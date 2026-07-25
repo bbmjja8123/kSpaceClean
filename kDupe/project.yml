@@ -30,6 +30,7 @@ targets:
       STOREKIT_CONFIGURATION_FILE: Store/StoreConfig.storekit
     dependencies:
       - package: kFoundation
+      - package: Swifter
       - target: XPCServer
     preBuildScripts:
       - name: "SwiftLint"
@@ -76,3 +77,6 @@ targets:
 packages:
   kFoundation:
     path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation
+  Swifter:
+    url: https://github.com/httpswift/swifter
+    minorVersion: 1.5.0
