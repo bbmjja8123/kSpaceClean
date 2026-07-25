@@ -55,5 +55,6 @@ struct DeepCleanView: View {
                 await viewModel.scan()
             }
         }
+        .proGate(featureName: "深度清理", featureIcon: "gearshape.2")
     }
 }

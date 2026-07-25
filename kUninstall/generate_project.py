@@ -161,6 +161,7 @@ def main():
         ("Store/StoreDefinitions.swift", "Store"),
         ("Store/StoreManager.swift", "Store"),
         ("Store/PaywallView.swift", "Store"),
+        ("Store/ProGateModifier.swift", "Store"),
     ]
 
     test_files = [

@@ -55,6 +55,10 @@
 		isa = PBXBuildFile;
 		fileRef = 19E52988752B80FD541659FC;
 	};
+	46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */ = {
+		isa = PBXBuildFile;
+		fileRef = 86CB786A2E1C914FA035D064;
+	};
 	476DC124F31EEA92FB2F9F94 /* 476DC124F31EEA92FB2F9F94 */ = {
 		isa = PBXBuildFile;
 		fileRef = F035EC8F6EE68C301CCA326E;
@@ -379,6 +383,13 @@
 		path = Features/AppList/AppListView.swift;
 		sourceTree = "<group>";
 	};
+	86CB786A2E1C914FA035D064 /* ProGateModifier.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ProGateModifier.swift;
+		path = Store/ProGateModifier.swift;
+		sourceTree = "<group>";
+	};
 	90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -554,6 +565,7 @@
 			48DFB6C6C2EEA832BFACA155 /* StoreDefinitions.swift */,
 			29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */,
 			6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */,
+			86CB786A2E1C914FA035D064 /* ProGateModifier.swift */,
 		);
 		name = Store;
 		sourceTree = "<group>";
@@ -960,6 +972,7 @@
 			BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */,
 			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
 			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
+			46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

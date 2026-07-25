@@ -47,5 +47,6 @@ struct StartupItemsView: View {
             }
         }
         .task { await viewModel.load() }
+        .proGate(featureName: "启动项管理", featureIcon: "power")
     }
 }
