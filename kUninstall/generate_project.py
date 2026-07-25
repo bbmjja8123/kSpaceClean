@@ -3,7 +3,7 @@
 
 import os, hashlib
 
-BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kUninstall"
+BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/agent-a3ae71f2/kUninstall"
 PROJECT_FILE = f"{BASE}/kUninstall.xcodeproj/project.pbxproj"
 KFOUNDATION_PATH = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation"
 
@@ -136,12 +136,16 @@ def main():
         ("Features/Common/EmptyStateView.swift", "Common"),
         ("Features/Common/LoadingStateView.swift", "Common"),
         ("Features/Detail/AppDetailView.swift", "Detail"),
+        ("Features/Detail/DetailViewModel.swift", "Detail"),
+        ("Features/Detail/ResidueSectionView.swift", "Detail"),
+        ("Features/Detail/UninstallConfirmSheet.swift", "Detail"),
     ]
 
     test_files = [
         "DetectTests/InstalledAppTests.swift",
         "DetectTests/AppCatalogServiceTests.swift",
         "DetectTests/ResidueDetectorTests.swift",
+        "CleanTests/TrashMoverTests.swift",
     ]
 
     static_files = [
