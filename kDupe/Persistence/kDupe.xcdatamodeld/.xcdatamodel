@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0">
+    <entity name="ScanRecordEntity" representedClassName="ScanRecordEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="profileType" attributeType="String"/>
+        <attribute name="totalFilesScanned" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="totalDuplicatesFound" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="totalWasteSize" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="duration" attributeType="Double" defaultValueString="0"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Cascade"
+            destinationEntity="DuplicateGroupEntity" inverseName="scanRecord" inverseEntity="DuplicateGroupEntity"/>
+    </entity>
+    <entity name="DuplicateGroupEntity" representedClassName="DuplicateGroupEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="category" attributeType="String"/>
+        <attribute name="totalSize" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="fileCount" attributeType="Integer 64" defaultValueString="0"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade"
+            destinationEntity="FileItemEntity" inverseName="group" inverseEntity="FileItemEntity"/>
+        <relationship name="scanRecord" optional="YES" maxCount="1" deletionRule="Nullify"
+            destinationEntity="ScanRecordEntity" inverseName="groups" inverseEntity="ScanRecordEntity"/>
+    </entity>
+    <entity name="FileItemEntity" representedClassName="FileItemEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="filePath" attributeType="String"/>
+        <attribute name="size" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="modificationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hashValue" attributeType="String" optional="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify"
+            destinationEntity="DuplicateGroupEntity" inverseName="files" inverseEntity="DuplicateGroupEntity"/>
+    </entity>
+    <entity name="CleanupActionEntity" representedClassName="CleanupActionEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="filePath" attributeType="String"/>
+        <attribute name="fileSize" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="method" attributeType="String"/>
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isCompleted" attributeType="Boolean" defaultValueString="NO"/>
+    </entity>
+</model>
