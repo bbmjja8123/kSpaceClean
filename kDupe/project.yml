@@ -1,0 +1,77 @@
+name: kDupe
+options:
+  bundleIdPrefix: app.kraftly
+  deploymentTarget:
+    macOS: "13.0"
+  xcodeVersion: "15.0"
+
+settings:
+  SWIFT_STRICT_CONCURRENCY: complete
+  MACOSX_DEPLOYMENT_TARGET: "13.0"
+  SWIFT_VERSION: "5.9"
+
+targets:
+  kDupe:
+    type: application
+    platform: macOS
+    sources:
+      - path: .
+        excludes:
+          - "project.yml"
+          - "**/*.md"
+          - "Tests/**"
+          - "CLI/**"
+          - "WebDashboard/DashboardAssets/**"
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe
+      INFOPLIST_FILE: Info.plist
+      CODE_SIGN_STYLE: Automatic
+      DEVELOPMENT_TEAM: ""
+    dependencies:
+      - package: kFoundation
+      - target: XPCServer
+    preBuildScripts:
+      - name: "SwiftLint"
+        script: "if which swiftlint >/dev/null; then swiftlint; fi"
+        basedOnDependencyAnalysis: false
+
+  XPCServer:
+    type: xpc-service
+    platform: macOS
+    sources:
+      - CLI/XPCServer
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.xpc
+      INFOPLIST_FILE: CLI/XPCServer/Info.plist
+      CODE_SIGN_STYLE: Automatic
+      DEVELOPMENT_TEAM: ""
+    dependencies:
+      - package: kFoundation
+
+  kdupe-cli:
+    type: tool
+    platform: macOS
+    sources:
+      - CLI/kdupe-cli
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.cli
+      CODE_SIGN_STYLE: Automatic
+      DEVELOPMENT_TEAM: ""
+    dependencies:
+      - target: XPCServer
+      - package: kFoundation
+
+  kDupeTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.tests
+    dependencies:
+      - target: kDupe
+      - package: kFoundation
+
+packages:
+  kFoundation:
+    path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation

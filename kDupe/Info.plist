@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key><string>kDupe</string>
+    <key>CFBundleDisplayName</key><string>kDupe</string>
+    <key>CFBundleIdentifier</key><string>app.kraftly.kdupe</string>
+    <key>CFBundleVersion</key><string>1</string>
+    <key>CFBundleShortVersionString</key><string>1.0.0</string>
+    <key>CFBundlePackageType</key><string>APPL</string>
+    <key>LSMinimumSystemVersion</key><string>13.0</string>
+    <key>NSPrincipalClass</key><string>NSApplication</string>
+    <key>NSSupportsAutomaticTermination</key><true/>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>kDupe needs access to find duplicate and large files.</string>
+    <key>NSDownloadsFolderUsageDescription</key>
+    <string>kDupe needs access to find duplicate and large files.</string>
+</dict>
+</plist>
