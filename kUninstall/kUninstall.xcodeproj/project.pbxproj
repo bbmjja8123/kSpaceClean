@@ -15,6 +15,10 @@
 		isa = PBXBuildFile;
 		fileRef = 1C4455D0B4CE1B5F5681A2FE;
 	};
+	1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */ = {
+		isa = PBXBuildFile;
+		fileRef = 0089DAE711574808D00ABD0B;
+	};
 	2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */ = {
 		isa = PBXBuildFile;
 		fileRef = 90B6343DFAE6C2A9AECF231C;
@@ -43,6 +47,10 @@
 		isa = PBXBuildFile;
 		fileRef = 19E52988752B80FD541659FC;
 	};
+	476DC124F31EEA92FB2F9F94 /* 476DC124F31EEA92FB2F9F94 */ = {
+		isa = PBXBuildFile;
+		fileRef = F035EC8F6EE68C301CCA326E;
+	};
 	4AEDA9A9240B69654ED01077 /* 4AEDA9A9240B69654ED01077 */ = {
 		isa = PBXBuildFile;
 		fileRef = C1500570860B074777D1122C;
@@ -63,6 +71,10 @@
 		isa = PBXBuildFile;
 		fileRef = DC9F358CA23F4689897454B8;
 	};
+	7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */ = {
+		isa = PBXBuildFile;
+		fileRef = F5EE8978A09525D063479709;
+	};
 	7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */ = {
 		isa = PBXBuildFile;
 		fileRef = F9F5DB4F736723C6F2F5DC63;
@@ -78,6 +90,10 @@
 	92D836BA8D75FD4D4FC20474 /* 92D836BA8D75FD4D4FC20474 */ = {
 		isa = PBXBuildFile;
 		fileRef = AA60392EFF1E1EB77FEC0D36;
+	};
+	98D3A7E04EE8047A3A85CD0A /* 98D3A7E04EE8047A3A85CD0A */ = {
+		isa = PBXBuildFile;
+		fileRef = 0410DBDC2573D4A43ABE15F7;
 	};
 	9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */ = {
 		isa = PBXBuildFile;
@@ -119,6 +135,10 @@
 		isa = PBXBuildFile;
 		fileRef = 136BEC5F911CA3A945CDC744;
 	};
+	EC4C24611EC92CC86CD0E0C3 /* EC4C24611EC92CC86CD0E0C3 */ = {
+		isa = PBXBuildFile;
+		fileRef = FBDE7C50C5246FD21C67CBE5;
+	};
 	EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */ = {
 		isa = PBXBuildFile;
 		fileRef = B6830D0E035D1121B06CF64B;
@@ -144,6 +164,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+	0089DAE711574808D00ABD0B /* TrashMoverTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TrashMoverTests.swift;
+		path = Tests/CleanTests/TrashMoverTests.swift;
+		sourceTree = "<group>";
+	};
+	0410DBDC2573D4A43ABE15F7 /* DeepCleanViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanViewModel.swift;
+		path = Features/DeepClean/DeepCleanViewModel.swift;
+		sourceTree = "<group>";
+	};
 	05B9799A26FB3FDC78B071F1 /* Assets.xcassets */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = folder.assetcatalog;
@@ -219,7 +253,7 @@
 		isa = PBXFileReference;
 		lastKnownFileType = folder;
 		name = kFoundation;
-		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/agent-a919e8c7/kFoundation;
+		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
 		sourceTree = "<absolute>";
 	};
 	2F003C23A18C74F51E543E30 /* AppCatalogService.swift */ = {
@@ -377,6 +411,20 @@
 		path = Features/Common/LoadingStateView.swift;
 		sourceTree = "<group>";
 	};
+	F035EC8F6EE68C301CCA326E /* DeepCleanEngine.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanEngine.swift;
+		path = Features/DeepClean/DeepCleanEngine.swift;
+		sourceTree = "<group>";
+	};
+	F5EE8978A09525D063479709 /* SystemCleanGroupView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SystemCleanGroupView.swift;
+		path = Features/DeepClean/SystemCleanGroupView.swift;
+		sourceTree = "<group>";
+	};
 	F6EF8E531BBFA21EF834D571 /* ResidueSectionView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -389,6 +437,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = RootView.swift;
 		path = App/RootView.swift;
+		sourceTree = "<group>";
+	};
+	FBDE7C50C5246FD21C67CBE5 /* DeepCleanView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanView.swift;
+		path = Features/DeepClean/DeepCleanView.swift;
 		sourceTree = "<group>";
 	};
 	FC8F976B27828057A607616A /* AppCoordinator.swift */ = {
@@ -479,6 +534,17 @@
 		children = (
 		);
 		name = DetectTests;
+		sourceTree = "<group>";
+	};
+	28A9C632746B17FFA5197C8E /* DeepClean */ = {
+		isa = PBXGroup;
+		children = (
+			F035EC8F6EE68C301CCA326E /* DeepCleanEngine.swift */,
+			0410DBDC2573D4A43ABE15F7 /* DeepCleanViewModel.swift */,
+			FBDE7C50C5246FD21C67CBE5 /* DeepCleanView.swift */,
+			F5EE8978A09525D063479709 /* SystemCleanGroupView.swift */,
+		);
+		name = DeepClean;
 		sourceTree = "<group>";
 	};
 	3439CADB97B973753F0013F7 /* Detect */ = {
@@ -598,6 +664,7 @@
 		children = (
 			3C01BB5CC94D49CC05F47B00 /* AppList */,
 			3F300C2EC1A0250807DB22F8 /* Common */,
+			28A9C632746B17FFA5197C8E /* DeepClean */,
 			6F639C44EC4191E54FD9C780 /* Detail */,
 			0283ED5888E25C418EDF5949 /* History */,
 			948A46E6570A8D25B50581C8 /* Onboarding */,
@@ -621,6 +688,7 @@
 			06E33A55C4FF7FD14C728811 /* InstalledAppTests.swift */,
 			44A2613DA7CAFB830A1F06D3 /* AppCatalogServiceTests.swift */,
 			90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */,
+			0089DAE711574808D00ABD0B /* TrashMoverTests.swift */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -767,6 +835,7 @@
 			30777437B37859FB155C273A /* 30777437B37859FB155C273A */,
 			9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */,
 			2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */,
+			1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -791,6 +860,10 @@
 			D764C8753D76D87EC4C3839C /* D764C8753D76D87EC4C3839C */,
 			D43E9821EC3E17EFF5B7B88C /* D43E9821EC3E17EFF5B7B88C */,
 			F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */,
+			476DC124F31EEA92FB2F9F94 /* 476DC124F31EEA92FB2F9F94 */,
+			98D3A7E04EE8047A3A85CD0A /* 98D3A7E04EE8047A3A85CD0A */,
+			EC4C24611EC92CC86CD0E0C3 /* EC4C24611EC92CC86CD0E0C3 */,
+			7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */,
 			92D836BA8D75FD4D4FC20474 /* 92D836BA8D75FD4D4FC20474 */,
 			82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */,
 			C956C8E6486DF8E7AFEFB05C /* C956C8E6486DF8E7AFEFB05C */,
@@ -1000,7 +1073,7 @@
 /* Begin XCLocalSwiftPackageReference section */
 	9B11DE76A6AB3B8F9151A660 /* 9B11DE76A6AB3B8F9151A660 */ = {
 		isa = XCLocalSwiftPackageReference;
-		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/agent-a919e8c7/kFoundation;
+		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
 	};
 /* End XCLocalSwiftPackageReference section */
 

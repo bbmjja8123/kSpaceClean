@@ -63,6 +63,7 @@ enum StartupItemType: String, Codable {
     case loginItem
     case launchAgent
     case launchDaemon
+    case prefPane
 }
 
 struct StartupItem: Identifiable, Codable {

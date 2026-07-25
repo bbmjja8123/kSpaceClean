@@ -94,6 +94,7 @@ def main():
         "Startup": make_group("Startup"),
         "Features": make_group("Features"),
         "AppList": make_group("AppList"),
+        "DeepClean": make_group("DeepClean"),
         "Detail": make_group("Detail"),
         "Common": make_group("Common"),
         "History": make_group("History"),
@@ -139,6 +140,10 @@ def main():
         ("Features/AppList/AppRowView.swift", "AppList"),
         ("Features/Common/EmptyStateView.swift", "Common"),
         ("Features/Common/LoadingStateView.swift", "Common"),
+        ("Features/DeepClean/DeepCleanEngine.swift", "DeepClean"),
+        ("Features/DeepClean/DeepCleanViewModel.swift", "DeepClean"),
+        ("Features/DeepClean/DeepCleanView.swift", "DeepClean"),
+        ("Features/DeepClean/SystemCleanGroupView.swift", "DeepClean"),
         ("Features/Detail/AppDetailView.swift", "Detail"),
         ("Features/Detail/DetailViewModel.swift", "Detail"),
         ("Features/Detail/ResidueSectionView.swift", "Detail"),
@@ -487,7 +492,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AppList", "Common", "Detail", "History", "Onboarding", "Settings"]:
+    for sub in ["AppList", "Common", "DeepClean", "Detail", "History", "Onboarding", "Settings"]:
         features_children.append((group_ids[sub], sub))
     objects[group_ids["Features"]][1]["children"] = features_children
 
