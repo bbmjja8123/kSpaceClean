@@ -1,0 +1,330 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "AI Analysis" : {
+      "comment" : "Section header for AI-powered app usage analysis",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "AI Analysis" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "AI分析" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "AI 分析" } }
+      }
+    },
+    "App Name" : {
+      "comment" : "Label for app name field",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "App Name" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アプリ名" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "应用名称" } }
+      }
+    },
+    "Backup" : {
+      "comment" : "Backup section header",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Backup" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "バックアップ" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "备份" } }
+      }
+    },
+    "Batch Uninstall" : {
+      "comment" : "Title for batch uninstall feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Batch Uninstall" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "一括アンインストール" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "批量卸载" } }
+      }
+    },
+    "Cache Clean" : {
+      "comment" : "Cache cleaning feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cache Clean" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "キャッシュ削除" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "缓存清理" } }
+      }
+    },
+    "Cancel" : {
+      "comment" : "Cancel button",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "キャンセル" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "取消" } }
+      }
+    },
+    "Deep Clean" : {
+      "comment" : "Title for deep clean Pro feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Deep Clean" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ディープクリーン" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "深度清理" } }
+      }
+    },
+    "Disk Space" : {
+      "comment" : "Widget display name for disk space widget",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Disk Space" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ディスク容量" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "磁盘占用" } }
+      }
+    },
+    "FDA Guide" : {
+      "comment" : "Title for Full Disk Access guide",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Full Disk Access" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フルディスクアクセス" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "完全磁盘权限" } }
+      }
+    },
+    "History" : {
+      "comment" : "Title for uninstall history view",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "History" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "履歴" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "历史记录" } }
+      }
+    },
+    "Loading" : {
+      "comment" : "Loading state text",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Loading..." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "読み込み中..." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "加载中..." } }
+      }
+    },
+    "Pro" : {
+      "comment" : "Label for Pro version",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pro" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Pro" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "Pro" } }
+      }
+    },
+    "Residues" : {
+      "comment" : "Section header for residual files",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Residues" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "残存ファイル" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "残留文件" } }
+      }
+    },
+    "Restore" : {
+      "comment" : "Restore button for undo uninstall",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "復元" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "恢复" } }
+      }
+    },
+    "Scanning" : {
+      "comment" : "Scanning in progress text",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Scanning..." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スキャン中..." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "扫描中..." } }
+      }
+    },
+    "Search Apps" : {
+      "comment" : "Search field placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Search Apps" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アプリを検索" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "搜索应用" } }
+      }
+    },
+    "Settings" : {
+      "comment" : "Title for settings view",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "設定" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "设置" } }
+      }
+    },
+    "Startup Items" : {
+      "comment" : "Title for startup items management",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Startup Items" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "起動項目" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "启动项" } }
+      }
+    },
+    "Uninstall" : {
+      "comment" : "Uninstall button/title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Uninstall" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アンインストール" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "卸载" } }
+      }
+    },
+    "Uninstall History" : {
+      "comment" : "Navigation title for history screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Uninstall History" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アンインストール履歴" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "卸载历史" } }
+      }
+    },
+    "Upgrade to Pro" : {
+      "comment" : "Button text to upgrade to Pro version",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Upgrade to Pro" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Proにアップグレード" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "升级 Pro" } }
+      }
+    },
+    "Version" : {
+      "comment" : "Label for app version",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Version" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "バージョン" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "版本" } }
+      }
+    },
+    "app_never_used" : {
+      "comment" : "AI analysis: app is rarely used",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rarely used" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ほとんど使用されていません" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "很少使用" } }
+      }
+    },
+    "app_over_90_days_unused" : {
+      "comment" : "AI analysis: app not used for over 90 days",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not used for over 90 days" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "90日以上使用されていません" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "超过 90 天未使用" } }
+      }
+    },
+    "batch_uninstall_action" : {
+      "comment" : "Button to execute batch uninstall",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Uninstall Selected (%d)" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "選択項目をアンインストール (%d)" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "卸载所选 (%d)" } }
+      }
+    },
+    "no_apps_found" : {
+      "comment" : "Empty state when no apps found",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No apps found" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アプリが見つかりません" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "没有找到应用" } }
+      }
+    },
+    "no_residues_found" : {
+      "comment" : "Text shown when no residual files detected",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No residues found" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "残存ファイルは見つかりませんでした" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "未发现残留文件" } }
+      }
+    },
+    "open_kuninstall" : {
+      "comment" : "Menu bar: open main app",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Open kUninstall" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "kUninstallを開く" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "打开 kUninstall" } }
+      }
+    },
+    "quick_uninstall" : {
+      "comment" : "Menu bar: quick uninstall action",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Quick Uninstall..." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "クイックアンインストール..." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "快速卸载..." } }
+      }
+    },
+    "quit" : {
+      "comment" : "Menu bar: quit app",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Quit" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "終了" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "退出" } }
+      }
+    },
+    "select_app_prompt" : {
+      "comment" : "Prompt to select an app from the list",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select an app" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アプリを選択してください" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "选择 App" } }
+      }
+    },
+    "select_app_detail" : {
+      "comment" : "Detail text for empty state",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Select an app from the list to view details" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "リストからアプリを選択して詳細を表示" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "从左侧列表选择一个应用查看详情" } }
+      }
+    },
+    "uninstall_confirm_title" : {
+      "comment" : "Confirmation dialog title for uninstall",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Are you sure you want to uninstall %@?" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%@ をアンインストールしてもよろしいですか？" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "确定要卸载 %@ 吗？" } }
+      }
+    },
+    "uninstall_confirm_detail" : {
+      "comment" : "Detail text in uninstall confirmation",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This will move the app and %d residue file(s) to Trash. You can restore from History within 30 days." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "アプリと %d 個の残存ファイルをゴミ箱に移動します。30日以内に履歴から復元できます。" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "这会将应用和 %d 个残留文件移到废纸篓。您可以在 30 天内从历史记录恢复。" } }
+      }
+    },
+    "uninstall_success" : {
+      "comment" : "Success message after uninstall",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ has been uninstalled" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%@ はアンインストールされました" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "%@ 已卸载" } }
+      }
+    },
+    "uninstall_error" : {
+      "comment" : "Error message when uninstall fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Failed to uninstall %@" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%@ のアンインストールに失敗しました" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "卸载 %@ 失败" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

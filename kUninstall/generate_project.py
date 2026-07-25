@@ -168,22 +168,57 @@ def main():
         ("Intents/DeepCleanIntent.swift", "Intents"),
         ("FinderExtension/FinderSync.swift", "FinderExtension"),
         ("FinderExtension/Info.plist", "FinderExtension"),
+        ("Widgets/AppUsageWidget.swift", "Widgets"),
+        ("Widgets/QuickUninstallWidget.swift", "Widgets"),
+        ("Data/CoreDataStack.swift", "Data"),
+        ("Data/Models/UninstallHistory+CoreDataClass.swift", "Data"),
+        ("Data/Models/UninstallHistory+CoreDataProperties.swift", "Data"),
+        ("Data/Models/AppAnalysis+CoreDataClass.swift", "Data"),
+        ("Data/Models/AppAnalysis+CoreDataProperties.swift", "Data"),
+        ("Data/AppAnalysisRepository.swift", "Data"),
     ]
 
-    test_files = [
-        "DetectTests/InstalledAppTests.swift",
-        "DetectTests/AppCatalogServiceTests.swift",
-        "DetectTests/ResidueDetectorTests.swift",
-        "CleanTests/TrashMoverTests.swift",
-    ]
+    test_file_groups = {
+        "DetectTests": [
+            "InstalledAppTests.swift",
+            "AppCatalogServiceTests.swift",
+            "ResidueDetectorTests.swift",
+            "AppSourceClassifierTests.swift",
+        ],
+        "CleanTests": [
+            "TrashMoverTests.swift",
+            "BackupManagerTests.swift",
+        ],
+        "IntegrationTests": [
+            "UninstallFlowTests.swift",
+            "SandboxDegradationTests.swift",
+        ],
+        "UITests": [
+            "UninstallJourneyUITests.swift",
+        ],
+    }
+
+    test_build_files = []
+    for sub_grp, files in test_file_groups.items():
+        for tf in files:
+            tdir = f"Tests/{sub_grp}"
+            tpath = f"{tdir}/{tf}"
+            gid = group_ids[sub_grp]
+            ref_id = add(make_fileref(tf, tpath, last="sourcecode.swift"), f"ref_{tpath}")
+            bf_id = add(make_buildfile(ref_id), f"bf_{tpath}")
+            objects[gid][1]["children"].append((ref_id, tf))
+            test_build_files.append(bf_id)
 
     static_files = [
         "Info.plist",
         "kUninstall.entitlements",
+        "kUninstallDebug.entitlements",
     ]
 
     resource_dirs = [
         ("Assets.xcassets", "Resources", "folder.assetcatalog"),
+        ("Localizable.xcstrings", "Resources", "text.json.xcstrings"),
+        ("PrivacyInfo.xcprivacy", "Resources", "text.plist.xml"),
     ]
 
     main_build_files = []
@@ -218,16 +253,6 @@ def main():
         bf_id = add(make_buildfile(ref_id), f"bf_{rpath}")
         objects[gid][1]["children"].append((ref_id, rname))
         resource_refs.append(bf_id)
-
-    test_build_files = []
-    for tf in test_files:
-        tpath = f"Tests/{tf}"
-        fname = os.path.basename(tf)
-        gid = group_ids["Tests"]
-        ref_id = add(make_fileref(fname, tpath, last="sourcecode.swift"), f"ref_{tpath}")
-        bf_id = add(make_buildfile(ref_id), f"bf_{tpath}")
-        objects[gid][1]["children"].append((ref_id, fname))
-        test_build_files.append(bf_id)
 
     # ========== Products ==========
     app_product_id = add(make_fileref("kUninstall.app", "kUninstall.app",
@@ -514,6 +539,12 @@ def main():
     for sub in ["AppList", "Common", "DeepClean", "Detail", "History", "Onboarding", "Settings", "StartupItems"]:
         features_children.append((group_ids[sub], sub))
     objects[group_ids["Features"]][1]["children"] = features_children
+
+    # Set Tests group children
+    tests_children = []
+    for sub in ["DetectTests", "CleanTests", "IntegrationTests", "UITests"]:
+        tests_children.append((group_ids[sub], sub))
+    objects[group_ids["Tests"]][1]["children"] = tests_children
 
     # Set root group children
     root_children = []

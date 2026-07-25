@@ -1,9 +1,11 @@
 import SwiftUI
+import WidgetKit
 
 @main
 struct kUninstallApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var coordinator = AppCoordinator()
+    @StateObject private var menuBarController = MenuBarController()
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +16,8 @@ struct kUninstallApp: App {
                 .onOpenURL { url in coordinator.handleDeepLink(url) }
                 .onAppear {
                     coordinator.appState = appState
+                    menuBarController.setup()
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
         }
         .windowStyle(.hiddenTitleBar)

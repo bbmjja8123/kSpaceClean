@@ -55,6 +55,7 @@ struct AppDetailView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                 sourceLabel
+                analysisBadge
             }
         }
     }
@@ -79,6 +80,30 @@ struct AppDetailView: View {
                 .foregroundColor(.secondary)
         case .unknown:
             EmptyView()
+        }
+    }
+
+    @ViewBuilder private var analysisBadge: some View {
+        if let action = viewModel.analysis?.suggestedAction {
+            HStack(spacing: 4) {
+                Image(systemName: "sparkle.magnifyingglass")
+                    .font(.caption)
+                switch action {
+                case "never_used":
+                    Text("很少使用")
+                        .font(.caption)
+                case "uninstall":
+                    Text("超过 90 天未使用")
+                        .font(.caption)
+                default:
+                    EmptyView()
+                }
+            }
+            .foregroundColor(action == "never_used" ? .orange : .red)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 3)
+            .background((action == "never_used" ? Color.orange : Color.red).opacity(0.12))
+            .cornerRadius(6)
         }
     }
 

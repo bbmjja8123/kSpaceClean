@@ -8,14 +8,22 @@ class DetailViewModel: ObservableObject {
     @Published var isUninstalling = false
     @Published var showUninstallToast = false
     @Published var undoRemainingSeconds = 10
+    @Published var analysis: AppAnalysis?
 
     private let trashMover = TrashMover()
     private let coordinator: AppCoordinator
+    private let analysisRepo = AppAnalysisRepository()
 
     init(app: InstalledApp, coordinator: AppCoordinator) {
         self.app = app
         self.coordinator = coordinator
         self.selectedResidues = Set(app.residues.filter { $0.confidence >= 0.8 }.map { $0.id })
+        Task { await loadAnalysis() }
+    }
+
+    private func loadAnalysis() async {
+        let fetched = await analysisRepo.fetchAnalysis(bundleID: app.bundleID)
+        await MainActor.run { self.analysis = fetched }
     }
 
     var totalFreedBytes: Int64 {
