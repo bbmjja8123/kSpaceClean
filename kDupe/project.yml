@@ -32,6 +32,7 @@ targets:
       - package: kFoundation
       - package: Swifter
       - target: XPCServer
+      - target: kDupeFinderSync
     preBuildScripts:
       - name: "SwiftLint"
         script: "if which swiftlint >/dev/null; then swiftlint; fi"
@@ -72,6 +73,20 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.tests
     dependencies:
       - target: kDupe
+      - package: kFoundation
+
+  kDupeFinderSync:
+    type: app-extension
+    platform: macOS
+    sources:
+      - FinderSync
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.finder-sync
+      INFOPLIST_FILE: FinderSync/Info.plist
+      CODE_SIGN_STYLE: Automatic
+      DEVELOPMENT_TEAM: ""
+      APPLICATION_EXTENSION_API_ONLY: true
+    dependencies:
       - package: kFoundation
 
 packages:
