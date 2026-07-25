@@ -1,0 +1,102 @@
+<h2>Kraftly 项目总览</h2>
+<p class="subtitle">4 款 Mac 精品 App · 独立开发者 · 全球 + 中国 App Store · 仅订阅 + 买断盈利</p>
+
+<div class="section">
+  <div class="cards">
+    <div class="card" data-choice="kspaceclean" onclick="toggleSelect(this)" style="border-color:#7c3aed">
+      <div class="card-body">
+        <span class="label" style="color:#7c3aed">v1 设计定稿</span>
+        <h3>kSpaceClean</h3>
+        <p><strong>磁盘清理</strong> · 3D 磁盘星系图 · CoreML 分类</p>
+        <p style="font-size:0.85em;color:#666">Free Trial 7天 → $19.99/年订阅</p>
+      </div>
+    </div>
+    <div class="card" data-choice="kwatch" onclick="toggleSelect(this)" style="border-color:#0ea5e9">
+      <div class="card-body">
+        <span class="label" style="color:#0ea5e9">Backlog</span>
+        <h3>kWatch</h3>
+        <p><strong>菜单栏监控</strong> · Widget · Live Activities</p>
+        <p style="font-size:0.85em;color:#666">主轴：平台集成 + Widget</p>
+      </div>
+    </div>
+    <div class="card" data-choice="kdupe" onclick="toggleSelect(this)" style="border-color:#10b981">
+      <div class="card-body">
+        <span class="label" style="color:#10b981">Backlog</span>
+        <h3>kDupe</h3>
+        <p><strong>重复/大文件</strong> · 开发者场景 · AI 建议</p>
+        <p style="font-size:0.85em;color:#666">主轴：极客 + AI</p>
+      </div>
+    </div>
+    <div class="card" data-choice="kuninstall" onclick="toggleSelect(this)" style="border-color:#f59e0b">
+      <div class="card-body">
+        <span class="label" style="color:#f59e0b">Backlog</span>
+        <h3>kUninstall</h3>
+        <p><strong>应用卸载</strong> · Shortcuts · Finder 扩展</p>
+        <p style="font-size:0.85em;color:#666">主轴：平台集成 + 自动化</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="background:#f8f8fa;padding:20px;border-radius:12px">
+  <h3 style="margin-top:0">kSpaceClean v1 设计要点</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+    <div>
+      <h4 style="color:#7c3aed">🎯 差异化核心</h4>
+      <ul style="margin:8px 0;font-size:0.9em">
+        <li>3D 磁盘星系图（Metal 渲染）</li>
+        <li>CoreML 本地 AI 自动分类</li>
+        <li>零网络上报，100% 本地计算</li>
+        <li>Interactive Widget（macOS 14+）</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:#0ea5e9">🛠 技术栈</h4>
+      <ul style="margin:8px 0;font-size:0.9em">
+        <li>Swift 5.9+ / SwiftUI / AppKit</li>
+        <li>macOS 13 最低（能力自动降级）</li>
+        <li>App Sandbox + Full Disk Access</li>
+        <li>仅 Mac App Store 分发</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:#10b981">📦 v1 全功能首发</h4>
+      <ul style="margin:8px 0;font-size:0.9em">
+        <li>扫描引擎 + AI 分类 + 一键清理</li>
+        <li>Widget / Shortcuts / Live Activities</li>
+        <li>Finder 扩展 + Spotlight 集成</li>
+        <li>菜单栏图标 + FDA 教育引导</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color:#f59e0b">⏱ 13 周时间表</h4>
+      <ul style="margin:8px 0;font-size:0.9em">
+        <li>W1-2: 基础 + 权限层</li>
+        <li>W3-5: 扫描引擎 + 分类 + 清理</li>
+        <li>W6-8: 3D 渲染 + 菜单栏</li>
+        <li>W9-13: Widget + 多语言 + 上架</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>工作区架构</h3>
+  <pre style="background:#1e1e2e;color:#cdd6f4;padding:16px;border-radius:8px;font-size:0.8em;overflow:auto">
+KraftlyWorkspace.xcworkspace
+├── kFoundation/         ← 共享 Swift Package
+│   ├── FileScanner      扫描 / Hash / 相似度
+│   ├── PrivacyShield    TCC 权限管理
+│   ├── Capabilities     OS 版本能力探测
+│   ├── DesignSystem     SwiftUI Tokens
+│   └── CommonUtils      字节格式化 / 路径处理
+├── kSpaceClean/         ← App target（v1 实施中）
+├── kWatch/              ← Backlog
+├── kDupe/               ← Backlog
+└── kUninstall/          ← Backlog
+  </pre>
+</div>
+
+<div style="text-align:center;color:#666;font-size:0.85em;margin-top:24px">
+  💡 点击卡片查看更多 · 终端回复反馈 · 调整后推送新版
+</div>

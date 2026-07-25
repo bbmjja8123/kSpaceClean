@@ -1,0 +1,168 @@
+<h2>✨ 重新设计：沉浸式星系主窗口</h2>
+<p class="subtitle">参考 Apple Design Award / 编辑推荐应用风格 — 暗色 + 沉浸 + 毛玻璃</p>
+
+<div class="section">
+  <h3>🎯 设计方向</h3>
+  <p style="margin-bottom:8px">放弃传统 Sidebar+Toolbar 分割布局，改为 <strong>全窗口沉浸式 3D 星系背景 + 浮动玻璃 UI</strong>：</p>
+  <ul>
+    <li><strong>全窗口星系背景</strong> — 3D 场景铺满整个窗口，没有白边</li>
+    <li><strong>无传统 Titlebar</strong> — 自定义标题栏，和内容合一</li>
+    <li><strong>浮动导航条</strong> — 毛玻璃效果，悬浮在星系之上</li>
+    <li><strong>底部悬浮面板</strong> — 磁盘信息 + 主操作按钮，半透明</li>
+    <li><strong>暗色为默认主题</strong> — 突出星系的光效和色彩</li>
+  </ul>
+</div>
+
+<div class="mockup" style="margin-top:20px">
+  <div class="mockup-header">kSpaceClean — 沉浸式主窗口 (暗色)</div>
+  <div class="mockup-body" style="padding:0;background:linear-gradient(135deg,#0a0a1a 0%,#1a0a2e 40%,#0a1628 100%);position:relative;min-height:480px;overflow:hidden">
+
+    <!-- 3D Galaxy Background (模拟) -->
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <!-- 星空粒子 -->
+      <div style="position:absolute;width:2px;height:2px;background:white;border-radius:50%;top:10%;left:15%;opacity:0.6"></div>
+      <div style="position:absolute;width:1px;height:1px;background:white;border-radius:50%;top:25%;left:45%;opacity:0.4"></div>
+      <div style="position:absolute;width:2px;height:2px;background:white;border-radius:50%;top:40%;left:70%;opacity:0.7"></div>
+      <div style="position:absolute;width:1px;height:1px;background:white;border-radius:50%;top:60%;left:20%;opacity:0.3"></div>
+      <div style="position:absolute;width:2px;height:2px;background:white;border-radius:50%;top:75%;left:55%;opacity:0.5"></div>
+      <div style="position:absolute;width:1px;height:1px;background:white;border-radius:50%;top:85%;left:80%;opacity:0.4"></div>
+
+      <!-- 星系漩涡 (装饰) -->
+      <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.15) 0%,rgba(59,130,246,0.08) 30%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+      <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,0.1) 0%,transparent 60%);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+
+      <!-- 模拟球体 (示意) -->
+      <div style="position:absolute;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#a855f7,#7c3aed);box-shadow:0 0 20px rgba(124,58,237,0.5);top:35%;left:35%;display:flex;align-items:center;justify-content:center;font-size:18px">🖼</div>
+      <div style="position:absolute;width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#60a5fa,#3b82f6);box-shadow:0 0 16px rgba(59,130,246,0.4);top:45%;left:55%;display:flex;align-items:center;justify-content:center;font-size:14px">🎬</div>
+      <div style="position:absolute;width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#34d399,#10b981);box-shadow:0 0 14px rgba(16,185,129,0.4);top:55%;left:42%;display:flex;align-items:center;justify-content:center;font-size:12px">📄</div>
+      <div style="position:absolute;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fbbf24,#f59e0b);box-shadow:0 0 12px rgba(245,158,11,0.4);top:38%;left:48%;display:flex;align-items:center;justify-content:center;font-size:11px">🎵</div>
+      <div style="position:absolute;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#9ca3af,#6b7280);box-shadow:0 0 16px rgba(107,114,128,0.3);top:52%;left:32%;display:flex;align-items:center;justify-content:center;font-size:14px">🗑</div>
+      <div style="position:absolute;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f472b6,#ec4899);box-shadow:0 0 10px rgba(236,72,153,0.3);top:48%;left:62%;display:flex;align-items:center;justify-content:center;font-size:9px">&lt;/&gt;</div>
+
+      <!-- 发光轨道 -->
+      <div style="position:absolute;width:400px;height:2px;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.2),transparent);top:45%;left:50%;transform:translate(-50%,0) rotate(-15deg)"></div>
+      <div style="position:absolute;width:350px;height:1px;background:linear-gradient(90deg,transparent,rgba(59,130,246,0.15),transparent);top:52%;left:50%;transform:translate(-50%,0) rotate(10deg)"></div>
+    </div>
+
+    <!-- 顶部浮动标题栏 (毛玻璃) -->
+    <div style="position:absolute;top:0;left:0;right:0;padding:8px 16px;background:rgba(28,28,30,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;z-index:10">
+      <span style="color:rgba(255,255,255,0.9);font-weight:600;font-size:13px;letter-spacing:0.5px">kSpaceClean</span>
+      <span style="margin-left:8px;font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(124,58,237,0.3);color:#a78bfa">Pro</span>
+      <div style="flex:1"></div>
+      <div style="display:flex;gap:4px">
+        <span style="padding:4px 10px;border-radius:4px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);font-size:11px;cursor:pointer">3D</span>
+        <span style="padding:4px 10px;border-radius:4px;color:rgba(255,255,255,0.4);font-size:11px;cursor:pointer">列表</span>
+      </div>
+      <div style="width:20px"></div>
+      <!-- 窗口控制点 (红黄绿) -->
+      <div style="display:flex;gap:6px;margin-left:12px">
+        <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:#febc2e"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:#28c840"></div>
+      </div>
+    </div>
+
+    <!-- 左侧浮动导航 (毛玻璃竖条) -->
+    <div style="position:absolute;left:12px;top:60px;bottom:80px;width:44px;background:rgba(28,28,30,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:12px;border:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:4px;z-index:10">
+      <div style="width:32px;height:32px;border-radius:8px;background:rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;color:#a78bfa;font-size:14px" title="星系">🪐</div>
+      <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:14px" title="扫描">🔍</div>
+      <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:14px" title="清理">🗑</div>
+      <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:14px" title="历史">⏱</div>
+      <div style="flex:1"></div>
+      <div style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:14px" title="设置">⚙</div>
+    </div>
+
+    <!-- 中央 3D 场景 (主区域, 示意) -->
+    <div style="position:absolute;left:68px;right:24px;top:60px;bottom:80px;border-radius:16px;z-index:1;pointer-events:none">
+      <!-- 3D 场景会在 Metal 中渲染,这里只是布局占位 -->
+    </div>
+
+    <!-- 右侧信息面板 (浮动半透明) -->
+    <div style="position:absolute;right:28px;top:72px;width:200px;background:rgba(28,28,30,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:12px;border:1px solid rgba(255,255,255,0.06);padding:14px;z-index:10">
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">选中详情</div>
+      <div style="font-size:15px;font-weight:600;color:white;margin-bottom:2px">🖼 图片</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6)">42.3 GB · 1,234 个文件</div>
+      <div style="display:flex;gap:6px;margin-top:10px">
+        <span style="flex:1;padding:6px 0;border-radius:6px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);font-size:11px;text-align:center;cursor:pointer">查看文件</span>
+        <span style="flex:1;padding:6px 0;border-radius:6px;background:rgba(239,68,68,0.2);color:#fca5a5;font-size:11px;text-align:center;cursor:pointer">清理</span>
+      </div>
+    </div>
+
+    <!-- 底部悬浮面板 (毛玻璃) -->
+    <div style="position:absolute;bottom:12px;left:68px;right:24px;height:56px;background:rgba(28,28,30,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:14px;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;padding:0 16px;z-index:10">
+      <!-- 磁盘信息 -->
+      <div style="display:flex;align-items:center;gap:10px;flex:1">
+        <span style="font-size:12px;color:rgba(255,255,255,0.5)">已用 128 GB</span>
+        <div style="width:120px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden">
+          <div style="width:50%;height:100%;background:linear-gradient(90deg,#10b981,#34d399);border-radius:2px"></div>
+        </div>
+        <span style="font-size:12px;color:rgba(255,255,255,0.5)">共 256 GB</span>
+      </div>
+      <!-- 操作按钮 -->
+      <div style="display:flex;gap:8px">
+        <span style="padding:6px 14px;border-radius:8px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);font-size:12px;cursor:pointer">⬇ 快速扫描</span>
+        <span style="padding:6px 18px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;font-size:12px;font-weight:500;cursor:pointer;box-shadow:0 4px 12px rgba(124,58,237,0.3)">✨ 开始扫描</span>
+      </div>
+    </div>
+
+    <!-- 分类图例 (左下角浮动) -->
+    <div style="position:absolute;left:68px;bottom:80px;padding:8px 12px;background:rgba(28,28,30,0.4);backdrop-filter:blur(10px);border-radius:8px;border:1px solid rgba(255,255,255,0.04);z-index:5;display:flex;gap:10px;font-size:10px;color:rgba(255,255,255,0.6)">
+      <span>🟣 图片</span>
+      <span>🔵 视频</span>
+      <span>🟢 文档</span>
+      <span>🟠 音频</span>
+      <span>⚪ 缓存</span>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px">
+  <h3>设计要点</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.9em">
+    <div style="padding:12px;background:rgba(124,58,237,0.08);border-radius:8px;border-left:3px solid #7c3aed">
+      <strong>🎨 暗色沉浸</strong><br>
+      全窗口深空渐变背景，3D 星系铺满整个窗口，无白边
+    </div>
+    <div style="padding:12px;background:rgba(59,130,246,0.08);border-radius:8px;border-left:3px solid #3b82f6">
+      <strong>🪟 毛玻璃层</strong><br>
+      所有 UI 元素都是浮动毛玻璃面板，不遮挡星系
+    </div>
+    <div style="padding:12px;background:rgba(16,185,129,0.08);border-radius:8px;border-left:3px solid #10b981">
+      <strong>📐 极简导航</strong><br>
+      左侧 44pt 窄导航条（Icon 化），取代传统文字 Sidebar
+    </div>
+    <div style="padding:12px;background:rgba(245,158,11,0.08);border-radius:8px;border-left:3px solid #f59e0b">
+      <strong>💡 聚焦内容</strong><br>
+      所有操作面板都在边缘浮动，中央 3D 场景无遮挡
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:16px;font-size:0.85em;color:rgba(255,255,255,0.5)">
+  <h3 style="margin-bottom:4px">设计参考</h3>
+  <p>DaisyDisk（全屏沉浸可视化）、CleanMyMac X（暗色抛光 UI）、Pixelmator Pro（统一标题栏）、Apple Design Award 2024/2025 偏好（自定义窗口 + 毛玻璃 + 暗色主题）</p>
+</div>
+
+<div class="options" style="margin-top:20px">
+  <div class="option" data-choice="ok" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content">
+      <h3>很好！继续下一屏</h3>
+      <p>确认这个方向，进入 Disk Galaxy 3D 视图交互设计</p>
+    </div>
+  </div>
+  <div class="option" data-choice="refine" onclick="toggleSelect(this)">
+    <div class="letter">✎</div>
+    <div class="content">
+      <h3>方向对了，但有小调整</h3>
+      <p>我在终端说明微调想法</p>
+    </div>
+  </div>
+  <div class="option" data-choice="redo" onclick="toggleSelect(this)">
+    <div class="letter">🔄</div>
+    <div class="content">
+      <h3>不太满意，换一个方向</h3>
+      <p>我在终端中说明想要的方向</p>
+    </div>
+  </div>
+</div>

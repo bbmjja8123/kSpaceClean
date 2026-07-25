@@ -1,0 +1,143 @@
+<h2>kSpaceClean Spec Gap Analysis</h2>
+<p class="subtitle">通读两份 spec 后发现的遗漏项 · 共 47 项 · 已按优先级分类</p>
+
+<div class="section">
+  <h3>📊 总体盘点</h3>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:center">
+    <div style="padding:20px;background:#fef2f2;border:2px solid #ef4444;border-radius:8px">
+      <div style="font-size:2em;font-weight:bold;color:#ef4444">14</div>
+      <div style="font-size:0.85em;color:#7f1d1d">P0 阻塞项<br>必须补到 spec</div>
+    </div>
+    <div style="padding:20px;background:#fef3c7;border:2px solid #f59e0b;border-radius:8px">
+      <div style="font-size:2em;font-weight:bold;color:#f59e0b">21</div>
+      <div style="font-size:0.85em;color:#92400e">P1 应该有<br>可分布到 V1.1</div>
+    </div>
+    <div style="padding:20px;background:#f0fdf4;border:2px solid #10b981;border-radius:8px">
+      <div style="font-size:2em;font-weight:bold;color:#10b981">13</div>
+      <div style="font-size:0.85em;color:#15803d">P2 可缓<br>V2 设计时考虑</div>
+    </div>
+    <div style="padding:20px;background:#eff6ff;border:2px solid #3b82f6;border-radius:8px">
+      <div style="font-size:2em;font-weight:bold;color:#3b82f6">10</div>
+      <div style="font-size:0.85em;color:#1e3a8a">维度<br>A-J 全面审视</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🔴 P0 阻塞项（必须补到 spec 才能进入实施）</h3>
+  <div style="background:#fef2f2;padding:16px;border-radius:8px;border-left:4px solid #ef4444">
+
+    <h4 style="color:#ef4444;margin-top:0">业务/合规/法律</h4>
+    <ul style="margin:4px 0;font-size:0.9em">
+      <li><strong>A1</strong> · Apple Developer Program 注册策略（Individual vs Organization）</li>
+      <li><strong>A3</strong> · 隐私政策 + 服务条款 URL（GitHub Pages 托管）</li>
+      <li><strong>A5</strong> · 订阅条款文本（订阅前必展示）</li>
+      <li><strong>A6</strong> · Restore Purchase 流程（审核必查）</li>
+      <li><strong>A8</strong> · App Store 隐私标签精确勾选（8 个维度）</li>
+    </ul>
+
+    <h4 style="color:#ef4444">上架发布</h4>
+    <ul style="margin:4px 0;font-size:0.9em">
+      <li><strong>B9</strong> · App Store Connect 设置清单（Bundle ID / Capabilities / 协议）</li>
+      <li><strong>B12</strong> · TestFlight 测试计划（内部 100 人 / 外部审核 / 周期）</li>
+    </ul>
+
+    <h4 style="color:#ef4444">客户体验</h4>
+    <ul style="margin:4px 0;font-size:0.9em">
+      <li><strong>C20</strong> · 客户支持渠道（support@kraftly.app + Discord）</li>
+      <li><strong>C24</strong> · 应用图标设计（1024 + 多尺寸 + 委托设计师）</li>
+    </ul>
+
+    <h4 style="color:#ef4444">可访问性</h4>
+    <ul style="margin:4px 0;font-size:0.9em">
+      <li><strong>D27</strong> · VoiceOver 支持（3D 球体的 accessibilityLabel + 列表视图替代）</li>
+      <li><strong>D28</strong> · 键盘导航（全功能可纯键盘操作）</li>
+    </ul>
+
+    <h4 style="color:#ef4444">运营质量</h4>
+    <ul style="margin:4px 0;font-size:0.9em">
+      <li><strong>F37</strong> · MetricKit 崩溃监控配置（MXMetricManager 订阅）</li>
+    </ul>
+
+    <h4 style="color:#ef4444">营销度量</h4>
+    <ul style="margin:4px 0;font-size:0.9em">
+      <li><strong>G45</strong> · GTM 详细计划（T-30 到 T+30 全流程）</li>
+      <li><strong>H52</strong> · KPI 定义（下载/转化/评分/收入/留存 5 项）</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🟡 P1 应该有项（分布到 V1.1 实施计划）</h3>
+  <div style="background:#fef3c7;padding:16px;border-radius:8px;border-left:4px solid #f59e0b;font-size:0.85em">
+    <strong>合规</strong>：A4 退款 UX · A7 审核指南 checklist<br>
+    <strong>上架</strong>：B10/11 证书 Provisioning · B13 分阶段发布 · B14 拒绝应急 · B16 CI/CD<br>
+    <strong>UX</strong>：C18 首次启动 Onboarding · C19 帮助文档 · C21-23 空/加载/错误状态 · C25 品牌系统 · C26 应用内反馈<br>
+    <strong>无障碍</strong>：D29-31 Dynamic Type / Reduce Motion / 高对比度<br>
+    <strong>i18n</strong>：E33 字符串资源估算（~300-500 字符串）<br>
+    <strong>运营</strong>：F39 macOS 支持窗口 · F40 更新频率 · F41 Bug 分级 · F42 故障应急<br>
+    <strong>营销</strong>：G46 Press Kit · G47 社交媒体 · G48 社区建设<br>
+    <strong>技术</strong>：J60-65 SPM/SwiftLint/覆盖率/Git/提交规范/Code Review
+  </div>
+</div>
+
+<div class="section">
+  <h3>🟢 P2 可缓项（V2 设计时考虑）</h3>
+  <div style="background:#f0fdf4;padding:16px;border-radius:8px;border-left:4px solid #10b981;font-size:0.85em">
+    <strong>财务</strong>：A2 税务详细 · F38 性能监控自动化<br>
+    <strong>扩展</strong>：B17 Fastlane · F43-44 备份/迁移 · G49-51 邮件列表/合作伙伴/Setapp<br>
+    <strong>增长</strong>：H53-55 A/B 测试/转化漏斗/北极星<br>
+    <strong>安全</strong>：I56-59 代码混淆/证书锁定/Hardened Runtime/安全审计
+  </div>
+</div>
+
+<div class="section">
+  <h3>📋 10 个审查维度</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;font-size:0.85em">
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>A · 业务/合规/法律</strong> · 8 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>B · 上架与发布</strong> · 9 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>C · 客户体验</strong> · 9 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>D · 可访问性</strong> · 5 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>E · 国际化</strong> · 5 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>F · 运营质量</strong> · 8 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>G · 营销增长</strong> · 7 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>H · 度量成功</strong> · 4 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>I · 安全</strong> · 4 项
+    </div>
+    <div style="padding:10px;background:#f8f8fa;border-radius:6px">
+      <strong>J · 技术规范</strong> · 6 项
+    </div>
+  </div>
+</div>
+
+<div class="section" style="background:#eff6ff;padding:16px;border-radius:8px;border-left:4px solid #3b82f6">
+  <h3 style="margin-top:0">🎯 我的建议路径</h3>
+  <ol style="margin:0;padding-left:20px;font-size:0.9em">
+    <li><strong>现在</strong>：把 14 项 P0 写进 spec 主文档（新增 "上架/合规/无障碍/运营" 章节）</li>
+    <li><strong>完成后</strong>：给你过目 spec v1.1</li>
+    <li><strong>然后</strong>：进入 writing-plans</li>
+    <li><strong>writing-plans 时</strong>：把 P1 项分布到 V1.1 实施任务里</li>
+  </ol>
+</div>
+
+<div style="text-align:center;color:#666;font-size:0.85em;margin-top:24px">
+  💡 完整 gap analysis 文档：<code>docs/superpowers/specs/2026-07-25-kraftly-kspaceclean-gap-analysis.md</code><br>
+  终端回复调整 P0 项 · 或确认开始补 spec
+</div>

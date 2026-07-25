@@ -1,0 +1,7 @@
+{"type":"server-started","port":57352,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:57352/?key=1c89005ee5e55c8fd169db511e85f190ff70bce9a97d1a28082cec7323d08dc0","screen_dir":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/content","state_dir":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/state","idle_timeout_ms":14400000}
+{"type":"server-started","port":57352,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:57352/?key=1c89005ee5e55c8fd169db511e85f190ff70bce9a97d1a28082cec7323d08dc0","screen_dir":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/content","state_dir":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/state","idle_timeout_ms":14400000}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/content/01-window-architecture.html"}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/content/01-window-architecture-v2.html"}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/content/02-dual-view-mode.html"}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/26101-1784956210/content/03-unified-galaxy-view.html"}
+{"type":"server-stopped","reason":"idle timeout"}

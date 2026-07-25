@@ -1,0 +1,226 @@
+<h2>🔄 重新设计：两种视图模式</h2>
+<p class="subtitle">沉浸模式 <strong>+</strong> 数据模式，一个不能少</p>
+
+<div class="section">
+  <p>你说得对 — 只看单个选中不够。应该有两种视图模式，通过左侧导航切换：</p>
+</div>
+
+<!-- Mode 1: 星系沉浸 -->
+<div class="mockup" style="margin-top:12px">
+  <div class="mockup-header">模式 A：🪐 星系 — 沉浸浏览</div>
+  <div class="mockup-body" style="padding:0;background:linear-gradient(135deg,#0a0a1a 0%,#1a0a2e 40%,#0a1628 100%);position:relative;min-height:360px;overflow:hidden">
+
+    <!-- 背景星星 -->
+    <div style="position:absolute;inset:0">
+      <div style="position:absolute;width:2px;height:2px;background:white;border-radius:50%;top:10%;left:15%;opacity:0.6"></div>
+      <div style="position:absolute;width:1px;height:1px;background:white;border-radius:50%;top:25%;left:45%;opacity:0.4"></div>
+      <div style="position:absolute;width:2px;height:2px;background:white;border-radius:50%;top:40%;left:70%;opacity:0.7"></div>
+      <div style="position:absolute;width:1px;height:1px;background:white;border-radius:50%;top:60%;left:20%;opacity:0.3"></div>
+      <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.12) 0%,transparent 60%);top:50%;left:55%;transform:translate(-50%,-50%)"></div>
+
+      <!-- 模拟球体 -->
+      <div style="position:absolute;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#a855f7,#7c3aed);box-shadow:0 0 20px rgba(124,58,237,0.4);top:32%;left:40%;display:flex;align-items:center;justify-content:center;font-size:16px">🖼</div>
+      <div style="position:absolute;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#60a5fa,#3b82f6);box-shadow:0 0 14px rgba(59,130,246,0.3);top:45%;left:55%;display:flex;align-items:center;justify-content:center;font-size:13px">🎬</div>
+      <div style="position:absolute;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#34d399,#10b981);box-shadow:0 0 12px rgba(16,185,129,0.3);top:55%;left:45%;display:flex;align-items:center;justify-content:center;font-size:11px">📄</div>
+      <div style="position:absolute;width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#9ca3af,#6b7280);box-shadow:0 0 14px rgba(107,114,128,0.2);top:50%;left:35%;display:flex;align-items:center;justify-content:center;font-size:13px">🗑</div>
+    </div>
+
+    <!-- 顶部标题栏 -->
+    <div style="position:absolute;top:0;left:0;right:0;padding:6px 14px;background:rgba(28,28,30,0.5);backdrop-filter:blur(16px);display:flex;align-items:center;z-index:10">
+      <span style="color:rgba(255,255,255,0.9);font-weight:600;font-size:12px">kSpaceClean</span>
+      <div style="flex:1"></div>
+      <div style="display:flex;gap:4px;background:rgba(255,255,255,0.06);padding:2px;border-radius:6px">
+        <span style="padding:3px 10px;border-radius:4px;background:rgba(124,58,237,0.3);color:#a78bfa;font-size:10px;font-weight:500">3D</span>
+        <span style="padding:3px 10px;border-radius:4px;color:rgba(255,255,255,0.4);font-size:10px">列表</span>
+      </div>
+    </div>
+
+    <!-- 左侧导航 -->
+    <div style="position:absolute;left:10px;top:44px;bottom:10px;width:40px;background:rgba(28,28,30,0.4);backdrop-filter:blur(16px);border-radius:10px;border:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:2px;z-index:10">
+      <div style="width:30px;height:30px;border-radius:7px;background:rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;color:#a78bfa;font-size:12px" title="星系">🪐</div>
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px" title="全部结果">📊</div>
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px" title="清理">🗑</div>
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px" title="历史">⏱</div>
+      <div style="flex:1"></div>
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px">⚙</div>
+    </div>
+
+    <!-- 右侧浮层面板 (选中详情) -->
+    <div style="position:absolute;right:14px;top:44px;width:180px;background:rgba(28,28,30,0.55);backdrop-filter:blur(16px);border-radius:10px;border:1px solid rgba(255,255,255,0.05);padding:12px;z-index:10">
+      <div style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px">选中</div>
+      <div style="font-size:14px;font-weight:600;color:white;margin:4px 0">🖼 图片</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.5)">42.3 GB · 1,234 个文件</div>
+      <div style="margin-top:8px;padding:5px 0;border-radius:5px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);font-size:10px;text-align:center">查看文件 →</div>
+    </div>
+
+    <!-- 底部面板 -->
+    <div style="position:absolute;bottom:10px;left:60px;right:14px;height:44px;background:rgba(28,28,30,0.5);backdrop-filter:blur(16px);border-radius:10px;border:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;padding:0 12px;z-index:10">
+      <span style="font-size:10px;color:rgba(255,255,255,0.4)">已用 128 / 256 GB</span>
+      <div style="width:80px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;margin:0 8px;overflow:hidden">
+        <div style="width:50%;height:100%;background:linear-gradient(90deg,#10b981,#34d399)"></div>
+      </div>
+      <div style="flex:1"></div>
+      <span style="padding:4px 14px;border-radius:6px;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;font-size:10px;font-weight:500;box-shadow:0 2px 8px rgba(124,58,237,0.3)">✨ 扫描</span>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;font-size:24px;margin:8px 0">⬇︎</div>
+
+<!-- Mode 2: 数据总览 -->
+<div class="mockup">
+  <div class="mockup-header">模式 B：📊 全部结果 — 完整数据视图</div>
+  <div class="mockup-body" style="padding:0;background:#1c1c1e;position:relative;min-height:360px">
+
+    <!-- 顶部标题栏 (同星系模式风格一致) -->
+    <div style="padding:6px 14px;background:rgba(44,44,46,0.8);display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <span style="color:rgba(255,255,255,0.9);font-weight:600;font-size:12px">kSpaceClean</span>
+      <div style="flex:1"></div>
+      <div style="display:flex;gap:4px;background:rgba(255,255,255,0.06);padding:2px;border-radius:6px">
+        <span style="padding:3px 10px;border-radius:4px;color:rgba(255,255,255,0.4);font-size:10px">3D</span>
+        <span style="padding:3px 10px;border-radius:4px;background:rgba(124,58,237,0.3);color:#a78bfa;font-size:10px;font-weight:500">列表</span>
+      </div>
+    </div>
+
+    <!-- 左侧导航 (高亮"全部结果") -->
+    <div style="position:absolute;left:10px;top:44px;bottom:10px;width:40px;background:rgba(44,44,46,0.6);backdrop-filter:blur(16px);border-radius:10px;border:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:2px;z-index:10">
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px">🪐</div>
+      <div style="width:30px;height:30px;border-radius:7px;background:rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;color:#a78bfa;font-size:12px">📊</div>
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px">🗑</div>
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px">⏱</div>
+      <div style="flex:1"></div>
+      <div style="width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:12px">⚙</div>
+    </div>
+
+    <!-- 内容区: 分类卡片 + 文件列表 -->
+    <div style="margin-left:58px;margin-top:8px;margin-right:14px;margin-bottom:10px;display:flex;gap:10px;min-height:320px">
+
+      <!-- 左侧: 分类总览卡片 -->
+      <div style="width:200px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);padding:4px 0;letter-spacing:0.5px">分类总览 · 12.8 GB 可清理</div>
+
+        <!-- 分类卡片: 系统缓存 -->
+        <div style="background:rgba(44,44,46,0.6);border-radius:8px;padding:8px 10px;border-left:3px solid #6b7280;cursor:pointer">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.9)">🗑 系统缓存</span>
+            <span style="font-size:11px;color:#fca5a5">3.2 GB</span>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">12,384 个文件</div>
+        </div>
+
+        <!-- 分类卡片: 应用残留 (选中高亮) -->
+        <div style="background:rgba(124,58,237,0.15);border-radius:8px;padding:8px 10px;border-left:3px solid #7c3aed;cursor:pointer">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;font-weight:500;color:white">📦 应用残留</span>
+            <span style="font-size:11px;color:#fca5a5">2.1 GB</span>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">845 个文件</div>
+        </div>
+
+        <!-- 分类卡片: 大文件 -->
+        <div style="background:rgba(44,44,46,0.6);border-radius:8px;padding:8px 10px;border-left:3px solid #f59e0b;cursor:pointer">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.9)">📄 大文件</span>
+            <span style="font-size:11px;color:#fca5a5">4.8 GB</span>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">12 个文件 (&gt;100MB)</div>
+        </div>
+
+        <!-- 分类卡片: 重复文件 -->
+        <div style="background:rgba(44,44,46,0.6);border-radius:8px;padding:8px 10px;border-left:3px solid #ec4899;cursor:pointer">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.9)">🔁 重复文件</span>
+            <span style="font-size:11px;color:#fca5a5">2.7 GB</span>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px">256 组重复</div>
+        </div>
+
+        <!-- 总计 -->
+        <div style="margin-top:4px;padding:6px 10px;display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.6);border-top:1px solid rgba(255,255,255,0.06)">
+          <span>总计可清理</span>
+          <span style="color:#34d399;font-weight:600">12.8 GB</span>
+        </div>
+      </div>
+
+      <!-- 右侧: 文件列表 (选中分类的详情) -->
+      <div style="flex:1;background:rgba(44,44,46,0.3);border-radius:8px;padding:0;display:flex;flex-direction:column">
+        <!-- 列表标题 -->
+        <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8px">
+          <span style="font-size:12px;font-weight:500;color:white">📦 应用残留</span>
+          <span style="font-size:10px;color:rgba(255,255,255,0.4)">845 个文件 · 2.1 GB</span>
+          <div style="flex:1"></div>
+          <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5)">🔍 搜索文件</span>
+          <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(239,68,68,0.15);color:#fca5a5">清理选中</span>
+        </div>
+        <!-- 表头 -->
+        <div style="display:flex;padding:6px 10px;font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.03)">
+          <span style="width:20px">☐</span>
+          <span style="flex:2">路径</span>
+          <span style="width:70px;text-align:right">大小</span>
+          <span style="width:50px;text-align:center">类型</span>
+          <span style="width:20px">⤵</span>
+        </div>
+        <!-- 文件行 -->
+        <div style="flex:1;overflow-y:auto;padding:0">
+          <div style="display:flex;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.03);align-items:center">
+            <span style="width:20px">☑</span>
+            <span style="flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">~/Library/Application Support/RemovedApp/Caches/</span>
+            <span style="width:70px;text-align:right;color:rgba(255,255,255,0.5)">342.4 MB</span>
+            <span style="width:50px;text-align:center"><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(107,114,128,0.2);color:#9ca3af">缓存</span></span>
+            <span style="width:20px;text-align:center;font-size:14px;color:rgba(255,255,255,0.2)">ⓘ</span>
+          </div>
+          <div style="display:flex;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.03);align-items:center">
+            <span style="width:20px">☑</span>
+            <span style="flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">~/Library/Preferences/com.removed.app.plist</span>
+            <span style="width:70px;text-align:right;color:rgba(255,255,255,0.5)">12.8 MB</span>
+            <span style="width:50px;text-align:center"><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(244,63,94,0.2);color:#fb7185">配置</span></span>
+            <span style="width:20px;text-align:center;font-size:14px;color:rgba(255,255,255,0.2)">ⓘ</span>
+          </div>
+          <div style="display:flex;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.03);align-items:center">
+            <span style="width:20px">☐</span>
+            <span style="flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">~/Library/Containers/com.removed.app/</span>
+            <span style="width:70px;text-align:right;color:rgba(255,255,255,0.5)">1.2 GB</span>
+            <span style="width:50px;text-align:center"><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(107,114,128,0.2);color:#9ca3af">容器</span></span>
+            <span style="width:20px;text-align:center;font-size:14px;color:rgba(255,255,255,0.2)">ⓘ</span>
+          </div>
+        </div>
+        <!-- 底部合计 -->
+        <div style="padding:6px 10px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.5)">
+          <span>已选 128 个文件 · 1.4 GB</span>
+          <span style="color:#34d399;font-weight:500">✓ 清理选中</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px;background:rgba(124,58,237,0.08);padding:14px;border-radius:10px;border-left:3px solid #7c3aed">
+  <h3 style="margin-top:0">📐 左侧导航含义</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.85em">
+    <div><strong>🪐 星系</strong> — 沉浸 3D 浏览，选中看单个分类概览</div>
+    <div><strong>📊 结果</strong> — 全数据视图，分类卡片 + 文件列表 + 搜索排序</div>
+    <div><strong>🗑 清理</strong> — 清理操作入口 + 回收站管理</div>
+    <div><strong>⏱ 历史</strong> — 清理历史记录 + 恢复</div>
+  </div>
+  <p style="margin-bottom:0;margin-top:12px;font-size:0.85em">
+    <strong>交互流程</strong>：在"星系"中看到某分类感兴趣 → 点击"查看文件" → 自动切换到"结果"页并定位到该分类列表；
+    或直接从左侧导航点击"结果"查看全部
+  </p>
+</div>
+
+<div class="options" style="margin-top:20px">
+  <div class="option" data-choice="ok" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content">
+      <h3>对！就是这样</h3>
+      <p>沉浸星系 + 完整数据两种视图，确认继续下一屏</p>
+    </div>
+  </div>
+  <div class="option" data-choice="adjust" onclick="toggleSelect(this)">
+    <div class="letter">✎</div>
+    <div class="content">
+      <h3>想法有调整</h3>
+      <p>我在终端说具体想法</p>
+    </div>
+  </div>
+</div>

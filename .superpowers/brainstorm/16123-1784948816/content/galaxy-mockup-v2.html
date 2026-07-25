@@ -1,0 +1,241 @@
+<h2>3D 磁盘星系图 · 迭代 v2</h2>
+<p class="subtitle">按大小对数缩放 · 8 类 + Top 20 大文件 · 每球带 SF Symbol 图标</p>
+
+<div class="mockup">
+  <div class="mockup-header">🌌 Galaxy View v2 — 完整版</div>
+  <div class="mockup-body" style="background:radial-gradient(ellipse at center,#1a1a2e 0%,#0f0f1e 60%,#000 100%);min-height:600px;position:relative;overflow:hidden;border-radius:12px">
+
+    <!-- Background stars -->
+    <div style="position:absolute;inset:0;background-image:
+      radial-gradient(1px 1px at 20% 30%, white, transparent),
+      radial-gradient(1px 1px at 60% 70%, white, transparent),
+      radial-gradient(2px 2px at 40% 50%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 20%, white, transparent),
+      radial-gradient(1px 1px at 30% 80%, white, transparent);
+      background-size:240px 240px;background-repeat:repeat;opacity:0.5"></div>
+
+    <!-- Center sun (User Home) -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:100px;height:100px;border-radius:50%;
+      background:radial-gradient(circle at 30% 30%,#fde047,#f59e0b,#b45309);
+      box-shadow:0 0 60px 18px rgba(245,158,11,0.6);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.8em">
+      🏠
+    </div>
+
+    <!-- Orbit 1: Videos (156GB - largest) - Blue -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:380px;height:380px;border-radius:50%;border:1px dashed rgba(59,130,246,0.15);
+      animation:rot1 35s linear infinite">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:78px;height:78px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#93c5fd,#3b82f6,#1e3a8a);
+        box-shadow:0 0 30px 5px rgba(59,130,246,0.5);
+        display:flex;align-items:center;justify-content:center;
+        color:white;font-size:1.6em">🎬</div>
+    </div>
+
+    <!-- Orbit 2: Images (128GB) - Purple -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(60deg);
+      width:330px;height:330px;border-radius:50%;border:1px dashed rgba(168,85,247,0.15);
+      animation:rot2 28s linear infinite reverse">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:68px;height:68px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#c084fc,#7c3aed,#581c87);
+        box-shadow:0 0 28px 4px rgba(168,85,247,0.5);
+        display:flex;align-items:center;justify-content:center;
+        color:white;font-size:1.4em">🖼</div>
+    </div>
+
+    <!-- Orbit 3: Documents (64GB) - Orange -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(120deg);
+      width:280px;height:280px;border-radius:50%;border:1px dashed rgba(245,158,11,0.15);
+      animation:rot3 22s linear infinite">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:54px;height:54px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#fdba74,#f59e0b,#9a3412);
+        box-shadow:0 0 22px 3px rgba(245,158,11,0.5);
+        display:flex;align-items:center;justify-content:center;
+        color:white;font-size:1.2em">📄</div>
+    </div>
+
+    <!-- Orbit 4: Cache (45GB) - Gray -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);
+      width:230px;height:230px;border-radius:50%;border:1px dashed rgba(156,163,175,0.15);
+      animation:rot4 18s linear infinite reverse">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:48px;height:48px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#d1d5db,#6b7280,#1f2937);
+        box-shadow:0 0 20px 3px rgba(156,163,175,0.5);
+        display:flex;align-items:center;justify-content:center;
+        color:white;font-size:1.1em">🗑</div>
+    </div>
+
+    <!-- Orbit 5: Archives (32GB) - Yellow -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(240deg);
+      width:190px;height:190px;border-radius:50%;border:1px dashed rgba(234,179,8,0.15);
+      animation:rot5 15s linear infinite">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:42px;height:42px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#fde047,#eab308,#854d0e);
+        box-shadow:0 0 18px 3px rgba(234,179,8,0.5);
+        display:flex;align-items:center;justify-content:center;
+        color:white;font-size:1em">📦</div>
+    </div>
+
+    <!-- Orbit 6: Dev files (28GB) - Red -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(300deg);
+      width:160px;height:160px;border-radius:50%;border:1px dashed rgba(239,68,68,0.15);
+      animation:rot6 13s linear infinite reverse">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:40px;height:40px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#fca5a5,#ef4444,#7f1d1d);
+        box-shadow:0 0 16px 3px rgba(239,68,68,0.5);
+        display:flex;align-items:center;justify-content:center;
+        color:white;font-size:0.9em">{ }</div>
+    </div>
+
+    <!-- Top 5 individual large files (mini spheres) -->
+    <div style="position:absolute;top:80px;right:80px;display:flex;flex-direction:column;gap:6px;
+      background:rgba(0,0,0,0.4);backdrop-filter:blur(12px);
+      padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)">
+      <div style="font-size:0.7em;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Top Files</div>
+      <div style="display:flex;align-items:center;gap:8px;color:white;font-size:0.85em">
+        <span style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#c084fc,#7c3aed);display:inline-block"></span>
+        <span>IMG_9821.HEIC</span>
+        <span style="margin-left:auto;color:#aaa">82MB</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;color:white;font-size:0.85em">
+        <span style="width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,#93c5fd,#3b82f6);display:inline-block"></span>
+        <span>Screen.mov</span>
+        <span style="margin-left:auto;color:#aaa">64MB</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;color:white;font-size:0.85em">
+        <span style="width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#fde047,#eab308);display:inline-block"></span>
+        <span>project.zip</span>
+        <span style="margin-left:auto;color:#aaa">51MB</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;color:white;font-size:0.85em">
+        <span style="width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,#fdba74,#f59e0b);display:inline-block"></span>
+        <span>final.pdf</span>
+        <span style="margin-left:auto;color:#aaa">38MB</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;color:white;font-size:0.85em">
+        <span style="width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#fca5a5,#ef4444);display:inline-block"></span>
+        <span>DerivedData/</span>
+        <span style="margin-left:auto;color:#aaa">29MB</span>
+      </div>
+    </div>
+
+    <!-- Legend (left side) -->
+    <div style="position:absolute;top:80px;left:60px;
+      background:rgba(0,0,0,0.4);backdrop-filter:blur(12px);
+      padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);
+      color:white;font-size:0.85em">
+      <div style="font-size:0.7em;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Total · 487 / 1000 GB</div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px">
+        <span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;align-self:center"></span><span>Videos 156GB</span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#7c3aed;align-self:center"></span><span>Images 128GB</span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;align-self:center"></span><span>Docs 64GB</span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#6b7280;align-self:center"></span><span>Cache 45GB</span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#eab308;align-self:center"></span><span>ZIPs 32GB</span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#ef4444;align-self:center"></span><span>Dev 28GB</span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#10b981;align-self:center"></span><span>Audio 18GB</span>
+        <span style="width:10px;height:10px;border-radius:50%;background:#6366f1;align-self:center"></span><span>Apps 16GB</span>
+      </div>
+    </div>
+
+    <!-- Bottom action bar -->
+    <div style="position:absolute;bottom:0;left:0;right:0;
+      background:linear-gradient(transparent,rgba(0,0,0,0.85));
+      padding:24px 32px;display:flex;justify-content:space-between;align-items:end">
+      <div style="color:white">
+        <div style="font-size:0.7em;opacity:0.7;text-transform:uppercase;letter-spacing:1px">Used</div>
+        <div style="font-size:1.8em;font-weight:bold">487<span style="font-size:0.4em;opacity:0.7">/1000 GB</span></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="mock-button" style="background:rgba(255,255,255,0.08);color:white;border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(8px)">🔍 Scan</button>
+        <button class="mock-button" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:white;border:none;padding:10px 20px">✨ Clean · 45GB cache</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @keyframes rot1 { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+  @keyframes rot2 { from { transform: translate(-50%,-50%) rotate(60deg); } to { transform: translate(-50%,-50%) rotate(420deg); } }
+  @keyframes rot3 { from { transform: translate(-50%,-50%) rotate(120deg); } to { transform: translate(-50%,-50%) rotate(480deg); } }
+  @keyframes rot4 { from { transform: translate(-50%,-50%) rotate(180deg); } to { transform: translate(-50%,-50%) rotate(540deg); } }
+  @keyframes rot5 { from { transform: translate(-50%,-50%) rotate(240deg); } to { transform: translate(-50%,-50%) rotate(600deg); } }
+  @keyframes rot6 { from { transform: translate(-50%,-50%) rotate(300deg); } to { transform: translate(-50%,-50%) rotate(660deg); } }
+</style>
+
+<div class="section">
+  <h3>球体大小算法（对数缩放）</h3>
+  <div style="background:#f8f8fa;padding:16px;border-radius:8px;font-family:monospace;font-size:0.85em">
+    <div style="color:#666;margin-bottom:8px">// 文件大小 1KB ~ 100GB → 球体半径 8pt ~ 80pt</div>
+    <div style="color:#7c3aed">func</div> <span style="color:#0ea5e9">radius</span>(<span style="color:#10b981">forBytes</span> bytes: Int64) -&gt; Float {
+    <div style="padding-left:20px">
+      let minLog = <span style="color:#f59e0b">log</span>(<span style="color:#f59e0b">Float</span>(<span style="color:#ef4444">1024</span>))                <span style="color:#999">// 1 KB</span><br>
+      let maxLog = <span style="color:#f59e0b">log</span>(<span style="color:#f59e0b">Float</span>(<span style="color:#ef4444">100_000_000_000</span>))    <span style="color:#999">// 100 GB</span><br>
+      let valLog = <span style="color:#f59e0b">log</span>(<span style="color:#f59e0b">Float</span>(bytes))<br>
+      let normalized = (valLog - minLog) / (maxLog - minLog)
+    </div>
+    <div style="padding-left:20px">
+      <span style="color:#7c3aed">return</span> <span style="color:#ef4444">8</span> + normalized * <span style="color:#ef4444">72</span>
+    </div>
+    }
+  </div>
+  <div style="margin-top:12px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:0.8em">
+    <div style="text-align:center;padding:8px;background:#f8f8fa;border-radius:6px">
+      <div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;margin:0 auto 4px"></div>
+      <div>1KB → 8pt</div>
+    </div>
+    <div style="text-align:center;padding:8px;background:#f8f8fa;border-radius:6px">
+      <div style="width:14px;height:14px;border-radius:50%;background:#7c3aed;margin:0 auto 4px"></div>
+      <div>10MB → 30pt</div>
+    </div>
+    <div style="text-align:center;padding:8px;background:#f8f8fa;border-radius:6px">
+      <div style="width:24px;height:24px;border-radius:50%;background:#f59e0b;margin:0 auto 4px"></div>
+      <div>100MB → 45pt</div>
+    </div>
+    <div style="text-align:center;padding:8px;background:#f8f8fa;border-radius:6px">
+      <div style="width:36px;height:36px;border-radius:50%;background:#eab308;margin:0 auto 4px"></div>
+      <div>10GB → 65pt</div>
+    </div>
+    <div style="text-align:center;padding:8px;background:#f8f8fa;border-radius:6px">
+      <div style="width:48px;height:48px;border-radius:50%;background:#ef4444;margin:0 auto 4px"></div>
+      <div>100GB → 80pt</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>数量控制策略</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="padding:16px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px">
+      <h4 style="color:#15803d;margin-top:0">✅ 显示的（~30 个球）</h4>
+      <ul style="font-size:0.85em;margin:0;padding-left:16px">
+        <li>8 个分类聚合球（每个类型总大小）</li>
+        <li>Top 20 最大单文件球（独立显示）</li>
+        <li>User Home 中央太阳</li>
+        <li>Applications 子星系（可下钻）</li>
+      </ul>
+    </div>
+    <div style="padding:16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px">
+      <h4 style="color:#dc2626;margin-top:0">❌ 不显示的</h4>
+      <ul style="font-size:0.85em;margin:0;padding-left:16px">
+        <li>50,000+ 普通文件（无法画）</li>
+        <li>&lt; 1MB 的小文件（聚合到分类）</li>
+        <li>已选中的待清理文件（在侧栏列表）</li>
+        <li>系统隐藏文件（在 On-Demand 视图）</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:12px;padding:12px;background:#eff6ff;border-radius:8px;font-size:0.85em;color:#1e40af">
+    💡 <strong>为什么 Top 20 单文件很重要</strong>：用户最大的痛点是"哪个文件最占空间"。
+    这 20 个文件往往占总量 30%+，让他们一眼可见 = 直接清理动力。
+  </div>
+</div>

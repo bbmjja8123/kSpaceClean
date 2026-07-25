@@ -1,0 +1,144 @@
+<h2>kSpaceClean Spec v1.1 · 更新摘要</h2>
+<p class="subtitle">14 项 P0 缺失已补齐 · 新增 7 个章节（合规/上架/客户/无障碍/运营/营销/KPI）</p>
+
+<div class="section">
+  <h3>✅ 14 项 P0 全部补齐</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;font-size:0.85em">
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§14.1</strong> · Apple Developer Program 个人注册
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§14.2</strong> · 隐私政策 GitHub Pages 托管
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§14.3</strong> · 订阅条款展示 Sheet
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§14.4</strong> · Restore Purchase 流程
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§14.6</strong> · App Store 隐私标签精确勾选
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§15.1</strong> · App Store Connect 设置清单
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§15.3</strong> · TestFlight 内部/外部测试计划
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§16.1</strong> · Discord + 微信双渠道客户支持
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§16.3</strong> · 应用图标设计委托清单
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§17.1</strong> · VoiceOver + ListView 替代
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§17.2</strong> · 全键盘导航 + 快捷键
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§18.1</strong> · MetricKit 崩溃监控（仅本地）
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§19.1</strong> · GTM T-30 到 T+60 详细计划
+    </div>
+    <div style="padding:10px;background:#f0fdf4;border-left:3px solid #10b981;border-radius:6px">
+      <strong>§20.1</strong> · V1 上市 90 天 KPI 目标
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>📄 主 spec 现在结构（20 章节）</h3>
+  <div style="background:#f8f8fa;padding:16px;border-radius:8px;font-family:monospace;font-size:0.78em;line-height:1.6">
+    §1. 概述（定位/用户/差异化）<br>
+    §2. 工程组织（Workspace/编译/Entitlements）<br>
+    §3. 功能规格（12 个模块）<br>
+    §4. 数据模型（Core Data + Codable）<br>
+    §5. 隐私与安全<br>
+    §6. 盈利设计（订阅 + 地区定价）<br>
+    §7. ASO 与上架策略<br>
+    §8. 测试策略<br>
+    §9. 上架时间表<br>
+    §10. 上架后第一周关键动作<br>
+    §11. 风险与缓解<br>
+    §12. 不做什么（Out of Scope）<br>
+    §13. 后续版本路线图<br>
+    <strong style="color:#10b981">§14. 业务合规与法律 ⭐新增</strong><br>
+    <strong style="color:#10b981">§15. 上架与发布流程 ⭐新增</strong><br>
+    <strong style="color:#10b981">§16. 客户体验 ⭐新增</strong><br>
+    <strong style="color:#10b981">§17. 可访问性设计 ⭐新增</strong><br>
+    <strong style="color:#10b981">§18. 运营与质量监控 ⭐新增</strong><br>
+    <strong style="color:#10b981">§19. 营销与增长 ⭐新增</strong><br>
+    <strong style="color:#10b981">§20. 成功指标（KPI） ⭐新增</strong>
+  </div>
+</div>
+
+<div class="section">
+  <h3>📐 详细设计现在结构（19 章节）</h3>
+  <div style="background:#f8f8fa;padding:16px;border-radius:8px;font-family:monospace;font-size:0.78em;line-height:1.6">
+    §1-14. 原有（架构/模式/流程图/类图/状态机/时序图/模块/错误/性能/测试/构建）<br>
+    <strong style="color:#10b981">§15. 可访问性架构 ⭐新增</strong><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- 双视图设计（3D + List）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- AccessibilityProviding 协议<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- Reduce Motion 降级<br>
+    <strong style="color:#10b981">§16. MetricKit 监控架构 ⭐新增</strong><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- MXMetricManager 订阅<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- 本地存储 Actor<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- 数据流图（永不离开设备）<br>
+    <strong style="color:#10b981">§17. CI/CD 架构 ⭐新增</strong><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- GitHub Actions workflow<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- Fastlane 配置<br>
+    <strong style="color:#10b981">§18. Discord 社区架构 ⭐新增</strong><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- 服务器频道结构<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- Bot 集成 + 运营节奏
+  </div>
+</div>
+
+<div class="section">
+  <h3>📊 spec 完整性自评</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;font-size:0.85em">
+    <div style="padding:12px;background:#f0fdf4;border-radius:6px">
+      <strong>✅ 完整覆盖</strong><br>
+      · 产品定位 + 差异化<br>
+      · 12 个功能模块详细规格<br>
+      · 完整架构（分层/模式/类图/状态机）<br>
+      · 数据模型 + 错误处理<br>
+      · 盈利 + ASO + KPI<br>
+      · 合规（隐私政策/订阅条款/Restore Purchase）<br>
+      · 上架发布（App Store Connect/TestFlight）<br>
+      · 客户支持（Discord/微信/邮件）<br>
+      · 可访问性（VoiceOver/键盘/Reduce Motion）<br>
+      · 运营（MetricKit/版本/故障应急）<br>
+      · 营销（GTM/Product Hunt/Press Kit/社区）<br>
+      · 测试（单元/集成/UI/性能/无障碍）<br>
+      · CI/CD（GitHub Actions + Fastlane）
+    </div>
+    <div style="padding:12px;background:#fef3c7;border-radius:6px">
+      <strong>🟡 P1 留在 V1.1 实施计划</strong><br>
+      · CI/CD 详细实现<br>
+      · 首次启动 Onboarding 整体<br>
+      · 状态 UI 三态组件<br>
+      · Dynamic Type/高对比度<br>
+      · Press Kit 详细物料<br>
+      · 社交媒体内容策略<br>
+      · SwiftLint 规则集<br>
+      · Git Flow 完整定义<br>
+      · Bug 分级 SLA<br>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="background:#eff6ff;padding:16px;border-radius:8px;border-left:4px solid #3b82f6">
+  <h3 style="margin-top:0">🎯 下一步路径</h3>
+  <p>spec v1.1 已经覆盖独立开发者上线 Mac App 所需的<strong>所有关键维度</strong>。剩余 P1 项会在 writing-plans 阶段拆解到具体任务里（P1 任务会自动包含到 V1.1 实施阶段）。</p>
+  <p style="margin-bottom:0"><strong>下一步</strong>：进入 writing-plans，把 13 周计划拆解为 ~100-150 个 30-90 分钟可执行任务。</p>
+</div>
+
+<div style="text-align:center;color:#666;font-size:0.85em;margin-top:24px">
+  💡 完整 spec 文档：<br>
+  <code style="font-size:0.9em">docs/superpowers/specs/2026-07-25-kraftly-kspaceclean-design.md</code>（~38KB）<br>
+  <code style="font-size:0.9em">docs/superpowers/specs/2026-07-25-kraftly-kspaceclean-detailed-design.md</code>（~52KB）<br><br>
+  终端回复 "OK 进入 writing-plans" 或继续调整
+</div>

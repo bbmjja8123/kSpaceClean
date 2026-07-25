@@ -1,0 +1,11 @@
+{"type":"server-started","port":54366,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:54366/?key=9a06e2020c0a4f4efbb9ee79353898259a4c7f60f491519ea05978d40d6dd0a3","screen_dir":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/16123-1784948816/content","state_dir":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/16123-1784948816/state","idle_timeout_ms":14400000}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/16123-1784948816/content/overview.html"}
+{"source":"user-event","type":"click","text":"v1 设计定稿\n        kSpaceClean\n        磁盘清理 · 3D 磁盘星系图 · CoreML 分类\n        Free Trial 7天 → $19.99/年订阅","choice":"kspaceclean","id":null,"timestamp":1784948877619}
+{"source":"user-event","type":"click","text":"v1 设计定稿\n        kSpaceClean\n        磁盘清理 · 3D 磁盘星系图 · CoreML 分类\n        Free Trial 7天 → $19.99/年订阅","choice":"kspaceclean","id":null,"timestamp":1784948879025}
+{"source":"user-event","type":"click","text":"Backlog\n        kWatch\n        菜单栏监控 · Widget · Live Activities\n        主轴：平台集成 + Widget","choice":"kwatch","id":null,"timestamp":1784948879739}
+{"source":"user-event","type":"click","text":"v1 设计定稿\n        kSpaceClean\n        磁盘清理 · 3D 磁盘星系图 · CoreML 分类\n        Free Trial 7天 → $19.99/年订阅","choice":"kspaceclean","id":null,"timestamp":1784948880578}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/16123-1784948816/content/galaxy-mockup.html"}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/16123-1784948816/content/galaxy-mockup-v2.html"}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/16123-1784948816/content/gap-analysis.html"}
+{"type":"screen-added","file":"/Users/mengjianjun/Documents/ai/aicoding/macapp/.superpowers/brainstorm/16123-1784948816/content/spec-v1.1-summary.html"}
+{"type":"server-stopped","reason":"idle timeout"}

@@ -1,0 +1,174 @@
+<h2>kSpaceClean 主视觉：3D 磁盘星系图</h2>
+<p class="subtitle">进入 App 第一眼看到的 3D 场景 · Metal + SceneKit 渲染 · 60fps 流畅</p>
+
+<div class="mockup">
+  <div class="mockup-header">🪐 Galaxy View（差异化核心）— 概念稿</div>
+  <div class="mockup-body" style="background:radial-gradient(ellipse at center,#1a1a2e 0%,#0f0f1e 60%,#000 100%);min-height:520px;position:relative;overflow:hidden;border-radius:12px">
+
+    <!-- Background stars -->
+    <div style="position:absolute;inset:0;background-image:
+      radial-gradient(1px 1px at 20% 30%, white, transparent),
+      radial-gradient(1px 1px at 60% 70%, white, transparent),
+      radial-gradient(2px 2px at 40% 50%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 20%, white, transparent),
+      radial-gradient(1px 1px at 30% 80%, white, transparent),
+      radial-gradient(1px 1px at 90% 60%, white, transparent),
+      radial-gradient(1px 1px at 10% 90%, white, transparent),
+      radial-gradient(1px 1px at 70% 10%, #ddd, transparent);
+      background-size:200px 200px;background-repeat:repeat;opacity:0.6"></div>
+
+    <!-- Center sun (User Home) -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:120px;height:120px;border-radius:50%;
+      background:radial-gradient(circle at 30% 30%,#fde047,#f59e0b,#b45309);
+      box-shadow:0 0 80px 20px rgba(245,158,11,0.6),0 0 120px 40px rgba(245,158,11,0.3);
+      display:flex;align-items:center;justify-content:center;
+      color:#1e1b08;font-weight:bold;font-size:0.9em;
+      animation:pulse 3s ease-in-out infinite">
+      <div style="text-align:center">
+        <div style="font-size:1.6em">🏠</div>
+        <div>User</div>
+        <div style="font-size:0.7em;opacity:0.8">487GB</div>
+      </div>
+    </div>
+
+    <!-- Orbit 1: Documents (purple) -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(0deg);
+      width:380px;height:380px;border-radius:50%;border:1px dashed rgba(168,85,247,0.2);
+      animation:rotate 30s linear infinite">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:60px;height:60px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#c084fc,#7c3aed,#581c87);
+        box-shadow:0 0 30px 5px rgba(168,85,247,0.5)"></div>
+    </div>
+
+    <!-- Orbit 2: Images (pink) -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);
+      width:280px;height:280px;border-radius:50%;border:1px dashed rgba(236,72,153,0.2);
+      animation:rotate 25s linear infinite reverse">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:45px;height:45px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#f9a8d4,#ec4899,#9d174d);
+        box-shadow:0 0 25px 4px rgba(236,72,153,0.5)"></div>
+    </div>
+
+    <!-- Orbit 3: Videos (blue) -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(90deg);
+      width:200px;height:200px;border-radius:50%;border:1px dashed rgba(59,130,246,0.2);
+      animation:rotate 20s linear infinite">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:38px;height:38px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#93c5fd,#3b82f6,#1e3a8a);
+        box-shadow:0 0 22px 4px rgba(59,130,246,0.5)"></div>
+    </div>
+
+    <!-- Orbit 4: Cache (gray) -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(135deg);
+      width:140px;height:140px;border-radius:50%;border:1px dashed rgba(156,163,175,0.2);
+      animation:rotate 15s linear infinite reverse">
+      <div style="position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+        width:30px;height:30px;border-radius:50%;
+        background:radial-gradient(circle at 30% 30%,#d1d5db,#6b7280,#1f2937);
+        box-shadow:0 0 18px 3px rgba(156,163,175,0.5)"></div>
+    </div>
+
+    <!-- Floating data labels -->
+    <div style="position:absolute;top:60px;left:60px;background:rgba(124,58,237,0.15);
+      border:1px solid rgba(124,58,237,0.4);border-radius:8px;padding:8px 12px;
+      font-size:0.8em;color:#c4b5fd;backdrop-filter:blur(8px)">
+      📄 Documents · 42.1 GB
+    </div>
+    <div style="position:absolute;top:60px;right:60px;background:rgba(236,72,153,0.15);
+      border:1px solid rgba(236,72,153,0.4);border-radius:8px;padding:8px 12px;
+      font-size:0.8em;color:#f9a8d4;backdrop-filter:blur(8px)">
+      🖼 Images · 28.4 GB
+    </div>
+    <div style="position:absolute;bottom:60px;left:60px;background:rgba(59,130,246,0.15);
+      border:1px solid rgba(59,130,246,0.4);border-radius:8px;padding:8px 12px;
+      font-size:0.8em;color:#93c5fd;backdrop-filter:blur(8px)">
+      🎬 Videos · 156.2 GB
+    </div>
+    <div style="position:absolute;bottom:60px;right:60px;background:rgba(156,163,175,0.15);
+      border:1px solid rgba(156,163,175,0.4);border-radius:8px;padding:8px 12px;
+      font-size:0.8em;color:#d1d5db;backdrop-filter:blur(8px)">
+      🗑 Cache · 31.8 GB
+    </div>
+
+    <!-- Bottom action bar -->
+    <div style="position:absolute;bottom:0;left:0;right:0;
+      background:linear-gradient(transparent,rgba(0,0,0,0.8));
+      padding:24px;display:flex;justify-content:space-between;align-items:end">
+      <div style="color:white">
+        <div style="font-size:0.75em;opacity:0.7;text-transform:uppercase;letter-spacing:1px">Used</div>
+        <div style="font-size:2em;font-weight:bold">487<span style="font-size:0.4em;opacity:0.7">/1000 GB</span></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="mock-button" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(8px)">📊 Scan</button>
+        <button class="mock-button" style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:white;border:none">✨ Clean · 31.8 GB</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @keyframes rotate {
+    from { transform: translate(-50%,-50%) rotate(0deg); }
+    to   { transform: translate(-50%,-50%) rotate(360deg); }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 80px 20px rgba(245,158,11,0.6), 0 0 120px 40px rgba(245,158,11,0.3); }
+    50%      { box-shadow: 0 0 100px 25px rgba(245,158,11,0.8), 0 0 150px 50px rgba(245,158,11,0.4); }
+  }
+</style>
+
+<div class="section">
+  <h3>设计要点</h3>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <div style="padding:16px;background:#f8f8fa;border-radius:8px">
+      <h4 style="color:#7c3aed;margin-top:0">🎨 视觉</h4>
+      <ul style="font-size:0.85em;margin:0;padding-left:16px">
+        <li>深空背景 + 星点装饰</li>
+        <li>球体按文件类型上色</li>
+        <li>半径对应大小（对数比例）</li>
+        <li>轨道虚线提示层级</li>
+      </ul>
+    </div>
+    <div style="padding:16px;background:#f8f8fa;border-radius:8px">
+      <h4 style="color:#0ea5e9;margin-top:0">🎬 动效</h4>
+      <ul style="font-size:0.85em;margin:0;padding-left:16px">
+        <li>轨道缓慢自转（15-30s/圈）</li>
+        <li>中央太阳呼吸效果</li>
+        <li>点击下钻：球体放大飞入</li>
+        <li>清理后：球体爆裂消散</li>
+      </ul>
+    </div>
+    <div style="padding:16px;background:#f8f8fa;border-radius:8px">
+      <h4 style="color:#10b981;margin-top:0">⚡ 性能</h4>
+      <ul style="font-size:0.85em;margin:0;padding-left:16px">
+        <li>Apple Silicon M1+ 60fps</li>
+        <li>Intel Mac 30fps+</li>
+        <li>macOS 13 降级：光线追踪关闭</li>
+        <li>无 Metal 设备：纯 SwiftUI Canvas</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>差异化对比</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:0.85em">
+    <div style="padding:12px;border:1px solid #ddd;border-radius:8px">
+      <div style="font-weight:bold;color:#666">CleanMyMac X</div>
+      <div style="margin-top:6px;color:#999">📦 模块拼盘界面，列表式展示</div>
+    </div>
+    <div style="padding:12px;border:1px solid #ddd;border-radius:8px">
+      <div style="font-weight:bold;color:#666">DaisyDisk</div>
+      <div style="margin-top:6px;color:#999">🌳 2D 树状图，环形可视化</div>
+    </div>
+    <div style="padding:12px;border:2px solid #7c3aed;border-radius:8px;background:#faf5ff">
+      <div style="font-weight:bold;color:#7c3aed">kSpaceClean ✨</div>
+      <div style="margin-top:6px;color:#7c3aed">🪐 3D 球体星系，沉浸式体验</div>
+    </div>
+  </div>
+</div>

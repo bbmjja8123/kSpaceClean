@@ -1,0 +1,71 @@
+<h2>🧭 整体窗口架构</h2>
+<p class="subtitle">kSpaceClean 主窗口布局 — 960 × 660pt 默认尺寸</p>
+
+<div class="mockup" style="margin-top:16px">
+  <div class="mockup-header">kSpaceClean 主窗口</div>
+  <div class="mockup-body" style="padding:0">
+    <!-- Toolbar -->
+    <div style="background:#f5f5f7;padding:6px 12px;border-bottom:1px solid #d2d2d7;display:flex;align-items:center;gap:8px;font-size:11px">
+      <span style="color:#86868b">← 后退</span>
+      <span style="flex:1;text-align:center;font-weight:600;color:#1d1d1f">kSpaceClean</span>
+      <span style="padding:2px 8px;border-radius:4px;border:1px solid #d2d2d7">3D⇔列表</span>
+      <span style="padding:2px 10px;border-radius:4px;background:#7c3aed;color:white;font-weight:500">扫描</span>
+      <span style="padding:2px 10px;border-radius:4px;border:1px solid #d2d2d7">清理</span>
+    </div>
+    <!-- Body -->
+    <div style="display:flex;min-height:400px">
+      <!-- Sidebar -->
+      <div style="width:140px;background:#f5f5f7;border-right:1px solid #d2d2d7;padding:8px 0;font-size:12px">
+        <div style="padding:6px 12px;background:#7c3aed;color:white;border-radius:4px;margin:4px 8px">● 星系</div>
+        <div style="padding:6px 12px;color:#6e6e73;margin:4px 8px">○ 扫描</div>
+        <div style="padding:6px 12px;color:#6e6e73;margin:4px 8px">○ 清理</div>
+        <div style="padding:6px 12px;color:#6e6e73;margin:4px 8px">○ 历史</div>
+        <div style="padding:6px 12px;color:#6e6e73;margin:4px 8px">○ 设置</div>
+        <div style="border-top:1px solid #d2d2d7;margin:12px 8px 8px"></div>
+        <div style="padding:8px 12px;margin:4px 8px;border:1px dashed #7c3aed;border-radius:6px;text-align:center;color:#7c3aed;font-weight:500;font-size:11px">⬆ 升级 Pro</div>
+      </div>
+      <!-- Content -->
+      <div style="flex:1;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#6e6e73">
+        <div style="font-size:32px;margin-bottom:12px">🪐</div>
+        <div style="font-size:14px;font-weight:600;color:#1d1d1f">3D 磁盘星系图</div>
+        <div style="font-size:11px;margin-top:4px">点击"扫描"开始分析你的磁盘</div>
+        <div style="margin-top:20px;padding:6px 20px;border-radius:6px;background:#7c3aed;color:white;font-size:12px">开始扫描</div>
+      </div>
+    </div>
+    <!-- Status Bar -->
+    <div style="background:#f5f5f7;border-top:1px solid #d2d2d7;padding:4px 12px;font-size:11px;color:#6e6e73;display:flex;align-items:center;gap:8px">
+      <span>已用: 128 GB / 256 GB</span>
+      <div style="flex:1;height:6px;background:#e8e8ed;border-radius:3px;max-width:200px">
+        <div style="width:50%;height:100%;background:#10b981;border-radius:3px"></div>
+      </div>
+      <span>50%</span>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px">
+  <h3>布局说明</h3>
+  <ul>
+    <li><strong>Sidebar</strong> (160pt)：核心功能导航 + 底部"升级 Pro"固定入口</li>
+    <li><strong>Toolbar</strong>：后退按钮、视图切换 (3D⇔列表)、主操作按钮（随上下文变化）</li>
+    <li><strong>Content</strong>：当前功能主内容区，flex 自适应</li>
+    <li><strong>Status Bar</strong>：磁盘容量进度条，颜色同菜单栏规则 (&lt;70% 绿 / 70-90% 黄 / &gt;90% 红)</li>
+  </ul>
+</div>
+
+<div class="options" style="margin-top:16px">
+  <div class="option" data-choice="ok" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content">
+      <h3>没问题，继续下一屏</h3>
+      <p>窗口架构确认，进入 Disk Galaxy 详细设计</p>
+    </div>
+  </div>
+  <div class="option" data-choice="adjust" onclick="toggleSelect(this)">
+    <div class="letter">✎</div>
+    <div class="content">
+      <h3>有调整意见</h3>
+      <p>我在终端中说明修改想法</p>
+    </div>
+  </div>
+</div>
