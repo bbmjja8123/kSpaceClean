@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+	05720CE11D0128121CC414D7 /* 05720CE11D0128121CC414D7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 86EBDC7A6B2FFF21B7FFBA9A;
+	};
 	0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */ = {
 		isa = PBXBuildFile;
 		fileRef = 1B365D303EAC1EE8F810E853;
@@ -18,6 +22,10 @@
 	115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */ = {
 		isa = PBXBuildFile;
 		fileRef = 1C4455D0B4CE1B5F5681A2FE;
+	};
+	14522065F7DF933255DA0908 /* 14522065F7DF933255DA0908 */ = {
+		isa = PBXBuildFile;
+		fileRef = AA82AD3ACA5E2DE044D14893;
 	};
 	1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */ = {
 		isa = PBXBuildFile;
@@ -138,6 +146,10 @@
 	C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */ = {
 		isa = PBXBuildFile;
 		fileRef = 21590BBBDE883EFBD31EAEE8;
+	};
+	C883C2F4E652FE2954F54F86 /* C883C2F4E652FE2954F54F86 */ = {
+		isa = PBXBuildFile;
+		fileRef = C6F02E16C32A208DAABE3322;
 	};
 	C956C8E6486DF8E7AFEFB05C /* C956C8E6486DF8E7AFEFB05C */ = {
 		isa = PBXBuildFile;
@@ -394,6 +406,13 @@
 		path = Store/ProGateModifier.swift;
 		sourceTree = "<group>";
 	};
+	86EBDC7A6B2FFF21B7FFBA9A /* DeepCleanIntent.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanIntent.swift;
+		path = Intents/DeepCleanIntent.swift;
+		sourceTree = "<group>";
+	};
 	90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -422,6 +441,13 @@
 		path = Features/Detail/AppDetailView.swift;
 		sourceTree = "<group>";
 	};
+	AA82AD3ACA5E2DE044D14893 /* UninstallAppIntent.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallAppIntent.swift;
+		path = Intents/UninstallAppIntent.swift;
+		sourceTree = "<group>";
+	};
 	AF272D3718777F39FA504734 /* ResidueScanner.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -448,6 +474,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = HistoryViewModel.swift;
 		path = Features/History/HistoryViewModel.swift;
+		sourceTree = "<group>";
+	};
+	C6F02E16C32A208DAABE3322 /* ScanResidueIntent.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanResidueIntent.swift;
+		path = Intents/ScanResidueIntent.swift;
 		sourceTree = "<group>";
 	};
 	C9436B5A5555F38E15906412 /* FDAuthorizer.swift */ = {
@@ -693,6 +726,9 @@
 	8737C58DE7045208C482770A /* Intents */ = {
 		isa = PBXGroup;
 		children = (
+			AA82AD3ACA5E2DE044D14893 /* UninstallAppIntent.swift */,
+			C6F02E16C32A208DAABE3322 /* ScanResidueIntent.swift */,
+			86EBDC7A6B2FFF21B7FFBA9A /* DeepCleanIntent.swift */,
 		);
 		name = Intents;
 		sourceTree = "<group>";
@@ -986,6 +1022,9 @@
 			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
 			46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */,
 			BC48F4AE041C911676CB0F92 /* BC48F4AE041C911676CB0F92 */,
+			14522065F7DF933255DA0908 /* 14522065F7DF933255DA0908 */,
+			C883C2F4E652FE2954F54F86 /* C883C2F4E652FE2954F54F86 */,
+			05720CE11D0128121CC414D7 /* 05720CE11D0128121CC414D7 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

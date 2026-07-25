@@ -163,6 +163,9 @@ def main():
         ("Store/PaywallView.swift", "Store"),
         ("Store/ProGateModifier.swift", "Store"),
         ("MenuBar/MenuBarController.swift", "MenuBar"),
+        ("Intents/UninstallAppIntent.swift", "Intents"),
+        ("Intents/ScanResidueIntent.swift", "Intents"),
+        ("Intents/DeepCleanIntent.swift", "Intents"),
     ]
 
     test_files = [
