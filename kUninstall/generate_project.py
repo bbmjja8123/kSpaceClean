@@ -162,6 +162,7 @@ def main():
         ("Store/StoreManager.swift", "Store"),
         ("Store/PaywallView.swift", "Store"),
         ("Store/ProGateModifier.swift", "Store"),
+        ("MenuBar/MenuBarController.swift", "MenuBar"),
     ]
 
     test_files = [

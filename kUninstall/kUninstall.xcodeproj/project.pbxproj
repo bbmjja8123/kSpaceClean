@@ -131,6 +131,10 @@
 		isa = PBXBuildFile;
 		fileRef = 48DFB6C6C2EEA832BFACA155;
 	};
+	BC48F4AE041C911676CB0F92 /* BC48F4AE041C911676CB0F92 */ = {
+		isa = PBXBuildFile;
+		fileRef = A5AD76B7AA53AF7085B7A992;
+	};
 	C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */ = {
 		isa = PBXBuildFile;
 		fileRef = 21590BBBDE883EFBD31EAEE8;
@@ -402,6 +406,13 @@
 		lastKnownFileType = text.plist.entitlements;
 		name = kUninstall.entitlements;
 		path = kUninstall.entitlements;
+		sourceTree = "<group>";
+	};
+	A5AD76B7AA53AF7085B7A992 /* MenuBarController.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MenuBarController.swift;
+		path = MenuBar/MenuBarController.swift;
 		sourceTree = "<group>";
 	};
 	AA60392EFF1E1EB77FEC0D36 /* AppDetailView.swift */ = {
@@ -799,6 +810,7 @@
 	D086B1D575B679BDD667F1C2 /* MenuBar */ = {
 		isa = PBXGroup;
 		children = (
+			A5AD76B7AA53AF7085B7A992 /* MenuBarController.swift */,
 		);
 		name = MenuBar;
 		sourceTree = "<group>";
@@ -973,6 +985,7 @@
 			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
 			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
 			46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */,
+			BC48F4AE041C911676CB0F92 /* BC48F4AE041C911676CB0F92 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
