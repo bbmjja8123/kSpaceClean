@@ -181,8 +181,9 @@ kSpaceClean/
 ### 4.1 kWatch（菜单栏监控）
 - **主轴**：平台集成 + Widget + Live Activities
 - **目标用户**：极客 / 设计师 / 视频创作者
-- **待定**：定价模式、iStat Menus 主战场切入角度
-- **预期时间**：kSpaceClean 上架后启动设计
+- **定价**：Free + $7.99 Pro 买断（vs iStat Menus $11.99）
+- **详细规格**：`docs/superpowers/specs/2026-07-26-kraftly-kwatch-design.md`
+- **状态**：✅ v1 设计定稿，待 writing-plans 拆解实施计划
 
 ### 4.2 kDupe（重复/大文件）
 - **主轴**：极客 + AI（开发者场景）
@@ -242,18 +243,32 @@ kSpaceClean/
 
 ## 7. 当前进度
 
+### kSpaceClean v1 — Complete ✅
 - [x] 项目可行性分析
 - [x] 竞品调研（CleanMyMac / DaisyDisk / iStat Menus / Gemini 2 / BuhoCleaner）
 - [x] 拆分方案锁定（A：4 款精品矩阵）
 - [x] 技术架构（Workspace + kFoundation + Swift 全新）
 - [x] kSpaceClean v1 完整设计
-- [ ] kWatch 设计
-- [ ] kDupe 设计
-- [ ] kUninstall 设计
-- [ ] 汇总设计文档（docs/superpowers/specs/）
-- [ ] 规格自审
-- [ ] 用户复核
-- [ ] 转入 writing-plans 编写实施计划
+- [x] 规格自审 + 用户复核
+- [x] 实施计划（writing-plans）
+- [x] **v1 全部 19 个 Task、39 个文件已创建（2026-07-25）**
+
+### kWatch v1 — Spec 定稿 ✅
+- [x] 产品定位 + 定价（Freemium + $7.99 Pro 买断）
+- [x] 功能规格（4 Free + 3 Pro 指标 + 平台集成）
+- [x] 技术架构（Clean Architecture + actor + AsyncStream）
+- [x] 完整 UX 交互设计（菜单栏 + Dashboard + Widget + Live Activity + Shortcuts + Spotlight）
+- [x] 数据层设计（Core Data + App Group JSON snapshot）
+- [x] 7 大指标检测实现细节（host_processor_info / SMC / libproc 等）
+- [x] 隐私与合规策略（GDPR / CCPA / App Privacy Details）
+- [x] 崩溃监控与诊断方案（MetricKit）
+- [x] 测试策略（单元/集成/UI/性能 + 兼容性矩阵）
+- [x] 营销与发布节奏（4 周预热 + 上线日动作清单）
+- [x] 5 大风险 Plan B（审核被拒 / SMC 不可用 / Live Activity 拒绝等）
+
+### Backlog（待设计）
+- [ ] kDupe 设计 — 重复/大文件
+- [ ] kUninstall 设计 — 应用卸载
 
 > ⚠️ **现阶段不要写实现代码**。所有设计待汇总到 spec 文档并通过后，再通过 writing-plans 技能拆解为可执行任务。
 
