@@ -6,8 +6,31 @@ struct RootView: View {
     var body: some View {
         NavigationSplitView {
             sidebar
+                .toolbar {
+                    ToolbarItemGroup(placement: .primaryAction) {
+                        Button(action: { coordinator.showHistory = true }) {
+                            Label("历史", systemImage: "clock.arrow.circlepath")
+                        }
+
+                        Button(action: { coordinator.showSettings = true }) {
+                            Label("设置", systemImage: "gearshape")
+                        }
+                    }
+                }
         } detail: {
             detailContent
+        }
+        .sheet(isPresented: $coordinator.showHistory) {
+            HistoryView()
+        }
+        .sheet(isPresented: $coordinator.showSettings) {
+            SettingsView()
+        }
+        .sheet(isPresented: $coordinator.showOnboarding) {
+            FDAGuideView(
+                onSkip: { coordinator.showOnboarding = false },
+                onContinue: { coordinator.showOnboarding = false }
+            )
         }
     }
 
