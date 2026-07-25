@@ -59,7 +59,7 @@ struct ResidueFile: Identifiable, Codable {
 
 // MARK: - Startup Item
 
-enum StartupItemType: String, Codable {
+enum StartupItemType: String, Codable, CaseIterable {
     case loginItem
     case launchAgent
     case launchDaemon

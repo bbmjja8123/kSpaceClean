@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+	0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */ = {
+		isa = PBXBuildFile;
+		fileRef = 1B365D303EAC1EE8F810E853;
+	};
 	0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */ = {
 		isa = PBXBuildFile;
 		fileRef = FC8F976B27828057A607616A;
@@ -22,6 +26,10 @@
 	2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */ = {
 		isa = PBXBuildFile;
 		fileRef = 90B6343DFAE6C2A9AECF231C;
+	};
+	2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */ = {
+		isa = PBXBuildFile;
+		fileRef = F86D4AC4F12BECB5A60374D9;
 	};
 	25A10FE62B29AD4A68CDD057 /* 25A10FE62B29AD4A68CDD057 */ = {
 		isa = PBXBuildFile;
@@ -131,6 +139,10 @@
 		isa = PBXBuildFile;
 		fileRef = 2F003C23A18C74F51E543E30;
 	};
+	E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */ = {
+		isa = PBXBuildFile;
+		fileRef = CF5DAA48D342F90110132D61;
+	};
 	EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */ = {
 		isa = PBXBuildFile;
 		fileRef = 136BEC5F911CA3A945CDC744;
@@ -233,6 +245,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = ResidueDetector.swift;
 		path = Core/Detect/ResidueDetector.swift;
+		sourceTree = "<group>";
+	};
+	1B365D303EAC1EE8F810E853 /* StartupItemsViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemsViewModel.swift;
+		path = Features/StartupItems/StartupItemsViewModel.swift;
 		sourceTree = "<group>";
 	};
 	1C4455D0B4CE1B5F5681A2FE /* SettingsView.swift */ = {
@@ -383,6 +402,13 @@
 		path = Data/FDAuthorizer.swift;
 		sourceTree = "<group>";
 	};
+	CF5DAA48D342F90110132D61 /* StartupItemsView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemsView.swift;
+		path = Features/StartupItems/StartupItemsView.swift;
+		sourceTree = "<group>";
+	};
 	DC9F358CA23F4689897454B8 /* TrashMover.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -430,6 +456,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = ResidueSectionView.swift;
 		path = Features/Detail/ResidueSectionView.swift;
+		sourceTree = "<group>";
+	};
+	F86D4AC4F12BECB5A60374D9 /* StartupItemManager.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemManager.swift;
+		path = Core/Startup/StartupItemManager.swift;
 		sourceTree = "<group>";
 	};
 	F9F5DB4F736723C6F2F5DC63 /* RootView.swift */ = {
@@ -500,6 +533,7 @@
 	0BFD696B0848A9C40367B52E /* Startup */ = {
 		isa = PBXGroup;
 		children = (
+			F86D4AC4F12BECB5A60374D9 /* StartupItemManager.swift */,
 		);
 		name = Startup;
 		sourceTree = "<group>";
@@ -643,6 +677,15 @@
 		name = Onboarding;
 		sourceTree = "<group>";
 	};
+	96268A9A1A43BACF89496A38 /* StartupItems */ = {
+		isa = PBXGroup;
+		children = (
+			CF5DAA48D342F90110132D61 /* StartupItemsView.swift */,
+			1B365D303EAC1EE8F810E853 /* StartupItemsViewModel.swift */,
+		);
+		name = StartupItems;
+		sourceTree = "<group>";
+	};
 	969679DE865F3E68DEC65C79 /* Settings */ = {
 		isa = PBXGroup;
 		children = (
@@ -669,6 +712,7 @@
 			0283ED5888E25C418EDF5949 /* History */,
 			948A46E6570A8D25B50581C8 /* Onboarding */,
 			969679DE865F3E68DEC65C79 /* Settings */,
+			96268A9A1A43BACF89496A38 /* StartupItems */,
 		);
 		name = Features;
 		sourceTree = "<group>";
@@ -874,6 +918,9 @@
 			C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */,
 			115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */,
 			EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */,
+			2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */,
+			E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */,
+			0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
