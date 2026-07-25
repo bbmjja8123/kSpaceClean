@@ -1,0 +1,689 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+	0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */ = {
+		isa = PBXBuildFile;
+		fileRef = FC8F976B27828057A607616A;
+	};
+	2B06CE90451E121FCC65E18A /* 2B06CE90451E121FCC65E18A */ = {
+		isa = PBXBuildFile;
+		fileRef = 381D3A35ABE82AE0AE3F42B3;
+	};
+	30777437B37859FB155C273A /* 30777437B37859FB155C273A */ = {
+		isa = PBXBuildFile;
+		fileRef = 06E33A55C4FF7FD14C728811;
+	};
+	50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */ = {
+		isa = PBXBuildFile;
+		fileRef = B0FA94F96C119EFBD28B7F0B;
+	};
+	7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */ = {
+		isa = PBXBuildFile;
+		fileRef = F9F5DB4F736723C6F2F5DC63;
+	};
+	833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */ = {
+		isa = PBXBuildFile;
+		fileRef = 05B9799A26FB3FDC78B071F1;
+	};
+	9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */ = {
+		isa = PBXBuildFile;
+		fileRef = 44A2613DA7CAFB830A1F06D3;
+	};
+	AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */ = {
+		isa = PBXBuildFile;
+		fileRef = 14679243FC833D0C8D16C74A;
+	};
+	DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 2F003C23A18C74F51E543E30;
+	};
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+	3412E6574B98EDF3F54840ED /* 3412E6574B98EDF3F54840ED */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = FB394FBB892F52161ADD1F20;
+		remoteInfo = kUninstall;
+	};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+	05B9799A26FB3FDC78B071F1 /* Assets.xcassets */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = folder.assetcatalog;
+		name = Assets.xcassets;
+		path = Resources/Assets.xcassets;
+		sourceTree = "<group>";
+	};
+	06E33A55C4FF7FD14C728811 /* InstalledAppTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = InstalledAppTests.swift;
+		path = Tests/DetectTests/InstalledAppTests.swift;
+		sourceTree = "<group>";
+	};
+	09C386C2F6D04F8712E2E85C /* kUninstallTests.xctest */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.cfbundle";
+		includeInIndex = 0;
+		name = kUninstallTests.xctest;
+		path = kUninstallTests.xctest;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
+	14679243FC833D0C8D16C74A /* AppState.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppState.swift;
+		path = App/AppState.swift;
+		sourceTree = "<group>";
+	};
+	27E8208E9A99978867A43090 /* kFoundation */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = folder;
+		name = kFoundation;
+		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
+		sourceTree = "<absolute>";
+	};
+	2F003C23A18C74F51E543E30 /* AppCatalogService.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppCatalogService.swift;
+		path = Core/Detect/AppCatalogService.swift;
+		sourceTree = "<group>";
+	};
+	381D3A35ABE82AE0AE3F42B3 /* InstalledApp.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = InstalledApp.swift;
+		path = Core/Detect/InstalledApp.swift;
+		sourceTree = "<group>";
+	};
+	3EBAE220C65B95B5461A69F4 /* Info.plist */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = Info.plist;
+		path = Info.plist;
+		sourceTree = "<group>";
+	};
+	44A2613DA7CAFB830A1F06D3 /* AppCatalogServiceTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppCatalogServiceTests.swift;
+		path = Tests/DetectTests/AppCatalogServiceTests.swift;
+		sourceTree = "<group>";
+	};
+	592A3E8DE2005013EFE473D7 /* kUninstall.app */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.application";
+		includeInIndex = 0;
+		name = kUninstall.app;
+		path = kUninstall.app;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
+	A4DAE388B0AC28F32B29E678 /* kUninstall.entitlements */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.entitlements;
+		name = kUninstall.entitlements;
+		path = kUninstall.entitlements;
+		sourceTree = "<group>";
+	};
+	B0FA94F96C119EFBD28B7F0B /* kUninstallApp.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = kUninstallApp.swift;
+		path = App/kUninstallApp.swift;
+		sourceTree = "<group>";
+	};
+	F9F5DB4F736723C6F2F5DC63 /* RootView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = RootView.swift;
+		path = App/RootView.swift;
+		sourceTree = "<group>";
+	};
+	FC8F976B27828057A607616A /* AppCoordinator.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppCoordinator.swift;
+		path = App/AppCoordinator.swift;
+		sourceTree = "<group>";
+	};
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+	4012D4C9DAE5CD9D31F3FFB2 /* 4012D4C9DAE5CD9D31F3FFB2 */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	639838777480095AEC9EAF3D /* 639838777480095AEC9EAF3D */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+	080719DCC0589D18D62EF828 /* Store */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = Store;
+		sourceTree = "<group>";
+	};
+	09B44A2A4904872CFA147FCA /* Frameworks */ = {
+		isa = PBXGroup;
+		children = (
+			27E8208E9A99978867A43090 /* kFoundation */,
+		);
+		name = Frameworks;
+		sourceTree = "<group>";
+	};
+	0BFD696B0848A9C40367B52E /* Startup */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = Startup;
+		sourceTree = "<group>";
+	};
+	10A05D10F4BAD8757DBB68EE /* Core */ = {
+		isa = PBXGroup;
+		children = (
+			3439CADB97B973753F0013F7 /* Detect */,
+			B6AF0BB12BBE679326B3832F /* Clean */,
+			0BFD696B0848A9C40367B52E /* Startup */,
+		);
+		name = Core;
+		sourceTree = "<group>";
+	};
+	1119F24AE4A205A534838F74 /* Resources */ = {
+		isa = PBXGroup;
+		children = (
+			05B9799A26FB3FDC78B071F1 /* Assets.xcassets */,
+		);
+		name = Resources;
+		sourceTree = "<group>";
+	};
+	2220AFE70C0352F63AF55DB3 /* UITests */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = UITests;
+		sourceTree = "<group>";
+	};
+	2393A47879AB5770997F6712 /* DetectTests */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = DetectTests;
+		sourceTree = "<group>";
+	};
+	3439CADB97B973753F0013F7 /* Detect */ = {
+		isa = PBXGroup;
+		children = (
+			381D3A35ABE82AE0AE3F42B3 /* InstalledApp.swift */,
+			2F003C23A18C74F51E543E30 /* AppCatalogService.swift */,
+		);
+		name = Detect;
+		sourceTree = "<group>";
+	};
+	8737C58DE7045208C482770A /* Intents */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = Intents;
+		sourceTree = "<group>";
+	};
+	8CB695B89F15D64CF154F9CA /* kUninstall */ = {
+		isa = PBXGroup;
+		children = (
+			C2EDC4814724351A3444C62A /* App */,
+			10A05D10F4BAD8757DBB68EE /* Core */,
+			B31AC5F5A4F7E20AE1F086A3 /* Features */,
+			AB9A6EBAA83058E1F2B4CCE0 /* FinderExtension */,
+			8737C58DE7045208C482770A /* Intents */,
+			D086B1D575B679BDD667F1C2 /* MenuBar */,
+			1119F24AE4A205A534838F74 /* Resources */,
+			080719DCC0589D18D62EF828 /* Store */,
+			F4D2E522CF9449BF1C2F0894 /* Widgets */,
+			BFF03A4B7DE5959B1AAD4165 /* Tests */,
+			EBA56EB89A9347CFCE560E19 /* Products */,
+			09B44A2A4904872CFA147FCA /* Frameworks */,
+			3EBAE220C65B95B5461A69F4 /* Info.plist */,
+			A4DAE388B0AC28F32B29E678 /* kUninstall.entitlements */,
+		);
+		name = kUninstall;
+		path = "";
+		sourceTree = "<group>";
+	};
+	92CF88F56CFAD37E6AF2955F /* CleanTests */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = CleanTests;
+		sourceTree = "<group>";
+	};
+	AB9A6EBAA83058E1F2B4CCE0 /* FinderExtension */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = FinderExtension;
+		sourceTree = "<group>";
+	};
+	B31AC5F5A4F7E20AE1F086A3 /* Features */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = Features;
+		sourceTree = "<group>";
+	};
+	B6AF0BB12BBE679326B3832F /* Clean */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = Clean;
+		sourceTree = "<group>";
+	};
+	BFF03A4B7DE5959B1AAD4165 /* Tests */ = {
+		isa = PBXGroup;
+		children = (
+			06E33A55C4FF7FD14C728811 /* InstalledAppTests.swift */,
+			44A2613DA7CAFB830A1F06D3 /* AppCatalogServiceTests.swift */,
+		);
+		name = Tests;
+		sourceTree = "<group>";
+	};
+	C2EDC4814724351A3444C62A /* App */ = {
+		isa = PBXGroup;
+		children = (
+			B0FA94F96C119EFBD28B7F0B /* kUninstallApp.swift */,
+			14679243FC833D0C8D16C74A /* AppState.swift */,
+			F9F5DB4F736723C6F2F5DC63 /* RootView.swift */,
+			FC8F976B27828057A607616A /* AppCoordinator.swift */,
+		);
+		name = App;
+		sourceTree = "<group>";
+	};
+	D086B1D575B679BDD667F1C2 /* MenuBar */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = MenuBar;
+		sourceTree = "<group>";
+	};
+	D5C3C798E3485DAFB96FECAE /* IntegrationTests */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = IntegrationTests;
+		sourceTree = "<group>";
+	};
+	EBA56EB89A9347CFCE560E19 /* Products */ = {
+		isa = PBXGroup;
+		children = (
+			592A3E8DE2005013EFE473D7 /* kUninstall.app */,
+			09C386C2F6D04F8712E2E85C /* kUninstallTests.xctest */,
+		);
+		name = Products;
+		sourceTree = "<group>";
+	};
+	F4D2E522CF9449BF1C2F0894 /* Widgets */ = {
+		isa = PBXGroup;
+		children = (
+		);
+		name = Widgets;
+		sourceTree = "<group>";
+	};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+	0FBA227ABB8C4996E5584B8F /* kUninstallTests */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 3FD6CBC4FF291B9367FDC53D;
+		buildPhases = (
+			A3EBA454EB2F5C879CA40B0C /* Sources */,
+			4012D4C9DAE5CD9D31F3FFB2 /* Frameworks */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+			364ACEDCA212FD889EA1CC94 /* kUninstall */,
+		);
+		name = kUninstallTests;
+		productName = kUninstallTests;
+		productReference = 09C386C2F6D04F8712E2E85C;
+		productType = "com.apple.product-type.bundle.unit-test";
+	};
+	FB394FBB892F52161ADD1F20 /* kUninstall */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 6080F8A7C5D6A84AD151124F;
+		buildPhases = (
+			D7ADA1B3F2BD4A23138F5A71 /* Sources */,
+			639838777480095AEC9EAF3D /* Frameworks */,
+			0F96DF12DE3D14BDBD2DCA50 /* Resources */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+		);
+		name = kUninstall;
+		packageProductDependencies = (
+			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
+			318F614673711C07F3DB300D /* FileScanner */,
+			AA27570A2ED9B8ABCC965A59 /* CommonUtils */,
+			5C6B11CEE1107D6AC8C4701B /* Capabilities */,
+		);
+		productName = kUninstall;
+		productReference = 592A3E8DE2005013EFE473D7;
+		productType = "com.apple.product-type.application";
+	};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+	59601E391B529B07AE11313D /* kUninstall */ = {
+		isa = PBXProject;
+		attributes = {
+			BuildIndependentTargetsInParallel = 1;
+			LastSwiftUpdateCheck = 1430;
+			LastUpgradeCheck = 1430;
+			TargetAttributes = {
+				FB394FBB892F52161ADD1F20 /* kUninstall */ = {CreatedOnToolsVersion = 14.3; };
+				0FBA227ABB8C4996E5584B8F /* kUninstallTests */ = {CreatedOnToolsVersion = 14.3; TestTargetID = FB394FBB892F52161ADD1F20; };
+			};
+		};
+		buildConfigurationList = CF35BBADA1B6673793B45974;
+		compatibilityVersion = "Xcode 14.0";
+		developmentRegion = en;
+		hasScannedForEncodings = 0;
+		knownRegions = (
+			en,
+			Base,
+			zh-Hans,
+			ja,
+		);
+		mainGroup = 8CB695B89F15D64CF154F9CA;
+		name = kUninstall;
+		packageReferences = (
+			9B11DE76A6AB3B8F9151A660 /* kFoundation */,
+		);
+		productRefGroup = EBA56EB89A9347CFCE560E19;
+		projectDirPath = "";
+		projectRoot = "";
+		targets = (
+			FB394FBB892F52161ADD1F20 /* kUninstall */,
+			0FBA227ABB8C4996E5584B8F /* kUninstallTests */,
+		);
+	};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+	0F96DF12DE3D14BDBD2DCA50 /* 0F96DF12DE3D14BDBD2DCA50 */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+	A3EBA454EB2F5C879CA40B0C /* A3EBA454EB2F5C879CA40B0C */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			30777437B37859FB155C273A /* 30777437B37859FB155C273A */,
+			9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	D7ADA1B3F2BD4A23138F5A71 /* D7ADA1B3F2BD4A23138F5A71 */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */,
+			AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */,
+			7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */,
+			0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */,
+			2B06CE90451E121FCC65E18A /* 2B06CE90451E121FCC65E18A */,
+			DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+	364ACEDCA212FD889EA1CC94 /* kUninstall */ = {
+		isa = PBXTargetDependency;
+		name = kUninstall;
+		target = FB394FBB892F52161ADD1F20;
+		targetProxy = 3412E6574B98EDF3F54840ED;
+	};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+	327A485C172AB8BDAA4E2848 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		BUNDLE_LOADER = "$(TEST_HOST)";
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kuninstall.tests;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_VERSION = 5.0;
+		TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kUninstall.app/Contents/MacOS/kUninstall";
+		};
+		name = Release;
+	};
+	3A75C3F04A5A46A06A715410 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+		CODE_SIGNING_ALLOWED = NO;
+		CODE_SIGN_STYLE = Manual;
+		COMBINE_HIDPI_IMAGES = YES;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kUninstall;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kuninstall;
+		INFOPLIST_KEY_CFBundleName = kUninstall;
+		INFOPLIST_KEY_CFBundlePackageType = "APPL";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
+		INFOPLIST_KEY_NSHumanReadableCopyright = "";
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kuninstall;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
+	};
+	3F8D7C61364D6E91CEA539C5 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ALWAYS_SEARCH_USER_PATHS = NO;
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		COPY_PHASE_STRIP = NO;
+		DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+		ENABLE_NS_ASSERTIONS = NO;
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		GCC_OPTIMIZATION_LEVEL = s;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MTL_ENABLE_DEBUG_INFO = NO;
+		SDKROOT = macosx;
+		SWIFT_COMPILATION_MODE = wholemodule;
+		SWIFT_OPTIMIZATION_LEVEL = "-O";
+		SWIFT_STRICT_CONCURRENCY = complete;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+	40AC8DB68C57EFEB661DB3D0 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+		CODE_SIGN_ENTITLEMENTS = kUninstall.entitlements;
+		CODE_SIGN_IDENTITY = "-";
+		CODE_SIGN_STYLE = Manual;
+		COMBINE_HIDPI_IMAGES = YES;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kUninstall;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kuninstall;
+		INFOPLIST_KEY_CFBundleName = kUninstall;
+		INFOPLIST_KEY_CFBundlePackageType = "APPL";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
+		INFOPLIST_KEY_NSHumanReadableCopyright = "";
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kuninstall;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+	7E1FBBBBDF2C6831C341A92D /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ALWAYS_SEARCH_USER_PATHS = NO;
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		COPY_PHASE_STRIP = NO;
+		DEBUG_INFORMATION_FORMAT = dwarf;
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		ENABLE_TESTABILITY = YES;
+		GCC_DYNAMIC_NO_PIC = NO;
+		GCC_OPTIMIZATION_LEVEL = 0;
+		GCC_PREPROCESSOR_DEFINITIONS = (
+			"DEBUG=1",
+			"$(inherited)",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+		ONLY_ACTIVE_ARCH = YES;
+		SDKROOT = macosx;
+		SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG";
+		SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+		SWIFT_STRICT_CONCURRENCY = complete;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
+	};
+	8E49F43A56D207D9CACB92D7 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		BUNDLE_LOADER = "$(TEST_HOST)";
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kuninstall.tests;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_VERSION = 5.0;
+		TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kUninstall.app/Contents/MacOS/kUninstall";
+		};
+		name = Debug;
+	};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+	3FD6CBC4FF291B9367FDC53D /* 3FD6CBC4FF291B9367FDC53D */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			8E49F43A56D207D9CACB92D7 /* Debug */,
+			327A485C172AB8BDAA4E2848 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	6080F8A7C5D6A84AD151124F /* 6080F8A7C5D6A84AD151124F */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			3A75C3F04A5A46A06A715410 /* Debug */,
+			40AC8DB68C57EFEB661DB3D0 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	CF35BBADA1B6673793B45974 /* CF35BBADA1B6673793B45974 */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			7E1FBBBBDF2C6831C341A92D /* Debug */,
+			3F8D7C61364D6E91CEA539C5 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+	9B11DE76A6AB3B8F9151A660 /* 9B11DE76A6AB3B8F9151A660 */ = {
+		isa = XCLocalSwiftPackageReference;
+		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
+	};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+	318F614673711C07F3DB300D /* 318F614673711C07F3DB300D */ = {
+		isa = XCSwiftPackageProductDependency;
+		package = 9B11DE76A6AB3B8F9151A660;
+		productName = FileScanner;
+	};
+	5C6B11CEE1107D6AC8C4701B /* 5C6B11CEE1107D6AC8C4701B */ = {
+		isa = XCSwiftPackageProductDependency;
+		package = 9B11DE76A6AB3B8F9151A660;
+		productName = Capabilities;
+	};
+	8FC8EFB927E635ABBEBD95C0 /* 8FC8EFB927E635ABBEBD95C0 */ = {
+		isa = XCSwiftPackageProductDependency;
+		package = 9B11DE76A6AB3B8F9151A660;
+		productName = DesignSystem;
+	};
+	AA27570A2ED9B8ABCC965A59 /* AA27570A2ED9B8ABCC965A59 */ = {
+		isa = XCSwiftPackageProductDependency;
+		package = 9B11DE76A6AB3B8F9151A660;
+		productName = CommonUtils;
+	};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 59601E391B529B07AE11313D /* Project object */;
+}
