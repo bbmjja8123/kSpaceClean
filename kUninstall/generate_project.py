@@ -93,8 +93,12 @@ def main():
         "Clean": make_group("Clean"),
         "Startup": make_group("Startup"),
         "Features": make_group("Features"),
+        "AppList": make_group("AppList"),
+        "Detail": make_group("Detail"),
+        "Common": make_group("Common"),
         "FinderExtension": make_group("FinderExtension"),
         "Intents": make_group("Intents"),
+        "Data": make_group("Data"),
         "MenuBar": make_group("MenuBar"),
         "Resources": make_group("Resources"),
         "Store": make_group("Store"),
@@ -121,11 +125,23 @@ def main():
         ("App/AppCoordinator.swift", "App"),
         ("Core/Detect/InstalledApp.swift", "Detect"),
         ("Core/Detect/AppCatalogService.swift", "Detect"),
+        ("Core/Detect/ResidueDetector.swift", "Detect"),
+        ("Core/Clean/TrashMover.swift", "Clean"),
+        ("Core/Clean/ResidueScanner.swift", "Clean"),
+        ("Data/BackupManager.swift", "Data"),
+        ("Data/UninstallHistoryRepository.swift", "Data"),
+        ("Features/AppList/AppListViewModel.swift", "AppList"),
+        ("Features/AppList/AppListView.swift", "AppList"),
+        ("Features/AppList/AppRowView.swift", "AppList"),
+        ("Features/Common/EmptyStateView.swift", "Common"),
+        ("Features/Common/LoadingStateView.swift", "Common"),
+        ("Features/Detail/AppDetailView.swift", "Detail"),
     ]
 
     test_files = [
         "DetectTests/InstalledAppTests.swift",
         "DetectTests/AppCatalogServiceTests.swift",
+        "DetectTests/ResidueDetectorTests.swift",
     ]
 
     static_files = [
@@ -455,9 +471,15 @@ def main():
         core_children.append((group_ids[sub], sub))
     objects[group_ids["Core"]][1]["children"] = core_children
 
+    # Set Features group children
+    features_children = []
+    for sub in ["AppList", "Common", "Detail"]:
+        features_children.append((group_ids[sub], sub))
+    objects[group_ids["Features"]][1]["children"] = features_children
+
     # Set root group children
     root_children = []
-    for gname in ["App", "Core", "Features", "FinderExtension", "Intents",
+    for gname in ["App", "Core", "Data", "Features", "FinderExtension", "Intents",
                    "MenuBar", "Resources", "Store", "Widgets", "Tests",
                    "Products", "Frameworks"]:
         root_children.append((group_ids[gname], gname))
