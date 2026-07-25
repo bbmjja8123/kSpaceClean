@@ -5,7 +5,7 @@ import WidgetKit
 struct kUninstallApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var coordinator = AppCoordinator()
-    @StateObject private var menuBarController = MenuBarController()
+    private let menuBarController = MenuBarController()
 
     var body: some Scene {
         WindowGroup {

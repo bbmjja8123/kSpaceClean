@@ -32,9 +32,9 @@ final class BackupManagerTests: XCTestCase {
         try? FileManager.default.removeItem(at: backupPath.deletingLastPathComponent())
     }
 
-    func testCleanupExpired() {
+    func testCleanupExpired() async {
         let manager = BackupManager()
         // Should not throw for non-existent backup
-        manager.cleanupExpired(olderThan: 1)
+        await manager.cleanupExpired(olderThan: 1)
     }
 }

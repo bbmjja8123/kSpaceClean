@@ -96,19 +96,19 @@ actor AppCatalogService {
 
     // MARK: - Source Classification
 
-    func classifySource(url: URL, bundleID: String) -> AppSource {
+    nonisolated func classifySource(url: URL, bundleID: String) -> AppSource {
         let path = url.path
         if path.hasPrefix("/System/") { return .system }
         if bundleID == "com.apple.finder" { return .system }
+        if hasMASReceipt(url) { return .mas }
         if bundleID.hasPrefix("com.apple.") || bundleID == "com.apple.dt.Xcode" {
             return .appleBuiltIn
         }
-        if hasMASReceipt(url) { return .mas }
         if path.contains("/Applications/") { return .userInstalled }
         return .unknown
     }
 
-    private func hasMASReceipt(_ url: URL) -> Bool {
+    private nonisolated func hasMASReceipt(_ url: URL) -> Bool {
         let receiptURL = url.appendingPathComponent("Contents/_MASReceipt/receipt")
         return FileManager.default.fileExists(atPath: receiptURL.path)
     }

@@ -16,7 +16,8 @@ final class ResidueDetectorTests: XCTestCase {
         let residues = await detector.detectResidues(bundleID: "com.example.Test", appName: "Test")
         let prefs = residues.filter { $0.type == .preferences }
         XCTAssertFalse(prefs.isEmpty)
-        XCTAssertEqual(prefs.first?.confidence, 0.99)
+        // Base confidence 0.99, files don't exist on test machine → halved to ~0.495
+        XCTAssertEqual(prefs.first?.confidence ?? 0, 0.99 * 0.5, accuracy: 0.01)
     }
 
     func testConfidenceLowForPlugins() async {
@@ -24,7 +25,8 @@ final class ResidueDetectorTests: XCTestCase {
         let residues = await detector.detectResidues(bundleID: "com.example.Test", appName: "Test")
         let plugins = residues.filter { $0.type == .plugin }
         if let plugin = plugins.first {
-            XCTAssertEqual(plugin.confidence, 0.80)
+            // Base confidence 0.80, file doesn't exist → halved to 0.40
+            XCTAssertEqual(plugin.confidence, 0.80 * 0.5, accuracy: 0.01)
         }
     }
 

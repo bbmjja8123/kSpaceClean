@@ -32,7 +32,7 @@ enum ResidueType: String, Codable, CaseIterable {
 
 // MARK: - Residue File
 
-struct ResidueFile: Identifiable, Codable {
+struct ResidueFile: Identifiable, Codable, @unchecked Sendable {
     var id: String { url.path }
     let url: URL
     let type: ResidueType
@@ -66,7 +66,7 @@ enum StartupItemType: String, Codable, CaseIterable {
     case prefPane
 }
 
-struct StartupItem: Identifiable, Codable {
+struct StartupItem: Identifiable, Codable, Sendable {
     var id: String { url.path }
     let name: String
     let type: StartupItemType
@@ -78,7 +78,7 @@ struct StartupItem: Identifiable, Codable {
 
 // MARK: - Installed App
 
-struct InstalledApp: Identifiable, Hashable {
+struct InstalledApp: Identifiable, Hashable, @unchecked Sendable {
     var id: String { bundleID }
     let url: URL
     let displayName: String

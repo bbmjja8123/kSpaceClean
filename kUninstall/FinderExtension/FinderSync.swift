@@ -22,7 +22,7 @@ class FinderSync: FIFinderSync {
     }
 
     @objc func uninstallItem(_ sender: AnyObject?) {
-        guard let item = FIFinderSyncController.default().selectedItemURLs?.first else { return }
+        guard let item = FIFinderSyncController.default().selectedItemURLs()?.first else { return }
         let appURL = URL(fileURLWithPath: "/Applications/kUninstall.app")
         NSWorkspace.shared.open(
             [item],
