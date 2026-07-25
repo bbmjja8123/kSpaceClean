@@ -166,6 +166,8 @@ def main():
         ("Intents/UninstallAppIntent.swift", "Intents"),
         ("Intents/ScanResidueIntent.swift", "Intents"),
         ("Intents/DeepCleanIntent.swift", "Intents"),
+        ("FinderExtension/FinderSync.swift", "FinderExtension"),
+        ("FinderExtension/Info.plist", "FinderExtension"),
     ]
 
     test_files = [
@@ -190,7 +192,12 @@ def main():
         fname = os.path.basename(sf_path)
         gid = group_ids[grp]
         ext = os.path.splitext(sf_path)[1]
-        lkft = "sourcecode.swift" if ext == ".swift" else "text.json.xcstrings"
+        if ext == ".swift":
+            lkft = "sourcecode.swift"
+        elif ext == ".plist":
+            lkft = "text.plist.xml"
+        else:
+            lkft = "text.json.xcstrings"
 
         ref_id = add(make_fileref(fname, sf_path, last=lkft), f"ref_{sf_path}")
         bf_id = add(make_buildfile(ref_id), f"bf_{sf_path}")
