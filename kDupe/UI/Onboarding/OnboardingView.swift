@@ -1,0 +1,41 @@
+import SwiftUI
+import DesignSystem
+
+struct OnboardingView: View {
+    @EnvironmentObject var appState: AppState
+    @StateObject private var viewModel = OnboardingViewModel()
+
+    var body: some View {
+        VStack(spacing: 32) {
+            Spacer()
+
+            Image(systemName: "doc.on.doc")
+                .font(.system(size: 64))
+                .foregroundColor(.brandPrimary)
+            Text("Welcome to kDupe")
+                .font(.largeTitle).bold()
+            Text("Find and remove duplicate files, reclaim disk space")
+                .foregroundColor(.secondary)
+
+            ProfileSetupView(viewModel: viewModel)
+                .frame(maxWidth: 400)
+
+            Spacer()
+
+            Button(action: completeOnboarding) {
+                Text("Get Started")
+                    .frame(maxWidth: 300)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.brandPrimary)
+            .padding(.bottom, 40)
+        }
+    }
+
+    private func completeOnboarding() {
+        let config = viewModel.buildConfig()
+        appState.selectedProfile = viewModel.selectedProfile
+        appState.isOnboardingComplete = true
+        appState.navigation = .scan
+    }
+}
