@@ -11,6 +11,10 @@
 		isa = PBXBuildFile;
 		fileRef = FC8F976B27828057A607616A;
 	};
+	115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1C4455D0B4CE1B5F5681A2FE;
+	};
 	2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */ = {
 		isa = PBXBuildFile;
 		fileRef = 90B6343DFAE6C2A9AECF231C;
@@ -39,9 +43,17 @@
 		isa = PBXBuildFile;
 		fileRef = 19E52988752B80FD541659FC;
 	};
+	4AEDA9A9240B69654ED01077 /* 4AEDA9A9240B69654ED01077 */ = {
+		isa = PBXBuildFile;
+		fileRef = C1500570860B074777D1122C;
+	};
 	4D4652C5722A891D0E8F2A0B /* 4D4652C5722A891D0E8F2A0B */ = {
 		isa = PBXBuildFile;
 		fileRef = 7A134B7F6EC7FEF20B0247B8;
+	};
+	4DBE57E216AD4A92D44C300D /* 4DBE57E216AD4A92D44C300D */ = {
+		isa = PBXBuildFile;
+		fileRef = DFFB3A04DCFE11AA8A75C917;
 	};
 	50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */ = {
 		isa = PBXBuildFile;
@@ -54,6 +66,10 @@
 	7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */ = {
 		isa = PBXBuildFile;
 		fileRef = F9F5DB4F736723C6F2F5DC63;
+	};
+	82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1890ACF921D842C7A68A1BBE;
 	};
 	833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */ = {
 		isa = PBXBuildFile;
@@ -71,9 +87,21 @@
 		isa = PBXBuildFile;
 		fileRef = AF272D3718777F39FA504734;
 	};
+	A7E806B246A4F0307D48718E /* A7E806B246A4F0307D48718E */ = {
+		isa = PBXBuildFile;
+		fileRef = E6B23CE24C9E6714E4A1D885;
+	};
 	AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */ = {
 		isa = PBXBuildFile;
 		fileRef = 14679243FC833D0C8D16C74A;
+	};
+	C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */ = {
+		isa = PBXBuildFile;
+		fileRef = 21590BBBDE883EFBD31EAEE8;
+	};
+	C956C8E6486DF8E7AFEFB05C /* C956C8E6486DF8E7AFEFB05C */ = {
+		isa = PBXBuildFile;
+		fileRef = F6EF8E531BBFA21EF834D571;
 	};
 	D43E9821EC3E17EFF5B7B88C /* D43E9821EC3E17EFF5B7B88C */ = {
 		isa = PBXBuildFile;
@@ -86,6 +114,18 @@
 	DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 2F003C23A18C74F51E543E30;
+	};
+	EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */ = {
+		isa = PBXBuildFile;
+		fileRef = 136BEC5F911CA3A945CDC744;
+	};
+	EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */ = {
+		isa = PBXBuildFile;
+		fileRef = B6830D0E035D1121B06CF64B;
+	};
+	F1B840EC59C8EF013434A941 /* F1B840EC59C8EF013434A941 */ = {
+		isa = PBXBuildFile;
+		fileRef = C9436B5A5555F38E15906412;
 	};
 	F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */ = {
 		isa = PBXBuildFile;
@@ -133,11 +173,25 @@
 		path = Data/BackupManager.swift;
 		sourceTree = "<group>";
 	};
+	136BEC5F911CA3A945CDC744 /* FDAGuideController.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAGuideController.swift;
+		path = Features/Onboarding/FDAGuideController.swift;
+		sourceTree = "<group>";
+	};
 	14679243FC833D0C8D16C74A /* AppState.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = AppState.swift;
 		path = App/AppState.swift;
+		sourceTree = "<group>";
+	};
+	1890ACF921D842C7A68A1BBE /* DetailViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DetailViewModel.swift;
+		path = Features/Detail/DetailViewModel.swift;
 		sourceTree = "<group>";
 	};
 	19E52988752B80FD541659FC /* ResidueDetector.swift */ = {
@@ -147,11 +201,25 @@
 		path = Core/Detect/ResidueDetector.swift;
 		sourceTree = "<group>";
 	};
+	1C4455D0B4CE1B5F5681A2FE /* SettingsView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SettingsView.swift;
+		path = Features/Settings/SettingsView.swift;
+		sourceTree = "<group>";
+	};
+	21590BBBDE883EFBD31EAEE8 /* FDAGuideView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAGuideView.swift;
+		path = Features/Onboarding/FDAGuideView.swift;
+		sourceTree = "<group>";
+	};
 	27E8208E9A99978867A43090 /* kFoundation */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = folder;
 		name = kFoundation;
-		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
+		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/agent-a919e8c7/kFoundation;
 		sourceTree = "<absolute>";
 	};
 	2F003C23A18C74F51E543E30 /* AppCatalogService.swift */ = {
@@ -260,6 +328,27 @@
 		path = App/kUninstallApp.swift;
 		sourceTree = "<group>";
 	};
+	B6830D0E035D1121B06CF64B /* SettingsViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SettingsViewModel.swift;
+		path = Features/Settings/SettingsViewModel.swift;
+		sourceTree = "<group>";
+	};
+	C1500570860B074777D1122C /* HistoryViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = HistoryViewModel.swift;
+		path = Features/History/HistoryViewModel.swift;
+		sourceTree = "<group>";
+	};
+	C9436B5A5555F38E15906412 /* FDAuthorizer.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAuthorizer.swift;
+		path = Data/FDAuthorizer.swift;
+		sourceTree = "<group>";
+	};
 	DC9F358CA23F4689897454B8 /* TrashMover.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -267,11 +356,32 @@
 		path = Core/Clean/TrashMover.swift;
 		sourceTree = "<group>";
 	};
+	DFFB3A04DCFE11AA8A75C917 /* HistoryView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = HistoryView.swift;
+		path = Features/History/HistoryView.swift;
+		sourceTree = "<group>";
+	};
+	E6B23CE24C9E6714E4A1D885 /* UninstallConfirmSheet.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallConfirmSheet.swift;
+		path = Features/Detail/UninstallConfirmSheet.swift;
+		sourceTree = "<group>";
+	};
 	EA66E191F044FFC4D9668848 /* LoadingStateView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = LoadingStateView.swift;
 		path = Features/Common/LoadingStateView.swift;
+		sourceTree = "<group>";
+	};
+	F6EF8E531BBFA21EF834D571 /* ResidueSectionView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueSectionView.swift;
+		path = Features/Detail/ResidueSectionView.swift;
 		sourceTree = "<group>";
 	};
 	F9F5DB4F736723C6F2F5DC63 /* RootView.swift */ = {
@@ -308,6 +418,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+	0283ED5888E25C418EDF5949 /* History */ = {
+		isa = PBXGroup;
+		children = (
+			DFFB3A04DCFE11AA8A75C917 /* HistoryView.swift */,
+			C1500570860B074777D1122C /* HistoryViewModel.swift */,
+		);
+		name = History;
+		sourceTree = "<group>";
+	};
 	080719DCC0589D18D62EF828 /* Store */ = {
 		isa = PBXGroup;
 		children = (
@@ -396,6 +515,7 @@
 		children = (
 			0C25FC9BBBD612C35A333C8F /* BackupManager.swift */,
 			4DB6B5CBAB9D12D12D1702D7 /* UninstallHistoryRepository.swift */,
+			C9436B5A5555F38E15906412 /* FDAuthorizer.swift */,
 		);
 		name = Data;
 		sourceTree = "<group>";
@@ -404,6 +524,9 @@
 		isa = PBXGroup;
 		children = (
 			AA60392EFF1E1EB77FEC0D36 /* AppDetailView.swift */,
+			1890ACF921D842C7A68A1BBE /* DetailViewModel.swift */,
+			F6EF8E531BBFA21EF834D571 /* ResidueSectionView.swift */,
+			E6B23CE24C9E6714E4A1D885 /* UninstallConfirmSheet.swift */,
 		);
 		name = Detail;
 		sourceTree = "<group>";
@@ -445,6 +568,24 @@
 		name = CleanTests;
 		sourceTree = "<group>";
 	};
+	948A46E6570A8D25B50581C8 /* Onboarding */ = {
+		isa = PBXGroup;
+		children = (
+			136BEC5F911CA3A945CDC744 /* FDAGuideController.swift */,
+			21590BBBDE883EFBD31EAEE8 /* FDAGuideView.swift */,
+		);
+		name = Onboarding;
+		sourceTree = "<group>";
+	};
+	969679DE865F3E68DEC65C79 /* Settings */ = {
+		isa = PBXGroup;
+		children = (
+			1C4455D0B4CE1B5F5681A2FE /* SettingsView.swift */,
+			B6830D0E035D1121B06CF64B /* SettingsViewModel.swift */,
+		);
+		name = Settings;
+		sourceTree = "<group>";
+	};
 	AB9A6EBAA83058E1F2B4CCE0 /* FinderExtension */ = {
 		isa = PBXGroup;
 		children = (
@@ -458,6 +599,9 @@
 			3C01BB5CC94D49CC05F47B00 /* AppList */,
 			3F300C2EC1A0250807DB22F8 /* Common */,
 			6F639C44EC4191E54FD9C780 /* Detail */,
+			0283ED5888E25C418EDF5949 /* History */,
+			948A46E6570A8D25B50581C8 /* Onboarding */,
+			969679DE865F3E68DEC65C79 /* Settings */,
 		);
 		name = Features;
 		sourceTree = "<group>";
@@ -641,12 +785,22 @@
 			9F7D061010AC1F35C96F4929 /* 9F7D061010AC1F35C96F4929 */,
 			3C45097EB9D7EA5FFC202E91 /* 3C45097EB9D7EA5FFC202E91 */,
 			25A10FE62B29AD4A68CDD057 /* 25A10FE62B29AD4A68CDD057 */,
+			F1B840EC59C8EF013434A941 /* F1B840EC59C8EF013434A941 */,
 			2881629D9FD740DD04775A52 /* 2881629D9FD740DD04775A52 */,
 			4D4652C5722A891D0E8F2A0B /* 4D4652C5722A891D0E8F2A0B */,
 			D764C8753D76D87EC4C3839C /* D764C8753D76D87EC4C3839C */,
 			D43E9821EC3E17EFF5B7B88C /* D43E9821EC3E17EFF5B7B88C */,
 			F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */,
 			92D836BA8D75FD4D4FC20474 /* 92D836BA8D75FD4D4FC20474 */,
+			82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */,
+			C956C8E6486DF8E7AFEFB05C /* C956C8E6486DF8E7AFEFB05C */,
+			A7E806B246A4F0307D48718E /* A7E806B246A4F0307D48718E */,
+			4DBE57E216AD4A92D44C300D /* 4DBE57E216AD4A92D44C300D */,
+			4AEDA9A9240B69654ED01077 /* 4AEDA9A9240B69654ED01077 */,
+			EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */,
+			C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */,
+			115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */,
+			EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -846,7 +1000,7 @@
 /* Begin XCLocalSwiftPackageReference section */
 	9B11DE76A6AB3B8F9151A660 /* 9B11DE76A6AB3B8F9151A660 */ = {
 		isa = XCLocalSwiftPackageReference;
-		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
+		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/agent-a919e8c7/kFoundation;
 	};
 /* End XCLocalSwiftPackageReference section */
 

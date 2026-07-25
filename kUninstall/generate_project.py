@@ -3,9 +3,9 @@
 
 import os, hashlib
 
-BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kUninstall"
+BASE = os.path.dirname(os.path.abspath(__file__))
 PROJECT_FILE = f"{BASE}/kUninstall.xcodeproj/project.pbxproj"
-KFOUNDATION_PATH = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation"
+KFOUNDATION_PATH = os.path.normpath(os.path.join(BASE, "..", "kFoundation"))
 
 def hash_id(seed, length=24):
     return hashlib.sha256(seed.encode()).hexdigest()[:length].upper()
@@ -96,6 +96,9 @@ def main():
         "AppList": make_group("AppList"),
         "Detail": make_group("Detail"),
         "Common": make_group("Common"),
+        "History": make_group("History"),
+        "Onboarding": make_group("Onboarding"),
+        "Settings": make_group("Settings"),
         "FinderExtension": make_group("FinderExtension"),
         "Intents": make_group("Intents"),
         "Data": make_group("Data"),
@@ -130,12 +133,22 @@ def main():
         ("Core/Clean/ResidueScanner.swift", "Clean"),
         ("Data/BackupManager.swift", "Data"),
         ("Data/UninstallHistoryRepository.swift", "Data"),
+        ("Data/FDAuthorizer.swift", "Data"),
         ("Features/AppList/AppListViewModel.swift", "AppList"),
         ("Features/AppList/AppListView.swift", "AppList"),
         ("Features/AppList/AppRowView.swift", "AppList"),
         ("Features/Common/EmptyStateView.swift", "Common"),
         ("Features/Common/LoadingStateView.swift", "Common"),
         ("Features/Detail/AppDetailView.swift", "Detail"),
+        ("Features/Detail/DetailViewModel.swift", "Detail"),
+        ("Features/Detail/ResidueSectionView.swift", "Detail"),
+        ("Features/Detail/UninstallConfirmSheet.swift", "Detail"),
+        ("Features/History/HistoryView.swift", "History"),
+        ("Features/History/HistoryViewModel.swift", "History"),
+        ("Features/Onboarding/FDAGuideController.swift", "Onboarding"),
+        ("Features/Onboarding/FDAGuideView.swift", "Onboarding"),
+        ("Features/Settings/SettingsView.swift", "Settings"),
+        ("Features/Settings/SettingsViewModel.swift", "Settings"),
     ]
 
     test_files = [
@@ -473,7 +486,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AppList", "Common", "Detail"]:
+    for sub in ["AppList", "Common", "Detail", "History", "Onboarding", "Settings"]:
         features_children.append((group_ids[sub], sub))
     objects[group_ids["Features"]][1]["children"] = features_children
 
