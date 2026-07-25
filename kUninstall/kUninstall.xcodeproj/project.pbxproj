@@ -79,6 +79,10 @@
 		isa = PBXBuildFile;
 		fileRef = DC9F358CA23F4689897454B8;
 	};
+	6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 6CAA3CF4C412CEDDEAA934C3;
+	};
 	7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */ = {
 		isa = PBXBuildFile;
 		fileRef = F5EE8978A09525D063479709;
@@ -118,6 +122,10 @@
 	AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */ = {
 		isa = PBXBuildFile;
 		fileRef = 14679243FC833D0C8D16C74A;
+	};
+	BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */ = {
+		isa = PBXBuildFile;
+		fileRef = 48DFB6C6C2EEA832BFACA155;
 	};
 	C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */ = {
 		isa = PBXBuildFile;
@@ -162,6 +170,10 @@
 	F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */ = {
 		isa = PBXBuildFile;
 		fileRef = EA66E191F044FFC4D9668848;
+	};
+	FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */ = {
+		isa = PBXBuildFile;
+		fileRef = 29548BE5AD0B39AAFE6CF22F;
 	};
 /* End PBXBuildFile section */
 
@@ -275,6 +287,13 @@
 		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
 		sourceTree = "<absolute>";
 	};
+	29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StoreManager.swift;
+		path = Store/StoreManager.swift;
+		sourceTree = "<group>";
+	};
 	2F003C23A18C74F51E543E30 /* AppCatalogService.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -310,6 +329,13 @@
 		path = Tests/DetectTests/AppCatalogServiceTests.swift;
 		sourceTree = "<group>";
 	};
+	48DFB6C6C2EEA832BFACA155 /* StoreDefinitions.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StoreDefinitions.swift;
+		path = Store/StoreDefinitions.swift;
+		sourceTree = "<group>";
+	};
 	4DB6B5CBAB9D12D12D1702D7 /* UninstallHistoryRepository.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -337,6 +363,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = EmptyStateView.swift;
 		path = Features/Common/EmptyStateView.swift;
+		sourceTree = "<group>";
+	};
+	6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = PaywallView.swift;
+		path = Store/PaywallView.swift;
 		sourceTree = "<group>";
 	};
 	7A134B7F6EC7FEF20B0247B8 /* AppListView.swift */ = {
@@ -518,6 +551,9 @@
 	080719DCC0589D18D62EF828 /* Store */ = {
 		isa = PBXGroup;
 		children = (
+			48DFB6C6C2EEA832BFACA155 /* StoreDefinitions.swift */,
+			29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */,
+			6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */,
 		);
 		name = Store;
 		sourceTree = "<group>";
@@ -921,6 +957,9 @@
 			2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */,
 			E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */,
 			0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */,
+			BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */,
+			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
+			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

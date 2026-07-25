@@ -158,6 +158,9 @@ def main():
         ("Core/Startup/StartupItemManager.swift", "Startup"),
         ("Features/StartupItems/StartupItemsView.swift", "StartupItems"),
         ("Features/StartupItems/StartupItemsViewModel.swift", "StartupItems"),
+        ("Store/StoreDefinitions.swift", "Store"),
+        ("Store/StoreManager.swift", "Store"),
+        ("Store/PaywallView.swift", "Store"),
     ]
 
     test_files = [
