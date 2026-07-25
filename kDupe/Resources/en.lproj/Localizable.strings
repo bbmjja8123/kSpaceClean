@@ -1,0 +1,53 @@
+/* App name */
+"kDupe" = "kDupe";
+
+/* Intents */
+"Scan for Duplicates" = "Scan for Duplicates";
+"Scans a directory for identical and similar files." = "Scans a directory for identical and similar files.";
+"Clean Up Duplicates" = "Clean Up Duplicates";
+"Moves duplicate files in the selected category to the Trash." = "Moves duplicate files in the selected category to the Trash.";
+"Show Large Files" = "Show Large Files";
+"Finds files larger than the specified minimum size." = "Finds files larger than the specified minimum size.";
+
+/* Onboarding */
+"Welcome to kDupe" = "Welcome to kDupe";
+"Find and remove duplicate files, reclaim disk space" = "Find and remove duplicate files, reclaim disk space";
+"Get Started" = "Get Started";
+"Choose Your Profile" = "Choose Your Profile";
+"kDupe optimizes scanning based on your workflow" = "kDupe optimizes scanning based on your workflow";
+
+/* Scan */
+"Ready to Scan" = "Ready to Scan";
+"Choose a profile in Settings or start with Developer mode" = "Choose a profile in Settings or start with Developer mode";
+"Scan Complete" = "Scan Complete";
+"%lld files scanned" = "%lld files scanned";
+"%lld duplicates found" = "%lld duplicates found";
+
+/* Store / Paywall */
+"Unlock Full Power" = "Unlock Full Power";
+"Remove duplicate files, clean build artifacts, and reclaim gigabytes." = "Remove duplicate files, clean build artifacts, and reclaim gigabytes.";
+"Continue" = "Continue";
+
+/* Results */
+"%lld groups selected" = "%lld groups selected";
+"%lld groups will be moved to Trash." = "%lld groups will be moved to Trash.";
+"%lld files · %@" = "%lld files · %@";
+"%lld selected · %@" = "%lld selected · %@";
+"Last scan: %@" = "Last scan: %@";
+"%lld duplicates" = "%lld duplicates";
+
+/* History */
+"Scan History" = "Scan History";
+"%lld groups · %@" = "%lld groups · %@";
+
+/* Settings */
+"Settings" = "Settings";
+"Min file size: %@" = "Min file size: %@";
+
+/* Category Display Names */
+"Identical" = "Identical";
+"Directory" = "Directory";
+"Similar" = "Similar";
+"Large" = "Large";
+"Artifacts" = "Artifacts";
+"RAW+JPEG" = "RAW+JPEG";

@@ -1,0 +1,53 @@
+/* App name */
+"kDupe" = "kDupe";
+
+/* Intents */
+"Scan for Duplicates" = "重複ファイルをスキャン";
+"Scans a directory for identical and similar files." = "ディレクトリ内の同一・類似ファイルをスキャンします。";
+"Clean Up Duplicates" = "重複ファイルをクリーンアップ";
+"Moves duplicate files in the selected category to the Trash." = "選択したカテゴリの重複ファイルをゴミ箱に移動します。";
+"Show Large Files" = "大ファイルを表示";
+"Finds files larger than the specified minimum size." = "指定したサイズより大きいファイルを検索します。";
+
+/* Onboarding */
+"Welcome to kDupe" = "kDupe へようこそ";
+"Find and remove duplicate files, reclaim disk space" = "重複ファイルを見つけて削除し、ディスク容量を回収";
+"Get Started" = "始める";
+"Choose Your Profile" = "プロファイルを選択";
+"kDupe optimizes scanning based on your workflow" = "kDupe はワークフローに基づいてスキャンを最適化します";
+
+/* Scan */
+"Ready to Scan" = "スキャン準備完了";
+"Choose a profile in Settings or start with Developer mode" = "設定でプロファイルを選択するか、開発者モードで開始";
+"Scan Complete" = "スキャン完了";
+"%lld files scanned" = "%lld ファイルをスキャン";
+"%lld duplicates found" = "%lld 件の重複を発見";
+
+/* Store / Paywall */
+"Unlock Full Power" = "全機能をアンロック";
+"Remove duplicate files, clean build artifacts, and reclaim gigabytes." = "重複ファイルを削除し、ビルドアーティファクトをクリーンアップして、GB 単位の容量を回収。";
+"Continue" = "続ける";
+
+/* Results */
+"%lld groups selected" = "%lld グループを選択";
+"%lld groups will be moved to Trash." = "%lld グループをゴミ箱に移動します。";
+"%lld files · %@" = "%lld ファイル · %@";
+"%lld selected · %@" = "%lld 選択 · %@";
+"Last scan: %@" = "最終スキャン：%@";
+"%lld duplicates" = "%lld 重複";
+
+/* History */
+"Scan History" = "スキャン履歴";
+"%lld groups · %@" = "%lld グループ · %@";
+
+/* Settings */
+"Settings" = "設定";
+"Min file size: %@" = "最小ファイルサイズ：%@";
+
+/* Category Display Names */
+"Identical" = "同一";
+"Directory" = "ディレクトリ";
+"Similar" = "類似";
+"Large" = "大容量";
+"Artifacts" = "アーティファクト";
+"RAW+JPEG" = "RAW+JPEG";

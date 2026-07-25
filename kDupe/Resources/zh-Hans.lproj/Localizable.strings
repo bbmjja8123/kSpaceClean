@@ -1,0 +1,53 @@
+/* App name */
+"kDupe" = "kDupe";
+
+/* Intents */
+"Scan for Duplicates" = "扫描重复文件";
+"Scans a directory for identical and similar files." = "扫描目录中的相同和相似文件。";
+"Clean Up Duplicates" = "清理重复文件";
+"Moves duplicate files in the selected category to the Trash." = "将选定类别中的重复文件移到废纸篓。";
+"Show Large Files" = "显示大文件";
+"Finds files larger than the specified minimum size." = "查找大于指定大小的文件。";
+
+/* Onboarding */
+"Welcome to kDupe" = "欢迎使用 kDupe";
+"Find and remove duplicate files, reclaim disk space" = "查找并删除重复文件，回收磁盘空间";
+"Get Started" = "开始使用";
+"Choose Your Profile" = "选择配置文件";
+"kDupe optimizes scanning based on your workflow" = "kDupe 根据您的工作流程优化扫描";
+
+/* Scan */
+"Ready to Scan" = "准备扫描";
+"Choose a profile in Settings or start with Developer mode" = "在设置中选择配置文件或使用开发者模式开始";
+"Scan Complete" = "扫描完成";
+"%lld files scanned" = "已扫描 %lld 个文件";
+"%lld duplicates found" = "发现 %lld 个重复文件";
+
+/* Store / Paywall */
+"Unlock Full Power" = "解锁全部功能";
+"Remove duplicate files, clean build artifacts, and reclaim gigabytes." = "删除重复文件，清理构建产物，回收数十GB空间。";
+"Continue" = "继续";
+
+/* Results */
+"%lld groups selected" = "已选 %lld 组";
+"%lld groups will be moved to Trash." = "%lld 组将被移到废纸篓。";
+"%lld files · %@" = "%lld 个文件 · %@";
+"%lld selected · %@" = "已选 %lld 个 · %@";
+"Last scan: %@" = "上次扫描：%@";
+"%lld duplicates" = "%lld 个重复文件";
+
+/* History */
+"Scan History" = "扫描历史";
+"%lld groups · %@" = "%lld 组 · %@";
+
+/* Settings */
+"Settings" = "设置";
+"Min file size: %@" = "最小文件大小：%@";
+
+/* Category Display Names */
+"Identical" = "完全相同";
+"Directory" = "目录重复";
+"Similar" = "相似图片";
+"Large" = "大文件";
+"Artifacts" = "构建产物";
+"RAW+JPEG" = "RAW+JPEG";

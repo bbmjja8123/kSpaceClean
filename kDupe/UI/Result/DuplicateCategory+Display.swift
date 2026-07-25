@@ -8,7 +8,7 @@ extension DuplicateCategory {
         case .perceptual: return "Similar"
         case .largeFile: return "Large"
         case .buildArtifact: return "Artifacts"
-        case .rawJPEGPair: return "RAW+JPEG"
+        case .rawJPEG: return "RAW+JPEG"
         }
     }
 
@@ -19,7 +19,7 @@ extension DuplicateCategory {
         case .perceptual: return "eye"
         case .largeFile: return "doc.resize"
         case .buildArtifact: return "hammer"
-        case .rawJPEGPair: return "camera"
+        case .rawJPEG: return "camera"
         }
     }
 
@@ -30,7 +30,7 @@ extension DuplicateCategory {
         case .perceptual: return .orange
         case .largeFile: return .red
         case .buildArtifact: return .gray
-        case .rawJPEGPair: return .green
+        case .rawJPEG: return .green
         }
     }
 }
