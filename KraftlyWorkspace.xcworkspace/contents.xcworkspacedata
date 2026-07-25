@@ -7,4 +7,7 @@
    <FileRef
       location = "group:kSpaceClean/">
    </FileRef>
+   <FileRef
+      location = "group:kWatch/">
+   </FileRef>
 </Workspace>

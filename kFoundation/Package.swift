@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.8
 import PackageDescription
 
 let package = Package(
@@ -7,21 +7,18 @@ let package = Package(
     products: [
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "FileScanner", targets: ["FileScanner"]),
-        .library(name: "PrivacyShield", targets: ["PrivacyShield"]),
-        .library(name: "AppCatalog", targets: ["AppCatalog"]),
         .library(name: "Capabilities", targets: ["Capabilities"]),
         .library(name: "CommonUtils", targets: ["CommonUtils"]),
-        .library(name: "DaemonBridge", targets: ["DaemonBridge"]),
+        .library(name: "MetricsKit", targets: ["MetricsKit"]),
     ],
     targets: [
         .target(name: "DesignSystem"),
         .target(name: "FileScanner", dependencies: ["CommonUtils"]),
-        .target(name: "PrivacyShield"),
-        .target(name: "AppCatalog"),
         .target(name: "Capabilities"),
         .target(name: "CommonUtils"),
-        .target(name: "DaemonBridge"),
+        .target(name: "MetricsKit"),
         .testTarget(name: "FileScannerTests", dependencies: ["FileScanner"]),
         .testTarget(name: "CommonUtilsTests", dependencies: ["CommonUtils"]),
+        .testTarget(name: "MetricsKitTests", dependencies: ["MetricsKit"]),
     ]
 )
