@@ -92,6 +92,7 @@ def main():
         "Detect": make_group("Detect"),
         "Clean": make_group("Clean"),
         "Startup": make_group("Startup"),
+        "StartupItems": make_group("StartupItems"),
         "Features": make_group("Features"),
         "AppList": make_group("AppList"),
         "Detail": make_group("Detail"),
@@ -149,6 +150,9 @@ def main():
         ("Features/Onboarding/FDAGuideView.swift", "Onboarding"),
         ("Features/Settings/SettingsView.swift", "Settings"),
         ("Features/Settings/SettingsViewModel.swift", "Settings"),
+        ("Core/Startup/StartupItemManager.swift", "Startup"),
+        ("Features/StartupItems/StartupItemsView.swift", "StartupItems"),
+        ("Features/StartupItems/StartupItemsViewModel.swift", "StartupItems"),
     ]
 
     test_files = [
@@ -487,7 +491,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AppList", "Common", "Detail", "History", "Onboarding", "Settings"]:
+    for sub in ["AppList", "Common", "Detail", "History", "Onboarding", "Settings", "StartupItems"]:
         features_children.append((group_ids[sub], sub))
     objects[group_ids["Features"]][1]["children"] = features_children
 
