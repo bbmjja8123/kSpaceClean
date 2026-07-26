@@ -14,6 +14,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let metricsRepository: MetricsRepository
     public let historyRepository: HistoryRepositoryProtocol
     public let alertRepository: AlertRepositoryProtocol
+    public let snapshotWriter: SnapshotWriterProtocol
     public let coreDataStack: CoreDataStack
 
     public init() {
@@ -37,6 +38,18 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
         self.coreDataStack = stack
         self.historyRepository = HistoryRepository(stack: stack)
         self.alertRepository = AlertRepository(stack: stack)
+
+        let directory: URL
+        if let appGroupDirectory = AppGroupConfiguration.snapshotDirectory() {
+            directory = appGroupDirectory
+        } else {
+            let fallback = FileManager.default.urls(
+                for: .applicationSupportDirectory,
+                in: .userDomainMask
+            ).first ?? FileManager.default.temporaryDirectory
+            directory = fallback.appendingPathComponent("kWatch", isDirectory: true)
+        }
+        self.snapshotWriter = SnapshotWriter(directory: directory)
 
         let monitors: [any MetricMonitor] = [
             CPUMonitor(provider: HostCPUStatsProvider()),

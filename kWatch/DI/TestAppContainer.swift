@@ -10,6 +10,7 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let metricsRepository: MetricsRepository
     public let historyRepository: HistoryRepositoryProtocol
     public let alertRepository: AlertRepositoryProtocol
+    public let snapshotWriter: SnapshotWriterProtocol
 
     public init(
         cpu: MetricValue = .percentage(0),
@@ -28,6 +29,13 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         )
         self.historyRepository = InMemoryHistoryRepository()
         self.alertRepository = InMemoryAlertRepository()
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("kWatch.test.snapshot.\(UUID().uuidString)", isDirectory: true)
+        try? FileManager.default.createDirectory(
+            at: directory,
+            withIntermediateDirectories: true
+        )
+        self.snapshotWriter = SnapshotWriter(directory: directory)
         let monitors: [any MetricMonitor] = [
             StubTestMonitor(kind: .cpu, value: cpu),
             StubTestMonitor(kind: .memory, value: memory),
