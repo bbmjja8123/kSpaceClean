@@ -12,6 +12,7 @@ public protocol AppContainerProtocol: Sendable {
     var aggregator: MetricsAggregator { get }
     var appState: AppState { get }
     var purchaseState: PurchaseState { get }
+    var preferences: PreferencesRepositoryProtocol { get }
     // Repositories, StoreManager, and NotificationScheduler are added by later tasks.
     // Keep the protocol minimal here; do NOT forward-declare types that don't exist yet.
 }

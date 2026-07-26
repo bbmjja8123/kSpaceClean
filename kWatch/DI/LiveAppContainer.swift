@@ -10,10 +10,28 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let aggregator: MetricsAggregator
     public let appState: AppState
     public let purchaseState: PurchaseState
+    public let preferences: PreferencesRepositoryProtocol
+    public let coreDataStack: CoreDataStack
 
     public init() {
         self.appState = AppState()
         self.purchaseState = PurchaseState()
+
+        let defaults = UserDefaults(suiteName: "group.app.kraftly.shared") ?? .standard
+        self.preferences = PreferencesRepository(defaults: defaults)
+
+        let stack: CoreDataStack
+        do {
+            stack = try CoreDataStack(
+                inMemory: false,
+                appGroupIdentifier: "group.app.kraftly.shared"
+            )
+        } catch {
+            // Unsigned development builds may not have access to the App Group.
+            stack = try! CoreDataStack(inMemory: true)
+        }
+        self.coreDataStack = stack
+
         let monitors: [any MetricMonitor] = [
             CPUMonitor(provider: HostCPUStatsProvider()),
             MemoryMonitor(provider: HostMemoryStatsProvider()),
