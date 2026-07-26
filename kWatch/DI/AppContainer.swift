@@ -1,5 +1,6 @@
 import Foundation
 import MetricsKit
+import UserNotifications
 
 /// Centralized dependency injection for the kWatch app.
 ///
@@ -18,5 +19,6 @@ public protocol AppContainerProtocol: Sendable {
     var alertRepository: AlertRepositoryProtocol { get }
     var snapshotWriter: SnapshotWriterProtocol { get }
     var processMonitor: ProcessMonitor? { get }
-    // StoreManager and NotificationScheduler are added by later tasks.
+    var notificationScheduler: NotificationSchedulerProtocol { get }
+    // StoreManager is added by Task 18.
 }

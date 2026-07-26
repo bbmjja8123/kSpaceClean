@@ -12,6 +12,7 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let alertRepository: AlertRepositoryProtocol
     public let snapshotWriter: SnapshotWriterProtocol
     public let processMonitor: ProcessMonitor?
+    public let notificationScheduler: NotificationSchedulerProtocol
 
     public init(
         cpu: MetricValue = .percentage(0),
@@ -21,7 +22,8 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         temperature: MetricValue = .unavailable(.unsupported("test")),
         fan: MetricValue = .unavailable(.unsupported("test")),
         battery: MetricValue = .percentage(0),
-        processMonitor: ProcessMonitor? = nil
+        processMonitor: ProcessMonitor? = nil,
+        notificationScheduler: NotificationSchedulerProtocol? = nil
     ) {
         self.appState = AppState()
         self.purchaseState = PurchaseState()
@@ -39,6 +41,8 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         )
         self.snapshotWriter = SnapshotWriter(directory: directory)
         self.processMonitor = processMonitor
+        self.notificationScheduler = notificationScheduler
+            ?? NotificationScheduler(overriddenAuthStatus: .denied)
         let monitors: [any MetricMonitor] = [
             StubTestMonitor(kind: .cpu, value: cpu),
             StubTestMonitor(kind: .memory, value: memory),

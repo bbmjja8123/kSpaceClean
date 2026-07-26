@@ -39,4 +39,59 @@ final class AppCoordinatorTests: XCTestCase {
         XCTAssertEqual(shared?.cpuPercent, 50)
         XCTAssertEqual(shared?.memoryPercent, 60)
     }
+
+    func testCoordinatorSchedulesNotificationWhenAlertAuthorized() async throws {
+        let container = TestAppContainer(
+            cpu: .percentage(95),
+            notificationScheduler: NotificationScheduler(overriddenAuthStatus: .authorized)
+        )
+        let alert = MetricAlert(
+            kind: .cpu, op: .above, threshold: 80,
+            isEnabled: true, cooldownSeconds: 60
+        )
+        try container.alertRepository.upsert(alert)
+
+        var scheduled: [ScheduledNotificationInfo] = []
+        let scheduler = container.notificationScheduler as! NotificationScheduler
+        await scheduler.setOnSchedule { scheduled.append($0) }
+
+        let coordinator = AppCoordinator(container: container)
+        coordinator.start()
+        defer { coordinator.stop() }
+
+        try await Task.sleep(for: .milliseconds(80))
+
+        let alerts = try container.alertRepository.all()
+        XCTAssertNotNil(alerts.first?.lastTriggeredAt, "Alert should have triggered")
+        XCTAssertFalse(scheduled.isEmpty, "Scheduler should have been invoked")
+        XCTAssertEqual(scheduled.first?.identifier, alert.id.uuidString)
+    }
+
+    func testCoordinatorDoesNotScheduleWhenNotificationDenied() async throws {
+        let container = TestAppContainer(
+            cpu: .percentage(95),
+            notificationScheduler: NotificationScheduler(overriddenAuthStatus: .denied)
+        )
+        let alert = MetricAlert(
+            kind: .cpu, op: .above, threshold: 80,
+            isEnabled: true, cooldownSeconds: 60
+        )
+        try container.alertRepository.upsert(alert)
+
+        var scheduled: [ScheduledNotificationInfo] = []
+        let scheduler = container.notificationScheduler as! NotificationScheduler
+        await scheduler.setOnSchedule { scheduled.append($0) }
+
+        let coordinator = AppCoordinator(container: container)
+        coordinator.start()
+        defer { coordinator.stop() }
+
+        try await Task.sleep(for: .milliseconds(80))
+
+        XCTAssertTrue(scheduled.isEmpty, "Scheduler must not fire when permission is denied")
+        // lastTriggeredAt is still updated so cooldown is honored once
+        // the user later grants permission.
+        let alerts = try container.alertRepository.all()
+        XCTAssertNotNil(alerts.first?.lastTriggeredAt)
+    }
 }

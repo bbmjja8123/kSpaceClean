@@ -88,6 +88,7 @@ private struct DashboardSceneContent: View {
     @ObservedObject var viewModel: DashboardViewModel
     @StateObject private var historyViewModel: HistoryViewModel
     @StateObject private var processesViewModel: ProcessesViewModel
+    @StateObject private var alertsViewModel: AlertsViewModel
     @State private var showPaywallSheet = false
     @Environment(\.openWindow) private var openWindow
 
@@ -100,6 +101,12 @@ private struct DashboardSceneContent: View {
         ))
         _processesViewModel = StateObject(wrappedValue: ProcessesViewModel(
             processMonitor: container.processMonitor,
+            purchaseState: container.purchaseState
+        ))
+        _alertsViewModel = StateObject(wrappedValue: AlertsViewModel(
+            repository: container.alertRepository,
+            scheduler: container.notificationScheduler,
+            appState: container.appState,
             purchaseState: container.purchaseState
         ))
     }
@@ -120,6 +127,11 @@ private struct DashboardSceneContent: View {
                     viewModel: processesViewModel,
                     onBack: { viewModel.navigateToDashboard() },
                     onOpenPaywall: { showPaywallSheet = true }
+                )
+            case .alerts:
+                AlertsView(
+                    viewModel: alertsViewModel,
+                    onBack: { viewModel.navigateToDashboard() }
                 )
             default:
                 dashboardView

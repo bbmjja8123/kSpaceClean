@@ -16,6 +16,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let alertRepository: AlertRepositoryProtocol
     public let snapshotWriter: SnapshotWriterProtocol
     public let processMonitor: ProcessMonitor?
+    public let notificationScheduler: NotificationSchedulerProtocol
     public let coreDataStack: CoreDataStack
 
     public init() {
@@ -52,6 +53,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
         }
         self.snapshotWriter = SnapshotWriter(directory: directory)
         self.processMonitor = ProcessMonitor(provider: LibprocProcessProvider())
+        self.notificationScheduler = NotificationScheduler()
 
         let monitors: [any MetricMonitor] = [
             CPUMonitor(provider: HostCPUStatsProvider()),

@@ -73,12 +73,15 @@ public final class AppCoordinator: ObservableObject {
             let triggered = AlertEvaluator.evaluate(snapshot: snapshot, alerts: alerts, now: now)
             for alert in triggered {
                 try? container.alertRepository.recordTriggered(id: alert.id, at: now)
-                container.purchaseState.recordError(
-                    "Alert: \(alert.kind.rawValue) \(alert.op.rawValue) \(alert.threshold)"
-                )
+                if let value = snapshot.values[alert.kind] {
+                    let scheduler = container.notificationScheduler
+                    Task.detached {
+                        await scheduler.schedule(alert: alert, value: value)
+                    }
+                }
             }
         } catch {
-            // Alert evaluation is best-effort until NotificationScheduler is wired.
+            // Alert evaluation is best-effort.
         }
 
         let shared = SharedSnapshot(

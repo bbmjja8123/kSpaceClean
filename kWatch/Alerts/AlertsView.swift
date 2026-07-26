@@ -5,28 +5,22 @@ import MetricsKit
 /// add and delete actions, and a notification-permission banner.
 struct AlertsView: View {
     @StateObject private var viewModel: AlertsViewModel
+    private let onBack: () -> Void
 
-    init(viewModel: AlertsViewModel) {
+    init(viewModel: AlertsViewModel, onBack: @escaping () -> Void = {}) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.onBack = onBack
     }
 
     var body: some View {
         VStack(spacing: 0) {
-            header
-
-            if !viewModel.isNotificationsAuthorized {
-                notificationPermissionBanner
-            }
-
-            if viewModel.alerts.isEmpty {
-                emptyState
-            } else {
-                alertList
-            }
+            toolbar
+            content
         }
         .onAppear {
             viewModel.refresh()
             viewModel.ensureDefaults()
+            viewModel.syncNotificationAuthorization()
         }
         .sheet(isPresented: $viewModel.isPresentingEditor) {
             if let alert = viewModel.editingAlert {
@@ -35,18 +29,43 @@ struct AlertsView: View {
         }
     }
 
-    // MARK: - Header
+    // MARK: - Toolbar
 
-    private var header: some View {
+    private var toolbar: some View {
         HStack {
-            Text("Alerts")
-                .font(.title)
+            Button(action: onBack) {
+                Label("Back", systemImage: "chevron.left")
+            }
+            .help("Back to dashboard")
+
             Spacer()
+
+            Text("Alerts")
+                .font(.headline)
+
+            Spacer()
+
             Button(action: viewModel.beginAdd) {
                 Label("Add", systemImage: "plus")
             }
+            .help("Add alert")
         }
         .padding()
+    }
+
+    // MARK: - Content
+
+    @ViewBuilder
+    private var content: some View {
+        if !viewModel.isNotificationsAuthorized {
+            notificationPermissionBanner
+        }
+
+        if viewModel.alerts.isEmpty {
+            emptyState
+        } else {
+            alertList
+        }
     }
 
     // MARK: - Notification permission banner

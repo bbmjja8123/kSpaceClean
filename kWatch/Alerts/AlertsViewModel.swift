@@ -130,6 +130,14 @@ public final class AlertsViewModel: ObservableObject {
         isNotificationsAuthorized = (status == .authorized || status == .provisional)
     }
 
+    /// Read the current notification authorization status without prompting
+    /// the user.  Used by the view on appear so the permission banner does
+    /// not flash for users who already granted access.
+    public func syncNotificationAuthorization() async {
+        let status = await scheduler.authorizationStatus
+        isNotificationsAuthorized = (status == .authorized || status == .provisional)
+    }
+
     // MARK: - Evaluation
 
     /// Evaluate all enabled alerts against the given snapshot.
