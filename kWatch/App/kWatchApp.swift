@@ -7,11 +7,17 @@ struct kWatchApp: App {
     @NSApplicationDelegateAdaptor(kWatchAppDelegate.self) private var appDelegate
     @StateObject private var menuBarViewModel: MenuBarViewModel
     @StateObject private var onboardingViewModel: OnboardingViewModel
+    @StateObject private var dashboardViewModel: DashboardViewModel
 
     init() {
         let container = kWatchAppDelegate.shared.container
         _menuBarViewModel = StateObject(wrappedValue: MenuBarViewModel(container: container))
         _onboardingViewModel = StateObject(wrappedValue: OnboardingViewModel(preferences: container.preferences))
+        _dashboardViewModel = StateObject(wrappedValue: DashboardViewModel(
+            appState: container.appState,
+            purchaseState: container.purchaseState,
+            onboardingCompleted: container.preferences.onboardingCompleted
+        ))
     }
 
     var body: some Scene {
@@ -23,10 +29,10 @@ struct kWatchApp: App {
         .menuBarExtraStyle(.window)
 
         Window("kWatch Dashboard", id: "dashboard") {
-            DashboardWindow()
-                .environmentObject(appState)
-                .environmentObject(purchaseState)
-                .environmentObject(menuBarViewModel)
+            DashboardSceneContent(
+                viewModel: dashboardViewModel,
+                purchaseState: purchaseState
+            )
         }
         .defaultSize(width: 720, height: 480)
 
@@ -75,9 +81,17 @@ private struct MenuBarContent: View {
     }
 }
 
-private struct DashboardWindow: View {
+/// Wraps `DashboardView` so the onboarding button can access `openWindow`.
+private struct DashboardSceneContent: View {
+    @ObservedObject var viewModel: DashboardViewModel
+    @ObservedObject var purchaseState: PurchaseState
+    @Environment(\.openWindow) private var openWindow
+
     var body: some View {
-        Text("Dashboard placeholder — Task 13 will replace this.")
-            .padding()
+        DashboardView(
+            viewModel: viewModel,
+            purchaseState: purchaseState,
+            onOpenOnboarding: { openWindow(id: "onboarding") }
+        )
     }
 }
