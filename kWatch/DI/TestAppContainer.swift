@@ -7,7 +7,9 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let appState: AppState
     public let purchaseState: PurchaseState
     public let preferences: PreferencesRepositoryProtocol
-    public let coreDataStack: CoreDataStack
+    public let metricsRepository: MetricsRepository
+    public let historyRepository: HistoryRepositoryProtocol
+    public let alertRepository: AlertRepositoryProtocol
 
     public init(
         cpu: MetricValue = .percentage(0),
@@ -21,7 +23,11 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         self.appState = AppState()
         self.purchaseState = PurchaseState()
         self.preferences = InMemoryPreferences()
-        self.coreDataStack = try! CoreDataStack(inMemory: true)
+        self.metricsRepository = MetricsRepository(
+            defaults: UserDefaults(suiteName: "kWatch.tests.\(UUID().uuidString)") ?? .standard
+        )
+        self.historyRepository = InMemoryHistoryRepository()
+        self.alertRepository = InMemoryAlertRepository()
         let monitors: [any MetricMonitor] = [
             StubTestMonitor(kind: .cpu, value: cpu),
             StubTestMonitor(kind: .memory, value: memory),

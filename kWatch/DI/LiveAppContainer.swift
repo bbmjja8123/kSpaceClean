@@ -11,6 +11,9 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let appState: AppState
     public let purchaseState: PurchaseState
     public let preferences: PreferencesRepositoryProtocol
+    public let metricsRepository: MetricsRepository
+    public let historyRepository: HistoryRepositoryProtocol
+    public let alertRepository: AlertRepositoryProtocol
     public let coreDataStack: CoreDataStack
 
     public init() {
@@ -19,6 +22,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
 
         let defaults = UserDefaults(suiteName: "group.app.kraftly.shared") ?? .standard
         self.preferences = PreferencesRepository(defaults: defaults)
+        self.metricsRepository = MetricsRepository(defaults: defaults)
 
         let stack: CoreDataStack
         do {
@@ -31,6 +35,8 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
             stack = try! CoreDataStack(inMemory: true)
         }
         self.coreDataStack = stack
+        self.historyRepository = HistoryRepository(stack: stack)
+        self.alertRepository = AlertRepository(stack: stack)
 
         let monitors: [any MetricMonitor] = [
             CPUMonitor(provider: HostCPUStatsProvider()),
