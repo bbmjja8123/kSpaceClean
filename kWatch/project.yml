@@ -29,6 +29,7 @@ targets:
     dependencies:
       - package: kFoundation
         product: MetricsKit
+      - target: kWatchIntents
     preBuildScripts:
       - name: "SwiftLint"
         script: "if which swiftlint >/dev/null; then swiftlint; fi"
@@ -84,6 +85,7 @@ targets:
       SWIFT_VERSION: "5.9"
     dependencies:
       - target: kWatch
+      - target: kWatchIntents
       - package: kFoundation
         product: MetricsKit
 

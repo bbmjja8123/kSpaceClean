@@ -25,6 +25,11 @@ struct kWatchApp: App {
             purchaseState: container.purchaseState,
             storeManager: container.storeManager
         ))
+
+        // Refresh the Spotlight index so the menu-bar search field can
+        // surface kWatch's quick actions. Safe to call on every launch;
+        // `KWatchSpotlightIndexer` deletes the previous index first.
+        Task { await KWatchSpotlightIndexer().reindex() }
     }
 
     var body: some Scene {
