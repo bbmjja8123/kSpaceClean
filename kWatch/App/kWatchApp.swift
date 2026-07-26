@@ -86,42 +86,98 @@ private struct MenuBarContent: View {
 /// the real `PaywallView`.
 private struct DashboardSceneContent: View {
     @ObservedObject var viewModel: DashboardViewModel
+    @StateObject private var historyViewModel: HistoryViewModel
     @State private var showPaywallSheet = false
     @Environment(\.openWindow) private var openWindow
 
+    init(viewModel: DashboardViewModel) {
+        self.viewModel = viewModel
+        let container = kWatchAppDelegate.shared.container
+        _historyViewModel = StateObject(wrappedValue: HistoryViewModel(
+            repository: container.historyRepository,
+            purchaseState: container.purchaseState
+        ))
+    }
+
     var body: some View {
-        DashboardView(
-            viewModel: viewModel,
-            onOpenOnboarding: { openWindow(id: "onboarding") },
-            onOpenPaywall: { showPaywallSheet = true }
-        )
-        .sheet(isPresented: $showPaywallSheet) {
-            // Temporary paywall placeholder — Task 18 replaces with real PaywallView.
-            VStack(spacing: 16) {
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 40))
-                    .foregroundStyle(Color.accentColor)
+        Group {
+            switch viewModel.navigation {
+            case .dashboard:
+                DashboardView(
+                    viewModel: viewModel,
+                    onOpenOnboarding: { openWindow(id: "onboarding") },
+                    onOpenPaywall: { showPaywallSheet = true }
+                )
+                .sheet(isPresented: $showPaywallSheet) {
+                    // Temporary paywall placeholder — Task 18 replaces with real PaywallView.
+                    VStack(spacing: 16) {
+                        Image(systemName: "crown.fill")
+                            .font(.system(size: 40))
+                            .foregroundStyle(Color.accentColor)
 
-                Text("kWatch Pro")
-                    .font(.title)
-                    .fontWeight(.bold)
+                        Text("kWatch Pro")
+                            .font(.title)
+                            .fontWeight(.bold)
 
-                Text("Unlock history, custom alerts, platform integrations, and advanced sensors where this Mac supports them.")
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
+                        Text("Unlock history, custom alerts, platform integrations, and advanced sensors where this Mac supports them.")
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.secondary)
 
-                Text("$7.99 one-time purchase. Sensor availability depends on Mac hardware.")
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
+                        Text("$7.99 one-time purchase. Sensor availability depends on Mac hardware.")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
 
-                Button("Not Now") {
-                    showPaywallSheet = false
+                        Button("Not Now") {
+                            showPaywallSheet = false
+                        }
+                        .keyboardShortcut(.cancelAction)
+                        .padding(.top, 8)
+                    }
+                    .padding(24)
+                    .frame(width: 320)
                 }
-                .keyboardShortcut(.cancelAction)
-                .padding(.top, 8)
+
+            case .history:
+                HistoryView(
+                    viewModel: historyViewModel,
+                    onBack: { viewModel.navigateToDashboard() }
+                )
+
+            default:
+                DashboardView(
+                    viewModel: viewModel,
+                    onOpenOnboarding: { openWindow(id: "onboarding") },
+                    onOpenPaywall: { showPaywallSheet = true }
+                )
+                .sheet(isPresented: $showPaywallSheet) {
+                    // Temporary paywall placeholder — Task 18 replaces with real PaywallView.
+                    VStack(spacing: 16) {
+                        Image(systemName: "crown.fill")
+                            .font(.system(size: 40))
+                            .foregroundStyle(Color.accentColor)
+
+                        Text("kWatch Pro")
+                            .font(.title)
+                            .fontWeight(.bold)
+
+                        Text("Unlock history, custom alerts, platform integrations, and advanced sensors where this Mac supports them.")
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.secondary)
+
+                        Text("$7.99 one-time purchase. Sensor availability depends on Mac hardware.")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+
+                        Button("Not Now") {
+                            showPaywallSheet = false
+                        }
+                        .keyboardShortcut(.cancelAction)
+                        .padding(.top, 8)
+                    }
+                    .padding(24)
+                    .frame(width: 320)
+                }
             }
-            .padding(24)
-            .frame(width: 320)
         }
     }
 }

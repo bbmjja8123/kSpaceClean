@@ -103,6 +103,11 @@ public final class DashboardViewModel: ObservableObject {
         appState.navigate(to: .alerts)
     }
 
+    /// Navigate back to the dashboard.
+    public func navigateToDashboard() {
+        appState.navigate(to: .dashboard)
+    }
+
     // MARK: - Card building
 
     /// Rebuild the `cards` array from a snapshot, preserving selection if
