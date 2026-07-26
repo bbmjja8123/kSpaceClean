@@ -8,6 +8,7 @@ struct kWatchApp: App {
     @StateObject private var menuBarViewModel: MenuBarViewModel
     @StateObject private var onboardingViewModel: OnboardingViewModel
     @StateObject private var dashboardViewModel: DashboardViewModel
+    @StateObject private var settingsViewModel: SettingsViewModel
 
     init() {
         let container = kWatchAppDelegate.shared.container
@@ -17,6 +18,11 @@ struct kWatchApp: App {
             appState: container.appState,
             purchaseState: container.purchaseState,
             onboardingCompleted: container.preferences.onboardingCompleted
+        ))
+        _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(
+            preferences: container.preferences,
+            scheduler: container.notificationScheduler,
+            purchaseState: container.purchaseState
         ))
     }
 
@@ -50,9 +56,16 @@ struct kWatchApp: App {
         .windowResizability(.contentSize)
 
         Settings {
-            // Placeholder; Task 17 implements the real Settings window.
-            Text("kWatch Settings")
+            SettingsView(
+                viewModel: settingsViewModel,
+                onCloseRequested: {
+                    if let window = NSApp.windows.first(where: { $0.title == "Settings" }) {
+                        window.close()
+                    }
+                }
+            )
         }
+        .windowResizability(.contentSize)
     }
 
     private var appState: AppState { kWatchAppDelegate.shared.container.appState }
