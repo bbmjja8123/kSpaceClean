@@ -13,6 +13,7 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let snapshotWriter: SnapshotWriterProtocol
     public let processMonitor: ProcessMonitor?
     public let notificationScheduler: NotificationSchedulerProtocol
+    public let storeManager: StoreManagerProtocol
 
     public init(
         cpu: MetricValue = .percentage(0),
@@ -23,7 +24,8 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         fan: MetricValue = .unavailable(.unsupported("test")),
         battery: MetricValue = .percentage(0),
         processMonitor: ProcessMonitor? = nil,
-        notificationScheduler: NotificationSchedulerProtocol? = nil
+        notificationScheduler: NotificationSchedulerProtocol? = nil,
+        storeManager: StoreManagerProtocol? = nil
     ) {
         self.appState = AppState()
         self.purchaseState = PurchaseState()
@@ -56,6 +58,15 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
             monitors: monitors,
             strategy: SamplingStrategy(interval: .milliseconds(1))
         )
+        // Test wiring never touches StoreKit. We always fall back to a
+        // `StubStoreManager` when callers do not pass an explicit
+        // manager in. The stub does not open any I/O at construction
+        // time and is safe to instantiate from any actor.
+        if let provided = storeManager {
+            self.storeManager = provided
+        } else {
+            self.storeManager = StubStoreManager(purchaseState: purchaseState)
+        }
     }
 }
 

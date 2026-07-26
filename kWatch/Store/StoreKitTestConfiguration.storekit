@@ -1,0 +1,47 @@
+{
+  "identifier" : "BE9453CC",
+  "nonRenewingSubscriptions" : [
+    {
+      "displayPrice" : "7.99",
+      "familyShareable" : false,
+      "internalID" : "FFE9C2F5",
+      "localizations" : [
+        {
+          "description" : "kWatch Pro lifetime",
+          "displayName" : "kWatch Pro (Test)",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "app.kraftly.kwatch.pro.subscription",
+      "referenceName" : "kWatch Pro Non-Renewing Test Subscription",
+      "type" : "NonRenewingSubscription"
+    }
+  ],
+  "products" : [
+    {
+      "displayPrice" : "7.99",
+      "familyShareable" : false,
+      "internalID" : "FF48EA7C",
+      "localizations" : [
+        {
+          "description" : "Unlock kWatch Pro features including history trends, custom alerts, platform integrations, and advanced sensors where supported by your Mac.",
+          "displayName" : "kWatch Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "app.kraftly.kwatch.pro",
+      "referenceName" : "kWatch Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : {}
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

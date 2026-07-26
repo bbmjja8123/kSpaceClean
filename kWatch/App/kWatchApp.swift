@@ -22,7 +22,8 @@ struct kWatchApp: App {
         _settingsViewModel = StateObject(wrappedValue: SettingsViewModel(
             preferences: container.preferences,
             scheduler: container.notificationScheduler,
-            purchaseState: container.purchaseState
+            purchaseState: container.purchaseState,
+            storeManager: container.storeManager
         ))
     }
 
@@ -95,13 +96,14 @@ private struct MenuBarContent: View {
 }
 
 /// Wraps `DashboardView` so the onboarding button can access `openWindow`,
-/// and provides a temporary paywall sheet that Task 18 will replace with
-/// the real `PaywallView`.
+/// and shows the StoreKit-backed `PaywallView` when Pro features are
+/// gated by the dashboard.
 private struct DashboardSceneContent: View {
     @ObservedObject var viewModel: DashboardViewModel
     @StateObject private var historyViewModel: HistoryViewModel
     @StateObject private var processesViewModel: ProcessesViewModel
     @StateObject private var alertsViewModel: AlertsViewModel
+    @StateObject private var paywallViewModel: PaywallViewModel
     @State private var showPaywallSheet = false
     @Environment(\.openWindow) private var openWindow
 
@@ -120,6 +122,10 @@ private struct DashboardSceneContent: View {
             repository: container.alertRepository,
             scheduler: container.notificationScheduler,
             appState: container.appState,
+            purchaseState: container.purchaseState
+        ))
+        _paywallViewModel = StateObject(wrappedValue: PaywallViewModel(
+            storeManager: container.storeManager,
             purchaseState: container.purchaseState
         ))
     }
@@ -151,7 +157,10 @@ private struct DashboardSceneContent: View {
             }
         }
         .sheet(isPresented: $showPaywallSheet) {
-            temporaryPaywall
+            PaywallView(
+                viewModel: paywallViewModel,
+                onDismiss: { showPaywallSheet = false }
+            )
         }
     }
 
@@ -161,34 +170,5 @@ private struct DashboardSceneContent: View {
             onOpenOnboarding: { openWindow(id: "onboarding") },
             onOpenPaywall: { showPaywallSheet = true }
         )
-    }
-
-    /// Temporary product explanation. Task 18 replaces this with StoreKit-backed `PaywallView`.
-    private var temporaryPaywall: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "crown.fill")
-                .font(.system(size: 40))
-                .foregroundStyle(Color.accentColor)
-
-            Text("kWatch Pro")
-                .font(.title)
-                .fontWeight(.bold)
-
-            Text("Unlock history, custom alerts, platform integrations, and advanced sensors where this Mac supports them.")
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-
-            Text("$7.99 one-time purchase. Sensor availability depends on Mac hardware.")
-                .font(.caption)
-                .foregroundStyle(.tertiary)
-
-            Button("Not Now") {
-                showPaywallSheet = false
-            }
-            .keyboardShortcut(.cancelAction)
-            .padding(.top, 8)
-        }
-        .padding(24)
-        .frame(width: 320)
     }
 }

@@ -28,6 +28,7 @@ struct AboutView: View {
             proBadge
             links
             diagnosticsButton
+            restorePurchasesButton
             exportStatus
             Spacer(minLength: 0)
 
@@ -128,6 +129,21 @@ struct AboutView: View {
         }
         .controlSize(.regular)
         .disabled(isExportingDiagnostics)
+    }
+
+    @ViewBuilder
+    private var restorePurchasesButton: some View {
+        Button {
+            viewModel.restorePurchases()
+        } label: {
+            HStack {
+                Image(systemName: "arrow.clockwise.circle")
+                Text("Restore Purchases")
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .controlSize(.regular)
+        .help("Restore a previous Pro purchase linked to your Apple ID.")
     }
 
     @ViewBuilder

@@ -20,5 +20,5 @@ public protocol AppContainerProtocol: Sendable {
     var snapshotWriter: SnapshotWriterProtocol { get }
     var processMonitor: ProcessMonitor? { get }
     var notificationScheduler: NotificationSchedulerProtocol { get }
-    // StoreManager is added by Task 18.
+    var storeManager: StoreManagerProtocol { get }
 }

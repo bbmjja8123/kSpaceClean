@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import AppKit
 import MetricsKit
+import StoreKit
 import UserNotifications
 
 /// Drives the Settings window.
@@ -61,6 +62,7 @@ public final class SettingsViewModel: ObservableObject {
     private let preferences: any PreferencesRepositoryProtocol
     private let scheduler: NotificationSchedulerProtocol
     private let purchaseState: PurchaseState
+    private let storeManager: any StoreManagerProtocol
     private let diagnosticsExporter: DiagnosticsExporting
 
     // MARK: - Init
@@ -69,11 +71,13 @@ public final class SettingsViewModel: ObservableObject {
         preferences: any PreferencesRepositoryProtocol,
         scheduler: NotificationSchedulerProtocol,
         purchaseState: PurchaseState,
+        storeManager: any StoreManagerProtocol = NoopStoreManager(),
         diagnosticsExporter: DiagnosticsExporting = NoopDiagnosticsExporter()
     ) {
         self.preferences = preferences
         self.scheduler = scheduler
         self.purchaseState = purchaseState
+        self.storeManager = storeManager
         self.diagnosticsExporter = diagnosticsExporter
 
         // Snapshot current preference values so the UI matches the
@@ -231,7 +235,7 @@ public final class SettingsViewModel: ObservableObject {
             }
     }
 
-    // MARK: - Error plumbing
+    // MARK: - Errors
 
     /// Forward an error message to both `PurchaseState.recordError` (so it
     /// shows up in the menu bar banner) and the local `lastErrorMessage`
@@ -244,6 +248,43 @@ public final class SettingsViewModel: ObservableObject {
     /// Clear the locally tracked error after the view has presented it.
     public func clearError() {
         lastErrorMessage = nil
+    }
+
+    // MARK: - StoreKit
+
+    /// Ask the StoreKit manager to re-check the user's existing
+    /// entitlements and update the Pro flag accordingly. Wired into the
+    /// "Restore Purchases" action on the About tab.
+    public func restorePurchases() {
+        Task { await storeManager.restore() }
+    }
+}
+
+/// Lightweight placeholder `StoreManagerProtocol` used when Settings is
+/// instantiated without a container (e.g. SwiftUI previews or older test
+/// paths). All methods are no-ops so the views still render without
+/// touching StoreKit.
+public final class NoopStoreManager: StoreManagerProtocol, @unchecked Sendable {
+    public let productID: String = "app.kraftly.kwatch.pro"
+
+    public init() {}
+
+    public var products: [Product] { [] }
+
+    public var isPro: Bool { false }
+
+    public var primaryProduct: Product? { nil }
+
+    public func refreshEntitlements() async {}
+
+    public func loadProducts() async {}
+
+    public func purchase() async {}
+
+    public func restore() async {}
+
+    public func finish(_ transaction: Transaction) async {
+        _ = transaction
     }
 }
 

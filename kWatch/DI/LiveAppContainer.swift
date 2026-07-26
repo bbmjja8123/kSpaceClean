@@ -18,6 +18,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let processMonitor: ProcessMonitor?
     public let notificationScheduler: NotificationSchedulerProtocol
     public let coreDataStack: CoreDataStack
+    public let storeManager: StoreManagerProtocol
 
     public init() {
         self.appState = AppState()
@@ -65,5 +66,9 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
             BatteryMonitor(provider: IOPSBatteryProvider())
         ]
         self.aggregator = MetricsAggregator(monitors: monitors, strategy: SamplingStrategy())
+        self.storeManager = StoreManager(
+            productID: "app.kraftly.kwatch.pro",
+            purchaseState: purchaseState
+        )
     }
 }
