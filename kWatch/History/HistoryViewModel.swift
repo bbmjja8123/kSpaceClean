@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import MetricsKit
 
 // MARK: - ChartPoint
@@ -28,27 +29,23 @@ public enum HistoryRange: String, CaseIterable, Sendable, Equatable {
     case days7
     case days30
 
-    /// The `DateInterval` covering the requested window, ending at `Date()`.
-    public var dateInterval: DateInterval {
-        let calendar = Calendar.current
-        let now = Date()
+    /// The exact interval ending at a caller-supplied reference date.
+    public func dateInterval(endingAt end: Date) -> DateInterval {
+        let duration: TimeInterval
         switch self {
         case .hours24:
-            return DateInterval(
-                start: calendar.date(byAdding: .hour, value: -24, to: now)!,
-                end: now
-            )
+            duration = 24 * 60 * 60
         case .days7:
-            return DateInterval(
-                start: calendar.date(byAdding: .day, value: -7, to: now)!,
-                end: now
-            )
+            duration = 7 * 24 * 60 * 60
         case .days30:
-            return DateInterval(
-                start: calendar.date(byAdding: .day, value: -30, to: now)!,
-                end: now
-            )
+            duration = 30 * 24 * 60 * 60
         }
+        return DateInterval(start: end.addingTimeInterval(-duration), end: end)
+    }
+
+    /// The interval ending now, used by production callers.
+    public var dateInterval: DateInterval {
+        dateInterval(endingAt: Date())
     }
 }
 
@@ -101,14 +98,40 @@ public final class HistoryViewModel: ObservableObject {
 
     private let repository: HistoryRepositoryProtocol
     private let purchaseState: PurchaseState
+    private let now: @Sendable () -> Date
+    private var cancellables = Set<AnyCancellable>()
     private var hasAppeared = false
 
     // MARK: Init
 
-    public init(repository: HistoryRepositoryProtocol, purchaseState: PurchaseState) {
+    public init(
+        repository: HistoryRepositoryProtocol,
+        purchaseState: PurchaseState,
+        now: @escaping @Sendable () -> Date = { Date() }
+    ) {
         self.repository = repository
         self.purchaseState = purchaseState
+        self.now = now
         self.isLocked = !purchaseState.isPro
+
+        purchaseState.$isPro
+            .removeDuplicates()
+            .sink { [weak self] isPro in
+                guard let self else { return }
+                self.isLocked = !isPro
+                if !isPro {
+                    self.isLoading = false
+                    self.errorMessage = nil
+                    self.points = []
+                    self.isEmpty = true
+                    self.clearSummaries()
+                } else if self.hasAppeared {
+                    Task { @MainActor [weak self] in
+                        await self?.load()
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
 
     // MARK: Public API
@@ -118,8 +141,11 @@ public final class HistoryViewModel: ObservableObject {
     /// Free users are gated *before* calling the repository so that no
     /// persistence I/O occurs for unentitled users.
     public func load() async {
+        hasAppeared = true
         guard purchaseState.isPro else {
             isLocked = true
+            isLoading = false
+            errorMessage = nil
             points = []
             isEmpty = true
             clearSummaries()
@@ -132,20 +158,23 @@ public final class HistoryViewModel: ObservableObject {
         isEmpty = false
 
         do {
-            let since = selectedRange.dateInterval.start
+            let since = selectedRange.dateInterval(endingAt: now()).start
             let snapshots = try repository.samples(since: since)
 
-            var chartPoints = snapshots.compactMap { snapshot -> ChartPoint? in
-                guard let value = extractDouble(from: snapshot.values[selectedMetric]) else {
+            let fullSeries = snapshots.compactMap { snapshot -> ChartPoint? in
+                guard let value = extractDouble(
+                    from: snapshot.values[selectedMetric],
+                    for: selectedMetric
+                ) else {
                     return nil
                 }
                 return ChartPoint(date: snapshot.timestamp, value: value)
             }
+            .sorted { $0.date < $1.date }
 
-            chartPoints = downsample(points: chartPoints, maxCount: 500)
-            points = chartPoints
-            isEmpty = chartPoints.isEmpty
-            computeSummaries(from: chartPoints)
+            computeSummaries(from: fullSeries)
+            points = downsample(points: fullSeries, maxCount: 500)
+            isEmpty = fullSeries.isEmpty
         } catch {
             errorMessage = error.localizedDescription
             points = []
@@ -186,18 +215,24 @@ public final class HistoryViewModel: ObservableObject {
 
 // MARK: - Internal helpers
 
-/// Extract a numeric `Double` from a `MetricValue`, returning `nil` for
-/// text or unavailable cases so they are omitted from chart series.
-internal func extractDouble(from value: MetricValue?) -> Double? {
+/// Extract the numeric representation expected for a metric kind.
+/// Mismatched, textual, and unavailable values are omitted rather than plotted as zero.
+internal func extractDouble(from value: MetricValue?, for kind: MetricKind) -> Double? {
     guard let value else { return nil }
-    switch value {
-    case .percentage(let v):           return v
-    case .bytes(let v):                return Double(v)
-    case .bytesPerSecond(let v):       return Double(v)
-    case .degreesCelsius(let v):       return v
-    case .revolutionsPerMinute(let v): return v
-    case .volts(let v):                return v
-    case .text, .unavailable:          return nil
+    switch (kind, value) {
+    case (.cpu, .percentage(let number)),
+         (.memory, .percentage(let number)),
+         (.disk, .percentage(let number)),
+         (.battery, .percentage(let number)):
+        return number
+    case (.network, .bytesPerSecond(let bytesPerSecond)):
+        return Double(bytesPerSecond)
+    case (.temperature, .degreesCelsius(let degrees)):
+        return degrees
+    case (.fan, .revolutionsPerMinute(let rpm)):
+        return rpm
+    default:
+        return nil
     }
 }
 

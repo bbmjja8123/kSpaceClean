@@ -10,13 +10,16 @@ import MetricsKit
 public struct HistoryView: View {
     @ObservedObject private var viewModel: HistoryViewModel
     private let onBack: (() -> Void)?
+    private let onOpenPaywall: (() -> Void)?
 
     public init(
         viewModel: HistoryViewModel,
-        onBack: (() -> Void)? = nil
+        onBack: (() -> Void)? = nil,
+        onOpenPaywall: (() -> Void)? = nil
     ) {
         self.viewModel = viewModel
         self.onBack = onBack
+        self.onOpenPaywall = onOpenPaywall
     }
 
     public var body: some View {
@@ -123,6 +126,11 @@ public struct HistoryView: View {
                 .font(.caption)
                 .foregroundStyle(.tertiary)
                 .multilineTextAlignment(.center)
+
+            Button("View kWatch Pro") {
+                onOpenPaywall?()
+            }
+            .buttonStyle(.borderedProminent)
 
             Spacer()
         }

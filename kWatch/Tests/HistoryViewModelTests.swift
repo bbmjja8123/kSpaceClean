@@ -31,25 +31,16 @@ private final class SpyRepository: HistoryRepositoryProtocol, @unchecked Sendabl
 
 // MARK: - Helpers
 
-private func snapshot(
-    at timeInterval: TimeInterval,
-    values: [MetricKind: MetricValue] = [.cpu: .percentage(50)]
-) -> MetricSnapshot {
-    MetricSnapshot(
-        timestamp: Date(timeIntervalSince1970: timeInterval),
-        values: values,
-        availability: [:]
-    )
-}
-
 private func makeSamples(
     count: Int,
-    from start: TimeInterval = 0,
+    from start: TimeInterval? = nil,
     interval: TimeInterval = 30
 ) -> [MetricSnapshot] {
-    (0..<count).map { i in
+    let firstTimestamp = start
+        ?? Date().addingTimeInterval(-Double(max(count - 1, 0)) * interval).timeIntervalSince1970
+    return (0..<count).map { i in
         MetricSnapshot(
-            timestamp: Date(timeIntervalSince1970: start + Double(i) * interval),
+            timestamp: Date(timeIntervalSince1970: firstTimestamp + Double(i) * interval),
             values: [
                 .cpu: .percentage(Double(i).truncatingRemainder(dividingBy: 100)),
                 .memory: .percentage(Double(i * 2).truncatingRemainder(dividingBy: 100)),
@@ -162,6 +153,13 @@ final class HistoryViewModelTests: XCTestCase {
 
     // MARK: - Range cutoff
 
+    func testHistoryRangesUseExactDurations() {
+        let end = Date(timeIntervalSince1970: 1_000_000)
+        XCTAssertEqual(HistoryRange.hours24.dateInterval(endingAt: end).duration, 24 * 60 * 60)
+        XCTAssertEqual(HistoryRange.days7.dateInterval(endingAt: end).duration, 7 * 24 * 60 * 60)
+        XCTAssertEqual(HistoryRange.days30.dateInterval(endingAt: end).duration, 30 * 24 * 60 * 60)
+    }
+
     func testRangeCutoffHours24() async {
         let now = Date()
         let recent = MetricSnapshot(
@@ -241,43 +239,36 @@ final class HistoryViewModelTests: XCTestCase {
 
     // MARK: - Metric conversion
 
-    func testExtractDoubleForAllMetricValues() {
-        // Percentage
-        XCTAssertEqual(extractDouble(from: .percentage(42.5)), 42.5)
-
-        // Bytes
-        XCTAssertEqual(extractDouble(from: .bytes(1024)), 1024)
-
-        // Bytes per second
-        XCTAssertEqual(extractDouble(from: .bytesPerSecond(2048)), 2048)
-
-        // Degrees Celsius
-        XCTAssertEqual(extractDouble(from: .degreesCelsius(36.6)), 36.6)
-
-        // RPM
-        XCTAssertEqual(extractDouble(from: .revolutionsPerMinute(2200)), 2200)
-
-        // Volts
-        XCTAssertEqual(extractDouble(from: .volts(12.3)), 12.3)
+    func testExtractDoubleForAllMetricKinds() {
+        XCTAssertEqual(extractDouble(from: .percentage(42.5), for: .cpu), 42.5)
+        XCTAssertEqual(extractDouble(from: .percentage(85), for: .memory), 85)
+        XCTAssertEqual(extractDouble(from: .percentage(60), for: .disk), 60)
+        XCTAssertEqual(extractDouble(from: .bytesPerSecond(2048), for: .network), 2048)
+        XCTAssertEqual(extractDouble(from: .degreesCelsius(36.6), for: .temperature), 36.6)
+        XCTAssertEqual(extractDouble(from: .revolutionsPerMinute(2200), for: .fan), 2200)
+        XCTAssertEqual(extractDouble(from: .percentage(91), for: .battery), 91)
     }
 
-    func testExtractDoubleReturnsNilForText() {
-        XCTAssertNil(extractDouble(from: .text("hello")))
+    func testExtractDoubleRejectsMismatchedValueType() {
+        XCTAssertNil(extractDouble(from: .percentage(50), for: .temperature))
+        XCTAssertNil(extractDouble(from: .bytes(1024), for: .memory))
+        XCTAssertNil(extractDouble(from: .volts(12.3), for: .battery))
+        XCTAssertNil(extractDouble(from: .text("hello"), for: .cpu))
     }
 
     func testExtractDoubleReturnsNilForUnavailable() {
-        XCTAssertNil(extractDouble(from: .unavailable(.unsupported("test"))))
-        XCTAssertNil(extractDouble(from: .unavailable(.systemCall("err", 1))))
-        XCTAssertNil(extractDouble(from: .unavailable(.malformedData("bad"))))
+        XCTAssertNil(extractDouble(from: .unavailable(.unsupported("test")), for: .cpu))
+        XCTAssertNil(extractDouble(from: .unavailable(.systemCall("err", 1)), for: .network))
+        XCTAssertNil(extractDouble(from: .unavailable(.malformedData("bad")), for: .fan))
     }
 
     func testExtractDoubleReturnsNilForNil() {
-        XCTAssertNil(extractDouble(from: nil))
+        XCTAssertNil(extractDouble(from: nil, for: .cpu))
     }
 
     func testUnavailableValuesAreOmittedFromChartPoints() async {
         let snapshot = MetricSnapshot(
-            timestamp: Date(timeIntervalSince1970: 100),
+            timestamp: Date(),
             values: [.cpu: .unavailable(.unsupported("no sensor"))],
             availability: [:]
         )
@@ -294,10 +285,9 @@ final class HistoryViewModelTests: XCTestCase {
     }
 
     func testMismatchedMetricValueIsOmitted() async {
-        // Temperature metric with a .text value (mismatched).
         let snapshot = MetricSnapshot(
-            timestamp: Date(timeIntervalSince1970: 100),
-            values: [.temperature: .text("warm")],
+            timestamp: Date(),
+            values: [.temperature: .percentage(50)],
             availability: [:]
         )
         let repository = InMemoryHistoryRepository(snapshots: [snapshot])
@@ -309,7 +299,7 @@ final class HistoryViewModelTests: XCTestCase {
         await model.load()
 
         XCTAssertTrue(model.points.isEmpty,
-                      "Text values for a numeric metric must be omitted")
+                      "Mismatched values must be omitted")
     }
 
     // MARK: - Metric selection
@@ -334,9 +324,10 @@ final class HistoryViewModelTests: XCTestCase {
     // MARK: - Summaries
 
     func testSummariesAreComputedFromLoadedPoints() async {
+        let now = Date()
         let samples = (1...5).map { i in
             MetricSnapshot(
-                timestamp: Date(timeIntervalSince1970: Double(i * 60)),
+                timestamp: now.addingTimeInterval(Double(i - 5) * 60),
                 values: [.cpu: .percentage(Double(i * 10))], // 10, 20, 30, 40, 50
                 availability: [:]
             )
@@ -354,6 +345,27 @@ final class HistoryViewModelTests: XCTestCase {
         XCTAssertEqual(model.minDisplay, "10%")
         XCTAssertEqual(model.maxDisplay, "50%")
         XCTAssertEqual(model.averageDisplay, "30%")
+    }
+
+    func testSummariesUseFullSeriesBeforeDownsampling() async {
+        let now = Date()
+        let samples = (0..<1_000).map { index in
+            MetricSnapshot(
+                timestamp: now.addingTimeInterval(Double(index - 999) * 30),
+                values: [.cpu: .percentage(index == 500 ? 100 : 0)]
+            )
+        }
+        let repository = InMemoryHistoryRepository(snapshots: samples)
+        let purchaseState = PurchaseState()
+        purchaseState.update(isPro: true)
+        let model = HistoryViewModel(repository: repository, purchaseState: purchaseState)
+
+        await model.load()
+
+        XCTAssertLessThanOrEqual(model.points.count, 500)
+        XCTAssertEqual(model.minValue, 0)
+        XCTAssertEqual(model.maxValue, 100)
+        XCTAssertEqual(model.averageValue ?? -1, 0.1, accuracy: 0.0001)
     }
 
     func testSummariesAreNilWhenNoData() async {
@@ -547,7 +559,7 @@ final class HistoryViewModelTests: XCTestCase {
 
 // MARK: - Failing repository stub
 
-private struct FailingHistoryRepository: HistoryRepositoryProtocol, Sendable {
+private struct FailingHistoryRepository: HistoryRepositoryProtocol, @unchecked Sendable {
     let error: Error
 
     init(error: Error) {

@@ -30,13 +30,16 @@ public struct TrendChart: View {
             let values = points.map(\.value)
             let maxValue = values.max() ?? 1
             let minValue = values.min() ?? 0
-            let range = max(maxValue - minValue, 0.0001)
+            let valueRange = max(maxValue - minValue, 0.0001)
+            let firstDate = points.first?.date ?? Date()
+            let lastDate = points.last?.date ?? firstDate
+            let timeRange = max(lastDate.timeIntervalSince(firstDate), 0.0001)
 
-            // Build the line path.
+            // Build the line path using real timestamp spacing.
             var linePath = Path()
             for (index, point) in points.enumerated() {
-                let x = size.width * CGFloat(index) / CGFloat(points.count - 1)
-                let y = size.height * (1 - CGFloat((point.value - minValue) / range))
+                let x = size.width * CGFloat(point.date.timeIntervalSince(firstDate) / timeRange)
+                let y = size.height * (1 - CGFloat((point.value - minValue) / valueRange))
                 let pt = CGPoint(x: x, y: y)
                 if index == 0 {
                     linePath.move(to: pt)
@@ -48,10 +51,8 @@ public struct TrendChart: View {
             // Optional fill beneath the line.
             if let fillColor {
                 var fillPath = linePath
-                if let last = points.last {
-                    let lastX = size.width
-                    let lastY = size.height * (1 - CGFloat((last.value - minValue) / range))
-                    fillPath.addLine(to: CGPoint(x: lastX, y: size.height))
+                if points.last != nil {
+                    fillPath.addLine(to: CGPoint(x: size.width, y: size.height))
                     fillPath.addLine(to: CGPoint(x: 0, y: size.height))
                     fillPath.closeSubpath()
                 }
@@ -66,9 +67,10 @@ public struct TrendChart: View {
 // MARK: - Preview
 
 #Preview("TrendChart with data") {
+    let now = Date()
     let points = (0..<50).map { i in
         ChartPoint(
-            date: Date(timeIntervalSinceNow: Double(-i * 60)),
+            date: now.addingTimeInterval(Double(i - 49) * 60),
             value: Double.random(in: 20...90)
         )
     }
