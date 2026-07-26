@@ -11,6 +11,7 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let historyRepository: HistoryRepositoryProtocol
     public let alertRepository: AlertRepositoryProtocol
     public let snapshotWriter: SnapshotWriterProtocol
+    public let processMonitor: ProcessMonitor?
 
     public init(
         cpu: MetricValue = .percentage(0),
@@ -19,7 +20,8 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         network: MetricValue = .bytesPerSecond(0),
         temperature: MetricValue = .unavailable(.unsupported("test")),
         fan: MetricValue = .unavailable(.unsupported("test")),
-        battery: MetricValue = .percentage(0)
+        battery: MetricValue = .percentage(0),
+        processMonitor: ProcessMonitor? = nil
     ) {
         self.appState = AppState()
         self.purchaseState = PurchaseState()
@@ -36,6 +38,7 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
             withIntermediateDirectories: true
         )
         self.snapshotWriter = SnapshotWriter(directory: directory)
+        self.processMonitor = processMonitor
         let monitors: [any MetricMonitor] = [
             StubTestMonitor(kind: .cpu, value: cpu),
             StubTestMonitor(kind: .memory, value: memory),

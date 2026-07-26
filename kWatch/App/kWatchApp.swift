@@ -87,6 +87,7 @@ private struct MenuBarContent: View {
 private struct DashboardSceneContent: View {
     @ObservedObject var viewModel: DashboardViewModel
     @StateObject private var historyViewModel: HistoryViewModel
+    @StateObject private var processesViewModel: ProcessesViewModel
     @State private var showPaywallSheet = false
     @Environment(\.openWindow) private var openWindow
 
@@ -95,6 +96,10 @@ private struct DashboardSceneContent: View {
         let container = kWatchAppDelegate.shared.container
         _historyViewModel = StateObject(wrappedValue: HistoryViewModel(
             repository: container.historyRepository,
+            purchaseState: container.purchaseState
+        ))
+        _processesViewModel = StateObject(wrappedValue: ProcessesViewModel(
+            processMonitor: container.processMonitor,
             purchaseState: container.purchaseState
         ))
     }
@@ -107,6 +112,12 @@ private struct DashboardSceneContent: View {
             case .history:
                 HistoryView(
                     viewModel: historyViewModel,
+                    onBack: { viewModel.navigateToDashboard() },
+                    onOpenPaywall: { showPaywallSheet = true }
+                )
+            case .processes:
+                ProcessesView(
+                    viewModel: processesViewModel,
                     onBack: { viewModel.navigateToDashboard() },
                     onOpenPaywall: { showPaywallSheet = true }
                 )

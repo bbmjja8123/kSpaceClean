@@ -15,6 +15,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let historyRepository: HistoryRepositoryProtocol
     public let alertRepository: AlertRepositoryProtocol
     public let snapshotWriter: SnapshotWriterProtocol
+    public let processMonitor: ProcessMonitor?
     public let coreDataStack: CoreDataStack
 
     public init() {
@@ -50,6 +51,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
             directory = fallback.appendingPathComponent("kWatch", isDirectory: true)
         }
         self.snapshotWriter = SnapshotWriter(directory: directory)
+        self.processMonitor = ProcessMonitor(provider: LibprocProcessProvider())
 
         let monitors: [any MetricMonitor] = [
             CPUMonitor(provider: HostCPUStatsProvider()),

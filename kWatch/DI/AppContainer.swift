@@ -17,5 +17,6 @@ public protocol AppContainerProtocol: Sendable {
     var historyRepository: HistoryRepositoryProtocol { get }
     var alertRepository: AlertRepositoryProtocol { get }
     var snapshotWriter: SnapshotWriterProtocol { get }
+    var processMonitor: ProcessMonitor? { get }
     // StoreManager and NotificationScheduler are added by later tasks.
 }
