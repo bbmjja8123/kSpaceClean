@@ -16,6 +16,12 @@ public final class kWatchAppDelegate: NSObject, NSApplicationDelegate {
         let coordinator = AppCoordinator(container: container)
         self.coordinator = coordinator
         coordinator.start()
+
+        // Subscribe to MetricKit so daily performance summaries and any
+        // crash/hang payloads are written to the App Group container.
+        // MetricKitSubscriber.start() is idempotent and runs only on the
+        // main actor.
+        container.metricKitSubscriber.start()
     }
 
     public func applicationWillTerminate(_ notification: Notification) {

@@ -1,0 +1,498 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "kWatch Pro" : {
+      "comment" : "Paywall headline for upgrading to Pro.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kWatch Pro"
+          }
+        }
+      }
+    },
+    "Unlock the full monitoring experience." : {
+      "comment" : "Paywall subtitle.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock the full monitoring experience."
+          }
+        }
+      }
+    },
+    "$7.99 one-time purchase" : {
+      "comment" : "Paywall price line for the lifetime unlock.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "$7.99 one-time purchase"
+          }
+        }
+      }
+    },
+    "Restore Purchases" : {
+      "comment" : "Action that re-checks existing StoreKit entitlements.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        }
+      }
+    },
+    "Not Now" : {
+      "comment" : "Dismiss button on paywall and prompts.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
+        }
+      }
+    },
+    "Enable Notifications" : {
+      "comment" : "Button to request notification authorization.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Notifications"
+          }
+        }
+      }
+    },
+    "Show Onboarding Again" : {
+      "comment" : "Reset onboarding so the four-step flow reappears.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Onboarding Again"
+          }
+        }
+      }
+    },
+    "Launch at Login" : {
+      "comment" : "Toggle to register kWatch as a login item.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at Login"
+          }
+        }
+      }
+    },
+    "Sampling" : {
+      "comment" : "Settings section header for sampling interval.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sampling"
+          }
+        }
+      }
+    },
+    "Style" : {
+      "comment" : "Menu bar style picker label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Style"
+          }
+        }
+      }
+    },
+    "Trend" : {
+      "comment" : "Menu bar trend variant.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trend"
+          }
+        }
+      }
+    },
+    "Numeric" : {
+      "comment" : "Menu bar numeric variant.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numeric"
+          }
+        }
+      }
+    },
+    "Minimal" : {
+      "comment" : "Menu bar minimal variant.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimal"
+          }
+        }
+      }
+    },
+    "CPU" : {
+      "comment" : "CPU metric label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU"
+          }
+        }
+      }
+    },
+    "Memory" : {
+      "comment" : "Memory metric label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memory"
+          }
+        }
+      }
+    },
+    "Disk" : {
+      "comment" : "Disk metric label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disk"
+          }
+        }
+      }
+    },
+    "Network" : {
+      "comment" : "Network metric label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Network"
+          }
+        }
+      }
+    },
+    "Temperature" : {
+      "comment" : "Temperature metric label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperature"
+          }
+        }
+      }
+    },
+    "Fan" : {
+      "comment" : "Fan metric label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fan"
+          }
+        }
+      }
+    },
+    "Battery" : {
+      "comment" : "Battery metric label.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battery"
+          }
+        }
+      }
+    },
+    "Privacy Policy" : {
+      "comment" : "Settings link to the privacy policy page.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "Support" : {
+      "comment" : "Settings link to the support page.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support"
+          }
+        }
+      }
+    },
+    "Open Source Licenses" : {
+      "comment" : "Settings link to open-source license acknowledgements.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Source Licenses"
+          }
+        }
+      }
+    },
+    "Export Diagnostics…" : {
+      "comment" : "Settings action to export a diagnostics archive.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export Diagnostics…"
+          }
+        }
+      }
+    },
+    "Reveal in Finder" : {
+      "comment" : "Settings action to reveal the most recent diagnostics archive.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reveal in Finder"
+          }
+        }
+      }
+    },
+    "Welcome to kWatch" : {
+      "comment" : "Onboarding welcome page title.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome to kWatch"
+          }
+        }
+      }
+    },
+    "Get Started" : {
+      "comment" : "Primary action on the onboarding welcome page.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Started"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "comment" : "Onboarding continue button between pages.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "Open Dashboard" : {
+      "comment" : "Onboarding action to open the dashboard.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Dashboard"
+          }
+        }
+      }
+    },
+    "Pause" : {
+      "comment" : "Pause live sampling.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
+          }
+        }
+      }
+    },
+    "Resume" : {
+      "comment" : "Resume live sampling after pausing.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resume"
+          }
+        }
+      }
+    },
+    "Open kWatch Settings" : {
+      "comment" : "Action to reveal the Settings window from the menu bar.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open kWatch Settings"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "comment" : "Add a new alert rule.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "Alerts" : {
+      "comment" : "Alerts navigation entry.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alerts"
+          }
+        }
+      }
+    },
+    "History" : {
+      "comment" : "History navigation entry.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "History"
+          }
+        }
+      }
+    },
+    "Processes" : {
+      "comment" : "Processes navigation entry.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Processes"
+          }
+        }
+      }
+    },
+    "Live" : {
+      "comment" : "Sampling status — actively collecting.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live"
+          }
+        }
+      }
+    },
+    "Paused" : {
+      "comment" : "Sampling status — collection halted by the user.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paused"
+          }
+        }
+      }
+    },
+    "kWatch Alert" : {
+      "comment" : "Notification title for threshold alerts.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kWatch Alert"
+          }
+        }
+      }
+    },
+    "Settings Error" : {
+      "comment" : "Alert title when the Settings view surfaces an error.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings Error"
+          }
+        }
+      }
+    },
+    "At least one metric must remain enabled." : {
+      "comment" : "Error when toggling off the last enabled metric kind.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At least one metric must remain enabled."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

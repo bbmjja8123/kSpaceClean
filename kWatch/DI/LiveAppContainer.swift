@@ -19,6 +19,8 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let notificationScheduler: NotificationSchedulerProtocol
     public let coreDataStack: CoreDataStack
     public let storeManager: StoreManagerProtocol
+    public let diagnosticsExporter: any DiagnosticsExporting
+    public let metricKitSubscriber: MetricKitSubscriber
 
     public init() {
         self.appState = AppState()
@@ -70,5 +72,7 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
             productID: "app.kraftly.kwatch.pro",
             purchaseState: purchaseState
         )
+        self.diagnosticsExporter = DiagnosticsExporter()
+        self.metricKitSubscriber = MetricKitSubscriber.shared
     }
 }

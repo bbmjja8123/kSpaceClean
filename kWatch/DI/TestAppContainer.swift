@@ -14,6 +14,8 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let processMonitor: ProcessMonitor?
     public let notificationScheduler: NotificationSchedulerProtocol
     public let storeManager: StoreManagerProtocol
+    public let diagnosticsExporter: any DiagnosticsExporting
+    public let metricKitSubscriber: MetricKitSubscriber
 
     public init(
         cpu: MetricValue = .percentage(0),
@@ -25,7 +27,9 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         battery: MetricValue = .percentage(0),
         processMonitor: ProcessMonitor? = nil,
         notificationScheduler: NotificationSchedulerProtocol? = nil,
-        storeManager: StoreManagerProtocol? = nil
+        storeManager: StoreManagerProtocol? = nil,
+        diagnosticsExporter: (any DiagnosticsExporting)? = nil,
+        metricKitSubscriber: MetricKitSubscriber? = nil
     ) {
         self.appState = AppState()
         self.purchaseState = PurchaseState()
@@ -67,6 +71,10 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         } else {
             self.storeManager = StubStoreManager(purchaseState: purchaseState)
         }
+        self.diagnosticsExporter = diagnosticsExporter ?? StubDiagnosticsExporter()
+        self.metricKitSubscriber = metricKitSubscriber ?? MetricKitSubscriber(
+            directoryProvider: { nil }
+        )
     }
 }
 
@@ -76,5 +84,25 @@ private struct StubTestMonitor: MetricMonitor, Sendable {
 
     func sample() async throws -> MetricSample {
         MetricSample(kind: kind, value: value, availability: .available, timestamp: Date())
+    }
+}
+
+/// Test diagnostics exporter. Records every `export()` invocation into
+/// `callCount` and returns a fixed URL supplied at construction time.
+public final class StubDiagnosticsExporter: DiagnosticsExporting, @unchecked Sendable {
+    public private(set) var callCount: Int = 0
+    public private(set) var lastDestination: URL?
+
+    public init() {}
+
+    public func export() async throws -> URL {
+        callCount += 1
+        // Point at a guaranteed-existing temp URL; tests assert on
+        // `callCount` rather than the file system when they need to
+        // avoid touching disk.
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("kWatch.stub.diagnostics.\(UUID().uuidString).json")
+        lastDestination = url
+        return url
     }
 }

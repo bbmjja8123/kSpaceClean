@@ -21,4 +21,6 @@ public protocol AppContainerProtocol: Sendable {
     var processMonitor: ProcessMonitor? { get }
     var notificationScheduler: NotificationSchedulerProtocol { get }
     var storeManager: StoreManagerProtocol { get }
+    var diagnosticsExporter: any DiagnosticsExporting { get }
+    var metricKitSubscriber: MetricKitSubscriber { get }
 }

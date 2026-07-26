@@ -20,6 +20,11 @@ targets:
           - "project.yml"
           - "**/*.md"
           - "Tests/**"
+          - "UITests/**"
+          - "kWatchWidget/**"
+          - "kWatchWidgetTests/**"
+          - "kWatchLiveActivity/**"
+          - "kWatchLiveActivityTests/**"
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch
       INFOPLIST_FILE: Info.plist

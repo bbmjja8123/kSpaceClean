@@ -23,7 +23,8 @@ struct kWatchApp: App {
             preferences: container.preferences,
             scheduler: container.notificationScheduler,
             purchaseState: container.purchaseState,
-            storeManager: container.storeManager
+            storeManager: container.storeManager,
+            diagnosticsExporter: container.diagnosticsExporter
         ))
 
         // Refresh the Spotlight index so the menu-bar search field can
