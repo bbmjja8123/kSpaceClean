@@ -21,16 +21,14 @@ public final class DashboardViewModel: ObservableObject {
     /// Whether the user has not yet completed onboarding.
     @Published public private(set) var showOnboardingBanner: Bool = false
 
-    // MARK: - AppState forwarding
+    /// Latest snapshot mirrored from the app state for dashboard consumers.
+    @Published public private(set) var latestSnapshot: MetricSnapshot?
 
-    /// The latest snapshot (forwarded from `AppState`).
-    public var latestSnapshot: MetricSnapshot? { appState.latestSnapshot }
+    /// Whether the coordinator is actively sampling metrics.
+    @Published public private(set) var isMonitoring: Bool = false
 
-    /// Whether the aggregator is currently sampling (forwarded from `AppState`).
-    public var isMonitoring: Bool { appState.isMonitoring }
-
-    /// The current navigation destination within the dashboard window.
-    public var navigation: AppState.NavigationDestination { appState.navigation }
+    /// Current destination in the dashboard window.
+    @Published public private(set) var navigation: AppState.NavigationDestination = .dashboard
 
     // MARK: - Dependencies
 
@@ -48,11 +46,27 @@ public final class DashboardViewModel: ObservableObject {
         self.appState = appState
         self.purchaseState = purchaseState
         self.showOnboardingBanner = !onboardingCompleted
+        self.latestSnapshot = appState.latestSnapshot
+        self.isMonitoring = appState.isMonitoring
+        self.navigation = appState.navigation
 
         // Observe snapshot changes.
         appState.$latestSnapshot
             .sink { [weak self] snapshot in
+                self?.latestSnapshot = snapshot
                 self?.rebuildCards(from: snapshot)
+            }
+            .store(in: &cancellables)
+
+        appState.$isMonitoring
+            .sink { [weak self] isMonitoring in
+                self?.isMonitoring = isMonitoring
+            }
+            .store(in: &cancellables)
+
+        appState.$navigation
+            .sink { [weak self] navigation in
+                self?.navigation = navigation
             }
             .store(in: &cancellables)
 
@@ -87,11 +101,6 @@ public final class DashboardViewModel: ObservableObject {
     /// Navigate to the alerts view.
     public func navigateToAlerts() {
         appState.navigate(to: .alerts)
-    }
-
-    /// Toggle monitoring on/off.
-    public func toggleMonitoring() {
-        appState.setMonitoring(!appState.isMonitoring)
     }
 
     // MARK: - Card building

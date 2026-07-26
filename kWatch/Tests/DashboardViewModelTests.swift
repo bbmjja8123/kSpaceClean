@@ -268,21 +268,6 @@ final class DashboardViewModelTests: XCTestCase {
         XCTAssertFalse(vm.isMonitoring)
     }
 
-    func testToggleMonitoringFlipsState() {
-        let vm = DashboardViewModel(
-            appState: appState,
-            purchaseState: purchaseState,
-            onboardingCompleted: true
-        )
-        XCTAssertFalse(vm.isMonitoring)
-
-        vm.toggleMonitoring()
-        XCTAssertTrue(vm.isMonitoring)
-
-        vm.toggleMonitoring()
-        XCTAssertFalse(vm.isMonitoring)
-    }
-
     // MARK: - Navigation
 
     func testNavigateToHistoryUpdatesAppState() {

@@ -39,6 +39,7 @@ struct kWatchApp: App {
             OnboardingView(
                 viewModel: onboardingViewModel,
                 onCloseRequested: {
+                    dashboardViewModel.dismissOnboardingBanner()
                     if let window = NSApp.windows.first(where: { $0.title == "Welcome to kWatch" }) {
                         window.close()
                     }
@@ -99,32 +100,24 @@ private struct DashboardSceneContent: View {
             VStack(spacing: 16) {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 40))
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(Color.accentColor)
 
                 Text("kWatch Pro")
                     .font(.title)
                     .fontWeight(.bold)
 
-                Text("Unlock all metrics including Temperature, Fan Speed, and Battery monitoring.")
+                Text("Unlock history, custom alerts, platform integrations, and advanced sensors where this Mac supports them.")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
 
-                Text("Subscribe to get full access to every sensor and historical data.")
+                Text("$7.99 one-time purchase. Sensor availability depends on Mac hardware.")
                     .font(.caption)
                     .foregroundStyle(.tertiary)
 
-                HStack(spacing: 12) {
-                    Button("Cancel") {
-                        showPaywallSheet = false
-                    }
-                    .keyboardShortcut(.cancelAction)
-
-                    Button("Upgrade") {
-                        // Task 18: real StoreKit purchase flow
-                        showPaywallSheet = false
-                    }
-                    .buttonStyle(.borderedProminent)
+                Button("Not Now") {
+                    showPaywallSheet = false
                 }
+                .keyboardShortcut(.cancelAction)
                 .padding(.top, 8)
             }
             .padding(24)

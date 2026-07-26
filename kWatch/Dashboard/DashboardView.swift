@@ -51,7 +51,7 @@ public struct DashboardView: View {
             HStack(spacing: 12) {
                 Image(systemName: "hand.wave")
                     .font(.title2)
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(Color.accentColor)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Welcome to kWatch")
@@ -96,15 +96,20 @@ public struct DashboardView: View {
     @ViewBuilder
     private var liveIndicator: some View {
         HStack(spacing: 6) {
-            Circle()
-                .fill(viewModel.isMonitoring ? Color.green : Color.gray)
-                .frame(width: 8, height: 8)
-            Text(viewModel.isMonitoring ? "Live" : "Paused")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            if viewModel.isMonitoring {
+                ProgressView()
+                    .controlSize(.small)
+                Text("Live")
+            } else {
+                Circle()
+                    .fill(Color.gray)
+                    .frame(width: 8, height: 8)
+                Text("Paused")
+            }
         }
+        .font(.caption)
+        .foregroundStyle(.secondary)
         .help(viewModel.isMonitoring ? "Monitoring is active" : "Monitoring is paused")
-        .onTapGesture { viewModel.toggleMonitoring() }
     }
 
     /// Navigation controls for sub-views required by the plan.

@@ -105,7 +105,7 @@ public struct MetricCardView: View {
             .padding(.vertical, 4)
             .background(
                 Capsule()
-                    .fill(.accent)
+                    .fill(Color.accentColor)
             )
         }
         .buttonStyle(.plain)
@@ -151,7 +151,7 @@ public struct MetricCardView: View {
 #Preview("Unavailable card") {
     let vm = MetricCardViewModel(
         kind: .fan,
-        value: .unavailable(.unsupported(reason: "SMC not found")),
+        value: .unavailable(.unsupported("SMC not found")),
         availability: .unsupported(reason: "SMC not found"),
         isPro: true
     )

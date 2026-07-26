@@ -115,7 +115,7 @@ final class MetricCardViewModelTests: XCTestCase {
     func testUnavailableFanShowsReason() {
         let vm = MetricCardViewModel(
             kind: .fan,
-            value: .unavailable(.unsupported(reason: "SMC not found")),
+            value: .unavailable(.unsupported("SMC not found")),
             availability: .unsupported(reason: "SMC not found"),
             isPro: true
         )
@@ -143,7 +143,7 @@ final class MetricCardViewModelTests: XCTestCase {
         // as locked — the user cannot purchase their way to a working sensor.
         let vm = MetricCardViewModel(
             kind: .temperature,
-            value: .unavailable(.unsupported(reason: "No thermal sensor")),
+            value: .unavailable(.unsupported("No thermal sensor")),
             availability: .unsupported(reason: "No thermal sensor"),
             isPro: false
         )
@@ -177,7 +177,7 @@ final class MetricCardViewModelTests: XCTestCase {
     func testFormatUnavailable() {
         let vm = MetricCardViewModel(
             kind: .cpu,
-            value: .unavailable(.unsupported(reason: "No data")),
+            value: .unavailable(.unsupported("No data")),
             availability: .available,
             isPro: false
         )
