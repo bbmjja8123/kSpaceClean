@@ -21,6 +21,17 @@ public final class DashboardViewModel: ObservableObject {
     /// Whether the user has not yet completed onboarding.
     @Published public private(set) var showOnboardingBanner: Bool = false
 
+    // MARK: - AppState forwarding
+
+    /// The latest snapshot (forwarded from `AppState`).
+    public var latestSnapshot: MetricSnapshot? { appState.latestSnapshot }
+
+    /// Whether the aggregator is currently sampling (forwarded from `AppState`).
+    public var isMonitoring: Bool { appState.isMonitoring }
+
+    /// The current navigation destination within the dashboard window.
+    public var navigation: AppState.NavigationDestination { appState.navigation }
+
     // MARK: - Dependencies
 
     private let appState: AppState
@@ -63,6 +74,26 @@ public final class DashboardViewModel: ObservableObject {
         showOnboardingBanner = false
     }
 
+    /// Navigate to the history view.
+    public func navigateToHistory() {
+        appState.navigate(to: .history)
+    }
+
+    /// Navigate to the processes view.
+    public func navigateToProcesses() {
+        appState.navigate(to: .processes)
+    }
+
+    /// Navigate to the alerts view.
+    public func navigateToAlerts() {
+        appState.navigate(to: .alerts)
+    }
+
+    /// Toggle monitoring on/off.
+    public func toggleMonitoring() {
+        appState.setMonitoring(!appState.isMonitoring)
+    }
+
     // MARK: - Card building
 
     /// Rebuild the `cards` array from a snapshot, preserving selection if
@@ -75,10 +106,10 @@ public final class DashboardViewModel: ObservableObject {
 
             if let snapshot {
                 value = snapshot.values[kind] ?? .unavailable(.unsupported("No data"))
-                availability = snapshot.availability[kind] ?? .unavailable("No data")
+                availability = snapshot.availability[kind] ?? .unavailable(reason: "No data")
             } else {
                 value = .unavailable(.unsupported("Waiting for data"))
-                availability = .unavailable("Waiting for data")
+                availability = .unavailable(reason: "Waiting for data")
             }
 
             return MetricCardViewModel(

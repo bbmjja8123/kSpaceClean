@@ -7,20 +7,23 @@ import MetricsKit
 /// Cards are laid out in a responsive grid. Tapping a card selects it for
 /// detail inspection. If the user has not completed onboarding, a banner is
 /// displayed at the top with a button to open the onboarding window.
+///
+/// A toolbar provides a live-monitoring indicator and navigation controls
+/// for History, Processes, and Alerts sub-views.
 public struct DashboardView: View {
     @ObservedObject private var viewModel: DashboardViewModel
-    @ObservedObject private var purchaseState: PurchaseState
 
     private let onOpenOnboarding: (() -> Void)?
+    private let onOpenPaywall: (() -> Void)?
 
     public init(
         viewModel: DashboardViewModel,
-        purchaseState: PurchaseState,
-        onOpenOnboarding: (() -> Void)? = nil
+        onOpenOnboarding: (() -> Void)? = nil,
+        onOpenPaywall: (() -> Void)? = nil
     ) {
         self.viewModel = viewModel
-        self.purchaseState = purchaseState
         self.onOpenOnboarding = onOpenOnboarding
+        self.onOpenPaywall = onOpenPaywall
     }
 
     public var body: some View {
@@ -32,6 +35,12 @@ public struct DashboardView: View {
             .padding()
         }
         .navigationTitle("Dashboard")
+        .toolbar {
+            ToolbarItemGroup {
+                liveIndicator
+                navigationControls
+            }
+        }
     }
 
     // MARK: - Onboarding banner
@@ -82,6 +91,35 @@ public struct DashboardView: View {
         }
     }
 
+    // MARK: - Toolbar
+
+    @ViewBuilder
+    private var liveIndicator: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(viewModel.isMonitoring ? Color.green : Color.gray)
+                .frame(width: 8, height: 8)
+            Text(viewModel.isMonitoring ? "Live" : "Paused")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .help(viewModel.isMonitoring ? "Monitoring is active" : "Monitoring is paused")
+        .onTapGesture { viewModel.toggleMonitoring() }
+    }
+
+    /// Navigation controls for sub-views required by the plan.
+    @ViewBuilder
+    private var navigationControls: some View {
+        Button("History") { viewModel.navigateToHistory() }
+            .help("View metric history")
+
+        Button("Processes") { viewModel.navigateToProcesses() }
+            .help("View running processes")
+
+        Button("Alerts") { viewModel.navigateToAlerts() }
+            .help("View alerts")
+    }
+
     // MARK: - Card grid
 
     private var cardGrid: some View {
@@ -90,7 +128,7 @@ public struct DashboardView: View {
             spacing: 12
         ) {
             ForEach(viewModel.cards) { card in
-                MetricCardView(viewModel: card)
+                MetricCardView(viewModel: card, onOpenPaywall: onOpenPaywall)
                     .onTapGesture {
                         viewModel.selectedKind = card.kind
                     }
@@ -125,7 +163,7 @@ public struct DashboardView: View {
         purchaseState: purchaseState,
         onboardingCompleted: true
     )
-    DashboardView(viewModel: vm, purchaseState: purchaseState)
+    DashboardView(viewModel: vm)
         .frame(width: 720, height: 480)
 }
 
@@ -137,6 +175,6 @@ public struct DashboardView: View {
         purchaseState: purchaseState,
         onboardingCompleted: false
     )
-    DashboardView(viewModel: vm, purchaseState: purchaseState)
+    DashboardView(viewModel: vm)
         .frame(width: 720, height: 480)
 }

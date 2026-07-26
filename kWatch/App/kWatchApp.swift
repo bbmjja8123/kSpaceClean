@@ -30,8 +30,7 @@ struct kWatchApp: App {
 
         Window("kWatch Dashboard", id: "dashboard") {
             DashboardSceneContent(
-                viewModel: dashboardViewModel,
-                purchaseState: purchaseState
+                viewModel: dashboardViewModel
             )
         }
         .defaultSize(width: 720, height: 480)
@@ -81,17 +80,55 @@ private struct MenuBarContent: View {
     }
 }
 
-/// Wraps `DashboardView` so the onboarding button can access `openWindow`.
+/// Wraps `DashboardView` so the onboarding button can access `openWindow`,
+/// and provides a temporary paywall sheet that Task 18 will replace with
+/// the real `PaywallView`.
 private struct DashboardSceneContent: View {
     @ObservedObject var viewModel: DashboardViewModel
-    @ObservedObject var purchaseState: PurchaseState
+    @State private var showPaywallSheet = false
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         DashboardView(
             viewModel: viewModel,
-            purchaseState: purchaseState,
-            onOpenOnboarding: { openWindow(id: "onboarding") }
+            onOpenOnboarding: { openWindow(id: "onboarding") },
+            onOpenPaywall: { showPaywallSheet = true }
         )
+        .sheet(isPresented: $showPaywallSheet) {
+            // Temporary paywall placeholder — Task 18 replaces with real PaywallView.
+            VStack(spacing: 16) {
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.accent)
+
+                Text("kWatch Pro")
+                    .font(.title)
+                    .fontWeight(.bold)
+
+                Text("Unlock all metrics including Temperature, Fan Speed, and Battery monitoring.")
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+
+                Text("Subscribe to get full access to every sensor and historical data.")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+
+                HStack(spacing: 12) {
+                    Button("Cancel") {
+                        showPaywallSheet = false
+                    }
+                    .keyboardShortcut(.cancelAction)
+
+                    Button("Upgrade") {
+                        // Task 18: real StoreKit purchase flow
+                        showPaywallSheet = false
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .padding(.top, 8)
+            }
+            .padding(24)
+            .frame(width: 320)
+        }
     }
 }

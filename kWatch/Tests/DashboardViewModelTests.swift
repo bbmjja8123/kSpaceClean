@@ -234,4 +234,96 @@ final class DashboardViewModelTests: XCTestCase {
         let uniqueIds = Set(ids)
         XCTAssertEqual(ids.count, uniqueIds.count)
     }
+
+    // MARK: - Snapshot forwarding
+
+    func testLatestSnapshotMirrorsAppState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        XCTAssertNil(vm.latestSnapshot)
+
+        let snapshot = MetricSnapshot(timestamp: Date(), values: [.cpu: .percentage(50)], availability: [:])
+        appState.update(snapshot: snapshot)
+
+        XCTAssertEqual(vm.latestSnapshot, snapshot)
+    }
+
+    // MARK: - Monitoring state
+
+    func testIsMonitoringMirrorsAppState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        XCTAssertFalse(vm.isMonitoring)
+
+        appState.setMonitoring(true)
+        XCTAssertTrue(vm.isMonitoring)
+
+        appState.setMonitoring(false)
+        XCTAssertFalse(vm.isMonitoring)
+    }
+
+    func testToggleMonitoringFlipsState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        XCTAssertFalse(vm.isMonitoring)
+
+        vm.toggleMonitoring()
+        XCTAssertTrue(vm.isMonitoring)
+
+        vm.toggleMonitoring()
+        XCTAssertFalse(vm.isMonitoring)
+    }
+
+    // MARK: - Navigation
+
+    func testNavigateToHistoryUpdatesAppState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        vm.navigateToHistory()
+        XCTAssertEqual(appState.navigation, .history)
+    }
+
+    func testNavigateToProcessesUpdatesAppState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        vm.navigateToProcesses()
+        XCTAssertEqual(appState.navigation, .processes)
+    }
+
+    func testNavigateToAlertsUpdatesAppState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        vm.navigateToAlerts()
+        XCTAssertEqual(appState.navigation, .alerts)
+    }
+
+    func testNavigationPropertyMirrorsAppState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        XCTAssertEqual(vm.navigation, .dashboard)
+
+        appState.navigate(to: .processes)
+        XCTAssertEqual(vm.navigation, .processes)
+    }
 }

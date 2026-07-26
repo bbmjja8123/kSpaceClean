@@ -28,9 +28,11 @@ extension CardColor {
 /// the capability-reason subtitle.
 public struct MetricCardView: View {
     public let viewModel: MetricCardViewModel
+    public let onOpenPaywall: (() -> Void)?
 
-    public init(viewModel: MetricCardViewModel) {
+    public init(viewModel: MetricCardViewModel, onOpenPaywall: (() -> Void)? = nil) {
         self.viewModel = viewModel
+        self.onOpenPaywall = onOpenPaywall
     }
 
     public var body: some View {
@@ -38,12 +40,12 @@ public struct MetricCardView: View {
             header
             valueArea
             subtitleView
+            if viewModel.isLocked {
+                upgradeButton
+            }
         }
         .padding(12)
         .background(background)
-        .overlay(alignment: .topTrailing) {
-            lockBadge
-        }
     }
 
     // MARK: - Sub-views
@@ -88,13 +90,26 @@ public struct MetricCardView: View {
     }
 
     @ViewBuilder
-    private var lockBadge: some View {
-        if viewModel.isLocked {
-            Image(systemName: "lock.fill")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .padding(4)
+    private var upgradeButton: some View {
+        Button {
+            onOpenPaywall?()
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "lock.fill")
+                    .font(.caption2)
+                Text("Upgrade to Pro")
+                    .font(.caption)
+            }
+            .foregroundStyle(.white)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(
+                Capsule()
+                    .fill(.accent)
+            )
         }
+        .buttonStyle(.plain)
+        .help(viewModel.lockDescription)
     }
 
     private var background: some View {
@@ -116,7 +131,7 @@ public struct MetricCardView: View {
         availability: .available,
         isPro: false
     )
-    MetricCardView(viewModel: vm)
+    MetricCardView(viewModel: vm) { print("Upgrade tapped") }
         .frame(width: 200)
         .padding()
 }
@@ -128,7 +143,7 @@ public struct MetricCardView: View {
         availability: .available,
         isPro: false
     )
-    MetricCardView(viewModel: vm)
+    MetricCardView(viewModel: vm) { print("Upgrade tapped") }
         .frame(width: 200)
         .padding()
 }
@@ -136,8 +151,8 @@ public struct MetricCardView: View {
 #Preview("Unavailable card") {
     let vm = MetricCardViewModel(
         kind: .fan,
-        value: .unavailable,
-        availability: .unsupported("SMC not found"),
+        value: .unavailable(.unsupported(reason: "SMC not found")),
+        availability: .unsupported(reason: "SMC not found"),
         isPro: true
     )
     MetricCardView(viewModel: vm)
