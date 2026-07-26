@@ -6,10 +6,12 @@ import MetricsKit
 struct kWatchApp: App {
     @NSApplicationDelegateAdaptor(kWatchAppDelegate.self) private var appDelegate
     @StateObject private var menuBarViewModel: MenuBarViewModel
+    @StateObject private var onboardingViewModel: OnboardingViewModel
 
     init() {
         let container = kWatchAppDelegate.shared.container
         _menuBarViewModel = StateObject(wrappedValue: MenuBarViewModel(container: container))
+        _onboardingViewModel = StateObject(wrappedValue: OnboardingViewModel(preferences: container.preferences))
     }
 
     var body: some Scene {
@@ -27,6 +29,19 @@ struct kWatchApp: App {
                 .environmentObject(menuBarViewModel)
         }
         .defaultSize(width: 720, height: 480)
+
+        Window("Welcome to kWatch", id: "onboarding") {
+            OnboardingView(
+                viewModel: onboardingViewModel,
+                onCloseRequested: {
+                    if let window = NSApp.windows.first(where: { $0.title == "Welcome to kWatch" }) {
+                        window.close()
+                    }
+                }
+            )
+        }
+        .defaultSize(width: 520, height: 420)
+        .windowResizability(.contentSize)
 
         Settings {
             // Placeholder; Task 17 implements the real Settings window.
