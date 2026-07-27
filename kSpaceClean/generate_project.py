@@ -229,6 +229,7 @@ def main():
         "TrashMoverTests.swift",
         "UserPreferencesTests.swift",
         "FileSizeFormatterTests.swift",
+        "CleanupConfirmationTests.swift",
         "DuplicateDetectorTests.swift",
         "StoreManagerTests.swift",
         "ScanSpeedTests.swift",

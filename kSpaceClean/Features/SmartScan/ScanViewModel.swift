@@ -230,6 +230,19 @@ public final class ScanViewModel: ObservableObject {
         resultGroups.reduce(0) { $0 + $1.selectedSize }
     }
 
+    /// Compute the confirmation level needed for current selection
+    public var confirmationLevel: CleanupConfirmationLevel {
+        var levels: [RiskLevel] = []
+        for group in resultGroups {
+            for ag in group.actionGroups {
+                for item in ag.items where item.isSelected {
+                    levels.append(item.riskLevel)
+                }
+            }
+        }
+        return CleanupConfirmationLevel.from(riskLevels: levels, hasWarnItems: false)
+    }
+
     // MARK: - Risk-Grouped Stats
 
     public struct RiskGroupedStats: Sendable {
