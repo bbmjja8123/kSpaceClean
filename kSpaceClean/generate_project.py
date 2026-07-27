@@ -233,6 +233,7 @@ def main():
         "StoreManagerTests.swift",
         "ScanSpeedTests.swift",
         "RiskLevelTests.swift",
+        "SelectionCascadeTests.swift",
     ]
 
     main_build_files = []
