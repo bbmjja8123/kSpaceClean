@@ -122,35 +122,82 @@ public struct ScanResultGroup: Identifiable {
     }
 }
 
+// MARK: - Risk Filter
+
+/// Risk level filter tabs
+enum RiskFilter: Int, CaseIterable {
+    case all = 0
+    case recommended = 1
+    case optional = 2
+    case caution = 3
+    case dangerous = 4
+
+    var title: String {
+        switch self {
+        case .all: return "全部"
+        case .recommended: return "推荐"
+        case .optional: return "可选"
+        case .caution: return "注意"
+        case .dangerous: return "危险"
+        }
+    }
+
+    func matches(_ level: RiskLevel) -> Bool {
+        switch self {
+        case .all: return true
+        case .recommended: return level == .recommended
+        case .optional: return level == .optional
+        case .caution: return level == .caution
+        case .dangerous: return level == .dangerous
+        }
+    }
+}
+
 // MARK: - Tree View
 
 /// Lemon-style expandable scan results tree (Category → Action → File)
-/// with summary bar at bottom.
+/// with risk filter tabs, search, and summary bar at bottom.
 struct ScanResultsTreeView: View {
     @ObservedObject var viewModel: ScanViewModel
+    @State private var riskFilter: RiskFilter = .all
+    @State private var searchText = ""
 
     var body: some View {
         VStack(spacing: 0) {
+            // Risk filter tabs
+            RiskFilterBar(riskFilter: $riskFilter, stats: viewModel.riskGroupedStats)
+
+            // Search bar
+            HStack {
+                Image(systemName: "magnifyingglass").foregroundColor(.textSecondary)
+                TextField("搜索文件名 / 路径 / 应用名...", text: $searchText)
+                    .textFieldStyle(.plain).font(AppFont.callout)
+                if !searchText.isEmpty {
+                    Button { searchText = "" } label: {
+                        Image(systemName: "xmark.circle.fill").foregroundColor(.textSecondary)
+                    }.buttonStyle(.plain)
+                }
+            }
+            .padding(8)
+            .background(Color.bgTertiary.opacity(0.3))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+            .padding(.horizontal, AppSpacing.md)
+            .padding(.vertical, 4)
+
+            // Filtered tree
             List {
-                ForEach(viewModel.resultGroups) { group in
-                    if group.actionGroups.isEmpty {
-                        // Legacy 1-level fallback
-                        Section {
-                            CategoryHeader(group: group, viewModel: viewModel)
-                            ForEach(group.items) { node in
-                                FileResultRow(node: node, viewModel: viewModel)
-                                    .padding(.leading, AppSpacing.lg)
-                            }
-                        }
-                    } else {
-                        Section {
-                            CategoryHeader(group: group, viewModel: viewModel)
-                            ForEach(group.actionGroups) { actionGroup in
+                ForEach(filteredGroups) { group in
+                    Section {
+                        CategoryHeader(group: group, viewModel: viewModel)
+                        ForEach(group.actionGroups) { actionGroup in
+                            if riskFilter.matches(actionGroup.riskLevel) {
                                 ActionHeader(actionGroup: actionGroup, viewModel: viewModel)
                                 if actionGroup.isExpanded {
                                     ForEach(actionGroup.items) { node in
-                                        FileResultRow(node: node, viewModel: viewModel)
-                                            .padding(.leading, AppSpacing.lg)
+                                        if riskFilter.matches(node.riskLevel) {
+                                            FileResultRow(node: node, viewModel: viewModel)
+                                                .padding(.leading, AppSpacing.lg)
+                                        }
                                     }
                                 }
                             }
@@ -160,14 +207,47 @@ struct ScanResultsTreeView: View {
             }
             .listStyle(.plain)
 
+            // Summary bar
             ScanSummaryBar(
-                totalItems: viewModel.scanResults.count,
-                totalSize: viewModel.scanResults.reduce(0) { $0 + $1.size },
+                totalItems: filteredItemCount,
+                totalSize: filteredGroupSize,
                 selectedItems: viewModel.selectedCount,
                 selectedSize: viewModel.selectedSize,
                 onCleanup: { viewModel.startCleanup() }
             )
         }
+    }
+
+    private var filteredGroups: [ScanResultGroup] {
+        var groups = viewModel.resultGroups
+        if !searchText.isEmpty {
+            groups = groups.compactMap { group in
+                let filteredActions = group.actionGroups.compactMap { ag -> ActionGroup? in
+                    let filteredItems = ag.items.filter {
+                        $0.fileName.localizedCaseInsensitiveContains(searchText) ||
+                        $0.path.localizedCaseInsensitiveContains(searchText) ||
+                        (ag.appName ?? "").localizedCaseInsensitiveContains(searchText)
+                    }
+                    guard !filteredItems.isEmpty else { return nil }
+                    var copy = ag
+                    copy.items = filteredItems
+                    return copy
+                }
+                guard !filteredActions.isEmpty else { return nil }
+                var copy = group
+                copy.actionGroups = filteredActions
+                return copy
+            }
+        }
+        return groups
+    }
+
+    private var filteredItemCount: Int {
+        filteredGroups.reduce(0) { $0 + $1.totalItems }
+    }
+
+    private var filteredGroupSize: Int64 {
+        filteredGroups.reduce(0) { $0 + $1.totalSize }
     }
 }
 
@@ -235,16 +315,32 @@ private struct ActionHeader: View {
                 .foregroundColor(.textPrimary)
                 .lineLimit(1)
 
-            // Badges
-            if actionGroup.cautionID != nil && actionGroup.cautionID != 0 {
-                Text("注意")
-                    .font(.system(size: 9, weight: .medium))
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 1)
-                    .background(Color.orange.opacity(0.2))
-                    .foregroundColor(.orange)
-                    .clipShape(Capsule())
-            } else if !actionGroup.isRecommended {
+            // Risk level badges (4-level)
+            if actionGroup.riskLevel == .dangerous {
+                HStack(spacing: 2) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 8))
+                    Text("危险")
+                }
+                .font(.system(size: 9, weight: .medium))
+                .padding(.horizontal, 4)
+                .padding(.vertical, 1)
+                .background(Color.danger.opacity(0.2))
+                .foregroundColor(.danger)
+                .clipShape(Capsule())
+            } else if actionGroup.riskLevel == .caution {
+                HStack(spacing: 2) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 8))
+                    Text("注意")
+                }
+                .font(.system(size: 9, weight: .medium))
+                .padding(.horizontal, 4)
+                .padding(.vertical, 1)
+                .background(Color.orange.opacity(0.2))
+                .foregroundColor(.orange)
+                .clipShape(Capsule())
+            } else if actionGroup.riskLevel == .optional {
                 Text("可选")
                     .font(.system(size: 9, weight: .medium))
                     .padding(.horizontal, 4)
@@ -288,7 +384,11 @@ private struct FileResultRow: View {
                 .onTapGesture { viewModel.toggleItem(node.id) }
 
             // Risk badge
-            if node.isCaution {
+            if node.riskLevel == .dangerous {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 10))
+                    .foregroundColor(.danger)
+            } else if node.isCaution {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(.system(size: 10))
                     .foregroundColor(.orange)
@@ -348,5 +448,68 @@ struct ScanSummaryBar: View {
         }
         .padding(.horizontal, AppSpacing.md)
         .padding(.vertical, 6)
+    }
+}
+
+// MARK: - Risk Filter Bar
+
+struct RiskFilterBar: View {
+    @Binding var riskFilter: RiskFilter
+    let stats: ScanViewModel.RiskGroupedStats
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 6) {
+                filterButton(.all, count: stats.totalCount, size: stats.totalSize)
+                filterButton(.recommended, count: stats.recommended.count, size: stats.recommended.size)
+                filterButton(.optional, count: stats.optional.count, size: stats.optional.size)
+                filterButton(.caution, count: stats.caution.count, size: stats.caution.size)
+                filterButton(.dangerous, count: stats.dangerous.count, size: stats.dangerous.size)
+            }
+            .padding(.horizontal, AppSpacing.md)
+            .padding(.vertical, 6)
+        }
+    }
+
+    @ViewBuilder
+    private func filterButton(_ filter: RiskFilter, count: Int, size: Int64) -> some View {
+        Button {
+            riskFilter = filter
+        } label: {
+            HStack(spacing: 4) {
+                Circle()
+                    .fill(filterColor(filter))
+                    .frame(width: 6, height: 6)
+                Text(filter.title)
+                    .font(.system(size: 11, weight: .medium))
+                Text("\(count)")
+                    .font(.system(size: 9, weight: .medium))
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 1)
+                    .background(filterColor(filter).opacity(0.15))
+                    .clipShape(Capsule())
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(riskFilter == filter ? filterColor(filter).opacity(0.15) : Color.clear)
+            .clipShape(Capsule())
+            .overlay(
+                Capsule().strokeBorder(
+                    riskFilter == filter ? filterColor(filter) : Color.separatorColor.opacity(0.3),
+                    lineWidth: 1
+                )
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func filterColor(_ filter: RiskFilter) -> Color {
+        switch filter {
+        case .all: return .brandPrimary
+        case .recommended: return .success
+        case .optional: return .textSecondary
+        case .caution: return .orange
+        case .dangerous: return .danger
+        }
     }
 }
