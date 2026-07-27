@@ -216,6 +216,7 @@ struct ScanResultsTreeView: View {
                 onCleanup: { viewModel.startCleanup() }
             )
         }
+        .modifier(ScanResultsKeyboardShortcuts(riskFilter: $riskFilter, onCleanup: { viewModel.startCleanup() }))
     }
 
     private var filteredGroups: [ScanResultGroup] {
@@ -511,5 +512,42 @@ struct RiskFilterBar: View {
         case .caution: return .orange
         case .dangerous: return .danger
         }
+    }
+}
+
+// MARK: - Keyboard Shortcuts
+
+/// macOS 13+ keyboard shortcuts for scan results using NSEvent monitor.
+private struct ScanResultsKeyboardShortcuts: ViewModifier {
+    @Binding var riskFilter: RiskFilter
+    let onCleanup: () -> Void
+    @State private var monitor: Any?
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+                    let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+                    let isCommand = flags == .command
+
+                    guard isCommand else { return event }
+
+                    switch event.charactersIgnoringModifiers {
+                    case "0": riskFilter = .all; return nil
+                    case "1": riskFilter = .recommended; return nil
+                    case "2": riskFilter = .optional; return nil
+                    case "3": riskFilter = .caution; return nil
+                    case "4": riskFilter = .dangerous; return nil
+                    case "\r": onCleanup(); return nil
+                    default: return event
+                    }
+                }
+            }
+            .onDisappear {
+                if let monitor = monitor {
+                    NSEvent.removeMonitor(monitor)
+                    self.monitor = nil
+                }
+            }
     }
 }
