@@ -36,7 +36,7 @@ struct RightPanelView: View {
                 Group {
                     switch selectedTab {
                     case .overview: OverviewTabView(scanViewModel: scanViewModel)
-                    case .allFiles: AllFilesTabView(scanViewModel: scanViewModel)
+                    case .results: ScanResultsTreeView(viewModel: scanViewModel)
                     case .suggestions: SuggestionsTabView(scanViewModel: scanViewModel)
                     }
                 }
