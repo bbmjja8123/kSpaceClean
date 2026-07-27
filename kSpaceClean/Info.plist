@@ -11,5 +11,9 @@
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>LSMinimumSystemVersion</key><string>13.0</string>
     <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Kraftly. All rights reserved.</string>
+    <key>NSSystemAdministrationUsageDescription</key>
+    <string>kSpaceClean needs Full Disk Access to scan all files on your Mac for cleanup.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>kSpaceClean needs Automation permission to help manage Trash and other applications.</string>
 </dict>
 </plist>

@@ -10,7 +10,7 @@ public final class TrashMover: Sendable {
     public init() {}
 
     public func moveToTrash(urls: [URL]) async -> TrashResult {
-        var succeeded: [(original: URL, trashURL: URL)] = []
+        var snapshots: [TrashSnapshot] = []
         var failed: [(URL, MoveError)] = []
 
         for url in urls {
@@ -29,13 +29,13 @@ public final class TrashMover: Sendable {
                     continue
                 }
 
-                succeeded.append((url, trashURL))
+                snapshots.append(snapshot)
             } catch {
                 failed.append((url, .trashFailed(url, error)))
             }
         }
 
-        return TrashResult(succeeded: succeeded.map(\.original), failed: failed)
+        return TrashResult(snapshots: snapshots, failed: failed)
     }
 
     private func createSnapshot(for url: URL, trashURL: URL) async -> TrashSnapshot? {
@@ -52,8 +52,10 @@ public final class TrashMover: Sendable {
 }
 
 public struct TrashResult: Sendable {
-    public let succeeded: [URL]
+    public let snapshots: [TrashSnapshot]
     public let failed: [(URL, TrashMover.MoveError)]
+
+    public var succeeded: [URL] { snapshots.map(\.originalPath).map { URL(fileURLWithPath: $0) } }
 }
 
 public struct TrashSnapshot: Codable, Sendable {

@@ -1,6 +1,7 @@
 import CoreData
 
-public final class CleanupHistory: Sendable {
+@MainActor
+public final class CleanupHistory {
     private let stack = CoreDataStack.shared
 
     public init() {}
@@ -31,7 +32,7 @@ public final class CleanupHistory: Sendable {
         var allRestored = true
         for entry in entries {
             let trashDir = FileManager.default.trashDirectory
-            let originalURL = URL(fileURLWithPath: entry.path)
+            let originalURL = URL(fileURLWithPath: entry.path ?? "")
             let trashURL = trashDir?.appendingPathComponent(originalURL.lastPathComponent) ?? originalURL
             let fm = FileManager.default
 
@@ -47,7 +48,7 @@ public final class CleanupHistory: Sendable {
         }
         if allRestored {
             let ctx = stack.backgroundContext()
-            ctx.perform {
+            await ctx.perform {
                 record.isRestored = true
                 try? ctx.save()
             }

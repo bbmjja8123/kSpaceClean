@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CleanupRecord" representedClassName="CleanupRecord" syncable="YES" codeGenerationType="manual">
+    <entity name="CleanupRecord" representedClassName="CleanupRecord" syncable="YES">
         <attribute name="cleanedAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isRestored" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="totalBytes" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="entries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FileEntry" inverseName="cleanupRecord" inverseEntity="FileEntry"/>
     </entity>
-    <entity name="FileEntry" representedClassName="FileEntry" syncable="YES" codeGenerationType="manual">
+    <entity name="FileEntry" representedClassName="FileEntry" syncable="YES">
+        <attribute name="actionID" attributeType="Integer 64" usesScalarValueType="YES" defaultValueString="-1"/>
         <attribute name="category" attributeType="String"/>
         <attribute name="confidence" attributeType="Double" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isRecommended" attributeType="Boolean" usesScalarValueType="YES" defaultValueString="NO"/>
         <attribute name="path" attributeType="String"/>
         <attribute name="size" attributeType="Integer 64" usesScalarValueType="YES"/>
+        <attribute name="subCategoryID" attributeType="Integer 64" usesScalarValueType="YES" defaultValueString="-1"/>
         <relationship name="cleanupRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CleanupRecord" inverseName="entries" inverseEntity="CleanupRecord"/>
         <relationship name="scanRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ScanRecord" inverseName="entries" inverseEntity="ScanRecord"/>
     </entity>
-    <entity name="ScanRecord" representedClassName="ScanRecord" syncable="YES" codeGenerationType="manual">
+    <entity name="ScanRecord" representedClassName="ScanRecord" syncable="YES">
         <attribute name="category" attributeType="String"/>
         <attribute name="finishedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="freedBytes" attributeType="Integer 64" usesScalarValueType="YES"/>

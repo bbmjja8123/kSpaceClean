@@ -1,17 +1,32 @@
 import SwiftUI
+import CoreData
 
 @main
 struct kSpaceCleanApp: App {
+    @StateObject private var appState = AppState()
+    @StateObject private var coordinator = AppCoordinator()
+    @StateObject private var menuBarManager = MenuBarManager()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(appState)
+                .environmentObject(coordinator)
+                .environment(\.managedObjectContext, CoreDataStack.shared.viewContext)
+                .preferredColorScheme(.dark)
+                .onOpenURL { url in
+                    coordinator.handleDeepLink(url)
+                }
+                .onAppear {
+                    coordinator.appState = appState
+                    menuBarManager.setup()
+                }
         }
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        Text("kSpaceClean")
-            .frame(width: 400, height: 300)
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentMinSize)
+        .defaultSize(width: 960, height: 660)
+        .commands {
+            CommandGroup(replacing: .newItem) {}
+        }
     }
 }

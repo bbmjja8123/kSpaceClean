@@ -9,6 +9,7 @@ public struct UserPreferences: Codable {
     public var historyRetentionDays: Int = 30
     public var launchAtLogin: Bool = false
     public var showMenuBarDiskUsage: Bool = true
+    public var scanSpeed: ScanSpeed = .medium
 
     public enum CleanAction: String, Codable {
         case trash, permanent
