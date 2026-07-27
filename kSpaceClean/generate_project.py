@@ -225,6 +225,7 @@ def main():
         "AppStateTests.swift",
         "AppCoordinatorTests.swift",
         "ScanProgressTests.swift",
+        "ScanProgressModelTests.swift",
         "TrashMoverTests.swift",
         "UserPreferencesTests.swift",
         "FileSizeFormatterTests.swift",
