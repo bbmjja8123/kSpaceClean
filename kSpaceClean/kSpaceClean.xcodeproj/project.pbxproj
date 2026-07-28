@@ -231,6 +231,10 @@
 		isa = PBXBuildFile;
 		fileRef = 3DD7A3BF34DFF3DF1B53E435;
 	};
+	A3CC30C80D09F1974865F777 /* A3CC30C80D09F1974865F777 */ = {
+		isa = PBXBuildFile;
+		fileRef = A94EDDBD9A8C7356D3BD3B99;
+	};
 	A3E4D45373D1BE3D3E45011D /* A3E4D45373D1BE3D3E45011D */ = {
 		isa = PBXBuildFile;
 		fileRef = DF350E26C9D818BFD659E2D0;
@@ -910,6 +914,13 @@
 		path = Features/SmartScan/ScanSpeed.swift;
 		sourceTree = "<group>";
 	};
+	A94EDDBD9A8C7356D3BD3B99 /* CheckState.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = CheckState.swift;
+		path = Features/Common/Models/CheckState.swift;
+		sourceTree = "<group>";
+	};
 	AD7ADD7CF11E777CD8908164 /* AppUninstallScanner.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1185,6 +1196,7 @@
 		isa = PBXGroup;
 		children = (
 			C4ADFF621F0AF6345A5599E7 /* RiskLevel.swift */,
+			A94EDDBD9A8C7356D3BD3B99 /* CheckState.swift */,
 		);
 		name = Models;
 		sourceTree = "<group>";
@@ -1642,6 +1654,7 @@
 			62A2321241F1878969C72428 /* 62A2321241F1878969C72428 */,
 			2FDD27146C426D2695791E71 /* 2FDD27146C426D2695791E71 */,
 			A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */,
+			A3CC30C80D09F1974865F777 /* A3CC30C80D09F1974865F777 */,
 			A6C5E37BB573D6D3DB661344 /* A6C5E37BB573D6D3DB661344 */,
 			E564A7F0385D9BCD1E1DE5F1 /* E564A7F0385D9BCD1E1DE5F1 */,
 			25722D97CC1821BA333B9F82 /* 25722D97CC1821BA333B9F82 */,

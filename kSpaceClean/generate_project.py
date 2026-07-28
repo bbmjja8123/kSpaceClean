@@ -3,8 +3,8 @@
 
 import os, hashlib
 
-BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean"
-PROJECT_FILE = f"{BASE}/kSpaceClean.xcodeproj/project.pbxproj"
+BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp"
+PROJECT_FILE = f"{BASE}/kSpaceClean/kSpaceClean.xcodeproj/project.pbxproj"
 KFOUNTATION_PATH = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation"
 
 def hash_id(seed, length=24):
@@ -152,6 +152,7 @@ def main():
         ("Features/Common/DesignSystem/Spacing.swift", "DesignSystem"),
         ("Features/Common/DesignSystem/Accessibility.swift", "DesignSystem"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
+        ("Features/Common/Models/CheckState.swift", "Models"),
         ("Features/LargeOldFile/LargeOldScanner.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldViewModel.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldView.swift", "LargeOldFile"),

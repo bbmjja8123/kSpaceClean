@@ -97,55 +97,6 @@ public enum ScanActionType: String, Codable, Sendable, CaseIterable {
     case soft
 }
 
-/// 3-state checkbox for tree cascade
-public enum CheckState: Sendable, Equatable {
-    case unchecked
-    case mixed        // 部分子项被选
-    case checked
-
-    /// Compute check state from selection counts
-    public static func from(selected: Bool, total: Int, selectedCount: Int) -> CheckState {
-        if selectedCount == 0 { return .unchecked }
-        if selectedCount == total { return .checked }
-        return .mixed
-    }
-}
-
-/// Recommend policy controls default selection behavior
-public enum RecommendPolicy: String, Codable, Sendable, CaseIterable {
-    case strict                   // 仅勾「推荐」项
-    case `default`                // 勾「推荐 + 可选」项
-    case autoSelectCaution        // 勾「推荐 + 可选 + 注意」项
-
-    /// Whether a given risk level should be selected by default under this policy
-    public func shouldSelect(_ level: RiskLevel) -> Bool {
-        switch (self, level) {
-        case (_, .dangerous): return false
-        case (_, .recommended): return true
-        case (_, .optional): return self != .strict
-        case (_, .caution): return self == .autoSelectCaution
-        }
-    }
-}
-
-/// Determines whether a node should be default-selected based on risk level and policy
-public struct DefaultSelectionPolicy: Sendable {
-    public let policy: RecommendPolicy
-
-    public init(policy: RecommendPolicy = .default) {
-        self.policy = policy
-    }
-
-    public func shouldSelect(_ riskLevel: RiskLevel) -> Bool {
-        policy.shouldSelect(riskLevel)
-    }
-
-    public func shouldSelect(recommended: Bool, cautionID: Int?) -> Bool {
-        let level = RiskLevel.from(recommended: recommended, cautionID: cautionID)
-        return shouldSelect(level)
-    }
-}
-
 // MARK: - Clean Attributes
 public struct CleanAttributes: OptionSet, Codable, Sendable {
     public let rawValue: Int
