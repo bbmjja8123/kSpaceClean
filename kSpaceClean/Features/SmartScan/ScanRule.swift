@@ -54,7 +54,7 @@ public indirect enum FilterExpression: Codable, Sendable {
 }
 
 // MARK: - Action Types
-public enum ScanActionType: String, Codable, Sendable, CaseIterable {
+public enum RuleScanActionType: String, Codable, Sendable, CaseIterable {
     /// 普通文件扫描
     case file
     /// 目录级扫描
@@ -143,9 +143,9 @@ public struct ScanPath: Codable, Sendable {
 }
 
 // MARK: - Scan Action
-public struct ScanAction: Codable, Sendable {
+public struct RuleScanAction: Codable, Sendable {
     public let actionID: Int?
-    public let type: ScanActionType
+    public let type: RuleScanActionType
     public let title: String
     public let paths: [ScanPath]
     /// 结果过滤条件 (atom filters)
@@ -157,7 +157,7 @@ public struct ScanAction: Codable, Sendable {
     public let recommended: Bool
     public let cleanAttributes: CleanAttributes
 
-    public init(actionID: Int? = nil, type: ScanActionType, title: String, paths: [ScanPath],
+    public init(actionID: Int? = nil, type: RuleScanActionType, title: String, paths: [ScanPath],
                 resultFilters: FilterExpression? = nil, cautionID: Int? = nil,
                 cleanHiddenFiles: Bool = false, cleanEmptyFolders: Bool = true, recommended: Bool = true,
                 cleanAttributes: CleanAttributes = []) {
@@ -175,14 +175,14 @@ public struct ScanAction: Codable, Sendable {
 }
 
 // MARK: - Scan SubCategory (Item)
-public struct ScanSubCategory: Codable, Sendable {
+public struct RuleScanSubCategory: Codable, Sendable {
     public let id: Int
     public let title: String
     public let tips: String?
     public let recommended: Bool
-    public let actions: [ScanAction]
+    public let actions: [RuleScanAction]
 
-    public init(id: Int, title: String, tips: String? = nil, recommended: Bool = true, actions: [ScanAction]) {
+    public init(id: Int, title: String, tips: String? = nil, recommended: Bool = true, actions: [RuleScanAction]) {
         self.id = id
         self.title = title
         self.tips = tips
@@ -192,15 +192,15 @@ public struct ScanSubCategory: Codable, Sendable {
 }
 
 // MARK: - Scan Category
-public struct ScanCategory: Codable, Sendable, Identifiable {
+public struct RuleScanCategory: Codable, Sendable, Identifiable {
     public let id: Int
     public let title: String
     public let tips: String
-    public let subCategories: [ScanSubCategory]
+    public let subCategories: [RuleScanSubCategory]
 
     public var categoryID: Int { id }
 
-    public init(id: Int, title: String, tips: String, subCategories: [ScanSubCategory]) {
+    public init(id: Int, title: String, tips: String, subCategories: [RuleScanSubCategory]) {
         self.id = id
         self.title = title
         self.tips = tips
@@ -235,7 +235,7 @@ public struct ScanResultEntry: Sendable {
 public struct ScanRuleSet: Codable, Sendable {
     public let version: String
     public let filters: [Int: FilterRule]
-    public let categories: [ScanCategory]
+    public let categories: [RuleScanCategory]
 
     public static let `default` = ScanRuleSet(
         version: "2026.1",
@@ -384,7 +384,7 @@ extension ScanRuleSet {
 
 // MARK: - Built-in Category Definitions
 extension ScanRuleSet {
-    public static let defaultCategories: [ScanCategory] = {
+    public static let defaultCategories: [RuleScanCategory] = {
         [
             category1_logsCache,
             category2_devJunk,
@@ -398,11 +398,11 @@ extension ScanRuleSet {
     }()
 
     // MARK: Category 1 — 日志&缓存文件
-    private static let category1_logsCache = ScanCategory(
+    private static let category1_logsCache = RuleScanCategory(
         id: 1, title: "日志&缓存文件", tips: "清理软件以及系统产生的日志和缓存文件。",
         subCategories: [
-            ScanSubCategory(id: 10, title: "用户缓存", recommended: true, actions: [
-                ScanAction(type: .file, title: "Caches 目录缓存", paths: [
+            RuleScanSubCategory(id: 10, title: "用户缓存", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "Caches 目录缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Caches", level: 1,
                              scanFilters: .and([.filterID(23), .filterID(25), .filterID(28), .filterID(29),
                                                 .filterID(30), .filterID(15), .filterID(16), .filterID(17),
@@ -411,52 +411,52 @@ extension ScanRuleSet {
                     ScanPath(type: .absolute, value: "~/Library/Caches/Google/", level: 1,
                              scanFilters: .filterID(32)),
                 ]),
-                ScanAction(type: .file, title: "系统临时目录", paths: [
+                RuleScanAction(type: .file, title: "系统临时目录", paths: [
                     ScanPath(type: .tempDir, value: "", level: 1,
                              filenamePattern: nil,
                              scanFilters: .and([.filterID(1), .filterID(2), .filterID(3),
                                                 .filterID(4), .filterID(5), .filterID(6),
                                                 .filterID(21), .filterID(35)])),
                 ], cleanEmptyFolders: false),
-                ScanAction(type: .file, title: "沙盒缓存", paths: [
+                RuleScanAction(type: .file, title: "沙盒缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Containers/(.+)/Data/Library/Caches", level: 1,
                              scanFilters: .and([.filterID(15), .filterID(16), .filterID(17),
                                                 .filterID(18), .filterID(19), .filterID(20), .filterID(27)])),
                 ], cleanEmptyFolders: false),
             ]),
-            ScanSubCategory(id: 11, title: "系统缓存", recommended: true, actions: [
-                ScanAction(type: .file, title: "系统缓存目录", paths: [
+            RuleScanSubCategory(id: 11, title: "系统缓存", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "系统缓存目录", paths: [
                     ScanPath(type: .absolute, value: "/Library/Caches", level: 1,
                              scanFilters: .filterID(7)),
                 ]),
             ]),
-            ScanSubCategory(id: 12, title: "用户日志", recommended: true, actions: [
-                ScanAction(type: .file, title: "用户日志目录", paths: [
+            RuleScanSubCategory(id: 12, title: "用户日志", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "用户日志目录", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Logs", level: 1,
                              filenamePattern: nil, scanFilters: .filterID(26)),
                 ], resultFilters: .filterID(8)),
-                ScanAction(type: .file, title: "诊断报告", paths: [
+                RuleScanAction(type: .file, title: "诊断报告", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Logs/DiagnosticReports", level: 0),
                 ]),
             ]),
-            ScanSubCategory(id: 13, title: "系统日志", recommended: true, actions: [
-                ScanAction(type: .file, title: "系统日志目录", paths: [
+            RuleScanSubCategory(id: 13, title: "系统日志", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "系统日志目录", paths: [
                     ScanPath(type: .absolute, value: "/Library/Logs/", level: 1,
                              scanFilters: .filterID(26)),
                 ], resultFilters: .filterID(8)),
-                ScanAction(type: .file, title: "系统诊断报告", paths: [
+                RuleScanAction(type: .file, title: "系统诊断报告", paths: [
                     ScanPath(type: .absolute, value: "/Library/Logs/DiagnosticReports", level: 0),
                 ]),
-                ScanAction(type: .file, title: "ASL 日志", paths: [
+                RuleScanAction(type: .file, title: "ASL 日志", paths: [
                     ScanPath(type: .absolute, value: "/private/var/log/asl/", level: 0),
                 ]),
-                ScanAction(type: .file, title: "诊断消息", paths: [
+                RuleScanAction(type: .file, title: "诊断消息", paths: [
                     ScanPath(type: .absolute, value: "/private/var/log/DiagnosticMessages/", level: 0),
                 ]),
-                ScanAction(type: .file, title: "CUPS 日志", paths: [
+                RuleScanAction(type: .file, title: "CUPS 日志", paths: [
                     ScanPath(type: .absolute, value: "/private/var/log/cups/", level: 1),
                 ], resultFilters: .and([.filterID(8), .or([.filterID(9), .filterID(10), .filterID(11)])])),
-                ScanAction(type: .file, title: "系统日志文件", paths: [
+                RuleScanAction(type: .file, title: "系统日志文件", paths: [
                     ScanPath(type: .absolute, value: "/private/var/log/", level: 1),
                 ], resultFilters: .and([.filterID(8), .or([.filterID(12), .filterID(13), .filterID(14)])])),
             ]),
@@ -464,11 +464,11 @@ extension ScanRuleSet {
     )
 
     // MARK: Category 2 — 开发残留垃圾
-    private static let category2_devJunk = ScanCategory(
+    private static let category2_devJunk = RuleScanCategory(
         id: 2, title: "开发残留垃圾", tips: "清理应用程序开发的时候，创建的一些支持文件。",
         subCategories: [
-            ScanSubCategory(id: 50, title: "开发支持文件", recommended: true, actions: [
-                ScanAction(type: .developer, title: "应用开发残留", paths: [
+            RuleScanSubCategory(id: 50, title: "开发支持文件", recommended: true, actions: [
+                RuleScanAction(type: .developer, title: "应用开发残留", paths: [
                     ScanPath(type: .absolute, value: "/Applications/", level: -1,
                              filenamePattern: ".+\\.app",
                              scanFilters: .and([.filterID(210), .filterID(214), .filterID(215)])),
@@ -478,11 +478,11 @@ extension ScanRuleSet {
     )
 
     // MARK: Category 3 — 无用的二进制文件
-    private static let category3_binary = ScanCategory(
+    private static let category3_binary = RuleScanCategory(
         id: 3, title: "无用的二进制文件", tips: "清理软件中包含的不必要的二进制。",
         subCategories: [
-            ScanSubCategory(id: 30, title: "多余二进制架构", recommended: true, actions: [
-                ScanAction(type: .binary, title: "不必要二进制", paths: [
+            RuleScanSubCategory(id: 30, title: "多余二进制架构", recommended: true, actions: [
+                RuleScanAction(type: .binary, title: "不必要二进制", paths: [
                     ScanPath(type: .absolute, value: "/Applications/", level: -1,
                              filenamePattern: ".+\\.app",
                              scanFilters: .and([.filterID(300), .filterID(214)])),
@@ -492,11 +492,11 @@ extension ScanRuleSet {
     )
 
     // MARK: Category 4 — 无用的程序语言包
-    private static let category4_language = ScanCategory(
+    private static let category4_language = RuleScanCategory(
         id: 4, title: "无用的程序语言包", tips: "清理应用程序里你不需要的语言包。",
         subCategories: [
-            ScanSubCategory(id: 20, title: "多余语言包", recommended: true, actions: [
-                ScanAction(type: .language, title: "不必要语言资源", paths: [
+            RuleScanSubCategory(id: 20, title: "多余语言包", recommended: true, actions: [
+                RuleScanAction(type: .language, title: "不必要语言资源", paths: [
                     ScanPath(type: .absolute, value: "/Applications/", level: -1,
                              filenamePattern: ".+\\.app",
                              scanFilters: .and([.filterID(210), .filterID(213), .filterID(214)])),
@@ -506,17 +506,17 @@ extension ScanRuleSet {
     )
 
     // MARK: Category 5 — 损坏的配置和注册项
-    private static let category5_brokenConfig = ScanCategory(
+    private static let category5_brokenConfig = RuleScanCategory(
         id: 5, title: "损坏的配置和注册项", tips: "清理应用程序或服务被移除之后，产生的破损登录项连接。",
         subCategories: [
-            ScanSubCategory(id: 40, title: "损坏的配置", recommended: true, actions: [
-                ScanAction(type: .brokenPlist, title: "损坏的偏好设置", paths: [
+            RuleScanSubCategory(id: 40, title: "损坏的配置", recommended: true, actions: [
+                RuleScanAction(type: .brokenPlist, title: "损坏的偏好设置", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Preferences", level: 1,
                              filenamePattern: ".+\\.plist"),
                 ], cleanHiddenFiles: false),
             ]),
-            ScanSubCategory(id: 41, title: "损坏的注册项", recommended: true, actions: [
-                ScanAction(type: .brokenRegister, title: "损坏的启动项", paths: [
+            RuleScanSubCategory(id: 41, title: "损坏的注册项", recommended: true, actions: [
+                RuleScanAction(type: .brokenRegister, title: "损坏的启动项", paths: [
                     ScanPath(type: .absolute, value: "~/Library/LaunchAgents", level: 1, filenamePattern: ".+\\.plist"),
                     ScanPath(type: .absolute, value: "/Library/LaunchAgents", level: 1, filenamePattern: ".+\\.plist"),
                     ScanPath(type: .absolute, value: "~/Library/LaunchDaemons", level: 1, filenamePattern: ".+\\.plist"),
@@ -527,16 +527,16 @@ extension ScanRuleSet {
     )
 
     // MARK: Category 6 — iOS 缓存
-    private static let category6_iOSCache = ScanCategory(
+    private static let category6_iOSCache = RuleScanCategory(
         id: 6, title: "iOS升级软件&照片缓存", tips: "清理 iOS 设备同步到电脑上面的数据缓存。",
         subCategories: [
-            ScanSubCategory(id: 60, title: "iOS 升级软件", recommended: true, actions: [
-                ScanAction(type: .iOSCache, title: "iOS 固件文件", paths: [
+            RuleScanSubCategory(id: 60, title: "iOS 升级软件", recommended: true, actions: [
+                RuleScanAction(type: .iOSCache, title: "iOS 固件文件", paths: [
                     ScanPath(type: .absolute, value: "~/Library/iTunes/", level: -1, filenamePattern: ".+\\.ipsw"),
                 ]),
             ]),
-            ScanSubCategory(id: 61, title: "iOS 照片缓存", recommended: true, actions: [
-                ScanAction(type: .directory, title: "照片缓存", paths: [
+            RuleScanSubCategory(id: 61, title: "iOS 照片缓存", recommended: true, actions: [
+                RuleScanAction(type: .directory, title: "照片缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Pictures/iPod Photo Cache/", level: 1,
                              scanFilters: .and([.filterID(70), .filterID(71)])),
                 ]),
@@ -545,11 +545,11 @@ extension ScanRuleSet {
     )
 
     // MARK: Category 7 — 应用程序残留
-    private static let category7_appLeftovers = ScanCategory(
+    private static let category7_appLeftovers = RuleScanCategory(
         id: 7, title: "应用程序残留", tips: "清理已删除软件的残留文件。",
         subCategories: [
-            ScanSubCategory(id: 70, title: "应用残留文件", recommended: true, actions: [
-                ScanAction(type: .appLeftover, title: "残留配置与支持文件", paths: [
+            RuleScanSubCategory(id: 70, title: "应用残留文件", recommended: true, actions: [
+                RuleScanAction(type: .appLeftover, title: "残留配置与支持文件", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Preferences", level: 1,
                              filenamePattern: ".+\\.plist",
                              scanFilters: .and([.filterID(100), .filterID(101), .filterID(102),
@@ -569,125 +569,125 @@ extension ScanRuleSet {
     )
 
     // MARK: Category 8 — 浏览器缓存
-    private static let category8_browserCache = ScanCategory(
+    private static let category8_browserCache = RuleScanCategory(
         id: 8, title: "浏览器缓存", tips: "清理 Chrome、Opera、Safari、Firefox 和 QQ 浏览器产生的缓存文件。",
         subCategories: [
             // Safari
-            ScanSubCategory(id: 81, title: "Safari", recommended: true, actions: [
-                ScanAction(type: .file, title: "浏览器缓存", paths: [
+            RuleScanSubCategory(id: 81, title: "Safari", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "浏览器缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Caches/com.apple.Safari/", level: 1),
                     ScanPath(type: .absolute, value: "~/Library/Caches/Metadata/Safari/", level: 1),
                     ScanPath(type: .absolute, value: "~/Library/Safari/WebpageIcons.db", level: 0),
                 ], cautionID: 1011),
-                ScanAction(type: .file, title: "浏览器历史记录", paths: [
+                RuleScanAction(type: .file, title: "浏览器历史记录", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Safari/History.plist", level: 0),
                     ScanPath(type: .absolute, value: "~/Library/Safari/HistoryIndex.sk", level: 0),
                 ], cautionID: 1011, recommended: false),
-                ScanAction(type: .file, title: "浏览器下载记录", paths: [
+                RuleScanAction(type: .file, title: "浏览器下载记录", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Safari/Downloads.plist", level: 0),
                 ], cautionID: 1011),
-                ScanAction(type: .file, title: "浏览器 Cookies", paths: [
+                RuleScanAction(type: .file, title: "浏览器 Cookies", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Safari/LocalStorage/", level: 0),
                 ], cautionID: 1011, recommended: false),
             ]),
             // Chrome
-            ScanSubCategory(id: 80, title: "Chrome", recommended: true, actions: [
-                ScanAction(type: .file, title: "浏览器缓存", paths: [
+            RuleScanSubCategory(id: 80, title: "Chrome", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "浏览器缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Caches/Google/Chrome/Default/Cache/", level: 0),
                 ], cautionID: 1012),
-                ScanAction(type: .file, title: "浏览器历史记录", paths: [
+                RuleScanAction(type: .file, title: "浏览器历史记录", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/Google/Chrome/Default/", level: 1,
                              scanFilters: .or([.filterID(240), .filterID(241), .filterID(242),
                                                .filterID(243), .filterID(244), .filterID(247)])),
                 ], cautionID: 1012, recommended: false),
-                ScanAction(type: .file, title: "浏览器会话", paths: [
+                RuleScanAction(type: .file, title: "浏览器会话", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/Google/Chrome/Default/", level: 1,
                              scanFilters: .or([.filterID(245), .filterID(246)])),
                 ], cautionID: 1012),
-                ScanAction(type: .file, title: "浏览器 Cookies", paths: [
+                RuleScanAction(type: .file, title: "浏览器 Cookies", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/Google/Chrome/Default/Local Storage/", level: 1,
                              scanFilters: .or([.filterID(248), .filterID(249), .filterID(261), .filterID(262)])),
                     ScanPath(type: .absolute, value: "~/Library/Application Support/Google/Chrome/Default", level: 1,
                              filenamePattern: "Cookies.*"),
                 ], cautionID: 1012, recommended: false),
-                ScanAction(type: .file, title: "保存的密码", paths: [
+                RuleScanAction(type: .file, title: "保存的密码", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/Google/Chrome/Default", level: 1,
                              filenamePattern: "Login Data.*"),
                 ], cautionID: 1012, recommended: false),
             ]),
             // QQBrowser
-            ScanSubCategory(id: 84, title: "QQ浏览器", recommended: true, actions: [
-                ScanAction(type: .file, title: "浏览器缓存", paths: [
+            RuleScanSubCategory(id: 84, title: "QQ浏览器", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "浏览器缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Caches/QQBrowser2/Default/Cache/", level: 0),
                 ], cautionID: 1014),
-                ScanAction(type: .file, title: "浏览器历史记录", paths: [
+                RuleScanAction(type: .file, title: "浏览器历史记录", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/QQBrowser2/Default/", level: 1,
                              scanFilters: .or([.filterID(240), .filterID(241), .filterID(242),
                                                .filterID(243), .filterID(244), .filterID(247)])),
                 ], cautionID: 1014, recommended: false),
-                ScanAction(type: .file, title: "浏览器会话", paths: [
+                RuleScanAction(type: .file, title: "浏览器会话", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/QQBrowser2/Default/", level: 1,
                              scanFilters: .or([.filterID(245), .filterID(246)])),
                 ], cautionID: 1014),
-                ScanAction(type: .file, title: "浏览器 Cookies", paths: [
+                RuleScanAction(type: .file, title: "浏览器 Cookies", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/QQBrowser2/Default/Local Storage/", level: 1),
                     ScanPath(type: .absolute, value: "~/Library/Application Support/QQBrowser2/Default/", level: 1,
                              filenamePattern: "Cookies.*"),
                 ], cautionID: 1014, recommended: false),
-                ScanAction(type: .file, title: "保存的密码", paths: [
+                RuleScanAction(type: .file, title: "保存的密码", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/QQBrowser2/Default/", level: 1,
                              filenamePattern: "Login Data.*"),
                 ], cautionID: 1014, recommended: false),
             ]),
             // Opera
-            ScanSubCategory(id: 82, title: "Opera", recommended: true, actions: [
-                ScanAction(type: .file, title: "浏览器缓存", paths: [
+            RuleScanSubCategory(id: 82, title: "Opera", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "浏览器缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Caches/Opera/", level: 0),
                     ScanPath(type: .absolute, value: "~/Library/Application Support/com.operasoftware.Opera/GPUCache", level: 0),
                     ScanPath(type: .absolute, value: "~/Library/Caches/com.operasoftware.Opera", level: 0),
                 ], cautionID: 1015),
-                ScanAction(type: .file, title: "应用程序缓存", paths: [
+                RuleScanAction(type: .file, title: "应用程序缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/Opera/application_cache", level: 0),
                 ], cautionID: 1015, recommended: false),
-                ScanAction(type: .file, title: "浏览器会话", paths: [
+                RuleScanAction(type: .file, title: "浏览器会话", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Opera/sessions/", level: 1),
                     ScanPath(type: .absolute, value: "~/Library/Application Support/com.operasoftware.Opera/", level: 1,
                              filenamePattern: "session.db.*"),
                 ], cautionID: 1015),
-                ScanAction(type: .file, title: "浏览器历史记录", paths: [
+                RuleScanAction(type: .file, title: "浏览器历史记录", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/com.operasoftware.Opera/", level: 1,
                              filenamePattern: "History.*"),
                 ], cautionID: 1015, recommended: false),
-                ScanAction(type: .file, title: "浏览器 Cookies", paths: [
+                RuleScanAction(type: .file, title: "浏览器 Cookies", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/com.operasoftware.Opera/", level: 1,
                              filenamePattern: "Cookies.*"),
                 ], cautionID: 1015, recommended: false),
-                ScanAction(type: .file, title: "保存的密码", paths: [
+                RuleScanAction(type: .file, title: "保存的密码", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Application Support/com.operasoftware.Opera/", level: 1,
                              filenamePattern: "Login Data.*"),
                 ], cautionID: 1015, recommended: false),
             ]),
             // FireFox
-            ScanSubCategory(id: 83, title: "FireFox", recommended: true, actions: [
-                ScanAction(type: .file, title: "浏览器缓存", paths: [
+            RuleScanSubCategory(id: 83, title: "FireFox", recommended: true, actions: [
+                RuleScanAction(type: .file, title: "浏览器缓存", paths: [
                     ScanPath(type: .absolute, value: "~/Library/Caches/Firefox/", level: 0),
                 ], cautionID: 1013),
-                ScanAction(type: .file, title: "浏览器下载记录", paths: [
+                RuleScanAction(type: .file, title: "浏览器下载记录", paths: [
                     ScanPath(type: .fireFoxProfiles, value: "FireFoxProfiles", level: 1, filenamePattern: "downloads\\.sqlite"),
                 ], cautionID: 1013, recommended: false),
-                ScanAction(type: .file, title: "浏览器会话", paths: [
+                RuleScanAction(type: .file, title: "浏览器会话", paths: [
                     ScanPath(type: .fireFoxProfiles, value: "FireFoxProfiles", level: 1, filenamePattern: "sessionstore\\..*"),
                 ], cautionID: 1013),
-                ScanAction(type: .file, title: "浏览器 Cookies", paths: [
+                RuleScanAction(type: .file, title: "浏览器 Cookies", paths: [
                     ScanPath(type: .fireFoxProfiles, value: "FireFoxProfiles", level: 1, filenamePattern: "cookies\\.sqlite"),
                 ], cautionID: 1013, recommended: false),
-                ScanAction(type: .file, title: "页面配置", paths: [
+                RuleScanAction(type: .file, title: "页面配置", paths: [
                     ScanPath(type: .fireFoxProfiles, value: "FireFoxProfiles", level: 1, filenamePattern: "content-prefs\\.sqlite"),
                 ], cautionID: 1013, recommended: true),
-                ScanAction(type: .file, title: "表单信息", paths: [
+                RuleScanAction(type: .file, title: "表单信息", paths: [
                     ScanPath(type: .fireFoxProfiles, value: "FireFoxProfiles", level: 1, filenamePattern: "formhistory\\.sqlite"),
                 ], cautionID: 1013, recommended: false),
-                ScanAction(type: .file, title: "保存的密码", paths: [
+                RuleScanAction(type: .file, title: "保存的密码", paths: [
                     ScanPath(type: .fireFoxProfiles, value: "FireFoxProfiles", level: 1, filenamePattern: "signons\\.sqlite"),
                 ], cautionID: 1013, recommended: false),
             ]),

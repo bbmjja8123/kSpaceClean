@@ -9,7 +9,7 @@ import Foundation
 /// across concurrency domains.
 public protocol CleanActionExecutor: Sendable {
     /// The action type this executor handles.
-    var actionType: ScanActionType { get }
+    var actionType: RuleScanActionType { get }
 
     /// Process (clean) the item at `url`.
     ///
@@ -66,7 +66,7 @@ extension FileManager {
 /// then is `lipo -extract arm64` invoked to produce a single-architecture
 /// binary, which replaces the original.
 public final class BinarySlicingExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .binary
+    public let actionType: RuleScanActionType = .binary
 
     public init() {}
 
@@ -146,7 +146,7 @@ public final class BinarySlicingExecutor: @unchecked Sendable, CleanActionExecut
 /// `Locale.preferredLanguages`.  Any `.lproj` directory whose language code
 /// falls outside this set is moved to Trash.
 public final class LanguagePackRemovalExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .language
+    public let actionType: RuleScanActionType = .language
 
     /// Languages that should never be removed regardless of user preference.
     private let alwaysKeep: Set<String> = ["en", "Base"]
@@ -204,7 +204,7 @@ public final class LanguagePackRemovalExecutor: @unchecked Sendable, CleanAction
 /// moving the file to Trash.  Archives are **never** deleted outright; they are
 /// always recoverable from Trash.
 public final class ArchiveExtractExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .archive
+    public let actionType: RuleScanActionType = .archive
 
     private let supportedExtensions: Set<String> = [
         "zip", "tar", "gz", "tgz", "bz2", "tbz", "xz", "lzma", "7z", "rar",
@@ -292,7 +292,7 @@ public final class ArchiveExtractExecutor: @unchecked Sendable, CleanActionExecu
 /// These are safe to delete: the system treats them as a cache and will
 /// re-download attachments on demand.
 public final class MailAttachmentExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .mail
+    public let actionType: RuleScanActionType = .mail
 
     /// The well-known subpath for Mail's attachment cache.
     private let mailDownloadsSubpath = "Containers/com.apple.mail/Data/Library/Mail Downloads"
@@ -340,7 +340,7 @@ public final class MailAttachmentExecutor: @unchecked Sendable, CleanActionExecu
 /// Typical targets are subdirectories inside `~/Library/Caches/` that contain
 /// well-known cache artifacts such as `fsCachedData/` or `Cache.db`.
 public final class AppCacheCleanExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .appCache
+    public let actionType: RuleScanActionType = .appCache
 
     public init() {}
 
@@ -397,7 +397,7 @@ public final class AppCacheCleanExecutor: @unchecked Sendable, CleanActionExecut
 /// dedicated cleaner (e.g. AppCacheCleanExecutor).  The directory hierarchy
 /// is preserved; only files and empty leaf directories are removed.
 public final class LeftCacheExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .leftCache
+    public let actionType: RuleScanActionType = .leftCache
 
     public init() {}
 
@@ -474,7 +474,7 @@ public final class LeftCacheExecutor: @unchecked Sendable, CleanActionExecutor {
 /// The executor preserves directory structure and only removes regular files
 /// (or empty subdirectories after their contents have been removed).
 public final class LeftLogExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .leftLog
+    public let actionType: RuleScanActionType = .leftLog
 
     /// Known log paths the scanner may return.
     private let allowedPrefixes: [String] = {
@@ -563,7 +563,7 @@ public final class LeftLogExecutor: @unchecked Sendable, CleanActionExecutor {
 /// Note: Emptying the system Trash requires Automation permission for Finder
 /// and may fail in sandboxed contexts.
 public final class SoftDeleteExecutor: @unchecked Sendable, CleanActionExecutor {
-    public let actionType: ScanActionType = .soft
+    public let actionType: RuleScanActionType = .soft
 
     public init() {}
 
@@ -691,7 +691,7 @@ public final class SoftDeleteExecutor: @unchecked Sendable, CleanActionExecutor 
 
 // MARK: - Executor Registry
 
-/// A dictionary that maps every `ScanActionType` to its corresponding
+/// A dictionary that maps every `RuleScanActionType` to its corresponding
 /// `CleanActionExecutor`.
 ///
 /// Usage:
@@ -700,7 +700,7 @@ public final class SoftDeleteExecutor: @unchecked Sendable, CleanActionExecutor 
 ///     let cleaned = try await executor.execute(url: someURL)
 /// }
 /// ```
-public let allExecutors: [ScanActionType: CleanActionExecutor] = {
+public let allExecutors: [RuleScanActionType: CleanActionExecutor] = {
     let list: [CleanActionExecutor] = [
         BinarySlicingExecutor(),
         LanguagePackRemovalExecutor(),

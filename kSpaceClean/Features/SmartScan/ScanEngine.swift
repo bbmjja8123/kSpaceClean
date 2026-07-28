@@ -140,7 +140,7 @@ public final class ScanEngine: ObservableObject {
 
     /// 单分类扫描 — 在 TaskGroup 子任务中运行。返回该分类累计的文件/字节统计。
     private func scanCategory(
-        _ category: ScanCategory,
+        _ category: RuleScanCategory,
         evaluator: FilterEvaluator,
         speed: ScanSpeed,
         stats: ScanStats,

@@ -95,6 +95,10 @@
 		isa = PBXBuildFile;
 		fileRef = 5295DCF95D62D27FAF0B421B;
 	};
+	3E6125A655221800A403AEF6 /* 3E6125A655221800A403AEF6 */ = {
+		isa = PBXBuildFile;
+		fileRef = 2CFE35D544528383C908AB59;
+	};
 	3EF1AE702F018DDE562866C7 /* 3EF1AE702F018DDE562866C7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 0A5138AABF7F5FCEFC7DA43E;
@@ -203,6 +207,14 @@
 		isa = PBXBuildFile;
 		fileRef = DE3DB9F0DE51E7A30047EE91;
 	};
+	99F5466776936D83A8982EC1 /* 99F5466776936D83A8982EC1 */ = {
+		isa = PBXBuildFile;
+		fileRef = 7A32909C417ABBF944B06227;
+	};
+	9A397EF15666FC312A044BF6 /* 9A397EF15666FC312A044BF6 */ = {
+		isa = PBXBuildFile;
+		fileRef = B958FCBD2B607239B2A13CF9;
+	};
 	9B7638C843719FD2CC9AB301 /* 9B7638C843719FD2CC9AB301 */ = {
 		isa = PBXBuildFile;
 		fileRef = 3B09D76AF3D612543B148313;
@@ -250,6 +262,10 @@
 	A59D71D67347553FE9F005C0 /* A59D71D67347553FE9F005C0 */ = {
 		isa = PBXBuildFile;
 		fileRef = ADB90F6FB754EE1C996E60D6;
+	};
+	A5DC807BBF7FE33311B154C7 /* A5DC807BBF7FE33311B154C7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 5476C01D0356DEDD2A0CE3A9;
 	};
 	A5EF019BB4A793139AD57F3F /* A5EF019BB4A793139AD57F3F */ = {
 		isa = PBXBuildFile;
@@ -330,6 +346,10 @@
 	CF002ACEA839D5052B46E932 /* CF002ACEA839D5052B46E932 */ = {
 		isa = PBXBuildFile;
 		fileRef = 9568E0A5418D2842BDB5093C;
+	};
+	D69D0010AA39A5FDDF6ED28F /* D69D0010AA39A5FDDF6ED28F */ = {
+		isa = PBXBuildFile;
+		fileRef = 257E6C9131E85B4341DA45A6;
 	};
 	D76D719FADCCDF1FBF81DC6A /* D76D719FADCCDF1FBF81DC6A */ = {
 		isa = PBXBuildFile;
@@ -518,6 +538,13 @@
 		path = Features/SmartScan/ScanEngine.swift;
 		sourceTree = "<group>";
 	};
+	257E6C9131E85B4341DA45A6 /* ScanTreeNode.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanTreeNode.swift;
+		path = Features/SmartScan/Models/ScanTreeNode.swift;
+		sourceTree = "<group>";
+	};
 	27BDC56BA0773FA9060A0F8F /* TestHelpers.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -544,6 +571,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = ScanSpeedTests.swift;
 		path = Tests/ScanSpeedTests.swift;
+		sourceTree = "<group>";
+	};
+	2CFE35D544528383C908AB59 /* ScanResult.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanResult.swift;
+		path = Features/SmartScan/Models/ScanResult.swift;
 		sourceTree = "<group>";
 	};
 	2D33DEE0D325F5BC1595C039 /* PhotoCleanView.swift */ = {
@@ -679,6 +713,13 @@
 		path = Tests/FileSizeFormatterTests.swift;
 		sourceTree = "<group>";
 	};
+	5476C01D0356DEDD2A0CE3A9 /* ScanAction.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanAction.swift;
+		path = Features/SmartScan/Models/ScanAction.swift;
+		sourceTree = "<group>";
+	};
 	55DDEFF53BE4D435722D8C65 /* SelectionCascadeTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -769,6 +810,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = TrashMover.swift;
 		path = Features/Cleanup/TrashMover.swift;
+		sourceTree = "<group>";
+	};
+	7A32909C417ABBF944B06227 /* ScanSubCategory.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanSubCategory.swift;
+		path = Features/SmartScan/Models/ScanSubCategory.swift;
 		sourceTree = "<group>";
 	};
 	7B8C4B8480875420191FFF37 /* FilterEvaluator.swift */ = {
@@ -972,6 +1020,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = UserPreferencesTests.swift;
 		path = Tests/UserPreferencesTests.swift;
+		sourceTree = "<group>";
+	};
+	B958FCBD2B607239B2A13CF9 /* ScanCategory.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanCategory.swift;
+		path = Features/SmartScan/Models/ScanCategory.swift;
 		sourceTree = "<group>";
 	};
 	BBA820954AEA484A741AA072 /* RightPanelView.swift */ = {
@@ -1498,6 +1553,11 @@
 			D36BFC84ADBE33E80B654D65 /* ScanResultsTreeView.swift */,
 			3D86B916EE61C62C7FA46592 /* ScanViewModel.swift */,
 			63EA5F35D593E2AD9287E295 /* SpecializedScanners.swift */,
+			257E6C9131E85B4341DA45A6 /* ScanTreeNode.swift */,
+			B958FCBD2B607239B2A13CF9 /* ScanCategory.swift */,
+			7A32909C417ABBF944B06227 /* ScanSubCategory.swift */,
+			5476C01D0356DEDD2A0CE3A9 /* ScanAction.swift */,
+			2CFE35D544528383C908AB59 /* ScanResult.swift */,
 		);
 		name = SmartScan;
 		sourceTree = "<group>";
@@ -1708,6 +1768,11 @@
 			A5EF019BB4A793139AD57F3F /* A5EF019BB4A793139AD57F3F */,
 			B0A429370631945D856D7395 /* B0A429370631945D856D7395 */,
 			84AB0CDA9E7FB1631357B6FD /* 84AB0CDA9E7FB1631357B6FD */,
+			D69D0010AA39A5FDDF6ED28F /* D69D0010AA39A5FDDF6ED28F */,
+			9A397EF15666FC312A044BF6 /* 9A397EF15666FC312A044BF6 */,
+			99F5466776936D83A8982EC1 /* 99F5466776936D83A8982EC1 */,
+			A5DC807BBF7FE33311B154C7 /* A5DC807BBF7FE33311B154C7 */,
+			3E6125A655221800A403AEF6 /* 3E6125A655221800A403AEF6 */,
 			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
 			2FAF4701D50F64464C1CDFE1 /* 2FAF4701D50F64464C1CDFE1 */,
 			6C7A8B19280920243EF09380 /* 6C7A8B19280920243EF09380 */,
