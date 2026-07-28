@@ -250,6 +250,7 @@ def main():
         "ScanSpeedTests.swift",
         "RiskLevelTests.swift",
         "SelectionCascadeTests.swift",
+        "CascadeCheckboxTests.swift",
         "DesignTokensTests.swift",
         "AccessibilityTests.swift",
     ]
