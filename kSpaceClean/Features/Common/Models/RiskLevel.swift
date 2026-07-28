@@ -36,13 +36,49 @@ public enum RiskLevel: Int, Codable, Sendable, CaseIterable, Comparable {
     }
 
     /// Display name for the Chinese UI surface used throughout kSpaceClean.
+    /// Equivalent to the canonical `label` property — kept for backwards compatibility
+    /// with existing call sites that predate the v3 spec.
     public var displayName: String {
         switch self {
         case .recommended: return "推荐"
         case .optional: return "可选"
-        case .caution: return "注意"
+        case .caution: return "谨慎"
         case .dangerous: return "危险"
         }
+    }
+
+    /// Canonical v3-spec label shown in risk badges and row titles.
+    public var label: String {
+        switch self {
+        case .recommended: return "推荐"
+        case .optional: return "可选"
+        case .caution: return "谨慎"
+        case .dangerous: return "危险"
+        }
+    }
+
+    /// SF Symbol name representing this risk in the row badge / toolbar.
+    public var iconName: String {
+        switch self {
+        case .recommended: return "checkmark.circle.fill"
+        case .optional: return "circle"
+        case .caution: return "exclamationmark.triangle.fill"
+        case .dangerous: return "flame.fill"
+        }
+    }
+
+    /// Whether items at this risk level should be selected by default in the tree.
+    /// Only `.recommended` is selected on first load — the cascade-checkbox algorithm
+    /// then propagates selection to children.
+    public var defaultChecked: Bool {
+        self == .recommended
+    }
+
+    /// Whether cleaning items at this level requires a second confirmation prompt.
+    /// Reserved for `.dangerous` per the v3 spec (§1.2). The actual confirmation UI
+    /// lives in `CleanupConfirmSheet` and `DangerousConfirmDialog` (Tasks C4 / C5).
+    public var requiresDoubleConfirm: Bool {
+        self == .dangerous
     }
 }
 
