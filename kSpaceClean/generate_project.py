@@ -97,6 +97,8 @@ def main():
         "Features": make_group("Features"),
         "AIClassifier": make_group("AIClassifier"),
         "Cleanup": make_group("Cleanup"),
+        "Common": make_group("Common"),
+        "DesignSystem": make_group("DesignSystem"),
         "DiskGalaxy": make_group("DiskGalaxy"),
         "LargeOldFile": make_group("LargeOldFile"),
         "DuplicateFile": make_group("DuplicateFile"),
@@ -144,6 +146,9 @@ def main():
         ("Features/Cleanup/TrashMover.swift", "Cleanup"),
         ("Features/Cleanup/CleanupEngine.swift", "Cleanup"),
         ("Features/Cleanup/CleanActionExecutors.swift", "Cleanup"),
+        ("Features/Common/DesignSystem/Colors.swift", "DesignSystem"),
+        ("Features/Common/DesignSystem/Typography.swift", "DesignSystem"),
+        ("Features/Common/DesignSystem/Spacing.swift", "DesignSystem"),
         ("Features/LargeOldFile/LargeOldScanner.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldViewModel.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldView.swift", "LargeOldFile"),
@@ -235,6 +240,7 @@ def main():
         "ScanSpeedTests.swift",
         "RiskLevelTests.swift",
         "SelectionCascadeTests.swift",
+        "DesignTokensTests.swift",
     ]
 
     main_build_files = []
@@ -566,7 +572,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AIClassifier", "Cleanup", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
+    for sub in ["AIClassifier", "Cleanup", "Common", "DesignSystem", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
                  "AppUninstall", "PrivacyClean", "PhotoClean", "Maintenance",
                  "Onboarding", "RightPanel", "Settings", "SmartScan"]:
         features_children.append((group_ids[sub], sub))
