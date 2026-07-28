@@ -83,6 +83,10 @@
 		isa = PBXBuildFile;
 		fileRef = 505366A05A93C5E2F212971A;
 	};
+	30F796EE7C461DDC4EA059B7 /* 30F796EE7C461DDC4EA059B7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 837C7684ADF5F0054F611817;
+	};
 	32F44FE5AD01073BC287B142 /* 32F44FE5AD01073BC287B142 */ = {
 		isa = PBXBuildFile;
 		fileRef = 5ACB1B42B3E07287988C577B;
@@ -118,6 +122,10 @@
 	469F29A99B0712EFC89DBF3C /* 469F29A99B0712EFC89DBF3C */ = {
 		isa = PBXBuildFile;
 		fileRef = C562F3E116F2A6D12494EC3B;
+	};
+	4852A6CB7BC35688453AAC84 /* 4852A6CB7BC35688453AAC84 */ = {
+		isa = PBXBuildFile;
+		fileRef = 15962EEC58F9DC73E40FC8D4;
 	};
 	4C1F47B96D7D363CA36EFB60 /* 4C1F47B96D7D363CA36EFB60 */ = {
 		isa = PBXBuildFile;
@@ -508,6 +516,13 @@
 		path = App/AppState.swift;
 		sourceTree = "<group>";
 	};
+	15962EEC58F9DC73E40FC8D4 /* IndeterminateCheckbox.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = IndeterminateCheckbox.swift;
+		path = Features/Common/Components/IndeterminateCheckbox.swift;
+		sourceTree = "<group>";
+	};
 	16ED6A33730132728338B942 /* RuleClassifier.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -878,6 +893,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = ScanProgress.swift;
 		path = Features/SmartScan/ScanProgress.swift;
+		sourceTree = "<group>";
+	};
+	837C7684ADF5F0054F611817 /* IndeterminateCheckboxTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = IndeterminateCheckboxTests.swift;
+		path = Tests/IndeterminateCheckboxTests.swift;
 		sourceTree = "<group>";
 	};
 	8396B1D62324A3CCBCEBCAE3 /* CleanupEngine.swift */ = {
@@ -1535,6 +1557,7 @@
 			65BA7E523F1D2F142C3E9E9E /* DesignTokensTests.swift */,
 			DF350E26C9D818BFD659E2D0 /* AccessibilityTests.swift */,
 			F721116F0C42EE236F5A9F5B /* RiskBadgeTests.swift */,
+			837C7684ADF5F0054F611817 /* IndeterminateCheckboxTests.swift */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -1554,6 +1577,7 @@
 		isa = PBXGroup;
 		children = (
 			B244E7E5DF378F3CAD6B1D24 /* RiskBadge.swift */,
+			15962EEC58F9DC73E40FC8D4 /* IndeterminateCheckbox.swift */,
 		);
 		name = Components;
 		sourceTree = "<group>";
@@ -1747,6 +1771,7 @@
 			BAD48C4287A251B9AEF53308 /* BAD48C4287A251B9AEF53308 */,
 			A3E4D45373D1BE3D3E45011D /* A3E4D45373D1BE3D3E45011D */,
 			5896B99214115481EEF2B5A0 /* 5896B99214115481EEF2B5A0 */,
+			30F796EE7C461DDC4EA059B7 /* 30F796EE7C461DDC4EA059B7 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -1772,6 +1797,7 @@
 			62A2321241F1878969C72428 /* 62A2321241F1878969C72428 */,
 			2FDD27146C426D2695791E71 /* 2FDD27146C426D2695791E71 */,
 			9DA43A8B7ADFA1D54B2C8AE5 /* 9DA43A8B7ADFA1D54B2C8AE5 */,
+			4852A6CB7BC35688453AAC84 /* 4852A6CB7BC35688453AAC84 */,
 			A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */,
 			A3CC30C80D09F1974865F777 /* A3CC30C80D09F1974865F777 */,
 			7DAABFE3BB24C54473DD3F3F /* 7DAABFE3BB24C54473DD3F3F */,

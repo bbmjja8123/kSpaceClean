@@ -153,6 +153,7 @@ def main():
         ("Features/Common/DesignSystem/Spacing.swift", "DesignSystem"),
         ("Features/Common/DesignSystem/Accessibility.swift", "DesignSystem"),
         ("Features/Common/Components/RiskBadge.swift", "Components"),
+        ("Features/Common/Components/IndeterminateCheckbox.swift", "Components"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/Common/Models/CheckState.swift", "Models"),
         ("Features/Common/Models/SelectionPolicy.swift", "Models"),
@@ -256,6 +257,7 @@ def main():
         "DesignTokensTests.swift",
         "AccessibilityTests.swift",
         "RiskBadgeTests.swift",
+        "IndeterminateCheckboxTests.swift",
     ]
 
     main_build_files = []
