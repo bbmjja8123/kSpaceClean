@@ -243,6 +243,10 @@
 		isa = PBXBuildFile;
 		fileRef = 7DD6D8CA13CAD5BF5BAE4FF5;
 	};
+	A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */ = {
+		isa = PBXBuildFile;
+		fileRef = C4ADFF621F0AF6345A5599E7;
+	};
 	A97665E8FDC2E362123BABE7 /* A97665E8FDC2E362123BABE7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 3A84BB454FED73942561887A;
@@ -961,6 +965,13 @@
 		path = Resources/Localizable.xcstrings;
 		sourceTree = "<group>";
 	};
+	C4ADFF621F0AF6345A5599E7 /* RiskLevel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = RiskLevel.swift;
+		path = Features/Common/Models/RiskLevel.swift;
+		sourceTree = "<group>";
+	};
 	C562F3E116F2A6D12494EC3B /* GalaxyScene.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1146,6 +1157,14 @@
 			505366A05A93C5E2F212971A /* com.kraftly.kspaceclean.trashmonitor.plist */,
 		);
 		name = Resources;
+		sourceTree = "<group>";
+	};
+	197EF6F3D8818A6495AD3D55 /* Models */ = {
+		isa = PBXGroup;
+		children = (
+			C4ADFF621F0AF6345A5599E7 /* RiskLevel.swift */,
+		);
+		name = Models;
 		sourceTree = "<group>";
 	};
 	27A4B436B24D38B2C0DF5464 /* RightPanel */ = {
@@ -1341,6 +1360,7 @@
 			65A8E0488E94F72D3CE5F01C /* Cleanup */,
 			3F300C2EC1A0250807DB22F8 /* Common */,
 			32C1718E990FB28676F7BCEE /* DesignSystem */,
+			197EF6F3D8818A6495AD3D55 /* Models */,
 			0F500621D819C65BE5E0B907 /* DiskGalaxy */,
 			86024B0512179A587AA2E09C /* LargeOldFile */,
 			A6A76DAF7E87AA81F14A499D /* DuplicateFile */,
@@ -1595,6 +1615,7 @@
 			B9B30D5BA5D988C13EACECCA /* B9B30D5BA5D988C13EACECCA */,
 			5244FA47D76DCB19628AAD79 /* 5244FA47D76DCB19628AAD79 */,
 			62A2321241F1878969C72428 /* 62A2321241F1878969C72428 */,
+			A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */,
 			A6C5E37BB573D6D3DB661344 /* A6C5E37BB573D6D3DB661344 */,
 			E564A7F0385D9BCD1E1DE5F1 /* E564A7F0385D9BCD1E1DE5F1 */,
 			25722D97CC1821BA333B9F82 /* 25722D97CC1821BA333B9F82 */,

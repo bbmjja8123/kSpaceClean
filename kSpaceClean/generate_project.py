@@ -99,6 +99,7 @@ def main():
         "Cleanup": make_group("Cleanup"),
         "Common": make_group("Common"),
         "DesignSystem": make_group("DesignSystem"),
+        "Models": make_group("Models"),
         "DiskGalaxy": make_group("DiskGalaxy"),
         "LargeOldFile": make_group("LargeOldFile"),
         "DuplicateFile": make_group("DuplicateFile"),
@@ -149,6 +150,7 @@ def main():
         ("Features/Common/DesignSystem/Colors.swift", "DesignSystem"),
         ("Features/Common/DesignSystem/Typography.swift", "DesignSystem"),
         ("Features/Common/DesignSystem/Spacing.swift", "DesignSystem"),
+        ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/LargeOldFile/LargeOldScanner.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldViewModel.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldView.swift", "LargeOldFile"),
@@ -572,7 +574,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AIClassifier", "Cleanup", "Common", "DesignSystem", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
+    for sub in ["AIClassifier", "Cleanup", "Common", "DesignSystem", "Models", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
                  "AppUninstall", "PrivacyClean", "PhotoClean", "Maintenance",
                  "Onboarding", "RightPanel", "Settings", "SmartScan"]:
         features_children.append((group_ids[sub], sub))

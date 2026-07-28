@@ -97,47 +97,6 @@ public enum ScanActionType: String, Codable, Sendable, CaseIterable {
     case soft
 }
 
-// MARK: - Risk Levels (v3 UX spec §1.2)
-
-/// 4-level risk classification for scan results
-public enum RiskLevel: Int, Codable, Sendable, CaseIterable, Comparable {
-    case recommended = 0   // 推荐（绿色 #34c759）— 可安全清理
-    case optional = 1      // 可选（蓝色 #0a84ff）— 清理效果有限但无副作用
-    case caution = 2       // 注意（橙色 #ff9500）— 清理后需重新登录/重建
-    case dangerous = 3     // 危险（红色 #ff3b30）— 应用运行中/不可逆/可能丢数据
-
-    public static func < (lhs: RiskLevel, rhs: RiskLevel) -> Bool {
-        lhs.rawValue < rhs.rawValue
-    }
-
-    /// Initialize from scan action properties
-    public static func from(recommended: Bool, cautionID: Int?) -> RiskLevel {
-        if let cid = cautionID, cid != 0 {
-            return .caution
-        }
-        return recommended ? .recommended : .optional
-    }
-
-    /// Color name for SwiftUI (use system colors at call site)
-    public var colorName: String {
-        switch self {
-        case .recommended: return "success"
-        case .optional: return "brandPrimary"
-        case .caution: return "warning"
-        case .dangerous: return "danger"
-        }
-    }
-
-    public var displayName: String {
-        switch self {
-        case .recommended: return "推荐"
-        case .optional: return "可选"
-        case .caution: return "注意"
-        case .dangerous: return "危险"
-        }
-    }
-}
-
 /// 3-state checkbox for tree cascade
 public enum CheckState: Sendable, Equatable {
     case unchecked
