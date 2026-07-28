@@ -4,15 +4,20 @@ import SwiftUI
 /// Centralized accessors for macOS accessibility settings used by kSpaceClean.
 ///
 /// The accessors wrap `NSWorkspace` so callers do not need to import AppKit
-/// directly. They are read on the main actor because `NSWorkspace` APIs
-/// require it; consumers can therefore call them from any SwiftUI view body
-/// without additional isolation work.
+/// directly. They are isolated to the **main actor** because `NSWorkspace`
+/// APIs require main-thread access; declaring the type `@MainActor` gives
+/// callers from off-main contexts a compile-time error under
+/// `SWIFT_STRICT_CONCURRENCY = complete` rather than a runtime crash.
+/// Consumers can call these accessors from any SwiftUI view body without
+/// additional isolation work because view bodies already run on the main
+/// actor.
 ///
 /// `dynamicTypeSize` is intentionally not exposed as a static accessor:
 /// `@Environment` property wrappers cannot be applied to `static` storage,
 /// and reading the current dynamic type size is a per-view concern. Views
 /// should declare `@Environment(\.dynamicTypeSize) private var dynamicTypeSize`
 /// directly and consult it where layout is computed.
+@MainActor
 enum AccessibilitySettings {
 
     /// `true` when VoiceOver is currently running on the user's Mac.
@@ -60,6 +65,7 @@ extension Animation {
     /// - Parameter base: The animation to use when motion is allowed.
     /// - Returns: `base` unchanged when ``AccessibilitySettings/reduceMotionEnabled``
     ///   is `false`; otherwise a 0.1s linear animation.
+    @MainActor
     static func accessibleDefault(_ base: Animation) -> Animation {
         AccessibilitySettings.reduceMotionEnabled ? .linear(duration: 0.1) : base
     }

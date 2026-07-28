@@ -2,6 +2,11 @@ import XCTest
 import SwiftUI
 @testable import kSpaceClean
 
+// Marked @MainActor because AccessibilitySettings (and therefore
+// Animation.accessibleDefault) is @MainActor under
+// SWIFT_STRICT_CONCURRENCY = complete. XCTest test methods run on the main
+// thread, so this matches the runtime behavior without changing semantics.
+@MainActor
 final class AccessibilityTests: XCTestCase {
 
     // MARK: - NSWorkspace-backed accessors
