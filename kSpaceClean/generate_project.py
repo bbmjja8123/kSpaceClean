@@ -153,6 +153,7 @@ def main():
         ("Features/Common/DesignSystem/Accessibility.swift", "DesignSystem"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/Common/Models/CheckState.swift", "Models"),
+        ("Features/Common/Models/SelectionPolicy.swift", "Models"),
         ("Features/LargeOldFile/LargeOldScanner.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldViewModel.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldView.swift", "LargeOldFile"),
