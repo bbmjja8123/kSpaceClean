@@ -139,6 +139,10 @@
 		isa = PBXBuildFile;
 		fileRef = AD7ADD7CF11E777CD8908164;
 	};
+	5896B99214115481EEF2B5A0 /* 5896B99214115481EEF2B5A0 */ = {
+		isa = PBXBuildFile;
+		fileRef = F721116F0C42EE236F5A9F5B;
+	};
 	62A2321241F1878969C72428 /* 62A2321241F1878969C72428 */ = {
 		isa = PBXBuildFile;
 		fileRef = 77AA77A1BAE07BC85424F4B4;
@@ -230,6 +234,10 @@
 	9C58B804BD43274AEFBC589D /* 9C58B804BD43274AEFBC589D */ = {
 		isa = PBXBuildFile;
 		fileRef = BD459A36F0F036BA48364A7D;
+	};
+	9DA43A8B7ADFA1D54B2C8AE5 /* 9DA43A8B7ADFA1D54B2C8AE5 */ = {
+		isa = PBXBuildFile;
+		fileRef = B244E7E5DF378F3CAD6B1D24;
 	};
 	9DB2E0CB10DB5ED0FC9BD7DA /* 9DB2E0CB10DB5ED0FC9BD7DA */ = {
 		isa = PBXBuildFile;
@@ -1026,6 +1034,13 @@
 		path = Resources/KSpaceClean.xcdatamodeld;
 		sourceTree = "<group>";
 	};
+	B244E7E5DF378F3CAD6B1D24 /* RiskBadge.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = RiskBadge.swift;
+		path = Features/Common/Components/RiskBadge.swift;
+		sourceTree = "<group>";
+	};
 	B7DE37FA701F3CBB161B5BED /* UserPreferencesTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1164,6 +1179,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = DuplicateDetectorTests.swift;
 		path = Tests/DuplicateDetectorTests.swift;
+		sourceTree = "<group>";
+	};
+	F721116F0C42EE236F5A9F5B /* RiskBadgeTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = RiskBadgeTests.swift;
+		path = Tests/RiskBadgeTests.swift;
 		sourceTree = "<group>";
 	};
 	F75307E42A8914CFBC4E8183 /* FinderSync.swift */ = {
@@ -1472,6 +1494,7 @@
 			9F8E9D97EA0583FC6F1F6563 /* AIClassifier */,
 			65A8E0488E94F72D3CE5F01C /* Cleanup */,
 			3F300C2EC1A0250807DB22F8 /* Common */,
+			CA29CAC593D46525E8F4520B /* Components */,
 			32C1718E990FB28676F7BCEE /* DesignSystem */,
 			197EF6F3D8818A6495AD3D55 /* Models */,
 			0F500621D819C65BE5E0B907 /* DiskGalaxy */,
@@ -1511,6 +1534,7 @@
 			5ACB1B42B3E07287988C577B /* CascadeCheckboxTests.swift */,
 			65BA7E523F1D2F142C3E9E9E /* DesignTokensTests.swift */,
 			DF350E26C9D818BFD659E2D0 /* AccessibilityTests.swift */,
+			F721116F0C42EE236F5A9F5B /* RiskBadgeTests.swift */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -1524,6 +1548,14 @@
 			FC18430806C5CD0B690F91C0 /* kSpaceCleanApp.swift */,
 		);
 		name = App;
+		sourceTree = "<group>";
+	};
+	CA29CAC593D46525E8F4520B /* Components */ = {
+		isa = PBXGroup;
+		children = (
+			B244E7E5DF378F3CAD6B1D24 /* RiskBadge.swift */,
+		);
+		name = Components;
 		sourceTree = "<group>";
 	};
 	D086B1D575B679BDD667F1C2 /* MenuBar */ = {
@@ -1714,6 +1746,7 @@
 			32F44FE5AD01073BC287B142 /* 32F44FE5AD01073BC287B142 */,
 			BAD48C4287A251B9AEF53308 /* BAD48C4287A251B9AEF53308 */,
 			A3E4D45373D1BE3D3E45011D /* A3E4D45373D1BE3D3E45011D */,
+			5896B99214115481EEF2B5A0 /* 5896B99214115481EEF2B5A0 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -1738,6 +1771,7 @@
 			5244FA47D76DCB19628AAD79 /* 5244FA47D76DCB19628AAD79 */,
 			62A2321241F1878969C72428 /* 62A2321241F1878969C72428 */,
 			2FDD27146C426D2695791E71 /* 2FDD27146C426D2695791E71 */,
+			9DA43A8B7ADFA1D54B2C8AE5 /* 9DA43A8B7ADFA1D54B2C8AE5 */,
 			A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */,
 			A3CC30C80D09F1974865F777 /* A3CC30C80D09F1974865F777 */,
 			7DAABFE3BB24C54473DD3F3F /* 7DAABFE3BB24C54473DD3F3F */,
