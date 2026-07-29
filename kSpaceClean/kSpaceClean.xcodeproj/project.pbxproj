@@ -27,6 +27,10 @@
 		isa = PBXBuildFile;
 		fileRef = 42CCD5883BC6489BC5050DC9;
 	};
+	1F1BCCCC10DEC6392AC99864 /* 1F1BCCCC10DEC6392AC99864 */ = {
+		isa = PBXBuildFile;
+		fileRef = 14F2021C3C9AF375232376CF;
+	};
 	201A00B31EEF8EC428CADA3F /* 201A00B31EEF8EC428CADA3F */ = {
 		isa = PBXBuildFile;
 		fileRef = 33A787540DD622D356820FE1;
@@ -230,6 +234,10 @@
 	8E40C6EAD97DCB6C1199FCD5 /* 8E40C6EAD97DCB6C1199FCD5 */ = {
 		isa = PBXBuildFile;
 		fileRef = EAF2CB1EF3094808949764DF;
+	};
+	967B83407C02DACAC84026C4 /* 967B83407C02DACAC84026C4 */ = {
+		isa = PBXBuildFile;
+		fileRef = ABB2502429F42D3C90007257;
 	};
 	99ABBDC172EB84CEE8289021 /* 99ABBDC172EB84CEE8289021 */ = {
 		isa = PBXBuildFile;
@@ -526,6 +534,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppState.swift;
 		path = App/AppState.swift;
+		sourceTree = "<group>";
+	};
+	14F2021C3C9AF375232376CF /* ScanResultsView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanResultsView.swift;
+		path = Features/SmartScan/Views/ScanResultsView.swift;
 		sourceTree = "<group>";
 	};
 	15962EEC58F9DC73E40FC8D4 /* IndeterminateCheckbox.swift */ = {
@@ -1045,6 +1060,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = CheckState.swift;
 		path = Features/Common/Models/CheckState.swift;
+		sourceTree = "<group>";
+	};
+	ABB2502429F42D3C90007257 /* ScanResultsViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanResultsViewModel.swift;
+		path = Features/SmartScan/Views/ScanResultsViewModel.swift;
 		sourceTree = "<group>";
 	};
 	AD7ADD7CF11E777CD8908164 /* AppUninstallScanner.swift */ = {
@@ -1662,6 +1684,8 @@
 			2CFE35D544528383C908AB59 /* ScanResult.swift */,
 			9582C7013B22FADEDAFA1CF3 /* ScanThreshold.swift */,
 			918AE59103697855AB2EF800 /* ScanTreeRow.swift */,
+			14F2021C3C9AF375232376CF /* ScanResultsView.swift */,
+			ABB2502429F42D3C90007257 /* ScanResultsViewModel.swift */,
 		);
 		name = SmartScan;
 		sourceTree = "<group>";
@@ -1885,6 +1909,8 @@
 			3E6125A655221800A403AEF6 /* 3E6125A655221800A403AEF6 */,
 			7D2E3DFF3BE2D70DBACABA60 /* 7D2E3DFF3BE2D70DBACABA60 */,
 			4D55544F4C20495978A727F3 /* 4D55544F4C20495978A727F3 */,
+			1F1BCCCC10DEC6392AC99864 /* 1F1BCCCC10DEC6392AC99864 */,
+			967B83407C02DACAC84026C4 /* 967B83407C02DACAC84026C4 */,
 			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
 			2FAF4701D50F64464C1CDFE1 /* 2FAF4701D50F64464C1CDFE1 */,
 			6C7A8B19280920243EF09380 /* 6C7A8B19280920243EF09380 */,

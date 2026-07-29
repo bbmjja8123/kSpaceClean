@@ -204,6 +204,8 @@ def main():
         ("Features/SmartScan/Models/ScanResult.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanThreshold.swift", "SmartScan"),
         ("Features/SmartScan/Views/ScanTreeRow.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanResultsView.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanResultsViewModel.swift", "SmartScan"),
         ("FinderExtension/FinderSync.swift", "FinderExtension"),
         ("Intents/ScanIntent.swift", "Intents"),
         ("LaunchAgent/TrashMonitorService.swift", "LaunchAgent"),
