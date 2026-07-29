@@ -44,3 +44,29 @@ public final class CancellationToken: @unchecked Sendable {
 
     public init() {}
 }
+
+/// Throttle configuration applied during long-running file enumeration so
+/// the scanner does not starve the foreground UI.
+///
+/// A `ThrottleConfig` is derived from ``Features/SmartScan/ScanSpeed.ScanSpeed``
+/// in kSpaceClean. The two fields are intentionally trivial (a batch size
+/// and a sleep duration) so the value type stays cheap to copy across
+/// actor hops; the consumer — `FileEnumerator` — is responsible for
+/// actually honouring the throttle.
+///
+/// ``batchSize`` is the number of files to process before yielding the
+/// CPU. `0` means "do not yield at all" (turbo mode).
+///
+/// ``sleepNanoseconds`` is how long to sleep after each yield. `0` means
+/// "yield without sleeping" (so the OS scheduler can pick another
+/// task). Non-zero values are useful when the consumer wants a known
+/// minimum gap between batches.
+public struct ThrottleConfig: Sendable, Equatable {
+    public let batchSize: Int
+    public let sleepNanoseconds: UInt64
+
+    public init(batchSize: Int, sleepNanoseconds: UInt64) {
+        self.batchSize = batchSize
+        self.sleepNanoseconds = sleepNanoseconds
+    }
+}

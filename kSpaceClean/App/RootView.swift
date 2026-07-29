@@ -21,29 +21,56 @@ struct RootView: View {
                 // Layer 1: Background
                 backgroundLayer
 
-                // Layer 2: Main content + icon rail side by side
-                HStack(spacing: 0) {
-                    // Icon Rail (left sidebar)
-                    iconRail
-                        .frame(width: 48)
-                        .padding(.leading, 8)
+                // Layer 2: Top toolbar (Scan / Clean / Warning / Account) — brand
+                // mark on the leading edge, four icon-and-label buttons on the
+                // trailing edge. Wired in A14 after sitting as dead code since
+                // A12 (see A14 report).
+                VStack(spacing: 0) {
+                    ToolbarView(
+                        onScan: {
+                            appState.navigation = .scan
+                            scanViewModel.startScan()
+                        },
+                        onClean: {
+                            appState.navigation = .cleanup
+                        },
+                        onWarning: {
+                            // Phase C will surface a real warning sheet here
+                            // (Task C6 WarningToast). For now, switching to
+                            // the cleanup route gives the user the closest
+                            // existing surface that surfaces the warnings.
+                            appState.navigation = .cleanup
+                        },
+                        onProfile: {
+                            appState.navigation = .settings
+                        }
+                    )
+                    .zIndex(10)
 
-                    // Main content area (switches based on navigation)
-                    mainContent
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    // Layer 3: Main content + icon rail side by side
+                    HStack(spacing: 0) {
+                        // Icon Rail (left sidebar)
+                        iconRail
+                            .frame(width: 48)
+                            .padding(.leading, 8)
 
-                    // Right panel (only in galaxy/scan views)
-                    if appState.rightPanelVisible,
-                       appState.navigation == .galaxy || appState.navigation == .scan {
-                        RightPanelView(galaxyViewModel: galaxyViewModel, scanViewModel: scanViewModel)
-                            .frame(width: min(260, geo.size.width * 0.3))
-                            .padding(.trailing, 12)
-                            .padding(.top, 48)
-                            .padding(.bottom, 68)
+                        // Main content area (switches based on navigation)
+                        mainContent
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                        // Right panel (only in galaxy/scan views)
+                        if appState.rightPanelVisible,
+                           appState.navigation == .galaxy || appState.navigation == .scan {
+                            RightPanelView(galaxyViewModel: galaxyViewModel, scanViewModel: scanViewModel)
+                                .frame(width: min(260, geo.size.width * 0.3))
+                                .padding(.trailing, 12)
+                                .padding(.top, 48)
+                                .padding(.bottom, 68)
+                        }
                     }
                 }
 
-                // Layer 3: Bottom panel (galaxy view only)
+                // Layer 4: Bottom panel (galaxy view only)
                 if appState.navigation == .galaxy {
                     VStack {
                         Spacer()
@@ -53,7 +80,7 @@ struct RootView: View {
                     }
                 }
 
-                // Layer 4: Category legend (galaxy view only)
+                // Layer 5: Category legend (galaxy view only)
                 if appState.navigation == .galaxy {
                     VStack {
                         Spacer()
@@ -73,6 +100,21 @@ struct RootView: View {
                 appState.navigation = .galaxy
             }
         }
+        .scanKeyboardShortcuts(
+            onNewScan: {
+                // ⌘N — switch to the scan surface and start a fresh scan
+                appState.navigation = .scan
+                scanViewModel.startScan()
+            },
+            onRescan: {
+                // ⌘R — re-run the scan using the same root paths and filters
+                // (ScanViewModel does not differentiate "new" from "rescan";
+                // both delegate to startScan(). Phase B's ScanOrchestrator
+                // will introduce the distinction.)
+                appState.navigation = .scan
+                scanViewModel.startScan()
+            }
+        )
         .modifier(RootKeyboardShortcuts(appState: appState))
     }
 

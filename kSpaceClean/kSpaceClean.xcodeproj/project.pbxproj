@@ -99,6 +99,10 @@
 		isa = PBXBuildFile;
 		fileRef = 837C7684ADF5F0054F611817;
 	};
+	32F44FE5AD01073BC287B142 /* 32F44FE5AD01073BC287B142 */ = {
+		isa = PBXBuildFile;
+		fileRef = 5ACB1B42B3E07287988C577B;
+	};
 	380BC827F6CB2C05B3961F1D /* 380BC827F6CB2C05B3961F1D */ = {
 		isa = PBXBuildFile;
 		fileRef = 3434D53EE3AE5CB267228A4F;
@@ -645,7 +649,7 @@
 		isa = PBXFileReference;
 		lastKnownFileType = folder;
 		name = kFoundation;
-		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
+		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1/kFoundation;
 		sourceTree = "<absolute>";
 	};
 	29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */ = {
@@ -837,6 +841,13 @@
 		name = kSpaceClean.app;
 		path = kSpaceClean.app;
 		sourceTree = BUILT_PRODUCTS_DIR;
+	};
+	5ACB1B42B3E07287988C577B /* CascadeCheckboxTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = CascadeCheckboxTests.swift;
+		path = Tests/CascadeCheckboxTests.swift;
+		sourceTree = "<group>";
 	};
 	63EA5F35D593E2AD9287E295 /* SpecializedScanners.swift */ = {
 		isa = PBXFileReference;
@@ -1686,6 +1697,7 @@
 			29C4B00FE9B3EF241D9CAF24 /* ScanSpeedTests.swift */,
 			1B5E92D7445A84569AAEEE74 /* RiskLevelTests.swift */,
 			55DDEFF53BE4D435722D8C65 /* SelectionCascadeTests.swift */,
+			5ACB1B42B3E07287988C577B /* CascadeCheckboxTests.swift */,
 			65BA7E523F1D2F142C3E9E9E /* DesignTokensTests.swift */,
 			DF350E26C9D818BFD659E2D0 /* AccessibilityTests.swift */,
 			F721116F0C42EE236F5A9F5B /* RiskBadgeTests.swift */,
@@ -1911,6 +1923,7 @@
 			B9817D2FAD0AA9F128544423 /* B9817D2FAD0AA9F128544423 */,
 			C3B45AFCE92E8E11CC7FA7D9 /* C3B45AFCE92E8E11CC7FA7D9 */,
 			7E5F0B91AAC3DF2C618AF45D /* 7E5F0B91AAC3DF2C618AF45D */,
+			32F44FE5AD01073BC287B142 /* 32F44FE5AD01073BC287B142 */,
 			BAD48C4287A251B9AEF53308 /* BAD48C4287A251B9AEF53308 */,
 			A3E4D45373D1BE3D3E45011D /* A3E4D45373D1BE3D3E45011D */,
 			5896B99214115481EEF2B5A0 /* 5896B99214115481EEF2B5A0 */,
@@ -2215,7 +2228,7 @@
 /* Begin XCLocalSwiftPackageReference section */
 	9B11DE76A6AB3B8F9151A660 /* 9B11DE76A6AB3B8F9151A660 */ = {
 		isa = XCLocalSwiftPackageReference;
-		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
+		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1/kFoundation;
 	};
 /* End XCLocalSwiftPackageReference section */
 

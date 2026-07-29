@@ -1,11 +1,78 @@
 #!/usr/bin/env python3
-"""Generate kSpaceClean.xcodeproj/project.pbxproj manually — proper OpenStep plist format."""
+"""Generate kSpaceClean.xcodeproj/project.pbxproj manually — proper OpenStep plist format.
 
-import os, hashlib
+# Path resolution
+#
+# The default ``BASE`` path points at the main repository's ``kSpaceClean``
+# directory. When the script is run from inside a worktree
+# (e.g. ``.claude/worktrees/feat-kspaceclean-v1/kSpaceClean/generate_project.py``),
+# that absolute path would write the regenerated ``project.pbxproj`` into the
+# *parent* repository rather than the worktree, leaving the worktree's
+# on-disk copy stale. The worktree workflow therefore relied on a manual
+# ``cp`` after every regeneration (see A6/A12/A13 reports).
+#
+# To fix that, the script now resolves ``BASE`` with the following
+# precedence:
+#
+# 1. ``--base <path>`` CLI argument (explicit override; highest priority).
+# 2. ``KSPACECLEAN_BASE`` environment variable (CI / Makefile use).
+# 3. The directory containing this script — i.e. the worktree-aware default
+#    that always regenerates the project file alongside the script.
+#
+# This means running ``python3 generate_project.py`` inside the worktree now
+# writes to the worktree's ``kSpaceClean.xcodeproj`` automatically, and
+# callers that really do want the main-repo path can opt in with
+# ``--base /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean``.
+"""
 
-BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean"
+import os
+import sys
+import argparse
+import hashlib
+
+DEFAULT_BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def resolve_base():
+    """Resolve the BASE directory using CLI > env > script-dir precedence."""
+    parser = argparse.ArgumentParser(
+        description="Generate kSpaceClean.xcodeproj/project.pbxproj."
+    )
+    parser.add_argument(
+        "--base",
+        default=None,
+        help=(
+            "Output directory containing the kSpaceClean target sources. "
+            "Defaults to $KSPACECLEAN_BASE, then the directory containing "
+            "this script (so worktree workflows regenerate in place)."
+        ),
+    )
+    args = parser.parse_args()
+
+    if args.base:
+        base = os.path.abspath(args.base)
+    elif os.environ.get("KSPACECLEAN_BASE"):
+        base = os.path.abspath(os.environ["KSPACECLEAN_BASE"])
+    else:
+        # Default to the directory containing this script so the script
+        # always regenerates the project file alongside it (worktree-safe).
+        base = SCRIPT_DIR
+    return base
+
+
+BASE = resolve_base()
 PROJECT_FILE = f"{BASE}/kSpaceClean.xcodeproj/project.pbxproj"
-KFOUNTATION_PATH = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation"
+# kFoundation lives alongside the parent directory of BASE (the kSpaceClean
+# sibling). Try a few candidates to stay portable across worktrees.
+_KFOUNDATION_CANDIDATES = [
+    os.path.join(os.path.dirname(BASE), "kFoundation"),
+    "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation",
+]
+KFOUNTATION_PATH = next(
+    (p for p in _KFOUNDATION_CANDIDATES if os.path.isdir(p)),
+    _KFOUNDATION_CANDIDATES[0],
+)
 
 def hash_id(seed, length=24):
     return hashlib.sha256(seed.encode()).hexdigest()[:length].upper()
@@ -261,6 +328,7 @@ def main():
         "ScanSpeedTests.swift",
         "RiskLevelTests.swift",
         "SelectionCascadeTests.swift",
+        "CascadeCheckboxTests.swift",
         "DesignTokensTests.swift",
         "AccessibilityTests.swift",
         "RiskBadgeTests.swift",
@@ -271,6 +339,10 @@ def main():
         "PhaseAComponentSnapshotTests.swift",
         "ScanResultsViewSnapshotTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
+    # CascadeCheckboxTests.swift — Task A5's 5 cascade-behaviour tests
+    # (recommended-only parent selection, parent-off propagation,
+    # mixed/on aggregation, manual dangerous selection). Re-registered in A14
+    # after it had been sitting on disk unregistered since A5.
 
     main_build_files = []
 
@@ -745,6 +817,7 @@ def main():
     print(f"Total objects: {len(objects)}")
     print(f"Main build files: {len(main_build_files)}")
     print(f"Test build files: {len(test_build_files)}")
+    print(f"BASE resolved to: {BASE}")
 
 if __name__ == "__main__":
     main()
