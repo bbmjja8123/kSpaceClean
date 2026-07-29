@@ -243,6 +243,10 @@
 		isa = PBXBuildFile;
 		fileRef = F75307E42A8914CFBC4E8183;
 	};
+	87CFBD3A80BA3F4155911EA2 /* 87CFBD3A80BA3F4155911EA2 */ = {
+		isa = PBXBuildFile;
+		fileRef = BF1771D7B6F634603DD17A7B;
+	};
 	8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */ = {
 		isa = PBXBuildFile;
 		fileRef = BFA7754C2E9614BC7641312C;
@@ -262,6 +266,10 @@
 	8E40C6EAD97DCB6C1199FCD5 /* 8E40C6EAD97DCB6C1199FCD5 */ = {
 		isa = PBXBuildFile;
 		fileRef = EAF2CB1EF3094808949764DF;
+	};
+	9666442E431A400989F5FE02 /* 9666442E431A400989F5FE02 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1294C440D6A50115838D849B;
 	};
 	967B83407C02DACAC84026C4 /* 967B83407C02DACAC84026C4 */ = {
 		isa = PBXBuildFile;
@@ -571,6 +579,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = GalaxyRenderer.swift;
 		path = Features/DiskGalaxy/GalaxyRenderer.swift;
+		sourceTree = "<group>";
+	};
+	1294C440D6A50115838D849B /* ScanProgressRing.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanProgressRing.swift;
+		path = Features/SmartScan/Views/ScanProgressRing.swift;
 		sourceTree = "<group>";
 	};
 	14679243FC833D0C8D16C74A /* AppState.swift */ = {
@@ -1253,6 +1268,13 @@
 		path = Features/Maintenance/MaintenanceView.swift;
 		sourceTree = "<group>";
 	};
+	BF1771D7B6F634603DD17A7B /* ScanProgressView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanProgressView.swift;
+		path = Features/SmartScan/Views/ScanProgressView.swift;
+		sourceTree = "<group>";
+	};
 	BFA7754C2E9614BC7641312C /* Localizable.xcstrings */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = text.json.xcstrings;
@@ -1818,6 +1840,8 @@
 			14F2021C3C9AF375232376CF /* ScanResultsView.swift */,
 			ABB2502429F42D3C90007257 /* ScanResultsViewModel.swift */,
 			918AE59103697855AB2EF800 /* ScanTreeRow.swift */,
+			1294C440D6A50115838D849B /* ScanProgressRing.swift */,
+			BF1771D7B6F634603DD17A7B /* ScanProgressView.swift */,
 		);
 		name = SmartScan;
 		sourceTree = "<group>";
@@ -2054,6 +2078,8 @@
 			1F1BCCCC10DEC6392AC99864 /* 1F1BCCCC10DEC6392AC99864 */,
 			967B83407C02DACAC84026C4 /* 967B83407C02DACAC84026C4 */,
 			4D55544F4C20495978A727F3 /* 4D55544F4C20495978A727F3 */,
+			9666442E431A400989F5FE02 /* 9666442E431A400989F5FE02 */,
+			87CFBD3A80BA3F4155911EA2 /* 87CFBD3A80BA3F4155911EA2 */,
 			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
 			2FAF4701D50F64464C1CDFE1 /* 2FAF4701D50F64464C1CDFE1 */,
 			6C7A8B19280920243EF09380 /* 6C7A8B19280920243EF09380 */,
