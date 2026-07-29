@@ -207,6 +207,9 @@ def main():
         ("Features/SmartScan/Models/ScanAction.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanResult.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanThreshold.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanResultsView.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanResultsViewModel.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanTreeRow.swift", "SmartScan"),
         ("FinderExtension/FinderSync.swift", "FinderExtension"),
         ("Intents/ScanIntent.swift", "Intents"),
         ("LaunchAgent/TrashMonitorService.swift", "LaunchAgent"),
@@ -264,6 +267,9 @@ def main():
         "IndeterminateCheckboxTests.swift",
         "RiskClassifierTests.swift",
         "EmptyStateViewTests.swift",
+        "SnapshotTestCase.swift",
+        "PhaseAComponentSnapshotTests.swift",
+        "ScanResultsViewSnapshotTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
 
     main_build_files = []
