@@ -3,8 +3,8 @@
 
 import os, hashlib
 
-BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp"
-PROJECT_FILE = f"{BASE}/kSpaceClean/kSpaceClean.xcodeproj/project.pbxproj"
+BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean"
+PROJECT_FILE = f"{BASE}/kSpaceClean.xcodeproj/project.pbxproj"
 KFOUNTATION_PATH = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation"
 
 def hash_id(seed, length=24):
@@ -154,6 +154,8 @@ def main():
         ("Features/Common/DesignSystem/Accessibility.swift", "DesignSystem"),
         ("Features/Common/Components/RiskBadge.swift", "Components"),
         ("Features/Common/Components/IndeterminateCheckbox.swift", "Components"),
+        ("Features/Common/Components/EmptyStateView.swift", "Components"),
+        ("Features/Common/Components/SkeletonRow.swift", "Components"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/Common/Models/CheckState.swift", "Models"),
         ("Features/Common/Models/SelectionPolicy.swift", "Models"),
@@ -203,9 +205,6 @@ def main():
         ("Features/SmartScan/Models/ScanAction.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanResult.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanThreshold.swift", "SmartScan"),
-        ("Features/SmartScan/Views/ScanTreeRow.swift", "SmartScan"),
-        ("Features/SmartScan/Views/ScanResultsView.swift", "SmartScan"),
-        ("Features/SmartScan/Views/ScanResultsViewModel.swift", "SmartScan"),
         ("FinderExtension/FinderSync.swift", "FinderExtension"),
         ("Intents/ScanIntent.swift", "Intents"),
         ("LaunchAgent/TrashMonitorService.swift", "LaunchAgent"),
@@ -257,13 +256,13 @@ def main():
         "ScanSpeedTests.swift",
         "RiskLevelTests.swift",
         "SelectionCascadeTests.swift",
-        "CascadeCheckboxTests.swift",
         "DesignTokensTests.swift",
         "AccessibilityTests.swift",
         "RiskBadgeTests.swift",
         "IndeterminateCheckboxTests.swift",
         "RiskClassifierTests.swift",
-    ]
+        "EmptyStateViewTests.swift",
+    ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
 
     main_build_files = []
 
