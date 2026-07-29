@@ -31,6 +31,10 @@
 		isa = PBXBuildFile;
 		fileRef = 33A787540DD622D356820FE1;
 	};
+	22398E879ED54BCACB02D236 /* 22398E879ED54BCACB02D236 */ = {
+		isa = PBXBuildFile;
+		fileRef = 6A14EEC19B3B5B3F9C2112DB;
+	};
 	23F7A4319341215A83BC3ABF /* 23F7A4319341215A83BC3ABF */ = {
 		isa = PBXBuildFile;
 		fileRef = 362341017602FD8FE3C4DCD8;
@@ -162,6 +166,10 @@
 	65394CE124729F1E04B9964B /* 65394CE124729F1E04B9964B */ = {
 		isa = PBXBuildFile;
 		fileRef = 217491CD724733CDEC686BCE;
+	};
+	684DF615F3B1843CBF85E30B /* 684DF615F3B1843CBF85E30B */ = {
+		isa = PBXBuildFile;
+		fileRef = 463CB1AFAED34A08917473F0;
 	};
 	6C7A8B19280920243EF09380 /* 6C7A8B19280920243EF09380 */ = {
 		isa = PBXBuildFile;
@@ -714,6 +722,13 @@
 		path = Features/AppUninstall/AppUninstallView.swift;
 		sourceTree = "<group>";
 	};
+	463CB1AFAED34A08917473F0 /* KeyboardShortcuts.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = KeyboardShortcuts.swift;
+		path = Features/Common/KeyboardShortcuts.swift;
+		sourceTree = "<group>";
+	};
 	483E6C0E12D5D16F7CC3DCCA /* AppStoreMetadata.plist */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = text.plist.xml;
@@ -811,6 +826,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = StoreProtocol.swift;
 		path = Store/StoreProtocol.swift;
+		sourceTree = "<group>";
+	};
+	6A14EEC19B3B5B3F9C2112DB /* ToolbarView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ToolbarView.swift;
+		path = Features/Common/Components/ToolbarView.swift;
 		sourceTree = "<group>";
 	};
 	6BA146E3B3F831C21C9347CC /* DuplicateScanner.swift */ = {
@@ -1392,6 +1414,7 @@
 	3F300C2EC1A0250807DB22F8 /* Common */ = {
 		isa = PBXGroup;
 		children = (
+			463CB1AFAED34A08917473F0 /* KeyboardShortcuts.swift */,
 		);
 		name = Common;
 		sourceTree = "<group>";
@@ -1625,6 +1648,7 @@
 			15962EEC58F9DC73E40FC8D4 /* IndeterminateCheckbox.swift */,
 			2408858D41C1FD466433A1B6 /* EmptyStateView.swift */,
 			72B03ED286D48519051D6C36 /* SkeletonRow.swift */,
+			6A14EEC19B3B5B3F9C2112DB /* ToolbarView.swift */,
 		);
 		name = Components;
 		sourceTree = "<group>";
@@ -1849,6 +1873,8 @@
 			4852A6CB7BC35688453AAC84 /* 4852A6CB7BC35688453AAC84 */,
 			CCD136AC62243D4906BB64F1 /* CCD136AC62243D4906BB64F1 */,
 			C4BBA6F57B34405F29CC1C0D /* C4BBA6F57B34405F29CC1C0D */,
+			22398E879ED54BCACB02D236 /* 22398E879ED54BCACB02D236 */,
+			684DF615F3B1843CBF85E30B /* 684DF615F3B1843CBF85E30B */,
 			A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */,
 			A3CC30C80D09F1974865F777 /* A3CC30C80D09F1974865F777 */,
 			7DAABFE3BB24C54473DD3F3F /* 7DAABFE3BB24C54473DD3F3F */,

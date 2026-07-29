@@ -156,6 +156,8 @@ def main():
         ("Features/Common/Components/IndeterminateCheckbox.swift", "Components"),
         ("Features/Common/Components/EmptyStateView.swift", "Components"),
         ("Features/Common/Components/SkeletonRow.swift", "Components"),
+        ("Features/Common/Components/ToolbarView.swift", "Components"),
+        ("Features/Common/KeyboardShortcuts.swift", "Common"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/Common/Models/CheckState.swift", "Models"),
         ("Features/Common/Models/SelectionPolicy.swift", "Models"),
