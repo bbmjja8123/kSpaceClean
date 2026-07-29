@@ -131,6 +131,10 @@
 		isa = PBXBuildFile;
 		fileRef = 04E9558BCD2C7ED10416DA1A;
 	};
+	4D55544F4C20495978A727F3 /* 4D55544F4C20495978A727F3 */ = {
+		isa = PBXBuildFile;
+		fileRef = 918AE59103697855AB2EF800;
+	};
 	50B65762CAF609C0CC83DB68 /* 50B65762CAF609C0CC83DB68 */ = {
 		isa = PBXBuildFile;
 		fileRef = F9462365D258D6756E2719E4;
@@ -951,6 +955,13 @@
 		path = Features/LargeOldFile/LargeOldView.swift;
 		sourceTree = "<group>";
 	};
+	918AE59103697855AB2EF800 /* ScanTreeRow.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanTreeRow.swift;
+		path = Features/SmartScan/Views/ScanTreeRow.swift;
+		sourceTree = "<group>";
+	};
 	923897329525023A788AACBD /* PhotoCleanViewModel.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1626,6 +1637,7 @@
 			7A32909C417ABBF944B06227 /* ScanSubCategory.swift */,
 			5476C01D0356DEDD2A0CE3A9 /* ScanAction.swift */,
 			2CFE35D544528383C908AB59 /* ScanResult.swift */,
+			918AE59103697855AB2EF800 /* ScanTreeRow.swift */,
 		);
 		name = SmartScan;
 		sourceTree = "<group>";
@@ -1846,6 +1858,7 @@
 			99F5466776936D83A8982EC1 /* 99F5466776936D83A8982EC1 */,
 			A5DC807BBF7FE33311B154C7 /* A5DC807BBF7FE33311B154C7 */,
 			3E6125A655221800A403AEF6 /* 3E6125A655221800A403AEF6 */,
+			4D55544F4C20495978A727F3 /* 4D55544F4C20495978A727F3 */,
 			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
 			2FAF4701D50F64464C1CDFE1 /* 2FAF4701D50F64464C1CDFE1 */,
 			6C7A8B19280920243EF09380 /* 6C7A8B19280920243EF09380 */,
