@@ -1,0 +1,451 @@
+{
+  "version": 1,
+  "generatedAt": "2026-07-30",
+  "source": "Lemon libcleaner cleaning-rule XML (data extraction only)",
+  "apps": {
+    "com.apple.Safari": {
+      "bundleID": "com.apple.Safari",
+      "name": "Safari",
+      "nameCN": "Safari",
+      "vendor": "Apple",
+      "type": "browser",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/Metadata/Safari",
+        "~/Library/Caches/com.apple.Safari",
+        "~/Library/Caches/com.apple.Safari.SafeBrowsing",
+        "~/Library/Caches/com.apple.safaridavclient",
+        "~/Library/Containers/com.apple.Safari.CacheDeleteExtension",
+        "~/Library/Safari/Downloads.plist",
+        "~/Library/Safari/History.plist",
+        "~/Library/Safari/HistoryIndex.sk",
+        "~/Library/Safari/LocalStorage",
+        "~/Library/Safari/WebpageIcons.db"
+      ],
+      "confidence": "medium"
+    },
+    "com.apple.dt.Xcode": {
+      "bundleID": "com.apple.dt.Xcode",
+      "name": "Xcode Junks",
+      "nameCN": "Xcode开发垃圾",
+      "vendor": "Apple",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.dt.Xcode",
+        "~/Library/Developer/Xcode/Archives",
+        "~/Library/Developer/Xcode/DerivedData",
+        "~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex",
+        "~/Library/Developer/Xcode/DocumentationCache",
+        "~/Library/Developer/Xcode/iOS Device Logs",
+        "~/Library/Developer/Xcode/iOS DeviceSupport"
+      ],
+      "confidence": "high"
+    },
+    "com.apple.mail": {
+      "bundleID": "com.apple.mail",
+      "name": "Mail Attachments",
+      "nameCN": "Mail缓存",
+      "vendor": "Apple",
+      "type": "mail",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.apple.mail/Data/Library/Mail Downloads",
+        "~/Library/Mail"
+      ],
+      "confidence": "high"
+    },
+    "com.baidu.inputmethod.BaiduIM": {
+      "bundleID": "com.baidu.inputmethod.BaiduIM",
+      "name": "Baidu Input",
+      "nameCN": "百度输入法",
+      "vendor": "百度",
+      "type": "inputmethod",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Application Support/BaiduInput/skin",
+        "~/Library/Caches/com.baidu.inputmethod.BaiduIM"
+      ],
+      "confidence": "high"
+    },
+    "com.baofeng.player": {
+      "bundleID": "com.baofeng.player",
+      "name": "Baofeng Player",
+      "nameCN": "暴风影音",
+      "vendor": "暴风影音",
+      "type": "video",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Application Support/Baofeng Inc.",
+        "~/Library/Caches/com.baofeng.player",
+        "~/Library/Containers/com.baofeng.player/Data/Library/Application Support/Baofeng Inc.",
+        "~/Library/Containers/com.baofeng.player/Data/Library/Caches",
+        "~/Library/Containers/com.baofeng.player/Data/Library/Logs"
+      ],
+      "confidence": "high"
+    },
+    "com.bohemiancoding.sketch3": {
+      "bundleID": "com.bohemiancoding.sketch3",
+      "name": "Sketch Junks",
+      "nameCN": "Sketch开发垃圾",
+      "vendor": "Bohemian Coding",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Application Support/com.bohemiancoding.sketch3/crash.log",
+        "~/Library/Caches/com.bohemiancoding.sketch3",
+        "~/Library/Logs/com.bohemiancoding.sketch3"
+      ],
+      "confidence": "high"
+    },
+    "com.dingtalk.mac": {
+      "bundleID": "com.dingtalk.mac",
+      "name": "DingTalk",
+      "nameCN": "钉钉",
+      "vendor": "阿里巴巴",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac",
+        "~/Library/Application Support/DingTalkMac",
+        "~/Library/Application Support/DingTalkMac/emotions",
+        "~/Library/Application Support/DingTalkMac/log",
+        "~/Library/Caches/com.alibaba.DingTalkMac",
+        "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db",
+        "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db-shm",
+        "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db-wal",
+        "~/Library/Caches/com.alibaba.DingTalkMac/fsCachedData",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/emotions",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/log",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db-shm",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db-wal",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/fsCachedData"
+      ],
+      "confidence": "medium"
+    },
+    "com.iflytek.macinput": {
+      "bundleID": "com.iflytek.macinput",
+      "name": "iFLYTEK Input",
+      "nameCN": "讯飞输入法",
+      "vendor": "科大讯飞",
+      "type": "inputmethod",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Containers/com.iflytek.macinput/Data/Library/Caches/com.iflytek.macinput",
+        "~/Library/Containers/com.iflytek.macinput/Data/Library/Logs"
+      ],
+      "confidence": "high"
+    },
+    "com.iqiyi.player": {
+      "bundleID": "com.iqiyi.player",
+      "name": "iQIYI",
+      "nameCN": "爱奇艺",
+      "vendor": "爱奇艺",
+      "type": "video",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Barrage_102",
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/PlayRecord",
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Puma/Log",
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/WebPlayer",
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/download",
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/previewImages",
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Caches",
+        "~/Library/Containers/com.iqiyi.player/Data/Library/Logs"
+      ],
+      "confidence": "high"
+    },
+    "com.kugou.mac.Music": {
+      "bundleID": "com.kugou.mac.Music",
+      "name": "KuGou Music",
+      "nameCN": "酷狗音乐",
+      "vendor": "酷狗",
+      "type": "music",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Lyric",
+        "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Portrait",
+        "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Songs",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac",
+        "~/Music/酷狗音乐"
+      ],
+      "confidence": "medium"
+    },
+    "com.netease.163music": {
+      "bundleID": "com.netease.163music",
+      "name": "NetEaseMusic",
+      "nameCN": "网易云音乐",
+      "vendor": "网易",
+      "type": "music",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.netease.163music",
+        "~/Library/Containers/com.netease.163music/Data/Caches/online_play_cache",
+        "~/Library/Containers/com.netease.163music/Data/Caches/orpheus_path",
+        "~/Library/Containers/com.netease.163music/Data/Documents/storage/Logs",
+        "~/Library/Containers/com.netease.163music/Data/Library/Caches/online_play_cache",
+        "~/Library/Containers/com.netease.163music/Data/Library/Caches/orpheus_path",
+        "~/Library/Logs/com.netease.163music",
+        "~/Music/网易云音乐"
+      ],
+      "confidence": "high"
+    },
+    "com.operasoftware.Opera": {
+      "bundleID": "com.operasoftware.Opera",
+      "name": "Opera",
+      "nameCN": "Opera",
+      "vendor": "Opera Software",
+      "type": "browser",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Application Support/Opera/application_cache",
+        "~/Library/Application Support/com.operasoftware.Opera",
+        "~/Library/Application Support/com.operasoftware.Opera/GPUCache",
+        "~/Library/Caches/Opera",
+        "~/Library/Caches/com.operasoftware.Opera",
+        "~/Library/Opera",
+        "~/Library/Opera/download.dat",
+        "~/Library/Opera/global_history.dat",
+        "~/Library/Opera/sessions"
+      ],
+      "confidence": "high"
+    },
+    "com.pptv.pptvmac": {
+      "bundleID": "com.pptv.pptvmac",
+      "name": "PPTV",
+      "nameCN": "PPTV",
+      "vendor": "PPTV",
+      "type": "video",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.pptv.pptvmac/Data/Library/Application Support/PPTV",
+        "~/Library/Containers/com.pptv.pptvmac/Data/Library/Caches",
+        "~/Library/Containers/com.pptv.pptvmac/Data/Library/Logs"
+      ],
+      "confidence": "high"
+    },
+    "com.rockysandstudio.MKPlayer": {
+      "bundleID": "com.rockysandstudio.MKPlayer",
+      "name": "MKPlayer",
+      "nameCN": "MKPlayer",
+      "vendor": "Rocky Sand Studio",
+      "type": "video",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Caches",
+        "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Logs"
+      ],
+      "confidence": "high"
+    },
+    "com.sogou.sogoupad": {
+      "bundleID": "com.sogou.sogoupad",
+      "name": "SoGou Pinyin",
+      "nameCN": "搜狗输入法",
+      "vendor": "搜狗",
+      "type": "inputmethod",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~//Library/Containers/com.sogou.sogoupad/Data/Library/Caches",
+        "~/Library/Application Support/Sogou/EmojiPanel/expressions",
+        "~/Library/Caches/SogouServices"
+      ],
+      "confidence": "high"
+    },
+    "com.tencent.QQMusicMac": {
+      "bundleID": "com.tencent.QQMusicMac",
+      "name": "QQ Music",
+      "nameCN": "QQ音乐",
+      "vendor": "腾讯",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iAlbum",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iArtist",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iCache",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLyric",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iMusic",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iTemp",
+        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac",
+        "~/Music/QQ音乐"
+      ],
+      "confidence": "high"
+    },
+    "com.tencent.WeWorkMac": {
+      "bundleID": "com.tencent.WeWorkMac",
+      "name": "WeChatWork",
+      "nameCN": "企业微信",
+      "vendor": "腾讯",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data",
+        "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Log",
+        "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Caches/com.tencent.WeWorkMac"
+      ],
+      "confidence": "high"
+    },
+    "com.tencent.qq": {
+      "bundleID": "com.tencent.qq",
+      "name": "QQ",
+      "nameCN": "QQ",
+      "vendor": "腾讯",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Avatar",
+        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/File",
+        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Images",
+        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/PTT",
+        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/QQINI",
+        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Videos",
+        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/com.tencent.qq"
+      ],
+      "confidence": "high"
+    },
+    "com.tencent.tenvideo": {
+      "bundleID": "com.tencent.tenvideo",
+      "name": "WeTV",
+      "nameCN": "腾讯视频",
+      "vendor": "腾讯",
+      "type": "video",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.tencent.tenvideo",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/CoreData/Download/ImageDir",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/offlinelogo",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/video",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/P2P",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/SSO/Logs",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/documentCache",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/com.tencent.xinWeChat/com.tencent.tenvideo",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/default",
+        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Logs"
+      ],
+      "confidence": "medium"
+    },
+    "com.tencent.xinWeChat": {
+      "bundleID": "com.tencent.xinWeChat",
+      "name": "WeChat",
+      "nameCN": "微信",
+      "vendor": "腾讯",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat",
+        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat",
+        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db",
+        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-shm",
+        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-wal",
+        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/PinYinCache",
+        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/fsCachedData"
+      ],
+      "confidence": "high"
+    },
+    "com.wenyu.kwplayermac": {
+      "bundleID": "com.wenyu.kwplayermac",
+      "name": "Kuwo Music",
+      "nameCN": "酷我音乐",
+      "vendor": "酷我",
+      "type": "music",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/BigArtistPic",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MV",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MVCache",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/OfflineRadio",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/P2PCache",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/PreGetMusic",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/WifiMusic",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/HDPicture",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Lyric",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/ImageData",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Caches/com.wenyu.kwplayermac",
+        "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Logs",
+        "~/Music/酷我音乐"
+      ],
+      "confidence": "high"
+    },
+    "com.xiami.client": {
+      "bundleID": "com.xiami.client",
+      "name": "XIAMI Music",
+      "nameCN": "虾米音乐",
+      "vendor": "虾米音乐",
+      "type": "music",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Caches/lyrics",
+        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Tmp/playerCache",
+        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/default",
+        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/playerCache",
+        "~/Library/Containers/com.xiami.client/Data/Library/Caches/com.xiami.client",
+        "~/Library/Containers/com.xiami.client/Data/Library/Logs",
+        "~/Music/虾米音乐"
+      ],
+      "confidence": "high"
+    },
+    "com.xianghu.cctalk.mac": {
+      "bundleID": "com.xianghu.cctalk.mac",
+      "name": "CCtalk",
+      "nameCN": "CCtalk",
+      "vendor": "沪江",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Application Support/CCtalk/Log",
+        "~/Library/Application Support/CCtalk/PPT/Image/ppt",
+        "~/Library/Application Support/CCtalk/Users",
+        "~/Library/Application Support/CCtalk/WebEngine/Cache",
+        "~/Library/Application Support/CCtalk/WebEngine/Cookie",
+        "~/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac",
+        "~/Library/Caches/com.hujiang.mac.cctalk",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Log",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/PPT/Image/ppt",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Users",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cache",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cookie",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Caches",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Logs"
+      ],
+      "confidence": "medium"
+    },
+    "com.youku.mac": {
+      "bundleID": "com.youku.mac",
+      "name": "YOUKU",
+      "nameCN": "优酷",
+      "vendor": "Youku",
+      "type": "other",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.youku.mac/Data/Documents/Log",
+        "~/Library/Containers/com.youku.mac/Data/Documents/Youku",
+        "~/Library/Containers/com.youku.mac/Data/Library/Application Support/Youku",
+        "~/Library/Containers/com.youku.mac/Data/Library/Caches",
+        "~/Library/Containers/com.youku.mac/Data/Library/Logs",
+        "~/Library/Containers/com.youku.mac/Data/VideoCache",
+        "~/Library/Containers/com.youku.mac/Data/thumb"
+      ],
+      "confidence": "high"
+    },
+    "tv.sohu.SHPlayer": {
+      "bundleID": "tv.sohu.SHPlayer",
+      "name": "Sohu Video",
+      "nameCN": "搜狐影音",
+      "vendor": "Sohu",
+      "type": "video",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches",
+        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Log",
+        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Movie",
+        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/PlayListCache",
+        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/VideoDetailCache"
+      ],
+      "confidence": "high"
+    }
+  }
+}

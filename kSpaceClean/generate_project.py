@@ -309,6 +309,7 @@ def main():
     resource_files = [
         "Localizable.xcstrings",
         "com.kraftly.kspaceclean.trashmonitor.plist",
+        "bundleIDMapping.json",
     ]
 
     test_files = [

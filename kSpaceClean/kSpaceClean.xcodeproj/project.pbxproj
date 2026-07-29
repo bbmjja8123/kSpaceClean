@@ -23,6 +23,10 @@
 		isa = PBXBuildFile;
 		fileRef = 1C4455D0B4CE1B5F5681A2FE;
 	};
+	14C0B14D56CEBA8A7CD5E237 /* 14C0B14D56CEBA8A7CD5E237 */ = {
+		isa = PBXBuildFile;
+		fileRef = D34B57C1703ED2F13F857E11;
+	};
 	1BD673E71CD7296E812865D7 /* 1BD673E71CD7296E812865D7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 67AE780A1B673D15799D5C78;
@@ -1276,6 +1280,13 @@
 		path = Features/Common/DesignSystem/Typography.swift;
 		sourceTree = "<group>";
 	};
+	D34B57C1703ED2F13F857E11 /* bundleIDMapping.json */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = file;
+		name = bundleIDMapping.json;
+		path = Resources/bundleIDMapping.json;
+		sourceTree = "<group>";
+	};
 	D36BFC84ADBE33E80B654D65 /* ScanResultsTreeView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1452,6 +1463,7 @@
 			05B9799A26FB3FDC78B071F1 /* Assets.xcassets */,
 			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
 			505366A05A93C5E2F212971A /* com.kraftly.kspaceclean.trashmonitor.plist */,
+			D34B57C1703ED2F13F857E11 /* bundleIDMapping.json */,
 		);
 		name = Resources;
 		sourceTree = "<group>";
@@ -1897,6 +1909,7 @@
 			833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */,
 			8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */,
 			304F60148EAF73731445DA5B /* 304F60148EAF73731445DA5B */,
+			14C0B14D56CEBA8A7CD5E237 /* 14C0B14D56CEBA8A7CD5E237 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
