@@ -202,6 +202,7 @@ def main():
         ("Features/SmartScan/Models/ScanSubCategory.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanAction.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanResult.swift", "SmartScan"),
+        ("Features/SmartScan/Models/ScanThreshold.swift", "SmartScan"),
         ("Features/SmartScan/Views/ScanTreeRow.swift", "SmartScan"),
         ("FinderExtension/FinderSync.swift", "FinderExtension"),
         ("Intents/ScanIntent.swift", "Intents"),
@@ -259,6 +260,7 @@ def main():
         "AccessibilityTests.swift",
         "RiskBadgeTests.swift",
         "IndeterminateCheckboxTests.swift",
+        "RiskClassifierTests.swift",
     ]
 
     main_build_files = []

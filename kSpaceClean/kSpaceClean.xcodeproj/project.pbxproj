@@ -115,6 +115,10 @@
 		isa = PBXBuildFile;
 		fileRef = 52E0461DD80334CC876655EE;
 	};
+	44067074C413F5B4B07C74C6 /* 44067074C413F5B4B07C74C6 */ = {
+		isa = PBXBuildFile;
+		fileRef = C9F8A73657E01AFA836D20D6;
+	};
 	45047541433A05A5C3637404 /* 45047541433A05A5C3637404 */ = {
 		isa = PBXBuildFile;
 		fileRef = 4280091CBB936F092C7D0B4D;
@@ -178,6 +182,10 @@
 	7CB86EE4BA9FD8FEBD3EE21E /* 7CB86EE4BA9FD8FEBD3EE21E */ = {
 		isa = PBXBuildFile;
 		fileRef = 68449DB53B84CAB2F246F108;
+	};
+	7D2E3DFF3BE2D70DBACABA60 /* 7D2E3DFF3BE2D70DBACABA60 */ = {
+		isa = PBXBuildFile;
+		fileRef = 9582C7013B22FADEDAFA1CF3;
 	};
 	7DAABFE3BB24C54473DD3F3F /* 7DAABFE3BB24C54473DD3F3F */ = {
 		isa = PBXBuildFile;
@@ -983,6 +991,13 @@
 		path = Spotlight/SpotlightIndexer.swift;
 		sourceTree = "<group>";
 	};
+	9582C7013B22FADEDAFA1CF3 /* ScanThreshold.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanThreshold.swift;
+		path = Features/SmartScan/Models/ScanThreshold.swift;
+		sourceTree = "<group>";
+	};
 	97D5754210E7D3F69530AAB5 /* StoreManagerTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1121,6 +1136,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = GalaxyScene.swift;
 		path = Features/DiskGalaxy/GalaxyScene.swift;
+		sourceTree = "<group>";
+	};
+	C9F8A73657E01AFA836D20D6 /* RiskClassifierTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = RiskClassifierTests.swift;
+		path = Tests/RiskClassifierTests.swift;
 		sourceTree = "<group>";
 	};
 	CCDE2FF048C7D15F5A9C4034 /* KSpaceCleanWidget.swift */ = {
@@ -1569,6 +1591,7 @@
 			DF350E26C9D818BFD659E2D0 /* AccessibilityTests.swift */,
 			F721116F0C42EE236F5A9F5B /* RiskBadgeTests.swift */,
 			837C7684ADF5F0054F611817 /* IndeterminateCheckboxTests.swift */,
+			C9F8A73657E01AFA836D20D6 /* RiskClassifierTests.swift */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -1637,6 +1660,7 @@
 			7A32909C417ABBF944B06227 /* ScanSubCategory.swift */,
 			5476C01D0356DEDD2A0CE3A9 /* ScanAction.swift */,
 			2CFE35D544528383C908AB59 /* ScanResult.swift */,
+			9582C7013B22FADEDAFA1CF3 /* ScanThreshold.swift */,
 			918AE59103697855AB2EF800 /* ScanTreeRow.swift */,
 		);
 		name = SmartScan;
@@ -1784,6 +1808,7 @@
 			A3E4D45373D1BE3D3E45011D /* A3E4D45373D1BE3D3E45011D */,
 			5896B99214115481EEF2B5A0 /* 5896B99214115481EEF2B5A0 */,
 			30F796EE7C461DDC4EA059B7 /* 30F796EE7C461DDC4EA059B7 */,
+			44067074C413F5B4B07C74C6 /* 44067074C413F5B4B07C74C6 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -1858,6 +1883,7 @@
 			99F5466776936D83A8982EC1 /* 99F5466776936D83A8982EC1 */,
 			A5DC807BBF7FE33311B154C7 /* A5DC807BBF7FE33311B154C7 */,
 			3E6125A655221800A403AEF6 /* 3E6125A655221800A403AEF6 */,
+			7D2E3DFF3BE2D70DBACABA60 /* 7D2E3DFF3BE2D70DBACABA60 */,
 			4D55544F4C20495978A727F3 /* 4D55544F4C20495978A727F3 */,
 			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
 			2FAF4701D50F64464C1CDFE1 /* 2FAF4701D50F64464C1CDFE1 */,
