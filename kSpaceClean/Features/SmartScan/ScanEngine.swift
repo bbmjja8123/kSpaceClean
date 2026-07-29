@@ -3,13 +3,20 @@ import CoreData
 import DesignSystem
 import FileScanner
 
-// MARK: - ScanEngine
+// MARK: - LegacyScanEngine
 
-/// 规则驱动的扫描引擎 — 遍历 ScanRuleSet 的 8 大分类，
-/// 使用 FilterEvaluator 做路径解析、过滤评估、文件枚举，
+/// 规则驱动的扫描引擎 — 遍历 ScanRuleSet 的 8 大分类,
+/// 使用 FilterEvaluator 做路径解析、过滤评估、文件枚举,
 /// 通过 BatchBuffer 批量写入 Core Data。
+///
+/// **Legacy v2 engine** — superseded by the new `ScanEngine` (Task B4)
+/// in `Features/SmartScan/Engine/ScanEngine.swift`. The new engine backs
+/// `ScanOrchestrator` for the v3 4-level tree; this legacy implementation
+/// remains here because `ScanViewModel` still drives it via Core Data +
+/// `BatchBuffer`. Both will be unified once `ScanViewModel` is migrated
+/// to consume the new engine.
 @MainActor
-public final class ScanEngine: ObservableObject {
+public final class LegacyScanEngine: ObservableObject {
     @Published public private(set) var progress = ScanProgress()
     public var speedOverride: ScanSpeed?
     private let cancellationToken = CancellationToken()

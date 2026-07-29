@@ -10,7 +10,7 @@ public final class ScanViewModel: ObservableObject {
     @Published public var resultGroups: [ScanResultGroup] = []
     /// Fires AFTER scanResults are populated — RootView observes this instead of progress.state to avoid timing races
     @Published public var scanDidComplete = false
-    private let engine = ScanEngine()
+    private let engine = LegacyScanEngine()
     private var cancellables = Set<AnyCancellable>()
     private let classifier = RuleClassifier()
 
