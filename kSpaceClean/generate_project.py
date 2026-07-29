@@ -274,6 +274,7 @@ def main():
         ("Features/SmartScan/Models/ScanAction.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanResult.swift", "SmartScan"),
         ("Features/SmartScan/Models/ScanThreshold.swift", "SmartScan"),
+        ("Features/SmartScan/Engine/ScanOrchestrator.swift", "SmartScan"),
         ("Features/SmartScan/Views/ScanResultsView.swift", "SmartScan"),
         ("Features/SmartScan/Views/ScanResultsViewModel.swift", "SmartScan"),
         ("Features/SmartScan/Views/ScanTreeRow.swift", "SmartScan"),

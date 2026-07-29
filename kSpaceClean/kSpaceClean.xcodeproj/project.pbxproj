@@ -495,6 +495,10 @@
 		isa = PBXBuildFile;
 		fileRef = 29548BE5AD0B39AAFE6CF22F;
 	};
+	FE28E4D428A313A8ED877C06 /* FE28E4D428A313A8ED877C06 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4B381C5DA9D410ED4B1B58AE;
+	};
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -780,6 +784,13 @@
 		lastKnownFileType = text.plist.xml;
 		name = AppStoreMetadata.plist;
 		path = AppStoreMetadata.plist;
+		sourceTree = "<group>";
+	};
+	4B381C5DA9D410ED4B1B58AE /* ScanOrchestrator.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanOrchestrator.swift;
+		path = Features/SmartScan/Engine/ScanOrchestrator.swift;
 		sourceTree = "<group>";
 	};
 	4BB3080892491F8489419E53 /* LargeOldViewModel.swift */ = {
@@ -1791,6 +1802,7 @@
 			5476C01D0356DEDD2A0CE3A9 /* ScanAction.swift */,
 			2CFE35D544528383C908AB59 /* ScanResult.swift */,
 			9582C7013B22FADEDAFA1CF3 /* ScanThreshold.swift */,
+			4B381C5DA9D410ED4B1B58AE /* ScanOrchestrator.swift */,
 			14F2021C3C9AF375232376CF /* ScanResultsView.swift */,
 			ABB2502429F42D3C90007257 /* ScanResultsViewModel.swift */,
 			918AE59103697855AB2EF800 /* ScanTreeRow.swift */,
@@ -2025,6 +2037,7 @@
 			A5DC807BBF7FE33311B154C7 /* A5DC807BBF7FE33311B154C7 */,
 			3E6125A655221800A403AEF6 /* 3E6125A655221800A403AEF6 */,
 			7D2E3DFF3BE2D70DBACABA60 /* 7D2E3DFF3BE2D70DBACABA60 */,
+			FE28E4D428A313A8ED877C06 /* FE28E4D428A313A8ED877C06 */,
 			1F1BCCCC10DEC6392AC99864 /* 1F1BCCCC10DEC6392AC99864 */,
 			967B83407C02DACAC84026C4 /* 967B83407C02DACAC84026C4 */,
 			4D55544F4C20495978A727F3 /* 4D55544F4C20495978A727F3 */,
