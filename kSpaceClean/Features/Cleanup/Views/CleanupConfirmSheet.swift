@@ -131,8 +131,19 @@ struct CleanupConfirmSheet: View {
                     .buttonStyle(.bordered)
                     .keyboardShortcut(.escape, modifiers: [])
 
+                // C3 fix: when dangerous items are present, the primary CTA
+                // opens `DangerousConfirmDialog` (Task C5) instead of firing
+                // `onConfirm` directly. The dialog requires the user to type
+                // the literal "DELETE" token before calling `onConfirm` back
+                // up the chain. This is the actual data-loss gate.
                 Button(actionTitle, role: hasDangerous ? .destructive : nil,
-                       action: { onConfirm(defaultWarnHandling) })
+                       action: {
+                           if hasDangerous {
+                               showDangerousDialog = true
+                           } else {
+                               onConfirm(defaultWarnHandling)
+                           }
+                       })
                     .buttonStyle(.borderedProminent)
                     .tint(ctaTint)
                     .keyboardShortcut(.return, modifiers: [])
@@ -142,7 +153,26 @@ struct CleanupConfirmSheet: View {
         .frame(width: 520)
         .background(Color.bgElevated)
         .accessibilityElement(children: .contain)
+        // C3: present the dangerous dialog as a sheet on top of the
+        // confirmation sheet. SwiftUI only allows one sheet per view, so
+        // we layer the dialog here rather than at the call site.
+        .sheet(isPresented: $showDangerousDialog) {
+            DangerousConfirmDialog(
+                onConfirm: {
+                    showDangerousDialog = false
+                    onConfirm(defaultWarnHandling)
+                },
+                onCancel: {
+                    showDangerousDialog = false
+                }
+            )
+        }
     }
+
+    /// C3: drives presentation of the `DangerousConfirmDialog`. The
+    /// dialog is only reachable when `hasDangerous` is `true`; otherwise
+    /// the CTA fires `onConfirm` directly.
+    @State private var showDangerousDialog: Bool = false
 
     // MARK: - Sub-views
 
