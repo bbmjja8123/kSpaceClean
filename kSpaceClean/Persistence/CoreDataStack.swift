@@ -9,11 +9,10 @@ public final class CoreDataStack: ObservableObject {
     private let isTestEnvironment: Bool
 
     public private(set) lazy var container: NSPersistentContainer = {
-        let bundle = Bundle(for: FileEntry.self)
-        guard let model = NSManagedObjectModel.mergedModel(from: [bundle]) else {
-            fatalError("Failed to load Core Data model")
-        }
-        let container = NSPersistentContainer(name: modelName, managedObjectModel: model)
+        // Shared model instance — see `CoreDataModel` for why loading it twice breaks
+        // NSManagedObject subclass → entity resolution.
+        let container = NSPersistentContainer(name: modelName,
+                                              managedObjectModel: CoreDataModel.shared)
 
         if isTestEnvironment {
             // In-memory store for tests

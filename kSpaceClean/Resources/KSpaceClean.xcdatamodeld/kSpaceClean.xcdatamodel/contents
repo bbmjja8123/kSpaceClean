@@ -7,6 +7,15 @@
         <attribute name="totalBytes" attributeType="Integer 64" usesScalarValueType="YES"/>
         <relationship name="entries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FileEntry" inverseName="cleanupRecord" inverseEntity="FileEntry"/>
     </entity>
+    <entity name="CleanupHistoryItem" representedClassName="CleanupHistoryItem" syncable="YES">
+        <attribute name="bundleID" optional="YES" attributeType="String"/>
+        <attribute name="categoryID" optional="YES" attributeType="String"/>
+        <attribute name="cleanedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="path" attributeType="String"/>
+        <attribute name="riskLevel" attributeType="String" defaultValueString="recommended"/>
+        <attribute name="size" attributeType="Integer 64" usesScalarValueType="YES" defaultValueString="0"/>
+    </entity>
     <entity name="FileEntry" representedClassName="FileEntry" syncable="YES">
         <attribute name="actionID" attributeType="Integer 64" usesScalarValueType="YES" defaultValueString="-1"/>
         <attribute name="category" attributeType="String"/>
@@ -29,6 +38,7 @@
         <relationship name="entries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FileEntry" inverseName="scanRecord" inverseEntity="FileEntry"/>
     </entity>
     <elements>
+        <element name="CleanupHistoryItem" positionX="-63" positionY="-9" width="128" height="134"/>
         <element name="CleanupRecord" positionX="-63" positionY="-9" width="128" height="104"/>
         <element name="FileEntry" positionX="-63" positionY="-9" width="128" height="134"/>
         <element name="ScanRecord" positionX="-63" positionY="-9" width="128" height="134"/>

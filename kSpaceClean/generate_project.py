@@ -215,6 +215,7 @@ def main():
         ("Features/Cleanup/TrashMover.swift", "Cleanup"),
         ("Features/Cleanup/CleanupEngine.swift", "Cleanup"),
         ("Features/Cleanup/CleanActionExecutors.swift", "Cleanup"),
+        ("Features/Cleanup/Models/CleanupTypes.swift", "Cleanup"),
         ("Features/Common/DesignSystem/Colors.swift", "DesignSystem"),
         ("Features/Common/DesignSystem/Typography.swift", "DesignSystem"),
         ("Features/Common/DesignSystem/Spacing.swift", "DesignSystem"),
@@ -287,10 +288,12 @@ def main():
         ("LiveActivity/CleanupActivityAttributes.swift", "LiveActivity"),
         ("MenuBar/DiskStatusView.swift", "MenuBar"),
         ("MenuBar/MenuBarManager.swift", "MenuBar"),
+        ("Persistence/CoreDataModels/CleanupHistoryItem.swift", "Persistence"),
         ("Persistence/CoreDataModels/CleanupRecord.swift", "Persistence"),
         ("Persistence/CoreDataModels/FileEntry.swift", "Persistence"),
         ("Persistence/CoreDataModels/ScanRecord.swift", "Persistence"),
         ("Persistence/CoreDataStack.swift", "Persistence"),
+        ("Persistence/PersistenceController.swift", "Persistence"),
         ("Persistence/UserPreferences.swift", "Persistence"),
         ("Spotlight/SpotlightIndexer.swift", "Spotlight"),
         ("Store/PaywallView.swift", "Store"),
@@ -343,6 +346,7 @@ def main():
         "SnapshotTestCase.swift",
         "PhaseAComponentSnapshotTests.swift",
         "ScanResultsViewSnapshotTests.swift",
+        "CleanupHistoryPersistenceTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
     # CascadeCheckboxTests.swift — Task A5's 5 cascade-behaviour tests
     # (recommended-only parent selection, parent-off propagation,
