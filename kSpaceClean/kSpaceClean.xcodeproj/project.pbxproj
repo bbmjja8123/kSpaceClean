@@ -191,6 +191,10 @@
 		isa = PBXBuildFile;
 		fileRef = F721116F0C42EE236F5A9F5B;
 	};
+	6027AA798C9F646F913218BE /* 6027AA798C9F646F913218BE */ = {
+		isa = PBXBuildFile;
+		fileRef = 7A21FC3C9414986B027F3FEA;
+	};
 	61A6103C581CF8E10ABF786C /* 61A6103C581CF8E10ABF786C */ = {
 		isa = PBXBuildFile;
 		fileRef = BB4B88CD88070F1A47869211;
@@ -495,6 +499,10 @@
 		isa = PBXBuildFile;
 		fileRef = AE22F6478FB89A6208E6100D;
 	};
+	EBCB188862BBFBBE04991473 /* EBCB188862BBFBBE04991473 */ = {
+		isa = PBXBuildFile;
+		fileRef = 0D29E5297F9423AC49CEBD8C;
+	};
 	EDB5293C48C9B1E79545322F /* EDB5293C48C9B1E79545322F */ = {
 		isa = PBXBuildFile;
 		fileRef = 7DB7F26B00370ABD7292F033;
@@ -597,6 +605,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = CleanupConfirmSheet.swift;
 		path = Features/Cleanup/Views/CleanupConfirmSheet.swift;
+		sourceTree = "<group>";
+	};
+	0D29E5297F9423AC49CEBD8C /* DangerousConfirmDialog.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DangerousConfirmDialog.swift;
+		path = Features/Cleanup/Views/DangerousConfirmDialog.swift;
 		sourceTree = "<group>";
 	};
 	0DFF4F4B8D975797AB2E42F1 /* CleanupHistoryPersistenceTests.swift */ = {
@@ -1060,6 +1075,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = TrashMover.swift;
 		path = Features/Cleanup/TrashMover.swift;
+		sourceTree = "<group>";
+	};
+	7A21FC3C9414986B027F3FEA /* DangerousConfirmDialogTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DangerousConfirmDialogTests.swift;
+		path = Tests/DangerousConfirmDialogTests.swift;
 		sourceTree = "<group>";
 	};
 	7A32909C417ABBF944B06227 /* ScanSubCategory.swift */ = {
@@ -1682,6 +1704,7 @@
 			9A33D8059481DFDE9C2FD9B5 /* CleanActionExecutors.swift */,
 			DFD54390D97E9452286C8813 /* CleanupTypes.swift */,
 			0A52BB71FC41E55ECEE18C80 /* CleanupConfirmSheet.swift */,
+			0D29E5297F9423AC49CEBD8C /* DangerousConfirmDialog.swift */,
 			5FB299C677B7CC084AC2D213 /* WarningDetectionService.swift */,
 		);
 		name = Cleanup;
@@ -1839,6 +1862,7 @@
 			B7DE37FA701F3CBB161B5BED /* UserPreferencesTests.swift */,
 			52E0461DD80334CC876655EE /* FileSizeFormatterTests.swift */,
 			3A84BB454FED73942561887A /* CleanupConfirmationTests.swift */,
+			7A21FC3C9414986B027F3FEA /* DangerousConfirmDialogTests.swift */,
 			F35BC38F895610B7B5332037 /* DuplicateDetectorTests.swift */,
 			97D5754210E7D3F69530AAB5 /* StoreManagerTests.swift */,
 			29C4B00FE9B3EF241D9CAF24 /* ScanSpeedTests.swift */,
@@ -2075,6 +2099,7 @@
 			A0E8A417B44193A6BB120C04 /* A0E8A417B44193A6BB120C04 */,
 			3F3DA18D11AC5740C4BA03D2 /* 3F3DA18D11AC5740C4BA03D2 */,
 			A97665E8FDC2E362123BABE7 /* A97665E8FDC2E362123BABE7 */,
+			6027AA798C9F646F913218BE /* 6027AA798C9F646F913218BE */,
 			FBD580A35CA294D032838132 /* FBD580A35CA294D032838132 */,
 			DBF041637F69E6FAF31C49F7 /* DBF041637F69E6FAF31C49F7 */,
 			B9817D2FAD0AA9F128544423 /* B9817D2FAD0AA9F128544423 */,
@@ -2115,6 +2140,7 @@
 			8BD9554947C216FA8D895BC6 /* 8BD9554947C216FA8D895BC6 */,
 			3C6EA704ABA14141172CEE23 /* 3C6EA704ABA14141172CEE23 */,
 			31AA48867F8A26E4B8963B46 /* 31AA48867F8A26E4B8963B46 */,
+			EBCB188862BBFBBE04991473 /* EBCB188862BBFBBE04991473 */,
 			F8C349D2E8DB357AE1F0ABC1 /* F8C349D2E8DB357AE1F0ABC1 */,
 			B9B30D5BA5D988C13EACECCA /* B9B30D5BA5D988C13EACECCA */,
 			5244FA47D76DCB19628AAD79 /* 5244FA47D76DCB19628AAD79 */,
