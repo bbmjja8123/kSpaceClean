@@ -223,6 +223,10 @@
 		isa = PBXBuildFile;
 		fileRef = 6BA146E3B3F831C21C9347CC;
 	};
+	75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */ = {
+		isa = PBXBuildFile;
+		fileRef = FAA3A8E09031388A4E38C620;
+	};
 	7CB86EE4BA9FD8FEBD3EE21E /* 7CB86EE4BA9FD8FEBD3EE21E */ = {
 		isa = PBXBuildFile;
 		fileRef = 68449DB53B84CAB2F246F108;
@@ -1583,6 +1587,13 @@
 		path = App/RootView.swift;
 		sourceTree = "<group>";
 	};
+	FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = file;
+		name = PrivacyInfo.xcprivacy;
+		path = Resources/PrivacyInfo.xcprivacy;
+		sourceTree = "<group>";
+	};
 	FB4FF672E5E951D4DC188AD7 /* WarningToastTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1662,6 +1673,7 @@
 			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
 			505366A05A93C5E2F212971A /* com.kraftly.kspaceclean.trashmonitor.plist */,
 			D34B57C1703ED2F13F857E11 /* bundleIDMapping.json */,
+			FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */,
 		);
 		name = Resources;
 		sourceTree = "<group>";
@@ -2134,6 +2146,7 @@
 			8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */,
 			304F60148EAF73731445DA5B /* 304F60148EAF73731445DA5B */,
 			14C0B14D56CEBA8A7CD5E237 /* 14C0B14D56CEBA8A7CD5E237 */,
+			75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

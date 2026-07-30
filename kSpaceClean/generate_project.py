@@ -323,6 +323,7 @@ def main():
         "Localizable.xcstrings",
         "com.kraftly.kspaceclean.trashmonitor.plist",
         "bundleIDMapping.json",
+        "PrivacyInfo.xcprivacy",
     ]
 
     test_files = [
