@@ -44,6 +44,12 @@ final class MetricKitReceiver: @unchecked Sendable {
         try? FileManager.default.createDirectory(at: self.outputDirectory, withIntermediateDirectories: true)
     }
 
+    /// Persist a single `CrashPayload` to disk as a JSON file under `outputDirectory`.
+    ///
+    /// Filename is `crash-<unix-timestamp>.json` so the directory sorts chronologically.
+    /// Throws if the payload cannot be encoded (only an `EncodingError` from the JSON
+    /// encoder — file-system writes are best-effort and bubble up the underlying I/O error).
+    /// Safe to call from any thread.
     func record(_ payload: CrashPayload) throws {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
@@ -58,10 +64,14 @@ final class MetricKitReceiver: @unchecked Sendable {
     /// Subscribe to MetricKit diagnostics. Call once at app launch.
     ///
     /// Only takes effect on macOS 14+ where `MXDiagnosticPayload` is available;
-    /// on macOS 13 the call is a no-op (the `MXMetricManager` API surface is
-    /// present but `MXDiagnosticPayload` / `MXCrashDiagnostic` are unavailable).
+    /// callers must gate the invocation themselves with `#available(macOS 14.0, *)`
+    /// (the `MXMetricManager` API surface exists on macOS 13 but
+    /// `MXDiagnosticPayload` / `MXCrashDiagnostic` do not). Calling `subscribe`
+    /// twice is a no-op — `MXMetricManager` would otherwise retain a dangling
+    /// reference to the previous subscriber.
     @available(macOS 14.0, *)
     func subscribe() {
+        guard subscriberBox == nil else { return }
         let sub = MetricKitSubscriber(receiver: self)
         subscriberBox = sub
         MXMetricManager.shared.add(sub)

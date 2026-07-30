@@ -5,6 +5,7 @@
 - Distribution certificate installed in Keychain (`Developer ID Application: <Team Name>` OR `Apple Distribution: <Team Name>`)
 - Team ID known (10-char alphanumeric, e.g. `A1B2C3D4E5`)
 - `kSpaceClean.xcarchive` produced by Task D1 (path: `kSpaceClean/build/kSpaceClean.xcarchive`)
+- Verify `Info.plist` has `ITSAppUsesNonExemptEncryption: false` (avoids the "Missing compliance" prompt on upload)
 
 ## Steps
 
@@ -25,7 +26,7 @@ python3 kSpaceClean/generate_project.py
 
 ### 2. Re-archive with signing
 ```bash
-xcodebuild -project kSpaceClean.xcodeproj \
+xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj \
   -scheme kSpaceClean \
   -configuration Release \
   -archivePath kSpaceClean/build/kSpaceClean.xcarchive \
@@ -48,7 +49,7 @@ Expected: `kSpaceClean/build/kSpaceClean.ipa` created.
 Either via Transporter (GUI) or CLI:
 ```bash
 xcrun altool --upload-app \
-  --type ios \
+  --type osx \
   --file kSpaceClean/build/kSpaceClean.ipa \
   --username "$APPLE_ID" \
   --password "$APP_SPECIFIC_PASSWORD"
@@ -73,7 +74,7 @@ If any step fails, fix and re-archive — do NOT distribute a broken build.
 ## Failure Modes
 - **"No code signing identities"**: cert not in Keychain — re-install from developer.apple.com
 - **"Bundle identifier is not available"**: bundle ID collision — change in `project.yml` and `Info.plist`
-- **"Missing compliance"**: `ITSAppUsesNonExemptEncryption` set to `false` in `Info.plist`
+- **"Missing compliance"**: `ITSAppUsesNonExemptEncryption` set to `false` in `Info.plist` (see Prerequisite 4)
 - **"Invalid bundle"**: derived data stale — `rm -rf ~/Library/Developer/Xcode/DerivedData` and re-archive
 
 ## Estimated Time
