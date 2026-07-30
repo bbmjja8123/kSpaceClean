@@ -108,6 +108,30 @@ public struct CategoryDefinition: Sendable, Identifiable, Hashable {
     ]
 }
 
+// MARK: - Category Event
+
+/// One `ScanCategory` yielded by the orchestrator's category stream as soon
+/// as the worker for that category finishes its walk.
+///
+/// Consumers (`ScanEngineStream`) fold these into the published tree so
+/// `ScanResultsViewModel.categories` populates incrementally rather than
+/// only after the whole scan finishes. Carries a `categoryID` so the stream
+/// consumer can correlate the event with the corresponding
+/// `ScanProgress.categoryProgress` row.
+public struct ScanCategoryEvent: Sendable {
+    public let category: ScanCategory
+    public let categoryID: String
+    public let filesFound: Int
+    public let totalSize: Int64
+
+    public init(category: ScanCategory, filesFound: Int, totalSize: Int64) {
+        self.category = category
+        self.categoryID = category.categoryID
+        self.filesFound = filesFound
+        self.totalSize = totalSize
+    }
+}
+
 // MARK: - Scan Orchestrator
 
 /// Parallel fan-out scanner — runs one `Task` per `CategoryDefinition`,
@@ -138,10 +162,40 @@ public actor ScanOrchestrator {
     // MARK: Mutable state
     private var categoriesScanned: Int = 0
     private var isCancelled: Bool = false
+    /// Cached `ScanCategory` events ready for the `categoryStream()` consumer.
+    /// Populated as workers complete (writes from the actor); drained lazily
+    /// on first `categoryStream()` call.
+    private var pendingCategoryEvents: [ScanCategoryEvent] = []
+    /// Set to `true` once the final `.completed`/`.failed`/`.cancelled` event
+    /// has been written, so `categoryStream()` knows when to finish.
+    private var hasFinishedScan: Bool = false
+    private var finalTerminalState: ScanProgress = .init(
+        state: .idle,
+        filesDiscovered: 0,
+        totalBytes: 0,
+        currentDirectory: "",
+        currentCategory: "",
+        currentSubCategory: "",
+        errors: [],
+        finishedAt: nil,
+        speed: .medium,
+        categoryProgress: [],
+        currentStage: .cache,
+        currentNodePath: nil,
+        stats: ScanStats()
+    )
 
     // MARK: Init
 
     /// Default initializer used by `ScanEngine.startScan()` (Task B4).
+    ///
+    /// C6 fix: if `bundleIDResolver` is its default value (a fresh actor with
+    /// nothing loaded), the init eagerly loads `bundleIDMapping.json` from
+    /// `Bundle.main`. The previous behaviour shipped an empty mapping and
+    /// the orchestrator was effectively running with 25 hardcoded apps —
+    /// every path resolved to "no app, generic category bucket". We now
+    /// load the full mapping at boot so the v3 cascade algorithm sees the
+    /// real attribution.
     public init(
         categoryDefinitions: [CategoryDefinition] = CategoryDefinition.defaults,
         riskClassifier: RiskClassifier = RiskClassifier(),
@@ -152,6 +206,18 @@ public actor ScanOrchestrator {
         self.riskClassifier = riskClassifier
         self.bundleIDResolver = bundleIDResolver
         self.fileEnumerator = fileEnumerator
+
+        // C6: kick off the JSON load eagerly. The init is synchronous but
+        // `BundleIDResolver.load(from:)` is `async`; we fire-and-forget
+        // the task from a detached context so we do not block the caller.
+        // The resolver's own actor-isolation guarantees that a slow load
+        // will not race with subsequent `resolve(path:)` calls (they
+        // observe the actor's in-memory state).
+        if let url = Bundle.main.url(forResource: "bundleIDMapping", withExtension: "json") {
+            Task.detached(priority: .utility) { [bundleIDResolver] in
+                await bundleIDResolver.load(from: url)
+            }
+        }
     }
 
     // MARK: Cancellation
@@ -161,8 +227,22 @@ public actor ScanOrchestrator {
     /// early. (We intentionally do NOT call `Task.cancel()` on the
     /// TaskGroup because `FileEnumerator.walk` uses `FileManager` and we
     /// cannot interrupt a mid-`nextObject()` call atomically.)
+    ///
+    /// Also parks a terminal `.cancelled` snapshot so any `categoryStream()`
+    /// consumer that attaches after cancellation sees the scan is done.
     public func cancel() {
         isCancelled = true
+        if !hasFinishedScan {
+            finalTerminalState = ScanProgress(
+                state: .cancelled,
+                filesDiscovered: 0,
+                totalBytes: 0,
+                errors: [],
+                finishedAt: Date(),
+                speed: .medium
+            )
+            hasFinishedScan = true
+        }
     }
 
     // MARK: Scan Entry Point
@@ -174,8 +254,33 @@ public actor ScanOrchestrator {
     /// - Returns: An `AsyncStream<ScanProgress>` that finishes once every
     ///   category worker has returned (or been short-circuited by
     ///   `cancel()`).
+    ///
+    /// C2: resets the per-scan buffers (`pendingCategoryEvents`,
+    /// `hasFinishedScan`, `finalTerminalState`) so a second `startScan()` on
+    /// the same orchestrator instance starts clean. The previous
+    /// implementation's buffers would have leaked state across scans.
     public func startScan() -> AsyncStream<ScanProgress> {
-        AsyncStream { continuation in
+        // Reset per-scan buffers.
+        isCancelled = false
+        pendingCategoryEvents.removeAll(keepingCapacity: true)
+        hasFinishedScan = false
+        finalTerminalState = ScanProgress(
+            state: .idle,
+            filesDiscovered: 0,
+            totalBytes: 0,
+            currentDirectory: "",
+            currentCategory: "",
+            currentSubCategory: "",
+            errors: [],
+            finishedAt: nil,
+            speed: .medium,
+            categoryProgress: [],
+            currentStage: .cache,
+            currentNodePath: nil,
+            stats: ScanStats()
+        )
+
+        return AsyncStream { continuation in
             // Spawn the worker task on the orchestrator actor so all
             // shared state mutations are serialised. The continuation
             // is `Sendable` so we can pass it across isolation domains.
@@ -243,6 +348,15 @@ public actor ScanOrchestrator {
                     failedCategories.append("\(outcome.category.title): \(err)")
                 }
 
+                // C2: enqueue the per-category payload so `categoryStream()`
+                // consumers can fold the tree incrementally instead of
+                // waiting for the whole scan to complete.
+                pendingCategoryEvents.append(ScanCategoryEvent(
+                    category: outcome.category,
+                    filesFound: outcome.fileCount,
+                    totalSize: outcome.bytes
+                ))
+
                 continuation.yield(ScanProgress(
                     state: .scanning,
                     filesDiscovered: totalFiles,
@@ -259,46 +373,94 @@ public actor ScanOrchestrator {
             }
         }
 
+        let terminalState: ScanProgress
         if Task.isCancelled || isCancelled {
-            continuation.yield(ScanProgress(
+            terminalState = ScanProgress(
                 state: .cancelled,
                 filesDiscovered: totalFiles,
                 totalBytes: totalBytes,
                 errors: [],
                 finishedAt: Date(),
                 speed: .medium
-            ))
-            continuation.finish()
-            return
-        }
-
-        if !failedCategories.isEmpty {
+            )
+        } else if !failedCategories.isEmpty {
             // Partial failure: surface the first error but still mark as
             // completed so the user can review what was found.
-            continuation.yield(ScanProgress(
+            terminalState = ScanProgress(
                 state: .failed(failedCategories.first ?? "unknown"),
                 filesDiscovered: totalFiles,
                 totalBytes: totalBytes,
                 errors: [],
                 finishedAt: Date(),
                 speed: .medium
-            ))
+            )
         } else {
-            continuation.yield(ScanProgress(
+            terminalState = ScanProgress(
                 state: .completed,
                 filesDiscovered: totalFiles,
                 totalBytes: totalBytes,
                 errors: [],
                 finishedAt: Date(),
                 speed: .medium
-            ))
+            )
         }
+        // C2: park the terminal snapshot so categoryStream() finishes in sync
+        // with the progress stream.
+        finalTerminalState = terminalState
+        hasFinishedScan = true
+        continuation.yield(terminalState)
         continuation.finish()
 
         // Reset internal counters so the same actor can be reused for a
         // second scan (we do not currently expose this, but it keeps the
         // semantics correct for tests that drive multiple cycles).
         categoriesScanned = completed
+    }
+
+    // MARK: - Category stream (C2)
+
+    /// AsyncStream of `ScanCategory` payloads — one per completed category,
+    /// followed by a sentinel `.completed`/`.failed`/`.cancelled` state so
+    /// consumers know when to stop.
+    ///
+    /// Drains the orchestrator's internal event buffer. Bounded so we never
+    /// grow the buffer indefinitely on long scans; uses `.bufferingNewest(4096)`
+    /// which drops the oldest events if the consumer falls behind.
+    public func categoryStream() -> AsyncStream<ScanCategoryStreamEvent> {
+        AsyncStream(bufferingPolicy: .bufferingNewest(4096)) { continuation in
+            Task { [weak self] in
+                guard let self else { continuation.finish(); return }
+                // Drain anything produced before the consumer attached.
+                let buffered = await self.drainPendingCategoryEvents()
+                for event in buffered { continuation.yield(.category(event)) }
+                // If the scan has already finished, emit the terminal event and stop.
+                if await self.hasFinishedScan {
+                    continuation.yield(.terminal(await self.finalTerminalState))
+                    continuation.finish()
+                    return
+                }
+                // Otherwise poll the buffer until the terminal state arrives.
+                // Polling is intentional: the actor's isolation model means we
+                // can only re-enter via `await`; the wrapper transforms the
+                // polling into a 50ms cadence so we don't burn CPU.
+                while !(await self.hasFinishedScan) {
+                    try? await Task.sleep(nanoseconds: 50_000_000)  // 50ms
+                    if Task.isCancelled { break }
+                    let more = await self.drainPendingCategoryEvents()
+                    for event in more { continuation.yield(.category(event)) }
+                }
+                let terminal = await self.finalTerminalState
+                continuation.yield(.terminal(terminal))
+                continuation.finish()
+            }
+        }
+    }
+
+    /// Pop every event currently buffered and return them in arrival order.
+    private func drainPendingCategoryEvents() -> [ScanCategoryEvent] {
+        let events = pendingCategoryEvents
+        pendingCategoryEvents.removeAll(keepingCapacity: true)
+        return events
     }
 
     // MARK: Category Worker (static so it can run inside the TaskGroup)
@@ -436,4 +598,14 @@ public actor ScanOrchestrator {
         default:                   return nil
         }
     }
+}
+
+// MARK: - Category stream event
+
+/// Single event yielded by `ScanOrchestrator.categoryStream()`. Either a
+/// per-category payload (worker finished one category) or the terminal
+/// snapshot (whole scan is done).
+public enum ScanCategoryStreamEvent: Sendable {
+    case category(ScanCategoryEvent)
+    case terminal(ScanProgress)
 }

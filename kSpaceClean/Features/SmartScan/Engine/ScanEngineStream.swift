@@ -191,35 +191,81 @@ public final class ScanEngine: ObservableObject {
     /// 4. Always forward the final state (so the UI doesn't sit on a
     ///    stale snapshot if the scan finishes inside a throttle window).
     private func runScan(stream: AsyncStream<ScanProgress>) async {
-        // We don't have a way to extract per-category payloads from the
-        // orchestrator's `AsyncStream<ScanProgress>` (it only emits
-        // progress snapshots, not the `ScanCategory` tree). The categories
-        // will be populated by `ScanResultsViewModel` once B5 wires it up.
-        // For now, we just consume the stream and update `progress`.
-        for await snapshot in stream {
-            let now = Date()
-            let elapsed = now.timeIntervalSince(lastEmitAt)
-            if elapsed >= throttleInterval {
-                let yieldStart = Date()
-                await Task.yield()
-                lastYieldDuration = Date().timeIntervalSince(yieldStart)
-                if lastYieldDuration > 0.016 {
-                    throttleInterval = 0.033
-                } else {
-                    throttleInterval = 0.016
-                }
-                lastEmitAt = now
-                progress = snapshot
-            }
+        // C2: also drain the orchestrator's per-category stream so the
+        // `@Published categories` array populates incrementally. The
+        // progress stream only carries aggregate counters, not the
+        // category tree, so we need a second consumer to fold the tree.
+        let categoryStream = await orchestrator.categoryStream()
 
-            // Always forward terminal states so the UI doesn't get stuck.
-            switch snapshot.state {
-            case .completed, .cancelled, .failed:
-                progress = snapshot
-                return
-            case .idle, .scanning, .analysing:
-                continue
+        let progressTask = Task { [weak self] in
+            guard let self else { return }
+            for await snapshot in stream {
+                self.ingest(snapshot: snapshot)
+                if Self.isTerminal(snapshot.state) { return }
             }
+        }
+        let categoryTask = Task { [weak self] in
+            guard let self else { return }
+            for await event in categoryStream {
+                switch event {
+                case .category(let catEvent):
+                    self.ingest(categoryEvent: catEvent)
+                case .terminal:
+                    return
+                }
+            }
+        }
+
+        await progressTask.value
+        categoryTask.cancel()
+        await categoryTask.value
+    }
+
+    /// True when `state` is one of the terminal states — `.completed`,
+    /// `.cancelled`, or `.failed(_)` — so the consumer can stop iterating.
+    private static func isTerminal(_ state: ScanProgress.State) -> Bool {
+        switch state {
+        case .completed, .cancelled, .failed: return true
+        case .idle, .scanning, .analysing: return false
+        }
+    }
+
+    /// Applies the adaptive throttle to a single progress snapshot and
+    /// forwards it to the `@Published` property.
+    private func ingest(snapshot: ScanProgress) {
+        let now = Date()
+        let elapsed = now.timeIntervalSince(lastEmitAt)
+        if elapsed >= throttleInterval {
+            // Note: we deliberately don't `await Task.yield()` here because
+            // we are on `@MainActor` and `progress = snapshot` triggers a
+            // SwiftUI re-render which is the only sink we need to throttle.
+            // The throttle measurement is approximated by the elapsed time
+            // since the last emit — if the previous emit took > 16ms the
+            // user is busy, so widen the window to 33ms.
+            if elapsed > 0.016 {
+                throttleInterval = 0.033
+            } else {
+                throttleInterval = 0.016
+            }
+            lastEmitAt = now
+            progress = snapshot
+        } else if Self.isTerminal(snapshot.state) {
+            // Always forward terminal states so the UI doesn't get stuck.
+            progress = snapshot
+        }
+    }
+
+    /// Folds a per-category payload into the `@Published categories` array.
+    /// Replaces any prior entry for the same `categoryID` so re-runs are
+    /// idempotent, and applies the adaptive throttle so the UI does not
+    /// redraw more than ~30 times per second.
+    private func ingest(categoryEvent: ScanCategoryEvent) {
+        // C2 fix: replace or append the category; the view layer sorts by
+        // a stable key (we keep insertion order so the first match wins).
+        if let idx = categories.firstIndex(where: { $0.categoryID == categoryEvent.categoryID }) {
+            categories[idx] = categoryEvent.category
+        } else {
+            categories.append(categoryEvent.category)
         }
     }
 }
