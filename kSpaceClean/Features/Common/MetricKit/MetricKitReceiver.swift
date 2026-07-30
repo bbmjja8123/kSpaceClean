@@ -26,14 +26,9 @@ final class MetricKitReceiver: @unchecked Sendable {
     let outputDirectory: URL
 
     #if canImport(MetricKit)
-    /// macOS-14+ subscriber; retained so the receiver can unregister cleanly.
-    /// The wrapper type is only stored on platforms where it is available —
-    /// older OSes see the receiver as a pure on-disk writer.
-    @available(macOS 14.0, *)
-    private final class StoredSubscriberBox {
-        let value: MetricKitSubscriber
-        init(_ value: MetricKitSubscriber) { self.value = value }
-    }
+    /// macOS-14+ subscriber; type-erased (`@available` cannot annotate a
+    /// stored property).  Reads/writes only happen from `subscribe`/`unsubscribe`,
+    /// which are themselves `@available(macOS 14, *)`.
     private var subscriberBox: AnyObject?
     #endif
 
@@ -68,14 +63,14 @@ final class MetricKitReceiver: @unchecked Sendable {
     @available(macOS 14.0, *)
     func subscribe() {
         let sub = MetricKitSubscriber(receiver: self)
-        subscriberBox = StoredSubscriberBox(sub)
+        subscriberBox = sub
         MXMetricManager.shared.add(sub)
     }
 
     @available(macOS 14.0, *)
     func unsubscribe() {
-        if let box = subscriberBox as? StoredSubscriberBox {
-            MXMetricManager.shared.remove(box.value)
+        if let sub = subscriberBox as? MetricKitSubscriber {
+            MXMetricManager.shared.remove(sub)
             subscriberBox = nil
         }
     }
@@ -116,11 +111,8 @@ final class MetricKitSubscriber: NSObject, MXMetricManagerSubscriber {
     private static func describeStack(_ tree: MXCallStackTree) -> String {
         // MetricKit ships the call stack only via its JSON form (per-thread),
         // which is exactly what we want to persist for offline symbolication.
-        // We truncate the description to keep the per-file payload small —
-        // the full per-thread JSON is also written alongside (future work).
         let raw = tree.jsonRepresentation()
-        let summary = "MetricKit call stack (\(raw.count) bytes of JSON)"
-        return summary
+        return "MetricKit call stack (\(raw.count) bytes of JSON)"
     }
 
     private static func describeReason(_ crash: MXCrashDiagnostic) -> String {
