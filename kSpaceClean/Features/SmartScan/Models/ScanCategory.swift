@@ -55,16 +55,26 @@ public final class ScanCategory: ScanTreeNode, @unchecked Sendable {
     }
 
     /// Cascade-toggle: setting `.on`/`.off` flips every child to that exact
-    /// state (the deeper categorization handles the "recommended-only" rule
-    /// because `ScanSubCategory` already imposes it on its own children).
-    /// `.mixed` is never propagated downward — it only arises from
-    /// `refreshState()` after child aggregation.
+    /// state, **except** that on the `.on` path a child whose `riskLevel` does
+    /// not have `defaultChecked` (i.e. anything other than `.recommended`)
+    /// stays OFF. This enforces CLAUDE.md §8.5 — only `.recommended` items
+    /// are auto-selected when a parent flips ON. `.mixed` is never propagated
+    /// downward — it only arises from `refreshState()` after child aggregation.
     public func setState(_ newState: CheckState) {
         guard state != newState else { return }
         state = newState
         guard newState != .mixed else { return }
         for child in subItems {
-            child.setState(newState)
+            // When the user flips a parent ON, do not blanket-flip every
+            // child to ON — that would auto-select `.optional` / `.caution` /
+            // `.dangerous` items, which is a data-loss vector for `.dangerous`.
+            // When the user flips a parent OFF, every child must be forced OFF
+            // so the cleanup flow never sees a half-selected subtree.
+            if newState == .on {
+                child.setState(child.riskLevel.defaultChecked ? .on : .off)
+            } else {
+                child.setState(.off)
+            }
         }
     }
 

@@ -100,6 +100,72 @@ final class CascadeCheckboxTests: XCTestCase {
         XCTAssertEqual(result.state, .on)
     }
 
+    /// Regression for C4 — a `.dangerous` leaf must NOT be auto-selected when
+    /// its grandparent (Category) flips ON. The whole point of the cascade
+    /// fix is to make `showAction == false` cascades respect
+    /// `riskLevel.defaultChecked` so a Category→SubCategory→Result tree
+    /// containing a `.dangerous` file does not auto-trash the file.
+    func testParentOn_DangerousSubcategoryLeafNotAutoSelected() {
+        // Build a sub-category with `showAction == false` (direct results)
+        // whose single result is classified `.dangerous`.
+        let dangerousResult = makeResult(riskLevel: .dangerous)
+        let sub = ScanSubCategory(
+            subCategoryID: "sub1",
+            title: "Dangerous sub",
+            directResults: [dangerousResult],
+            showAction: false,
+            riskLevel: .caution
+        )
+        let category = ScanCategory(
+            categoryID: "cat1",
+            title: "Container",
+            subItems: [sub],
+            riskLevel: .recommended
+        )
+
+        // Flip the category ON. The sub-category should follow; the
+        // `.dangerous` leaf must stay OFF.
+        category.setState(.on)
+
+        XCTAssertEqual(category.state, .on)
+        XCTAssertEqual(sub.state, .on, "Sub-category mirrors the parent on .on")
+        XCTAssertEqual(dangerousResult.state, .off,
+                       "C4 regression: a .dangerous leaf must NOT be auto-selected when its ancestor flips ON")
+    }
+
+    /// Regression for C4 — same rule applies to the showAction==true path:
+    /// a `.dangerous` `ScanAction` is not auto-selected when its sub-category
+    /// flips ON, even if its `recommend` flag is true. The gate is
+    /// `riskLevel.defaultChecked`, which is `true` only for `.recommended`.
+    func testParentOn_DangerousActionNotAutoSelected() {
+        let dangerousAction = ScanAction(
+            actionID: "a1",
+            actionType: .cache,
+            title: "Risky cleanup",
+            recommend: true,
+            riskLevel: .dangerous
+        )
+        let recAction = ScanAction(
+            actionID: "a2",
+            actionType: .cache,
+            title: "Safe cleanup",
+            recommend: true,
+            riskLevel: .recommended
+        )
+        let sub = ScanSubCategory(
+            subCategoryID: "sub1",
+            title: "Sub",
+            actions: [dangerousAction, recAction],
+            showAction: true
+        )
+
+        sub.setState(.on)
+
+        XCTAssertEqual(dangerousAction.state, .off,
+                       "C4 regression: a .dangerous action with recommend=true must NOT auto-select")
+        XCTAssertEqual(recAction.state, .on)
+    }
+
     private func makeResult(riskLevel: RiskLevel) -> ScanResult {
         ScanResult(
             url: URL(fileURLWithPath: "/tmp/test"),

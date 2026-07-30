@@ -70,10 +70,15 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
         self.isRecommended = isRecommended
     }
 
-    /// Cascade-toggle. Mirrors the v3 spec rule: when the user toggles a
-    /// sub-category ON, recommended actions auto-select while non-recommended
-    /// ones (Optional/Caution/Dangerous) stay OFF. When toggled OFF, every
-    /// descendant is forced OFF.
+    /// Cascade-toggle. Mirrors the v3 spec rule (CLAUDE.md §8.5):
+    /// - When the user toggles a sub-category OFF, every descendant is
+    ///   forced OFF so the cleanup flow never sees a half-selected subtree.
+    /// - When the user toggles a sub-category ON, descendants whose
+    ///   `riskLevel.defaultChecked` is `true` (i.e. `.recommended`) are
+    ///   auto-selected; non-recommended descendants (`.optional`, `.caution`,
+    ///   `.dangerous`) stay OFF. This applies to both the
+    ///   `showAction == true` (per-action) and `showAction == false`
+    ///   (per-result) cascades — both can contain `.dangerous` leaves.
     public func setState(_ newState: CheckState) {
         guard state != newState else { return }
         state = newState
@@ -83,12 +88,26 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
                 if newState == .off {
                     action.setState(.off)
                 } else {
-                    action.setState(action.recommend ? .on : .off)
+                    // The action's `recommend` flag is the historical source
+                    // of truth; for actions that carry an explicit `riskLevel`
+                    // (e.g. `.dangerous`) we additionally consult
+                    // `riskLevel.defaultChecked` so a manually-classified
+                    // dangerous action is never auto-selected.
+                    let shouldAutoSelect = action.recommend && action.riskLevel.defaultChecked
+                    action.setState(shouldAutoSelect ? .on : .off)
                 }
             }
         } else {
             for result in directResults {
-                result.setState(newState)
+                if newState == .off {
+                    result.setState(.off)
+                } else {
+                    // Per-result cascade — same rule. A `.dangerous` leaf
+                    // under a sub-category that just flipped ON must NOT
+                    // be auto-selected (data-loss vector). The user can
+                    // still check it manually via the per-row checkbox.
+                    result.setState(result.riskLevel.defaultChecked ? .on : .off)
+                }
             }
         }
     }
