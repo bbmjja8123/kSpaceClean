@@ -216,6 +216,7 @@ def main():
         ("Features/Cleanup/CleanupEngine.swift", "Cleanup"),
         ("Features/Cleanup/CleanActionExecutors.swift", "Cleanup"),
         ("Features/Cleanup/Models/CleanupTypes.swift", "Cleanup"),
+        ("Features/Cleanup/Views/CleanupConfirmSheet.swift", "Cleanup"),
         ("Features/Cleanup/Engine/WarningDetectionService.swift", "Cleanup"),
         ("Features/Common/DesignSystem/Colors.swift", "DesignSystem"),
         ("Features/Common/DesignSystem/Typography.swift", "DesignSystem"),
