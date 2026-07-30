@@ -287,6 +287,10 @@
 		isa = PBXBuildFile;
 		fileRef = ABB2502429F42D3C90007257;
 	};
+	99A988FC87B75B3DACB8B242 /* 99A988FC87B75B3DACB8B242 */ = {
+		isa = PBXBuildFile;
+		fileRef = 913402BC8BAA5B03EA62AD36;
+	};
 	99ABBDC172EB84CEE8289021 /* 99ABBDC172EB84CEE8289021 */ = {
 		isa = PBXBuildFile;
 		fileRef = DE3DB9F0DE51E7A30047EE91;
@@ -374,6 +378,10 @@
 	AAF7BA0D42D178E325769D7E /* AAF7BA0D42D178E325769D7E */ = {
 		isa = PBXBuildFile;
 		fileRef = 214D9CEAE4A3964A86890B8F;
+	};
+	ABB2A063B80BFC4B02A00181 /* ABB2A063B80BFC4B02A00181 */ = {
+		isa = PBXBuildFile;
+		fileRef = FB4FF672E5E951D4DC188AD7;
 	};
 	AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */ = {
 		isa = PBXBuildFile;
@@ -1189,6 +1197,13 @@
 		path = Features/LargeOldFile/LargeOldView.swift;
 		sourceTree = "<group>";
 	};
+	913402BC8BAA5B03EA62AD36 /* WarningToast.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WarningToast.swift;
+		path = Features/Cleanup/Views/WarningToast.swift;
+		sourceTree = "<group>";
+	};
 	918AE59103697855AB2EF800 /* ScanTreeRow.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1546,6 +1561,13 @@
 		path = App/RootView.swift;
 		sourceTree = "<group>";
 	};
+	FB4FF672E5E951D4DC188AD7 /* WarningToastTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WarningToastTests.swift;
+		path = Tests/WarningToastTests.swift;
+		sourceTree = "<group>";
+	};
 	FC18430806C5CD0B690F91C0 /* kSpaceCleanApp.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1705,6 +1727,7 @@
 			DFD54390D97E9452286C8813 /* CleanupTypes.swift */,
 			0A52BB71FC41E55ECEE18C80 /* CleanupConfirmSheet.swift */,
 			0D29E5297F9423AC49CEBD8C /* DangerousConfirmDialog.swift */,
+			913402BC8BAA5B03EA62AD36 /* WarningToast.swift */,
 			5FB299C677B7CC084AC2D213 /* WarningDetectionService.swift */,
 		);
 		name = Cleanup;
@@ -1863,6 +1886,7 @@
 			52E0461DD80334CC876655EE /* FileSizeFormatterTests.swift */,
 			3A84BB454FED73942561887A /* CleanupConfirmationTests.swift */,
 			7A21FC3C9414986B027F3FEA /* DangerousConfirmDialogTests.swift */,
+			FB4FF672E5E951D4DC188AD7 /* WarningToastTests.swift */,
 			F35BC38F895610B7B5332037 /* DuplicateDetectorTests.swift */,
 			97D5754210E7D3F69530AAB5 /* StoreManagerTests.swift */,
 			29C4B00FE9B3EF241D9CAF24 /* ScanSpeedTests.swift */,
@@ -2100,6 +2124,7 @@
 			3F3DA18D11AC5740C4BA03D2 /* 3F3DA18D11AC5740C4BA03D2 */,
 			A97665E8FDC2E362123BABE7 /* A97665E8FDC2E362123BABE7 */,
 			6027AA798C9F646F913218BE /* 6027AA798C9F646F913218BE */,
+			ABB2A063B80BFC4B02A00181 /* ABB2A063B80BFC4B02A00181 */,
 			FBD580A35CA294D032838132 /* FBD580A35CA294D032838132 */,
 			DBF041637F69E6FAF31C49F7 /* DBF041637F69E6FAF31C49F7 */,
 			B9817D2FAD0AA9F128544423 /* B9817D2FAD0AA9F128544423 */,
@@ -2141,6 +2166,7 @@
 			3C6EA704ABA14141172CEE23 /* 3C6EA704ABA14141172CEE23 */,
 			31AA48867F8A26E4B8963B46 /* 31AA48867F8A26E4B8963B46 */,
 			EBCB188862BBFBBE04991473 /* EBCB188862BBFBBE04991473 */,
+			99A988FC87B75B3DACB8B242 /* 99A988FC87B75B3DACB8B242 */,
 			F8C349D2E8DB357AE1F0ABC1 /* F8C349D2E8DB357AE1F0ABC1 */,
 			B9B30D5BA5D988C13EACECCA /* B9B30D5BA5D988C13EACECCA */,
 			5244FA47D76DCB19628AAD79 /* 5244FA47D76DCB19628AAD79 */,
