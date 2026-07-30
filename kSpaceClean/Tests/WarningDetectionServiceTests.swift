@@ -49,8 +49,13 @@ final class WarningDetectionServiceTests: XCTestCase {
     /// that the sandbox blocks, this returns an empty array and the test
     /// fails.
     func testOpenFilesFindsFileHeldOpenByThisProcess() throws {
-        let dir = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent("sclean-warn-\(UUID().uuidString)", isDirectory: true)
+        // Use /tmp directly so we sidestep the /var/folders -> /private/var
+        // symlink that Xcode's NSTemporaryDirectory returns. The
+        // assertion checks several aliases because /tmp is itself a
+        // symlink on some macOS installs.
+        let dir = URL(fileURLWithPath: "/tmp")
+            .appendingPathComponent("sclean-warn-\(UUID().uuidString)",
+                                    isDirectory: true)
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: dir) }
 
@@ -61,14 +66,24 @@ final class WarningDetectionServiceTests: XCTestCase {
         let handle = try FileHandle(forReadingFrom: file)
         defer { try? handle.close() }
 
-        let resolved = file.resolvingSymlinksInPath().path
+        // Try every plausible alias the kernel / our enumerator might return.
+        let candidates: [String] = [
+            file.path,
+            file.resolvingSymlinksInPath().path,
+            "/private" + file.path,
+            URL(fileURLWithPath: "/private/tmp")
+                .appendingPathComponent(dir.lastPathComponent)
+                .appendingPathComponent("held-open.bin").path
+        ]
         let opened = WarningDetectionService.openFilesForTesting(pid: getpid())
 
         XCTAssertFalse(opened.isEmpty,
                        "libproc FD enumeration returned nothing for the current process — "
                        + "the C7 in-process implementation is not working")
-        XCTAssertTrue(opened.contains(resolved) || opened.contains(file.path),
-                      "expected \(resolved) among the open files of this process; got \(opened.count) paths")
+        let hit = candidates.contains(where: { opened.contains($0) })
+        XCTAssertTrue(hit,
+                      "expected one of \(candidates) among the open files; "
+                      + "got \(opened.count) paths (sample: \(opened.prefix(5)))")
     }
 
     /// Every path the FD walk returns must be an absolute path — no relative

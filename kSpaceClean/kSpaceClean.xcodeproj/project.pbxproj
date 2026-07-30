@@ -227,6 +227,10 @@
 		isa = PBXBuildFile;
 		fileRef = 6BA146E3B3F831C21C9347CC;
 	};
+	728FD3C04FCBF2184C5BB501 /* 728FD3C04FCBF2184C5BB501 */ = {
+		isa = PBXBuildFile;
+		fileRef = FDAC274167912B01766226D0;
+	};
 	75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */ = {
 		isa = PBXBuildFile;
 		fileRef = FAA3A8E09031388A4E38C620;
@@ -1626,6 +1630,13 @@
 		path = App/AppCoordinator.swift;
 		sourceTree = "<group>";
 	};
+	FDAC274167912B01766226D0 /* ScanOrchestratorIntegrationTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanOrchestratorIntegrationTests.swift;
+		path = Tests/ScanOrchestratorIntegrationTests.swift;
+		sourceTree = "<group>";
+	};
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1960,6 +1971,7 @@
 			0DFF4F4B8D975797AB2E42F1 /* CleanupHistoryPersistenceTests.swift */,
 			191F8E934AEB52731CDD715B /* CleanupEngineTests.swift */,
 			4B9C58B251FBC680211C9700 /* WarningDetectionServiceTests.swift */,
+			FDAC274167912B01766226D0 /* ScanOrchestratorIntegrationTests.swift */,
 			5E6548C4E1A35147FDB30114 /* MetricKitReceiverTests.swift */,
 		);
 		name = Tests;
@@ -2200,6 +2212,7 @@
 			C02480D9C398C92A891F87A7 /* C02480D9C398C92A891F87A7 */,
 			E2C21456A0BE9B61B0AEF4F7 /* E2C21456A0BE9B61B0AEF4F7 */,
 			BDAF2D98CE93A2CDBB1A85AC /* BDAF2D98CE93A2CDBB1A85AC */,
+			728FD3C04FCBF2184C5BB501 /* 728FD3C04FCBF2184C5BB501 */,
 			C5A9BB5E28B40052FCAF75D7 /* C5A9BB5E28B40052FCAF75D7 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;

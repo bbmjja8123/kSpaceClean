@@ -123,12 +123,14 @@ final class CascadeCheckboxTests: XCTestCase {
             riskLevel: .recommended
         )
 
-        // Flip the category ON. The sub-category should follow; the
-        // `.dangerous` leaf must stay OFF.
+        // Flip the category ON. The sub-category has riskLevel=.caution
+        // (defaultChecked == false), so the C4 fix deliberately leaves it
+        // OFF — and the .dangerous leaf must stay OFF regardless.
         category.setState(.on)
 
         XCTAssertEqual(category.state, .on)
-        XCTAssertEqual(sub.state, .on, "Sub-category mirrors the parent on .on")
+        XCTAssertEqual(sub.state, .off,
+                       "C4 regression: a .caution sub-category must NOT auto-mirror the parent on .on (its riskLevel.defaultChecked is false)")
         XCTAssertEqual(dangerousResult.state, .off,
                        "C4 regression: a .dangerous leaf must NOT be auto-selected when its ancestor flips ON")
     }

@@ -359,6 +359,7 @@ def main():
         "CleanupHistoryPersistenceTests.swift",
         "CleanupEngineTests.swift",
         "WarningDetectionServiceTests.swift",
+        "ScanOrchestratorIntegrationTests.swift",
         "MetricKitReceiverTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
     # CascadeCheckboxTests.swift — Task A5's 5 cascade-behaviour tests

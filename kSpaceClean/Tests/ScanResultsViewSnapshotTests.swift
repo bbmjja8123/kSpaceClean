@@ -34,7 +34,7 @@ final class ScanResultsViewSnapshotTests: SnapshotTestCase {
         // supported directly in unit tests; instead, verify that the
         // view model + body together produce a valid render by snapshotting
         // the view-model-only render path.
-        let view = ScanResultsView()
+        let view = ScanResultsView(viewModel: ScanResultsViewModel(engine: nil))
             .frame(width: 960, height: 720)
         assertStructuralSnapshot(view, named: "ScanResultsView-960x720",
                                  size: CGSize(width: 960, height: 720))
@@ -70,7 +70,7 @@ final class ScanResultsViewSnapshotTests: SnapshotTestCase {
     /// Verifies the layout adapts without crashing across widths.
     func test_scanResultsViewRendersAcrossWidths() {
         for width: CGFloat in [600, 960, 1280] {
-            let view = ScanResultsView()
+            let view = ScanResultsView(viewModel: ScanResultsViewModel(engine: nil))
                 .frame(width: width, height: 720)
             assertStructuralSnapshot(
                 view,
