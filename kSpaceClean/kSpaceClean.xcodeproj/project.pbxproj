@@ -179,6 +179,10 @@
 		isa = PBXBuildFile;
 		fileRef = 8C25B783239F0E8BDD179B08;
 	};
+	5517E4FB80FE4C96C544576E /* 5517E4FB80FE4C96C544576E */ = {
+		isa = PBXBuildFile;
+		fileRef = AF93B2C4A5AC09EC48C5D4F8;
+	};
 	5521D91BCACC8253AC7838A9 /* 5521D91BCACC8253AC7838A9 */ = {
 		isa = PBXBuildFile;
 		fileRef = 7524786DDFA5ED0024567E9C;
@@ -1342,6 +1346,13 @@
 		path = Persistence/UserPreferences.swift;
 		sourceTree = "<group>";
 	};
+	AF93B2C4A5AC09EC48C5D4F8 /* RestoreHistoryItemView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = RestoreHistoryItemView.swift;
+		path = Features/Cleanup/Views/RestoreHistoryItemView.swift;
+		sourceTree = "<group>";
+	};
 	AFA02BA1535BBD889403394C /* GalaxyViewModelTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1770,6 +1781,7 @@
 			0A52BB71FC41E55ECEE18C80 /* CleanupConfirmSheet.swift */,
 			0D29E5297F9423AC49CEBD8C /* DangerousConfirmDialog.swift */,
 			913402BC8BAA5B03EA62AD36 /* WarningToast.swift */,
+			AF93B2C4A5AC09EC48C5D4F8 /* RestoreHistoryItemView.swift */,
 			5FB299C677B7CC084AC2D213 /* WarningDetectionService.swift */,
 		);
 		name = Cleanup;
@@ -2213,6 +2225,7 @@
 			31AA48867F8A26E4B8963B46 /* 31AA48867F8A26E4B8963B46 */,
 			EBCB188862BBFBBE04991473 /* EBCB188862BBFBBE04991473 */,
 			99A988FC87B75B3DACB8B242 /* 99A988FC87B75B3DACB8B242 */,
+			5517E4FB80FE4C96C544576E /* 5517E4FB80FE4C96C544576E */,
 			F8C349D2E8DB357AE1F0ABC1 /* F8C349D2E8DB357AE1F0ABC1 */,
 			B9B30D5BA5D988C13EACECCA /* B9B30D5BA5D988C13EACECCA */,
 			5244FA47D76DCB19628AAD79 /* 5244FA47D76DCB19628AAD79 */,
@@ -2336,9 +2349,12 @@
 		isa = XCBuildConfiguration;
 		buildSettings = {
 		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-		CODE_SIGNING_ALLOWED = NO;
+		CODE_SIGN_ENTITLEMENTS = kSpaceClean.entitlements;
+		CODE_SIGN_IDENTITY = "-";
+		CODE_SIGN_STYLE = Manual;
 		COMBINE_HIDPI_IMAGES = YES;
 		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
 		GENERATE_INFOPLIST_FILE = YES;
 		INFOPLIST_FILE = Info.plist;
 		INFOPLIST_KEY_CFBundleDisplayName = kSpaceClean;

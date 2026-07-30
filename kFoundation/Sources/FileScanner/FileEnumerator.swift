@@ -75,13 +75,21 @@ public actor FileEnumerator {
     /// descend into — the primary use case is excluding other apps' bundle
     /// containers (TCC permission failure on `/Library/Containers/<id>` is
     /// extremely common and would otherwise crash the scan).
+    ///
+    /// I2 fix: the body runs through ``Self.walk(rootPath:skipPaths:
+    /// continuation:)`` which is `nonisolated static`. That lets many
+    /// category workers in `ScanOrchestrator` walk different roots in
+    /// parallel without serialising on a shared `FileEnumerator` actor —
+    /// previously every concurrent scan took a turn through this actor's
+    /// mailbox, which collapsed the parallelism the orchestrator was
+    /// trying to expose.
     public func enumerate(
         rootPath: String,
         skipPaths: Set<String> = []
     ) -> AsyncStream<FileInfo> {
-        AsyncStream { continuation in
+        AsyncStream(bufferingPolicy: .bufferingNewest(4096)) { continuation in
             Task.detached(priority: .background) {
-                await self.walk(
+                await Self.walk(
                     rootPath: rootPath,
                     skipPaths: skipPaths,
                     continuation: continuation
@@ -91,7 +99,16 @@ public actor FileEnumerator {
         }
     }
 
-    private func walk(
+    /// Pure walker — runs as `nonisolated static` so concurrent callers do
+    /// not serialise on the `FileEnumerator` actor (I2 fix).
+    ///
+    /// I3 fix: the stream is now bounded (`bufferingNewest(4096)`) so a
+    /// consumer that falls behind does not cause the walker to allocate an
+    /// unbounded queue of `FileInfo` values; the stream drops the oldest
+    /// entry when full. The walker also honours `Task.isCancelled` and the
+    /// `continuation.onTermination` cleanup so a cancellation midway tears
+    /// down properly instead of running to completion in the background.
+    nonisolated private static func walk(
         rootPath: String,
         skipPaths: Set<String>,
         continuation: AsyncStream<FileInfo>.Continuation
@@ -108,6 +125,10 @@ public actor FileEnumerator {
         }
 
         for case let fileURL as URL in enumerator {
+            // Cancellation: drop the loop on the next iteration rather than
+            // racing ahead and tearing down the enumerator mid-`for ... in`
+            // (which corrupts the FileManager.enumerator state).
+            if Task.isCancelled { break }
             // If a skipPath matches the file URL's path, do not descend into
             // its children. `skipDescendants()` advances the enumerator past
             // the entire subtree so the next iteration is the next sibling.
@@ -131,7 +152,10 @@ public actor FileEnumerator {
                 modificationDate: attrs?.contentModificationDate,
                 isDirectory: attrs?.isDirectory ?? false
             )
-            continuation.yield(info)
+            // `yield` returns a `YieldResult` distinguishing accepted (`.enqueued(remaining:)`)
+            // from `dropped` (`.dropped(_)`) when the bounded buffer is full.
+            // We ignore the result — the bounded policy is best-effort, not strict.
+            _ = continuation.yield(info)
         }
     }
 

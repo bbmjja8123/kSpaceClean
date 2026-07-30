@@ -6,6 +6,9 @@ import CoreData
 struct HistoryContentView: View {
     @State private var scanHistory: [ScanRecord] = []
     @State private var cleanupRecords: [CleanupHistoryItem] = []
+    // I10: rollback sheet state.
+    @State private var openBatch: [CleanupHistoryItem] = []
+    @State private var batchSheetVisible: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.lg) {
@@ -25,7 +28,6 @@ struct HistoryContentView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: AppSpacing.lg) {
-                    // Scan History Section
                     if !scanHistory.isEmpty {
                         Text("\u{626B}\u{63CF}\u{5386}\u{53F2}")
                             .font(AppFont.title3)
@@ -36,14 +38,27 @@ struct HistoryContentView: View {
                         }
                     }
 
-                    // Cleanup History Section
                     if !cleanupRecords.isEmpty {
                         Text("\u{6E05}\u{7406}\u{5386}\u{53F2}")
                             .font(AppFont.title3)
                             .foregroundColor(.textPrimary)
 
-                        ForEach(cleanupRecords, id: \.id) { record in
-                            CleanupRecordMiniRow(record: record)
+                        // I10: rows are grouped by (cleanedAt, bundleID) so a
+                        // user can see exactly which cleanup batch they want
+                        // to undo and roll every file in that batch back in
+                        // one tap. Tapping a batch opens RestoreHistoryItemView.
+                        ForEach(groupedBatches, id: \.key) { batch in
+                            Button {
+                                openBatch = batch.items
+                                batchSheetVisible = true
+                            } label: {
+                                CleanupBatchRow(
+                                    cleanedAt: batch.cleanedAt,
+                                    bundleID: batch.bundleID,
+                                    items: batch.items
+                                )
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
 
@@ -57,6 +72,11 @@ struct HistoryContentView: View {
         .onAppear {
             Task { @MainActor in
                 loadHistory()
+            }
+        }
+        .sheet(isPresented: $batchSheetVisible) {
+            RestoreHistoryItemView(batch: openBatch) {
+                batchSheetVisible = false
             }
         }
     }
@@ -89,9 +109,42 @@ struct HistoryContentView: View {
 
         let cleanupFetch = CleanupHistoryItem.fetchRequest()
         cleanupFetch.sortDescriptors = [NSSortDescriptor(key: "cleanedAt", ascending: false)]
-        cleanupFetch.fetchLimit = 20
+        cleanupFetch.fetchLimit = 100
         cleanupRecords = (try? ctx.fetch(cleanupFetch)) ?? []
     }
+
+    /// I10: bucket cleanup history into same-batch groups so the rollback
+    /// sheet can list every file from a single cleanup run together.
+    private var groupedBatches: [CleanupBatch] {
+        let groups = Dictionary(grouping: cleanupRecords) { item in
+            CleanupBatchKey(
+                cleanedAt: (item.cleanedAt ?? Date.distantPast).rounded(toSeconds: 1),
+                bundleID: item.bundleID ?? "_"
+            )
+        }
+        return groups.map { key, items in
+            CleanupBatch(
+                key: "\(key.cleanedAt.timeIntervalSince1970)-\(key.bundleID)",
+                cleanedAt: key.cleanedAt,
+                bundleID: key.bundleID,
+                items: items.sorted { $0.path ?? "" < $1.path ?? "" }
+            )
+        }
+        .sorted { $0.cleanedAt > $1.cleanedAt }
+    }
+}
+
+private struct CleanupBatchKey: Hashable {
+    let cleanedAt: Date
+    let bundleID: String
+}
+
+private struct CleanupBatch: Identifiable {
+    let key: String
+    let cleanedAt: Date
+    let bundleID: String
+    let items: [CleanupHistoryItem]
+    var id: String { key }
 }
 
 struct ScanRecordRow: View {
@@ -122,8 +175,10 @@ struct ScanRecordRow: View {
     }
 }
 
-struct CleanupRecordMiniRow: View {
-    let record: CleanupHistoryItem
+struct CleanupBatchRow: View {
+    let cleanedAt: Date
+    let bundleID: String
+    let items: [CleanupHistoryItem]
 
     var body: some View {
         GlassPanel {
@@ -131,19 +186,30 @@ struct CleanupRecordMiniRow: View {
                 Image(systemName: "trash")
                     .foregroundColor(.danger)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(record.size) \u{5B57}\u{8282}")
+                    Text("\(totalSize) \u{5B57}\u{8282} \u{00B7} \(items.count) \u{9879}")
                         .font(AppFont.body)
                         .foregroundColor(.textPrimary)
-                    Text(record.cleanedAt?.formatted() ?? "")
+                    Text("\(cleanedAt.formatted()) \u{00B7} \(bundleID)")
                         .font(AppFont.caption)
                         .foregroundColor(.textSecondary)
                 }
                 Spacer()
-                Text(record.riskLevel ?? "recommended")
-                    .font(AppFont.caption)
-                    .foregroundColor(.textSecondary)
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.textTertiary)
             }
             .padding(AppSpacing.md)
         }
+    }
+
+    private var totalSize: Int64 {
+        items.reduce(0) { $0 + $1.size }
+    }
+}
+
+private extension Date {
+    /// Truncate to second precision so two items written within 1s of each
+    /// other during the same cleanup batch land in the same group.
+    func rounded(toSeconds: TimeInterval) -> Date {
+        Date(timeIntervalSince1970: floor(timeIntervalSince1970 / toSeconds) * toSeconds)
     }
 }

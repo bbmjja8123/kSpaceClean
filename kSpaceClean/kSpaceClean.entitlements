@@ -12,7 +12,7 @@
     <key>com.apple.security.device.microphone</key><false/>
     <key>com.apple.security.device.usb</key><false/>
     <key>com.apple.security.print</key><false/>
-    <key>com.apple.security.network.client</key><true/>
+    <key>com.apple.security.network.client</key><false/>
     <key>com.apple.security.network.server</key><false/>
 </dict>
 </plist>

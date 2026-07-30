@@ -11,17 +11,23 @@ import Foundation
 public enum RecommendPolicy: String, Codable, Sendable, CaseIterable {
     /// Only select `.recommended` items by default.
     case strict
-    /// Select `.recommended` and `.optional` items by default.
+    /// Select only `.recommended` items by default (CLAUDE.md §8.5: only
+    /// `recommended` is auto-selected; non-recommended items default to OFF).
     case `default`
     /// Select `.recommended`, `.optional`, and `.caution` items by default.
     case autoSelectCaution
 
     /// Whether a given risk level should be selected by default under this policy.
+    ///
+    /// `default` selects only `.recommended` — non-recommended items must be
+    /// opted into by the user, per CLAUDE.md §8.5 ("only recommended items
+    /// are auto-selected"). `autoSelectCaution` is the opt-in policy for
+    /// power users.
     public func shouldSelect(_ level: RiskLevel) -> Bool {
         switch (self, level) {
         case (_, .dangerous): return false
         case (_, .recommended): return true
-        case (_, .optional): return self != .strict
+        case (_, .optional): return self == .autoSelectCaution
         case (_, .caution): return self == .autoSelectCaution
         }
     }

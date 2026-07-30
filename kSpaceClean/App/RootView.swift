@@ -8,12 +8,6 @@ struct RootView: View {
     @StateObject private var galaxyViewModel = GalaxyViewModel()
     @StateObject private var scanViewModel = ScanViewModel()
     @StateObject private var cleanupViewModel = CleanupViewModel()
-    @StateObject private var largeOldViewModel = LargeOldViewModel()
-    @StateObject private var duplicateViewModel = DuplicateViewModel()
-    @StateObject private var appUninstallViewModel = AppUninstallViewModel()
-    @StateObject private var privacyViewModel = PrivacyViewModel()
-    @StateObject private var photoCleanViewModel = PhotoCleanViewModel()
-    @StateObject private var maintenanceViewModel = MaintenanceViewModel()
 
     // C1: production scan pipeline. Owned at the root so the scan state
     // survives navigation switches (e.g. user starts a scan, navigates
@@ -143,13 +137,6 @@ struct RootView: View {
         case .galaxy:
             galaxyContent
         case .scan:
-            // C1 fix: render the real `ScanResultsView` (the 4-level tree
-            // built by the production scanner) instead of the legacy
-            // `ScanContentView`. The legacy view still exists for the
-            // A12 toolbar's "Start Scan" button which feeds the legacy
-            // `ScanViewModel`, but the moment a scan completes the user
-            // lands on the new tree here. We keep both side-by-side per
-            // the merge-gate constraint.
             ScanResultsView(viewModel: scanResultsViewModel)
         case .cleanup:
             CleanupContentView(viewModel: cleanupViewModel)
@@ -157,18 +144,6 @@ struct RootView: View {
             HistoryContentView()
         case .settings:
             SettingsView()
-        case .largeFiles:
-            LargeOldView()
-        case .duplicateFiles:
-            DuplicateView(viewModel: duplicateViewModel)
-        case .uninstall:
-            AppUninstallView()
-        case .privacy:
-            PrivacyView()
-        case .photoClean:
-            PhotoCleanView()
-        case .maintenance:
-            MaintenanceView()
         }
     }
 

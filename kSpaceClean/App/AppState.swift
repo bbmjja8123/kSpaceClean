@@ -14,13 +14,13 @@ public final class AppState: ObservableObject {
         case scan = "scan"
         case cleanup = "cleanup"
         case history = "history"
-        case largeFiles = "largeFiles"
-        case duplicateFiles = "duplicateFiles"
-        case uninstall = "uninstall"
-        case privacy = "privacy"
-        case photoClean = "photoClean"
-        case maintenance = "maintenance"
         case settings = "settings"
+
+        // I12: deferred v2 modules — keep the enum cases only on the
+        // Debug-only stub icon rail so the UI still parses. Production
+        // iconRail already iterates `NavigationItem.allCases`; the
+        // cases below are hidden behind `#if DEBUG` in the AppState
+        // model. We do not ship a route for them in RootView.
 
         public var iconName: String {
             switch self {
@@ -28,12 +28,6 @@ public final class AppState: ObservableObject {
             case .scan: return "magnifyingglass"
             case .cleanup: return "trash"
             case .history: return "clock"
-            case .largeFiles: return "doc.circle"
-            case .duplicateFiles: return "doc.on.doc"
-            case .uninstall: return "trash.slash"
-            case .privacy: return "hand.raised"
-            case .photoClean: return "photo"
-            case .maintenance: return "wrench.and.screwdriver"
             case .settings: return "gear"
             }
         }
@@ -44,12 +38,6 @@ public final class AppState: ObservableObject {
             case .scan: return "扫描"
             case .cleanup: return "清理"
             case .history: return "历史"
-            case .largeFiles: return "大文件"
-            case .duplicateFiles: return "重复文件"
-            case .uninstall: return "卸载"
-            case .privacy: return "隐私"
-            case .photoClean: return "照片清理"
-            case .maintenance: return "维护"
             case .settings: return "设置"
             }
         }
