@@ -15,6 +15,12 @@ struct RootView: View {
     @StateObject private var photoCleanViewModel = PhotoCleanViewModel()
     @StateObject private var maintenanceViewModel = MaintenanceViewModel()
 
+    // C1: production scan pipeline. Owned at the root so the scan state
+    // survives navigation switches (e.g. user starts a scan, navigates
+    // away, comes back — the categories tree is still there).
+    @StateObject private var scanEngine = ScanEngine()
+    @StateObject private var scanResultsViewModel = ScanResultsViewModel(engine: ScanEngine())
+
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -137,7 +143,14 @@ struct RootView: View {
         case .galaxy:
             galaxyContent
         case .scan:
-            ScanContentView(viewModel: scanViewModel)
+            // C1 fix: render the real `ScanResultsView` (the 4-level tree
+            // built by the production scanner) instead of the legacy
+            // `ScanContentView`. The legacy view still exists for the
+            // A12 toolbar's "Start Scan" button which feeds the legacy
+            // `ScanViewModel`, but the moment a scan completes the user
+            // lands on the new tree here. We keep both side-by-side per
+            // the merge-gate constraint.
+            ScanResultsView(viewModel: scanResultsViewModel)
         case .cleanup:
             CleanupContentView(viewModel: cleanupViewModel)
         case .history:

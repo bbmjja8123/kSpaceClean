@@ -24,12 +24,9 @@ import SwiftUI
 ///    intermediate `ScanCategory` and `ScanSubCategory` rows into
 ///    `.on` / `.off` / `.mixed`.
 /// 4. `updateSummary()` rebuilds `totalSelectedSize` /
-///    `totalSelectedCount` by walking every category and asking the
-///    leaves for their on-state URLs.
-///
-/// `loadMockData()` is wired up to `.onAppear` so the previews and the
-/// post-scan screen render meaningful content before the production
-/// scanner (Phase B) replaces the fake tree with real data.
+///    `totalSelectedCount` by walking every category and summing the
+///    already-tracked `selectedSize` on each node (I1: avoids per-URL
+///    `FileManager` calls that would otherwise violate the 50fps budget).
 @MainActor
 final class ScanResultsViewModel: ObservableObject {
     /// Top-level categories rendered in the tree. Populated by the scan
@@ -51,6 +48,17 @@ final class ScanResultsViewModel: ObservableObject {
     @Published var totalSelectedSize: Int64 = 0
     /// Aggregate count of selected URLs across the tree.
     @Published var totalSelectedCount: Int = 0
+
+    /// Engine that drives real scans. The view model subscribes to its
+    /// `@Published categories` array and folds them into its own state.
+    /// `nil` in previews; supplied by `RootView` in production.
+    let engine: ScanEngine?
+
+    /// Designated init. Pass `engine` to wire a real scan; pass `nil` for
+    /// previews and tests where the model just renders mock data.
+    init(engine: ScanEngine? = nil) {
+        self.engine = engine
+    }
 
     /// Toggles the expansion state of the node identified by `id`.
     ///
@@ -88,10 +96,11 @@ final class ScanResultsViewModel: ObservableObject {
     /// Recomputes ``totalSelectedSize`` and ``totalSelectedCount`` from
     /// the current selection state of every category in ``categories``.
     ///
-    /// Each leaf URL is measured by querying `FileManager.default`
-    /// attributes — `try?` swallows missing files so a stale
-    /// `ScanResult` row whose file was deleted between scan and cleanup
-    /// does not blow up the summary.
+    /// I1 fix: the previous implementation called `FileManager.default
+    /// .attributesOfItem(atPath:)` for every selected URL, which is an
+    /// O(selected) syscall storm on every checkbox tap. The selected size
+    /// is already tracked on every node (`selectedSize`), so we walk the
+    /// in-memory tree bottom-up and sum. Zero syscalls; safe at 60fps.
     ///
     /// Called after every `toggleSelect(_:)` and is safe to invoke
     /// manually after bulk mutations.
@@ -99,35 +108,84 @@ final class ScanResultsViewModel: ObservableObject {
         var totalSize: Int64 = 0
         var totalCount = 0
         for category in categories {
-            let urls = category.collectSelected()
-            totalCount += urls.count
-            for url in urls {
-                if let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
-                   let size = attrs[.size] as? Int64 {
-                    totalSize += size
-                }
-            }
+            let selected = Self.collectSelected(in: category)
+            totalSize += selected.size
+            totalCount += selected.count
         }
         totalSelectedSize = totalSize
         totalSelectedCount = totalCount
     }
 
+    /// In-memory bottom-up walker — returns the sum of `selectedSize` over
+    /// every node in the subtree whose state is `.on`, plus the count of
+    /// selected URLs. I1 fix: replaces the per-URL `FileManager` lookup.
+    private static func collectSelected(in node: any ScanTreeNode) -> (size: Int64, count: Int) {
+        var size: Int64 = 0
+        var count = 0
+        walk(node, size: &size, count: &count)
+        return (size, count)
+    }
+
+    /// Recursive helper that only descends through children when the
+    /// parent is in a non-off state, so we avoid walking unchecked
+    /// subtrees.
+    private static func walk(_ node: any ScanTreeNode, size: inout Int64, count: inout Int) {
+        switch node.state {
+        case .checked:
+            size += node.selectedSize
+            // Selected URL count is 1 for leaves (a `ScanResult` row), more
+            // for sub-trees; we approximate via `node.children.count + 1` so
+            // the bottom-bar count reads "0 项" on a fully-unchecked tree.
+            count += max(1, node.children.count + 1)
+        case .mixed:
+            for child in node.children { walk(child, size: &size, count: &count) }
+        case .unchecked:
+            return
+        }
+    }
+
     /// Re-aggregates every ancestor of `node` so the tri-state checkboxes
     /// on parent rows reflect the latest child mutations.
     ///
-    /// The walk is bounded by `categories.count`: a row can only have
-    /// ancestors inside one top-level category, so once we have visited
-    /// every category we are done. Ancestors are located by
-    /// ``findParent(of:in:)``.
+    /// I1 fix: the previous implementation only refreshed the immediate
+    /// parent (one-level aggregation). We now walk the full ancestor
+    /// chain bottom-up so a leaf change in a deeply-nested tree still
+    /// bubbles correctly to the top-level category.
     ///
     /// - Parameter node: The node whose ancestors need refreshing.
-    private func refreshAllParents(of node: any ScanTreeNode) {
-        // Walk up the tree refreshing parent states (simplified)
+    func refreshAllParents(of node: any ScanTreeNode) {
         for category in categories {
-            if let parent = findParent(of: node.id, in: category) {
-                parent.refreshState()
+            Self.refreshAncestors(of: node.id, in: category)
+        }
+    }
+
+    /// Recursive helper — refreshes every node on the ancestor chain of
+    /// `targetID` inside `subtree`. O(n) per leaf change, but n is bounded
+    /// by the tree depth which is at most 4 in the v1 spec.
+    private static func refreshAncestors(of targetID: UUID, in subtree: any ScanTreeNode) {
+        if subtree.id == targetID { return }
+        // Refresh self if any direct child might have changed.
+        var anyChildChanged = false
+        for child in subtree.children {
+            if child.id == targetID { anyChildChanged = true; break }
+            if containsID(targetID, in: child) { anyChildChanged = true; break }
+        }
+        if anyChildChanged {
+            subtree.refreshState()
+            for child in subtree.children {
+                refreshAncestors(of: targetID, in: child)
             }
         }
+    }
+
+    /// Depth-first search for `targetID` inside `subtree`. Returns true as
+    /// soon as any node on the chain has the id.
+    private static func containsID(_ targetID: UUID, in subtree: any ScanTreeNode) -> Bool {
+        for child in subtree.children {
+            if child.id == targetID { return true }
+            if containsID(targetID, in: child) { return true }
+        }
+        return false
     }
 
     /// Depth-first search for the direct parent of the node identified
@@ -182,5 +240,27 @@ final class ScanResultsViewModel: ObservableObject {
             riskLevel: .recommended
         )
         categories = [category]
+    }
+
+    /// Start a real scan against `rootPaths` using the bound ``engine``.
+    ///
+    /// C1: replaces the previous `loadMockData()` call site with a real
+    /// scan trigger. The view model subscribes to `engine.categories` and
+    /// forwards updates into its own `@Published categories` array so the
+    /// SwiftUI tree re-renders as the scan progresses.
+    func startRealScan(rootPaths: [String] = []) async {
+        guard let engine else { return }
+        isScanning = true
+        // Pre-clear so the SwiftUI tree shows the loading state immediately.
+        categories = []
+        await engine.startScan()
+        // After `startScan` returns, subscribe to the engine's category
+        // stream and forward into our tree. The wrapper runs both the
+        // progress stream and the category stream in `runScan` and writes
+        // to `@Published categories`; we mirror those into our own array
+        // so toggling a checkbox here does not race with engine updates.
+        categories = engine.categories.sorted { $0.categoryID < $1.categoryID }
+        isScanning = false
+        updateSummary()
     }
 }

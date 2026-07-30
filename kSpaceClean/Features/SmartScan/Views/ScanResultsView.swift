@@ -22,14 +22,14 @@ import SwiftUI
 /// 4. **Summary bar** — ``SummaryBar`` (defined below) shows the
 ///    aggregate size + count and the primary "清 理" cleanup button.
 ///
-/// Mock data is loaded in `.onAppear` so previews and the production
-/// post-scan screen have content before the real scanner (Phase B)
-/// replaces the placeholder.
+/// C1 fix: the view now accepts an injected `ScanResultsViewModel` so the
+/// production call site (RootView) can wire a real `ScanEngine` instead of
+/// the placeholder mock data. Previews keep the default-init form.
 struct ScanResultsView: View {
-    /// Owning view model. `@StateObject` so the view owns the lifetime
-    /// of the model — the scanner (Phase B) will inject the production
-    /// model at the call site instead.
-    @StateObject private var viewModel = ScanResultsViewModel()
+    /// Owning view model. `@ObservedObject` so the production call site
+    /// (RootView) can own the model lifetime via `@StateObject` and pass
+    /// it in; previews use the no-arg init.
+    @ObservedObject var viewModel: ScanResultsViewModel
 
     /// Builds the full screen as a vertical stack of header / divider /
     /// scrollable tree / divider / summary bar.
@@ -40,20 +40,28 @@ struct ScanResultsView: View {
 
             Divider().background(Color.divider)
 
-            // Tree
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    ForEach(viewModel.categories) { category in
-                        RecursiveTreeNode(
-                            node: category,
-                            level: 0,
-                            expandedIDs: viewModel.expandedIDs,
-                            onToggleExpand: viewModel.toggleExpand,
-                            onToggleSelect: viewModel.toggleSelect
-                        )
+            // Tree — show EmptyStateScreen while the scan is in flight
+            // (or no categories have populated yet), the real tree once
+            // the engine has finished.
+            if viewModel.isScanning || viewModel.categories.isEmpty {
+                EmptyStateScreen(
+                    scenario: viewModel.isScanning ? .firstLaunch : .noResults
+                )
+            } else {
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 0) {
+                        ForEach(viewModel.categories) { category in
+                            RecursiveTreeNode(
+                                node: category,
+                                level: 0,
+                                expandedIDs: viewModel.expandedIDs,
+                                onToggleExpand: viewModel.toggleExpand,
+                                onToggleSelect: viewModel.toggleSelect
+                            )
+                        }
                     }
+                    .padding(.vertical, Spacing.sm)
                 }
-                .padding(.vertical, Spacing.sm)
             }
 
             Divider().background(Color.divider)
@@ -62,7 +70,6 @@ struct ScanResultsView: View {
             SummaryBar(viewModel: viewModel)
         }
         .background(Color.bgCanvas)
-        .onAppear { viewModel.loadMockData() }
     }
 
     /// Header bar: large "扫描完成" title on the leading edge, selection
@@ -219,7 +226,7 @@ struct SummaryBar: View {
 /// 960×720 design-system canvas size.
 struct ScanResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        ScanResultsView()
+        ScanResultsView(viewModel: ScanResultsViewModel(engine: nil))
             .frame(width: 960, height: 720)
     }
 }
