@@ -99,7 +99,7 @@ final class CleanupEngineTests: XCTestCase {
 
         let engine = CleanupEngine(persistence: PersistenceController(inMemory: true))
         var finalState: CleanupProgress.State?
-        for await progress in engine.cleanup(urls: [tempFile], skipWarnItems: true) {
+        for await progress in engine.cleanup(urls: [tempFile], warnHandling: .skip) {
             if progress.state == .completed || progress.state == .failed {
                 finalState = progress.state
             }

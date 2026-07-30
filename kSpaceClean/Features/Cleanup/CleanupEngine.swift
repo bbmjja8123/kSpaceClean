@@ -124,82 +124,89 @@ public actor CleanupEngine {
 
     private let persistence: PersistenceController
     private let mover: TrashMover
+    /// C5 fix: injected `WarningDetectionService` so the streaming API
+    /// actually consults Layer-1 detection (lsof / proc_pidinfo) instead
+    /// of the broken `detectWarnItems` prefix-only heuristic that used to
+    /// live in this file. The service is an `actor`, so callers `await` it.
+    private let warningService: WarningDetectionService
 
     public init(persistence: PersistenceController = .shared,
-                mover: TrashMover = TrashMover()) {
+                mover: TrashMover = TrashMover(),
+                warningService: WarningDetectionService = WarningDetectionService()) {
         self.persistence = persistence
         self.mover = mover
+        self.warningService = warningService
     }
 
     // MARK: - Streaming API (legacy surface, preserved)
 
-    /// Detect running apps that own any of the selected paths.
-    ///
-    /// Aggregates matches by bundle identifier so the same app is reported once
-    /// even when several of its files are in the selection. Returns apps sorted
-    /// alphabetically for stable UI presentation.
-    public nonisolated func detectWarnItems(for paths: [String]) -> [WarnItem] {
-        let running = NSWorkspace.shared.runningApplications
-        var warnByBundle: [String: WarnItem] = [:]
-
-        for app in running {
-            guard let appURL = app.bundleURL,
-                  let bundleID = app.bundleIdentifier else { continue }
-            let appPath = appURL.path
-            for path in paths where path == appPath || path.hasPrefix(appPath + "/") || path.hasPrefix(appPath) {
-                var item = warnByBundle[bundleID]
-                if item == nil {
-                    item = WarnItem(
-                        appName: app.localizedName ?? bundleID,
-                        bundleID: bundleID,
-                        processID: app.processIdentifier,
-                        conflictingPaths: []
-                    )
-                }
-                warnByBundle[bundleID] = WarnItem(
-                    appName: item!.appName,
-                    bundleID: bundleID,
-                    processID: item!.processID,
-                    conflictingPaths: item!.conflictingPaths + [path]
-                )
-            }
-        }
-        return Array(warnByBundle.values).sorted { $0.appName < $1.appName }
-    }
-
     /// Streaming cleanup — emits a `CleanupProgress` per batch plus a final event.
     ///
     /// Concurrent deletion with a 12-task ceiling per batch (matches the
-    /// previous implementation's behaviour). The `skipWarnItems` flag is a
-    /// soft hint: when `false`, paths that belong to a running app are still
-    /// sent to Trash; the warning flow is expected to have already terminated
-    /// or aborted by the time the caller invokes this method with `false`.
+    /// previous implementation's behaviour). The `warnHandling` enum is the
+    /// C5 replacement for the old `skipWarnItems: Bool` parameter: the new
+    /// shape lets callers pick between `.skip` (default, safe), `.terminate`
+    /// (kill conflicting apps first), or `.cancel` (abort the run).
+    ///
+    /// C5 fix: detection now runs through the injected
+    /// `WarningDetectionService` instead of the broken prefix-match
+    /// implementation. The default is to **run detection** — `skipWarnItems`
+    /// semantics are no longer available; use `warnHandling: .skip` to
+    /// pretend the detection result is empty.
     ///
     /// - Returns: An `AsyncStream` that yields progress events and finishes
     ///   after the final `.completed` or `.failed` event.
     public nonisolated func cleanup(urls: [URL],
-                                    skipWarnItems: Bool = true) -> AsyncStream<CleanupProgress> {
+                                    warnHandling: WarnHandling = .skip) -> AsyncStream<CleanupProgress> {
         AsyncStream { continuation in
             Task {
                 let total = urls.count
-                let warnItems = skipWarnItems ? [] : self.detectWarnItems(for: urls.map(\.path))
+                let paths = urls.map(\.path)
+                let detected: [WarnItem] = await self.warningService.detectWarnItems(for: paths)
+                let warnItems: [WarnItem]
+                switch warnHandling {
+                case .skip:
+                    // `.skip` means "filter out conflicts"; the user has
+                    // already chosen to skip, so we suppress the warning
+                    // emission too — the engine will not show a warning
+                    // footer, and conflicts are silently dropped.
+                    warnItems = []
+                case .terminate:
+                    // `.terminate` means "kill conflicting apps first";
+                    // we still emit the warning list so the UI can show
+                    // a confirmation; the actual terminate is the caller's
+                    // responsibility before invoking this method.
+                    warnItems = detected
+                case .abort:
+                    // `.abort` means "abort the whole run"; emit a
+                    // warning event with no progress and bail.
+                    continuation.yield(CleanupProgress(
+                        state: .warning,
+                        totalItems: total,
+                        warnItems: detected
+                    ))
+                    continuation.yield(CleanupProgress(
+                        state: .failed,
+                        totalItems: total,
+                        warnItems: detected,
+                        failedPaths: paths
+                    ))
+                    continuation.finish()
+                    return
+                }
+
                 continuation.yield(CleanupProgress(
                     state: warnItems.isEmpty ? .cleaning : .warning,
                     totalItems: total,
                     warnItems: warnItems
                 ))
 
-                if !warnItems.isEmpty {
-                    // Caller asked to NOT skip but did not terminate; surface the warning
-                    // and let them re-invoke. We do not delete in this state.
-                    continuation.yield(CleanupProgress(
-                        state: .warning,
-                        totalItems: total,
-                        warnItems: warnItems
-                    ))
-                    continuation.finish()
-                    return
-                }
+                // Compute the actual deletion set: if `.skip`, drop
+                // everything that conflicts; otherwise delete everything.
+                let conflicting: Set<String> = Set(detected.flatMap(\.conflictingPaths))
+                let urlsToProcess: [URL] = (warnHandling == .skip)
+                    ? urls.filter { !conflicting.contains($0.path) }
+                    : urls
 
                 // Concurrent deletion — 12 tasks per batch.
                 let batchSize = 12
@@ -207,11 +214,11 @@ public actor CleanupEngine {
                 var completed = 0
                 var failedPaths: [String] = []
 
-                for batchStart in stride(from: 0, to: urls.count, by: batchSize) {
-                    let batchEnd = min(batchStart + batchSize, urls.count)
-                    let batch = Array(urls[batchStart..<batchEnd])
+                for batchStart in stride(from: 0, to: urlsToProcess.count, by: batchSize) {
+                    let batchEnd = min(batchStart + batchSize, urlsToProcess.count)
+                    let batch = Array(urlsToProcess[batchStart..<batchEnd])
 
-                    let results = await withTaskGroup(of: (URL, Int64, Error?).self) { [mover] group in
+                    let results = await withTaskGroup(of: (URL, Int64, Error?).self) { [self, mover] group in
                         for url in batch {
                             group.addTask {
                                 let size = (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize).flatMap { Int64($0) } ?? 0
@@ -311,7 +318,11 @@ public actor CleanupEngine {
             return .empty
         } else if config.warnHandling == .skip {
             let paths = targets.map(\.url.path)
-            let warnings = detectWarnItems(for: paths)
+            // C5 fix: route the structured API through the injected
+            // `WarningDetectionService` (the same instance the streaming
+            // API uses) so the prefix-only heuristic that used to live
+            // in this file is no longer the source of truth.
+            let warnings = await warningService.detectWarnItems(for: paths)
             let conflictingPaths = Set(warnings.flatMap(\.conflictingPaths))
             let filtered = targets.filter { !conflictingPaths.contains($0.url.path) }
             toClean = filtered
