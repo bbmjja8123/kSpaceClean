@@ -119,6 +119,28 @@ public struct CleanupConfiguration: Sendable {
     public static let `default` = CleanupConfiguration()
 }
 
+// MARK: - Confirmation level
+
+/// 4-level cleanup confirmation routing (v3 spec §2.6).
+public enum CleanupConfirmationLevel: Sendable, Equatable {
+    /// Only `recommended` + `optional` items → one-tap confirm.
+    case low
+    /// Includes `caution` items → per-item list confirmation.
+    case medium
+    /// Includes `dangerous` items or running-app conflicts → warning flow.
+    case high
+    /// Skip trash (irreversible delete) → user must type DELETE.
+    case irreversible
+
+    /// Decide the level from the targets' risk mix and whether any running apps
+    /// conflict with the selection.
+    public static func from(riskLevels: [RiskLevel], hasWarnItems: Bool) -> CleanupConfirmationLevel {
+        if riskLevels.contains(.dangerous) || hasWarnItems { return .high }
+        if riskLevels.contains(.caution) { return .medium }
+        return .low
+    }
+}
+
 // MARK: - Cleanup result
 
 /// A target that could not be cleaned, with a human-presentable reason.

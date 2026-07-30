@@ -347,6 +347,7 @@ def main():
         "PhaseAComponentSnapshotTests.swift",
         "ScanResultsViewSnapshotTests.swift",
         "CleanupHistoryPersistenceTests.swift",
+        "CleanupEngineTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
     # CascadeCheckboxTests.swift — Task A5's 5 cascade-behaviour tests
     # (recommended-only parent selection, parent-off propagation,

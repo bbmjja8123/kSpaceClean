@@ -471,6 +471,10 @@
 		isa = PBXBuildFile;
 		fileRef = A1C8F159E438C5D425663128;
 	};
+	E2C21456A0BE9B61B0AEF4F7 /* E2C21456A0BE9B61B0AEF4F7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 191F8E934AEB52731CDD715B;
+	};
 	E564A7F0385D9BCD1E1DE5F1 /* E564A7F0385D9BCD1E1DE5F1 */ = {
 		isa = PBXBuildFile;
 		fileRef = 4BB3080892491F8489419E53;
@@ -637,6 +641,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = RuleClassifier.swift;
 		path = Features/AIClassifier/RuleClassifier.swift;
+		sourceTree = "<group>";
+	};
+	191F8E934AEB52731CDD715B /* CleanupEngineTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = CleanupEngineTests.swift;
+		path = Tests/CleanupEngineTests.swift;
 		sourceTree = "<group>";
 	};
 	1B5E92D7445A84569AAEEE74 /* RiskLevelTests.swift */ = {
@@ -1809,6 +1820,7 @@
 			67AE780A1B673D15799D5C78 /* PhaseAComponentSnapshotTests.swift */,
 			30C5A4104A47B08FCBA5C9C3 /* ScanResultsViewSnapshotTests.swift */,
 			0DFF4F4B8D975797AB2E42F1 /* CleanupHistoryPersistenceTests.swift */,
+			191F8E934AEB52731CDD715B /* CleanupEngineTests.swift */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -2043,6 +2055,7 @@
 			1BD673E71CD7296E812865D7 /* 1BD673E71CD7296E812865D7 */,
 			45A730AF093A5B2474D06B9D /* 45A730AF093A5B2474D06B9D */,
 			C02480D9C398C92A891F87A7 /* C02480D9C398C92A891F87A7 */,
+			E2C21456A0BE9B61B0AEF4F7 /* E2C21456A0BE9B61B0AEF4F7 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

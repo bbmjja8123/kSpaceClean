@@ -70,3 +70,22 @@ public extension FileManager {
         urls(for: .trashDirectory, in: .userDomainMask).first
     }
 }
+
+public extension TrashMover {
+    /// Best-effort snapshot helper — nil-safe for use inside concurrent Tasks.
+    ///
+    /// Captures the file size + modification date at the moment of the move so
+    /// the history row has accurate provenance even if the file is later
+    /// mutated in Trash (Finder renames on conflict, etc.).
+    func snapshotIfPossible(original: URL, trashURL: URL) async -> TrashSnapshot? {
+        guard let values = try? original.resourceValues(forKeys: [.fileSizeKey, .contentModificationDateKey]) else {
+            return nil
+        }
+        return TrashSnapshot(
+            originalPath: original.path,
+            trashPath: trashURL.path,
+            fileSize: Int64(values.fileSize ?? 0),
+            modifiedAt: values.contentModificationDate ?? Date()
+        )
+    }
+}

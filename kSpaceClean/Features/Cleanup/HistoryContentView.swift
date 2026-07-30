@@ -5,7 +5,7 @@ import CoreData
 /// History content view — shows scan and cleanup history.
 struct HistoryContentView: View {
     @State private var scanHistory: [ScanRecord] = []
-    @State private var cleanupRecords: [CleanupRecord] = []
+    @State private var cleanupRecords: [CleanupHistoryItem] = []
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.lg) {
@@ -87,7 +87,7 @@ struct HistoryContentView: View {
         scanFetch.fetchLimit = 20
         scanHistory = (try? ctx.fetch(scanFetch)) ?? []
 
-        let cleanupFetch = CleanupRecord.fetchRequest()
+        let cleanupFetch = CleanupHistoryItem.fetchRequest()
         cleanupFetch.sortDescriptors = [NSSortDescriptor(key: "cleanedAt", ascending: false)]
         cleanupFetch.fetchLimit = 20
         cleanupRecords = (try? ctx.fetch(cleanupFetch)) ?? []
@@ -123,15 +123,15 @@ struct ScanRecordRow: View {
 }
 
 struct CleanupRecordMiniRow: View {
-    let record: CleanupRecord
+    let record: CleanupHistoryItem
 
     var body: some View {
         GlassPanel {
             HStack {
-                Image(systemName: record.isRestored ? "arrow.uturn.backward" : "trash")
-                    .foregroundColor(record.isRestored ? .textSecondary : .danger)
+                Image(systemName: "trash")
+                    .foregroundColor(.danger)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(record.totalBytes) \u{5B57}\u{8282}")
+                    Text("\(record.size) \u{5B57}\u{8282}")
                         .font(AppFont.body)
                         .foregroundColor(.textPrimary)
                     Text(record.cleanedAt?.formatted() ?? "")
@@ -139,11 +139,9 @@ struct CleanupRecordMiniRow: View {
                         .foregroundColor(.textSecondary)
                 }
                 Spacer()
-                if record.isRestored {
-                    Text("\u{5DF2}\u{56DE}\u{6EDA}")
-                        .font(AppFont.caption)
-                        .foregroundColor(.textSecondary)
-                }
+                Text(record.riskLevel ?? "recommended")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
             }
             .padding(AppSpacing.md)
         }
