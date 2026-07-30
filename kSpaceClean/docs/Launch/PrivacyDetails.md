@@ -32,7 +32,7 @@ The policy must:
 4. Be no longer than 1 printed page.
 
 ## Privacy Manifest (`PrivacyInfo.xcprivacy`)
-The privacy manifest file lives at `kSpaceClean/Resources/PrivacyInfo.xcprivacy` and is registered in `kSpaceClean/project.yml` so `generate_project.py` includes it in the build.
+The privacy manifest file lives at `kSpaceClean/Resources/PrivacyInfo.xcprivacy` and is registered in `kSpaceClean/generate_project.py` (`resource_files` list) so the regenerated `kSpaceClean.xcodeproj/project.pbxproj` includes it in the Resources copy phase.
 
 The manifest declares:
 

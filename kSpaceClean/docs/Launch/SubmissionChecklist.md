@@ -29,7 +29,7 @@ Tick each box before clicking "Submit for Review."
 ## Privacy
 - [ ] Privacy policy live at https://kraftly.app/privacy
 - [ ] App Privacy nutrition label: every category = "Data Not Collected"
-- [ ] `PrivacyInfo.xcprivacy` in `kSpaceClean/Resources/` and registered in `project.yml`
+- [ ] `PrivacyInfo.xcprivacy` in `kSpaceClean/Resources/` and registered in `kSpaceClean/generate_project.py` (`resource_files` list)
 - [ ] No tracking, no analytics, no telemetry in source
 
 ## Pricing & IAP

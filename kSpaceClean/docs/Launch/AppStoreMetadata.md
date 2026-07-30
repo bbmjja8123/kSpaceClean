@@ -61,7 +61,7 @@ ONE-CLICK CLEANUP, 30-DAY UNDO
 Cleaned items move to the macOS Trash, not oblivion. A full 30-day cleanup history lets you restore anything you regret. (Pro feature.)
 
 BUILT FOR APPLE SILICON
-Hashing and perceptual classification use Apple's Neural Engine where available. Scans that took CleanMyMac 10 minutes finish in under 2.
+Hashing and perceptual classification use Apple's Neural Engine where available — scans that took minutes on other apps finish in under two.
 
 ZERO NETWORK
 No analytics, no telemetry, no "anonymous usage stats" — because truly anonymous doesn't exist. Every byte stays on your Mac. Period.
