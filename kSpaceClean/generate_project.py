@@ -168,6 +168,7 @@ def main():
         "Components": make_group("Components"),
         "DesignSystem": make_group("DesignSystem"),
         "Models": make_group("Models"),
+        "MetricKit": make_group("MetricKit"),
         "DiskGalaxy": make_group("DiskGalaxy"),
         "LargeOldFile": make_group("LargeOldFile"),
         "DuplicateFile": make_group("DuplicateFile"),
@@ -229,6 +230,7 @@ def main():
         ("Features/Common/Components/EmptyStateView.swift", "Components"),
         ("Features/Common/Components/SkeletonRow.swift", "Components"),
         ("Features/Common/Components/ToolbarView.swift", "Components"),
+        ("Features/Common/MetricKit/MetricKitReceiver.swift", "MetricKit"),
         ("Features/Common/KeyboardShortcuts.swift", "Common"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/Common/Models/CheckState.swift", "Models"),
@@ -355,6 +357,7 @@ def main():
         "CleanupHistoryPersistenceTests.swift",
         "CleanupEngineTests.swift",
         "WarningDetectionServiceTests.swift",
+        "MetricKitReceiverTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
     # CascadeCheckboxTests.swift — Task A5's 5 cascade-behaviour tests
     # (recommended-only parent selection, parent-off propagation,
@@ -690,7 +693,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AIClassifier", "Cleanup", "Common", "Components", "DesignSystem", "Models", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
+    for sub in ["AIClassifier", "Cleanup", "Common", "Components", "DesignSystem", "Models", "MetricKit", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
                  "AppUninstall", "PrivacyClean", "PhotoClean", "Maintenance",
                  "Onboarding", "RightPanel", "Settings", "SmartScan"]:
         features_children.append((group_ids[sub], sub))
