@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>kWatch Privacy Policy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #1d1d1f; }
+  h1 { font-size: 32px; margin-bottom: 8px; }
+  h2 { font-size: 20px; margin-top: 32px; border-bottom: 1px solid #e5e5e7; padding-bottom: 4px; }
+  .updated { color: #6e6e73; font-size: 14px; }
+  a { color: #0071e3; }
+</style>
+</head>
+<body>
+<h1>kWatch Privacy Policy</h1>
+<p class="updated">Last updated: 1 August 2026</p>
+
+<h2>Summary</h2>
+<p>kWatch is a menu-bar system monitor. All metric readings, alert thresholds, and Pro entitlements live on your Mac. We do not collect, transmit, sell, or share any personal data.</p>
+
+<h2>Data kWatch does NOT collect</h2>
+<ul>
+  <li>Identity (name, email, phone)</li>
+  <li>Location</li>
+  <li>Contacts, calendars, photos</li>
+  <li>Health data</li>
+  <li>Browsing history</li>
+  <li>Usage analytics, telemetry, crash reports</li>
+  <li>Diagnostic data</li>
+</ul>
+
+<h2>What kWatch accesses on your Mac</h2>
+<p>kWatch reads the following system signals locally to display metrics:</p>
+<ul>
+  <li><strong>CPU, memory, disk, network counters</strong> — read via <code>host_processor_info</code>, <code>sysctl</code>, <code>proc_listpids</code>, <code>getifaddrs</code>.</li>
+  <li><strong>Temperature, fan RPM</strong> — read via the Apple System Management Controller (SMC) through Apple's IO-kit APIs. Available only on hardware that exposes these sensors; macOS may require Full Disk Access.</li>
+  <li><strong>Battery state</strong> — read via <code>IOPSCopyPowerSourcesInfo</code>.</li>
+</ul>
+<p>These reads happen on-device. kWatch never opens network connections to transmit readings.</p>
+
+<h2>Permissions kWatch requests</h2>
+<ul>
+  <li><strong>Full Disk Access</strong> — required to read protected system paths on macOS 13+. Declined by default; you can grant it from <em>System Settings → Privacy & Security → Full Disk Access</em>.</li>
+  <li><strong>Notifications</strong> — used for threshold alerts. Declined by default.</li>
+</ul>
+
+<h2>Pro subscription</h2>
+<p>The Pro upgrade is processed by Apple via StoreKit. We never see your Apple ID, payment method, or billing details. Apple handles all subscription state; we receive only a single <em>verified entitlement</em> flag.</p>
+
+<h2>Children's privacy</h2>
+<p>kWatch is not directed at children under 13. We do not knowingly collect data from children.</p>
+
+<h2>Changes to this policy</h2>
+<p>We may update this policy. Material changes will be reflected by a new "Last updated" date above. Continued use of kWatch after a change constitutes acceptance.</p>
+
+<h2>Contact</h2>
+<p>support@kraftly.app · <a href="https://kraftly.app/support">kraftly.app/support</a></p>
+</body>
+</html>
