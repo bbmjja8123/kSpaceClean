@@ -43,6 +43,14 @@
 		isa = PBXBuildFile;
 		fileRef = 0089DAE711574808D00ABD0B;
 	};
+	1AF08C2E107B6484E281B271 /* 1AF08C2E107B6484E281B271 */ = {
+		isa = PBXBuildFile;
+		fileRef = A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */;
+	};
+	0B27AC77065D8C62DD6187C9 /* 0B27AC77065D8C62DD6187C9 */ = {
+		isa = PBXBuildFile;
+		fileRef = 89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */;
+	};
 	1F1383F1C5BBAC11C885A8A9 /* 1F1383F1C5BBAC11C885A8A9 */ = {
 		isa = PBXBuildFile;
 		fileRef = F75684B0069B206DC6478D95;
@@ -337,6 +345,20 @@
 		lastKnownFileType = sourcecode.swift;
 		name = TrashMoverTests.swift;
 		path = Tests/CleanTests/TrashMoverTests.swift;
+		sourceTree = "<group>";
+	};
+	A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AuditLoggerTests.swift;
+		path = Tests/CleanTests/AuditLoggerTests.swift;
+		sourceTree = "<group>";
+	};
+	89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AuditLogger.swift;
+		path = Core/Clean/AuditLogger.swift;
 		sourceTree = "<group>";
 	};
 	028FE75EBC698AC1A1A03C74 /* kFreshDebug.entitlements */ = {
@@ -1144,6 +1166,7 @@
 		children = (
 			0089DAE711574808D00ABD0B /* TrashMoverTests.swift */,
 			D7B438A54B3D98707F22F4C7 /* BackupManagerTests.swift */,
+			A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */,
 		);
 		name = CleanTests;
 		sourceTree = "<group>";
@@ -1204,6 +1227,7 @@
 		children = (
 			DC9F358CA23F4689897454B8 /* TrashMover.swift */,
 			AF272D3718777F39FA504734 /* ResidueScanner.swift */,
+			89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */,
 		);
 		name = Clean;
 		sourceTree = "<group>";
@@ -1367,6 +1391,7 @@
 			ABAE0D7916C85CCAB7B3C1B6 /* ABAE0D7916C85CCAB7B3C1B6 */,
 			1F2330F83330CD811E7D7A29 /* 1F2330F83330CD811E7D7A29 */,
 			1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */,
+			1AF08C2E107B6484E281B271 /* 1AF08C2E107B6484E281B271 */,
 			717B5017E8BA6330A45302F9 /* 717B5017E8BA6330A45302F9 */,
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
@@ -1417,6 +1442,7 @@
 			39FEF37BBD65059F5FD0BA44 /* 39FEF37BBD65059F5FD0BA44 */,
 			2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */,
 			E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */,
+			0B27AC77065D8C62DD6187C9 /* 0B27AC77065D8C62DD6187C9 */,
 			0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */,
 			BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */,
 			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
