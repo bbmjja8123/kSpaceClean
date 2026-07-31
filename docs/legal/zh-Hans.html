@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kWatch — 隐私政策</title>
+    <meta name="description" content="kWatch（Kraftly 旗下 macOS 菜单栏系统监控工具）的隐私政策。">
+    <style>
+        :root {
+            --brand: #2563EB;
+            --text: #111827;
+            --text-muted: #4B5563;
+            --bg: #FFFFFF;
+            --bg-alt: #F9FAFB;
+            --border: #E5E7EB;
+            --code-bg: #F3F4F6;
+            --warn: #B45309;
+        }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Arial, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+        header.brand {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 32px;
+        }
+        header.brand h1 {
+            font-size: 28px;
+            margin: 0 0 4px;
+            color: var(--text);
+        }
+        header.brand p.subtitle {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        h1, h2, h3 {
+            color: var(--text);
+            line-height: 1.25;
+        }
+        h2 {
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        h3 {
+            font-size: 17px;
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+        p, li {
+            color: var(--text);
+        }
+        p.lede {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 0;
+        }
+        a {
+            color: var(--brand);
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 22px; }
+        li { margin-bottom: 6px; }
+        code, pre {
+            font-family: "SF Mono", Menlo, Consolas, monospace;
+            font-size: 13px;
+        }
+        code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        pre {
+            background: var(--code-bg);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px;
+            font-size: 14px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        th {
+            background: var(--bg-alt);
+            font-weight: 600;
+        }
+        .callout {
+            border-left: 3px solid var(--brand);
+            background: var(--bg-alt);
+            padding: 14px 18px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .callout.warn {
+            border-left-color: var(--warn);
+        }
+        .toc {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 22px;
+            margin: 20px 0 32px;
+        }
+        .toc h2 {
+            font-size: 15px;
+            margin: 0 0 10px;
+            padding: 0;
+            border: none;
+        }
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .toc a { color: var(--text); }
+        footer.meta {
+            margin-top: 56px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .lang-switch {
+            float: right;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .lang-switch a { margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="brand">
+            <div class="lang-switch">
+                <a href="index.html" lang="en">English</a>
+                <a href="zh-Hans.html" lang="zh-Hans">简体中文</a>
+                <a href="ja.html" lang="ja">日本語</a>
+            </div>
+            <h1>隐私政策</h1>
+            <p class="subtitle">kWatch 由 Kraftly 出品 &middot; 最后更新日期：2026-08-01</p>
+        </header>
+
+        <p class="lede">
+            kWatch 围绕一个承诺打造：你的 Mac 数据始终留在你的 Mac 上。
+            本政策说明了 kWatch 收集与不收集哪些数据，菜单栏中所展示数据的
+            处理方式，以及你可以做出的选择。
+        </p>
+
+        <nav class="toc" aria-label="目录">
+            <h2>目录</h2>
+            <ol>
+                <li><a href="#summary">概要</a></li>
+                <li><a href="#scope">本政策的适用范围</a></li>
+                <li><a href="#data-we-do-not-collect">我们不收集的数据</a></li>
+                <li><a href="#data-stored-locally">存储在你 Mac 本地的数据</a></li>
+                <li><a href="#system-apis">kWatch 使用的系统 API</a></li>
+                <li><a href="#entitlements">权限与许可</a></li>
+                <li><a href="#purchases">应用内购买与 App Store</a></li>
+                <li><a href="#diagnostics">诊断与崩溃报告</a></li>
+                <li><a href="#support">联系客服</a></li>
+                <li><a href="#data-retention">数据保留与删除</a></li>
+                <li><a href="#third-parties">第三方 SDK</a></li>
+                <li><a href="#children">儿童隐私</a></li>
+                <li><a href="#international">国际用户</a></li>
+                <li><a href="#changes">本政策的变更</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ol>
+        </nav>
+
+        <h2 id="summary">1. 概要</h2>
+        <p>
+            kWatch 是一款 macOS 菜单栏应用程序，用于展示实时系统指标
+            （CPU、内存、磁盘、网络、温度、转速、电池与进程活动）。所有指标
+            数据通过 Apple 公开 API 从你的 Mac 读取，并在本地完成处理。kWatch
+            不运行后端服务，不上报遥测数据，也不需要「完全磁盘访问权限」。
+        </p>
+        <ul>
+            <li><strong>无需注册账号。</strong>打开 kWatch 即可直接使用。</li>
+            <li><strong>无远程服务器。</strong>指标数据从不上传。</li>
+            <li><strong>无广告或追踪。</strong>kWatch 不集成任何广告 SDK。</li>
+            <li><strong>无第三方分析。</strong>崩溃数据保留在本地，除非你主动选择共享。</li>
+        </ul>
+
+        <h2 id="scope">2. 本政策的适用范围</h2>
+        <p>
+            本政策适用于在 Mac App Store 上以 Bundle 标识符
+            <code>app.kraftly.kwatch</code> 分发的 kWatch 应用程序，以及同一
+            应用包内附带的可选组件（Widget 扩展、Live Activity 与 Shortcuts
+            集成）。本政策不适用于 Kraftly 旗下的其他应用程序，例如
+            kSpaceClean、kDupe 或 kFresh，它们各自维护独立的隐私文档。
+        </p>
+
+        <h2 id="data-we-do-not-collect">3. 我们不收集的数据</h2>
+        <p>kWatch 不收集、不上传、不出售以下信息：</p>
+        <ul>
+            <li>你的姓名、电子邮箱、电话号码或通信地址。</li>
+            <li>你的 Apple ID、Apple 账户邮箱或任何登录凭据。</li>
+            <li>你的精确位置或粗略位置。</li>
+            <li>你的通讯录、日历、提醒事项、照片或信息。</li>
+            <li>你的浏览历史、麦克风音频或摄像头画面。</li>
+            <li>健康、健身或生物特征数据。</li>
+            <li>使用分析、广告标识符或跨应用追踪信号。</li>
+            <li>任何显示在菜单栏中的系统指标。</li>
+        </ul>
+
+        <h2 id="data-stored-locally">4. 存储在你 Mac 本地的数据</h2>
+        <p>
+            kWatch 仅使用 macOS 标准的 Application Support 目录与共享的
+            App Group 容器进行持久化存储。以下数据会写入本地：
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>数据</th>
+                    <th>用途</th>
+                    <th>存储位置</th>
+                    <th>保留期限</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>系统指标历史（CPU、内存、磁盘、网络）</td>
+                    <td>绘制趋势图表与触发告警</td>
+                    <td>App Group Core Data 存储</td>
+                    <td>7 天或 30 天（可在设置中切换）</td>
+                </tr>
+                <tr>
+                    <td>告警日志</td>
+                    <td>展示最近触发的告警</td>
+                    <td>App Group Core Data 存储</td>
+                    <td>90 天</td>
+                </tr>
+                <tr>
+                    <td>用户偏好（阈值、刷新频率、主题）</td>
+                    <td>在应用重启后恢复你的配置</td>
+                    <td>App Group <code>UserDefaults</code></td>
+                    <td>直到你修改或卸载应用</td>
+                </tr>
+                <tr>
+                    <td>MetricKit 诊断数据（崩溃与卡顿报告）</td>
+                    <td>在你反馈问题时辅助排查</td>
+                    <td><code>~/Library/Application Support/kWatch/diagnostics/</code></td>
+                    <td>7 天，磁盘占用上限 10 MB</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            以上内容全部保存在你 Mac 的用户账户下，不会自动传输给 Kraftly
+            或任何第三方。
+        </p>
+
+        <h2 id="system-apis">5. kWatch 使用的系统 API</h2>
+        <p>
+            kWatch 仅通过 Apple 公开 API 读取系统信息。运行时使用的接口均
+            为只读访问，列举如下：
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>API</th>
+                    <th>读取内容</th>
+                    <th>用途</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sysctl</code> / <code>host_processor_info</code> / <code>host_statistics64</code></td>
+                    <td>CPU 使用率、负载均值、内存统计、启动时间</td>
+                    <td>核心 CPU 与内存指标卡片</td>
+                </tr>
+                <tr>
+                    <td><code>statfs</code></td>
+                    <td>每个卷的磁盘使用量与剩余空间</td>
+                    <td>磁盘使用指标卡片</td>
+                </tr>
+                <tr>
+                    <td><code>getifaddrs</code>（BSD sockets）</td>
+                    <td>每个网卡的字节与包计数</td>
+                    <td>网络吞吐指标卡片</td>
+                </tr>
+                <tr>
+                    <td><code>libproc</code>（<code>proc_listallpids</code>、<code>proc_pidinfo</code>）</td>
+                    <td>进程名称、PID、CPU/内存使用量（前 N 项列表）</td>
+                    <td>Top 进程面板（Pro 功能）</td>
+                </tr>
+                <tr>
+                    <td>IOKit <code>AppleSMC</code></td>
+                    <td>CPU 与 GPU 温度、风扇转速</td>
+                    <td>温度与风扇指标卡片（Pro 功能）</td>
+                </tr>
+                <tr>
+                    <td>IOKit <code>IOAppleBattery</code> / <code>IOPS</code></td>
+                    <td>电池循环次数、当前容量、充电状态</td>
+                    <td>电池指标卡片</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            kWatch 不安装内核扩展、系统守护进程或特权辅助工具，不修改任何
+            系统文件，也不会写入用户账户之外的任何位置。
+        </p>
+
+        <h2 id="entitlements">6. 权限与许可</h2>
+        <p>
+            kWatch 在 App Sandbox 中运行。应用仅声明读取系统指标所需的最
+            小权限：
+        </p>
+        <ul>
+            <li><code>com.apple.security.app-sandbox</code> &mdash; 所有 Mac App Store 应用必需。</li>
+            <li><code>com.apple.security.files.user-selected.read-only</code> &mdash; 仅在你从 Finder 打开诊断报告时使用。</li>
+        </ul>
+        <p>
+            kWatch <strong>不</strong>申请「完全磁盘访问权限」。你无需在
+            「隐私与安全性」面板中添加任何文件夹，kWatch 即可正常使用。
+            你可能看到的 macOS 权限提示来自 Apple 标准框架（例如通知），
+            即使拒绝也不影响指标监控。
+        </p>
+
+        <h2 id="purchases">7. 应用内购买与 App Store</h2>
+        <p>
+            kWatch 提供一次性的 Pro 升级。付款由 Apple 通过 StoreKit 处理；
+            Kraftly 不会接触你的信用卡号或 Apple 账户密码。Apple 会向
+            Kraftly 提供交易标识符、产品标识符与购买日期，以便在你的设备
+            上恢复 Pro 权限。你可随时通过恢复购买或删除应用的方式撤销
+            Pro 权限。
+        </p>
+        <p>
+            v1 版本未提供 Pro 订阅。若未来版本引入订阅模式，本政策将相应
+            更新，并在 Paywall 中按 App Store 审核指南 3.1.2(a) 的要求
+            展示续订说明。
+        </p>
+
+        <h2 id="diagnostics">8. 诊断与崩溃报告</h2>
+        <p>
+            kWatch 使用 Apple 的 MetricKit 框架在你的 Mac 上记录崩溃与
+            卡顿数据。MetricKit 数据写入本地文件，路径为
+            <code>~/Library/Application Support/kWatch/diagnostics/</code>，
+            不会自动上传。
+        </p>
+        <p>
+            如果你通过「设置 &rarr; 关于」中的「报告问题」发起反馈，应用会
+            准备一份诊断包，其中包含最近 24 小时的 MetricKit 数据、当前
+            指标快照以及你的 macOS 版本。该诊断包会附加到预先填好的
+            <code>mailto:</code> 链接中，便于你在发送前检查并编辑内容。
+            只有当你在邮件客户端中明确点击「发送」时，诊断包才会被发送。
+        </p>
+        <p>
+            诊断包可能包含正在运行的进程名称以及 Top N 列表中显示的
+            应用名称，但不会包含任何文件内容、你的 Apple ID、你的 IP 地址
+            或任何个人身份标识。
+        </p>
+
+        <h2 id="support">9. 联系客服</h2>
+        <p>
+            如果你发送邮件至
+            <a href="mailto:support@kraftly.app">support@kraftly.app</a>，
+            Kraftly 将收到你的邮件内容，包括任何附件以及你选择附上的诊断
+            包。我们仅将该信息用于回复你的请求、协助排查你 Mac 上的 kWatch
+            问题以及改进产品。客服邮件不会用于市场营销。
+        </p>
+
+        <h2 id="data-retention">10. 数据保留与删除</h2>
+        <p>kWatch 强制执行的保留窗口如下：</p>
+        <ul>
+            <li>指标历史 &mdash; 7 天或 30 天（由你选择），到期永久删除。</li>
+            <li>告警日志 &mdash; 90 天，到期永久删除。</li>
+            <li>MetricKit 诊断 &mdash; 7 天，总大小超过 10 MB 时清理最早记录。</li>
+            <li>用户偏好 &mdash; 一直保留，直到你修改。</li>
+        </ul>
+        <p>
+            从 Finder 或 Launchpad 卸载 kWatch 会移除应用二进制文件。
+            kWatch 写入的本地数据保存在你的用户资源库中，卸载时不会自动
+            删除。如需清除所有 kWatch 数据，请在卸载前选择
+            「设置 &rarr; 高级 &rarr; 重置全部数据」，或在卸载后手动删除
+            <code>~/Library/Application Support/kWatch/</code> 文件夹以及
+            App Group 容器中的 kWatch 条目。
+        </p>
+
+        <h2 id="third-parties">11. 第三方 SDK</h2>
+        <p>
+            kWatch 不捆绑任何第三方 SDK、分析库、广告网络或崩溃上报服务。
+            所有功能均通过 Apple 框架实现：StoreKit、MetricKit、ActivityKit、
+            AppIntents、CoreSpotlight、IOKit 与 Core Data。
+        </p>
+
+        <h2 id="children">12. 儿童隐私</h2>
+        <p>
+            kWatch 面向 13 岁及以上的用户（或你所在国家/地区规定的同等最低
+            年龄）。kWatch 不会明知故犯地收集儿童的个人信息。由于 kWatch
+            本身不收集任何人的个人信息，因此无需特殊处理。
+        </p>
+
+        <h2 id="international">13. 国际用户</h2>
+        <p>
+            kWatch 不会将你的数据传输至位于其他国家的服务器，因为 kWatch
+            不持有服务器。所有处理都在你正在使用的设备上完成。本政策中
+            描述的隐私实践旨在满足欧盟《通用数据保护条例》（GDPR）、
+            《加州消费者隐私法》（CCPA）、英国《数据保护法》、巴西
+            《通用数据保护法》（LGPD）以及《中华人民共和国个人信息
+            保护法》的要求。
+        </p>
+        <div class="callout">
+            <strong>你的权利。</strong>若当地法律赋予你访问、删除、可携带或
+            反对处理与你有关的个人数据的权利，kWatch 的本地化设计可自动
+            满足这些要求。你可以直接在「设置」面板中行使，或通过卸载应用
+            来完成。
+        </div>
+
+        <h2 id="changes">14. 本政策的变更</h2>
+        <p>
+            若本政策发生重大变更，kWatch 将在下次启动时显示应用内通知，
+            并更新页面顶部的「最后更新日期」。非实质性修改（如错别字修正、
+            表述澄清）将仅更新「最后更新日期」。本政策的历次版本可联系
+            <a href="mailto:privacy@kraftly.app">privacy@kraftly.app</a>
+            获取。
+        </p>
+
+        <h2 id="contact">15. 联系我们</h2>
+        <p>
+            对于你通过
+            <a href="#support">第 9 节</a>所述渠道主动发送给我们的任何
+            信息，Kraftly 是其数据控制者。你可以通过以下方式联系我们：
+        </p>
+        <pre><code>Kraftly
+隐私邮箱：privacy@kraftly.app
+客服邮箱：support@kraftly.app
+官网：https://kraftly.app</code></pre>
+
+        <footer class="meta">
+            <p>
+                本文档同时提供
+                <a href="index.html" lang="en">English</a>
+                与
+                <a href="ja.html" lang="ja">日本語</a>
+                版本。
+            </p>
+            <p>&copy; 2026 Kraftly。保留所有权利。</p>
+        </footer>
+    </div>
+</body>
+</html>

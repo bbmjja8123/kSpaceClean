@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kWatch — Privacy Policy</title>
+    <meta name="description" content="Privacy Policy for kWatch, the Kraftly macOS menu-bar system monitor.">
+    <style>
+        :root {
+            --brand: #2563EB;
+            --text: #111827;
+            --text-muted: #4B5563;
+            --bg: #FFFFFF;
+            --bg-alt: #F9FAFB;
+            --border: #E5E7EB;
+            --code-bg: #F3F4F6;
+            --warn: #B45309;
+        }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+        header.brand {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 32px;
+        }
+        header.brand h1 {
+            font-size: 28px;
+            margin: 0 0 4px;
+            color: var(--text);
+        }
+        header.brand p.subtitle {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        h1, h2, h3 {
+            color: var(--text);
+            line-height: 1.25;
+        }
+        h2 {
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        h3 {
+            font-size: 17px;
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+        p, li {
+            color: var(--text);
+        }
+        p.lede {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 0;
+        }
+        a {
+            color: var(--brand);
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 22px; }
+        li { margin-bottom: 6px; }
+        code, pre {
+            font-family: "SF Mono", Menlo, Consolas, monospace;
+            font-size: 13px;
+        }
+        code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        pre {
+            background: var(--code-bg);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px;
+            font-size: 14px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        th {
+            background: var(--bg-alt);
+            font-weight: 600;
+        }
+        .callout {
+            border-left: 3px solid var(--brand);
+            background: var(--bg-alt);
+            padding: 14px 18px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .callout.warn {
+            border-left-color: var(--warn);
+        }
+        .toc {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 22px;
+            margin: 20px 0 32px;
+        }
+        .toc h2 {
+            font-size: 15px;
+            margin: 0 0 10px;
+            padding: 0;
+            border: none;
+        }
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .toc a { color: var(--text); }
+        footer.meta {
+            margin-top: 56px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .lang-switch {
+            float: right;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .lang-switch a { margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="brand">
+            <div class="lang-switch">
+                <a href="index.html" lang="en">English</a>
+                <a href="zh-Hans.html" lang="zh-Hans">简体中文</a>
+                <a href="ja.html" lang="ja">日本語</a>
+            </div>
+            <h1>Privacy Policy</h1>
+            <p class="subtitle">kWatch by Kraftly &middot; Last updated: 2026-08-01</p>
+        </header>
+
+        <p class="lede">
+            kWatch is built around a single promise: your Mac's data stays on your Mac.
+            This policy explains what kWatch does and does not collect, how the data
+            you see in the menu bar is processed, and the choices you have.
+        </p>
+
+        <nav class="toc" aria-label="Table of contents">
+            <h2>Contents</h2>
+            <ol>
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#scope">Scope of this policy</a></li>
+                <li><a href="#data-we-do-not-collect">Data we do not collect</a></li>
+                <li><a href="#data-stored-locally">Data stored locally on your Mac</a></li>
+                <li><a href="#system-apis">System APIs kWatch uses</a></li>
+                <li><a href="#entitlements">Entitlements and permissions</a></li>
+                <li><a href="#purchases">In-app purchases and the App Store</a></li>
+                <li><a href="#diagnostics">Diagnostics and crash reports</a></li>
+                <li><a href="#support">Contacting support</a></li>
+                <li><a href="#data-retention">Data retention and deletion</a></li>
+                <li><a href="#third-parties">Third-party SDKs</a></li>
+                <li><a href="#children">Children's privacy</a></li>
+                <li><a href="#international">International users</a></li>
+                <li><a href="#changes">Changes to this policy</a></li>
+                <li><a href="#contact">Contact us</a></li>
+            </ol>
+        </nav>
+
+        <h2 id="summary">1. Summary</h2>
+        <p>
+            kWatch is a macOS menu-bar application that displays real-time system
+            metrics (CPU, memory, disk, network, temperature, fan speed, battery, and
+            process activity). All metric data is read from your Mac using Apple
+            public APIs and is processed locally. kWatch does not run a backend
+            service, does not transmit telemetry, and does not require Full Disk
+            Access.
+        </p>
+        <ul>
+            <li><strong>No account required.</strong> kWatch works without sign-in.</li>
+            <li><strong>No remote servers.</strong> Metric data never leaves your device.</li>
+            <li><strong>No advertising or tracking.</strong> kWatch integrates no ad SDKs.</li>
+            <li><strong>No third-party analytics.</strong> Crash data stays on-device unless you choose to share it.</li>
+        </ul>
+
+        <h2 id="scope">2. Scope of this policy</h2>
+        <p>
+            This policy applies to the kWatch application distributed on the Mac App
+            Store under the bundle identifier <code>app.kraftly.kwatch</code> and to
+            the optional companion targets shipped in the same app bundle (Widget
+            extension, Live Activity, and Shortcuts integration). It does not cover
+            other Kraftly applications such as kSpaceClean, kDupe, or kFresh, which
+            maintain their own privacy documentation.
+        </p>
+
+        <h2 id="data-we-do-not-collect">3. Data we do not collect</h2>
+        <p>kWatch does not collect, transmit, or sell the following:</p>
+        <ul>
+            <li>Your name, email address, phone number, or postal address.</li>
+            <li>Your Apple ID, Apple Account email, or any sign-in credentials.</li>
+            <li>Your precise or coarse location.</li>
+            <li>Your contacts, calendars, reminders, photos, or messages.</li>
+            <li>Your browsing history, microphone audio, or camera input.</li>
+            <li>Health, fitness, or biometric data.</li>
+            <li>Usage analytics, advertising identifiers, or cross-app tracking signals.</li>
+            <li>Any system metric shown in the menu bar.</li>
+        </ul>
+
+        <h2 id="data-stored-locally">4. Data stored locally on your Mac</h2>
+        <p>
+            The only persistent storage kWatch uses is the standard macOS
+            Application Support directory and the shared App Group container. The
+            following data is written locally:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Purpose</th>
+                    <th>Location</th>
+                    <th>Retention</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>System metric history (CPU, memory, disk, network)</td>
+                    <td>Display trend charts and compute alerts</td>
+                    <td>App Group Core Data store</td>
+                    <td>7 or 30 days (user-configurable)</td>
+                </tr>
+                <tr>
+                    <td>Alert log</td>
+                    <td>Show the most recent triggered alerts</td>
+                    <td>App Group Core Data store</td>
+                    <td>90 days</td>
+                </tr>
+                <tr>
+                    <td>User preferences (thresholds, refresh interval, theme)</td>
+                    <td>Restore your configuration across launches</td>
+                    <td>App Group <code>UserDefaults</code></td>
+                    <td>Until you change it or uninstall</td>
+                </tr>
+                <tr>
+                    <td>MetricKit diagnostics (crash and hang reports)</td>
+                    <td>Help diagnose stability issues if you report them</td>
+                    <td><code>~/Library/Application Support/kWatch/diagnostics/</code></td>
+                    <td>7 days, capped at 10 MB</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            All of the above lives on your Mac in your user account. None of it is
+            transmitted to Kraftly or to any third party automatically.
+        </p>
+
+        <h2 id="system-apis">5. System APIs kWatch uses</h2>
+        <p>
+            kWatch reads system information exclusively through Apple public APIs.
+            The following are used at runtime, all in read-only fashion:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>API</th>
+                    <th>What kWatch reads</th>
+                    <th>Why</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sysctl</code> / <code>host_processor_info</code> / <code>host_statistics64</code></td>
+                    <td>CPU usage, load average, memory statistics, boot time</td>
+                    <td>Core CPU and memory metric cards</td>
+                </tr>
+                <tr>
+                    <td><code>statfs</code></td>
+                    <td>Per-volume disk usage and free space</td>
+                    <td>Disk usage metric card</td>
+                </tr>
+                <tr>
+                    <td><code>getifaddrs</code> (BSD sockets)</td>
+                    <td>Per-interface byte and packet counters</td>
+                    <td>Network throughput metric card</td>
+                </tr>
+                <tr>
+                    <td><code>libproc</code> (<code>proc_listallpids</code>, <code>proc_pidinfo</code>)</td>
+                    <td>Process name, PID, CPU/memory usage for the top-N list</td>
+                    <td>Top processes panel (Pro feature)</td>
+                </tr>
+                <tr>
+                    <td>IOKit <code>AppleSMC</code></td>
+                    <td>CPU and GPU temperature, fan RPM</td>
+                    <td>Temperature and fan metric cards (Pro feature)</td>
+                </tr>
+                <tr>
+                    <td>IOKit <code>IOAppleBattery</code> / <code>IOPS</code></td>
+                    <td>Battery cycle count, current capacity, charging state</td>
+                    <td>Battery metric card</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            kWatch does not install kernel extensions, system daemons, or privileged
+            helpers. It does not modify any system file and does not write to any
+            location outside your user account.
+        </p>
+
+        <h2 id="entitlements">6. Entitlements and permissions</h2>
+        <p>
+            kWatch runs inside the App Sandbox. The application declares only the
+            minimum entitlements needed to read system metrics:
+        </p>
+        <ul>
+            <li><code>com.apple.security.app-sandbox</code> &mdash; required for all Mac App Store apps.</li>
+            <li><code>com.apple.security.files.user-selected.read-only</code> &mdash; only if you choose to open a diagnostic report from Finder.</li>
+        </ul>
+        <p>
+            kWatch does <strong>not</strong> request Full Disk Access. There is no
+            folder you need to add to the Privacy &amp; Security pane for kWatch to
+            function. The macOS permission prompts you may see relate to standard
+            Apple frameworks (for example, Notifications) and can be declined
+            without affecting metric monitoring.
+        </p>
+
+        <h2 id="purchases">7. In-app purchases and the App Store</h2>
+        <p>
+            kWatch offers a one-time Pro upgrade. Payment is processed by Apple
+            through StoreKit; Kraftly never sees your credit card number or Apple
+            Account password. Apple provides Kraftly with a transaction
+            identifier, the product identifier, and the date of purchase so the
+            Pro entitlement can be restored on your devices. You can revoke the
+            Pro entitlement at any time by restoring purchases or by deleting the
+            app.
+        </p>
+        <p>
+            A Pro subscription is not offered in the v1 release. If subscription
+            pricing is introduced in a future release, this policy will be
+            updated and a renewal-disclosure sheet will be presented in the
+            Paywall before purchase, in accordance with App Store Review
+            Guideline 3.1.2(a).
+        </p>
+
+        <h2 id="diagnostics">8. Diagnostics and crash reports</h2>
+        <p>
+            kWatch uses Apple's MetricKit framework to record crash and hang
+            payloads on your Mac. MetricKit data is written to local files inside
+            <code>~/Library/Application Support/kWatch/diagnostics/</code> and is
+            never uploaded automatically.
+        </p>
+        <p>
+            If you choose to <em>Report a problem</em> from the Settings &rarr;
+            About pane, the app prepares a diagnostic bundle containing the most
+            recent 24 hours of MetricKit data, a snapshot of current metrics, and
+            your macOS version. The bundle is attached to a pre-filled
+            <code>mailto:</code> link so you can review and edit the contents
+            before sending. The diagnostic bundle is only transmitted if you
+            explicitly press <em>Send</em> in your mail client.
+        </p>
+        <p>
+            The diagnostic bundle may contain the names of running processes and
+            the application names of any process visible in the top-N list. It
+            does not contain the contents of any file, your Apple ID, your IP
+            address, or any personal identifier.
+        </p>
+
+        <h2 id="support">9. Contacting support</h2>
+        <p>
+            If you email <a href="mailto:support@kraftly.app">support@kraftly.app</a>,
+            Kraftly will receive the contents of your message, including any
+            attachments and any diagnostic bundle you choose to include. We use
+            this information only to respond to your request, to troubleshoot
+            kWatch on your Mac, and to improve the product. We do not use support
+            emails for marketing.
+        </p>
+
+        <h2 id="data-retention">10. Data retention and deletion</h2>
+        <p>Retention windows enforced by kWatch:</p>
+        <ul>
+            <li>Metric history &mdash; 7 or 30 days (your choice), then permanently deleted.</li>
+            <li>Alert log &mdash; 90 days, then permanently deleted.</li>
+            <li>MetricKit diagnostics &mdash; 7 days, oldest entries purged when total size exceeds 10 MB.</li>
+            <li>User preferences &mdash; retained until you change them.</li>
+        </ul>
+        <p>
+            Uninstalling kWatch from the Finder or Launchpad removes the app
+            binary. Local data written by kWatch lives in your user library and
+            is not removed automatically. To erase all kWatch data, choose
+            <em>Settings &rarr; Advanced &rarr; Reset all data</em> before
+            uninstalling, or manually delete the
+            <code>~/Library/Application Support/kWatch/</code> folder and the
+            kWatch entry inside the App Group container after uninstalling.
+        </p>
+
+        <h2 id="third-parties">11. Third-party SDKs</h2>
+        <p>
+            kWatch does not bundle any third-party SDKs, analytics libraries,
+            advertising networks, or crash-reporting services. All features are
+            implemented with Apple frameworks: StoreKit, MetricKit, ActivityKit,
+            AppIntents, CoreSpotlight, IOKit, and Core Data.
+        </p>
+
+        <h2 id="children">12. Children's privacy</h2>
+        <p>
+            kWatch is intended for users aged 13 and older (or the equivalent
+            minimum age in your country). kWatch does not knowingly collect
+            personal information from children. Because kWatch does not collect
+            personal information from anyone, no special handling applies.
+        </p>
+
+        <h2 id="international">13. International users</h2>
+        <p>
+            kWatch does not transfer your data to servers located in another
+            country, because kWatch does not have servers. All processing happens
+            on the device you are using. The privacy practices described in this
+            policy are designed to satisfy the requirements of the European
+            Union's General Data Protection Regulation (GDPR), the California
+            Consumer Privacy Act (CCPA), the United Kingdom's Data Protection
+            Act, Brazil's LGPD, and the Personal Information Protection Law of
+            the People's Republic of China.
+        </p>
+        <div class="callout">
+            <strong>Your rights.</strong> Where local law grants you rights over
+            personal data held about you (access, deletion, portability, or
+            objection), those rights are satisfied automatically by the local-only
+            design of kWatch. You can exercise them directly through the
+            Settings pane or by uninstalling the app.
+        </div>
+
+        <h2 id="changes">14. Changes to this policy</h2>
+        <p>
+            If this policy changes in a material way, kWatch will display an
+            in-app notice on next launch and update the <em>Last updated</em>
+            date above. Non-material edits (typo fixes, clarifications) will be
+            reflected in the <em>Last updated</em> date only. Previous versions
+            of this policy are available on request from
+            <a href="mailto:privacy@kraftly.app">privacy@kraftly.app</a>.
+        </p>
+
+        <h2 id="contact">15. Contact us</h2>
+        <p>
+            Kraftly is the data controller for any information you choose to send
+            us through the support channel described in
+            <a href="#support">Section 9</a>. You can reach us at:
+        </p>
+        <pre><code>Kraftly
+Email: privacy@kraftly.app
+Support: support@kraftly.app
+Web: https://kraftly.app</code></pre>
+
+        <footer class="meta">
+            <p>
+                This document is also available in
+                <a href="zh-Hans.html" lang="zh-Hans">简体中文</a>
+                and
+                <a href="ja.html" lang="ja">日本語</a>.
+            </p>
+            <p>&copy; 2026 Kraftly. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
