@@ -2,13 +2,13 @@ import Foundation
 import AppIntents
 import MetricsKit
 
-/// Pro-gated intent. Returns the current network throughput.
+/// Returns the current network throughput.
 @available(macOS 13.0, *)
 public struct ShowNetworkRateIntent: AppIntent {
     public static var title: LocalizedStringResource = "Show Network Rate"
     public static var description = IntentDescription(
-        "Reports current network throughput. Requires kWatch Pro.",
-        categoryName: "kWatch Pro"
+        "Reports current network throughput.",
+        categoryName: "kWatch"
     )
 
     @Parameter(title: "Direction", default: .combined)

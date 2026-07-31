@@ -1,13 +1,13 @@
 import Foundation
 import AppIntents
 
-/// Pro-gated intent. Returns the top CPU consumers as a dialog line.
+/// Lists the highest-CPU processes.
 @available(macOS 13.0, *)
 public struct ShowTopProcessesIntent: AppIntent {
     public static var title: LocalizedStringResource = "Show Top Processes"
     public static var description = IntentDescription(
-        "Lists the highest-CPU processes. Requires kWatch Pro.",
-        categoryName: "kWatch Pro"
+        "Lists the highest-CPU processes.",
+        categoryName: "kWatch"
     )
 
     @Parameter(title: "Limit", default: 10, inclusiveRange: (1, 50))
