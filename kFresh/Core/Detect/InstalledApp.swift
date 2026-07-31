@@ -3,11 +3,25 @@ import AppKit
 
 // MARK: - App Source
 
-enum AppSource: String, Codable, CaseIterable {
-    case system          // /System/* — protected
-    case appleBuiltIn    // com.apple.* but not in /System
-    case mas             // App Store with receipt
-    case userInstalled   // /Applications/*
+/// Where an installed app came from.
+///
+/// Determined by ``AppCatalogService/classifySource(url:bundleID:)``. The source
+/// drives uninstall eligibility (system apps are protected) and residue strategy
+/// (Homebrew casks and Setapp apps are managed by their own package manager).
+enum AppSource: String, Codable, CaseIterable, Sendable {
+    /// Shipped inside `/System/*` — protected, never uninstallable.
+    case system
+    /// `com.apple.*` bundle ID but living outside `/System`.
+    case appleBuiltIn
+    /// Mac App Store install, proven by a `Contents/_MASReceipt/receipt`.
+    case mas
+    /// Developer ID / direct download installed under `/Applications/*`.
+    case userInstalled
+    /// Installed through a Setapp subscription bundle (`/Applications/Setapp/*`).
+    case setapp
+    /// Installed by a Homebrew cask (`/opt/homebrew/Caskroom/*` or `/usr/local/Caskroom/*`).
+    case homebrew
+    /// Origin could not be determined.
     case unknown
 }
 

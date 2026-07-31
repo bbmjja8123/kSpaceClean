@@ -90,6 +90,14 @@ struct AppDetailView: View {
             Label("Apple 内置", systemImage: "applelogo")
                 .font(.caption)
                 .foregroundColor(.textSecondary)
+        case .setapp:
+            Label("来自 Setapp", systemImage: "square.stack.3d.up")
+                .font(.caption)
+                .foregroundColor(.brandSecondary)
+        case .homebrew:
+            Label("Homebrew Cask", systemImage: "terminal")
+                .font(.caption)
+                .foregroundColor(.textSecondary)
         case .unknown:
             EmptyView()
         }
