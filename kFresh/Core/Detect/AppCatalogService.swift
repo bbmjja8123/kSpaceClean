@@ -85,10 +85,26 @@ actor AppCatalogService {
                 enumerator.skipDescendants()
                 continue
             }
-            let values = try? fileURL.resourceValues(forKeys: Set(keys))
-            total += Int64(values?.totalFileAllocatedSize ?? values?.fileSize ?? 0)
+            total += Self.safeResourceSize(at: fileURL, keys: Set(keys))
         }
         return total
+    }
+
+    /// Reads `URLResourceValues` for a file inside the bundle walk, returning
+    /// the per-file size contribution while tolerating per-file metadata
+    /// failures.
+    ///
+    /// The swallow is deliberate: a single unreadable file (broken symlink,
+    /// race with deletion, filesystem permission glitch) must not abort the
+    /// whole size accumulation. The caller treats a `0` contribution as
+    /// "this file is unknown size; skip it" — the same semantics that the
+    /// previous inline `try?` had before this helper was extracted.
+    ///
+    /// - Returns: Bytes contributed by `at`, or `0` if the values could not
+    ///   be read or both `totalFileAllocatedSize` and `fileSize` are missing.
+    private static func safeResourceSize(at url: URL, keys: Set<URLResourceKey>) -> Int64 {
+        guard let values = try? url.resourceValues(forKeys: keys) else { return 0 }
+        return Int64(values.totalFileAllocatedSize ?? values.fileSize ?? 0)
     }
 
     /// Classifies where an app came from using only its location and bundle ID.
@@ -198,7 +214,7 @@ actor AppCatalogService {
         sourceOverride: AppSource? = nil
     ) -> InstalledApp? {
         let bundle = Bundle(url: url)
-        let bundleID = bundle?.bundleIdentifier ?? "unknown.\(url.lastPathComponent)"
+        let bundleID = bundle?.bundleIdentifier ?? Self.fallbackBundleID(for: url)
         let displayName = bundle?.localizedInfoDictionary?["CFBundleDisplayName"] as? String
             ?? bundle?.infoDictionary?["CFBundleDisplayName"] as? String
             ?? url.deletingPathExtension().lastPathComponent
@@ -216,6 +232,27 @@ actor AppCatalogService {
         )
     }
 
+    /// Builds a synthetic bundle identifier for bundles whose `Info.plist` has
+    /// no `CFBundleIdentifier` (corrupted metadata, unsigned developer bundle,
+    /// unusual layout). Distance between the bundle and the filesystem root is
+    /// included so that two bundles with the same name living in different
+    /// directories do not collapse into the same dedup key.
+    ///
+    /// Examples:
+    /// - `/Applications/Foo.app` → `unknown.Applications.Foo`
+    /// - `/opt/homebrew/Caskroom/foo/1.0/Foo.app` → `unknown.Applications.Foo`
+    ///   (the parent directory of the bundle is the deduplication-relevant
+    ///   discriminator, not the full cask path)
+    /// - `/Users/me/Desktop/Foo.app` → `unknown.Desktop.Foo`
+    ///
+    /// Whitespace and path separators in the parent name are stripped so the
+    /// resulting identifier is still usable as a dictionary key.
+    private static func fallbackBundleID(for url: URL) -> String {
+        let parent = url.deletingLastPathComponent().lastPathComponent
+        let cleanParent = parent.replacingOccurrences(of: " ", with: "_")
+        return "unknown.\(cleanParent).\(url.lastPathComponent)"
+    }
+
     /// Combines two sightings of the same bundle ID, preferring the running
     /// entry's URL and filling empty fields from the other candidate.
     private func merge(existing: InstalledApp, with new: InstalledApp) -> InstalledApp {
@@ -224,7 +261,7 @@ actor AppCatalogService {
             displayName: existing.displayName,
             bundleID: existing.bundleID,
             version: existing.version.isEmpty ? new.version : existing.version,
-            icon: existing.icon,
+            icon: Self.preferIcon(existing.icon, new.icon),
             sizeBytes: max(existing.sizeBytes, new.sizeBytes),
             source: existing.source == .unknown ? new.source : existing.source,
             isRunning: existing.isRunning || new.isRunning,
@@ -233,6 +270,25 @@ actor AppCatalogService {
         )
     }
 
+    /// Picks the ``NSImage`` that actually renders — preferring the first
+    /// argument's icon unless it carries no bitmap representation, in which
+    /// case the second argument's icon is used. This handles the case where
+    /// one candidate was built from a path with no Finder metadata (yielding
+    /// `NSImage()` with zero `representations`) and the other from a path
+    /// where `NSWorkspace.icon(forFile:)` resolved successfully.
+    private static func preferIcon(_ existing: NSImage, _ new: NSImage) -> NSImage {
+        if !existing.representations.isEmpty { return existing }
+        return new
+    }
+
+    /// Returns `true` when the bundle at `url` carries a Mac App Store receipt.
+    ///
+    /// Uses `FileManager.default` deliberately because this helper is invoked
+    /// from ``classifySource(url:bundleID:)``, which is `nonisolated static`
+    /// and therefore cannot access actor state (the injected `fileManager`).
+    /// The lossy coupling is intentional: a per-instance file manager would
+    /// force `classifySource` onto the actor, defeating the convenience of the
+    /// static call sites in tests and view code.
     private static func hasMASReceipt(_ url: URL) -> Bool {
         let receiptURL = url.appendingPathComponent("Contents/_MASReceipt/receipt")
         return FileManager.default.fileExists(atPath: receiptURL.path)
