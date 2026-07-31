@@ -1,0 +1,1628 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+	05720CE11D0128121CC414D7 /* 05720CE11D0128121CC414D7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 86EBDC7A6B2FFF21B7FFBA9A;
+	};
+	0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */ = {
+		isa = PBXBuildFile;
+		fileRef = 1B365D303EAC1EE8F810E853;
+	};
+	0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */ = {
+		isa = PBXBuildFile;
+		fileRef = FC8F976B27828057A607616A;
+	};
+	0E85846AB9656CAED4DB998A /* 0E85846AB9656CAED4DB998A */ = {
+		isa = PBXBuildFile;
+		fileRef = 488FE55E92AD5F4E6BEF88E8;
+	};
+	107421278965574C5112620B /* 107421278965574C5112620B */ = {
+		isa = PBXBuildFile;
+		fileRef = CE04F6C7E85E205F424C65AC;
+	};
+	115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1C4455D0B4CE1B5F5681A2FE;
+	};
+	14522065F7DF933255DA0908 /* 14522065F7DF933255DA0908 */ = {
+		isa = PBXBuildFile;
+		fileRef = AA82AD3ACA5E2DE044D14893;
+	};
+	14841E6EE2613C55089B2896 /* 14841E6EE2613C55089B2896 */ = {
+		isa = PBXBuildFile;
+		fileRef = 6733EE44B5FD81C4226C560C;
+	};
+	1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */ = {
+		isa = PBXBuildFile;
+		fileRef = 0089DAE711574808D00ABD0B;
+	};
+	1F1383F1C5BBAC11C885A8A9 /* 1F1383F1C5BBAC11C885A8A9 */ = {
+		isa = PBXBuildFile;
+		fileRef = F75684B0069B206DC6478D95;
+	};
+	1F2330F83330CD811E7D7A29 /* 1F2330F83330CD811E7D7A29 */ = {
+		isa = PBXBuildFile;
+		fileRef = 98CD6945367BA393779F79A0;
+	};
+	2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */ = {
+		isa = PBXBuildFile;
+		fileRef = 90B6343DFAE6C2A9AECF231C;
+	};
+	2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */ = {
+		isa = PBXBuildFile;
+		fileRef = F86D4AC4F12BECB5A60374D9;
+	};
+	25A10FE62B29AD4A68CDD057 /* 25A10FE62B29AD4A68CDD057 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4DB6B5CBAB9D12D12D1702D7;
+	};
+	2881629D9FD740DD04775A52 /* 2881629D9FD740DD04775A52 */ = {
+		isa = PBXBuildFile;
+		fileRef = 43E95637FFF6820D2C78A1BE;
+	};
+	2B06CE90451E121FCC65E18A /* 2B06CE90451E121FCC65E18A */ = {
+		isa = PBXBuildFile;
+		fileRef = 381D3A35ABE82AE0AE3F42B3;
+	};
+	30777437B37859FB155C273A /* 30777437B37859FB155C273A */ = {
+		isa = PBXBuildFile;
+		fileRef = 06E33A55C4FF7FD14C728811;
+	};
+	39FEF37BBD65059F5FD0BA44 /* 39FEF37BBD65059F5FD0BA44 */ = {
+		isa = PBXBuildFile;
+		fileRef = 93E7385164CAC43BEEBF65ED;
+	};
+	3BFC387ADC063EFCE1CEBC1D /* 3BFC387ADC063EFCE1CEBC1D */ = {
+		isa = PBXBuildFile;
+		fileRef = E32F171EE23994CDA392D2E7;
+	};
+	3C45097EB9D7EA5FFC202E91 /* 3C45097EB9D7EA5FFC202E91 */ = {
+		isa = PBXBuildFile;
+		fileRef = 0C25FC9BBBD612C35A333C8F;
+	};
+	3D4A21BD659FC7020FF7156B /* 3D4A21BD659FC7020FF7156B */ = {
+		isa = PBXBuildFile;
+		fileRef = 19E52988752B80FD541659FC;
+	};
+	46AE690EBB45827AF102DFB2 /* 46AE690EBB45827AF102DFB2 */ = {
+		isa = PBXBuildFile;
+		fileRef = 8138CFB82419F6F8F3E957C3;
+	};
+	46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */ = {
+		isa = PBXBuildFile;
+		fileRef = 86CB786A2E1C914FA035D064;
+	};
+	476DC124F31EEA92FB2F9F94 /* 476DC124F31EEA92FB2F9F94 */ = {
+		isa = PBXBuildFile;
+		fileRef = F035EC8F6EE68C301CCA326E;
+	};
+	4AEDA9A9240B69654ED01077 /* 4AEDA9A9240B69654ED01077 */ = {
+		isa = PBXBuildFile;
+		fileRef = C1500570860B074777D1122C;
+	};
+	4D4652C5722A891D0E8F2A0B /* 4D4652C5722A891D0E8F2A0B */ = {
+		isa = PBXBuildFile;
+		fileRef = 7A134B7F6EC7FEF20B0247B8;
+	};
+	4DBE57E216AD4A92D44C300D /* 4DBE57E216AD4A92D44C300D */ = {
+		isa = PBXBuildFile;
+		fileRef = DFFB3A04DCFE11AA8A75C917;
+	};
+	50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */ = {
+		isa = PBXBuildFile;
+		fileRef = B0FA94F96C119EFBD28B7F0B;
+	};
+	583B954A6A1E0563236FE408 /* 583B954A6A1E0563236FE408 */ = {
+		isa = PBXBuildFile;
+		fileRef = 06873BB0E2C32B0E84C3FFEF;
+	};
+	5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */ = {
+		isa = PBXBuildFile;
+		fileRef = 0ADB26D41ACA3A15E19ABEE3;
+	};
+	6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */ = {
+		isa = PBXBuildFile;
+		fileRef = 53EF96BE26DB6B2A6C185799;
+	};
+	62E646831E0902B06DD4553A /* 62E646831E0902B06DD4553A */ = {
+		isa = PBXBuildFile;
+		fileRef = DC9F358CA23F4689897454B8;
+	};
+	67823FEA09526598EB3ACBED /* 67823FEA09526598EB3ACBED */ = {
+		isa = PBXBuildFile;
+		fileRef = 9C73A58BF662B0271D083EE3;
+	};
+	6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 6CAA3CF4C412CEDDEAA934C3;
+	};
+	717B5017E8BA6330A45302F9 /* 717B5017E8BA6330A45302F9 */ = {
+		isa = PBXBuildFile;
+		fileRef = D7B438A54B3D98707F22F4C7;
+	};
+	74154FD04BEEF2138155FFD4 /* 74154FD04BEEF2138155FFD4 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4043971F5EFD0C3AB4322C65;
+	};
+	744A4F0B8F52B196A492AEA1 /* 744A4F0B8F52B196A492AEA1 */ = {
+		isa = PBXBuildFile;
+		fileRef = 0E68C8E554FB84F8812F9963;
+	};
+	75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */ = {
+		isa = PBXBuildFile;
+		fileRef = FAA3A8E09031388A4E38C620;
+	};
+	78F8A9DFEED2BD5C2BFE359D /* 78F8A9DFEED2BD5C2BFE359D */ = {
+		isa = PBXBuildFile;
+		fileRef = 66EBF85D7D7569CED79F5DF4;
+	};
+	7A6C1D27E747136FB9E0845C /* 7A6C1D27E747136FB9E0845C */ = {
+		isa = PBXBuildFile;
+		fileRef = 5D0DC122863AABE458A77BA8;
+	};
+	7AC3A31E4348CAAD16FDE399 /* 7AC3A31E4348CAAD16FDE399 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1656D17F4D90B00E30B9C367;
+	};
+	7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */ = {
+		isa = PBXBuildFile;
+		fileRef = F5EE8978A09525D063479709;
+	};
+	7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */ = {
+		isa = PBXBuildFile;
+		fileRef = F9F5DB4F736723C6F2F5DC63;
+	};
+	80FC5F8CBB595E37C8122AEB /* 80FC5F8CBB595E37C8122AEB */ = {
+		isa = PBXBuildFile;
+		fileRef = A1B2D98C4D9054D86EB64B87;
+	};
+	82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1890ACF921D842C7A68A1BBE;
+	};
+	833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */ = {
+		isa = PBXBuildFile;
+		fileRef = 05B9799A26FB3FDC78B071F1;
+	};
+	845606ED7B3C17AE42B3EFCB /* 845606ED7B3C17AE42B3EFCB */ = {
+		isa = PBXBuildFile;
+		fileRef = 8C2E92D5254BB63634A134D7;
+	};
+	85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */ = {
+		isa = PBXBuildFile;
+		fileRef = F75307E42A8914CFBC4E8183;
+	};
+	8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */ = {
+		isa = PBXBuildFile;
+		fileRef = BFA7754C2E9614BC7641312C;
+	};
+	92D836BA8D75FD4D4FC20474 /* 92D836BA8D75FD4D4FC20474 */ = {
+		isa = PBXBuildFile;
+		fileRef = AA60392EFF1E1EB77FEC0D36;
+	};
+	98D3A7E04EE8047A3A85CD0A /* 98D3A7E04EE8047A3A85CD0A */ = {
+		isa = PBXBuildFile;
+		fileRef = 0410DBDC2573D4A43ABE15F7;
+	};
+	9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */ = {
+		isa = PBXBuildFile;
+		fileRef = 44A2613DA7CAFB830A1F06D3;
+	};
+	9F7D061010AC1F35C96F4929 /* 9F7D061010AC1F35C96F4929 */ = {
+		isa = PBXBuildFile;
+		fileRef = AF272D3718777F39FA504734;
+	};
+	9FE0E33F3FCD69A0A105C330 /* 9FE0E33F3FCD69A0A105C330 */ = {
+		isa = PBXBuildFile;
+		fileRef = 212440F390BC3282519C17C8;
+	};
+	A62C9F07E54CB81C7B1CA298 /* A62C9F07E54CB81C7B1CA298 */ = {
+		isa = PBXBuildFile;
+		fileRef = F075F2C88B6E1045A56D681A;
+	};
+	A7E806B246A4F0307D48718E /* A7E806B246A4F0307D48718E */ = {
+		isa = PBXBuildFile;
+		fileRef = E6B23CE24C9E6714E4A1D885;
+	};
+	ABAE0D7916C85CCAB7B3C1B6 /* ABAE0D7916C85CCAB7B3C1B6 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4D863FD91ECB3118002568D4;
+	};
+	AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */ = {
+		isa = PBXBuildFile;
+		fileRef = 14679243FC833D0C8D16C74A;
+	};
+	BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */ = {
+		isa = PBXBuildFile;
+		fileRef = 48DFB6C6C2EEA832BFACA155;
+	};
+	BC48F4AE041C911676CB0F92 /* BC48F4AE041C911676CB0F92 */ = {
+		isa = PBXBuildFile;
+		fileRef = A5AD76B7AA53AF7085B7A992;
+	};
+	C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */ = {
+		isa = PBXBuildFile;
+		fileRef = 21590BBBDE883EFBD31EAEE8;
+	};
+	C883C2F4E652FE2954F54F86 /* C883C2F4E652FE2954F54F86 */ = {
+		isa = PBXBuildFile;
+		fileRef = C6F02E16C32A208DAABE3322;
+	};
+	C956C8E6486DF8E7AFEFB05C /* C956C8E6486DF8E7AFEFB05C */ = {
+		isa = PBXBuildFile;
+		fileRef = F6EF8E531BBFA21EF834D571;
+	};
+	D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */ = {
+		isa = PBXBuildFile;
+		fileRef = 92285B8C36BFE1BC01B56B40;
+	};
+	D43E9821EC3E17EFF5B7B88C /* D43E9821EC3E17EFF5B7B88C */ = {
+		isa = PBXBuildFile;
+		fileRef = 69534F9EAC28CF4D641D8DC3;
+	};
+	D764C8753D76D87EC4C3839C /* D764C8753D76D87EC4C3839C */ = {
+		isa = PBXBuildFile;
+		fileRef = 5EF3C83CE85852F781B5EBA1;
+	};
+	DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 2F003C23A18C74F51E543E30;
+	};
+	DEDCF62736EE4FE8EC3222B2 /* DEDCF62736EE4FE8EC3222B2 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4E0A28E26F67D15D01EC121B;
+	};
+	E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */ = {
+		isa = PBXBuildFile;
+		fileRef = CF5DAA48D342F90110132D61;
+	};
+	E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */ = {
+		isa = PBXBuildFile;
+		fileRef = 83C79C522B962284BED63E66;
+	};
+	EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */ = {
+		isa = PBXBuildFile;
+		fileRef = 136BEC5F911CA3A945CDC744;
+	};
+	EC4C24611EC92CC86CD0E0C3 /* EC4C24611EC92CC86CD0E0C3 */ = {
+		isa = PBXBuildFile;
+		fileRef = FBDE7C50C5246FD21C67CBE5;
+	};
+	EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */ = {
+		isa = PBXBuildFile;
+		fileRef = B6830D0E035D1121B06CF64B;
+	};
+	F1B840EC59C8EF013434A941 /* F1B840EC59C8EF013434A941 */ = {
+		isa = PBXBuildFile;
+		fileRef = C9436B5A5555F38E15906412;
+	};
+	F7BFFF484BD25D346DC5325E /* F7BFFF484BD25D346DC5325E */ = {
+		isa = PBXBuildFile;
+		fileRef = BD8372016B507E6E4A7A99AC;
+	};
+	F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */ = {
+		isa = PBXBuildFile;
+		fileRef = EA66E191F044FFC4D9668848;
+	};
+	FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */ = {
+		isa = PBXBuildFile;
+		fileRef = 29548BE5AD0B39AAFE6CF22F;
+	};
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+	3412E6574B98EDF3F54840ED /* 3412E6574B98EDF3F54840ED */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = AE77F0E9602ACC1A9F8C75FB;
+		remoteInfo = kFresh;
+	};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+	0089DAE711574808D00ABD0B /* TrashMoverTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TrashMoverTests.swift;
+		path = Tests/CleanTests/TrashMoverTests.swift;
+		sourceTree = "<group>";
+	};
+	028FE75EBC698AC1A1A03C74 /* kFreshDebug.entitlements */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.entitlements;
+		name = kFreshDebug.entitlements;
+		path = kFreshDebug.entitlements;
+		sourceTree = "<group>";
+	};
+	0410DBDC2573D4A43ABE15F7 /* DeepCleanViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanViewModel.swift;
+		path = Features/DeepClean/DeepCleanViewModel.swift;
+		sourceTree = "<group>";
+	};
+	05B9799A26FB3FDC78B071F1 /* Assets.xcassets */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = folder.assetcatalog;
+		name = Assets.xcassets;
+		path = Resources/Assets.xcassets;
+		sourceTree = "<group>";
+	};
+	06873BB0E2C32B0E84C3FFEF /* UninstallHistory+CoreDataProperties.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = "UninstallHistory+CoreDataProperties.swift";
+		path = "Data/Models/UninstallHistory+CoreDataProperties.swift";
+		sourceTree = "<group>";
+	};
+	06E33A55C4FF7FD14C728811 /* InstalledAppTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = InstalledAppTests.swift;
+		path = Tests/DetectTests/InstalledAppTests.swift;
+		sourceTree = "<group>";
+	};
+	09C386C2F6D04F8712E2E85C /* kFreshTests.xctest */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.cfbundle";
+		includeInIndex = 0;
+		name = kFreshTests.xctest;
+		path = kFreshTests.xctest;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
+	0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = CoreDataStack.swift;
+		path = Data/CoreDataStack.swift;
+		sourceTree = "<group>";
+	};
+	0C25FC9BBBD612C35A333C8F /* BackupManager.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = BackupManager.swift;
+		path = Data/BackupManager.swift;
+		sourceTree = "<group>";
+	};
+	0E68C8E554FB84F8812F9963 /* BrandStyles.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = BrandStyles.swift;
+		path = Features/Common/BrandStyles.swift;
+		sourceTree = "<group>";
+	};
+	136BEC5F911CA3A945CDC744 /* FDAGuideController.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAGuideController.swift;
+		path = Features/Onboarding/FDAGuideController.swift;
+		sourceTree = "<group>";
+	};
+	14679243FC833D0C8D16C74A /* AppState.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppState.swift;
+		path = App/AppState.swift;
+		sourceTree = "<group>";
+	};
+	1656D17F4D90B00E30B9C367 /* BundleRuleStore.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = BundleRuleStore.swift;
+		path = Core/Detect/BundleRuleStore.swift;
+		sourceTree = "<group>";
+	};
+	1890ACF921D842C7A68A1BBE /* DetailViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DetailViewModel.swift;
+		path = Features/Detail/DetailViewModel.swift;
+		sourceTree = "<group>";
+	};
+	19E52988752B80FD541659FC /* ResidueDetector.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueDetector.swift;
+		path = Core/Detect/ResidueDetector.swift;
+		sourceTree = "<group>";
+	};
+	1B365D303EAC1EE8F810E853 /* StartupItemsViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemsViewModel.swift;
+		path = Features/StartupItems/StartupItemsViewModel.swift;
+		sourceTree = "<group>";
+	};
+	1C4455D0B4CE1B5F5681A2FE /* SettingsView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SettingsView.swift;
+		path = Features/Settings/SettingsView.swift;
+		sourceTree = "<group>";
+	};
+	212440F390BC3282519C17C8 /* QuickUninstallWidget.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = QuickUninstallWidget.swift;
+		path = Widgets/QuickUninstallWidget.swift;
+		sourceTree = "<group>";
+	};
+	21590BBBDE883EFBD31EAEE8 /* FDAGuideView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAGuideView.swift;
+		path = Features/Onboarding/FDAGuideView.swift;
+		sourceTree = "<group>";
+	};
+	29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StoreManager.swift;
+		path = Store/StoreManager.swift;
+		sourceTree = "<group>";
+	};
+	2F003C23A18C74F51E543E30 /* AppCatalogService.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppCatalogService.swift;
+		path = Core/Detect/AppCatalogService.swift;
+		sourceTree = "<group>";
+	};
+	381D3A35ABE82AE0AE3F42B3 /* InstalledApp.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = InstalledApp.swift;
+		path = Core/Detect/InstalledApp.swift;
+		sourceTree = "<group>";
+	};
+	3EBAE220C65B95B5461A69F4 /* Info.plist */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = Info.plist;
+		path = Info.plist;
+		sourceTree = "<group>";
+	};
+	4043971F5EFD0C3AB4322C65 /* Typography.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = Typography.swift;
+		path = ../kFoundation/Sources/DesignSystem/Typography.swift;
+		sourceTree = "<group>";
+	};
+	43E95637FFF6820D2C78A1BE /* AppListViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppListViewModel.swift;
+		path = Features/AppList/AppListViewModel.swift;
+		sourceTree = "<group>";
+	};
+	44A2613DA7CAFB830A1F06D3 /* AppCatalogServiceTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppCatalogServiceTests.swift;
+		path = Tests/DetectTests/AppCatalogServiceTests.swift;
+		sourceTree = "<group>";
+	};
+	488FE55E92AD5F4E6BEF88E8 /* KFreshBundleRule.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = KFreshBundleRule.swift;
+		path = Core/Rules/KFreshBundleRule.swift;
+		sourceTree = "<group>";
+	};
+	48DFB6C6C2EEA832BFACA155 /* StoreDefinitions.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StoreDefinitions.swift;
+		path = Store/StoreDefinitions.swift;
+		sourceTree = "<group>";
+	};
+	4D863FD91ECB3118002568D4 /* CaskParserTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = CaskParserTests.swift;
+		path = Tests/RulesTests/CaskParserTests.swift;
+		sourceTree = "<group>";
+	};
+	4DB6B5CBAB9D12D12D1702D7 /* UninstallHistoryRepository.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallHistoryRepository.swift;
+		path = Data/UninstallHistoryRepository.swift;
+		sourceTree = "<group>";
+	};
+	4E0A28E26F67D15D01EC121B /* AppAnalysisRepository.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppAnalysisRepository.swift;
+		path = Data/AppAnalysisRepository.swift;
+		sourceTree = "<group>";
+	};
+	53EF96BE26DB6B2A6C185799 /* UninstallFlowTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallFlowTests.swift;
+		path = Tests/IntegrationTests/UninstallFlowTests.swift;
+		sourceTree = "<group>";
+	};
+	592A3E8DE2005013EFE473D7 /* kFresh.app */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.application";
+		includeInIndex = 0;
+		name = kFresh.app;
+		path = kFresh.app;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
+	5D0DC122863AABE458A77BA8 /* AppUsageWidget.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppUsageWidget.swift;
+		path = Widgets/AppUsageWidget.swift;
+		sourceTree = "<group>";
+	};
+	5EF3C83CE85852F781B5EBA1 /* AppRowView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppRowView.swift;
+		path = Features/AppList/AppRowView.swift;
+		sourceTree = "<group>";
+	};
+	66EBF85D7D7569CED79F5DF4 /* UninstallHistory+CoreDataClass.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = "UninstallHistory+CoreDataClass.swift";
+		path = "Data/Models/UninstallHistory+CoreDataClass.swift";
+		sourceTree = "<group>";
+	};
+	6733EE44B5FD81C4226C560C /* AppAnalysis+CoreDataClass.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = "AppAnalysis+CoreDataClass.swift";
+		path = "Data/Models/AppAnalysis+CoreDataClass.swift";
+		sourceTree = "<group>";
+	};
+	69534F9EAC28CF4D641D8DC3 /* EmptyStateView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = EmptyStateView.swift;
+		path = Features/Common/EmptyStateView.swift;
+		sourceTree = "<group>";
+	};
+	6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = PaywallView.swift;
+		path = Store/PaywallView.swift;
+		sourceTree = "<group>";
+	};
+	7A134B7F6EC7FEF20B0247B8 /* AppListView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppListView.swift;
+		path = Features/AppList/AppListView.swift;
+		sourceTree = "<group>";
+	};
+	8138CFB82419F6F8F3E957C3 /* Icons.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = Icons.swift;
+		path = ../kFoundation/Sources/DesignSystem/Icons.swift;
+		sourceTree = "<group>";
+	};
+	83C79C522B962284BED63E66 /* UninstallJourneyUITests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallJourneyUITests.swift;
+		path = Tests/UITests/UninstallJourneyUITests.swift;
+		sourceTree = "<group>";
+	};
+	86CB786A2E1C914FA035D064 /* ProGateModifier.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ProGateModifier.swift;
+		path = Store/ProGateModifier.swift;
+		sourceTree = "<group>";
+	};
+	86EBDC7A6B2FFF21B7FFBA9A /* DeepCleanIntent.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanIntent.swift;
+		path = Intents/DeepCleanIntent.swift;
+		sourceTree = "<group>";
+	};
+	8C2E92D5254BB63634A134D7 /* BrandButtonStyle.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = BrandButtonStyle.swift;
+		path = Features/Common/BrandButtonStyle.swift;
+		sourceTree = "<group>";
+	};
+	90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueDetectorTests.swift;
+		path = Tests/DetectTests/ResidueDetectorTests.swift;
+		sourceTree = "<group>";
+	};
+	92285B8C36BFE1BC01B56B40 /* SandboxDegradationTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SandboxDegradationTests.swift;
+		path = Tests/IntegrationTests/SandboxDegradationTests.swift;
+		sourceTree = "<group>";
+	};
+	93E7385164CAC43BEEBF65ED /* AboutView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AboutView.swift;
+		path = Features/Settings/AboutView.swift;
+		sourceTree = "<group>";
+	};
+	98CD6945367BA393779F79A0 /* BundleRuleStoreTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = BundleRuleStoreTests.swift;
+		path = Tests/RulesTests/BundleRuleStoreTests.swift;
+		sourceTree = "<group>";
+	};
+	9A872BB5A2D10B44D7842336 /* kFresh.entitlements */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.entitlements;
+		name = kFresh.entitlements;
+		path = kFresh.entitlements;
+		sourceTree = "<group>";
+	};
+	9C73A58BF662B0271D083EE3 /* Radius.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = Radius.swift;
+		path = ../kFoundation/Sources/DesignSystem/Radius.swift;
+		sourceTree = "<group>";
+	};
+	A1B2D98C4D9054D86EB64B87 /* AppAnalysis+CoreDataProperties.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = "AppAnalysis+CoreDataProperties.swift";
+		path = "Data/Models/AppAnalysis+CoreDataProperties.swift";
+		sourceTree = "<group>";
+	};
+	A5AD76B7AA53AF7085B7A992 /* MenuBarController.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MenuBarController.swift;
+		path = MenuBar/MenuBarController.swift;
+		sourceTree = "<group>";
+	};
+	AA60392EFF1E1EB77FEC0D36 /* AppDetailView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppDetailView.swift;
+		path = Features/Detail/AppDetailView.swift;
+		sourceTree = "<group>";
+	};
+	AA82AD3ACA5E2DE044D14893 /* UninstallAppIntent.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallAppIntent.swift;
+		path = Intents/UninstallAppIntent.swift;
+		sourceTree = "<group>";
+	};
+	AF272D3718777F39FA504734 /* ResidueScanner.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueScanner.swift;
+		path = Core/Clean/ResidueScanner.swift;
+		sourceTree = "<group>";
+	};
+	B0FA94F96C119EFBD28B7F0B /* kUninstallApp.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = kUninstallApp.swift;
+		path = App/kUninstallApp.swift;
+		sourceTree = "<group>";
+	};
+	B6830D0E035D1121B06CF64B /* SettingsViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SettingsViewModel.swift;
+		path = Features/Settings/SettingsViewModel.swift;
+		sourceTree = "<group>";
+	};
+	BD8372016B507E6E4A7A99AC /* AppSourceClassifierTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppSourceClassifierTests.swift;
+		path = Tests/DetectTests/AppSourceClassifierTests.swift;
+		sourceTree = "<group>";
+	};
+	BFA7754C2E9614BC7641312C /* Localizable.xcstrings */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.json.xcstrings;
+		name = Localizable.xcstrings;
+		path = Resources/Localizable.xcstrings;
+		sourceTree = "<group>";
+	};
+	C1500570860B074777D1122C /* HistoryViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = HistoryViewModel.swift;
+		path = Features/History/HistoryViewModel.swift;
+		sourceTree = "<group>";
+	};
+	C6F02E16C32A208DAABE3322 /* ScanResidueIntent.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanResidueIntent.swift;
+		path = Intents/ScanResidueIntent.swift;
+		sourceTree = "<group>";
+	};
+	C9436B5A5555F38E15906412 /* FDAuthorizer.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAuthorizer.swift;
+		path = Data/FDAuthorizer.swift;
+		sourceTree = "<group>";
+	};
+	CE04F6C7E85E205F424C65AC /* Spacing.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = Spacing.swift;
+		path = ../kFoundation/Sources/DesignSystem/Spacing.swift;
+		sourceTree = "<group>";
+	};
+	CF5DAA48D342F90110132D61 /* StartupItemsView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemsView.swift;
+		path = Features/StartupItems/StartupItemsView.swift;
+		sourceTree = "<group>";
+	};
+	D7B438A54B3D98707F22F4C7 /* BackupManagerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = BackupManagerTests.swift;
+		path = Tests/CleanTests/BackupManagerTests.swift;
+		sourceTree = "<group>";
+	};
+	DC9F358CA23F4689897454B8 /* TrashMover.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TrashMover.swift;
+		path = Core/Clean/TrashMover.swift;
+		sourceTree = "<group>";
+	};
+	DFFB3A04DCFE11AA8A75C917 /* HistoryView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = HistoryView.swift;
+		path = Features/History/HistoryView.swift;
+		sourceTree = "<group>";
+	};
+	E32F171EE23994CDA392D2E7 /* Shadow.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = Shadow.swift;
+		path = ../kFoundation/Sources/DesignSystem/Shadow.swift;
+		sourceTree = "<group>";
+	};
+	E6B23CE24C9E6714E4A1D885 /* UninstallConfirmSheet.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallConfirmSheet.swift;
+		path = Features/Detail/UninstallConfirmSheet.swift;
+		sourceTree = "<group>";
+	};
+	EA66E191F044FFC4D9668848 /* LoadingStateView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = LoadingStateView.swift;
+		path = Features/Common/LoadingStateView.swift;
+		sourceTree = "<group>";
+	};
+	F035EC8F6EE68C301CCA326E /* DeepCleanEngine.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanEngine.swift;
+		path = Features/DeepClean/DeepCleanEngine.swift;
+		sourceTree = "<group>";
+	};
+	F075F2C88B6E1045A56D681A /* Colors.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = Colors.swift;
+		path = ../kFoundation/Sources/DesignSystem/Colors.swift;
+		sourceTree = "<group>";
+	};
+	F5EE8978A09525D063479709 /* SystemCleanGroupView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SystemCleanGroupView.swift;
+		path = Features/DeepClean/SystemCleanGroupView.swift;
+		sourceTree = "<group>";
+	};
+	F6EF8E531BBFA21EF834D571 /* ResidueSectionView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueSectionView.swift;
+		path = Features/Detail/ResidueSectionView.swift;
+		sourceTree = "<group>";
+	};
+	F75307E42A8914CFBC4E8183 /* FinderSync.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FinderSync.swift;
+		path = FinderExtension/FinderSync.swift;
+		sourceTree = "<group>";
+	};
+	F75684B0069B206DC6478D95 /* CaskParser.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = CaskParser.swift;
+		path = Core/Rules/CaskParser.swift;
+		sourceTree = "<group>";
+	};
+	F86D4AC4F12BECB5A60374D9 /* StartupItemManager.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemManager.swift;
+		path = Core/Startup/StartupItemManager.swift;
+		sourceTree = "<group>";
+	};
+	F9F5DB4F736723C6F2F5DC63 /* RootView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = RootView.swift;
+		path = App/RootView.swift;
+		sourceTree = "<group>";
+	};
+	FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = PrivacyInfo.xcprivacy;
+		path = Resources/PrivacyInfo.xcprivacy;
+		sourceTree = "<group>";
+	};
+	FBDE7C50C5246FD21C67CBE5 /* DeepCleanView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanView.swift;
+		path = Features/DeepClean/DeepCleanView.swift;
+		sourceTree = "<group>";
+	};
+	FC8F976B27828057A607616A /* AppCoordinator.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppCoordinator.swift;
+		path = App/AppCoordinator.swift;
+		sourceTree = "<group>";
+	};
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+	4012D4C9DAE5CD9D31F3FFB2 /* 4012D4C9DAE5CD9D31F3FFB2 */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	639838777480095AEC9EAF3D /* 639838777480095AEC9EAF3D */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+	0283ED5888E25C418EDF5949 /* History */ = {
+		isa = PBXGroup;
+		children = (
+			DFFB3A04DCFE11AA8A75C917 /* HistoryView.swift */,
+			C1500570860B074777D1122C /* HistoryViewModel.swift */,
+		);
+		name = History;
+		sourceTree = "<group>";
+	};
+	080719DCC0589D18D62EF828 /* Store */ = {
+		isa = PBXGroup;
+		children = (
+			48DFB6C6C2EEA832BFACA155 /* StoreDefinitions.swift */,
+			29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */,
+			6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */,
+			86CB786A2E1C914FA035D064 /* ProGateModifier.swift */,
+		);
+		name = Store;
+		sourceTree = "<group>";
+	};
+	0BFD696B0848A9C40367B52E /* Startup */ = {
+		isa = PBXGroup;
+		children = (
+			F86D4AC4F12BECB5A60374D9 /* StartupItemManager.swift */,
+		);
+		name = Startup;
+		sourceTree = "<group>";
+	};
+	10A05D10F4BAD8757DBB68EE /* Core */ = {
+		isa = PBXGroup;
+		children = (
+			3439CADB97B973753F0013F7 /* Detect */,
+			B6AF0BB12BBE679326B3832F /* Clean */,
+			2385080813E057142A7DF6BE /* Rules */,
+			0BFD696B0848A9C40367B52E /* Startup */,
+		);
+		name = Core;
+		sourceTree = "<group>";
+	};
+	1119F24AE4A205A534838F74 /* Resources */ = {
+		isa = PBXGroup;
+		children = (
+			05B9799A26FB3FDC78B071F1 /* Assets.xcassets */,
+			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
+			FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */,
+		);
+		name = Resources;
+		sourceTree = "<group>";
+	};
+	2220AFE70C0352F63AF55DB3 /* UITests */ = {
+		isa = PBXGroup;
+		children = (
+			83C79C522B962284BED63E66 /* UninstallJourneyUITests.swift */,
+		);
+		name = UITests;
+		sourceTree = "<group>";
+	};
+	2385080813E057142A7DF6BE /* Rules */ = {
+		isa = PBXGroup;
+		children = (
+			488FE55E92AD5F4E6BEF88E8 /* KFreshBundleRule.swift */,
+			F75684B0069B206DC6478D95 /* CaskParser.swift */,
+		);
+		name = Rules;
+		sourceTree = "<group>";
+	};
+	2393A47879AB5770997F6712 /* DetectTests */ = {
+		isa = PBXGroup;
+		children = (
+			06E33A55C4FF7FD14C728811 /* InstalledAppTests.swift */,
+			44A2613DA7CAFB830A1F06D3 /* AppCatalogServiceTests.swift */,
+			90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */,
+			BD8372016B507E6E4A7A99AC /* AppSourceClassifierTests.swift */,
+		);
+		name = DetectTests;
+		sourceTree = "<group>";
+	};
+	28A9C632746B17FFA5197C8E /* DeepClean */ = {
+		isa = PBXGroup;
+		children = (
+			F035EC8F6EE68C301CCA326E /* DeepCleanEngine.swift */,
+			0410DBDC2573D4A43ABE15F7 /* DeepCleanViewModel.swift */,
+			FBDE7C50C5246FD21C67CBE5 /* DeepCleanView.swift */,
+			F5EE8978A09525D063479709 /* SystemCleanGroupView.swift */,
+		);
+		name = DeepClean;
+		sourceTree = "<group>";
+	};
+	3439CADB97B973753F0013F7 /* Detect */ = {
+		isa = PBXGroup;
+		children = (
+			381D3A35ABE82AE0AE3F42B3 /* InstalledApp.swift */,
+			2F003C23A18C74F51E543E30 /* AppCatalogService.swift */,
+			19E52988752B80FD541659FC /* ResidueDetector.swift */,
+			1656D17F4D90B00E30B9C367 /* BundleRuleStore.swift */,
+		);
+		name = Detect;
+		sourceTree = "<group>";
+	};
+	3C01BB5CC94D49CC05F47B00 /* AppList */ = {
+		isa = PBXGroup;
+		children = (
+			43E95637FFF6820D2C78A1BE /* AppListViewModel.swift */,
+			7A134B7F6EC7FEF20B0247B8 /* AppListView.swift */,
+			5EF3C83CE85852F781B5EBA1 /* AppRowView.swift */,
+		);
+		name = AppList;
+		sourceTree = "<group>";
+	};
+	3F300C2EC1A0250807DB22F8 /* Common */ = {
+		isa = PBXGroup;
+		children = (
+			69534F9EAC28CF4D641D8DC3 /* EmptyStateView.swift */,
+			EA66E191F044FFC4D9668848 /* LoadingStateView.swift */,
+			0E68C8E554FB84F8812F9963 /* BrandStyles.swift */,
+			8C2E92D5254BB63634A134D7 /* BrandButtonStyle.swift */,
+		);
+		name = Common;
+		sourceTree = "<group>";
+	};
+	541BE480BD6342CA50028767 /* Data */ = {
+		isa = PBXGroup;
+		children = (
+			0C25FC9BBBD612C35A333C8F /* BackupManager.swift */,
+			4DB6B5CBAB9D12D12D1702D7 /* UninstallHistoryRepository.swift */,
+			C9436B5A5555F38E15906412 /* FDAuthorizer.swift */,
+			0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */,
+			66EBF85D7D7569CED79F5DF4 /* UninstallHistory+CoreDataClass.swift */,
+			06873BB0E2C32B0E84C3FFEF /* UninstallHistory+CoreDataProperties.swift */,
+			6733EE44B5FD81C4226C560C /* AppAnalysis+CoreDataClass.swift */,
+			A1B2D98C4D9054D86EB64B87 /* AppAnalysis+CoreDataProperties.swift */,
+			4E0A28E26F67D15D01EC121B /* AppAnalysisRepository.swift */,
+		);
+		name = Data;
+		sourceTree = "<group>";
+	};
+	597B9EC128A7CAC8315BA831 /* DesignSystem */ = {
+		isa = PBXGroup;
+		children = (
+			F075F2C88B6E1045A56D681A /* Colors.swift */,
+			8138CFB82419F6F8F3E957C3 /* Icons.swift */,
+			4043971F5EFD0C3AB4322C65 /* Typography.swift */,
+			9C73A58BF662B0271D083EE3 /* Radius.swift */,
+			E32F171EE23994CDA392D2E7 /* Shadow.swift */,
+			CE04F6C7E85E205F424C65AC /* Spacing.swift */,
+		);
+		name = DesignSystem;
+		sourceTree = "<group>";
+	};
+	5FE9C103B068D0D68C2FC09D /* RulesTests */ = {
+		isa = PBXGroup;
+		children = (
+			4D863FD91ECB3118002568D4 /* CaskParserTests.swift */,
+			98CD6945367BA393779F79A0 /* BundleRuleStoreTests.swift */,
+		);
+		name = RulesTests;
+		sourceTree = "<group>";
+	};
+	6F639C44EC4191E54FD9C780 /* Detail */ = {
+		isa = PBXGroup;
+		children = (
+			AA60392EFF1E1EB77FEC0D36 /* AppDetailView.swift */,
+			1890ACF921D842C7A68A1BBE /* DetailViewModel.swift */,
+			F6EF8E531BBFA21EF834D571 /* ResidueSectionView.swift */,
+			E6B23CE24C9E6714E4A1D885 /* UninstallConfirmSheet.swift */,
+		);
+		name = Detail;
+		sourceTree = "<group>";
+	};
+	8737C58DE7045208C482770A /* Intents */ = {
+		isa = PBXGroup;
+		children = (
+			AA82AD3ACA5E2DE044D14893 /* UninstallAppIntent.swift */,
+			C6F02E16C32A208DAABE3322 /* ScanResidueIntent.swift */,
+			86EBDC7A6B2FFF21B7FFBA9A /* DeepCleanIntent.swift */,
+		);
+		name = Intents;
+		sourceTree = "<group>";
+	};
+	8CB695B89F15D64CF154F9CA /* kFresh */ = {
+		isa = PBXGroup;
+		children = (
+			C2EDC4814724351A3444C62A /* App */,
+			10A05D10F4BAD8757DBB68EE /* Core */,
+			597B9EC128A7CAC8315BA831 /* DS_DesignSystem */,
+			541BE480BD6342CA50028767 /* Data */,
+			B31AC5F5A4F7E20AE1F086A3 /* Features */,
+			AB9A6EBAA83058E1F2B4CCE0 /* FinderExtension */,
+			8737C58DE7045208C482770A /* Intents */,
+			D086B1D575B679BDD667F1C2 /* MenuBar */,
+			1119F24AE4A205A534838F74 /* Resources */,
+			080719DCC0589D18D62EF828 /* Store */,
+			F4D2E522CF9449BF1C2F0894 /* Widgets */,
+			BFF03A4B7DE5959B1AAD4165 /* Tests */,
+			EBA56EB89A9347CFCE560E19 /* Products */,
+			3EBAE220C65B95B5461A69F4 /* Info.plist */,
+			9A872BB5A2D10B44D7842336 /* kFresh.entitlements */,
+			028FE75EBC698AC1A1A03C74 /* kFreshDebug.entitlements */,
+		);
+		name = kFresh;
+		path = "";
+		sourceTree = "<group>";
+	};
+	92CF88F56CFAD37E6AF2955F /* CleanTests */ = {
+		isa = PBXGroup;
+		children = (
+			0089DAE711574808D00ABD0B /* TrashMoverTests.swift */,
+			D7B438A54B3D98707F22F4C7 /* BackupManagerTests.swift */,
+		);
+		name = CleanTests;
+		sourceTree = "<group>";
+	};
+	948A46E6570A8D25B50581C8 /* Onboarding */ = {
+		isa = PBXGroup;
+		children = (
+			136BEC5F911CA3A945CDC744 /* FDAGuideController.swift */,
+			21590BBBDE883EFBD31EAEE8 /* FDAGuideView.swift */,
+		);
+		name = Onboarding;
+		sourceTree = "<group>";
+	};
+	96268A9A1A43BACF89496A38 /* StartupItems */ = {
+		isa = PBXGroup;
+		children = (
+			CF5DAA48D342F90110132D61 /* StartupItemsView.swift */,
+			1B365D303EAC1EE8F810E853 /* StartupItemsViewModel.swift */,
+		);
+		name = StartupItems;
+		sourceTree = "<group>";
+	};
+	969679DE865F3E68DEC65C79 /* Settings */ = {
+		isa = PBXGroup;
+		children = (
+			1C4455D0B4CE1B5F5681A2FE /* SettingsView.swift */,
+			B6830D0E035D1121B06CF64B /* SettingsViewModel.swift */,
+			93E7385164CAC43BEEBF65ED /* AboutView.swift */,
+		);
+		name = Settings;
+		sourceTree = "<group>";
+	};
+	AB9A6EBAA83058E1F2B4CCE0 /* FinderExtension */ = {
+		isa = PBXGroup;
+		children = (
+			F75307E42A8914CFBC4E8183 /* FinderSync.swift */,
+		);
+		name = FinderExtension;
+		sourceTree = "<group>";
+	};
+	B31AC5F5A4F7E20AE1F086A3 /* Features */ = {
+		isa = PBXGroup;
+		children = (
+			3C01BB5CC94D49CC05F47B00 /* AppList */,
+			3F300C2EC1A0250807DB22F8 /* Common */,
+			28A9C632746B17FFA5197C8E /* DeepClean */,
+			6F639C44EC4191E54FD9C780 /* Detail */,
+			0283ED5888E25C418EDF5949 /* History */,
+			948A46E6570A8D25B50581C8 /* Onboarding */,
+			969679DE865F3E68DEC65C79 /* Settings */,
+			96268A9A1A43BACF89496A38 /* StartupItems */,
+		);
+		name = Features;
+		sourceTree = "<group>";
+	};
+	B6AF0BB12BBE679326B3832F /* Clean */ = {
+		isa = PBXGroup;
+		children = (
+			DC9F358CA23F4689897454B8 /* TrashMover.swift */,
+			AF272D3718777F39FA504734 /* ResidueScanner.swift */,
+		);
+		name = Clean;
+		sourceTree = "<group>";
+	};
+	BFF03A4B7DE5959B1AAD4165 /* Tests */ = {
+		isa = PBXGroup;
+		children = (
+			2393A47879AB5770997F6712 /* DetectTests */,
+			92CF88F56CFAD37E6AF2955F /* CleanTests */,
+			5FE9C103B068D0D68C2FC09D /* RulesTests */,
+			D5C3C798E3485DAFB96FECAE /* IntegrationTests */,
+			2220AFE70C0352F63AF55DB3 /* UITests */,
+		);
+		name = Tests;
+		sourceTree = "<group>";
+	};
+	C2EDC4814724351A3444C62A /* App */ = {
+		isa = PBXGroup;
+		children = (
+			B0FA94F96C119EFBD28B7F0B /* kUninstallApp.swift */,
+			14679243FC833D0C8D16C74A /* AppState.swift */,
+			F9F5DB4F736723C6F2F5DC63 /* RootView.swift */,
+			FC8F976B27828057A607616A /* AppCoordinator.swift */,
+		);
+		name = App;
+		sourceTree = "<group>";
+	};
+	D086B1D575B679BDD667F1C2 /* MenuBar */ = {
+		isa = PBXGroup;
+		children = (
+			A5AD76B7AA53AF7085B7A992 /* MenuBarController.swift */,
+		);
+		name = MenuBar;
+		sourceTree = "<group>";
+	};
+	D5C3C798E3485DAFB96FECAE /* IntegrationTests */ = {
+		isa = PBXGroup;
+		children = (
+			53EF96BE26DB6B2A6C185799 /* UninstallFlowTests.swift */,
+			92285B8C36BFE1BC01B56B40 /* SandboxDegradationTests.swift */,
+		);
+		name = IntegrationTests;
+		sourceTree = "<group>";
+	};
+	EBA56EB89A9347CFCE560E19 /* Products */ = {
+		isa = PBXGroup;
+		children = (
+			592A3E8DE2005013EFE473D7 /* kFresh.app */,
+			09C386C2F6D04F8712E2E85C /* kFreshTests.xctest */,
+		);
+		name = Products;
+		sourceTree = "<group>";
+	};
+	F4D2E522CF9449BF1C2F0894 /* Widgets */ = {
+		isa = PBXGroup;
+		children = (
+			5D0DC122863AABE458A77BA8 /* AppUsageWidget.swift */,
+			212440F390BC3282519C17C8 /* QuickUninstallWidget.swift */,
+		);
+		name = Widgets;
+		sourceTree = "<group>";
+	};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+	2F05DDC4153075C742663358 /* kFreshTests */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 3FD6CBC4FF291B9367FDC53D;
+		buildPhases = (
+			A3EBA454EB2F5C879CA40B0C /* Sources */,
+			4012D4C9DAE5CD9D31F3FFB2 /* Frameworks */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+			364ACEDCA212FD889EA1CC94 /* kFresh */,
+		);
+		name = kFreshTests;
+		productName = kFreshTests;
+		productReference = 09C386C2F6D04F8712E2E85C;
+		productType = "com.apple.product-type.bundle.unit-test";
+	};
+	AE77F0E9602ACC1A9F8C75FB /* kFresh */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 6080F8A7C5D6A84AD151124F;
+		buildPhases = (
+			D7ADA1B3F2BD4A23138F5A71 /* Sources */,
+			639838777480095AEC9EAF3D /* Frameworks */,
+			0F96DF12DE3D14BDBD2DCA50 /* Resources */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+		);
+		name = kFresh;
+		packageProductDependencies = (
+		);
+		productName = kFresh;
+		productReference = 592A3E8DE2005013EFE473D7;
+		productType = "com.apple.product-type.application";
+	};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+	59601E391B529B07AE11313D /* kFresh */ = {
+		isa = PBXProject;
+		attributes = {
+			BuildIndependentTargetsInParallel = 1;
+			LastSwiftUpdateCheck = 1430;
+			LastUpgradeCheck = 1430;
+			TargetAttributes = {
+				AE77F0E9602ACC1A9F8C75FB /* kFresh */ = {CreatedOnToolsVersion = 14.3; };
+				2F05DDC4153075C742663358 /* kFreshTests */ = {CreatedOnToolsVersion = 14.3; TestTargetID = AE77F0E9602ACC1A9F8C75FB; };
+			};
+		};
+		buildConfigurationList = CF35BBADA1B6673793B45974;
+		compatibilityVersion = "Xcode 14.0";
+		developmentRegion = en;
+		hasScannedForEncodings = 0;
+		knownRegions = (
+			en,
+			Base,
+			zh-Hans,
+			ja,
+		);
+		mainGroup = 8CB695B89F15D64CF154F9CA;
+		name = kFresh;
+		productRefGroup = EBA56EB89A9347CFCE560E19;
+		projectDirPath = "";
+		projectRoot = "";
+		targets = (
+			AE77F0E9602ACC1A9F8C75FB /* kFresh */,
+			2F05DDC4153075C742663358 /* kFreshTests */,
+		);
+	};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+	0F96DF12DE3D14BDBD2DCA50 /* 0F96DF12DE3D14BDBD2DCA50 */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */,
+			8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */,
+			75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+	A3EBA454EB2F5C879CA40B0C /* A3EBA454EB2F5C879CA40B0C */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			30777437B37859FB155C273A /* 30777437B37859FB155C273A */,
+			9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */,
+			2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */,
+			F7BFFF484BD25D346DC5325E /* F7BFFF484BD25D346DC5325E */,
+			ABAE0D7916C85CCAB7B3C1B6 /* ABAE0D7916C85CCAB7B3C1B6 */,
+			1F2330F83330CD811E7D7A29 /* 1F2330F83330CD811E7D7A29 */,
+			1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */,
+			717B5017E8BA6330A45302F9 /* 717B5017E8BA6330A45302F9 */,
+			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
+			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
+			E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	D7ADA1B3F2BD4A23138F5A71 /* D7ADA1B3F2BD4A23138F5A71 */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */,
+			AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */,
+			7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */,
+			0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */,
+			2B06CE90451E121FCC65E18A /* 2B06CE90451E121FCC65E18A */,
+			DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */,
+			3D4A21BD659FC7020FF7156B /* 3D4A21BD659FC7020FF7156B */,
+			7AC3A31E4348CAAD16FDE399 /* 7AC3A31E4348CAAD16FDE399 */,
+			0E85846AB9656CAED4DB998A /* 0E85846AB9656CAED4DB998A */,
+			1F1383F1C5BBAC11C885A8A9 /* 1F1383F1C5BBAC11C885A8A9 */,
+			62E646831E0902B06DD4553A /* 62E646831E0902B06DD4553A */,
+			9F7D061010AC1F35C96F4929 /* 9F7D061010AC1F35C96F4929 */,
+			3C45097EB9D7EA5FFC202E91 /* 3C45097EB9D7EA5FFC202E91 */,
+			25A10FE62B29AD4A68CDD057 /* 25A10FE62B29AD4A68CDD057 */,
+			F1B840EC59C8EF013434A941 /* F1B840EC59C8EF013434A941 */,
+			2881629D9FD740DD04775A52 /* 2881629D9FD740DD04775A52 */,
+			4D4652C5722A891D0E8F2A0B /* 4D4652C5722A891D0E8F2A0B */,
+			D764C8753D76D87EC4C3839C /* D764C8753D76D87EC4C3839C */,
+			D43E9821EC3E17EFF5B7B88C /* D43E9821EC3E17EFF5B7B88C */,
+			F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */,
+			744A4F0B8F52B196A492AEA1 /* 744A4F0B8F52B196A492AEA1 */,
+			845606ED7B3C17AE42B3EFCB /* 845606ED7B3C17AE42B3EFCB */,
+			476DC124F31EEA92FB2F9F94 /* 476DC124F31EEA92FB2F9F94 */,
+			98D3A7E04EE8047A3A85CD0A /* 98D3A7E04EE8047A3A85CD0A */,
+			EC4C24611EC92CC86CD0E0C3 /* EC4C24611EC92CC86CD0E0C3 */,
+			7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */,
+			92D836BA8D75FD4D4FC20474 /* 92D836BA8D75FD4D4FC20474 */,
+			82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */,
+			C956C8E6486DF8E7AFEFB05C /* C956C8E6486DF8E7AFEFB05C */,
+			A7E806B246A4F0307D48718E /* A7E806B246A4F0307D48718E */,
+			4DBE57E216AD4A92D44C300D /* 4DBE57E216AD4A92D44C300D */,
+			4AEDA9A9240B69654ED01077 /* 4AEDA9A9240B69654ED01077 */,
+			EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */,
+			C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */,
+			115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */,
+			EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */,
+			39FEF37BBD65059F5FD0BA44 /* 39FEF37BBD65059F5FD0BA44 */,
+			2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */,
+			E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */,
+			0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */,
+			BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */,
+			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
+			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
+			46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */,
+			BC48F4AE041C911676CB0F92 /* BC48F4AE041C911676CB0F92 */,
+			14522065F7DF933255DA0908 /* 14522065F7DF933255DA0908 */,
+			C883C2F4E652FE2954F54F86 /* C883C2F4E652FE2954F54F86 */,
+			05720CE11D0128121CC414D7 /* 05720CE11D0128121CC414D7 */,
+			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
+			7A6C1D27E747136FB9E0845C /* 7A6C1D27E747136FB9E0845C */,
+			9FE0E33F3FCD69A0A105C330 /* 9FE0E33F3FCD69A0A105C330 */,
+			5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */,
+			78F8A9DFEED2BD5C2BFE359D /* 78F8A9DFEED2BD5C2BFE359D */,
+			583B954A6A1E0563236FE408 /* 583B954A6A1E0563236FE408 */,
+			14841E6EE2613C55089B2896 /* 14841E6EE2613C55089B2896 */,
+			80FC5F8CBB595E37C8122AEB /* 80FC5F8CBB595E37C8122AEB */,
+			DEDCF62736EE4FE8EC3222B2 /* DEDCF62736EE4FE8EC3222B2 */,
+			A62C9F07E54CB81C7B1CA298 /* A62C9F07E54CB81C7B1CA298 */,
+			46AE690EBB45827AF102DFB2 /* 46AE690EBB45827AF102DFB2 */,
+			74154FD04BEEF2138155FFD4 /* 74154FD04BEEF2138155FFD4 */,
+			67823FEA09526598EB3ACBED /* 67823FEA09526598EB3ACBED */,
+			3BFC387ADC063EFCE1CEBC1D /* 3BFC387ADC063EFCE1CEBC1D */,
+			107421278965574C5112620B /* 107421278965574C5112620B */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+	364ACEDCA212FD889EA1CC94 /* kFresh */ = {
+		isa = PBXTargetDependency;
+		name = kFresh;
+		target = AE77F0E9602ACC1A9F8C75FB;
+		targetProxy = 3412E6574B98EDF3F54840ED;
+	};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+	327A485C172AB8BDAA4E2848 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		BUNDLE_LOADER = "$(TEST_HOST)";
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kfresh.tests;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_VERSION = 5.0;
+		TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kFresh.app/Contents/MacOS/kFresh";
+		};
+		name = Release;
+	};
+	3A75C3F04A5A46A06A715410 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+		CODE_SIGNING_ALLOWED = NO;
+		CODE_SIGN_STYLE = Manual;
+		COMBINE_HIDPI_IMAGES = YES;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kFresh;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kfresh;
+		INFOPLIST_KEY_CFBundleName = kFresh;
+		INFOPLIST_KEY_CFBundlePackageType = "APPL";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
+		INFOPLIST_KEY_NSHumanReadableCopyright = "";
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kfresh;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
+	};
+	3F8D7C61364D6E91CEA539C5 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ALWAYS_SEARCH_USER_PATHS = NO;
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		COPY_PHASE_STRIP = NO;
+		DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+		ENABLE_NS_ASSERTIONS = NO;
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		GCC_OPTIMIZATION_LEVEL = s;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MTL_ENABLE_DEBUG_INFO = NO;
+		SDKROOT = macosx;
+		SWIFT_COMPILATION_MODE = wholemodule;
+		SWIFT_OPTIMIZATION_LEVEL = "-O";
+		SWIFT_STRICT_CONCURRENCY = complete;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+	40AC8DB68C57EFEB661DB3D0 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+		CODE_SIGN_ENTITLEMENTS = kFresh.entitlements;
+		CODE_SIGN_IDENTITY = "-";
+		CODE_SIGN_STYLE = Manual;
+		COMBINE_HIDPI_IMAGES = YES;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kFresh;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kfresh;
+		INFOPLIST_KEY_CFBundleName = kFresh;
+		INFOPLIST_KEY_CFBundlePackageType = "APPL";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
+		INFOPLIST_KEY_NSHumanReadableCopyright = "";
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kfresh;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+	7E1FBBBBDF2C6831C341A92D /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		ALWAYS_SEARCH_USER_PATHS = NO;
+		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+		CLANG_ANALYZER_NONNULL = YES;
+		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+		CLANG_ENABLE_MODULES = YES;
+		CLANG_ENABLE_OBJC_ARC = YES;
+		COPY_PHASE_STRIP = NO;
+		DEBUG_INFORMATION_FORMAT = dwarf;
+		ENABLE_STRICT_OBJC_MSGSEND = YES;
+		ENABLE_TESTABILITY = YES;
+		GCC_DYNAMIC_NO_PIC = NO;
+		GCC_OPTIMIZATION_LEVEL = 0;
+		GCC_PREPROCESSOR_DEFINITIONS = (
+			"DEBUG=1",
+			"$(inherited)",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+		ONLY_ACTIVE_ARCH = YES;
+		SDKROOT = macosx;
+		SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG";
+		SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+		SWIFT_STRICT_CONCURRENCY = complete;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
+	};
+	8E49F43A56D207D9CACB92D7 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		BUNDLE_LOADER = "$(TEST_HOST)";
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kfresh.tests;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_VERSION = 5.0;
+		TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kFresh.app/Contents/MacOS/kFresh";
+		};
+		name = Debug;
+	};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+	3FD6CBC4FF291B9367FDC53D /* 3FD6CBC4FF291B9367FDC53D */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			8E49F43A56D207D9CACB92D7 /* Debug */,
+			327A485C172AB8BDAA4E2848 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	6080F8A7C5D6A84AD151124F /* 6080F8A7C5D6A84AD151124F */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			3A75C3F04A5A46A06A715410 /* Debug */,
+			40AC8DB68C57EFEB661DB3D0 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	CF35BBADA1B6673793B45974 /* CF35BBADA1B6673793B45974 */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			7E1FBBBBDF2C6831C341A92D /* Debug */,
+			3F8D7C61364D6E91CEA539C5 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+/* End XCConfigurationList section */
+	};
+	rootObject = 59601E391B529B07AE11313D /* Project object */;
+}
