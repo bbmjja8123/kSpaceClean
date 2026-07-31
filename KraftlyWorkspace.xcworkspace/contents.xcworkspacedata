@@ -2,7 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:kDupe/">
+   </FileRef>
+   <FileRef
       location = "group:kFoundation/">
+   </FileRef>
+   <FileRef
+      location = "group:kFresh/">
    </FileRef>
    <FileRef
       location = "group:kSpaceClean/">
