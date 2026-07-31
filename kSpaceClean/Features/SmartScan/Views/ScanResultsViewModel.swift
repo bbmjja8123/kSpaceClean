@@ -98,43 +98,37 @@ final class ScanResultsViewModel: ObservableObject {
     /// whole struct at scan completion collapses what used to be 4–5
     /// separate `objectWillChange` emissions into one.
     ///
-    /// Marked `internal` (not `private(set)`) so the regression guard
-    /// in ``ScanResultsViewModelSnapshotTests`` can exercise the
-    /// batched-write path directly. Production code reads/writes only
-    /// through the computed accessors below.
-    @Published var snapshot = ScanSnapshot()
+    /// Stored as `private` so the only sanctioned write paths are the
+    /// ``assign(snapshot:)`` mutator (for tests) and the internal
+    /// helpers (`updateSummary`, `startRealScan`). Production code
+    /// reads via the computed accessors below; it never writes the
+    /// struct itself.
+    @Published private var snapshot = ScanSnapshot()
 
-    /// Backward-compatible `@Published` accessor — external callers
+    /// Replaces the current scan snapshot. The only sanctioned write
+    /// path from outside the model — production callers go through
+    /// `startScan(...)` / `toggleSelect(...)`. Exposed `internal` so the
+    /// regression-guard test can drive it; production call sites do not.
+    ///
+    /// - Parameter snapshot: The new batched snapshot to publish.
+    func assign(snapshot: ScanSnapshot) {
+        self.snapshot = snapshot
+    }
+
+    /// Backward-compatible read-only accessor — external callers
     /// (`RootView`, previews, sibling view models that read this field
     /// without owning it) continue to compile unchanged. SwiftUI's
     /// `objectWillChange` is triggered by writes to `snapshot`, so this
     /// computed read still observes the right invalidation cadence.
-    var categories: [ScanCategory] {
-        get { snapshot.categories }
-        set { snapshot.categories = newValue }
-    }
-    /// Backward-compatible accessor. Mutating this property writes
-    /// through to `snapshot.categories` so the whole struct's
-    /// `objectWillChange` fires once.
-    var isScanning: Bool {
-        get { snapshot.isScanning }
-        set { snapshot.isScanning = newValue }
-    }
-    /// Backward-compatible accessor — see ``categories``.
-    var hasScanned: Bool {
-        get { snapshot.hasScanned }
-        set { snapshot.hasScanned = newValue }
-    }
-    /// Backward-compatible accessor — see ``categories``.
-    var totalSelectedSize: Int64 {
-        get { snapshot.totalSelectedSize }
-        set { snapshot.totalSelectedSize = newValue }
-    }
-    /// Backward-compatible accessor — see ``categories``.
-    var totalSelectedCount: Int {
-        get { snapshot.totalSelectedCount }
-        set { snapshot.totalSelectedCount = newValue }
-    }
+    var categories: [ScanCategory] { snapshot.categories }
+    /// Backward-compatible read-only accessor — see ``categories``.
+    var isScanning: Bool { snapshot.isScanning }
+    /// Backward-compatible read-only accessor — see ``categories``.
+    var hasScanned: Bool { snapshot.hasScanned }
+    /// Backward-compatible read-only accessor — see ``categories``.
+    var totalSelectedSize: Int64 { snapshot.totalSelectedSize }
+    /// Backward-compatible read-only accessor — see ``categories``.
+    var totalSelectedCount: Int { snapshot.totalSelectedCount }
 
     /// Set of tree-node ids whose subtree is currently expanded.
     /// Membership changes drive the SwiftUI `LazyVStack` rerender.
@@ -362,7 +356,9 @@ final class ScanResultsViewModel: ObservableObject {
             subItems: [sub],
             riskLevel: .recommended
         )
-        categories = [category]
+        var mock = snapshot
+        mock.categories = [category]
+        assign(snapshot: mock)
     }
 
     /// Start a real scan against `rootPaths` using the bound ``engine``.

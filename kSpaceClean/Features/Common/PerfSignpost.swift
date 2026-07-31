@@ -62,19 +62,23 @@ enum PerfSignpost {
 ///     }
 @inline(__always)
 func PerfSignpostBegin(_ name: StaticString) {
-    os_signpost(.begin, log: PerfSignpost.log, name: name, "%{public}s", "")
+    os_signpost(.begin, log: PerfSignpost.log, name: name)
 }
 
 @inline(__always)
 func PerfSignpostEnd(_ name: StaticString) {
-    os_signpost(.end, log: PerfSignpost.log, name: name, "%{public}s", "")
+    os_signpost(.end, log: PerfSignpost.log, name: name)
 }
 
 /// RAII wrapper that emits a `begin`/`end` pair on construction and
 /// on `end()` (or when the wrapper is dropped). Built on the free
 /// functions above so the begin/end pair is always symmetric.
+///
+/// `end()` is idempotent: a manual call followed by `deinit` (or vice
+/// versa) emits the closing signpost exactly once.
 final class PerfInterval {
     fileprivate let name: StaticString
+    private var closed = false
 
     init(_ name: StaticString) {
         self.name = name
@@ -82,12 +86,15 @@ final class PerfInterval {
     }
 
     /// Manually end the interval. Optional — the interval also ends
-    /// when the wrapper is deinitialised.
+    /// when the wrapper is deinitialised. Idempotent: a second call
+    /// after the first (or after `deinit`) is a no-op.
     func end() {
+        guard !closed else { return }
+        closed = true
         PerfSignpostEnd(name)
     }
 
     deinit {
-        PerfSignpostEnd(name)
+        end()
     }
 }

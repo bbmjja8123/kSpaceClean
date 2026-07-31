@@ -41,15 +41,21 @@ final class ScanResultsViewModelSnapshotTests: XCTestCase {
         cancellable.value = viewModel.objectWillChange.sink { counter.increment() }
 
         // Replicate the batched completion: assemble the new snapshot
-        // locally, then assign once.
-        var batched = viewModel.snapshot
-        batched.isScanning = false
-        batched.hasScanned = true
-        batched.categories = viewModel.categories
-        batched.totalSelectedSize = viewModel.categories
-            .reduce(Int64(0)) { $0 + $1.totalSize }
-        batched.totalSelectedCount = viewModel.categories.count
-        viewModel.snapshot = batched
+        // locally, then assign once. The `assign(snapshot:)` mutator is
+        // the only sanctioned write path from outside the model — it
+        // preserves the encapsulation that existed pre-F4. We build the
+        // `ScanSnapshot` literal here (rather than reading the private
+        // `snapshot` storage) so the test exercises only public surface.
+        let currentCategories = viewModel.categories
+        let batched = ScanResultsViewModel.ScanSnapshot(
+            isScanning: false,
+            hasScanned: true,
+            categories: currentCategories,
+            totalSelectedSize: currentCategories
+                .reduce(Int64(0)) { $0 + $1.totalSize },
+            totalSelectedCount: currentCategories.count
+        )
+        viewModel.assign(snapshot: batched)
 
         // Drain pending notifications.
         await Task.yield()
