@@ -37,14 +37,25 @@ struct SuggestionsTabView: View {
     @ObservedObject var scanViewModel: ScanViewModel
     @State private var diskUsage = DiskUsage.current()
     @State private var selectedSuggestions: Set<Int> = []
+    /// Memoized copy of `scanViewModel.resultGroups` flattened into
+    /// `[(ImpactLevel, ActionGroup)]` tuples. Recomputed only on
+    /// `.onAppear` and on `scanDidComplete`; previously this was a
+    /// computed property that ran on every body call.
+    @State private var otherSuggestions: [(ImpactLevel, ActionGroup)] = []
+    /// Memoized bucket keyed by `ImpactLevel.rawValue` so the inner
+    /// `ForEach` no longer needs to filter `otherSuggestions` per row.
+    @State private var suggestionsByLevel: [Int: [(ImpactLevel, ActionGroup)]] = [:]
 
-    private var otherSuggestions: [(ImpactLevel, ActionGroup)] {
-        scanViewModel.resultGroups
+    /// Rebuilds `otherSuggestions` and `suggestionsByLevel` from the
+    /// current `scanViewModel.resultGroups`. Called on appear and on
+    /// every `scanDidComplete` emission.
+    private func refreshSuggestions() {
+        let flat = scanViewModel.resultGroups
             .flatMap { $0.actionGroups }
             .filter { $0.totalSize > 0 }
             .sorted { $0.totalSize > $1.totalSize }
             .prefix(12)
-            .map { action in
+            .map { action -> (ImpactLevel, ActionGroup) in
                 let impact: ImpactLevel
                 switch action.riskLevel {
                 case .dangerous: impact = .high
@@ -54,6 +65,14 @@ struct SuggestionsTabView: View {
                 }
                 return (impact, action)
             }
+        otherSuggestions = Array(flat)
+        // Bucket once. SwiftUI's ForEach reads by key so this lookup
+        // is O(1) instead of O(n) per row.
+        var bucketed: [Int: [(ImpactLevel, ActionGroup)]] = [:]
+        for entry in otherSuggestions {
+            bucketed[entry.0.rawValue, default: []].append(entry)
+        }
+        suggestionsByLevel = bucketed
     }
 
     var body: some View {
@@ -64,7 +83,7 @@ struct SuggestionsTabView: View {
 
                 // Grouped by impact
                 ForEach(ImpactLevel.allCases, id: \.rawValue) { level in
-                    let items = otherSuggestions.filter { $0.0 == level }
+                    let items = suggestionsByLevel[level.rawValue] ?? []
                     if !items.isEmpty {
                         VStack(alignment: .leading, spacing: AppSpacing.sm) {
                             HStack {
@@ -94,8 +113,11 @@ struct SuggestionsTabView: View {
             }
             .padding(AppSpacing.md)
         }
-        .onAppear { diskUsage = DiskUsage.current() }
-        .onReceive(scanViewModel.$scanDidComplete) { _ in diskUsage = DiskUsage.current() }
+        .onAppear { refreshSuggestions(); diskUsage = DiskUsage.current() }
+        .onReceive(scanViewModel.$scanDidComplete) { _ in
+            refreshSuggestions()
+            diskUsage = DiskUsage.current()
+        }
     }
 }
 
