@@ -27,17 +27,22 @@ final class AppSourceClassifierTests: XCTestCase {
         XCTAssertEqual(result, .appleBuiltIn)
     }
 
-    func testMASApp() {
+    func testMASApp() throws {
         // Create a temp directory simulating an App Store app with receipt
         let tmpDir = FileManager.default.temporaryDirectory
             .appendingPathComponent("com.kraftly.mastest")
-        try? FileManager.default.removeItem(at: tmpDir)
-        try? FileManager.default.createDirectory(
+        // `removeItem` throws when the directory does not exist (which is the
+        // common case on first run). Only remove if present so the test is
+        // idempotent across runs without a tearDown.
+        if FileManager.default.fileExists(atPath: tmpDir.path) {
+            try FileManager.default.removeItem(at: tmpDir)
+        }
+        try FileManager.default.createDirectory(
             at: tmpDir.appendingPathComponent("Contents/_MASReceipt"),
             withIntermediateDirectories: true
         )
         // Create the receipt file (required by hasMASReceipt check)
-        try? Data().write(to: tmpDir.appendingPathComponent("Contents/_MASReceipt/receipt"))
+        try Data().write(to: tmpDir.appendingPathComponent("Contents/_MASReceipt/receipt"))
 
         let result = AppCatalogService.classifySource(
             url: tmpDir,
@@ -45,7 +50,7 @@ final class AppSourceClassifierTests: XCTestCase {
         )
         XCTAssertEqual(result, .mas)
 
-        try? FileManager.default.removeItem(at: tmpDir)
+        try FileManager.default.removeItem(at: tmpDir)
     }
 
     func testProtectedBundleID() {
