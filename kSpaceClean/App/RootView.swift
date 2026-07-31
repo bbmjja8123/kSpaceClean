@@ -119,23 +119,44 @@ struct RootView: View {
         GlassPanel {
             VStack(spacing: 4) {
                 ForEach(AppState.NavigationItem.allCases, id: \.self) { item in
-                    Button {
-                        appState.navigation = item
-                    } label: {
-                        Image(systemName: item.iconName)
-                            .font(.system(size: 16))
-                            .frame(width: 36, height: 36)
-                            .background(appState.navigation == item ? Color.brandPrimary.opacity(0.3) : .clear)
-                            .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
-                    }
-                    .buttonStyle(.plain)
-                    .help(item.tooltip)
+                    IconRailButton(
+                        item: item,
+                        isSelected: appState.navigation == item,
+                        action: { appState.navigation = item }
+                    )
                 }
                 Spacer()
             }
             .padding(.vertical, AppSpacing.sm)
         }
         .frame(width: 42)
+    }
+}
+
+/// F9 perf sweep: small Equatable helper view that wraps each icon
+/// rail button. `.equatable()` on it means a `navigation` change
+/// only re-evaluates the two affected buttons (selected and
+/// deselected) instead of every button in the rail. Equality is
+/// `(item, isSelected)` because the row body depends only on those.
+private struct IconRailButton: View, Equatable {
+    let item: AppState.NavigationItem
+    let isSelected: Bool
+    let action: () -> Void
+
+    static func == (lhs: IconRailButton, rhs: IconRailButton) -> Bool {
+        lhs.item == rhs.item && lhs.isSelected == rhs.isSelected
+    }
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: item.iconName)
+                .font(.system(size: 16))
+                .frame(width: 36, height: 36)
+                .background(isSelected ? Color.brandPrimary.opacity(0.3) : .clear)
+                .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+        }
+        .buttonStyle(.plain)
+        .help(item.tooltip)
     }
 }
 
