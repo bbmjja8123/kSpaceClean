@@ -28,12 +28,14 @@ public struct PaywallView: View {
             if let errorMessage = viewModel.errorMessage {
                 errorBanner(message: errorMessage)
             }
+            termsDisclosure
             PurchaseButton(
                 label: LocalizedStringKey(stringLiteral: viewModel.priceLine),
                 isLoading: viewModel.isPurchasing,
                 didSucceed: viewModel.isPro,
                 action: { Task { await viewModel.purchase() } }
             )
+            .disabled(!viewModel.canPurchase)
             restoreButton
             dismissButton
         }
@@ -98,6 +100,33 @@ public struct PaywallView: View {
                 .foregroundStyle(.tertiary)
                 .multilineTextAlignment(.center)
         }
+    }
+
+    private var termsDisclosure: some View {
+        let disclosure = SubscriptionTerms.disclosure()
+        return VStack(alignment: .leading, spacing: 6) {
+            Text(disclosure.title)
+                .font(.caption.bold())
+                .foregroundStyle(.secondary)
+
+            Text(disclosure.body)
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Toggle(isOn: Binding(
+                get: { viewModel.acceptedTerms },
+                set: { viewModel.acceptedTerms = $0 }
+            )) {
+                Text(disclosure.supportLink)
+                    .font(.caption2)
+            }
+            .toggleStyle(.checkbox)
+            .controlSize(.small)
+        }
+        .padding(8)
+        .background(Color.secondary.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
     private func errorBanner(message: String) -> some View {
