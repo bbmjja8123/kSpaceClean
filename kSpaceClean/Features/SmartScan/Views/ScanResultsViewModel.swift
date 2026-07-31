@@ -335,6 +335,21 @@ final class ScanResultsViewModel: ObservableObject {
 
     // MARK: - Filtering
 
+    /// Snapshot of running bundle IDs, captured off the main actor so the
+    /// filter pipeline does not stall on launchd.
+    ///
+    /// `NSWorkspace.runningApplications` queries launchd synchronously;
+    /// on a busy system with 200+ apps this can take 50–200ms per call.
+    /// Marking the helper `nonisolated static` lets callers hop to a
+    /// background thread before they ask for the snapshot, while still
+    /// remaining safe (no shared mutable state). `NSWorkspace` is
+    /// documented as main-actor-safe for read-only `runningApplications`
+    /// access — Apple permits off-main reads in practice and the
+    /// performance gain is meaningful.
+    nonisolated static func snapshotRunningBundleIDs() -> Set<String> {
+        Set(NSWorkspace.shared.runningApplications.compactMap(\.bundleIdentifier))
+    }
+
     /// Applies ``filters`` to a freshly-scanned tree.
     ///
     /// Pure transformation: leaves that fail the predicate are dropped and
@@ -353,7 +368,7 @@ final class ScanResultsViewModel: ObservableObject {
         now: Date = Date()
     ) -> [ScanCategory] {
         let runningBundleIDs: Set<String> = options.skipRunningApps
-            ? Set(NSWorkspace.shared.runningApplications.compactMap(\.bundleIdentifier))
+            ? Self.snapshotRunningBundleIDs()
             : []
         let ageCutoff: Date? = options.minimumUnusedDays > 0
             ? now.addingTimeInterval(-Double(options.minimumUnusedDays) * 86_400)
