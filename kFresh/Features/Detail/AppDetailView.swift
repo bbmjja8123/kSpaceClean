@@ -30,6 +30,16 @@ struct AppDetailView: View {
         .overlay(alignment: .bottom) {
             if viewModel.showUninstallToast {
                 uninstallToast
+            } else if let restoreError = viewModel.lastRestoreError {
+                // I3a: persistent retry banner replaces the countdown toast
+                // when the last `restore()` attempt failed. Tapping the
+                // button re-invokes `restore()`, which uses the still-
+                // preserved `lastUninstallRecord` to retry against the
+                // intact backup directory. The toast is suppressed via
+                // `showUninstallToast = false` (set by the success branch
+                // of `restore`); until then, this banner is the user's
+                // only affordance to retry the restore.
+                restoreErrorBanner(for: restoreError)
             }
         }
     }
@@ -162,5 +172,51 @@ struct AppDetailView: View {
         .background(.ultraThinMaterial)
         .cornerRadius(12)
         .padding()
+    }
+
+    /// I3a: persistent banner shown when the last `restore()` attempt
+    /// failed. Distinct from the 10-second undo countdown toast — this
+    /// banner stays on screen until either the user retries successfully
+    /// or they navigate away. The retry button re-invokes `restore()`,
+    /// which uses the still-preserved `lastUninstallRecord` against the
+    /// intact backup directory (see `TrashMover.restore` `.restoreResidueFailed`
+    /// branch — the backup is never cleaned up on a failed restore).
+    private func restoreErrorBanner(for error: TrashError) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundColor(.warning)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("恢复部分失败")
+                    .fontWeight(.medium)
+                Text(restoreErrorMessage(for: error))
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+            }
+            Spacer()
+            Button("重试") {
+                Task { await viewModel.restore() }
+            }
+        }
+        .padding()
+        .background(.ultraThinMaterial)
+        .cornerRadius(12)
+        .padding()
+    }
+
+    /// Maps a `TrashError` to a user-readable message for the retry banner.
+    /// The soft cases (which the user can act on) get specific copy; the
+    /// hard cases fall back to a generic "unexpected error" so we don't
+    /// leak OS internals.
+    private func restoreErrorMessage(for error: TrashError) -> String {
+        switch error {
+        case .restoreResidueFailed:
+            return "残留文件未完全恢复 — 备份已保留，可重试"
+        case .restoreRefusedOverwrite:
+            return "原始路径已被占用，无法恢复"
+        case .trashedItemMissing:
+            return "原 App 已在废纸篓中消失，无法恢复"
+        case .trashFailed, .terminateFailed, .protected, .auditLogFailed:
+            return "意外错误，请稍后重试"
+        }
     }
 }

@@ -17,6 +17,18 @@ class DetailViewModel: ObservableObject {
     /// rename collisions like `Foo.app` → `Foo 2.app`.
     @Published var lastUninstallRecord: UninstallRecord?
 
+    /// The most recent `TrashMover.restore` failure, or `nil` if the last
+    /// restore attempt succeeded (or none has run yet).
+    ///
+    /// I3a: surfaced by `restore()` to drive a retry affordance. When
+    /// `.restoreResidueFailed` (or any other failure) fires, the backup
+    /// directory is intentionally preserved so the user can retry — but
+    /// only if `lastUninstallRecord` is still available. The UI should
+    /// observe this property and replace the undo countdown toast with a
+    /// persistent "Restore partially failed — backup preserved, tap to
+    /// retry" banner. Cleared on a subsequent successful restore.
+    @Published var lastRestoreError: TrashError?
+
     private let trashMover = TrashMover()
     private let coordinator: AppCoordinator
     private let analysisRepo = AppAnalysisRepository()
@@ -63,9 +75,19 @@ class DetailViewModel: ObservableObject {
     private func startUndoCountdown(with record: UninstallRecord) {
         undoRemainingSeconds = 10
         Task {
+            // m7: `do`/`catch` instead of `try?` so cancellation (which
+            // throws `CancellationError` inside `Task.sleep`) exits the
+            // countdown cleanly. The previous `try? await Task.sleep(...)`
+            // silently turned cancellation into a no-op, so a SwiftUI view
+            // that destroyed `DetailViewModel` mid-countdown would still
+            // observe the next tick.
             for i in stride(from: 10, through: 0, by: -1) {
                 undoRemainingSeconds = i
-                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                do {
+                    try await Task.sleep(nanoseconds: 1_000_000_000)
+                } catch {
+                    return
+                }
                 if i == 0 {
                     showUninstallToast = false
                 }
@@ -79,8 +101,26 @@ class DetailViewModel: ObservableObject {
         // failed), `lastUninstallRecord` is nil — bail silently rather
         // than constructing a broken record with an empty trash path.
         guard let record = lastUninstallRecord else { return }
-        _ = await trashMover.restore(record: record)
-        showUninstallToast = false
-        lastUninstallRecord = nil
+        let result = await trashMover.restore(record: record)
+        // I3a: switch on the result so each failure mode drives a distinct
+        // UI outcome instead of always clearing the undo affordance.
+        // `.restoreResidueFailed` (and any other failure) means the app
+        // bundle is already back at its original path BUT the residue
+        // restore partially failed — the backup is intentionally preserved
+        // for retry. Clearing `lastUninstallRecord` here would destroy the
+        // user's only retry affordance.
+        switch result {
+        case .success:
+            lastRestoreError = nil
+            showUninstallToast = false
+            lastUninstallRecord = nil
+        case .failure(let error):
+            // Keep `lastUninstallRecord` so the undo button can retry.
+            // Surface the failure via `lastRestoreError` so the UI can
+            // show "Restore partially failed — backup preserved, tap to
+            // retry" (e.g. a persistent error banner replacing the
+            // countdown toast).
+            lastRestoreError = error
+        }
     }
 }
