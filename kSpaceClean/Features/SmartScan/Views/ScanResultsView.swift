@@ -141,10 +141,15 @@ struct PreScanPanel: View {
     @ObservedObject var viewModel: ScanResultsViewModel
 
     /// Size-floor slider works in MB; the model stores bytes.
+    /// F6 perf sweep: the slider writes into ``viewModel/draftFilters``
+    /// (debounced 150 ms → ``viewModel/filters``) so dragging across the
+    /// full 0–100 MB range fires the filter pipeline once instead of
+    /// 100 times. The size label reads from the draft so the UI stays
+    /// snappy during the drag.
     private var minimumSizeMB: Binding<Double> {
         Binding(
-            get: { Double(viewModel.filters.minimumSizeBytes) / 1_048_576.0 },
-            set: { viewModel.filters.minimumSizeBytes = Int64($0 * 1_048_576.0) }
+            get: { Double(viewModel.draftFilters.minimumSizeBytes) / 1_048_576.0 },
+            set: { viewModel.draftFilters.minimumSizeBytes = Int64($0 * 1_048_576.0) }
         )
     }
 
@@ -195,9 +200,10 @@ struct PreScanPanel: View {
     @ViewBuilder
     private var filterControls: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            // 1 — minimum size threshold
+            // 1 — minimum size threshold (F6: binds to draftFilters,
+            //     debounced 150ms before the pipeline runs).
             VStack(alignment: .leading, spacing: 2) {
-                Text("最小文件大小：\(formatSizeLabel(viewModel.filters.minimumSizeBytes))")
+                Text("最小文件大小：\(formatSizeLabel(viewModel.draftFilters.minimumSizeBytes))")
                     .font(Typography.regularBody())
                     .foregroundStyle(Color.textPrimary)
                 Slider(value: minimumSizeMB, in: 0...100, step: 1)

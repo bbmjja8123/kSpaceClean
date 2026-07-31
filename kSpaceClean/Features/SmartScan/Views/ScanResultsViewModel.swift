@@ -2,6 +2,7 @@
 import AppKit
 import Foundation
 import SwiftUI
+import Combine
 
 /// The four pre-scan filters the user can tune before starting a scan.
 ///
@@ -152,10 +153,34 @@ final class ScanResultsViewModel: ObservableObject {
     /// `nil` in previews; supplied by `RootView` in production.
     let engine: ScanEngine?
 
+    /// F6 perf sweep: the pre-scan slider writes into this draft, not
+    /// `filters`. A Combine debounce flushes the draft into the real
+    /// `filters` after 150ms of slider inactivity, so dragging the
+    /// slider across a full 0–100 MB range fires the filter pipeline
+    /// once instead of 100 times.
+    @Published var draftFilters: ScanFilterOptions = .default
+
+    /// Combine subscription that copies `draftFilters` into `filters`
+    /// after a 150ms quiet window. Kept on the view model so it
+    /// shares the model's @MainActor lifetime.
+    private var filterDebounceCancellable: AnyCancellable?
+
     /// Designated init. Pass `engine` to wire a real scan; pass `nil` for
     /// previews and tests where the model just renders mock data.
     init(engine: ScanEngine? = nil) {
         self.engine = engine
+        // F6 perf sweep: debounce `draftFilters` → `filters` by 150 ms so
+        // the size-floor slider does not fire the filter pipeline on
+        // every pixel of drag. The pipeline still re-runs on every
+        // committed value, just at most once per gesture instead of
+        // 60 times per second.
+        filterDebounceCancellable = $draftFilters
+            .debounce(for: .milliseconds(150), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                guard self.filters != newValue else { return }
+                self.filters = newValue
+            }
     }
 
     /// Toggles the expansion state of the node identified by `id`.
