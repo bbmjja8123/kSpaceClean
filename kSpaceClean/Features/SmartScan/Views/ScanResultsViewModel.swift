@@ -58,7 +58,17 @@ public struct ScanFilterOptions: Equatable, Sendable {
 /// project level, so any background-thread touch point would otherwise
 /// surface a compile-time error.
 ///
+/// F4 perf sweep: the four scan-lifecycle fields
+/// (`isScanning`, `hasScanned`, `categories`, and the summary pair
+/// `totalSelectedSize` / `totalSelectedCount`) are now stored on a
+/// single ``ScanSnapshot`` struct so a scan-completion can update all
+/// five with one setter call and one `objectWillChange` invocation —
+/// instead of the previous one-invalidation-per-field cascade. Legacy
+/// `@Published` accessors remain as computed properties so external
+/// callers (RootView, previews) do not break.
+///
 /// Selection flow:
+///
 /// 1. User taps a checkbox on any row.
 /// 2. `toggleSelect(_:)` flips the node's `CheckState` and mirrors the
 ///    new state down through the cascade (see `ScanTreeNode.setState`).
@@ -71,33 +81,71 @@ public struct ScanFilterOptions: Equatable, Sendable {
 ///    `FileManager` calls that would otherwise violate the 50fps budget).
 @MainActor
 final class ScanResultsViewModel: ObservableObject {
-    /// Top-level categories rendered in the tree. Populated by the scan
-    /// engine at completion; preview / placeholder data is supplied by
-    /// ``loadMockData()``.
-    @Published var categories: [ScanCategory] = []
+    /// Batched scan-lifecycle state. The four logical fields that always
+    /// transition together at scan completion (start, end, category
+    /// arrival, summary recompute) live on this struct so a single setter
+    /// call emits one `objectWillChange` per SwiftUI render cycle.
+    struct ScanSnapshot: Equatable {
+        var isScanning: Bool = false
+        var hasScanned: Bool = false
+        var categories: [ScanCategory] = []
+        var totalSelectedSize: Int64 = 0
+        var totalSelectedCount: Int = 0
+    }
+
+    /// Snapshot backing the legacy `@Published` accessors. Setting the
+    /// whole struct at scan completion collapses what used to be 4–5
+    /// separate `objectWillChange` emissions into one.
+    ///
+    /// Marked `internal` (not `private(set)`) so the regression guard
+    /// in ``ScanResultsViewModelSnapshotTests`` can exercise the
+    /// batched-write path directly. Production code reads/writes only
+    /// through the computed accessors below.
+    @Published var snapshot = ScanSnapshot()
+
+    /// Backward-compatible `@Published` accessor — external callers
+    /// (`RootView`, previews, sibling view models that read this field
+    /// without owning it) continue to compile unchanged. SwiftUI's
+    /// `objectWillChange` is triggered by writes to `snapshot`, so this
+    /// computed read still observes the right invalidation cadence.
+    var categories: [ScanCategory] {
+        get { snapshot.categories }
+        set { snapshot.categories = newValue }
+    }
+    /// Backward-compatible accessor. Mutating this property writes
+    /// through to `snapshot.categories` so the whole struct's
+    /// `objectWillChange` fires once.
+    var isScanning: Bool {
+        get { snapshot.isScanning }
+        set { snapshot.isScanning = newValue }
+    }
+    /// Backward-compatible accessor — see ``categories``.
+    var hasScanned: Bool {
+        get { snapshot.hasScanned }
+        set { snapshot.hasScanned = newValue }
+    }
+    /// Backward-compatible accessor — see ``categories``.
+    var totalSelectedSize: Int64 {
+        get { snapshot.totalSelectedSize }
+        set { snapshot.totalSelectedSize = newValue }
+    }
+    /// Backward-compatible accessor — see ``categories``.
+    var totalSelectedCount: Int {
+        get { snapshot.totalSelectedCount }
+        set { snapshot.totalSelectedCount = newValue }
+    }
+
     /// Set of tree-node ids whose subtree is currently expanded.
     /// Membership changes drive the SwiftUI `LazyVStack` rerender.
     @Published var expandedIDs: Set<UUID> = []
-    /// `true` while a scan is in flight; gates progress UI overlays.
-    @Published var isScanning: Bool = false
     /// Filesystem path currently being inspected by the scanner.
     /// Empty when the scan is idle.
     @Published var currentPath: String = ""
     /// Coarse progress value (`0.0`...`1.0`) for the top progress bar.
     @Published var progress: Double = 0.0
-    /// Aggregate size in bytes across every URL currently selected
-    /// (`.state == .on`) in the tree.
-    @Published var totalSelectedSize: Int64 = 0
-    /// Aggregate count of selected URLs across the tree.
-    @Published var totalSelectedCount: Int = 0
     /// User-tunable filters shown on the pre-scan surface and applied to
     /// the engine output when a scan completes.
     @Published var filters: ScanFilterOptions = .default
-    /// `false` until the first scan of this session finishes. Drives the
-    /// pre-scan surface (filters + "开始扫描" CTA) versus the post-scan
-    /// "nothing to clean" empty state — without it, both states collapse
-    /// into `categories.isEmpty` and the user never sees a scan trigger.
-    @Published private(set) var hasScanned: Bool = false
 
     /// Engine that drives real scans. The view model subscribes to its
     /// `@Published categories` array and folds them into its own state.
@@ -157,13 +205,13 @@ final class ScanResultsViewModel: ObservableObject {
     func updateSummary() {
         var totalSize: Int64 = 0
         var totalCount = 0
-        for category in categories {
+        for category in snapshot.categories {
             let selected = Self.collectSelected(in: category)
             totalSize += selected.size
             totalCount += selected.count
         }
-        totalSelectedSize = totalSize
-        totalSelectedCount = totalCount
+        snapshot.totalSelectedSize = totalSize
+        snapshot.totalSelectedCount = totalCount
     }
 
     /// In-memory bottom-up walker — returns the sum of `selectedSize` over
@@ -204,7 +252,7 @@ final class ScanResultsViewModel: ObservableObject {
     ///
     /// - Parameter node: The node whose ancestors need refreshing.
     func refreshAllParents(of node: any ScanTreeNode) {
-        for category in categories {
+        for category in snapshot.categories {
             Self.refreshAncestors(of: node.id, in: category)
         }
     }
@@ -298,11 +346,19 @@ final class ScanResultsViewModel: ObservableObject {
     /// scan trigger. The view model subscribes to `engine.categories` and
     /// forwards updates into its own `@Published categories` array so the
     /// SwiftUI tree re-renders as the scan progresses.
+    ///
+    /// F4 perf sweep: the four scan-lifecycle fields (`isScanning`,
+    /// `hasScanned`, `categories`, and the summary pair) update inside
+    /// one MainActor transaction so the SwiftUI render pass fires once
+    /// instead of four times per completion.
     func startRealScan(rootPaths: [String] = []) async {
         guard let engine else { return }
-        isScanning = true
+        var working = snapshot
+        working.isScanning = true
         // Pre-clear so the SwiftUI tree shows the loading state immediately.
-        categories = []
+        working.categories = []
+        snapshot = working
+
         await engine.startScan()
         // After `startScan` returns, subscribe to the engine's category
         // stream and forward into our tree. The wrapper runs both the
@@ -310,10 +366,27 @@ final class ScanResultsViewModel: ObservableObject {
         // to `@Published categories`; we mirror those into our own array
         // so toggling a checkbox here does not race with engine updates.
         let raw = engine.categories.sorted { $0.categoryID < $1.categoryID }
-        categories = Self.applyFilters(raw, options: filters)
-        isScanning = false
-        hasScanned = true
-        updateSummary()
+        var newSnapshot = working
+        newSnapshot.categories = Self.applyFilters(raw, options: filters)
+        newSnapshot.isScanning = false
+        newSnapshot.hasScanned = true
+
+        // Recompute summary on the new categories before publishing so
+        // the summary bar never shows a transient "0 项" between the
+        // categories write and the summary write.
+        var totalSize: Int64 = 0
+        var totalCount = 0
+        for category in newSnapshot.categories {
+            let selected = Self.collectSelected(in: category)
+            totalSize += selected.size
+            totalCount += selected.count
+        }
+        newSnapshot.totalSelectedSize = totalSize
+        newSnapshot.totalSelectedCount = totalCount
+
+        // Single write — one `objectWillChange` emission covers all five
+        // logical state changes.
+        snapshot = newSnapshot
     }
 
     /// Fire-and-forget scan trigger for SwiftUI button actions.
