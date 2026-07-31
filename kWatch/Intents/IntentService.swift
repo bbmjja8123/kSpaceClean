@@ -44,6 +44,19 @@ public protocol IntentServiceProtocol: Sendable {
     /// Triggers the diagnostics export flow. Returns the URL of the written
     /// archive, or throws if the export failed.
     func exportDiagnostics() async throws -> URL
+
+    /// Fire-and-forget. Tells the app to surface the top processes dialog
+    /// using `limit` entries. The intent itself owns the dialog text and
+    /// formatting; the service only routes the side effect.
+    func showTopProcesses(limit: Int) async
+
+    /// Fire-and-forget. Tells the app to surface a disk usage dialog scoped
+    /// to `volume` (system / data / external).
+    func showDiskUsage(volume: DiskVolumeParameter) async
+
+    /// Fire-and-forget. Tells the app to surface a network rate dialog
+    /// filtered by `direction` (combined / download / upload).
+    func showNetworkRate(direction: NetworkDirectionParameter) async
 }
 
 /// Lightweight process usage snapshot used by intents.

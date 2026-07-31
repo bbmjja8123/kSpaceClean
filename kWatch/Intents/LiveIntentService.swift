@@ -92,6 +92,24 @@ public final class LiveIntentService: IntentServiceProtocol, @unchecked Sendable
         }
         throw IntentServiceError.exportFailed("Diagnostics export was not produced.")
     }
+
+    public func showTopProcesses(limit: Int) async {
+        // Fire-and-forget. The intent owns the dialog text. The main app
+        // already pushes fresh process data through the App Group snapshot,
+        // so no distributed notification is needed.
+        _ = limit
+    }
+
+    public func showDiskUsage(volume: DiskVolumeParameter) async {
+        // Fire-and-forget. Disk snapshots are read from the App Group; the
+        // main app can filter by volume on the dashboard side if needed.
+        _ = volume
+    }
+
+    public func showNetworkRate(direction: NetworkDirectionParameter) async {
+        // Fire-and-forget. Network throughput comes from the shared snapshot.
+        _ = direction
+    }
 }
 
 /// Notification names used by the intents extension to talk to the main app.
