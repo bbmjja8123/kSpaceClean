@@ -15,10 +15,6 @@
 		isa = PBXBuildFile;
 		fileRef = FC8F976B27828057A607616A;
 	};
-	10DB601CE6FB083934042CC1 /* 10DB601CE6FB083934042CC1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 83B862B9A7D7EA1B63BDE826;
-	};
 	115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */ = {
 		isa = PBXBuildFile;
 		fileRef = 1C4455D0B4CE1B5F5681A2FE;
@@ -63,6 +59,10 @@
 		isa = PBXBuildFile;
 		fileRef = F7545E34522EFCBAF5855CC5;
 	};
+	27620085AB03437DD5C056BE /* 27620085AB03437DD5C056BE */ = {
+		isa = PBXBuildFile;
+		fileRef = CA421224A0D4FD30CDE58039;
+	};
 	29FF2FF43E9C07D57EE25823 /* 29FF2FF43E9C07D57EE25823 */ = {
 		isa = PBXBuildFile;
 		fileRef = CCDE2FF048C7D15F5A9C4034;
@@ -74,10 +74,6 @@
 	2E2245A790D86751CF57E071 /* 2E2245A790D86751CF57E071 */ = {
 		isa = PBXBuildFile;
 		fileRef = 8E5C043DA0B1F2CABCBA966C;
-	};
-	2E556BE28F6F12D001344D8C /* 2E556BE28F6F12D001344D8C */ = {
-		isa = PBXBuildFile;
-		fileRef = 0F5EC2A0B02232CE44A555F8;
 	};
 	2F3C02BFE066131091663283 /* 2F3C02BFE066131091663283 */ = {
 		isa = PBXBuildFile;
@@ -150,10 +146,6 @@
 	45A730AF093A5B2474D06B9D /* 45A730AF093A5B2474D06B9D */ = {
 		isa = PBXBuildFile;
 		fileRef = 30C5A4104A47B08FCBA5C9C3;
-	};
-	469F29A99B0712EFC89DBF3C /* 469F29A99B0712EFC89DBF3C */ = {
-		isa = PBXBuildFile;
-		fileRef = C562F3E116F2A6D12494EC3B;
 	};
 	4852A6CB7BC35688453AAC84 /* 4852A6CB7BC35688453AAC84 */ = {
 		isa = PBXBuildFile;
@@ -363,10 +355,6 @@
 		isa = PBXBuildFile;
 		fileRef = E3EED811D3EC913342F176EF;
 	};
-	A59D71D67347553FE9F005C0 /* A59D71D67347553FE9F005C0 */ = {
-		isa = PBXBuildFile;
-		fileRef = ADB90F6FB754EE1C996E60D6;
-	};
 	A5DC807BBF7FE33311B154C7 /* A5DC807BBF7FE33311B154C7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 5476C01D0356DEDD2A0CE3A9;
@@ -398,10 +386,6 @@
 	AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */ = {
 		isa = PBXBuildFile;
 		fileRef = 14679243FC833D0C8D16C74A;
-	};
-	AF7B5248EA6EF44C73E0960F /* AF7B5248EA6EF44C73E0960F */ = {
-		isa = PBXBuildFile;
-		fileRef = A052A401664B833ED62E449D;
 	};
 	AFC2605720E874C24B299225 /* AFC2605720E874C24B299225 */ = {
 		isa = PBXBuildFile;
@@ -535,10 +519,6 @@
 		isa = PBXBuildFile;
 		fileRef = 7DB7F26B00370ABD7292F033;
 	};
-	F0668EAEEDEA622D6239C31F /* F0668EAEEDEA622D6239C31F */ = {
-		isa = PBXBuildFile;
-		fileRef = AFA02BA1535BBD889403394C;
-	};
 	F784188A406376B3327EC377 /* F784188A406376B3327EC377 */ = {
 		isa = PBXBuildFile;
 		fileRef = 7421B94C79458AF8EF7AECF5;
@@ -661,13 +641,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = HistoryContentView.swift;
 		path = Features/Cleanup/HistoryContentView.swift;
-		sourceTree = "<group>";
-	};
-	0F5EC2A0B02232CE44A555F8 /* GalaxyRenderer.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = GalaxyRenderer.swift;
-		path = Features/DiskGalaxy/GalaxyRenderer.swift;
 		sourceTree = "<group>";
 	};
 	1294C440D6A50115838D849B /* ScanProgressRing.swift */ = {
@@ -1182,13 +1155,6 @@
 		path = Features/Cleanup/CleanupEngine.swift;
 		sourceTree = "<group>";
 	};
-	83B862B9A7D7EA1B63BDE826 /* DiskUsageBar.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DiskUsageBar.swift;
-		path = Features/DiskGalaxy/DiskUsageBar.swift;
-		sourceTree = "<group>";
-	};
 	86C58025E849DC1DCA94AF91 /* ScanProgressModelTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1280,13 +1246,6 @@
 		path = Features/Cleanup/CleanActionExecutors.swift;
 		sourceTree = "<group>";
 	};
-	A052A401664B833ED62E449D /* GalaxyViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = GalaxyViewModel.swift;
-		path = Features/DiskGalaxy/GalaxyViewModel.swift;
-		sourceTree = "<group>";
-	};
 	A09AC995B0CF0440511F967F /* AppUninstallViewModel.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1336,13 +1295,6 @@
 		path = Features/AppUninstall/AppUninstallScanner.swift;
 		sourceTree = "<group>";
 	};
-	ADB90F6FB754EE1C996E60D6 /* GalaxyView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = GalaxyView.swift;
-		path = Features/DiskGalaxy/GalaxyView.swift;
-		sourceTree = "<group>";
-	};
 	AE22F6478FB89A6208E6100D /* UserPreferences.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1355,13 +1307,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = RestoreHistoryItemView.swift;
 		path = Features/Cleanup/Views/RestoreHistoryItemView.swift;
-		sourceTree = "<group>";
-	};
-	AFA02BA1535BBD889403394C /* GalaxyViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = GalaxyViewModelTests.swift;
-		path = Tests/GalaxyViewModelTests.swift;
 		sourceTree = "<group>";
 	};
 	B2296761732A6D8AABCEDABB /* KSpaceClean.xcdatamodeld */ = {
@@ -1434,18 +1379,18 @@
 		path = Features/Common/Models/RiskLevel.swift;
 		sourceTree = "<group>";
 	};
-	C562F3E116F2A6D12494EC3B /* GalaxyScene.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = GalaxyScene.swift;
-		path = Features/DiskGalaxy/GalaxyScene.swift;
-		sourceTree = "<group>";
-	};
 	C9F8A73657E01AFA836D20D6 /* RiskClassifierTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = RiskClassifierTests.swift;
 		path = Tests/RiskClassifierTests.swift;
+		sourceTree = "<group>";
+	};
+	CA421224A0D4FD30CDE58039 /* DiskUsageBar.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DiskUsageBar.swift;
+		path = Features/Common/Components/DiskUsageBar.swift;
 		sourceTree = "<group>";
 	};
 	CCDE2FF048C7D15F5A9C4034 /* KSpaceCleanWidget.swift */ = {
@@ -1673,18 +1618,6 @@
 			27E8208E9A99978867A43090 /* kFoundation */,
 		);
 		name = Frameworks;
-		sourceTree = "<group>";
-	};
-	0F500621D819C65BE5E0B907 /* DiskGalaxy */ = {
-		isa = PBXGroup;
-		children = (
-			0F5EC2A0B02232CE44A555F8 /* GalaxyRenderer.swift */,
-			C562F3E116F2A6D12494EC3B /* GalaxyScene.swift */,
-			ADB90F6FB754EE1C996E60D6 /* GalaxyView.swift */,
-			A052A401664B833ED62E449D /* GalaxyViewModel.swift */,
-			83B862B9A7D7EA1B63BDE826 /* DiskUsageBar.swift */,
-		);
-		name = DiskGalaxy;
 		sourceTree = "<group>";
 	};
 	1119F24AE4A205A534838F74 /* Resources */ = {
@@ -1922,7 +1855,6 @@
 			32C1718E990FB28676F7BCEE /* DesignSystem */,
 			197EF6F3D8818A6495AD3D55 /* Models */,
 			4BFC342C97D7A4FADE666607 /* MetricKit */,
-			0F500621D819C65BE5E0B907 /* DiskGalaxy */,
 			86024B0512179A587AA2E09C /* LargeOldFile */,
 			A6A76DAF7E87AA81F14A499D /* DuplicateFile */,
 			601CA57E814BC3922B39403A /* AppUninstall */,
@@ -1942,7 +1874,6 @@
 		children = (
 			27BDC56BA0773FA9060A0F8F /* TestHelpers.swift */,
 			E4C62FD7FB4A1EAC51EC2224 /* RuleClassifierTests.swift */,
-			AFA02BA1535BBD889403394C /* GalaxyViewModelTests.swift */,
 			362341017602FD8FE3C4DCD8 /* AppStateTests.swift */,
 			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
 			33A787540DD622D356820FE1 /* ScanProgressTests.swift */,
@@ -1996,6 +1927,7 @@
 			2408858D41C1FD466433A1B6 /* EmptyStateView.swift */,
 			72B03ED286D48519051D6C36 /* SkeletonRow.swift */,
 			6A14EEC19B3B5B3F9C2112DB /* ToolbarView.swift */,
+			CA421224A0D4FD30CDE58039 /* DiskUsageBar.swift */,
 		);
 		name = Components;
 		sourceTree = "<group>";
@@ -2183,7 +2115,6 @@
 		files = (
 			9DB2E0CB10DB5ED0FC9BD7DA /* 9DB2E0CB10DB5ED0FC9BD7DA */,
 			F7EF2CF90A9EA92120D93DCC /* F7EF2CF90A9EA92120D93DCC */,
-			F0668EAEEDEA622D6239C31F /* F0668EAEEDEA622D6239C31F */,
 			23F7A4319341215A83BC3ABF /* 23F7A4319341215A83BC3ABF */,
 			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,
 			201A00B31EEF8EC428CADA3F /* 201A00B31EEF8EC428CADA3F */,
@@ -2249,6 +2180,7 @@
 			CCD136AC62243D4906BB64F1 /* CCD136AC62243D4906BB64F1 */,
 			C4BBA6F57B34405F29CC1C0D /* C4BBA6F57B34405F29CC1C0D */,
 			22398E879ED54BCACB02D236 /* 22398E879ED54BCACB02D236 */,
+			27620085AB03437DD5C056BE /* 27620085AB03437DD5C056BE */,
 			AFC2605720E874C24B299225 /* AFC2605720E874C24B299225 */,
 			684DF615F3B1843CBF85E30B /* 684DF615F3B1843CBF85E30B */,
 			A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */,
@@ -2272,11 +2204,6 @@
 			F8E952B07043AB9EEBD47303 /* F8E952B07043AB9EEBD47303 */,
 			8E0E5FEE34C6C2AD6DAFD9C1 /* 8E0E5FEE34C6C2AD6DAFD9C1 */,
 			9C58B804BD43274AEFBC589D /* 9C58B804BD43274AEFBC589D */,
-			2E556BE28F6F12D001344D8C /* 2E556BE28F6F12D001344D8C */,
-			469F29A99B0712EFC89DBF3C /* 469F29A99B0712EFC89DBF3C */,
-			A59D71D67347553FE9F005C0 /* A59D71D67347553FE9F005C0 */,
-			AF7B5248EA6EF44C73E0960F /* AF7B5248EA6EF44C73E0960F */,
-			10DB601CE6FB083934042CC1 /* 10DB601CE6FB083934042CC1 */,
 			EDB5293C48C9B1E79545322F /* EDB5293C48C9B1E79545322F */,
 			99ABBDC172EB84CEE8289021 /* 99ABBDC172EB84CEE8289021 */,
 			F784188A406376B3327EC377 /* F784188A406376B3327EC377 */,

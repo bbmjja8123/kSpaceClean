@@ -169,7 +169,6 @@ def main():
         "DesignSystem": make_group("DesignSystem"),
         "Models": make_group("Models"),
         "MetricKit": make_group("MetricKit"),
-        "DiskGalaxy": make_group("DiskGalaxy"),
         "LargeOldFile": make_group("LargeOldFile"),
         "DuplicateFile": make_group("DuplicateFile"),
         "AppUninstall": make_group("AppUninstall"),
@@ -231,6 +230,7 @@ def main():
         ("Features/Common/Components/EmptyStateView.swift", "Components"),
         ("Features/Common/Components/SkeletonRow.swift", "Components"),
         ("Features/Common/Components/ToolbarView.swift", "Components"),
+        ("Features/Common/Components/DiskUsageBar.swift", "Components"),
         ("Features/Common/MetricKit/MetricKitReceiver.swift", "MetricKit"),
         ("Features/Common/KeyboardShortcuts.swift", "Common"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
@@ -254,11 +254,6 @@ def main():
         ("Features/Maintenance/MaintenanceScript.swift", "Maintenance"),
         ("Features/Maintenance/MaintenanceViewModel.swift", "Maintenance"),
         ("Features/Maintenance/MaintenanceView.swift", "Maintenance"),
-        ("Features/DiskGalaxy/GalaxyRenderer.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/GalaxyScene.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/GalaxyView.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/GalaxyViewModel.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/DiskUsageBar.swift", "DiskGalaxy"),
         ("Features/Onboarding/OnboardingCoordinator.swift", "Onboarding"),
         ("Features/Onboarding/OnboardingPages.swift", "Onboarding"),
         ("Features/RightPanel/AllFilesTabView.swift", "RightPanel"),
@@ -330,7 +325,6 @@ def main():
     test_files = [
         "TestHelpers.swift",
         "RuleClassifierTests.swift",
-        "GalaxyViewModelTests.swift",
         "AppStateTests.swift",
         "AppCoordinatorTests.swift",
         "ScanProgressTests.swift",
@@ -699,7 +693,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AIClassifier", "Cleanup", "Common", "Components", "DesignSystem", "Models", "MetricKit", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
+    for sub in ["AIClassifier", "Cleanup", "Common", "Components", "DesignSystem", "Models", "MetricKit", "LargeOldFile", "DuplicateFile",
                  "AppUninstall", "PrivacyClean", "PhotoClean", "Maintenance",
                  "Onboarding", "RightPanel", "Settings", "SmartScan"]:
         features_children.append((group_ids[sub], sub))

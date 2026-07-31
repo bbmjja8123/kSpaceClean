@@ -8,7 +8,7 @@ struct OnboardingPage1: View {
         VStack(spacing: AppSpacing.xxl) {
             Spacer()
 
-            Image(systemName: AppIcon.galaxy)
+            Image(systemName: "sparkles")
                 .font(.system(size: 64))
                 .foregroundStyle(Color.brandPrimary)
 
@@ -72,9 +72,9 @@ struct OnboardingPage2: View {
 
             VStack(spacing: AppSpacing.xl) {
                 FeatureRow(
-                    icon: "circle.hexagongrid",
-                    title: "3D 磁盘星系图",
-                    description: "以星系视角可视化您的磁盘空间分布，一目了然"
+                    icon: "magnifyingglass",
+                    title: "智能扫描",
+                    description: "快速扫描系统缓存、应用残留与可清理文件"
                 )
                 FeatureRow(
                     icon: "brain",

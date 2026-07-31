@@ -87,13 +87,6 @@
         "ja" : { "stringUnit" : { "state" : "translated", "value" : "AI分類" } }
       }
     },
-    "3D 磁盘星系图" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "3D Disk Galaxy" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "3D 磁盘星系图" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "3Dディスク銀河" } }
-      }
-    },
     "桌面 Widget + Shortcuts" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Desktop Widget + Shortcuts" } },

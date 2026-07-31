@@ -1,7 +1,21 @@
+// kSpaceClean/Features/Common/Components/DiskUsageBar.swift
 import SwiftUI
 import DesignSystem
 import CommonUtils
 
+/// Snapshot of the current volume's storage state.
+///
+/// `DiskUsage` is a `Sendable` value type that captures the four numbers a
+/// UI surface needs to render a storage indicator: total, used, and free
+/// bytes plus the optional per-bucket sizes (system, cache, projected
+/// cleanup savings). Construct it with ``current()`` to read the live
+/// values from the home volume's `URLResourceValues` (no privileged
+/// helpers — the same query the system uses for the Finder "Get Info"
+/// window).
+///
+/// The struct stays `public` so right-panel tabs, the toolbar, the
+/// widget, and the menu bar can all share a single source of truth
+/// without dragging the rest of the app shell into the model.
 public struct DiskUsage: Sendable {
     public let totalSpace: Int64
     public let usedSpace: Int64
@@ -34,6 +48,15 @@ public struct DiskUsage: Sendable {
     }
 }
 
+/// Compact horizontal disk-usage bar used at the bottom of the main
+/// surface.
+///
+/// Renders a `used / total` text label on the left, a 4-pt capsule bar
+/// in the middle (green below 70% used, yellow between 70-90%, red
+/// above 90%), and a `total` text label on the right. The bar is
+/// driven by ``DiskUsage/current()`` and refreshes on appear and
+/// whenever `scanViewModel.scanDidComplete` flips to `true` so a
+/// fresh scan immediately reflects in the storage indicator.
 struct DiskUsageBar: View {
     @ObservedObject var scanViewModel: ScanViewModel
     @State private var diskUsage = DiskUsage.current()

@@ -5,7 +5,6 @@ import DesignSystem
 /// Displays different content based on appState.navigation.
 struct RootView: View {
     @EnvironmentObject var appState: AppState
-    @StateObject private var galaxyViewModel = GalaxyViewModel()
     @StateObject private var scanViewModel = ScanViewModel()
     @StateObject private var cleanupViewModel = CleanupViewModel()
 
@@ -58,10 +57,11 @@ struct RootView: View {
                         mainContent
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                        // Right panel (only in galaxy/scan views)
-                        if appState.rightPanelVisible,
-                           appState.navigation == .galaxy || appState.navigation == .scan {
-                            RightPanelView(galaxyViewModel: galaxyViewModel, scanViewModel: scanViewModel)
+                        // Right panel (driven solely by rightPanelVisible
+                        // since the 3D galaxy visualization was removed in
+                        // v1.0 per CLAUDE.md §8.1)
+                        if appState.rightPanelVisible {
+                            RightPanelView(scanViewModel: scanViewModel)
                                 .frame(width: min(260, geo.size.width * 0.3))
                                 .padding(.trailing, 12)
                                 .padding(.top, 48)
@@ -69,35 +69,6 @@ struct RootView: View {
                         }
                     }
                 }
-
-                // Layer 4: Bottom panel (galaxy view only)
-                if appState.navigation == .galaxy {
-                    VStack {
-                        Spacer()
-                        bottomPanel
-                            .padding(.horizontal, 68)
-                            .padding(.bottom, 10)
-                    }
-                }
-
-                // Layer 5: Category legend (galaxy view only)
-                if appState.navigation == .galaxy {
-                    VStack {
-                        Spacer()
-                        HStack {
-                            categoryLegend
-                                .padding(.leading, 68)
-                            Spacer()
-                        }
-                        .padding(.bottom, 72)
-                    }
-                }
-            }
-        }
-        .onChange(of: scanViewModel.scanDidComplete) { completed in
-            if completed {
-                galaxyViewModel.update(with: scanViewModel.scanResults)
-                appState.navigation = .galaxy
             }
         }
         .scanKeyboardShortcuts(
@@ -121,21 +92,13 @@ struct RootView: View {
     // MARK: - Background
     @ViewBuilder
     private var backgroundLayer: some View {
-        switch appState.navigation {
-        case .galaxy:
-            GalaxyView(viewModel: galaxyViewModel)
-                .ignoresSafeArea()
-        default:
-            Color.bgPrimary.ignoresSafeArea()
-        }
+        Color.bgPrimary.ignoresSafeArea()
     }
 
     // MARK: - Main Content
     @ViewBuilder
     private var mainContent: some View {
         switch appState.navigation {
-        case .galaxy:
-            galaxyContent
         case .scan:
             ScanResultsView(viewModel: scanResultsViewModel)
         case .cleanup:
@@ -145,12 +108,6 @@ struct RootView: View {
         case .settings:
             SettingsView()
         }
-    }
-
-    /// In Galaxy mode, the area behind the right panel is transparent
-    /// so the 3D scene shows through. We just place a clear filler.
-    private var galaxyContent: some View {
-        Color.clear
     }
 
     // MARK: - Icon Rail
@@ -175,69 +132,6 @@ struct RootView: View {
             .padding(.vertical, AppSpacing.sm)
         }
         .frame(width: 42)
-    }
-
-    // MARK: - Bottom Panel
-    private var bottomPanel: some View {
-        GlassPanel {
-            HStack {
-                DiskUsageBar(scanViewModel: scanViewModel)
-                Spacer()
-                HStack(spacing: AppSpacing.sm) {
-                    Button(action: {
-                        appState.navigation = .scan
-                        scanViewModel.startScan()
-                    }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "arrow.down.circle")
-                                .font(.system(size: 12))
-                            Text("\u{5FEB}\u{901F}\u{626B}\u{63CF}")
-                                .font(AppFont.caption)
-                        }
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(.textSecondary)
-
-                    Button(action: {
-                        appState.navigation = .scan
-                        scanViewModel.startScan()
-                    }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "sparkles")
-                                .font(.system(size: 12))
-                            Text("\u{5F00}\u{59CB}\u{626B}\u{63CF}")
-                                .font(AppFont.caption)
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.brandPrimary)
-                }
-            }
-            .padding(.horizontal, AppSpacing.lg)
-            .frame(height: 48)
-        }
-    }
-
-    // MARK: - Category Legend
-    private var categoryLegend: some View {
-        HStack(spacing: 10) {
-            ForEach(FileCategory.allCases, id: \.self) { cat in
-                HStack(spacing: 4) {
-                    Circle()
-                        .fill(cat.color)
-                        .frame(width: 8, height: 8)
-                    Text(verbatim: "\(cat)")
-                        .font(AppFont.caption)
-                        .foregroundColor(.textSecondary)
-                }
-                .onTapGesture { appState.selectedCategory = cat }
-                .help(cat.rawValue)
-            }
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
     }
 }
 

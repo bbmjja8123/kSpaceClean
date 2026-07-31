@@ -3,28 +3,20 @@ import DesignSystem
 
 @MainActor
 public final class AppState: ObservableObject {
-    @Published public var navigation: NavigationItem = .galaxy
+    @Published public var navigation: NavigationItem = .scan
     @Published public var rightPanelTab: RightPanelTab = .overview
     @Published public var rightPanelVisible = true
     @Published public var selectedCategory: FileCategory?
     @Published public var scanState: ScanState = .idle
 
     public enum NavigationItem: String, CaseIterable {
-        case galaxy = "galaxy"
         case scan = "scan"
         case cleanup = "cleanup"
         case history = "history"
         case settings = "settings"
 
-        // I12: deferred v2 modules — keep the enum cases only on the
-        // Debug-only stub icon rail so the UI still parses. Production
-        // iconRail already iterates `NavigationItem.allCases`; the
-        // cases below are hidden behind `#if DEBUG` in the AppState
-        // model. We do not ship a route for them in RootView.
-
         public var iconName: String {
             switch self {
-            case .galaxy: return "sparkles"
             case .scan: return "magnifyingglass"
             case .cleanup: return "trash"
             case .history: return "clock"
@@ -34,7 +26,6 @@ public final class AppState: ObservableObject {
 
         public var tooltip: String {
             switch self {
-            case .galaxy: return "星系"
             case .scan: return "扫描"
             case .cleanup: return "清理"
             case .history: return "历史"

@@ -4,7 +4,6 @@ import DesignSystem
 struct RightPanelView: View {
     @EnvironmentObject var appState: AppState
     @State private var selectedTab: AppState.RightPanelTab = .overview
-    let galaxyViewModel: GalaxyViewModel
     let scanViewModel: ScanViewModel
 
     var body: some View {

@@ -3,7 +3,6 @@ import SwiftUI
 public enum AppIcon {
     public static let scan = "magnifyingglass"
     public static let clean = "trash"
-    public static let galaxy = "sparkles"
     public static let history = "clock"
     public static let settings = "gear"
     public static let appIcon = "app"
