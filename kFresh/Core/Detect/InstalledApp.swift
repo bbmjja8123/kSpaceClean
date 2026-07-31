@@ -38,7 +38,7 @@ public enum ResidueType: String, Codable, CaseIterable, Sendable {
 
 // MARK: - Residue File
 
-public struct ResidueFile: Identifiable, Codable, @unchecked Sendable {
+public struct ResidueFile: Identifiable, Codable, Sendable {
     public var id: String { url.path }
     let url: URL
     let type: ResidueType
