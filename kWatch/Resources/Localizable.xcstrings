@@ -492,6 +492,78 @@
           }
         }
       }
+    },
+    "subscription.terms.title" : {
+      "comment" : "Title shown above the auto-renewal disclosure block in the Paywall.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription Terms"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サブスクリプション規約"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "订阅条款"
+          }
+        }
+      }
+    },
+    "subscription.terms.body" : {
+      "comment" : "Auto-renewal disclosure body required by App Store Review Guidelines §3.1.2(a).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions in your App Store account settings."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入確定時に Apple ID アカウントに課金されます。現在の期間が終了する少なくとも 24 時間前に自動更新をオフにしない限り、サブスクリプションは自動的に更新されます。現在の期間が終了する 24 時間前までにアカウントに更新料金が課金されます。サブスクリプションの管理とキャンセルは App Store のアカウント設定で行えます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "购买确认时将从您的 Apple ID 账户扣款。除非在当前订阅期结束前至少 24 小时关闭自动续订,否则订阅将自动续订。在当前订阅期结束前 24 小时内,系统会从您的账户扣款续订。您可以在 App Store 账户设置中管理和取消订阅。"
+          }
+        }
+      }
+    },
+    "subscription.terms.supportLink" : {
+      "comment" : "Hyperlink copy pointing to Terms of Use and Privacy Policy.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Terms of Use and Privacy Policy"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "利用規約とプライバシーポリシーを見る"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看服务条款和隐私政策"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
