@@ -75,6 +75,34 @@ public actor TrashMover {
         self.auditLogger = auditLogger
     }
 
+    /// TEST: test-only initialiser that lets a test inject a pre-populated
+    /// `UninstallHistoryRepository` so the assertion `record(id:).isRestored
+    /// == false` can prove `markRestored` was NOT called. The default
+    /// `init(auditLogger:)` constructs a fresh empty repository, which makes
+    /// `recentRecords` empty whether `markRestored` is correctly skipped or
+    /// incorrectly called — a vacuous assertion (see I3b).
+    init(auditLogger: AuditLogger? = nil, historyRepo: UninstallHistoryRepository) {
+        self.backupManager = BackupManager()
+        self.historyRepo = historyRepo
+        self.auditLogger = auditLogger
+    }
+
+    /// TEST: records a pre-built `UninstallRecord` into the in-memory history
+    /// so a test that drives `restore(record:)` directly can subsequently
+    /// inspect it via `record(id:)`. Production code never needs this —
+    /// `moveToTrash` writes the record itself. Marked internal (not
+    /// `public`) because `UninstallRecord` is internal.
+    func seedHistoryRecord(_ record: UninstallRecord) async {
+        await historyRepo.save(record: record)
+    }
+
+    /// Returns the stored history record for `id`, or `nil` if absent. Used
+    /// by tests to assert `isRestored` flipped (or did not flip) after a
+    /// `restore(record:)` call.
+    func historyRecord(id: UUID) async -> UninstallRecord? {
+        await historyRepo.record(id: id)
+    }
+
     /// Returns true if the app is allowed to be moved to Trash.
     ///
     /// System apps (`/System/*` and the `isBundleIDProtected` allowlist) and
@@ -113,11 +141,27 @@ public actor TrashMover {
 
         // Step 1: Terminate (graceful first; only force if user confirms)
         if app.isRunning {
+            // m6: surface cancellation BEFORE the do/catch so a cancelled
+            // Task is not silently converted into `.trashFailed`. The generic
+            // `catch` below would otherwise catch `CancellationError` (thrown
+            // by `terminateGracefully` via `Task.sleep`) and wrap it in
+            // `.trashFailed(underlying:)` — lying to the UI and preventing
+            // structured-task cancellation from propagating. We pre-check
+            // `Task.isCancelled` here so the failure mode is unambiguous.
+            if Task.isCancelled { return .failure(.trashFailed(underlying: CancellationError())) }
             do {
                 try await terminateGracefully(app: app, timeoutSeconds: 8)
             } catch let TrashError.terminateFailed(bundleID) {
                 await logEvent(action: "terminate", bundleID: bundleID, paths: [app.url.path], status: "failure", error: "App did not exit gracefully")
                 return .failure(TrashError.terminateFailed(bundleID: bundleID))
+            } catch is CancellationError {
+                // Defence-in-depth: if cancellation races the sleep but the
+                // `Task.isCancelled` pre-check above was false, still avoid
+                // wrapping CancellationError in `.trashFailed` — surface it
+                // unchanged so the UI's switch on Result can treat it
+                // distinctly (or, for SwiftUI cancellation semantics, the
+                // caller's `try await mover.moveToTrash(...)` re-throws it).
+                return .failure(.trashFailed(underlying: CancellationError()))
             } catch {
                 return .failure(.trashFailed(underlying: error))
             }

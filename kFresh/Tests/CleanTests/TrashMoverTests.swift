@@ -225,7 +225,16 @@ final class TrashMoverTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: tempDir) }
         let auditURL = tempDir.appendingPathComponent("audit.jsonl")
         let logger = try AuditLogger(logURL: auditURL)
-        let mover = TrashMover(auditLogger: logger)
+
+        // Seed a real `UninstallRecord` into the in-memory history so the
+        // post-restore assertion can verify `isRestored` is still `false`.
+        // The default `TrashMover.init` creates an empty repository, which
+        // makes `recentRecords.allSatisfy { !$0.isRestored }` vacuously true
+        // — the assertion proves nothing because `recentRecords` was empty
+        // whether `markRestored` was correctly skipped or incorrectly called.
+        // I3b fix: use the test-only initialiser + `seedHistoryRecord`.
+        let seededRepo = UninstallHistoryRepository()
+        let mover = TrashMover(auditLogger: logger, historyRepo: seededRepo)
 
         // Real backup dir + sentinel that must survive a failed restore.
         let backupPath = tempDir.appendingPathComponent("backup")
@@ -244,8 +253,9 @@ final class TrashMoverTests: XCTestCase {
         let missingParent = tempDir.appendingPathComponent("nonexistent-parent")
         let missingResidue = missingParent.appendingPathComponent(residueName)
 
+        let seededID = UUID()
         let record = UninstallRecord(
-            id: UUID(),
+            id: seededID,
             appName: "Trashed",
             bundleID: "com.example.c1b",
             appPath: tempDir.appendingPathComponent("Original.app").path,
@@ -260,6 +270,7 @@ final class TrashMoverTests: XCTestCase {
                 ResidueFile(url: missingResidue, type: .preferences, sizeBytes: 9, confidence: 0.9, description: "dest-dir-missing")
             ]
         )
+        await mover.seedHistoryRecord(record)
 
         let result = await mover.restore(record: record)
 
@@ -273,13 +284,15 @@ final class TrashMoverTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: sentinel.path),
                       "Backup sentinel must survive a failed residue restore (no cleanup call)")
 
-        // No record was seeded into the in-memory history, so recentRecords
-        // is empty — confirms `markRestored` was a no-op rather than having
-        // flipped anything. (A real production call would have saved the
-        // record via moveToTrash first.)
-        let records = await mover.recentRecords(limit: 10)
-        XCTAssertTrue(records.allSatisfy { $0.isRestored == false },
-                      "No record must be marked restored after a failed residue restore")
+        // I3b fix: the seeded record must still be retrievable AND its
+        // `isRestored` flag must still be `false`. A vacuous allSatisfy on
+        // an empty array would have passed even if `markRestored` flipped a
+        // record we never seeded — this assertion cannot.
+        let stored = await mover.historyRecord(id: seededID)
+        XCTAssertNotNil(stored, "Seeded record must still be retrievable from history")
+        XCTAssertEqual(stored?.id, seededID, "Stored record id must match seeded id")
+        XCTAssertFalse(stored?.isRestored ?? true,
+                       "Seeded record's isRestored MUST remain false after a failed residue restore (markRestored must not have been called)")
 
         // Audit log records the residue-restore failure (recoverable, distinct
         // from `trashFailed`) so the operator can correlate the half-restored
