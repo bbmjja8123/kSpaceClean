@@ -259,6 +259,10 @@
 		isa = PBXBuildFile;
 		fileRef = F6EF8E531BBFA21EF834D571;
 	};
+	D3AAF3B1FCAF554EA1011E70 /* D3AAF3B1FCAF554EA1011E70 */ = {
+		isa = PBXBuildFile;
+		fileRef = 66DCDD3E8D4249951CFA3C37;
+	};
 	D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */ = {
 		isa = PBXBuildFile;
 		fileRef = 92285B8C36BFE1BC01B56B40;
@@ -573,6 +577,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppRowView.swift;
 		path = Features/AppList/AppRowView.swift;
+		sourceTree = "<group>";
+	};
+	66DCDD3E8D4249951CFA3C37 /* cask_rules.json */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.json;
+		name = cask_rules.json;
+		path = Resources/cask_rules.json;
 		sourceTree = "<group>";
 	};
 	66EBF85D7D7569CED79F5DF4 /* UninstallHistory+CoreDataClass.swift */ = {
@@ -969,6 +980,7 @@
 			05B9799A26FB3FDC78B071F1 /* Assets.xcassets */,
 			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
 			FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */,
+			66DCDD3E8D4249951CFA3C37 /* cask_rules.json */,
 		);
 		name = Resources;
 		sourceTree = "<group>";
@@ -1337,6 +1349,7 @@
 			833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */,
 			8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */,
 			75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */,
+			D3AAF3B1FCAF554EA1011E70 /* D3AAF3B1FCAF554EA1011E70 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
