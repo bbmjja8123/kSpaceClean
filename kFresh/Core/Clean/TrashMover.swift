@@ -31,6 +31,15 @@ public enum TrashError: Error {
     /// bundle name on a prior uninstall). Restoring from an empty Trash
     /// would silently destroy the backup, so we refuse explicitly.
     case trashedItemMissing(bundleID: String)
+    /// The app bundle was successfully moved back from Trash, but the
+    /// residue-restore step (copying files from `BackupManager` back to
+    /// their original locations) threw. The backup directory is preserved
+    /// so the user can retry, and the history record is NOT marked
+    /// restored — leaving the system in the exact half-restored state the
+    /// user can see and act on. Surfaces a distinct case from the hard
+    /// `.trashFailed` so the UI can offer a "retry restore" affordance
+    /// rather than the generic "unexpected error" path.
+    case restoreResidueFailed(underlying: Error)
 }
 
 /// Safe-delete engine for uninstalling a Mac app and its residue files.
@@ -93,8 +102,8 @@ public actor TrashMover {
     ///    the exact path Finder produced instead of guessing.
     /// 5. Delete the FILTERED set of high-confidence residue files. Per-
     ///    residue failures are collected; residue counts reported in the
-    ///    record and audit event reflect the filtered set actually deleted,
-    ///    never the full input.
+    ///    record and audit event reflect ONLY the residues that were
+    ///    successfully deleted, never the filtered set, never the input.
     /// 6. Save an `UninstallRecord` in history.
     /// 7. Log a `"trash"` audit event.
     func moveToTrash(app: InstalledApp, residues: [ResidueFile]) async -> Result<UninstallRecord, TrashError> {
@@ -144,18 +153,23 @@ public actor TrashMover {
         // Step 4: Delete the FILTERED high-confidence residues. Per-residue
         // errors are collected (never silently swallowed) and surfaced in
         // the audit event. The record and success audit only report the
-        // residues we actually deleted.
+        // residues we actually deleted — failed residues must not be
+        // counted as freed space or persisted in `record.residues`.
         let filteredResidues = residues.filter { $0.confidence > 0.5 }
+        var deletedResidues: [ResidueFile] = []
         var residueFailures: [(url: URL, error: Error)] = []
         for residue in filteredResidues {
             do {
                 try FileManager.default.removeItem(at: residue.url)
+                deletedResidues.append(residue)
             } catch {
                 residueFailures.append((residue.url, error))
             }
         }
 
-        // Step 5: Build the success record from the filtered set.
+        // Step 5: Build the success record from the actually-deleted set,
+        // not the filtered set. The user's freed-space accounting and the
+        // restore path both rely on `record.residues` being truthful.
         let record = UninstallRecord(
             id: UUID(),
             appName: app.displayName,
@@ -163,19 +177,19 @@ public actor TrashMover {
             appPath: app.url.path,
             actualTrashPath: trashedURL.path,
             appSize: app.sizeBytes,
-            totalResidueSize: filteredResidues.reduce(0) { $0 + $1.sizeBytes },
-            residueCount: Int32(filteredResidues.count),
+            totalResidueSize: deletedResidues.reduce(0) { $0 + $1.sizeBytes },
+            residueCount: Int32(deletedResidues.count),
             uninstalledAt: Date(),
             isRestored: false,
             backupPath: backupPath?.path ?? "",
-            residues: filteredResidues
+            residues: deletedResidues
         )
         await historyRepo.save(record: record)
 
-        // Audit: success event logs all filtered residue paths and any
-        // per-residue failures as a single comma-separated errorMessage so
-        // the operator can reconstruct exactly what happened.
-        let auditPaths = [app.url.path] + filteredResidues.map(\.url.path)
+        // Audit: success event logs all actually-deleted residue paths and
+        // any per-residue failures as a single comma-separated errorMessage
+        // so the operator can reconstruct exactly what happened.
+        let auditPaths = [app.url.path] + deletedResidues.map(\.url.path)
         let residueErrorMessage: String?
         if residueFailures.isEmpty {
             residueErrorMessage = nil
@@ -242,21 +256,45 @@ public actor TrashMover {
             return .failure(.trashFailed(underlying: error))
         }
 
-        // Step 4: Restore residues
+        // Step 4: Restore residues. Errors here are NOT silently swallowed —
+        // the C1b fix: a thrown `backupManager.restore` previously fell
+        // through to `markRestored` + `backupManager.cleanup`, which
+        // permanently destroyed the only copy of the residue data while
+        // pretending the restore succeeded. Now we surface the error and
+        // leave the backup directory intact so the user can retry. The
+        // app bundle has already been moved back from Trash at this
+        // point, so the system is in a visible half-restored state.
         if !record.backupPath.isEmpty {
             let backupURL = URL(fileURLWithPath: record.backupPath)
-            try? await backupManager.restore(backupPath: backupURL, originalResidues: record.residues)
+            do {
+                try await backupManager.restore(backupPath: backupURL, originalResidues: record.residues)
+            } catch {
+                await logEvent(action: "restore", bundleID: record.bundleID,
+                               paths: [originalURL.path, backupURL.path],
+                               status: "failure",
+                               error: "Residue restore failed (backup preserved): \(error)")
+                return .failure(.restoreResidueFailed(underlying: error))
+            }
         }
 
-        // Step 5: Only mark restored + clean up backup AFTER both moves
-        // succeed. Doing this earlier was the C1 bug — a missing trashed
-        // item used to fall through to here and delete the residue backup
-        // while pretending the restore succeeded.
+        // Step 5: Only mark restored + clean up backup AFTER both the app
+        // move AND the residue restore succeed. The C1 + C1b fix:
+        // previously a thrown `backupManager.restore` fell through to
+        // here, permanently deleting the residue backup while pretending
+        // the restore succeeded.
         await historyRepo.markRestored(id: record.id)
         await backupManager.cleanup(bundleID: record.bundleID)
         await logEvent(action: "restore", bundleID: record.bundleID, paths: [originalURL.path], status: "success", error: nil)
 
         return .success(originalURL)
+    }
+
+    /// Returns the most recent `limit` in-memory history records (newest
+    /// first). Exposed so tests verifying `restore`'s failure path can
+    /// assert that `markRestored` was NOT called without reaching into
+    /// private storage. Internal because `UninstallRecord` is internal.
+    func recentRecords(limit: Int) async -> [UninstallRecord] {
+        await historyRepo.recentRecords(limit: limit)
     }
 
     /// Sends `terminate` to the app and waits up to `timeoutSeconds` for it
@@ -274,7 +312,15 @@ public actor TrashMover {
         let deadline = Date().addingTimeInterval(Double(timeoutSeconds))
         while Date() < deadline {
             if running.isTerminated { return }
-            try? await Task.sleep(nanoseconds: 500_000_000)
+            // Propagate cancellation: if the Task is cancelled while
+            // we're polling for the app to exit, the sleep throws and
+            // we bail — never forceTerminate a live process whose
+            // owner's already given up.
+            do {
+                try await Task.sleep(nanoseconds: 500_000_000)
+            } catch {
+                throw CancellationError()
+            }
         }
 
         // Still alive after timeout — refuse to recycle a live process.
@@ -350,5 +396,27 @@ struct UninstallRecord: Identifiable, Codable, Sendable {
         self.isRestored = isRestored
         self.backupPath = backupPath
         self.residues = residues
+    }
+
+    /// Custom decoder for backwards compatibility with persisted records
+    /// that pre-date the `actualTrashPath` field. A synthesised
+    /// `init(from:)` would throw `DecodingError.keyNotFound` on a missing
+    /// non-optional key, but the field is treated as `""` (the legacy
+    /// default) so restore can fall back to the `~/.Trash/<name>` guess.
+    /// - SeeAlso: `testUninstallRecordDecodesLegacyRecordWithoutActualTrashPath`
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try c.decode(UUID.self, forKey: .id)
+        self.appName = try c.decode(String.self, forKey: .appName)
+        self.bundleID = try c.decode(String.self, forKey: .bundleID)
+        self.appPath = try c.decode(String.self, forKey: .appPath)
+        self.actualTrashPath = try c.decodeIfPresent(String.self, forKey: .actualTrashPath) ?? ""
+        self.appSize = try c.decode(Int64.self, forKey: .appSize)
+        self.totalResidueSize = try c.decode(Int64.self, forKey: .totalResidueSize)
+        self.residueCount = try c.decode(Int32.self, forKey: .residueCount)
+        self.uninstalledAt = try c.decode(Date.self, forKey: .uninstalledAt)
+        self.isRestored = try c.decode(Bool.self, forKey: .isRestored)
+        self.backupPath = try c.decode(String.self, forKey: .backupPath)
+        self.residues = try c.decode([ResidueFile].self, forKey: .residues)
     }
 }
