@@ -233,6 +233,7 @@ def main():
         ("Features/Common/Components/DiskUsageBar.swift", "Components"),
         ("Features/Common/MetricKit/MetricKitReceiver.swift", "MetricKit"),
         ("Features/Common/KeyboardShortcuts.swift", "Common"),
+        ("Features/Common/PerfSignpost.swift", "Common"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/Common/Models/CheckState.swift", "Models"),
         ("Features/Common/Models/SelectionPolicy.swift", "Models"),

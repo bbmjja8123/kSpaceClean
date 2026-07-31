@@ -259,6 +259,10 @@
 		isa = PBXBuildFile;
 		fileRef = F75307E42A8914CFBC4E8183;
 	};
+	8718C04649317033B76A5547 /* 8718C04649317033B76A5547 */ = {
+		isa = PBXBuildFile;
+		fileRef = 62AA21F42C53116EBA11C4A1;
+	};
 	87CFBD3A80BA3F4155911EA2 /* 87CFBD3A80BA3F4155911EA2 */ = {
 		isa = PBXBuildFile;
 		fileRef = BF1771D7B6F634603DD17A7B;
@@ -991,6 +995,13 @@
 		path = Features/Cleanup/Engine/WarningDetectionService.swift;
 		sourceTree = "<group>";
 	};
+	62AA21F42C53116EBA11C4A1 /* PerfSignpost.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = PerfSignpost.swift;
+		path = Features/Common/PerfSignpost.swift;
+		sourceTree = "<group>";
+	};
 	63EA5F35D593E2AD9287E295 /* SpecializedScanners.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1680,6 +1691,7 @@
 		isa = PBXGroup;
 		children = (
 			463CB1AFAED34A08917473F0 /* KeyboardShortcuts.swift */,
+			62AA21F42C53116EBA11C4A1 /* PerfSignpost.swift */,
 		);
 		name = Common;
 		sourceTree = "<group>";
@@ -2196,6 +2208,7 @@
 			27620085AB03437DD5C056BE /* 27620085AB03437DD5C056BE */,
 			AFC2605720E874C24B299225 /* AFC2605720E874C24B299225 */,
 			684DF615F3B1843CBF85E30B /* 684DF615F3B1843CBF85E30B */,
+			8718C04649317033B76A5547 /* 8718C04649317033B76A5547 */,
 			A7322C2F325778039607D0B6 /* A7322C2F325778039607D0B6 */,
 			A3CC30C80D09F1974865F777 /* A3CC30C80D09F1974865F777 */,
 			7DAABFE3BB24C54473DD3F3F /* 7DAABFE3BB24C54473DD3F3F */,

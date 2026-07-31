@@ -465,6 +465,9 @@ final class ScanResultsViewModel: ObservableObject {
         options: ScanFilterOptions,
         now: Date = Date()
     ) -> [ScanCategory] {
+        // F8: signpost marker around the filter pipeline so an
+        // Instruments run can attribute time spent walking the tree.
+        let _ = PerfInterval("filter.apply")
         let runningBundleIDs: Set<String> = options.skipRunningApps
             ? Self.snapshotRunningBundleIDs()
             : []

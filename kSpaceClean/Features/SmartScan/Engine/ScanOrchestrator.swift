@@ -305,6 +305,9 @@ public actor ScanOrchestrator {
     private func runScan(
         continuation: AsyncStream<ScanProgress>.Continuation
     ) async {
+        // F8: signpost marker so an Instruments run can attribute the
+        // orchestrator's wall time without sifting through stack frames.
+        let _ = PerfInterval("scan.orchestrate")
         let total = categoryDefs.count
         var completed = 0
         var totalBytes: Int64 = 0
@@ -497,6 +500,10 @@ public actor ScanOrchestrator {
             // Aggregate the visited files by *per-app bucket* so each
             // ScanSubCategory corresponds to one owning app (or to the
             // generic category bucket if the path is system-wide).
+            // F8: signpost marker around the FD-walk loop so an
+            // Instruments run can attribute time to enumeration
+            // (vs. classify / resolve / bucket folds).
+            let _ = PerfInterval("scan.enumerate")
             var bucketByApp: [String: [ScanResult]] = [:]
             var bucketSize: [String: Int64] = [:]
             var bucketTitle: [String: String] = [:]
