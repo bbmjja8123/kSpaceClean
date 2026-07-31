@@ -9,12 +9,43 @@ struct AllFilesTabView: View {
     @State private var sortColumn = "name"
     @State private var sortAscending = true
     @State private var selectedFiles: Set<UUID> = []
+    /// F7 perf sweep: pre-sorted + filtered file list. Computed on
+    /// appear, on `searchText` / `sortColumn` / `sortAscending` changes,
+    /// and on Core Data fetch changes (`.onChange(of: files.count)`).
+    /// Reading `filteredFiles` no longer pays the full-array sort cost
+    /// on every body invalidation.
+    @State private var displayFiles: [FileEntry] = []
+    /// Precomputed `[UUID: FileEntry]` lookup so `performCleanup`
+    /// resolves each selected id in O(1) instead of scanning the
+    /// `FetchedResults` per id.
+    @State private var fileIndex: [UUID: FileEntry] = [:]
+    /// F7: precomputed "all selected" state so the checkbox header
+    /// avoids the two-pass `count == count && !isEmpty` walk on every
+    /// body invalidation.
+    @State private var isAllSelected: Bool = false
     let scanViewModel: ScanViewModel
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \FileEntry.size, ascending: false)],
         animation: .default
     ) private var files: FetchedResults<FileEntry>
+
+    /// Rebuilds `displayFiles`, `fileIndex`, and `isAllSelected` from
+    /// the current `files` fetch and the active search/sort state.
+    private func rebuildDisplay() {
+        let sorted = sortColumn == "size"
+            ? files.sorted { sortAscending ? $0.size < $1.size : $0.size > $1.size }
+            : files.sorted { sortAscending ? ($0.path ?? "") < ($1.path ?? "") : ($0.path ?? "") > ($1.path ?? "") }
+        let filtered = searchText.isEmpty
+            ? Array(sorted)
+            : sorted.filter { ($0.path ?? "").localizedCaseInsensitiveContains(searchText) }
+        displayFiles = filtered
+        fileIndex = Dictionary(uniqueKeysWithValues: files.compactMap { f in
+            guard let id = f.id else { return nil }
+            return (id, f)
+        })
+        isAllSelected = !files.isEmpty && selectedFiles.count == files.count
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -37,8 +68,7 @@ struct AllFilesTabView: View {
 
             // Table header
             HStack(spacing: 0) {
-                CheckboxHeader(isAllSelected: selectedFiles.count == files.count && !files.isEmpty,
-                               action: toggleSelectAll)
+                CheckboxHeader(isAllSelected: isAllSelected, action: toggleSelectAll)
                     .frame(width: 24)
                 SortableHeader("名称", column: "name", sortColumn: $sortColumn, sortAscending: $sortAscending)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -52,7 +82,6 @@ struct AllFilesTabView: View {
             Divider()
 
             // File list
-            let displayFiles = filteredFiles
             List(displayFiles, id: \.id) { file in
                 FileRow(file: file, isSelected: selectedFiles.contains(file.id ?? UUID()))
                     .onTapGesture { toggleSelection(file.id ?? UUID()) }
@@ -69,32 +98,39 @@ struct AllFilesTabView: View {
             }
             .padding(8)
         }
-    }
-
-    private var filteredFiles: [FileEntry] {
-        let sorted = sortColumn == "size"
-            ? files.sorted { sortAscending ? $0.size < $1.size : $0.size > $1.size }
-            : files.sorted { sortAscending ? ($0.path ?? "") < ($1.path ?? "") : ($0.path ?? "") > ($1.path ?? "") }
-        guard !searchText.isEmpty else { return sorted }
-        return sorted.filter { ($0.path ?? "").localizedCaseInsensitiveContains(searchText) }
+        .onAppear { rebuildDisplay() }
+        .onChange(of: searchText) { _ in rebuildDisplay() }
+        .onChange(of: sortColumn) { _ in rebuildDisplay() }
+        .onChange(of: sortAscending) { _ in rebuildDisplay() }
+        // `@FetchRequest` re-emits a body update when its result set
+        // changes; we observe the count so a Core Data insert/delete
+        // refreshes the displayed list.
+        .onChange(of: files.count) { _ in rebuildDisplay() }
     }
 
     private func toggleSelection(_ id: UUID) {
-        if selectedFiles.contains(id) { selectedFiles.remove(id) }
-        else { selectedFiles.insert(id) }
+        if selectedFiles.contains(id) {
+            selectedFiles.remove(id)
+            isAllSelected = false
+        } else {
+            selectedFiles.insert(id)
+            isAllSelected = !files.isEmpty && selectedFiles.count == files.count
+        }
     }
 
     private func toggleSelectAll() {
         if selectedFiles.count == files.count {
             selectedFiles.removeAll()
+            isAllSelected = false
         } else {
             selectedFiles = Set(files.compactMap { $0.id })
+            isAllSelected = !files.isEmpty
         }
     }
 
     private func performCleanup() {
         let paths = selectedFiles.compactMap { id in
-            files.first(where: { $0.id == id })?.path
+            fileIndex[id]?.path
         }
         guard !paths.isEmpty else { return }
         let urls = paths.map { URL(fileURLWithPath: $0) }
@@ -103,6 +139,7 @@ struct AllFilesTabView: View {
             for await progress in engine.cleanup(urls: urls) {
                 if progress.state == .completed || progress.state == .failed {
                     selectedFiles.removeAll()
+                    isAllSelected = false
                 }
             }
         }
