@@ -1,10 +1,21 @@
 import SwiftUI
 import DesignSystem
 
+/// Trailing inspector panel (⌘F) with the overview / results / suggestions
+/// tabs.
+///
+/// C3: the panel now owns its own legacy ``ScanViewModel`` instead of
+/// borrowing the root's. The root's scan triggers were migrated to the v3
+/// ``ScanResultsViewModel`` pipeline, which the legacy right-panel tabs
+/// cannot read (they consume Core Data `FileEntry` rows produced by
+/// `LegacyScanEngine`). Owning the model locally keeps the panel
+/// self-contained until the tabs are migrated (Task B5+); until then the
+/// tabs render their own "点击开始扫描" empty state.
 struct RightPanelView: View {
     @EnvironmentObject var appState: AppState
     @State private var selectedTab: AppState.RightPanelTab = .overview
-    let scanViewModel: ScanViewModel
+    /// Legacy v2 scan model backing the three tabs. Local to the panel.
+    @StateObject private var scanViewModel = ScanViewModel()
 
     var body: some View {
         GlassPanel {

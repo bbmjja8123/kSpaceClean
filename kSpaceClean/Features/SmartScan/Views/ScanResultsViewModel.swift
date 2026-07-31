@@ -1,6 +1,48 @@
 // kSpaceClean/Features/SmartScan/Views/ScanResultsViewModel.swift
+import AppKit
 import Foundation
 import SwiftUI
+
+/// The four pre-scan filters the user can tune before starting a scan.
+///
+/// The filters are applied **after** the orchestrator finishes, as a pure
+/// transformation over the returned tree — the scan itself always walks the
+/// same category definitions, so toggling a filter never changes what is
+/// read from disk, only what the tree surfaces. This keeps the engine free
+/// of UI-driven configuration while still giving the user a fast way to
+/// narrow a noisy result set.
+///
+/// Defaults follow the v1 UX decision: 1 MB size floor, no age floor,
+/// dangerous items hidden, and files owned by running apps hidden.
+public struct ScanFilterOptions: Equatable, Sendable {
+    /// Minimum file size (in bytes) for a leaf to appear in the tree.
+    /// `0` disables the filter.
+    public var minimumSizeBytes: Int64
+    /// Only surface files that have *not* been modified for at least this
+    /// many days. `0` disables the filter (surface files of any age).
+    public var minimumUnusedDays: Int
+    /// Hide leaves classified `.dangerous` by `RiskClassifier`.
+    public var skipDangerous: Bool
+    /// Hide sub-categories owned by an app that is currently running —
+    /// cleaning those risks corrupting live state.
+    public var skipRunningApps: Bool
+
+    /// Memberwise init with the v1 defaults pre-filled.
+    public init(
+        minimumSizeBytes: Int64 = 1_048_576,
+        minimumUnusedDays: Int = 0,
+        skipDangerous: Bool = true,
+        skipRunningApps: Bool = true
+    ) {
+        self.minimumSizeBytes = minimumSizeBytes
+        self.minimumUnusedDays = minimumUnusedDays
+        self.skipDangerous = skipDangerous
+        self.skipRunningApps = skipRunningApps
+    }
+
+    /// The v1 default filter set shown on the pre-scan surface.
+    public static let `default` = ScanFilterOptions()
+}
 
 /// View-model backing `ScanResultsView` — the 4-level scan results tree.
 ///
@@ -48,6 +90,14 @@ final class ScanResultsViewModel: ObservableObject {
     @Published var totalSelectedSize: Int64 = 0
     /// Aggregate count of selected URLs across the tree.
     @Published var totalSelectedCount: Int = 0
+    /// User-tunable filters shown on the pre-scan surface and applied to
+    /// the engine output when a scan completes.
+    @Published var filters: ScanFilterOptions = .default
+    /// `false` until the first scan of this session finishes. Drives the
+    /// pre-scan surface (filters + "开始扫描" CTA) versus the post-scan
+    /// "nothing to clean" empty state — without it, both states collapse
+    /// into `categories.isEmpty` and the user never sees a scan trigger.
+    @Published private(set) var hasScanned: Bool = false
 
     /// Engine that drives real scans. The view model subscribes to its
     /// `@Published categories` array and folds them into its own state.
@@ -259,8 +309,136 @@ final class ScanResultsViewModel: ObservableObject {
         // progress stream and the category stream in `runScan` and writes
         // to `@Published categories`; we mirror those into our own array
         // so toggling a checkbox here does not race with engine updates.
-        categories = engine.categories.sorted { $0.categoryID < $1.categoryID }
+        let raw = engine.categories.sorted { $0.categoryID < $1.categoryID }
+        categories = Self.applyFilters(raw, options: filters)
         isScanning = false
+        hasScanned = true
         updateSummary()
+    }
+
+    /// Fire-and-forget scan trigger for SwiftUI button actions.
+    ///
+    /// The toolbar button, the ⌘N / ⌘R shortcuts, and the pre-scan CTA all
+    /// route through here. Re-entrancy is guarded so a double-click cannot
+    /// stack two orchestrator runs; the underlying ``ScanEngine`` would
+    /// cancel the first run, but the UI would briefly flash an empty tree.
+    ///
+    /// - Parameter rootPaths: Optional root path override forwarded to
+    ///   ``startRealScan(rootPaths:)``. Empty means "use the built-in
+    ///   category definitions".
+    func startScan(rootPaths: [String] = []) {
+        guard !isScanning else { return }
+        Task { [weak self] in
+            await self?.startRealScan(rootPaths: rootPaths)
+        }
+    }
+
+    // MARK: - Filtering
+
+    /// Applies ``filters`` to a freshly-scanned tree.
+    ///
+    /// Pure transformation: leaves that fail the predicate are dropped and
+    /// every ancestor is rebuilt with a recomputed `totalSize` so the row
+    /// labels stay consistent with what is actually visible. Ancestors that
+    /// end up with no surviving children are removed entirely.
+    ///
+    /// - Parameters:
+    ///   - categories: The raw tree emitted by the scan engine.
+    ///   - options: Filter set to apply.
+    ///   - now: Injectable clock used for the age cutoff (tests).
+    /// - Returns: A new tree containing only the surviving nodes.
+    static func applyFilters(
+        _ categories: [ScanCategory],
+        options: ScanFilterOptions,
+        now: Date = Date()
+    ) -> [ScanCategory] {
+        let runningBundleIDs: Set<String> = options.skipRunningApps
+            ? Set(NSWorkspace.shared.runningApplications.compactMap(\.bundleIdentifier))
+            : []
+        let ageCutoff: Date? = options.minimumUnusedDays > 0
+            ? now.addingTimeInterval(-Double(options.minimumUnusedDays) * 86_400)
+            : nil
+
+        return categories.compactMap { category in
+            let subs = category.subItems.compactMap {
+                filterSubCategory($0, options: options,
+                                  runningBundleIDs: runningBundleIDs,
+                                  ageCutoff: ageCutoff)
+            }
+            guard !subs.isEmpty else { return nil }
+            return ScanCategory(
+                categoryID: category.categoryID,
+                title: category.title,
+                tooltip: category.tooltip,
+                totalSize: subs.reduce(0) { $0 + $1.totalSize },
+                subItems: subs,
+                riskLevel: category.riskLevel,
+                isRecommended: category.isRecommended
+            )
+        }
+    }
+
+    /// Filters one level-2 node. Returns `nil` when nothing survives (or the
+    /// sub-category belongs to a running app and `skipRunningApps` is on).
+    private static func filterSubCategory(
+        _ sub: ScanSubCategory,
+        options: ScanFilterOptions,
+        runningBundleIDs: Set<String>,
+        ageCutoff: Date?
+    ) -> ScanSubCategory? {
+        if let bundleID = sub.bundleID, runningBundleIDs.contains(bundleID) {
+            return nil
+        }
+        let actions: [ScanAction] = sub.actions.compactMap { action in
+            let results = action.results.filter {
+                keep($0, options: options, ageCutoff: ageCutoff)
+            }
+            guard !results.isEmpty else { return nil }
+            return ScanAction(
+                actionID: action.actionID,
+                actionType: action.actionType,
+                title: action.title,
+                tooltip: action.tooltip,
+                totalSize: results.reduce(0) { $0 + $1.totalSize },
+                results: results,
+                recommend: action.recommend,
+                riskLevel: action.riskLevel,
+                isRecommended: action.isRecommended
+            )
+        }
+        let direct = sub.directResults.filter {
+            keep($0, options: options, ageCutoff: ageCutoff)
+        }
+        guard !(actions.isEmpty && direct.isEmpty) else { return nil }
+        let total = actions.reduce(0) { $0 + $1.totalSize }
+            + direct.reduce(0) { $0 + $1.totalSize }
+        return ScanSubCategory(
+            subCategoryID: sub.subCategoryID,
+            title: sub.title,
+            bundleID: sub.bundleID,
+            appName: sub.appName,
+            tooltip: sub.tooltip,
+            totalSize: total,
+            actions: actions,
+            directResults: direct,
+            showAction: sub.showAction,
+            riskLevel: sub.riskLevel,
+            isRecommended: sub.isRecommended
+        )
+    }
+
+    /// Leaf-level predicate — size floor, age floor, and the dangerous gate.
+    private static func keep(
+        _ result: ScanResult,
+        options: ScanFilterOptions,
+        ageCutoff: Date?
+    ) -> Bool {
+        if result.totalSize < options.minimumSizeBytes { return false }
+        if options.skipDangerous, result.riskLevel == .dangerous { return false }
+        if let cutoff = ageCutoff, let modified = result.modificationDate,
+           modified > cutoff {
+            return false
+        }
+        return true
     }
 }

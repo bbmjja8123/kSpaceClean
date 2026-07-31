@@ -5,13 +5,17 @@ import DesignSystem
 /// Displays different content based on appState.navigation.
 struct RootView: View {
     @EnvironmentObject var appState: AppState
-    @StateObject private var scanViewModel = ScanViewModel()
     @StateObject private var cleanupViewModel = CleanupViewModel()
 
     // C1: production scan pipeline. Owned at the root so the scan state
     // survives navigation switches (e.g. user starts a scan, navigates
     // away, comes back — the categories tree is still there).
-    @StateObject private var scanEngine = ScanEngine()
+    //
+    // C3: this is now the *only* scan model the root owns. The legacy
+    // `ScanViewModel` used to be wired to the toolbar button and the
+    // ⌘N / ⌘R shortcuts while the rendered `ScanResultsView` observed this
+    // model, so every user-initiated scan ran a pipeline nothing on screen
+    // was watching. All three triggers now route here.
     @StateObject private var scanResultsViewModel = ScanResultsViewModel(engine: ScanEngine())
 
     var body: some View {
@@ -28,7 +32,7 @@ struct RootView: View {
                     ToolbarView(
                         onScan: {
                             appState.navigation = .scan
-                            scanViewModel.startScan()
+                            scanResultsViewModel.startScan()
                         },
                         onClean: {
                             appState.navigation = .cleanup
@@ -61,7 +65,7 @@ struct RootView: View {
                         // since the 3D galaxy visualization was removed in
                         // v1.0 per CLAUDE.md §8.1)
                         if appState.rightPanelVisible {
-                            RightPanelView(scanViewModel: scanViewModel)
+                            RightPanelView()
                                 .frame(width: min(260, geo.size.width * 0.3))
                                 .padding(.trailing, 12)
                                 .padding(.top, 48)
@@ -75,15 +79,15 @@ struct RootView: View {
             onNewScan: {
                 // ⌘N — switch to the scan surface and start a fresh scan
                 appState.navigation = .scan
-                scanViewModel.startScan()
+                scanResultsViewModel.startScan()
             },
             onRescan: {
                 // ⌘R — re-run the scan using the same root paths and filters
-                // (ScanViewModel does not differentiate "new" from "rescan";
-                // both delegate to startScan(). Phase B's ScanOrchestrator
-                // will introduce the distinction.)
+                // (ScanResultsViewModel does not differentiate "new" from
+                // "rescan"; both delegate to startScan(), which cancels any
+                // in-flight orchestrator run before starting a new one.)
                 appState.navigation = .scan
-                scanViewModel.startScan()
+                scanResultsViewModel.startScan()
             }
         )
         .modifier(RootKeyboardShortcuts(appState: appState))

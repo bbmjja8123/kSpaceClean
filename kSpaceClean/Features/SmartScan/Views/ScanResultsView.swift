@@ -40,12 +40,19 @@ struct ScanResultsView: View {
 
             Divider().background(Color.divider)
 
-            // Tree — show EmptyStateScreen while the scan is in flight
-            // (or no categories have populated yet), the real tree once
-            // the engine has finished.
-            if viewModel.isScanning || viewModel.categories.isEmpty {
+            // Tree — three states:
+            // 1. scan in flight  → progress empty state
+            // 2. never scanned   → pre-scan surface (filters + CTA)
+            // 3. scanned, empty  → "nothing to clean" + rescan CTA
+            // otherwise the real 4-level tree.
+            if viewModel.isScanning {
+                EmptyStateScreen(scenario: .firstLaunch)
+            } else if !viewModel.hasScanned {
+                PreScanPanel(viewModel: viewModel)
+            } else if viewModel.categories.isEmpty {
                 EmptyStateScreen(
-                    scenario: viewModel.isScanning ? .firstLaunch : .noResults
+                    scenario: .noResults,
+                    primaryAction: ("重新扫描", { viewModel.startScan() })
                 )
             } else {
                 ScrollView {
@@ -72,13 +79,14 @@ struct ScanResultsView: View {
         .background(Color.bgCanvas)
     }
 
-    /// Header bar: large "扫描完成" title on the leading edge, selection
-    /// count + total byte size on the trailing edge. Uses the
-    /// `bgElevated` surface so it reads against the scrolling tree.
+    /// Header bar: large title on the leading edge, selection count + total
+    /// byte size on the trailing edge. The title tracks the scan lifecycle so
+    /// the pre-scan surface does not claim "扫描完成" before anything ran.
+    /// Uses the `bgElevated` surface so it reads against the scrolling tree.
     @ViewBuilder
     private var headerView: some View {
         HStack {
-            Text("扫描完成")
+            Text(headerTitle)
                 .font(Typography.largeTitle())
                 .foregroundStyle(Color.textPrimary)
             Spacer()
@@ -91,11 +99,126 @@ struct ScanResultsView: View {
         .background(Color.bgElevated)
     }
 
+    /// Lifecycle-aware header title: 准备扫描 → 正在扫描 → 扫描完成.
+    private var headerTitle: String {
+        if viewModel.isScanning { return "正在扫描" }
+        return viewModel.hasScanned ? "扫描完成" : "准备扫描"
+    }
+
     /// Formats `bytes` as a localized file-size string (e.g. `"12.4 MB"`).
     /// Uses `.file` style to favor MB/GB units over the block-count
     /// style of `.binary`.
     private func formatBytes(_ bytes: Int64) -> String {
         ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+    }
+}
+
+/// Pre-scan surface shown before the first scan of a session.
+///
+/// Answers the "扫描前没有看到 4 级扫描项" complaint: the user now sees a
+/// real call-to-action plus the four filters that shape the result tree,
+/// instead of a purely informational empty state that offered no way to
+/// start a scan.
+///
+/// Deliberately minimal — exactly four controls (size floor, unused-age
+/// floor, dangerous gate, running-app gate) plus the primary CTA. Anything
+/// richer belongs in Settings, not on the scan surface.
+struct PreScanPanel: View {
+    /// Owning view model. Bound so the toggles/slider write straight into
+    /// ``ScanResultsViewModel/filters`` and the CTA can trigger the scan.
+    @ObservedObject var viewModel: ScanResultsViewModel
+
+    /// Size-floor slider works in MB; the model stores bytes.
+    private var minimumSizeMB: Binding<Double> {
+        Binding(
+            get: { Double(viewModel.filters.minimumSizeBytes) / 1_048_576.0 },
+            set: { viewModel.filters.minimumSizeBytes = Int64($0 * 1_048_576.0) }
+        )
+    }
+
+    /// Hero icon + copy, the four controls, then the full-width CTA.
+    var body: some View {
+        VStack(spacing: Spacing.lg) {
+            Spacer(minLength: 0)
+
+            Image(systemName: "sparkles")
+                .font(.system(size: 56, weight: .light))
+                .foregroundStyle(Color.brandPrimary)
+                .accessibilityHidden(true)
+
+            VStack(spacing: Spacing.xs) {
+                Text("准备扫描")
+                    .font(Typography.largeTitle())
+                    .foregroundStyle(Color.textPrimary)
+                Text("kSpaceClean 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按 4 级树展示。")
+                    .font(Typography.regularBody())
+                    .foregroundStyle(Color.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 420)
+            }
+
+            filterControls
+                .frame(maxWidth: 420)
+
+            Button {
+                viewModel.startScan()
+            } label: {
+                Text("开始扫描")
+                    .font(Typography.largeBody())
+                    .frame(maxWidth: 420)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .keyboardShortcut(.defaultAction)
+            .accessibilityLabel("开始扫描")
+
+            Spacer(minLength: 0)
+        }
+        .padding(Spacing.lg)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.bgCanvas)
+    }
+
+    /// The four filter controls, stacked with the design-system rhythm.
+    @ViewBuilder
+    private var filterControls: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            // 1 — minimum size threshold
+            VStack(alignment: .leading, spacing: 2) {
+                Text("最小文件大小：\(formatSizeLabel(viewModel.filters.minimumSizeBytes))")
+                    .font(Typography.regularBody())
+                    .foregroundStyle(Color.textPrimary)
+                Slider(value: minimumSizeMB, in: 0...100, step: 1)
+                    .accessibilityLabel("最小文件大小")
+            }
+
+            // 2 — minimum unused age
+            Picker("超过多久未使用", selection: $viewModel.filters.minimumUnusedDays) {
+                Text("不限").tag(0)
+                Text("7 天").tag(7)
+                Text("30 天").tag(30)
+                Text("90 天").tag(90)
+            }
+            .pickerStyle(.segmented)
+            .accessibilityLabel("超过多久未使用")
+
+            // 3 — dangerous gate
+            Toggle("跳过高风险项", isOn: $viewModel.filters.skipDangerous)
+                .accessibilityLabel("跳过高风险项")
+
+            // 4 — running-app gate
+            Toggle("跳过正在运行的应用", isOn: $viewModel.filters.skipRunningApps)
+                .accessibilityLabel("跳过正在运行的应用")
+        }
+        .font(Typography.regularBody())
+        .foregroundStyle(Color.textPrimary)
+    }
+
+    /// Renders the byte threshold as "不限" at zero, else a file-size string.
+    private func formatSizeLabel(_ bytes: Int64) -> String {
+        bytes <= 0
+            ? "不限"
+            : ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
     }
 }
 
