@@ -11,9 +11,8 @@ import CommonCrypto
 ///
 /// 1. **Versioning** — every call to ``backup(residues:bundleID:)`` creates
 ///    a new `v<N>/` subdirectory inside the bundle's directory. `N` is
-///    one greater than the count of pre-existing versioned directories, so
-///    repeated backups of the same app are kept side-by-side and a stale
-///    backup never clobbers a still-good one.
+///    one greater than the highest pre-existing version number, so repeated
+///    backups remain collision-free even when a middle version is missing.
 /// 2. **30-day TTL eviction** — ``cleanupExpired(olderThanDays:)`` walks
 ///    `rootURL`, removes any bundleID directory whose `creationDate` is
 ///    older than the cutoff, and returns the count removed. ``cleanup(bundleID:)``
@@ -26,9 +25,9 @@ import CommonCrypto
 ///    corruption between `backup` and `restore`.
 ///
 /// The atomic-write guarantee from the I3c/I3d interim fixes is preserved:
-/// every file write goes through temp-and-rename (`<dest>.tmp.<UUID>` →
-/// `moveItem` onto `<dest>`) so a failed `copyItem` never destroys the
-/// destination that was already on disk.
+/// every file write goes through a temporary copy followed by an atomic
+/// replacement (`<dest>.tmp.<UUID>` → `replaceItemAt`) so failed copies or
+/// replacements do not pre-delete the destination already on disk.
 ///
 /// `BackupManager` is an `actor`; all state mutations are serialised on the
 /// actor's executor so concurrent calls from `TrashMover` cannot race.
@@ -43,6 +42,8 @@ public actor BackupManager {
     /// `JSONEncoder` and read back with `JSONDecoder`; both are
     /// `Codable`-round-trip stable.
     public struct Manifest: Codable, Sendable {
+        /// Schema version for forward compatibility. Currently always `1`.
+        public let schemaVersion: Int
         /// Bundle identifier this backup belongs to.
         public let bundleID: String
         /// When the backup was taken.
@@ -52,6 +53,45 @@ public actor BackupManager {
         public let version: Int
         /// One entry per backed-up file.
         public let files: [ManifestEntry]
+
+        /// Creates a manifest for one versioned backup.
+        public init(
+            schemaVersion: Int = 1,
+            bundleID: String,
+            createdAt: Date,
+            version: Int,
+            files: [ManifestEntry]
+        ) {
+            self.schemaVersion = schemaVersion
+            self.bundleID = bundleID
+            self.createdAt = createdAt
+            self.version = version
+            self.files = files
+        }
+
+        /// Decodes manifests while treating the absent schema field in legacy
+        /// JSON as schema version `1`.
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            do {
+                schemaVersion = try container.decodeIfPresent(Int.self, forKey: .schemaVersion) ?? 1
+            } catch {
+                print("BackupManager.Manifest: invalid schemaVersion, defaulting to 1: \(error)")
+                schemaVersion = 1
+            }
+            bundleID = try container.decode(String.self, forKey: .bundleID)
+            createdAt = try container.decode(Date.self, forKey: .createdAt)
+            version = try container.decode(Int.self, forKey: .version)
+            files = try container.decode([ManifestEntry].self, forKey: .files)
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case schemaVersion
+            case bundleID
+            case createdAt
+            case version
+            case files
+        }
 
         /// Description of one file inside a backup.
         public struct ManifestEntry: Codable, Sendable {
@@ -64,6 +104,13 @@ public actor BackupManager {
             public let sizeBytes: Int64
             /// Lowercase hex SHA-256 of the file at backup time.
             public let sha256: String
+
+            /// Creates one manifest entry.
+            public init(relativePath: String, sizeBytes: Int64, sha256: String) {
+                self.relativePath = relativePath
+                self.sizeBytes = sizeBytes
+                self.sha256 = sha256
+            }
         }
     }
 
@@ -79,8 +126,9 @@ public actor BackupManager {
 
     // MARK: - Init
 
-    /// Creates a backup manager rooted at `rootURL`. If `rootURL` is `nil`
-    /// the manager uses ``defaultRootURL()``.
+    /// Creates a backup manager rooted at `rootURL`. If `rootURL` is `nil`,
+    /// the manager uses the production default:
+    /// `applicationSupportDirectory/app.kraftly.kfresh/Backups`.
     ///
     /// - Parameter rootURL: Override location for backup storage. Tests
     ///   pass a unique `temporaryDirectory.appendingPathComponent(...)`
@@ -90,9 +138,8 @@ public actor BackupManager {
         self.rootURL = rootURL ?? Self.defaultRootURL()
     }
 
-    /// Returns the production root: `applicationSupportDirectory/<bundleID>`.
-    /// Throws if `applicationSupportDirectory` is not available, which
-    /// would only happen in a severely degraded sandbox.
+    /// Returns the production root, or `NSTemporaryDirectory()` if
+    /// `applicationSupportDirectory` is unavailable.
     private static func defaultRootURL() -> URL {
         guard let appSupport = FileManager.default.urls(for: .applicationSupportDirectory,
                                                         in: .userDomainMask).first else {
@@ -127,7 +174,10 @@ public actor BackupManager {
     public func backup(residues: [ResidueFile], bundleID: String) async throws -> URL {
         let bundleDir = rootURL.appendingPathComponent(bundleID)
         let existingVersions = listVersionedDirectories(in: bundleDir)
-        let version = existingVersions.count + 1
+        let versionNumbers = existingVersions.compactMap { url in
+            Int(url.lastPathComponent.dropFirst())
+        }
+        let version = (versionNumbers.max() ?? 0) + 1
         let backupDir = bundleDir.appendingPathComponent("v\(version)")
         try fileManager.createDirectory(at: backupDir, withIntermediateDirectories: true)
 
@@ -138,10 +188,9 @@ public actor BackupManager {
             let fileName = residue.url.lastPathComponent
             let dest = backupDir.appendingPathComponent(fileName)
 
-            // Temp-and-rename atomicity: copy lands at `<dest>.tmp.<UUID>`
-            // first; `moveItem` onto `<dest>` is the atomic commit. If the
-            // copy throws the previous good backup at `dest` is untouched.
-            // Preserves the I3c guarantee from the interim BackupManager.
+            // Temp-and-atomic-replacement: copy lands at
+            // `<dest>.tmp.<UUID>` first. A failed copy or replacement leaves
+            // any previous good backup at `dest` untouched (I3c).
             let tempDest = backupDir.appendingPathComponent("\(fileName).tmp.\(UUID().uuidString)")
             do {
                 try fileManager.copyItem(at: residue.url, to: tempDest)
@@ -154,19 +203,18 @@ public actor BackupManager {
                 }
                 throw error
             }
-            if fileManager.fileExists(atPath: dest.path) {
-                try fileManager.removeItem(at: dest)
-            }
             do {
-                try fileManager.moveItem(at: tempDest, to: dest)
+                _ = try fileManager.replaceItemAt(
+                    dest,
+                    withItemAt: tempDest,
+                    backupItemName: nil,
+                    options: .usingNewMetadataOnly
+                )
             } catch {
-                // If the move fails after a successful copy the temp file
-                // is left in place; clean it up so the versioned directory
-                // does not accumulate orphans across retries.
                 do {
                     try fileManager.removeItem(at: tempDest)
                 } catch {
-                    print("BackupManager.backup: failed to clean orphan temp after move failure \(tempDest.path): \(error)")
+                    print("BackupManager.backup: failed to clean orphan temp after replace failure \(tempDest.path): \(error)")
                 }
                 throw error
             }
@@ -175,13 +223,8 @@ public actor BackupManager {
             // `verify` later. We read from `dest` (the canonical location)
             // rather than `tempDest` because we want the hash of what is on
             // disk, not the temp file we are about to delete.
-            let data: Data
-            do {
-                data = try Data(contentsOf: dest)
-            } catch {
-                throw error
-            }
-            let sha = sha256Hex(data)
+            let data = try Data(contentsOf: dest)
+            let sha = Self.sha256Hex(data)
             entries.append(Manifest.ManifestEntry(
                 relativePath: fileName,
                 sizeBytes: Int64(data.count),
@@ -192,12 +235,7 @@ public actor BackupManager {
         let manifest = Manifest(bundleID: bundleID, createdAt: Date(), version: version, files: entries)
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
-        let manifestData: Data
-        do {
-            manifestData = try encoder.encode(manifest)
-        } catch {
-            throw error
-        }
+        let manifestData = try encoder.encode(manifest)
         try manifestData.write(to: backupDir.appendingPathComponent("manifest.json"))
 
         return backupDir
@@ -212,7 +250,7 @@ public actor BackupManager {
     ///
     /// The backup directory is expected to be the `v<N>/` URL returned by
     /// ``backup(residues:bundleID:)``. If the manifest is missing or
-    /// malformed the function throws `RestoreError.missingManifest` /
+    /// malformed the function throws `BackupError.missingManifest` /
     /// `.corruptManifest` so the caller can surface the failure rather
     /// than silently no-op.
     ///
@@ -227,7 +265,7 @@ public actor BackupManager {
     ///   by ``backup(residues:bundleID:)``.
     /// - Parameter originalResidues: The residue set the user originally
     ///   backed up; used to look up destination URLs by file name.
-    /// - Throws: `RestoreError.missingManifest`, `.corruptManifest`, or
+    /// - Throws: `BackupError.missingManifest`, `.corruptManifest`, or
     ///   filesystem errors from the copy loop.
     public func restore(backupPath: URL, originalResidues: [ResidueFile]) async throws {
         let manifest = try Self.readManifest(at: backupPath, fileManager: fileManager)
@@ -235,7 +273,10 @@ public actor BackupManager {
         for entry in manifest.files {
             guard let residue = originalResidues.first(where: { $0.url.lastPathComponent == entry.relativePath }) else { continue }
             let backupFile = backupPath.appendingPathComponent(entry.relativePath)
-            guard fileManager.fileExists(atPath: backupFile.path) else { continue }
+            guard fileManager.fileExists(atPath: backupFile.path) else {
+                print("BackupManager.restore: manifest entry references missing file \(entry.relativePath) in \(backupPath.path)")
+                continue
+            }
 
             // CRITICAL: never overwrite a more-recent file at the original
             // path. The "more recent" heuristic is "current size >= backup
@@ -264,10 +305,9 @@ public actor BackupManager {
                 if existingSize >= entry.sizeBytes { continue }
             }
 
-            // Temp-and-rename atomicity: copy lands at `<dest>.tmp.<UUID>`
-            // first; `moveItem` onto `<dest>` is the atomic commit. If the
-            // copy throws the existing destination is untouched. Preserves
-            // the I3d guarantee from the interim BackupManager.
+            // Temp-and-atomic-replacement: copy lands at
+            // `<dest>.tmp.<UUID>` first. A failed copy or replacement leaves
+            // the existing destination untouched (I3d).
             let dest = residue.url
             let tempDest = dest.deletingLastPathComponent()
                 .appendingPathComponent("\(dest.lastPathComponent).tmp.\(UUID().uuidString)")
@@ -281,16 +321,20 @@ public actor BackupManager {
                 }
                 throw error
             }
-            if fileManager.fileExists(atPath: dest.path) {
-                try fileManager.removeItem(at: dest)
-            }
             do {
-                try fileManager.moveItem(at: tempDest, to: dest)
+                _ = try fileManager.replaceItemAt(
+                    dest,
+                    withItemAt: tempDest,
+                    backupItemName: nil,
+                    options: .usingNewMetadataOnly
+                )
             } catch {
+                // Atomic replace failed; the original destination was never
+                // pre-deleted. Clean up the temporary copy and propagate.
                 do {
                     try fileManager.removeItem(at: tempDest)
                 } catch {
-                    print("BackupManager.restore: failed to clean orphan temp after move failure \(tempDest.path): \(error)")
+                    print("BackupManager.restore: failed to clean orphan temp \(tempDest.path): \(error)")
                 }
                 throw error
             }
@@ -314,9 +358,9 @@ public actor BackupManager {
         do {
             try fileManager.removeItem(at: bundleDir)
         } catch {
-            // ENOENT (already removed) is fine; anything else is logged so
-            // it is discoverable via `Console.app` but does not block the
-            // calling flow.
+            // ENOENT (already removed) is fine; anything else is logged via
+            // `print` (visible in `Console.app` only during a foreground
+            // debug session) but does not block the calling flow.
             print("BackupManager.cleanup: failed to remove \(bundleDir.path): \(error)")
         }
     }
@@ -335,7 +379,7 @@ public actor BackupManager {
             contents = try fileManager.contentsOfDirectory(at: rootURL,
                                                            includingPropertiesForKeys: [.creationDateKey])
         } catch {
-            // ENOENT (root missing) and any other failure: nothing to do.
+            print("BackupManager.cleanupExpired: failed to list \(rootURL.path): \(error)")
             return 0
         }
         let cutoff = Date().addingTimeInterval(-Double(days) * 86400)
@@ -345,6 +389,7 @@ public actor BackupManager {
             do {
                 attrs = try fileManager.attributesOfItem(atPath: url.path)
             } catch {
+                print("BackupManager.cleanupExpired: failed to inspect \(url.path): \(error)")
                 continue
             }
             guard let creationDate = attrs[.creationDate] as? Date,
@@ -369,9 +414,6 @@ public actor BackupManager {
     /// - Parameter backupPath: `v<N>/` directory URL previously returned
     ///   by ``backup(residues:bundleID:)``.
     /// - Returns: `true` if every manifest entry matches the file on disk.
-    /// - Throws: Only `BackupError` for unexpected I/O failures; the more
-    ///   common "manifest missing / corrupt / file missing / hash mismatch"
-    ///   cases return `false` so callers can branch on a single Bool.
     public func verify(backupPath: URL) async throws -> Bool {
         let manifest: Manifest
         do {
@@ -392,7 +434,7 @@ public actor BackupManager {
                 print("BackupManager.verify: file unreadable at \(fileURL.path): \(error)")
                 return false
             }
-            if sha256Hex(data) != entry.sha256 {
+            if Self.sha256Hex(data) != entry.sha256 {
                 print("BackupManager.verify: hash mismatch for \(entry.relativePath)")
                 return false
             }
@@ -411,6 +453,9 @@ public actor BackupManager {
             contents = try fileManager.contentsOfDirectory(at: bundleDir,
                                                            includingPropertiesForKeys: nil)
         } catch {
+            if fileManager.fileExists(atPath: bundleDir.path) {
+                print("BackupManager.listVersionedDirectories: failed to list \(bundleDir.path): \(error)")
+            }
             return []
         }
         return contents.filter { $0.lastPathComponent.hasPrefix("v") }
@@ -436,15 +481,20 @@ public actor BackupManager {
         }
     }
 
+    /// Returns the lowercase hex SHA-256 of `data` for test fixtures.
+    static func sha256HexForTest(_ data: Data) -> String {
+        sha256Hex(data)
+    }
+
     /// Returns the lowercase hex SHA-256 of `data`.
-    private func sha256Hex(_ data: Data) -> String {
+    private static func sha256Hex(_ data: Data) -> String {
         sha256CC(data).map { String(format: "%02x", $0) }.joined()
     }
 
     /// CommonCrypto SHA-256 wrapper. Kept as a tiny helper so the rest of
     /// the file stays focused on the backup/restore flow. CommonCrypto is
     /// always available on macOS so no extra module map is required.
-    private func sha256CC(_ data: Data) -> [UInt8] {
+    private static func sha256CC(_ data: Data) -> [UInt8] {
         var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
         data.withUnsafeBytes { buffer in
             _ = CC_SHA256(buffer.baseAddress, CC_LONG(data.count), &hash)

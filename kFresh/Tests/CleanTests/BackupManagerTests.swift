@@ -121,6 +121,20 @@ final class BackupManagerTests: XCTestCase {
         XCTAssertTrue(valid)
     }
 
+    /// `verify` must reject a backup whose on-disk contents no longer match
+    /// the SHA-256 recorded in its manifest.
+    func testVerifyReturnsFalseWhenFileCorrupted() async throws {
+        let sourceFile = tempDir.appendingPathComponent("source.plist")
+        try Data("test".utf8).write(to: sourceFile)
+        let residue = ResidueFile(url: sourceFile, type: .preferences, sizeBytes: 4, confidence: 0.9, description: "test", isSystemLevel: false, isProtected: false)
+        let manager = BackupManager(rootURL: tempDir.appendingPathComponent("backups"))
+        let backupURL = try await manager.backup(residues: [residue], bundleID: "com.example.test")
+        try Data("test!".utf8).write(to: backupURL.appendingPathComponent("source.plist"))
+
+        let valid = try await manager.verify(backupPath: backupURL)
+        XCTAssertFalse(valid)
+    }
+
     // MARK: - I3d preservation guard
 
     /// When `BackupManager.restore` is asked to copy a backup over an
@@ -171,6 +185,25 @@ final class BackupManagerTests: XCTestCase {
         try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: 0o000)],
                                               ofItemAtPath: backupFile.path)
 
+        // A valid manifest ensures this test enters the restore copy loop;
+        // without it, restore would fail earlier while reading the manifest.
+        let manifest = BackupManager.Manifest(
+            bundleID: "com.example.i3d",
+            createdAt: Date(),
+            version: 1,
+            files: [
+                BackupManager.Manifest.ManifestEntry(
+                    relativePath: residueName,
+                    sizeBytes: 9,
+                    sha256: BackupManager.sha256HexForTest(Data("user-data".utf8))
+                )
+            ]
+        )
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let manifestData = try encoder.encode(manifest)
+        try manifestData.write(to: backupRoot.appendingPathComponent("manifest.json"))
+
         let residue = ResidueFile(
             url: existingFile,
             type: .preferences,
@@ -184,10 +217,11 @@ final class BackupManagerTests: XCTestCase {
         do {
             try await manager.restore(backupPath: backupRoot, originalResidues: [residue])
             XCTFail("Expected restore to throw because the backup source is unreadable")
+        } catch let error as BackupError {
+            XCTFail("Expected copy to fail with NSError, got BackupError: \(error)")
         } catch {
-            // Expected: the copy failed because the source is unreadable
-            // (EACCES). The exact error code is irrelevant — what matters
-            // is that the existing destination file is still on disk.
+            // Expected: copy failed with EACCES on chmod-000 source. Underlying
+            // error is whatever FileManager.copyItem raised.
         }
 
         XCTAssertTrue(FileManager.default.fileExists(atPath: existingFile.path),

@@ -242,6 +242,22 @@ final class TrashMoverTests: XCTestCase {
         let residueName = "preferences.plist"
         let sentinel = backupPath.appendingPathComponent(residueName)
         try "user-data".write(to: sentinel, atomically: true, encoding: .utf8)
+        let manifest = BackupManager.Manifest(
+            bundleID: "com.example.c1b",
+            createdAt: Date(),
+            version: 1,
+            files: [
+                BackupManager.Manifest.ManifestEntry(
+                    relativePath: residueName,
+                    sizeBytes: 9,
+                    sha256: BackupManager.sha256HexForTest(Data("user-data".utf8))
+                )
+            ]
+        )
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let manifestData = try encoder.encode(manifest)
+        try manifestData.write(to: backupPath.appendingPathComponent("manifest.json"))
 
         // Real "trashed" app that moveItem can pick up.
         let trashedApp = tempDir.appendingPathComponent("Trashed.app")
