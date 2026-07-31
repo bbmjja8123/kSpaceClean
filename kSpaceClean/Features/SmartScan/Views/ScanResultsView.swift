@@ -1,6 +1,15 @@
 // kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift
 import SwiftUI
 
+/// Process-wide `ByteCountFormatter` shared by every visible byte label
+/// in the scan-results view (header, summary bar, and child rows). One
+/// construction is dramatically cheaper than per-render allocation.
+private let sharedByteCountFormatter: ByteCountFormatter = {
+    let f = ByteCountFormatter()
+    f.countStyle = .file
+    return f
+}()
+
 /// Top-level container view that displays the post-scan 4-level tree.
 ///
 /// `ScanResultsView` is the Phase A "main view" milestone: it owns the
@@ -65,6 +74,7 @@ struct ScanResultsView: View {
                                 onToggleExpand: viewModel.toggleExpand,
                                 onToggleSelect: viewModel.toggleSelect
                             )
+                            .equatable()
                         }
                     }
                     .padding(.vertical, Spacing.sm)
@@ -107,9 +117,11 @@ struct ScanResultsView: View {
 
     /// Formats `bytes` as a localized file-size string (e.g. `"12.4 MB"`).
     /// Uses `.file` style to favor MB/GB units over the block-count
-    /// style of `.binary`.
+    /// style of `.binary`. Reads from the process-wide
+    /// `sharedByteCountFormatter` so the per-render allocation cost
+    /// disappears.
     private func formatBytes(_ bytes: Int64) -> String {
-        ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+        sharedByteCountFormatter.string(fromByteCount: bytes)
     }
 }
 
@@ -218,7 +230,7 @@ struct PreScanPanel: View {
     private func formatSizeLabel(_ bytes: Int64) -> String {
         bytes <= 0
             ? "不限"
-            : ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+            : sharedByteCountFormatter.string(fromByteCount: bytes)
     }
 }
 
@@ -234,7 +246,13 @@ struct PreScanPanel: View {
 /// indent children by `RowSize.indentPerLevel` per level. Dispatch is
 /// polymorphic — `ScanTreeRow` uses `as?` casts on `node` to pull
 /// level-specific fields.
-private struct RecursiveTreeNode: View {
+///
+/// `RecursiveTreeNode` conforms to `Equatable` so SwiftUI can skip the
+/// body re-evaluation for a whole subtree whose `(node.id, level,
+/// expandedIDs)` triple is unchanged. The two callbacks are stable
+/// references for the view tree's lifetime and would only force equality
+/// churn on every parent invalidation.
+private struct RecursiveTreeNode: View, Equatable {
     /// Tree node being rendered. Polymorphic — `ScanTreeRow` handles the
     /// per-level field access via runtime `as?` checks.
     let node: any ScanTreeNode
@@ -247,6 +265,18 @@ private struct RecursiveTreeNode: View {
     /// User tapped the checkbox. Parent routes through the cascade.
     let onToggleSelect: (any ScanTreeNode) -> Void
 
+    /// Equatable conformance — drives `.equatable()` on the recursive
+    /// children in `body` so subtrees whose `(node.id, level,
+    /// expandedIDs)` triple is unchanged skip body evaluation. This is
+    /// the key win for the leaf-level `.on → .off` flip case described
+    /// in the perf brief: a sibling leaf toggling no longer rebuilds
+    /// the HStack for every other row in the tree.
+    static func == (lhs: RecursiveTreeNode, rhs: RecursiveTreeNode) -> Bool {
+        lhs.node.id == rhs.node.id
+            && lhs.level == rhs.level
+            && lhs.expandedIDs == rhs.expandedIDs
+    }
+
     /// Always renders the row; the children are wrapped in a single
     /// `Group` so the body shape stays uniform across the recursion.
     var body: some View {
@@ -258,6 +288,7 @@ private struct RecursiveTreeNode: View {
             onToggleExpand: { onToggleExpand(node.id) },
             onToggleSelect: { onToggleSelect(node) }
         )
+        .equatable()
         Group {
             if isExpanded {
                 ForEach(Array(node.children.enumerated()), id: \.element.id) { _, child in
@@ -268,6 +299,7 @@ private struct RecursiveTreeNode: View {
                         onToggleExpand: onToggleExpand,
                         onToggleSelect: onToggleSelect
                     )
+                    .equatable()
                 }
             }
         }
@@ -338,9 +370,10 @@ struct SummaryBar: View {
     /// Formats `bytes` as a localized file-size string (e.g. `"12.4 MB"`).
     /// Mirrors ``ScanResultsView/formatBytes(_:)``; duplicated here so
     /// `SummaryBar` can be lifted into a preview or a sibling surface
-    /// without taking the parent view with it.
+    /// without taking the parent view with it. Reads from the
+    /// process-wide `sharedByteCountFormatter`.
     private func formatBytes(_ bytes: Int64) -> String {
-        ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+        sharedByteCountFormatter.string(fromByteCount: bytes)
     }
 }
 

@@ -1,6 +1,17 @@
 // kSpaceClean/Features/SmartScan/Views/ScanTreeRow.swift
 import SwiftUI
 
+/// Process-wide `ByteCountFormatter` shared by every scan-result row.
+///
+/// Constructing a `ByteCountFormatter` loads the user's locale tables;
+/// doing it once per render is wasteful. Rows are `.equatable()` and
+/// re-render often during a scan, so this is a meaningful win.
+private let sharedByteCountFormatter: ByteCountFormatter = {
+    let f = ByteCountFormatter()
+    f.countStyle = .file
+    return f
+}()
+
 /// Generic row view used by the 4-level scan-result tree (`ScanResultsView`).
 ///
 /// `ScanTreeRow` renders a single node — `ScanCategory`, `ScanSubCategory`,
@@ -9,6 +20,12 @@ import SwiftUI
 /// current expand/collapse state; the view itself is purely presentational
 /// and surfaces every interaction back through callbacks so the owning view
 /// model can mutate the underlying node.
+///
+/// `ScanTreeRow` conforms to `Equatable` so SwiftUI can skip body
+/// evaluation when the rendered output is unchanged. Equality is computed
+/// from `(node.id, level, isExpanded)` — the body never depends on the
+/// callback identity (closures are stable references for the lifetime of
+/// the view tree) so comparing them would defeat the purpose.
 ///
 /// Visual layout, from leading to trailing edge:
 ///
@@ -33,7 +50,7 @@ import SwiftUI
 /// Hovering the row swaps the background to `Color.bgSurface` and the
 /// transition uses `Animation.accessibleDefault` so motion-sensitive users
 /// get the calmer 0.1s linear curve.
-struct ScanTreeRow: View {
+struct ScanTreeRow: View, Equatable {
     /// The tree node being rendered. The view dispatches on its runtime type
     /// via `as?` casts to pull node-specific fields (e.g. `ScanResult.path`).
     let node: any ScanTreeNode
@@ -46,6 +63,17 @@ struct ScanTreeRow: View {
     /// User tapped the checkbox. Parent routes through the cascade algorithm
     /// defined by `SelectionPolicy` so the selection propagates correctly.
     let onToggleSelect: () -> Void
+
+    /// Equatable conformance — SwiftUI uses this when the parent applies
+    /// `.equatable()` so a row whose `(node.id, level, isExpanded)` tuple
+    /// is unchanged skips body evaluation. The callbacks are stable
+    /// references for the view tree's lifetime, so identity changes
+    /// there are not a meaningful equality signal.
+    static func == (lhs: ScanTreeRow, rhs: ScanTreeRow) -> Bool {
+        lhs.node.id == rhs.node.id
+            && lhs.level == rhs.level
+            && lhs.isExpanded == rhs.isExpanded
+    }
 
     var body: some View {
         HStack(spacing: Spacing.sm) {
@@ -177,9 +205,10 @@ struct ScanTreeRow: View {
 
     /// Formats a byte count as a localized file-size string (e.g.
     /// `"12.4 MB"`). Uses `.file` style to favor MB/GB units over the
-    /// block-count style of `.binary`.
+    /// block-count style of `.binary`. Reads from the process-wide
+    /// `sharedByteCountFormatter` so construction cost is paid once.
     private func formatBytes(_ bytes: Int64) -> String {
-        ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+        sharedByteCountFormatter.string(fromByteCount: bytes)
     }
 }
 
