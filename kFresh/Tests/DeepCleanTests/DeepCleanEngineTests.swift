@@ -175,6 +175,47 @@ final class DeepCleanEngineTests: XCTestCase {
         XCTAssertEqual(pane.isProtected, true, "A com.apple.* bundle ID must protect the pane regardless of its folder name")
     }
 
+    /// A launch agent that launches an Apple app via `ProgramArguments` must
+    /// NOT be flagged protected when its label is third-party — the derived
+    /// bundle ID is surfaced for display but never drives protection.
+    func testScanLaunchAgentNotProtectedWhenProgramArgumentsLaunchesAppleApp() async throws {
+        try writePlist([
+            "Label": "com.thirdparty.someagent",
+            "ProgramArguments": ["/usr/bin/open", "/Applications/Safari.app"],
+        ], to: launchAgentsDir.appendingPathComponent("thirdparty-agent.plist"))
+        let engine = makeEngine()
+
+        let items = try await engine.scan()
+
+        guard let agent = items.first else {
+            return XCTFail("Expected the launch agent to be scanned")
+        }
+        XCTAssertEqual(agent.category, .launchAgents)
+        XCTAssertEqual(agent.associatedBundleID, "com.apple.Safari",
+                       "The Apple app bundle ID is derived for display even though it does not drive protection")
+        XCTAssertEqual(agent.isProtected, false,
+                       "A third-party launch agent must never be protected via a ProgramArguments-derived bundle ID")
+    }
+
+    /// A launch agent whose label IS Apple-owned stays protected even when its
+    /// `ProgramArguments` names a third-party app — the label invariant wins.
+    func testScanLaunchAgentAppleLabelStaysProtectedDespiteThirdPartyProgramArguments() async throws {
+        try writePlist([
+            "Label": "com.apple.someagent",
+            "ProgramArguments": ["/usr/bin/open", "/Applications/SomeThirdParty.app"],
+        ], to: launchAgentsDir.appendingPathComponent("apple-agent.plist"))
+        let engine = makeEngine()
+
+        let items = try await engine.scan()
+
+        guard let agent = items.first else {
+            return XCTFail("Expected the launch agent to be scanned")
+        }
+        XCTAssertEqual(agent.category, .launchAgents)
+        XCTAssertEqual(agent.isProtected, true,
+                       "An Apple-owned label must stay protected regardless of ProgramArguments content")
+    }
+
     // MARK: - Clean
 
     /// An empty selection is a no-op returning zero.

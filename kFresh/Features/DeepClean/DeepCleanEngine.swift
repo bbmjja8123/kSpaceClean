@@ -57,8 +57,12 @@ internal struct SystemCleanItem: Identifiable, Equatable, Sendable {
     /// Aggregate size on disk in bytes. Recursive for `.prefPane` bundles,
     /// a single-file stat otherwise.
     let sizeBytes: Int64
-    /// `true` for Apple-owned items (launchd label prefixed `com.apple.` or
-    /// `com.macos.`). Such items are never deletable.
+    /// `true` for Apple-owned items. For launch agents and daemons the launchd
+    /// `Label` is authoritative: a label prefixed `com.apple.` or `com.macos.`
+    /// protects the item regardless of its `ProgramArguments`. For preference
+    /// panes the `CFBundleIdentifier` from `Contents/Info.plist` is checked
+    /// first, falling back to the bundle folder name. Such items are never
+    /// deletable.
     let isProtected: Bool
     /// Bundle identifier of the app the item belongs to, when derivable
     /// from the plist's `ProgramArguments`; `nil` otherwise.
@@ -95,10 +99,13 @@ internal protocol DeepCleanEngining: AnyObject, Sendable {
 /// 1. **Backup before delete** — ``clean(_:)`` copies every selected item
 ///    into ``BackupManager`` first. If the backup throws, the whole
 ///    operation aborts and nothing is deleted.
-/// 2. **Apple items are never deleted** — items whose launchd label starts
-///    with `com.apple.` or `com.macos.` are flagged ``SystemCleanItem/isProtected``,
-///    and both the engine's ``clean(_:)`` and the view-model's toggle guard
-///    refuse them.
+/// 2. **Apple items are never deleted** — launch agents and daemons are
+///    protected by their launchd `Label` (prefixed `com.apple.` or
+///    `com.macos.`); preference panes are protected by their
+///    `CFBundleIdentifier` when present, else by their bundle folder name.
+///    Protected items are flagged ``SystemCleanItem/isProtected`` and both
+///    the engine's ``clean(_:)`` and the view-model's toggle guard refuse
+///    them.
 /// 3. **Per-directory degradation** — a directory that is unreadable (e.g. a
 ///    TCC denial) contributes zero items instead of failing the whole scan,
 ///    so the UI always renders the readable subset.
@@ -210,12 +217,24 @@ internal actor DeepCleanEngine: DeepCleanEngining {
             bundleID = plist["CFBundleIdentifier"] as? String
         }
 
+        // Protection keys off the launchd `Label` for launch agents and
+        // daemons; preference panes additionally check the `CFBundleIdentifier`
+        // so an apple-CFBundleIdentifier pane is protected even under a
+        // third-party folder name.
+        let isProtected: Bool
+        switch category {
+        case .launchAgents, .launchDaemons:
+            isProtected = isAppleOwned(label)
+        case .preferencePanes:
+            isProtected = isAppleOwned(bundleID ?? label)
+        }
+
         return SystemCleanItem(
             displayName: displayName,
             url: url,
             category: category,
             sizeBytes: sizeOfItem(at: url),
-            isProtected: isAppleOwned(bundleID ?? label),
+            isProtected: isProtected,
             associatedBundleID: bundleID
         )
     }
