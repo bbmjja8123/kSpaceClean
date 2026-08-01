@@ -46,14 +46,16 @@ public struct ProcessRowView: View {
 
 // MARK: - Preview
 
-#Preview("Process row") {
-    ProcessRowView(viewModel: ProcessRowViewModel(
-        pid: 1234,
-        name: "Safari",
-        cpuPercent: 12.5,
-        memoryBytes: 145_000_000,
-        networkBytesPerSecond: 2_300_000
-    ))
-    .padding(8)
-    .frame(width: 500)
+struct ProcessRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProcessRowView(viewModel: ProcessRowViewModel(
+            pid: 1234,
+            name: "Safari",
+            cpuPercent: 12.5,
+            memoryBytes: 145_000_000,
+            networkBytesPerSecond: 2_300_000
+        ))
+        .padding(8)
+        .frame(width: 500)
+    }
 }

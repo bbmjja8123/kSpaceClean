@@ -150,6 +150,7 @@ public final class PaywallViewModel: ObservableObject {
 extension StoreManagerProtocol {
     /// Combine publisher for `products`. Provided so view models can
     /// subscribe via Combine even though the protocol exposes raw values.
+    @MainActor
     var productsPublisher: AnyPublisher<[Product], Never> {
         if let publisher = self as? StoreManager {
             return publisher.$products.eraseToAnyPublisher()
@@ -162,6 +163,7 @@ extension StoreManagerProtocol {
 
     /// Combine publisher for `isPro`. Mirrors `productsPublisher` for the
     /// Pro flag.
+    @MainActor
     var isProPublisher: AnyPublisher<Bool, Never> {
         if let publisher = self as? StoreManager {
             return publisher.$isPro.eraseToAnyPublisher()

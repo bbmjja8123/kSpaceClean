@@ -59,7 +59,7 @@ public final class SettingsViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
-    private let preferences: any PreferencesRepositoryProtocol
+    private var preferences: any PreferencesRepositoryProtocol
     private let scheduler: NotificationSchedulerProtocol
     private let purchaseState: PurchaseState
     private let storeManager: any StoreManagerProtocol

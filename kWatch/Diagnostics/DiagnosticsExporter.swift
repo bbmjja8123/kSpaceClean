@@ -107,7 +107,7 @@ public final class DiagnosticsExporter: DiagnosticsExporting, @unchecked Sendabl
     ) {
         self.panel = panel
         self.snapshotProvider = snapshotProvider ?? DiagnosticsExporter.defaultSnapshotProvider()
-        let calendar = Calendar(identifier: .gregorian)
+        var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "UTC") ?? .current
         self.calendar = calendar
         let formatter = DateFormatter()

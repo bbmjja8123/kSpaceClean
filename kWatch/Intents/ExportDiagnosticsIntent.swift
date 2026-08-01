@@ -25,12 +25,12 @@ public struct ExportDiagnosticsIntent: AppIntent {
         let service = serviceFactory()
         guard await service.isPro() else {
             let locked = lockedDialogText()
-            return .result(value: "", dialog: IntentDialog(locked))
+            return .result(value: "", dialog: IntentDialog("\(locked)"))
         }
         do {
             let url = try await service.exportDiagnostics()
             let line = "Diagnostics exported to \(url.path)"
-            return .result(value: url.path, dialog: IntentDialog(line))
+            return .result(value: url.path, dialog: IntentDialog("\(line)"))
         } catch {
             return .result(value: "", dialog: IntentDialog("Diagnostics export failed: \(error.localizedDescription)"))
         }

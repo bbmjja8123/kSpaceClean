@@ -20,8 +20,6 @@ struct AboutView: View {
 
     public var body: some View {
         VStack(spacing: 16) {
-            Spacer(minLength: 0)
-
             appIcon
             appName
             versionLabel

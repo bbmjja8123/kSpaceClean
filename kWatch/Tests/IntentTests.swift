@@ -1,7 +1,7 @@
 import XCTest
 import AppIntents
 import MetricsKit
-@testable import kWatchIntents
+@testable import kWatch
 
 /// Tests for kWatch's App Intents.
 ///

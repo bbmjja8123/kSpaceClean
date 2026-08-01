@@ -17,13 +17,13 @@ public struct ShowNetworkRateIntent: AppIntent {
     public var serviceFactory: @Sendable () -> any IntentServiceProtocol
 
     public init() {
-        self.direction = .combined
         self.serviceFactory = { LiveIntentService() }
+        self.direction = .combined
     }
 
     public init(direction: NetworkDirectionParameter = .combined, service: any IntentServiceProtocol) {
-        self.direction = direction
         self.serviceFactory = { service }
+        self.direction = direction
     }
 
     public func perform() async throws -> some IntentResult & ProvidesDialog {

@@ -272,46 +272,52 @@ public struct HistoryView: View {
 
 // MARK: - Preview
 
-#Preview("History with data") {
-    let vm = HistoryViewModel(
-        repository: InMemoryHistoryRepository(snapshots: {
-            let now = Date()
-            return (0..<100).map { i in
-                MetricSnapshot(
-                    timestamp: now.addingTimeInterval(Double(-i * 60)),
-                    values: [.cpu: .percentage(Double.random(in: 20...90))],
-                    availability: [:]
-                )
-            }
-        }()),
-        purchaseState: {
-            let ps = PurchaseState()
-            ps.update(isPro: true)
-            return ps
-        }()
-    )
-    HistoryView(viewModel: vm)
-        .frame(width: 700, height: 400)
+struct HistoryView_Data_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = HistoryViewModel(
+            repository: InMemoryHistoryRepository(snapshots: {
+                let now = Date()
+                return (0..<100).map { i in
+                    MetricSnapshot(
+                        timestamp: now.addingTimeInterval(Double(-i * 60)),
+                        values: [.cpu: .percentage(Double.random(in: 20...90))],
+                        availability: [:]
+                    )
+                }
+            }()),
+            purchaseState: {
+                let ps = PurchaseState()
+                ps.update(isPro: true)
+                return ps
+            }()
+        )
+        HistoryView(viewModel: vm)
+            .frame(width: 700, height: 400)
+    }
 }
 
-#Preview("History locked") {
-    let vm = HistoryViewModel(
-        repository: InMemoryHistoryRepository(),
-        purchaseState: PurchaseState()
-    )
-    HistoryView(viewModel: vm)
-        .frame(width: 700, height: 400)
+struct HistoryView_Locked_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = HistoryViewModel(
+            repository: InMemoryHistoryRepository(),
+            purchaseState: PurchaseState()
+        )
+        HistoryView(viewModel: vm)
+            .frame(width: 700, height: 400)
+    }
 }
 
-#Preview("History empty") {
-    let vm = HistoryViewModel(
-        repository: InMemoryHistoryRepository(),
-        purchaseState: {
-            let ps = PurchaseState()
-            ps.update(isPro: true)
-            return ps
-        }()
-    )
-    HistoryView(viewModel: vm)
-        .frame(width: 700, height: 400)
+struct HistoryView_Empty_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = HistoryViewModel(
+            repository: InMemoryHistoryRepository(),
+            purchaseState: {
+                let ps = PurchaseState()
+                ps.update(isPro: true)
+                return ps
+            }()
+        )
+        HistoryView(viewModel: vm)
+            .frame(width: 700, height: 400)
+    }
 }

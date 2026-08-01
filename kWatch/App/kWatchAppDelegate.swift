@@ -1,6 +1,7 @@
 import AppKit
 
 /// Bridges AppKit lifecycle events to the shared app coordinator.
+@MainActor
 public final class kWatchAppDelegate: NSObject, NSApplicationDelegate {
     public static let shared = kWatchAppDelegate()
 

@@ -256,23 +256,27 @@ public struct ProcessesView: View {
 
 // MARK: - Preview
 
-#Preview("Processes with data") {
-    let purchaseState = PurchaseState()
-    purchaseState.update(isPro: true)
+struct ProcessesView_Data_Previews: PreviewProvider {
+    static var previews: some View {
+        let purchaseState = PurchaseState()
+        let _ = purchaseState.update(isPro: true)
 
-    let vm = ProcessesViewModel(
-        processMonitor: nil,
-        purchaseState: purchaseState
-    )
-    ProcessesView(viewModel: vm)
-        .frame(width: 700, height: 500)
+        let vm = ProcessesViewModel(
+            processMonitor: nil,
+            purchaseState: purchaseState
+        )
+        ProcessesView(viewModel: vm)
+            .frame(width: 700, height: 500)
+    }
 }
 
-#Preview("Processes free") {
-    let vm = ProcessesViewModel(
-        processMonitor: nil,
-        purchaseState: PurchaseState()
-    )
-    ProcessesView(viewModel: vm)
-        .frame(width: 700, height: 500)
+struct ProcessesView_Free_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = ProcessesViewModel(
+            processMonitor: nil,
+            purchaseState: PurchaseState()
+        )
+        ProcessesView(viewModel: vm)
+            .frame(width: 700, height: 500)
+    }
 }

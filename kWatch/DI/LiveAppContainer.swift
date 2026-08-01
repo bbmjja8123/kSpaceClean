@@ -6,6 +6,7 @@ import MetricsKit
 /// Note: `ProcessMonitor` is intentionally not included in the monitor list because
 /// it does not conform to `MetricMonitor` — process data is queried on demand by
 /// feature view-models (see Task 15).
+@MainActor
 public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let aggregator: MetricsAggregator
     public let appState: AppState

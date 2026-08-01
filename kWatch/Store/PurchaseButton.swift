@@ -46,36 +46,42 @@ struct PurchaseButton: View {
 }
 
 #if DEBUG
-#Preview("Idle") {
-    PurchaseButton(
-        label: "Buy kWatch Pro — $7.99",
-        isLoading: false,
-        didSucceed: false,
-        action: {}
-    )
-    .padding()
-    .frame(width: 280)
+struct PurchaseButton_Idle_Previews: PreviewProvider {
+    static var previews: some View {
+        PurchaseButton(
+            label: "Buy kWatch Pro — $7.99",
+            isLoading: false,
+            didSucceed: false,
+            action: {}
+        )
+        .padding()
+        .frame(width: 280)
+    }
 }
 
-#Preview("Loading") {
-    PurchaseButton(
-        label: "Buy kWatch Pro — $7.99",
-        isLoading: true,
-        didSucceed: false,
-        action: {}
-    )
-    .padding()
-    .frame(width: 280)
+struct PurchaseButton_Loading_Previews: PreviewProvider {
+    static var previews: some View {
+        PurchaseButton(
+            label: "Buy kWatch Pro — $7.99",
+            isLoading: true,
+            didSucceed: false,
+            action: {}
+        )
+        .padding()
+        .frame(width: 280)
+    }
 }
 
-#Preview("Success") {
-    PurchaseButton(
-        label: "Buy kWatch Pro — $7.99",
-        isLoading: false,
-        didSucceed: true,
-        action: {}
-    )
-    .padding()
-    .frame(width: 280)
+struct PurchaseButton_Success_Previews: PreviewProvider {
+    static var previews: some View {
+        PurchaseButton(
+            label: "Buy kWatch Pro — $7.99",
+            isLoading: false,
+            didSucceed: true,
+            action: {}
+        )
+        .padding()
+        .frame(width: 280)
+    }
 }
 #endif

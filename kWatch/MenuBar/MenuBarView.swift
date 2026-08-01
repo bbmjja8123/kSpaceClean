@@ -41,19 +41,22 @@ public struct MenuBarView: View {
                 MiniTrendChart(values: viewModel.cpuHistory)
                     .frame(height: 28)
             }
-            Divider()
-            MetricMenuRow(title: "CPU", value: "\(Int(viewModel.cpuPercent))%", icon: "cpu")
-            MetricMenuRow(title: "Memory", value: "\(Int(viewModel.memoryPercent))%", icon: "memorychip")
-            MetricMenuRow(title: "Disk", value: "\(Int(viewModel.diskPercent))%", icon: "internaldrive")
-            MetricMenuRow(title: "Network", value: formatBytes(viewModel.networkBytesPerSecond) + "/s", icon: "network")
-            Divider()
+            VStack(alignment: .leading, spacing: 8) {
+                Divider()
+                MetricMenuRow(title: "CPU", value: "\(Int(viewModel.cpuPercent))%", icon: "cpu")
+                MetricMenuRow(title: "Memory", value: "\(Int(viewModel.memoryPercent))%", icon: "memorychip")
+                MetricMenuRow(title: "Disk", value: "\(Int(viewModel.diskPercent))%", icon: "internaldrive")
+                MetricMenuRow(title: "Network", value: formatBytes(viewModel.networkBytesPerSecond) + "/s", icon: "network")
+            }
             modePicker
-            Divider()
-            Button("Open Dashboard…", action: onOpenDashboard)
-            Button("History…", action: onOpenHistory)
-            Button("Processes…", action: onOpenProcesses)
-            Button("Alerts…", action: onOpenAlerts)
-            Button("Settings…", action: onOpenSettings)
+            VStack(alignment: .leading, spacing: 8) {
+                Divider()
+                Button("Open Dashboard…", action: onOpenDashboard)
+                Button("History…", action: onOpenHistory)
+                Button("Processes…", action: onOpenProcesses)
+                Button("Alerts…", action: onOpenAlerts)
+                Button("Settings…", action: onOpenSettings)
+            }
             Divider()
             Text("kWatch").font(.footnote).foregroundStyle(.secondary)
         }

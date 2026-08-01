@@ -1,5 +1,8 @@
 import Foundation
+
+#if canImport(MetricKit)
 import MetricKit
+#endif
 
 /// Subscribes to Apple `MetricKit` daily and crash payloads and persists
 /// them to the App Group container. **Local-only** — no network calls,
@@ -11,6 +14,13 @@ import MetricKit
 /// `MetricKitSubscriber` is `@MainActor` because the AppKit-style
 /// `MXMetricManager` / `MXCrashManager` callbacks are delivered on the
 /// main thread and the underlying subscriber list is not thread-safe.
+///
+/// Note: Apple's `MetricKit` framework is not available on macOS, so the
+/// MetricKit-specific entry points are compiled out on macOS. The type
+/// still exists on macOS so the dependency graph (`AppContainerProtocol`,
+/// `LiveAppContainer`, `TestAppContainer`) compiles unchanged; on macOS
+/// `start()` / `stop()` are then no-ops and the `persist(...)` payload
+/// helpers are unavailable.
 @MainActor
 public final class MetricKitSubscriber {
     /// Singleton used by `kWatchAppDelegate` to share a subscriber across
@@ -53,8 +63,10 @@ public final class MetricKitSubscriber {
     public func start() {
         guard !isStarted else { return }
         isStarted = true
+#if canImport(MetricKit) && (os(iOS) || os(tvOS) || os(watchOS))
         MXMetricManager.shared.add(self)
         MXCrashManager.shared.add(self)
+#endif
     }
 
     /// Detach from the managers. Provided for completeness (mostly used by
@@ -62,12 +74,15 @@ public final class MetricKitSubscriber {
     public func stop() {
         guard isStarted else { return }
         isStarted = false
+#if canImport(MetricKit) && (os(iOS) || os(tvOS) || os(watchOS))
         MXMetricManager.shared.remove(self)
         MXCrashManager.shared.remove(self)
+#endif
     }
 
     // MARK: - Persistence helpers
 
+#if canImport(MetricKit) && (os(iOS) || os(tvOS) || os(watchOS))
     /// Persist a daily metric payload as JSON inside the App Group.
     /// Returns the URL written, or `nil` if the directory is unavailable
     /// or the payload is empty.
@@ -99,6 +114,7 @@ public final class MetricKitSubscriber {
             return nil
         }
     }
+#endif
 
     /// Returns a list of diagnostic files currently stored in the App
     /// Group, oldest first. Returns an empty array when the directory is
@@ -128,6 +144,7 @@ public final class MetricKitSubscriber {
     }
 }
 
+#if canImport(MetricKit) && (os(iOS) || os(tvOS) || os(watchOS))
 // MARK: - MXMetricManagerSubscriber
 
 extension MetricKitSubscriber: MXMetricManagerSubscriber {
@@ -283,3 +300,4 @@ private struct HangSummary: Codable, Sendable {
         self.hangDuration = String(describing: payload.hangDuration)
     }
 }
+#endif

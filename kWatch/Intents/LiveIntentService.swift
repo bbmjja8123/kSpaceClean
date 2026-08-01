@@ -12,7 +12,7 @@ import MetricsKit
 /// reference — extensions must keep their container lifetimes independent
 /// from the main app to avoid `XPC` confusion.
 public final class LiveIntentService: IntentServiceProtocol, @unchecked Sendable {
-    public init() {}
+    public nonisolated init() {}
 
     public func latestSnapshot() async -> MetricSnapshot? {
         guard let url = AppGroupConfiguration.snapshotURL() else { return nil }

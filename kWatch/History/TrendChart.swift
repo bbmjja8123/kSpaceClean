@@ -66,25 +66,29 @@ public struct TrendChart: View {
 
 // MARK: - Preview
 
-#Preview("TrendChart with data") {
-    let now = Date()
-    let points = (0..<50).map { i in
-        ChartPoint(
-            date: now.addingTimeInterval(Double(i - 49) * 60),
-            value: Double.random(in: 20...90)
+struct TrendChart_Data_Previews: PreviewProvider {
+    static var previews: some View {
+        let now = Date()
+        let points = (0..<50).map { i in
+            ChartPoint(
+                date: now.addingTimeInterval(Double(i - 49) * 60),
+                value: Double.random(in: 20...90)
+            )
+        }
+        TrendChart(
+            points: points,
+            lineColor: .blue,
+            fillColor: .blue.opacity(0.1)
         )
-    }
-    TrendChart(
-        points: points,
-        lineColor: .blue,
-        fillColor: .blue.opacity(0.1)
-    )
-    .frame(height: 200)
-    .padding()
-}
-
-#Preview("TrendChart empty") {
-    TrendChart(points: [])
         .frame(height: 200)
         .padding()
+    }
+}
+
+struct TrendChart_Empty_Previews: PreviewProvider {
+    static var previews: some View {
+        TrendChart(points: [])
+            .frame(height: 200)
+            .padding()
+    }
 }

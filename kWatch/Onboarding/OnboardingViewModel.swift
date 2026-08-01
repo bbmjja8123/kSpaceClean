@@ -22,7 +22,7 @@ public final class OnboardingViewModel: ObservableObject {
     @Published public var selectedMode: MenuBarMode = .trend
     @Published public var enabledKinds: Set<MetricKind> = [.cpu, .memory, .disk, .network]
 
-    private let preferences: any PreferencesRepositoryProtocol
+    private var preferences: any PreferencesRepositoryProtocol
 
     public init(preferences: any PreferencesRepositoryProtocol) {
         self.preferences = preferences

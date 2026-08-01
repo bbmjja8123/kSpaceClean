@@ -16,13 +16,13 @@ public struct ShowTopProcessesIntent: AppIntent {
     public var serviceFactory: @Sendable () -> any IntentServiceProtocol
 
     public init() {
-        self.limit = 10
         self.serviceFactory = { LiveIntentService() }
+        self.limit = 10
     }
 
     public init(limit: Int = 10, service: any IntentServiceProtocol) {
-        self.limit = limit
         self.serviceFactory = { service }
+        self.limit = limit
     }
 
     public func perform() async throws -> some IntentResult & ProvidesDialog {

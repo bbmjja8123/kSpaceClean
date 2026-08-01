@@ -20,7 +20,7 @@ struct AlertsView: View {
         .onAppear {
             viewModel.refresh()
             viewModel.ensureDefaults()
-            viewModel.syncNotificationAuthorization()
+            Task { await viewModel.syncNotificationAuthorization() }
         }
         .sheet(isPresented: $viewModel.isPresentingEditor) {
             if let alert = viewModel.editingAlert {

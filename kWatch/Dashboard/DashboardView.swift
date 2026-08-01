@@ -144,42 +144,46 @@ public struct DashboardView: View {
 
 // MARK: - Preview
 
-#Preview("Dashboard with data") {
-    let appState = AppState()
-    let purchaseState = PurchaseState()
-    appState.update(snapshot: MetricSnapshot(
-        timestamp: Date(),
-        values: [
-            .cpu: .percentage(72),
-            .memory: .percentage(85),
-            .disk: .percentage(44),
-            .network: .bytesPerSecond(1_024_000),
-            .temperature: .degreesCelsius(68),
-            .fan: .revolutionsPerMinute(2200),
-            .battery: .percentage(91)
-        ],
-        availability: [
-            .temperature: .available,
-            .fan: .available
-        ]
-    ))
-    let vm = DashboardViewModel(
-        appState: appState,
-        purchaseState: purchaseState,
-        onboardingCompleted: true
-    )
-    DashboardView(viewModel: vm)
-        .frame(width: 720, height: 480)
+struct DashboardView_Data_Previews: PreviewProvider {
+    static var previews: some View {
+        let appState = AppState()
+        let purchaseState = PurchaseState()
+        let _ = appState.update(snapshot: MetricSnapshot(
+            timestamp: Date(),
+            values: [
+                .cpu: .percentage(72),
+                .memory: .percentage(85),
+                .disk: .percentage(44),
+                .network: .bytesPerSecond(1_024_000),
+                .temperature: .degreesCelsius(68),
+                .fan: .revolutionsPerMinute(2200),
+                .battery: .percentage(91)
+            ],
+            availability: [
+                .temperature: .available,
+                .fan: .available
+            ]
+        ))
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        DashboardView(viewModel: vm)
+            .frame(width: 720, height: 480)
+    }
 }
 
-#Preview("Dashboard with onboarding") {
-    let appState = AppState()
-    let purchaseState = PurchaseState()
-    let vm = DashboardViewModel(
-        appState: appState,
-        purchaseState: purchaseState,
-        onboardingCompleted: false
-    )
-    DashboardView(viewModel: vm)
-        .frame(width: 720, height: 480)
+struct DashboardView_Onboarding_Previews: PreviewProvider {
+    static var previews: some View {
+        let appState = AppState()
+        let purchaseState = PurchaseState()
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: false
+        )
+        DashboardView(viewModel: vm)
+            .frame(width: 720, height: 480)
+    }
 }

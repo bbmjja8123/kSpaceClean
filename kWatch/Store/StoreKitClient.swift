@@ -179,7 +179,7 @@ public final class StubStoreKitClient: StoreKitClient, @unchecked Sendable {
 
     public func products(for ids: [String]) async throws -> [Product] {
         if _productsShouldThrow {
-            throw StoreKitError.networkError
+            throw StoreKitError.networkError(URLError(.notConnectedToInternet))
         }
         return productsResponse
     }
@@ -190,14 +190,14 @@ public final class StubStoreKitClient: StoreKitClient, @unchecked Sendable {
 
     public func currentEntitlements() async throws -> [Transaction] {
         if _entitlementsShouldThrow {
-            throw StoreKitError.networkError
+            throw StoreKitError.networkError(URLError(.notConnectedToInternet))
         }
         return entitlements
     }
 
     public func sync() async throws {
         if _syncShouldThrow {
-            throw StoreKitError.networkError
+            throw StoreKitError.networkError(URLError(.notConnectedToInternet))
         }
         // Test-only stub: return immediately.
     }

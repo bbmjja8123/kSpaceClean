@@ -22,13 +22,13 @@ public struct QueryMetricIntent: AppIntent {
     public var serviceFactory: @Sendable () -> any IntentServiceProtocol
 
     public init() {
-        self.metric = .cpu
         self.serviceFactory = { LiveIntentService() }
+        self.metric = .cpu
     }
 
     public init(metric: MetricKindParameter, service: any IntentServiceProtocol) {
-        self.metric = metric
         self.serviceFactory = { service }
+        self.metric = metric
     }
 
     public func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
@@ -57,6 +57,10 @@ public struct MetricKindParameter: AppEnum, Sendable {
     ]
 
     public let kind: MetricKind
+
+    public init(kind: MetricKind) {
+        self.kind = kind
+    }
 
     public init?(rawValue: String) {
         guard let k = MetricKind(rawValue: rawValue) else { return nil }

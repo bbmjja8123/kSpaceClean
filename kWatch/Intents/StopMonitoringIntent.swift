@@ -26,7 +26,7 @@ public struct StopMonitoringIntent: AppIntent {
     public func perform() async throws -> some IntentResult & ProvidesDialog {
         let service = serviceFactory()
         guard await service.isPro() else {
-            return .result(dialog: IntentDialog(lockedDialogText()))
+            return .result(dialog: IntentDialog("\(lockedDialogText())"))
         }
         await service.stopMonitoring()
         return .result(dialog: IntentDialog("kWatch monitoring paused."))

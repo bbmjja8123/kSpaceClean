@@ -124,38 +124,44 @@ public struct MetricCardView: View {
 
 // MARK: - Preview
 
-#Preview("Free card") {
-    let vm = MetricCardViewModel(
-        kind: .cpu,
-        value: .percentage(67),
-        availability: .available,
-        isPro: false
-    )
-    MetricCardView(viewModel: vm) { print("Upgrade tapped") }
-        .frame(width: 200)
-        .padding()
+struct MetricCardView_Free_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = MetricCardViewModel(
+            kind: .cpu,
+            value: .percentage(67),
+            availability: .available,
+            isPro: false
+        )
+        MetricCardView(viewModel: vm) { print("Upgrade tapped") }
+            .frame(width: 200)
+            .padding()
+    }
 }
 
-#Preview("Locked card") {
-    let vm = MetricCardViewModel(
-        kind: .temperature,
-        value: .degreesCelsius(72),
-        availability: .available,
-        isPro: false
-    )
-    MetricCardView(viewModel: vm) { print("Upgrade tapped") }
-        .frame(width: 200)
-        .padding()
+struct MetricCardView_Locked_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = MetricCardViewModel(
+            kind: .temperature,
+            value: .degreesCelsius(72),
+            availability: .available,
+            isPro: false
+        )
+        MetricCardView(viewModel: vm) { print("Upgrade tapped") }
+            .frame(width: 200)
+            .padding()
+    }
 }
 
-#Preview("Unavailable card") {
-    let vm = MetricCardViewModel(
-        kind: .fan,
-        value: .unavailable(.unsupported("SMC not found")),
-        availability: .unsupported(reason: "SMC not found"),
-        isPro: true
-    )
-    MetricCardView(viewModel: vm)
-        .frame(width: 200)
-        .padding()
+struct MetricCardView_Unavailable_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = MetricCardViewModel(
+            kind: .fan,
+            value: .unavailable(.unsupported("SMC not found")),
+            availability: .unsupported(reason: "SMC not found"),
+            isPro: true
+        )
+        MetricCardView(viewModel: vm)
+            .frame(width: 200)
+            .padding()
+    }
 }

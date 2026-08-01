@@ -2,6 +2,7 @@ import Foundation
 import MetricsKit
 
 /// Test wiring. Stubs must not touch disk, StoreKit, IOKit, or App Group containers.
+@MainActor
 public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
     public let aggregator: MetricsAggregator
     public let appState: AppState

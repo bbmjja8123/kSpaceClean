@@ -1,12 +1,6 @@
 import Foundation
 import MetricsKit
 
-public enum MenuBarMode: String, CaseIterable, Codable, Sendable {
-    case trend
-    case numeric
-    case minimal
-}
-
 public enum AlertOperator: String, Codable, Sendable {
     case above
     case below

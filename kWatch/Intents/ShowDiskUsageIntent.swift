@@ -17,13 +17,13 @@ public struct ShowDiskUsageIntent: AppIntent {
     public var serviceFactory: @Sendable () -> any IntentServiceProtocol
 
     public init() {
-        self.volume = .system
         self.serviceFactory = { LiveIntentService() }
+        self.volume = .system
     }
 
     public init(volume: DiskVolumeParameter = .system, service: any IntentServiceProtocol) {
-        self.volume = volume
         self.serviceFactory = { service }
+        self.volume = volume
     }
 
     public func perform() async throws -> some IntentResult & ProvidesDialog {
