@@ -1,139 +1,1220 @@
 {
-  "version": 1,
-  "generatedAt": "2026-07-30",
-  "source": "Lemon libcleaner cleaning-rule XML (data extraction only)",
+  "version": 2,
+  "generatedAt": "2026-08-01",
+  "source": "Lemon libcleaner cleaning-rule XML (item->action->path extraction, bilingual)",
+  "appCount": 72,
   "apps": {
-    "com.adobe.CreativeCloud": {
-      "name": "Creative Cloud",
-      "nameCN": "Creative Cloud",
-      "vendor": "Adobe",
-      "type": "design",
+    "com.apple.dt.Xcode": {
+      "bundleID": "com.apple.dt.Xcode",
+      "appstoreBundleID": null,
+      "nameCN": "Xcode开发垃圾",
+      "name": "Xcode Junks",
+      "actions": [
+        {
+          "nameCN": "Xcode app缓存",
+          "name": "Xcode app Caches",
+          "paths": [
+            "~/Library/Caches/com.apple.dt.Xcode/"
+          ]
+        },
+        {
+          "nameCN": "Xcode DerivedData",
+          "name": "Xcode DerivedData",
+          "paths": [
+            "~/Library/Developer/Xcode/DerivedData/"
+          ]
+        },
+        {
+          "nameCN": "iOS Device Support",
+          "name": "iOS Device Support",
+          "paths": [
+            "~/Library/Developer/Xcode/iOS DeviceSupport/"
+          ]
+        },
+        {
+          "nameCN": "Archives",
+          "name": "Archives",
+          "paths": [
+            "~/Library/Developer/Xcode/Archives/"
+          ]
+        },
+        {
+          "nameCN": "Module Caches",
+          "name": "Module Caches",
+          "paths": [
+            "~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/"
+          ]
+        },
+        {
+          "nameCN": "iOS Device Logs",
+          "name": "iOS Device Logs",
+          "paths": [
+            "~/Library/Developer/Xcode/iOS Device Logs/"
+          ]
+        },
+        {
+          "nameCN": "DocumentationCache",
+          "name": "DocumentationCache",
+          "paths": [
+            "~/Library/Developer/Xcode/DocumentationCache/"
+          ]
+        }
+      ],
+      "vendor": "Apple",
+      "type": "developer",
       "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.adobe.CreativeCloud"
-      ],
-      "bundleID": "com.adobe.CreativeCloud",
       "confidence": "high"
     },
-    "com.adobe.Illustrator": {
-      "name": "Illustrator",
-      "nameCN": "Illustrator",
-      "vendor": "Adobe",
-      "type": "design",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.adobe.Illustrator"
+    "com.bohemiancoding.sketch3": {
+      "bundleID": "com.bohemiancoding.sketch3",
+      "appstoreBundleID": null,
+      "nameCN": "Sketch开发垃圾",
+      "name": "Sketch开发垃圾",
+      "actions": [
+        {
+          "nameCN": "Sketch缓存",
+          "name": "Sketch缓存",
+          "paths": [
+            "~/Library/Caches/com.bohemiancoding.sketch3/"
+          ]
+        },
+        {
+          "nameCN": "Sketch日志",
+          "name": "Sketch日志",
+          "paths": [
+            "~/Library/Application Support/com.bohemiancoding.sketch3/crash.log/",
+            "~/Library/Logs/com.bohemiancoding.sketch3/"
+          ]
+        },
+        {
+          "nameCN": "Sketch缓存数据",
+          "name": "Sketch缓存数据",
+          "paths": [
+            "/.DocumentRevisions-V100/"
+          ]
+        }
       ],
-      "bundleID": "com.adobe.Illustrator",
-      "confidence": "high"
-    },
-    "com.adobe.InDesign": {
-      "name": "InDesign",
-      "nameCN": "InDesign",
-      "vendor": "Adobe",
-      "type": "design",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.adobe.InDesign"
-      ],
-      "bundleID": "com.adobe.InDesign",
-      "confidence": "high"
-    },
-    "com.adobe.Lightroom": {
-      "name": "Lightroom",
-      "nameCN": "Lightroom",
-      "vendor": "Adobe",
-      "type": "design",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.adobe.Lightroom"
-      ],
-      "bundleID": "com.adobe.Lightroom",
-      "confidence": "high"
-    },
-    "com.adobe.Photoshop": {
-      "name": "Photoshop",
-      "nameCN": "Photoshop",
-      "vendor": "Adobe",
-      "type": "design",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/Adobe",
-        "~/Library/Caches/com.adobe.Photoshop"
-      ],
-      "bundleID": "com.adobe.Photoshop",
-      "confidence": "high"
-    },
-    "com.apple.ActivityMonitor": {
-      "name": "Activity Monitor",
-      "nameCN": "活动监视器",
-      "vendor": "Apple",
-      "type": "system",
+      "vendor": "Bohemiancoding",
+      "type": "general",
       "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.ActivityMonitor"
-      ],
-      "bundleID": "com.apple.ActivityMonitor",
       "confidence": "high"
     },
-    "com.apple.Console": {
-      "name": "Console",
-      "nameCN": "控制台",
-      "vendor": "Apple",
-      "type": "system",
+    "com.tencent.qq": {
+      "bundleID": "com.tencent.qq",
+      "appstoreBundleID": null,
+      "nameCN": "QQ",
+      "name": "QQ",
+      "actions": [
+        {
+          "nameCN": "QQ缓存",
+          "name": "QQ Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/com.tencent.qq"
+          ]
+        },
+        {
+          "nameCN": "QQ日志文件",
+          "name": "QQ Logs",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/QQINI"
+          ]
+        },
+        {
+          "nameCN": "QQ聊天记录中产生的图片",
+          "name": "Pictures in your QQ Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Images"
+          ]
+        },
+        {
+          "nameCN": "QQ聊天记录中产生的图片[180天前]",
+          "name": "Pictures in your QQ Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Images"
+          ]
+        },
+        {
+          "nameCN": "QQ接收到的文件",
+          "name": "QQ Received Files",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/File"
+          ]
+        },
+        {
+          "nameCN": "QQ聊天记录中表情",
+          "name": "Stickers in your QQ Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Avatar"
+          ]
+        },
+        {
+          "nameCN": "QQ接收到的视频文件",
+          "name": "QQ Received Video Files",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Videos"
+          ]
+        },
+        {
+          "nameCN": "QQ接收到的语音文件",
+          "name": "QQ Received Audio Files",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/PTT"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
       "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Console"
-      ],
-      "bundleID": "com.apple.Console",
       "confidence": "high"
     },
-    "com.apple.FaceTime": {
-      "name": "FaceTime",
-      "nameCN": "FaceTime",
-      "vendor": "Apple",
-      "type": "chat",
+    "com.tencent.xinWeChat": {
+      "bundleID": "com.tencent.xinWeChat",
+      "appstoreBundleID": null,
+      "nameCN": "微信",
+      "name": "WeChat",
+      "actions": [
+        {
+          "nameCN": "微信缓存",
+          "name": "WeChat Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/fsCachedData",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/PinYinCache",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-shm",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-wal"
+          ]
+        },
+        {
+          "nameCN": "微信日志文件",
+          "name": "WeChat Logs",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/(.+)/log"
+          ]
+        },
+        {
+          "nameCN": "微信头像",
+          "name": "WeChat Avatar",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/(.+)/"
+          ]
+        },
+        {
+          "nameCN": "微信聊天记录中产生的图片",
+          "name": "Pictures in your WeChat Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信聊天记录中产生的图片[90天前]",
+          "name": "Pictures in your WeChat Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信接收到的文件",
+          "name": "Pictures in your WeChat Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信接收到的视频文件",
+          "name": "Pictures in your WeChat Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信接收到的语音文件",
+          "name": "Pictures in your WeChat Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
       "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.FaceTime"
-      ],
-      "bundleID": "com.apple.FaceTime",
       "confidence": "high"
     },
-    "com.apple.Finder": {
-      "name": "Finder",
-      "nameCN": "访达",
+    "com.tencent.WeWorkMac": {
+      "bundleID": "com.tencent.WeWorkMac",
+      "appstoreBundleID": null,
+      "nameCN": "企业微信",
+      "name": "WeChatWork",
+      "actions": [
+        {
+          "nameCN": "企业微信缓存",
+          "name": "WeChatWork Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Caches/com.tencent.WeWorkMac/"
+          ]
+        },
+        {
+          "nameCN": "企业微信日志文件",
+          "name": "WeChatWork Logs",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Log/"
+          ]
+        },
+        {
+          "nameCN": "企业微信头像",
+          "name": "WeChatWork Avatar",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Avator/"
+          ]
+        },
+        {
+          "nameCN": "企业微信聊天记录中产生的图片",
+          "name": "Pictures in your WeChatWork Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Image/"
+          ]
+        },
+        {
+          "nameCN": "企业微信聊天记录中产生的图片[180天前]",
+          "name": "Pictures in your WeChatWork Chats",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Image/"
+          ]
+        },
+        {
+          "nameCN": "企业微信接收到的文件",
+          "name": "WeChatWork Received Files",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/File/",
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Zip/"
+          ]
+        },
+        {
+          "nameCN": "企业微信接收到的视频文件",
+          "name": "WeChat Received Video Files",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Video/"
+          ]
+        },
+        {
+          "nameCN": "企业微信接收到的语音文件",
+          "name": "WeChat Received Audio Files",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Voice/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.alibaba.DingTalkMac": {
+      "bundleID": "com.alibaba.DingTalkMac",
+      "appstoreBundleID": "5ZSL2CJU2T.com.dingtalk.mac",
+      "nameCN": "钉钉",
+      "name": "DingTalk",
+      "actions": [
+        {
+          "nameCN": "钉钉缓存",
+          "name": "DingTalk Caches",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/fsCachedData",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db-shm",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db-wal",
+            "~/Library/Caches/com.alibaba.DingTalkMac/fsCachedData",
+            "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db",
+            "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db-shm",
+            "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db-wal"
+          ]
+        },
+        {
+          "nameCN": "钉钉日志文件",
+          "name": "DingTalk Logs",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/log/",
+            "~/Library/Application Support/DingTalkMac/log"
+          ]
+        },
+        {
+          "nameCN": "钉钉使用的动态表情",
+          "name": "Stickers in your DingTalk Chats",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/emotions/",
+            "~/Library/Application Support/DingTalkMac/emotions/"
+          ]
+        },
+        {
+          "nameCN": "钉钉聊天记录中产生的图片",
+          "name": "Pictures in your DingTalk Chats",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/(.+)/ImageFiles/",
+            "/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/(.+)/ImageFiles/",
+            "~/Library/Caches/com.alibaba.DingTalkMac/",
+            "~/Library/Application Support/DingTalkMac/(.+)/ImageFiles/",
+            "~/Library/Application Support/DingTalkMac/(.+)/ImageFiles/"
+          ]
+        },
+        {
+          "nameCN": "钉钉聊天记录中产生的图片[180天前]",
+          "name": "Pictures in your DingTalk Chats",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "~/Library/Caches/com.alibaba.DingTalkMac/"
+          ]
+        }
+      ],
+      "vendor": "Alibaba",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.hujiang.mac.cctalk": {
+      "bundleID": "com.hujiang.mac.cctalk",
+      "appstoreBundleID": "com.xianghu.cctalk.mac",
+      "nameCN": "CCtalk",
+      "name": "CCtalk",
+      "actions": [
+        {
+          "nameCN": "CCtalk缓存",
+          "name": "CCTalk Caches",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Caches/",
+            "~/Library/Caches/com.hujiang.mac.cctalk/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk日志文件",
+          "name": "CCTalk Logs",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Logs/",
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Log/",
+            "~/Library/Application Support/CCtalk/Log/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk Web缓存",
+          "name": "CCTalk Web Caches",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cache/",
+            "~/Library/Application Support/CCtalk/WebEngine/Cache/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk Web Cookie",
+          "name": "CCtalk Web Cookie",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cookie/",
+            "~/Library/Application Support/CCtalk/WebEngine/Cookie/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk课程PPT图片",
+          "name": "PowerPoint pictures in CCtalk courses",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/PPT/Image/ppt/",
+            "~/Library/Application Support/CCtalk/PPT/Image/ppt/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk聊天记录中产生的图片",
+          "name": "Pictures in your CCtalk chats",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Users/(.+)/DownloadPic/",
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Users/(.+))/Header/",
+            "~/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "~/Library/Application Support/CCtalk/Users/(.+)/DownloadPic/",
+            "~/Library/Application Support/CCtalk/Users/(.+))/Header/"
+          ]
+        }
+      ],
+      "vendor": "Hujiang",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.sogou.inputmethod.sogou": {
+      "bundleID": "com.sogou.inputmethod.sogou",
+      "appstoreBundleID": "com.sogou.sogoupad",
+      "nameCN": "搜狗输入法",
+      "name": "SoGou Pinyin",
+      "actions": [
+        {
+          "nameCN": "搜狗输入法缓存",
+          "name": "SoGou Pinyin Caches",
+          "paths": [
+            "~/Library/Caches/SogouServices/",
+            "~//Library/Containers/com.sogou.sogoupad/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "搜狗输入法表情",
+          "name": "SoGou Pinyin stickers",
+          "paths": [
+            "~/Library/Application Support/Sogou/EmojiPanel/expressions/"
+          ]
+        }
+      ],
+      "vendor": "Sogou",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.iflytek.macinput": {
+      "bundleID": "com.iflytek.macinput",
+      "appstoreBundleID": null,
+      "nameCN": "讯飞输入法",
+      "name": "iFLYTEK Input",
+      "actions": [
+        {
+          "nameCN": "讯飞输入法缓存",
+          "name": "iFLYTEK Input Caches",
+          "paths": [
+            "~/Library/Containers/com.iflytek.macinput/Data/Library/Caches/com.iflytek.macinput/"
+          ]
+        },
+        {
+          "nameCN": "讯飞输入法日志",
+          "name": "iFLYTEK Input logs",
+          "paths": [
+            "~/Library/Containers/com.iflytek.macinput/Data/Library/Logs/"
+          ]
+        }
+      ],
+      "vendor": "Iflytek",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.baidu.inputmethod.BaiduIM": {
+      "bundleID": "com.baidu.inputmethod.BaiduIM",
+      "appstoreBundleID": null,
+      "nameCN": "百度输入法",
+      "name": "Baidu Input",
+      "actions": [
+        {
+          "nameCN": "百度输入法缓存",
+          "name": "Baidu Input caches",
+          "paths": [
+            "~/Library/Caches/com.baidu.inputmethod.BaiduIM/"
+          ]
+        },
+        {
+          "nameCN": "百度输入法默认皮肤",
+          "name": "Baidu Input default themes",
+          "paths": [
+            "~/Library/Application Support/BaiduInput/skin/"
+          ]
+        }
+      ],
+      "vendor": "Baidu",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.netease.163music": {
+      "bundleID": "com.netease.163music",
+      "appstoreBundleID": "com.netease.163music",
+      "nameCN": "网易云音乐",
+      "name": "NetEaseMusic",
+      "actions": [
+        {
+          "nameCN": "网易云音乐缓存",
+          "name": "NetEaseMusic Caches",
+          "paths": [
+            "~/Library/Caches/com.netease.163music/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐日志",
+          "name": "NetEaseMusic Logs",
+          "paths": [
+            "~/Library/Containers/com.netease.163music/Data/Documents/storage/Logs/",
+            "~/Library/Logs/com.netease.163music/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐歌曲图片",
+          "name": "NetEaseMusic pictures",
+          "paths": [
+            "~/Library/Containers/com.netease.163music/Data/Caches/orpheus_path/",
+            "~/Library/Containers/com.netease.163music/Data/Library/Caches/orpheus_path/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐歌曲缓存",
+          "name": "NetEaseMusic Song Caches",
+          "paths": [
+            "~/Library/Containers/com.netease.163music/Data/Caches/online_play_cache/",
+            "~/Library/Containers/com.netease.163music/Data/Library/Caches/online_play_cache/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐下载歌曲",
+          "name": "NetEaseMusic downloaded songs",
+          "paths": [
+            "~/Music/网易云音乐/"
+          ]
+        }
+      ],
+      "vendor": "Netease",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.QQMusicMac": {
+      "bundleID": "com.tencent.QQMusicMac",
+      "appstoreBundleID": null,
+      "nameCN": "QQ音乐",
+      "name": "QQ Music",
+      "actions": [
+        {
+          "nameCN": "QQ音乐缓存",
+          "name": "QQ Music Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐日志",
+          "name": "QQ Music Logs",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌曲图片",
+          "name": "QQ Music Images",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iCache/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌曲缓存",
+          "name": "QQ Music Song Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iMusic/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌词缓存",
+          "name": "QQ Music Lysics Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLyric/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐专辑缓存",
+          "name": "QQ Music Album Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iAlbum/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌手缓存",
+          "name": "QQ Music Singer Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iArtist/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐临时文件",
+          "name": "QQ Music Temporary files",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iTemp/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐下载歌曲",
+          "name": "QQ Music downloaded songs",
+          "paths": [
+            "~/Music/QQ音乐/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.kugou.mac.Music": {
+      "bundleID": "com.kugou.mac.Music",
+      "appstoreBundleID": null,
+      "nameCN": "酷狗音乐",
+      "name": "KuGou Music",
+      "actions": [
+        {
+          "nameCN": "酷狗音乐缓存",
+          "name": "KuGou Music Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐日志",
+          "name": "KuGou Music Logs",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐歌曲图片",
+          "name": "KuGou Music Images",
+          "paths": [
+            "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Portrait/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐歌曲缓存",
+          "name": "KuGou Music Song Caches",
+          "paths": [
+            "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Songs/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐歌词缓存",
+          "name": "KuGou Music Lysics Caches",
+          "paths": [
+            "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Lyric/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐下载歌曲",
+          "name": "KuGou Music downloaded songs",
+          "paths": [
+            "~/Music/酷狗音乐/"
+          ]
+        }
+      ],
+      "vendor": "Kugou",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.wenyu.kwplayermac": {
+      "bundleID": "com.wenyu.kwplayermac",
+      "appstoreBundleID": null,
+      "nameCN": "酷我音乐",
+      "name": "Kuwo Music",
+      "actions": [
+        {
+          "nameCN": "酷我音乐缓存",
+          "name": "KuWo  Music Caches",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Caches/com.wenyu.kwplayermac/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐日志",
+          "name": "KuWo  Music Logs",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐歌曲图片",
+          "name": "KuWo  Music Images",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/ImageData/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/HDPicture/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐专辑图片",
+          "name": "KuWo  Music Album Images",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/BigArtistPic/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐歌曲缓存",
+          "name": "KuWo  Music Song Caches",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/P2PCache/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/PreGetMusic/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/WifiMusic/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐视频缓存",
+          "name": "KuWo  Music Video Caches",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MV/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MVCache/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐音频缓存",
+          "name": "KuWo  Music Audio Caches",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/OfflineRadio/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐歌词缓存",
+          "name": "KuWo  Music Lyrics Caches",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Lyric/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐下载歌曲",
+          "name": "KuWo  Music Downloaded songs",
+          "paths": [
+            "~/Music/酷我音乐/"
+          ]
+        }
+      ],
+      "vendor": "Wenyu",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.xiami.client": {
+      "bundleID": "com.xiami.client",
+      "appstoreBundleID": null,
+      "nameCN": "虾米音乐",
+      "name": "XIAMI Music",
+      "actions": [
+        {
+          "nameCN": "虾米音乐缓存",
+          "name": "XIAMI Music Caches",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Caches/com.xiami.client/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐日志",
+          "name": "XIAMI Music Logs",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐歌曲图片",
+          "name": "XIAMI Music Images",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/default/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐歌曲缓存",
+          "name": "XIAMI Music Song Caches",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/playerCache/",
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Tmp/playerCache/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐歌词缓存",
+          "name": "XIAMI Music Lyrics Caches",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Caches/lyrics/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐下载歌曲",
+          "name": "XIAMI Music Downloaded songs",
+          "paths": [
+            "~/Music/虾米音乐/"
+          ]
+        }
+      ],
+      "vendor": "Xiami",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.tenvideo": {
+      "bundleID": "com.tencent.tenvideo",
+      "appstoreBundleID": null,
+      "nameCN": "腾讯视频",
+      "name": "WeTV",
+      "actions": [
+        {
+          "nameCN": "腾讯视频缓存",
+          "name": "WeTV Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/com.tencent.xinWeChat/com.tencent.tenvideo/",
+            "~/Library/Caches/com.tencent.tenvideo/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频日志",
+          "name": "WeTV Logs",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Logs/",
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/default/",
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/SSO/Logs/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频缓存图片",
+          "name": "WeTV Cached Images",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/offlinelogo/",
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/CoreData/Download/ImageDir/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频离线缓存",
+          "name": "WeTV Offline Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/documentCache/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频P2P缓存",
+          "name": "WeTV P2P Caches",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/P2P/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频下载视频",
+          "name": "WeTV Downloaded songs",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/video/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.iqiyi.player": {
+      "bundleID": "com.iqiyi.player",
+      "appstoreBundleID": null,
+      "nameCN": "爱奇艺",
+      "name": "iQIYI",
+      "actions": [
+        {
+          "nameCN": "爱奇艺缓存",
+          "name": "iQIYI Cache Files",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺日志",
+          "name": "iQIYI Log Files",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Logs/",
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Puma/Log/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺弹幕缓存",
+          "name": "iQIYI Live Commenting Caches",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Barrage_102/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺视频缓存",
+          "name": "iQIYI Video Caches",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/PlayRecord/",
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/previewImages/",
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/WebPlayer/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺下载视频",
+          "name": "iQIYI Downloaded videos",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/download/"
+          ]
+        }
+      ],
+      "vendor": "Iqiyi",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.youku.mac": {
+      "bundleID": "com.youku.mac",
+      "appstoreBundleID": null,
+      "nameCN": "优酷",
+      "name": "YOUKU",
+      "actions": [
+        {
+          "nameCN": "优酷缓存",
+          "name": "YOUKU Caches",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "优酷日志",
+          "name": "YOUKU Logs",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/Documents/Log/",
+            "~/Library/Containers/com.youku.mac/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "优酷视频缓存",
+          "name": "YOUKU Video Caches",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/Library/Application Support/Youku/",
+            "~/Library/Containers/com.youku.mac/Data/Documents/Youku/"
+          ]
+        },
+        {
+          "nameCN": "优酷下载视频封面图片",
+          "name": "YOUKU Video Cover Caches",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/thumb/"
+          ]
+        },
+        {
+          "nameCN": "优酷下载视频",
+          "name": "YOUKU Downloaded videos",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/VideoCache/"
+          ]
+        }
+      ],
+      "vendor": "Youku",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "tv.sohu.SHPlayer": {
+      "bundleID": "tv.sohu.SHPlayer",
+      "appstoreBundleID": null,
+      "nameCN": "搜狐影音",
+      "name": "Sohu Video",
+      "actions": [
+        {
+          "nameCN": "搜狐影音缓存",
+          "name": "Sohu Video Caches",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/",
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "搜狐影音日志",
+          "name": "Sohu Video Logs",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Log/"
+          ]
+        },
+        {
+          "nameCN": "搜狐影音视频缓存",
+          "name": "Sohu Video Video Caches",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Movie/"
+          ]
+        },
+        {
+          "nameCN": "搜狐影音视频相关图片",
+          "name": "Sohu Video Images associated with Videos",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/PlayListCache/",
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/VideoDetailCache/"
+          ]
+        }
+      ],
+      "vendor": "Tv",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.baofeng.player": {
+      "bundleID": "com.baofeng.player",
+      "appstoreBundleID": null,
+      "nameCN": "暴风影音",
+      "name": "Baofeng Player",
+      "actions": [
+        {
+          "nameCN": "暴风影音缓存",
+          "name": "Baofeng Player Caches",
+          "paths": [
+            "~/Library/Containers/com.baofeng.player/Data/Library/Caches/",
+            "~/Library/Caches/com.baofeng.player/"
+          ]
+        },
+        {
+          "nameCN": "暴风影音日志",
+          "name": "Baofeng Player Logs",
+          "paths": [
+            "~/Library/Containers/com.baofeng.player/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "暴风影音播放器数据",
+          "name": "Baofeng Player Data",
+          "paths": [
+            "~/Library/Application Support/Baofeng Inc./",
+            "~/Library/Containers/com.baofeng.player/Data/Library/Application Support/Baofeng Inc./"
+          ]
+        }
+      ],
+      "vendor": "Baofeng",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.pptv.pptvmac": {
+      "bundleID": "com.pptv.pptvmac",
+      "appstoreBundleID": null,
+      "nameCN": "PPTV",
+      "name": "PPTV",
+      "actions": [
+        {
+          "nameCN": "PPTV缓存",
+          "name": "PPTV Caches",
+          "paths": [
+            "~/Library/Containers/com.pptv.pptvmac/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "PPTV日志",
+          "name": "PPTV Logs",
+          "paths": [
+            "~/Library/Containers/com.pptv.pptvmac/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "PPTV播放器数据",
+          "name": "PPTV Data",
+          "paths": [
+            "~/Library/Containers/com.pptv.pptvmac/Data/Library/Application Support/PPTV/"
+          ]
+        }
+      ],
+      "vendor": "Pptv",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.rockysandstudio.MKPlayer": {
+      "bundleID": "com.rockysandstudio.MKPlayer",
+      "appstoreBundleID": null,
+      "nameCN": "MKPlayer",
+      "name": "MKPlayer",
+      "actions": [
+        {
+          "nameCN": "MKPlayer缓存",
+          "name": "MKPlayer Caches",
+          "paths": [
+            "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "MKPlayer日志",
+          "name": "MKPlayer Logs",
+          "paths": [
+            "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Logs/"
+          ]
+        }
+      ],
+      "vendor": "Rockysandstudio",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.QQBrowser": {
+      "bundleID": "com.tencent.QQBrowser",
+      "appstoreBundleID": null,
+      "nameCN": "QQ浏览器",
+      "name": "QQBrowser",
+      "actions": [
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Caches",
+          "paths": [
+            "~/Library/Caches/QQBrowser2/Default/Cache/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.operasoftware.Opera": {
+      "bundleID": "com.operasoftware.Opera",
+      "appstoreBundleID": null,
+      "nameCN": "Opera",
+      "name": "Opera",
+      "actions": [
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Caches",
+          "paths": [
+            "~/Library/Caches/Opera/"
+          ]
+        },
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Caches",
+          "paths": [
+            "~/Library/Application Support/com.operasoftware.Opera/GPUCache",
+            "~/Library/Caches/com.operasoftware.Opera"
+          ]
+        },
+        {
+          "nameCN": "应用程序缓存",
+          "name": "Applications Caches",
+          "paths": [
+            "~/Library/Application Support/Opera/application_cache"
+          ]
+        }
+      ],
+      "vendor": "Operasoftware",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "org.mozilla.firefox": {
+      "bundleID": "org.mozilla.firefox",
+      "appstoreBundleID": null,
+      "nameCN": "FireFox",
+      "name": "FireFox",
+      "actions": [
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Cache",
+          "paths": [
+            "~/Library/Caches/Firefox/"
+          ]
+        }
+      ],
+      "vendor": "Org",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.apple.mail": {
+      "bundleID": "com.apple.mail",
+      "name": "Mail Attachments",
+      "nameCN": "Mail缓存",
       "vendor": "Apple",
-      "type": "system",
+      "type": "mail",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.finder"
+        "~/Library/Containers/com.apple.mail/Data/Library/Mail Downloads",
+        "~/Library/Mail"
       ],
-      "bundleID": "com.apple.Finder",
       "confidence": "high"
     },
-    "com.apple.Maps": {
-      "name": "Maps",
-      "nameCN": "地图",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Maps"
-      ],
-      "bundleID": "com.apple.Maps",
-      "confidence": "high"
-    },
-    "com.apple.MobileSMS": {
-      "name": "Messages",
-      "nameCN": "信息",
-      "vendor": "Apple",
-      "type": "chat",
+    "com.microsoft.edgemac": {
+      "name": "Edge",
+      "nameCN": "Edge",
+      "vendor": "Microsoft",
+      "type": "browser",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.Messages"
+        "~/Library/Caches/com.microsoft.edgemac"
       ],
-      "bundleID": "com.apple.MobileSMS",
+      "bundleID": "com.microsoft.edgemac",
       "confidence": "high"
     },
     "com.apple.Music": {
@@ -146,216 +1227,6 @@
         "~/Library/Caches/com.apple.Music"
       ],
       "bundleID": "com.apple.Music",
-      "confidence": "high"
-    },
-    "com.apple.Notes": {
-      "name": "Notes",
-      "nameCN": "备忘录",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Notes"
-      ],
-      "bundleID": "com.apple.Notes",
-      "confidence": "high"
-    },
-    "com.apple.PhotoLibraryServices": {
-      "name": "Photos",
-      "nameCN": "照片",
-      "vendor": "Apple",
-      "type": "media",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.iCloudPhotoLibraryService",
-        "~/Library/Caches/com.apple.photoanalysisd"
-      ],
-      "bundleID": "com.apple.PhotoLibraryServices",
-      "confidence": "high"
-    },
-    "com.apple.Podcasts": {
-      "name": "Podcasts",
-      "nameCN": "播客",
-      "vendor": "Apple",
-      "type": "media",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.podcasts"
-      ],
-      "bundleID": "com.apple.Podcasts",
-      "confidence": "high"
-    },
-    "com.apple.QuickLook": {
-      "name": "Quick Look",
-      "nameCN": "快速查看",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.QuickLookThumbnailing",
-        "~/Library/Caches/com.apple.quicklook"
-      ],
-      "bundleID": "com.apple.QuickLook",
-      "confidence": "high"
-    },
-    "com.apple.QuickTimePlayerX": {
-      "name": "QuickTime",
-      "nameCN": "QuickTime",
-      "vendor": "Apple",
-      "type": "media",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.QuickTimePlayerX"
-      ],
-      "bundleID": "com.apple.QuickTimePlayerX",
-      "confidence": "high"
-    },
-    "com.apple.Safari": {
-      "bundleID": "com.apple.Safari",
-      "name": "Safari",
-      "nameCN": "Safari",
-      "vendor": "Apple",
-      "type": "browser",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/Metadata/Safari",
-        "~/Library/Caches/com.apple.Safari",
-        "~/Library/Caches/com.apple.Safari.SafeBrowsing",
-        "~/Library/Caches/com.apple.safaridavclient",
-        "~/Library/Containers/com.apple.Safari.CacheDeleteExtension",
-        "~/Library/Safari/Downloads.plist",
-        "~/Library/Safari/History.plist",
-        "~/Library/Safari/HistoryIndex.sk",
-        "~/Library/Safari/LocalStorage",
-        "~/Library/Safari/WebpageIcons.db"
-      ],
-      "confidence": "medium"
-    },
-    "com.apple.ScriptEditor2": {
-      "name": "Script Editor",
-      "nameCN": "脚本编辑器",
-      "vendor": "Apple",
-      "type": "developer",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.ScriptEditor2"
-      ],
-      "bundleID": "com.apple.ScriptEditor2",
-      "confidence": "high"
-    },
-    "com.apple.Siri": {
-      "name": "Siri",
-      "nameCN": "Siri",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Siri"
-      ],
-      "bundleID": "com.apple.Siri",
-      "confidence": "high"
-    },
-    "com.apple.Spotlight": {
-      "name": "Spotlight",
-      "nameCN": "聚焦搜索",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Spotlight",
-        "~/Library/Caches/com.apple.spotlightknowledged"
-      ],
-      "bundleID": "com.apple.Spotlight",
-      "confidence": "high"
-    },
-    "com.apple.SystemPreferences": {
-      "name": "System Preferences",
-      "nameCN": "系统偏好设置",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.SystemPreferences"
-      ],
-      "bundleID": "com.apple.SystemPreferences",
-      "confidence": "high"
-    },
-    "com.apple.TV": {
-      "name": "TV",
-      "nameCN": "电视",
-      "vendor": "Apple",
-      "type": "media",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.TV"
-      ],
-      "bundleID": "com.apple.TV",
-      "confidence": "high"
-    },
-    "com.apple.Terminal": {
-      "name": "Terminal",
-      "nameCN": "终端",
-      "vendor": "Apple",
-      "type": "developer",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Terminal"
-      ],
-      "bundleID": "com.apple.Terminal",
-      "confidence": "high"
-    },
-    "com.apple.cloudkit": {
-      "name": "CloudKit",
-      "nameCN": "CloudKit",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.cloudkit"
-      ],
-      "bundleID": "com.apple.cloudkit",
-      "confidence": "high"
-    },
-    "com.apple.dt.Xcode": {
-      "bundleID": "com.apple.dt.Xcode",
-      "name": "Xcode Junks",
-      "nameCN": "Xcode开发垃圾",
-      "vendor": "Apple",
-      "type": "developer",
-      "riskLevel": "optional",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.dt.Xcode",
-        "~/Library/Developer/Xcode/Archives",
-        "~/Library/Developer/Xcode/DerivedData",
-        "~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex",
-        "~/Library/Developer/Xcode/DocumentationCache",
-        "~/Library/Developer/Xcode/iOS Device Logs",
-        "~/Library/Developer/Xcode/iOS DeviceSupport"
-      ],
-      "confidence": "high"
-    },
-    "com.apple.fileprovider.cs": {
-      "name": "FileProvider",
-      "nameCN": "文件提供器",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.fileprovider.cs"
-      ],
-      "bundleID": "com.apple.fileprovider.cs",
-      "confidence": "high"
-    },
-    "com.apple.iCal": {
-      "name": "Calendar",
-      "nameCN": "日历",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.iCal"
-      ],
-      "bundleID": "com.apple.iCal",
       "confidence": "high"
     },
     "com.apple.iWork": {
@@ -372,72 +1243,76 @@
       "bundleID": "com.apple.iWork",
       "confidence": "high"
     },
-    "com.apple.mail": {
-      "bundleID": "com.apple.mail",
-      "name": "Mail Attachments",
-      "nameCN": "Mail缓存",
+    "com.apple.SystemPreferences": {
+      "name": "System Preferences",
+      "nameCN": "系统偏好设置",
       "vendor": "Apple",
-      "type": "mail",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.apple.mail/Data/Library/Mail Downloads",
-        "~/Library/Mail"
-      ],
-      "confidence": "high"
-    },
-    "com.apple.reminders": {
-      "name": "Reminders",
-      "nameCN": "提醒事项",
-      "vendor": "Apple",
-      "type": "productivity",
+      "type": "system",
       "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.reminders"
+        "~/Library/Caches/com.apple.SystemPreferences"
       ],
-      "bundleID": "com.apple.reminders",
+      "bundleID": "com.apple.SystemPreferences",
       "confidence": "high"
     },
-    "com.baidu.inputmethod.BaiduIM": {
-      "bundleID": "com.baidu.inputmethod.BaiduIM",
-      "name": "Baidu Input",
-      "nameCN": "百度输入法",
-      "vendor": "百度",
-      "type": "inputmethod",
+    "com.apple.ActivityMonitor": {
+      "name": "Activity Monitor",
+      "nameCN": "活动监视器",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.ActivityMonitor"
+      ],
+      "bundleID": "com.apple.ActivityMonitor",
+      "confidence": "high"
+    },
+    "com.vivaldi.Vivaldi": {
+      "name": "Vivaldi",
+      "nameCN": "Vivaldi",
+      "vendor": "Vivaldi",
+      "type": "browser",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Application Support/BaiduInput/skin",
-        "~/Library/Caches/com.baidu.inputmethod.BaiduIM"
+        "~/Library/Caches/com.vivaldi.Vivaldi"
       ],
+      "bundleID": "com.vivaldi.Vivaldi",
       "confidence": "high"
     },
-    "com.baofeng.player": {
-      "bundleID": "com.baofeng.player",
-      "name": "Baofeng Player",
-      "nameCN": "暴风影音",
-      "vendor": "暴风影音",
-      "type": "video",
-      "riskLevel": "caution",
+    "com.apple.fileprovider.cs": {
+      "name": "FileProvider",
+      "nameCN": "文件提供器",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Application Support/Baofeng Inc.",
-        "~/Library/Caches/com.baofeng.player",
-        "~/Library/Containers/com.baofeng.player/Data/Library/Application Support/Baofeng Inc.",
-        "~/Library/Containers/com.baofeng.player/Data/Library/Caches",
-        "~/Library/Containers/com.baofeng.player/Data/Library/Logs"
+        "~/Library/Caches/com.apple.fileprovider.cs"
       ],
+      "bundleID": "com.apple.fileprovider.cs",
       "confidence": "high"
     },
-    "com.bohemiancoding.sketch3": {
-      "bundleID": "com.bohemiancoding.sketch3",
-      "name": "Sketch Junks",
-      "nameCN": "Sketch开发垃圾",
-      "vendor": "Bohemian Coding",
+    "com.adobe.Lightroom": {
+      "name": "Lightroom",
+      "nameCN": "Lightroom",
+      "vendor": "Adobe",
       "type": "design",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Application Support/com.bohemiancoding.sketch3/crash.log",
-        "~/Library/Caches/com.bohemiancoding.sketch3",
-        "~/Library/Logs/com.bohemiancoding.sketch3"
+        "~/Library/Caches/com.adobe.Lightroom"
       ],
+      "bundleID": "com.adobe.Lightroom",
+      "confidence": "high"
+    },
+    "com.adobe.InDesign": {
+      "name": "InDesign",
+      "nameCN": "InDesign",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.InDesign"
+      ],
+      "bundleID": "com.adobe.InDesign",
       "confidence": "high"
     },
     "com.brave.Browser": {
@@ -450,6 +1325,55 @@
         "~/Library/Caches/com.brave.Browser"
       ],
       "bundleID": "com.brave.Browser",
+      "confidence": "high"
+    },
+    "com.apple.TV": {
+      "name": "TV",
+      "nameCN": "电视",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.TV"
+      ],
+      "bundleID": "com.apple.TV",
+      "confidence": "high"
+    },
+    "com.slack.Slack": {
+      "name": "Slack",
+      "nameCN": "Slack",
+      "vendor": "Slack",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.slack.Slack"
+      ],
+      "bundleID": "com.slack.Slack",
+      "confidence": "high"
+    },
+    "com.github.GitHubClient": {
+      "name": "GitHub Desktop",
+      "nameCN": "GitHub Desktop",
+      "vendor": "GitHub",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.github.GitHubClient"
+      ],
+      "bundleID": "com.github.GitHubClient",
+      "confidence": "high"
+    },
+    "com.apple.PhotoLibraryServices": {
+      "name": "Photos",
+      "nameCN": "照片",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.iCloudPhotoLibraryService",
+        "~/Library/Caches/com.apple.photoanalysisd"
+      ],
+      "bundleID": "com.apple.PhotoLibraryServices",
       "confidence": "high"
     },
     "com.dingtalk.mac": {
@@ -479,87 +1403,6 @@
       ],
       "confidence": "medium"
     },
-    "com.figma.Desktop": {
-      "name": "Figma",
-      "nameCN": "Figma",
-      "vendor": "Figma",
-      "type": "design",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.figma.Desktop"
-      ],
-      "bundleID": "com.figma.Desktop",
-      "confidence": "high"
-    },
-    "com.github.GitHubClient": {
-      "name": "GitHub Desktop",
-      "nameCN": "GitHub Desktop",
-      "vendor": "GitHub",
-      "type": "developer",
-      "riskLevel": "optional",
-      "cleanPaths": [
-        "~/Library/Caches/com.github.GitHubClient"
-      ],
-      "bundleID": "com.github.GitHubClient",
-      "confidence": "high"
-    },
-    "com.google.Chrome": {
-      "name": "Chrome",
-      "nameCN": "Chrome",
-      "vendor": "Google",
-      "type": "browser",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/Google",
-        "~/Library/Caches/com.google.Chrome"
-      ],
-      "bundleID": "com.google.Chrome",
-      "confidence": "high"
-    },
-    "com.google.Chrome.canary": {
-      "name": "Chrome Canary",
-      "nameCN": "Chrome Canary",
-      "vendor": "Google",
-      "type": "browser",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.google.Chrome.canary"
-      ],
-      "bundleID": "com.google.Chrome.canary",
-      "confidence": "high"
-    },
-    "com.iflytek.macinput": {
-      "bundleID": "com.iflytek.macinput",
-      "name": "iFLYTEK Input",
-      "nameCN": "讯飞输入法",
-      "vendor": "科大讯飞",
-      "type": "inputmethod",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Containers/com.iflytek.macinput/Data/Library/Caches/com.iflytek.macinput",
-        "~/Library/Containers/com.iflytek.macinput/Data/Library/Logs"
-      ],
-      "confidence": "high"
-    },
-    "com.iqiyi.player": {
-      "bundleID": "com.iqiyi.player",
-      "name": "iQIYI",
-      "nameCN": "爱奇艺",
-      "vendor": "爱奇艺",
-      "type": "video",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Barrage_102",
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/PlayRecord",
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Puma/Log",
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/WebPlayer",
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/download",
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/previewImages",
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Caches",
-        "~/Library/Containers/com.iqiyi.player/Data/Library/Logs"
-      ],
-      "confidence": "high"
-    },
     "com.jetbrains.intellij": {
       "name": "IntelliJ IDEA",
       "nameCN": "IntelliJ",
@@ -570,117 +1413,6 @@
         "~/Library/Caches/com.jetbrains.intellij"
       ],
       "bundleID": "com.jetbrains.intellij",
-      "confidence": "high"
-    },
-    "com.kugou.mac.Music": {
-      "bundleID": "com.kugou.mac.Music",
-      "name": "KuGou Music",
-      "nameCN": "酷狗音乐",
-      "vendor": "酷狗",
-      "type": "music",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Lyric",
-        "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Portrait",
-        "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Songs",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac",
-        "~/Music/酷狗音乐"
-      ],
-      "confidence": "medium"
-    },
-    "com.microsoft.VSCode": {
-      "name": "VS Code",
-      "nameCN": "VS Code",
-      "vendor": "Microsoft",
-      "type": "developer",
-      "riskLevel": "optional",
-      "cleanPaths": [
-        "~/Library/Caches/com.microsoft.VSCode"
-      ],
-      "bundleID": "com.microsoft.VSCode",
-      "confidence": "high"
-    },
-    "com.microsoft.edgemac": {
-      "name": "Edge",
-      "nameCN": "Edge",
-      "vendor": "Microsoft",
-      "type": "browser",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.microsoft.edgemac"
-      ],
-      "bundleID": "com.microsoft.edgemac",
-      "confidence": "high"
-    },
-    "com.netease.163music": {
-      "bundleID": "com.netease.163music",
-      "name": "NetEaseMusic",
-      "nameCN": "网易云音乐",
-      "vendor": "网易",
-      "type": "music",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.netease.163music",
-        "~/Library/Containers/com.netease.163music/Data/Caches/online_play_cache",
-        "~/Library/Containers/com.netease.163music/Data/Caches/orpheus_path",
-        "~/Library/Containers/com.netease.163music/Data/Documents/storage/Logs",
-        "~/Library/Containers/com.netease.163music/Data/Library/Caches/online_play_cache",
-        "~/Library/Containers/com.netease.163music/Data/Library/Caches/orpheus_path",
-        "~/Library/Logs/com.netease.163music",
-        "~/Music/网易云音乐"
-      ],
-      "confidence": "high"
-    },
-    "com.operasoftware.Opera": {
-      "name": "Opera",
-      "nameCN": "Opera",
-      "vendor": "Opera",
-      "type": "browser",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.operasoftware.Opera"
-      ],
-      "bundleID": "com.operasoftware.Opera",
-      "confidence": "high"
-    },
-    "com.pptv.pptvmac": {
-      "bundleID": "com.pptv.pptvmac",
-      "name": "PPTV",
-      "nameCN": "PPTV",
-      "vendor": "PPTV",
-      "type": "video",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.pptv.pptvmac/Data/Library/Application Support/PPTV",
-        "~/Library/Containers/com.pptv.pptvmac/Data/Library/Caches",
-        "~/Library/Containers/com.pptv.pptvmac/Data/Library/Logs"
-      ],
-      "confidence": "high"
-    },
-    "com.rockysandstudio.MKPlayer": {
-      "bundleID": "com.rockysandstudio.MKPlayer",
-      "name": "MKPlayer",
-      "nameCN": "MKPlayer",
-      "vendor": "Rocky Sand Studio",
-      "type": "video",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Caches",
-        "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Logs"
-      ],
-      "confidence": "high"
-    },
-    "com.slack.Slack": {
-      "name": "Slack",
-      "nameCN": "Slack",
-      "vendor": "Slack",
-      "type": "chat",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.slack.Slack"
-      ],
-      "bundleID": "com.slack.Slack",
       "confidence": "high"
     },
     "com.sogou.sogoupad": {
@@ -697,185 +1429,16 @@
       ],
       "confidence": "high"
     },
-    "com.spotify.client": {
-      "name": "Spotify",
-      "nameCN": "Spotify",
-      "vendor": "Spotify",
-      "type": "music",
+    "com.apple.FaceTime": {
+      "name": "FaceTime",
+      "nameCN": "FaceTime",
+      "vendor": "Apple",
+      "type": "chat",
       "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Caches/com.spotify.client"
+        "~/Library/Caches/com.apple.FaceTime"
       ],
-      "bundleID": "com.spotify.client",
-      "confidence": "high"
-    },
-    "com.sublimetext.3": {
-      "name": "Sublime Text",
-      "nameCN": "Sublime Text",
-      "vendor": "Sublime HQ",
-      "type": "developer",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.sublimetext.3"
-      ],
-      "bundleID": "com.sublimetext.3",
-      "confidence": "high"
-    },
-    "com.tencent.QQMusicMac": {
-      "bundleID": "com.tencent.QQMusicMac",
-      "name": "QQ Music",
-      "nameCN": "QQ音乐",
-      "vendor": "腾讯",
-      "type": "chat",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iAlbum",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iArtist",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iCache",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLyric",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iMusic",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iTemp",
-        "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac",
-        "~/Music/QQ音乐"
-      ],
-      "confidence": "high"
-    },
-    "com.tencent.WeWorkMac": {
-      "bundleID": "com.tencent.WeWorkMac",
-      "name": "WeChatWork",
-      "nameCN": "企业微信",
-      "vendor": "腾讯",
-      "type": "chat",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data",
-        "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Log",
-        "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Caches/com.tencent.WeWorkMac"
-      ],
-      "confidence": "high"
-    },
-    "com.tencent.qq": {
-      "bundleID": "com.tencent.qq",
-      "name": "QQ",
-      "nameCN": "QQ",
-      "vendor": "腾讯",
-      "type": "chat",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Avatar",
-        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/File",
-        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Images",
-        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/PTT",
-        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/QQINI",
-        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Videos",
-        "~/Library/Containers/com.tencent.qq/Data/Library/Caches/com.tencent.qq"
-      ],
-      "confidence": "high"
-    },
-    "com.tencent.tenvideo": {
-      "bundleID": "com.tencent.tenvideo",
-      "name": "WeTV",
-      "nameCN": "腾讯视频",
-      "vendor": "腾讯",
-      "type": "video",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.tencent.tenvideo",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/CoreData/Download/ImageDir",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/offlinelogo",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/video",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/P2P",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/SSO/Logs",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/documentCache",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/com.tencent.xinWeChat/com.tencent.tenvideo",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/default",
-        "~/Library/Containers/com.tencent.tenvideo/Data/Library/Logs"
-      ],
-      "confidence": "medium"
-    },
-    "com.tencent.xinWeChat": {
-      "bundleID": "com.tencent.xinWeChat",
-      "name": "WeChat",
-      "nameCN": "微信",
-      "vendor": "腾讯",
-      "type": "chat",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat",
-        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat",
-        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db",
-        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-shm",
-        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-wal",
-        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/PinYinCache",
-        "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/fsCachedData"
-      ],
-      "confidence": "high"
-    },
-    "com.tinyspeck.chatlyio": {
-      "name": "Chatly",
-      "nameCN": "Chatly",
-      "vendor": "Slack",
-      "type": "chat",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.tinyspeck.chatlyio"
-      ],
-      "bundleID": "com.tinyspeck.chatlyio",
-      "confidence": "high"
-    },
-    "com.vivaldi.Vivaldi": {
-      "name": "Vivaldi",
-      "nameCN": "Vivaldi",
-      "vendor": "Vivaldi",
-      "type": "browser",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.vivaldi.Vivaldi"
-      ],
-      "bundleID": "com.vivaldi.Vivaldi",
-      "confidence": "high"
-    },
-    "com.wenyu.kwplayermac": {
-      "bundleID": "com.wenyu.kwplayermac",
-      "name": "Kuwo Music",
-      "nameCN": "酷我音乐",
-      "vendor": "酷我",
-      "type": "music",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/BigArtistPic",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MV",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MVCache",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/OfflineRadio",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/P2PCache",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/PreGetMusic",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/WifiMusic",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/HDPicture",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Lyric",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/ImageData",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Caches/com.wenyu.kwplayermac",
-        "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Logs",
-        "~/Music/酷我音乐"
-      ],
-      "confidence": "high"
-    },
-    "com.xiami.client": {
-      "bundleID": "com.xiami.client",
-      "name": "XIAMI Music",
-      "nameCN": "虾米音乐",
-      "vendor": "虾米音乐",
-      "type": "music",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Caches/lyrics",
-        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Tmp/playerCache",
-        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/default",
-        "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/playerCache",
-        "~/Library/Containers/com.xiami.client/Data/Library/Caches/com.xiami.client",
-        "~/Library/Containers/com.xiami.client/Data/Library/Logs",
-        "~/Music/虾米音乐"
-      ],
+      "bundleID": "com.apple.FaceTime",
       "confidence": "high"
     },
     "com.xianghu.cctalk.mac": {
@@ -904,51 +1467,198 @@
       ],
       "confidence": "medium"
     },
-    "com.youku.mac": {
-      "bundleID": "com.youku.mac",
-      "name": "YOUKU",
-      "nameCN": "优酷",
-      "vendor": "Youku",
-      "type": "other",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.youku.mac/Data/Documents/Log",
-        "~/Library/Containers/com.youku.mac/Data/Documents/Youku",
-        "~/Library/Containers/com.youku.mac/Data/Library/Application Support/Youku",
-        "~/Library/Containers/com.youku.mac/Data/Library/Caches",
-        "~/Library/Containers/com.youku.mac/Data/Library/Logs",
-        "~/Library/Containers/com.youku.mac/Data/VideoCache",
-        "~/Library/Containers/com.youku.mac/Data/thumb"
-      ],
-      "confidence": "high"
-    },
-    "org.mozilla.firefox": {
-      "name": "Firefox",
-      "nameCN": "Firefox",
-      "vendor": "Mozilla",
+    "com.google.Chrome": {
+      "name": "Chrome",
+      "nameCN": "Chrome",
+      "vendor": "Google",
       "type": "browser",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/Mozilla",
-        "~/Library/Caches/org.mozilla.firefox"
+        "~/Library/Caches/Google",
+        "~/Library/Caches/com.google.Chrome"
       ],
-      "bundleID": "org.mozilla.firefox",
+      "bundleID": "com.google.Chrome",
       "confidence": "high"
     },
-    "tv.sohu.SHPlayer": {
-      "bundleID": "tv.sohu.SHPlayer",
-      "name": "Sohu Video",
-      "nameCN": "搜狐影音",
-      "vendor": "Sohu",
-      "type": "video",
+    "com.apple.MobileSMS": {
+      "name": "Messages",
+      "nameCN": "信息",
+      "vendor": "Apple",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Messages"
+      ],
+      "bundleID": "com.apple.MobileSMS",
+      "confidence": "high"
+    },
+    "com.apple.Terminal": {
+      "name": "Terminal",
+      "nameCN": "终端",
+      "vendor": "Apple",
+      "type": "developer",
       "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches",
-        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Log",
-        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Movie",
-        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/PlayListCache",
-        "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/VideoDetailCache"
+        "~/Library/Caches/com.apple.Terminal"
       ],
+      "bundleID": "com.apple.Terminal",
+      "confidence": "high"
+    },
+    "com.apple.Spotlight": {
+      "name": "Spotlight",
+      "nameCN": "聚焦搜索",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Spotlight",
+        "~/Library/Caches/com.apple.spotlightknowledged"
+      ],
+      "bundleID": "com.apple.Spotlight",
+      "confidence": "high"
+    },
+    "com.apple.Finder": {
+      "name": "Finder",
+      "nameCN": "访达",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.finder"
+      ],
+      "bundleID": "com.apple.Finder",
+      "confidence": "high"
+    },
+    "com.apple.Podcasts": {
+      "name": "Podcasts",
+      "nameCN": "播客",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.podcasts"
+      ],
+      "bundleID": "com.apple.Podcasts",
+      "confidence": "high"
+    },
+    "com.apple.cloudkit": {
+      "name": "CloudKit",
+      "nameCN": "CloudKit",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.cloudkit"
+      ],
+      "bundleID": "com.apple.cloudkit",
+      "confidence": "high"
+    },
+    "com.apple.iCal": {
+      "name": "Calendar",
+      "nameCN": "日历",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.iCal"
+      ],
+      "bundleID": "com.apple.iCal",
+      "confidence": "high"
+    },
+    "com.figma.Desktop": {
+      "name": "Figma",
+      "nameCN": "Figma",
+      "vendor": "Figma",
+      "type": "design",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.figma.Desktop"
+      ],
+      "bundleID": "com.figma.Desktop",
+      "confidence": "high"
+    },
+    "com.adobe.CreativeCloud": {
+      "name": "Creative Cloud",
+      "nameCN": "Creative Cloud",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.CreativeCloud"
+      ],
+      "bundleID": "com.adobe.CreativeCloud",
+      "confidence": "high"
+    },
+    "com.apple.QuickTimePlayerX": {
+      "name": "QuickTime",
+      "nameCN": "QuickTime",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.QuickTimePlayerX"
+      ],
+      "bundleID": "com.apple.QuickTimePlayerX",
+      "confidence": "high"
+    },
+    "com.apple.Siri": {
+      "name": "Siri",
+      "nameCN": "Siri",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Siri"
+      ],
+      "bundleID": "com.apple.Siri",
+      "confidence": "high"
+    },
+    "com.adobe.Illustrator": {
+      "name": "Illustrator",
+      "nameCN": "Illustrator",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.Illustrator"
+      ],
+      "bundleID": "com.adobe.Illustrator",
+      "confidence": "high"
+    },
+    "com.tinyspeck.chatlyio": {
+      "name": "Chatly",
+      "nameCN": "Chatly",
+      "vendor": "Slack",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.tinyspeck.chatlyio"
+      ],
+      "bundleID": "com.tinyspeck.chatlyio",
+      "confidence": "high"
+    },
+    "com.google.Chrome.canary": {
+      "name": "Chrome Canary",
+      "nameCN": "Chrome Canary",
+      "vendor": "Google",
+      "type": "browser",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.google.Chrome.canary"
+      ],
+      "bundleID": "com.google.Chrome.canary",
+      "confidence": "high"
+    },
+    "com.sublimetext.3": {
+      "name": "Sublime Text",
+      "nameCN": "Sublime Text",
+      "vendor": "Sublime HQ",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.sublimetext.3"
+      ],
+      "bundleID": "com.sublimetext.3",
       "confidence": "high"
     },
     "us.zoom.xos": {
@@ -961,6 +1671,137 @@
         "~/Library/Caches/us.zoom.xos"
       ],
       "bundleID": "us.zoom.xos",
+      "confidence": "high"
+    },
+    "com.apple.Safari": {
+      "bundleID": "com.apple.Safari",
+      "name": "Safari",
+      "nameCN": "Safari",
+      "vendor": "Apple",
+      "type": "browser",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/Metadata/Safari",
+        "~/Library/Caches/com.apple.Safari",
+        "~/Library/Caches/com.apple.Safari.SafeBrowsing",
+        "~/Library/Caches/com.apple.safaridavclient",
+        "~/Library/Containers/com.apple.Safari.CacheDeleteExtension",
+        "~/Library/Safari/Downloads.plist",
+        "~/Library/Safari/History.plist",
+        "~/Library/Safari/HistoryIndex.sk",
+        "~/Library/Safari/LocalStorage",
+        "~/Library/Safari/WebpageIcons.db"
+      ],
+      "confidence": "medium"
+    },
+    "com.apple.Notes": {
+      "name": "Notes",
+      "nameCN": "备忘录",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Notes"
+      ],
+      "bundleID": "com.apple.Notes",
+      "confidence": "high"
+    },
+    "com.microsoft.VSCode": {
+      "name": "VS Code",
+      "nameCN": "VS Code",
+      "vendor": "Microsoft",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.microsoft.VSCode"
+      ],
+      "bundleID": "com.microsoft.VSCode",
+      "confidence": "high"
+    },
+    "com.apple.reminders": {
+      "name": "Reminders",
+      "nameCN": "提醒事项",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.reminders"
+      ],
+      "bundleID": "com.apple.reminders",
+      "confidence": "high"
+    },
+    "com.apple.ScriptEditor2": {
+      "name": "Script Editor",
+      "nameCN": "脚本编辑器",
+      "vendor": "Apple",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.ScriptEditor2"
+      ],
+      "bundleID": "com.apple.ScriptEditor2",
+      "confidence": "high"
+    },
+    "com.spotify.client": {
+      "name": "Spotify",
+      "nameCN": "Spotify",
+      "vendor": "Spotify",
+      "type": "music",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.spotify.client"
+      ],
+      "bundleID": "com.spotify.client",
+      "confidence": "high"
+    },
+    "com.apple.Maps": {
+      "name": "Maps",
+      "nameCN": "地图",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Maps"
+      ],
+      "bundleID": "com.apple.Maps",
+      "confidence": "high"
+    },
+    "com.adobe.Photoshop": {
+      "name": "Photoshop",
+      "nameCN": "Photoshop",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/Adobe",
+        "~/Library/Caches/com.adobe.Photoshop"
+      ],
+      "bundleID": "com.adobe.Photoshop",
+      "confidence": "high"
+    },
+    "com.apple.Console": {
+      "name": "Console",
+      "nameCN": "控制台",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Console"
+      ],
+      "bundleID": "com.apple.Console",
+      "confidence": "high"
+    },
+    "com.apple.QuickLook": {
+      "name": "Quick Look",
+      "nameCN": "快速查看",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.QuickLookThumbnailing",
+        "~/Library/Caches/com.apple.quicklook"
+      ],
+      "bundleID": "com.apple.QuickLook",
       "confidence": "high"
     }
   }
