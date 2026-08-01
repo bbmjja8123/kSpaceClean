@@ -64,6 +64,15 @@ export TMP
 xargs -n 1 -P "$PARALLEL" -I {} bash -c 'fetch_one "$@"' _ {} < "$TMP/jobs.txt" > "$TMP/fetched.txt"
 
 # Aggregate zap stanzas into JSON.
+#
+# NOTE: The `zap trash: [...]` extraction regex below is duplicated in
+# `fetch_wellknown_casks.py:parse_zap()`. Both scripts must parse the same
+# ruby DSL shape — when one changes, change the other. A future refactor
+# could extract a shared `extract_zap_stanzas.py` helper invoked from
+# both shells (the bash script would simply call `python3
+# extract_zap_stanzas.py <input> <output>`), but the bash→python boundary
+# is awkward enough that we accept the duplication for now. If you fix a
+# bug here, mirror the fix in the python script's `parse_zap`.
 python3 - "$TMP/fetched.txt" "$OUTPUT" <<'PY'
 import json, re, sys
 fetched_path, output_path = sys.argv[1], sys.argv[2]

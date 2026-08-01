@@ -82,6 +82,15 @@ def fetch_cask_ruby(token: str) -> str | None:
 
 
 def parse_zap(token: str, ruby: str) -> dict | None:
+    # NOTE: The `zap trash: [...]` regex below is duplicated in
+    # `fetch_cask_rules.sh` (the embedded python heredoc). Both scripts
+    # must parse the same ruby DSL shape — when one changes, change the
+    # other. If the bash version's extraction logic evolves, mirror the
+    # change here. A future refactor could extract a shared
+    # `extract_zap_stanzas.py` helper invoked from both shells (the bash
+    # script would simply call `python3 extract_zap_stanzas.py`), but
+    # the bash→python boundary is awkward enough that we accept the
+    # duplication for now.
     m = re.search(r"zap\s+trash:\s*\[(.*?)\]", ruby, re.DOTALL)
     if not m:
         return None
