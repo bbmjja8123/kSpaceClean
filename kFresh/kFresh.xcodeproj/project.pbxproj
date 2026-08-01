@@ -35,14 +35,6 @@
 		isa = PBXBuildFile;
 		fileRef = 1C4455D0B4CE1B5F5681A2FE;
 	};
-	14522065F7DF933255DA0908 /* 14522065F7DF933255DA0908 */ = {
-		isa = PBXBuildFile;
-		fileRef = AA82AD3ACA5E2DE044D14893;
-	};
-	14841E6EE2613C55089B2896 /* 14841E6EE2613C55089B2896 */ = {
-		isa = PBXBuildFile;
-		fileRef = 6733EE44B5FD81C4226C560C;
-	};
 	16DD6A0BD70B4AA953E77A46 /* 16DD6A0BD70B4AA953E77A46 */ = {
 		isa = PBXBuildFile;
 		fileRef = E7C75D71D1A007D0AE93042E;
@@ -75,6 +67,10 @@
 		isa = PBXBuildFile;
 		fileRef = 4DB6B5CBAB9D12D12D1702D7;
 	};
+	26CBD8381DA7FE7954125061 /* 26CBD8381DA7FE7954125061 */ = {
+		isa = PBXBuildFile;
+		fileRef = A1C2B87E1ED2C573006DA178;
+	};
 	2881629D9FD740DD04775A52 /* 2881629D9FD740DD04775A52 */ = {
 		isa = PBXBuildFile;
 		fileRef = 43E95637FFF6820D2C78A1BE;
@@ -82,10 +78,6 @@
 	2B06CE90451E121FCC65E18A /* 2B06CE90451E121FCC65E18A */ = {
 		isa = PBXBuildFile;
 		fileRef = 381D3A35ABE82AE0AE3F42B3;
-	};
-	30777437B37859FB155C273A /* 30777437B37859FB155C273A */ = {
-		isa = PBXBuildFile;
-		fileRef = 06E33A55C4FF7FD14C728811;
 	};
 	33D3B9276A837515275FF9DC /* 33D3B9276A837515275FF9DC */ = {
 		isa = PBXBuildFile;
@@ -127,10 +119,6 @@
 		isa = PBXBuildFile;
 		fileRef = 8138CFB82419F6F8F3E957C3;
 	};
-	46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */ = {
-		isa = PBXBuildFile;
-		fileRef = 86CB786A2E1C914FA035D064;
-	};
 	476DC124F31EEA92FB2F9F94 /* 476DC124F31EEA92FB2F9F94 */ = {
 		isa = PBXBuildFile;
 		fileRef = F035EC8F6EE68C301CCA326E;
@@ -159,18 +147,6 @@
 		isa = PBXBuildFile;
 		fileRef = D7374E7C28D6489848AF3698;
 	};
-	583B954A6A1E0563236FE408 /* 583B954A6A1E0563236FE408 */ = {
-		isa = PBXBuildFile;
-		fileRef = 06873BB0E2C32B0E84C3FFEF;
-	};
-	5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */ = {
-		isa = PBXBuildFile;
-		fileRef = 0ADB26D41ACA3A15E19ABEE3;
-	};
-	6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */ = {
-		isa = PBXBuildFile;
-		fileRef = 53EF96BE26DB6B2A6C185799;
-	};
 	62E646831E0902B06DD4553A /* 62E646831E0902B06DD4553A */ = {
 		isa = PBXBuildFile;
 		fileRef = DC9F358CA23F4689897454B8;
@@ -182,10 +158,6 @@
 	6DEA26C5ACF70B72832A1F3D /* 6DEA26C5ACF70B72832A1F3D */ = {
 		isa = PBXBuildFile;
 		fileRef = F64EB626B1651356DF05FAE6;
-	};
-	6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */ = {
-		isa = PBXBuildFile;
-		fileRef = 6CAA3CF4C412CEDDEAA934C3;
 	};
 	717B5017E8BA6330A45302F9 /* 717B5017E8BA6330A45302F9 */ = {
 		isa = PBXBuildFile;
@@ -203,21 +175,9 @@
 		isa = PBXBuildFile;
 		fileRef = A336DAF2982BFADFF3C0BCE9;
 	};
-	75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */ = {
-		isa = PBXBuildFile;
-		fileRef = FAA3A8E09031388A4E38C620;
-	};
 	779B1FAC30D47330DBEF0816 /* 779B1FAC30D47330DBEF0816 */ = {
 		isa = PBXBuildFile;
 		fileRef = 398BC05338A7AC080AC83E1E;
-	};
-	78F8A9DFEED2BD5C2BFE359D /* 78F8A9DFEED2BD5C2BFE359D */ = {
-		isa = PBXBuildFile;
-		fileRef = 66EBF85D7D7569CED79F5DF4;
-	};
-	7A6C1D27E747136FB9E0845C /* 7A6C1D27E747136FB9E0845C */ = {
-		isa = PBXBuildFile;
-		fileRef = 5D0DC122863AABE458A77BA8;
 	};
 	7AC3A31E4348CAAD16FDE399 /* 7AC3A31E4348CAAD16FDE399 */ = {
 		isa = PBXBuildFile;
@@ -231,17 +191,13 @@
 		isa = PBXBuildFile;
 		fileRef = F9F5DB4F736723C6F2F5DC63;
 	};
-	80FC5F8CBB595E37C8122AEB /* 80FC5F8CBB595E37C8122AEB */ = {
-		isa = PBXBuildFile;
-		fileRef = A1B2D98C4D9054D86EB64B87;
-	};
 	82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */ = {
 		isa = PBXBuildFile;
 		fileRef = 1890ACF921D842C7A68A1BBE;
 	};
-	833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */ = {
+	8373124E2F773E6CF5308DEF /* 8373124E2F773E6CF5308DEF */ = {
 		isa = PBXBuildFile;
-		fileRef = 05B9799A26FB3FDC78B071F1;
+		fileRef = D7E4DF17C68298CE603E86E7;
 	};
 	845606ED7B3C17AE42B3EFCB /* 845606ED7B3C17AE42B3EFCB */ = {
 		isa = PBXBuildFile;
@@ -250,14 +206,6 @@
 	84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */ = {
 		isa = PBXBuildFile;
 		fileRef = C9E078E86802779CEEDAD0F2;
-	};
-	85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */ = {
-		isa = PBXBuildFile;
-		fileRef = F75307E42A8914CFBC4E8183;
-	};
-	8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */ = {
-		isa = PBXBuildFile;
-		fileRef = BFA7754C2E9614BC7641312C;
 	};
 	8C8D6B2C5A3EA74A2E0510A3 /* 8C8D6B2C5A3EA74A2E0510A3 */ = {
 		isa = PBXBuildFile;
@@ -275,6 +223,10 @@
 		isa = PBXBuildFile;
 		fileRef = 44A2613DA7CAFB830A1F06D3;
 	};
+	9B5089A563EDF2D5B2F21130 /* 9B5089A563EDF2D5B2F21130 */ = {
+		isa = PBXBuildFile;
+		fileRef = 6E9BEFDC0F04572A19B2DFA1;
+	};
 	9DFB3583F240A44BFBD52A8F /* 9DFB3583F240A44BFBD52A8F */ = {
 		isa = PBXBuildFile;
 		fileRef = F7DD8A33BD1AA198AEF2A93A;
@@ -282,10 +234,6 @@
 	9F7D061010AC1F35C96F4929 /* 9F7D061010AC1F35C96F4929 */ = {
 		isa = PBXBuildFile;
 		fileRef = AF272D3718777F39FA504734;
-	};
-	9FE0E33F3FCD69A0A105C330 /* 9FE0E33F3FCD69A0A105C330 */ = {
-		isa = PBXBuildFile;
-		fileRef = 212440F390BC3282519C17C8;
 	};
 	A02E366068897EFEF1913654 /* A02E366068897EFEF1913654 */ = {
 		isa = PBXBuildFile;
@@ -315,10 +263,6 @@
 		isa = PBXBuildFile;
 		fileRef = B75355466AE62A0871C03EB7;
 	};
-	BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */ = {
-		isa = PBXBuildFile;
-		fileRef = 48DFB6C6C2EEA832BFACA155;
-	};
 	BC48F4AE041C911676CB0F92 /* BC48F4AE041C911676CB0F92 */ = {
 		isa = PBXBuildFile;
 		fileRef = A5AD76B7AA53AF7085B7A992;
@@ -343,10 +287,6 @@
 		isa = PBXBuildFile;
 		fileRef = 66DCDD3E8D4249951CFA3C37;
 	};
-	D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */ = {
-		isa = PBXBuildFile;
-		fileRef = 92285B8C36BFE1BC01B56B40;
-	};
 	D43E9821EC3E17EFF5B7B88C /* D43E9821EC3E17EFF5B7B88C */ = {
 		isa = PBXBuildFile;
 		fileRef = 69534F9EAC28CF4D641D8DC3;
@@ -366,10 +306,6 @@
 	DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 2F003C23A18C74F51E543E30;
-	};
-	DEDCF62736EE4FE8EC3222B2 /* DEDCF62736EE4FE8EC3222B2 */ = {
-		isa = PBXBuildFile;
-		fileRef = 4E0A28E26F67D15D01EC121B;
 	};
 	E233F62991DC0F46CF4D2FFE /* E233F62991DC0F46CF4D2FFE */ = {
 		isa = PBXBuildFile;
@@ -431,10 +367,6 @@
 		isa = PBXBuildFile;
 		fileRef = EA66E191F044FFC4D9668848;
 	};
-	FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */ = {
-		isa = PBXBuildFile;
-		fileRef = 29548BE5AD0B39AAFE6CF22F;
-	};
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -455,39 +387,11 @@
 		path = Tests/CleanTests/TrashMoverTests.swift;
 		sourceTree = "<group>";
 	};
-	028FE75EBC698AC1A1A03C74 /* kFreshDebug.entitlements */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.entitlements;
-		name = kFreshDebug.entitlements;
-		path = kFreshDebug.entitlements;
-		sourceTree = "<group>";
-	};
 	0410DBDC2573D4A43ABE15F7 /* DeepCleanViewModel.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = DeepCleanViewModel.swift;
 		path = Features/DeepClean/DeepCleanViewModel.swift;
-		sourceTree = "<group>";
-	};
-	05B9799A26FB3FDC78B071F1 /* Assets.xcassets */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = folder.assetcatalog;
-		name = Assets.xcassets;
-		path = Resources/Assets.xcassets;
-		sourceTree = "<group>";
-	};
-	06873BB0E2C32B0E84C3FFEF /* UninstallHistory+CoreDataProperties.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = "UninstallHistory+CoreDataProperties.swift";
-		path = "Data/Models/UninstallHistory+CoreDataProperties.swift";
-		sourceTree = "<group>";
-	};
-	06E33A55C4FF7FD14C728811 /* InstalledAppTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = InstalledAppTests.swift;
-		path = Tests/DetectTests/InstalledAppTests.swift;
 		sourceTree = "<group>";
 	};
 	09C386C2F6D04F8712E2E85C /* kFreshTests.xctest */ = {
@@ -497,13 +401,6 @@
 		name = kFreshTests.xctest;
 		path = kFreshTests.xctest;
 		sourceTree = BUILT_PRODUCTS_DIR;
-	};
-	0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = CoreDataStack.swift;
-		path = Data/CoreDataStack.swift;
-		sourceTree = "<group>";
 	};
 	0C25FC9BBBD612C35A333C8F /* BackupManager.swift */ = {
 		isa = PBXFileReference;
@@ -575,13 +472,6 @@
 		path = Features/Settings/SettingsView.swift;
 		sourceTree = "<group>";
 	};
-	212440F390BC3282519C17C8 /* QuickUninstallWidget.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = QuickUninstallWidget.swift;
-		path = Widgets/QuickUninstallWidget.swift;
-		sourceTree = "<group>";
-	};
 	214C113C57AC8C9363D916D7 /* DirectorySizeCalculator.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -594,13 +484,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = FDAGuideView.swift;
 		path = Features/Onboarding/FDAGuideView.swift;
-		sourceTree = "<group>";
-	};
-	29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StoreManager.swift;
-		path = Store/StoreManager.swift;
 		sourceTree = "<group>";
 	};
 	2CECBF48E3D876A389BF7752 /* UninstallConfirmSheetTests.swift */ = {
@@ -652,13 +535,6 @@
 		path = Tests/DetailTests/UninstallSafetyCheckTests.swift;
 		sourceTree = "<group>";
 	};
-	3EBAE220C65B95B5461A69F4 /* Info.plist */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.xml;
-		name = Info.plist;
-		path = Info.plist;
-		sourceTree = "<group>";
-	};
 	4043971F5EFD0C3AB4322C65 /* Typography.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -687,13 +563,6 @@
 		path = Core/Rules/KFreshBundleRule.swift;
 		sourceTree = "<group>";
 	};
-	48DFB6C6C2EEA832BFACA155 /* StoreDefinitions.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StoreDefinitions.swift;
-		path = Store/StoreDefinitions.swift;
-		sourceTree = "<group>";
-	};
 	4B4EBB8963FE59BC0A93699E /* HistoryViewModelTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -715,25 +584,11 @@
 		path = Data/UninstallHistoryRepository.swift;
 		sourceTree = "<group>";
 	};
-	4E0A28E26F67D15D01EC121B /* AppAnalysisRepository.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppAnalysisRepository.swift;
-		path = Data/AppAnalysisRepository.swift;
-		sourceTree = "<group>";
-	};
 	4F7AD27F716655EB375F2412 /* FDAGuidePage.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = FDAGuidePage.swift;
 		path = Features/Onboarding/FDAGuidePage.swift;
-		sourceTree = "<group>";
-	};
-	53EF96BE26DB6B2A6C185799 /* UninstallFlowTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = UninstallFlowTests.swift;
-		path = Tests/IntegrationTests/UninstallFlowTests.swift;
 		sourceTree = "<group>";
 	};
 	592A3E8DE2005013EFE473D7 /* kFresh.app */ = {
@@ -758,13 +613,6 @@
 		path = Core/Clean/AuditLogger.swift;
 		sourceTree = "<group>";
 	};
-	5D0DC122863AABE458A77BA8 /* AppUsageWidget.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppUsageWidget.swift;
-		path = Widgets/AppUsageWidget.swift;
-		sourceTree = "<group>";
-	};
 	5EF3C83CE85852F781B5EBA1 /* AppRowView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -779,20 +627,6 @@
 		path = Resources/cask_rules.json;
 		sourceTree = "<group>";
 	};
-	66EBF85D7D7569CED79F5DF4 /* UninstallHistory+CoreDataClass.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = "UninstallHistory+CoreDataClass.swift";
-		path = "Data/Models/UninstallHistory+CoreDataClass.swift";
-		sourceTree = "<group>";
-	};
-	6733EE44B5FD81C4226C560C /* AppAnalysis+CoreDataClass.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = "AppAnalysis+CoreDataClass.swift";
-		path = "Data/Models/AppAnalysis+CoreDataClass.swift";
-		sourceTree = "<group>";
-	};
 	69534F9EAC28CF4D641D8DC3 /* EmptyStateView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -800,11 +634,11 @@
 		path = Features/Common/EmptyStateView.swift;
 		sourceTree = "<group>";
 	};
-	6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */ = {
+	6E9BEFDC0F04572A19B2DFA1 /* DeepCleanViewModelTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
-		name = PaywallView.swift;
-		path = Store/PaywallView.swift;
+		name = DeepCleanViewModelTests.swift;
+		path = Tests/DeepCleanTests/DeepCleanViewModelTests.swift;
 		sourceTree = "<group>";
 	};
 	780EBDE21893F54287CDD30D /* HistoryRow.swift */ = {
@@ -826,13 +660,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = Icons.swift;
 		path = ../kFoundation/Sources/DesignSystem/Icons.swift;
-		sourceTree = "<group>";
-	};
-	86CB786A2E1C914FA035D064 /* ProGateModifier.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ProGateModifier.swift;
-		path = Store/ProGateModifier.swift;
 		sourceTree = "<group>";
 	};
 	86EBDC7A6B2FFF21B7FFBA9A /* DeepCleanIntent.swift */ = {
@@ -863,13 +690,6 @@
 		path = Tests/DetectTests/ResidueDetectorTests.swift;
 		sourceTree = "<group>";
 	};
-	92285B8C36BFE1BC01B56B40 /* SandboxDegradationTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SandboxDegradationTests.swift;
-		path = Tests/IntegrationTests/SandboxDegradationTests.swift;
-		sourceTree = "<group>";
-	};
 	93E7385164CAC43BEEBF65ED /* AboutView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -882,13 +702,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = BundleRuleStoreTests.swift;
 		path = Tests/RulesTests/BundleRuleStoreTests.swift;
-		sourceTree = "<group>";
-	};
-	9A872BB5A2D10B44D7842336 /* kFresh.entitlements */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.entitlements;
-		name = kFresh.entitlements;
-		path = kFresh.entitlements;
 		sourceTree = "<group>";
 	};
 	9A914D29E3FBE232544870A3 /* OnboardingRoutingTests.swift */ = {
@@ -905,11 +718,11 @@
 		path = ../kFoundation/Sources/DesignSystem/Radius.swift;
 		sourceTree = "<group>";
 	};
-	A1B2D98C4D9054D86EB64B87 /* AppAnalysis+CoreDataProperties.swift */ = {
+	A1C2B87E1ED2C573006DA178 /* SystemCleanRowView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
-		name = "AppAnalysis+CoreDataProperties.swift";
-		path = "Data/Models/AppAnalysis+CoreDataProperties.swift";
+		name = SystemCleanRowView.swift;
+		path = Features/DeepClean/SystemCleanRowView.swift;
 		sourceTree = "<group>";
 	};
 	A1D1E204D0FEFB2109B4C7D3 /* StartupItemManagerTests.swift */ = {
@@ -945,13 +758,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AuditLoggerTests.swift;
 		path = Tests/CleanTests/AuditLoggerTests.swift;
-		sourceTree = "<group>";
-	};
-	AA82AD3ACA5E2DE044D14893 /* UninstallAppIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = UninstallAppIntent.swift;
-		path = Intents/UninstallAppIntent.swift;
 		sourceTree = "<group>";
 	};
 	AF272D3718777F39FA504734 /* ResidueScanner.swift */ = {
@@ -1015,13 +821,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppSourceClassifierTests.swift;
 		path = Tests/DetectTests/AppSourceClassifierTests.swift;
-		sourceTree = "<group>";
-	};
-	BFA7754C2E9614BC7641312C /* Localizable.xcstrings */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.json.xcstrings;
-		name = Localizable.xcstrings;
-		path = Resources/Localizable.xcstrings;
 		sourceTree = "<group>";
 	};
 	C1500570860B074777D1122C /* HistoryViewModel.swift */ = {
@@ -1092,6 +891,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = BackupManagerTests.swift;
 		path = Tests/CleanTests/BackupManagerTests.swift;
+		sourceTree = "<group>";
+	};
+	D7E4DF17C68298CE603E86E7 /* DeepCleanEngineTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DeepCleanEngineTests.swift;
+		path = Tests/DeepCleanTests/DeepCleanEngineTests.swift;
 		sourceTree = "<group>";
 	};
 	DC9F358CA23F4689897454B8 /* TrashMover.swift */ = {
@@ -1178,13 +984,6 @@
 		path = Features/Detail/ResidueSectionView.swift;
 		sourceTree = "<group>";
 	};
-	F75307E42A8914CFBC4E8183 /* FinderSync.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = FinderSync.swift;
-		path = FinderExtension/FinderSync.swift;
-		sourceTree = "<group>";
-	};
 	F75684B0069B206DC6478D95 /* CaskParser.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1211,13 +1010,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = RootView.swift;
 		path = App/RootView.swift;
-		sourceTree = "<group>";
-	};
-	FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.xml;
-		name = PrivacyInfo.xcprivacy;
-		path = Resources/PrivacyInfo.xcprivacy;
 		sourceTree = "<group>";
 	};
 	FBDE7C50C5246FD21C67CBE5 /* DeepCleanView.swift */ = {
@@ -1264,17 +1056,6 @@
 		name = History;
 		sourceTree = "<group>";
 	};
-	080719DCC0589D18D62EF828 /* Store */ = {
-		isa = PBXGroup;
-		children = (
-			48DFB6C6C2EEA832BFACA155 /* StoreDefinitions.swift */,
-			29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */,
-			6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */,
-			86CB786A2E1C914FA035D064 /* ProGateModifier.swift */,
-		);
-		name = Store;
-		sourceTree = "<group>";
-	};
 	0BFD696B0848A9C40367B52E /* Startup */ = {
 		isa = PBXGroup;
 		children = (
@@ -1297,9 +1078,6 @@
 	1119F24AE4A205A534838F74 /* Resources */ = {
 		isa = PBXGroup;
 		children = (
-			05B9799A26FB3FDC78B071F1 /* Assets.xcassets */,
-			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
-			FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */,
 			66DCDD3E8D4249951CFA3C37 /* cask_rules.json */,
 		);
 		name = Resources;
@@ -1326,7 +1104,6 @@
 	2393A47879AB5770997F6712 /* DetectTests */ = {
 		isa = PBXGroup;
 		children = (
-			06E33A55C4FF7FD14C728811 /* InstalledAppTests.swift */,
 			44A2613DA7CAFB830A1F06D3 /* AppCatalogServiceTests.swift */,
 			90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */,
 			BD8372016B507E6E4A7A99AC /* AppSourceClassifierTests.swift */,
@@ -1342,6 +1119,7 @@
 			0410DBDC2573D4A43ABE15F7 /* DeepCleanViewModel.swift */,
 			FBDE7C50C5246FD21C67CBE5 /* DeepCleanView.swift */,
 			F5EE8978A09525D063479709 /* SystemCleanGroupView.swift */,
+			A1C2B87E1ED2C573006DA178 /* SystemCleanRowView.swift */,
 		);
 		name = DeepClean;
 		sourceTree = "<group>";
@@ -1392,6 +1170,15 @@
 		name = Common;
 		sourceTree = "<group>";
 	};
+	49A7970DC5A10324A6DE3EBB /* DeepCleanTests */ = {
+		isa = PBXGroup;
+		children = (
+			D7E4DF17C68298CE603E86E7 /* DeepCleanEngineTests.swift */,
+			6E9BEFDC0F04572A19B2DFA1 /* DeepCleanViewModelTests.swift */,
+		);
+		name = DeepCleanTests;
+		sourceTree = "<group>";
+	};
 	51A79B58FC1B5FEFCADCA5DD /* HistoryTests */ = {
 		isa = PBXGroup;
 		children = (
@@ -1406,12 +1193,6 @@
 			0C25FC9BBBD612C35A333C8F /* BackupManager.swift */,
 			4DB6B5CBAB9D12D12D1702D7 /* UninstallHistoryRepository.swift */,
 			C9436B5A5555F38E15906412 /* FDAuthorizer.swift */,
-			0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */,
-			66EBF85D7D7569CED79F5DF4 /* UninstallHistory+CoreDataClass.swift */,
-			06873BB0E2C32B0E84C3FFEF /* UninstallHistory+CoreDataProperties.swift */,
-			6733EE44B5FD81C4226C560C /* AppAnalysis+CoreDataClass.swift */,
-			A1B2D98C4D9054D86EB64B87 /* AppAnalysis+CoreDataProperties.swift */,
-			4E0A28E26F67D15D01EC121B /* AppAnalysisRepository.swift */,
 		);
 		name = Data;
 		sourceTree = "<group>";
@@ -1474,7 +1255,6 @@
 	8737C58DE7045208C482770A /* Intents */ = {
 		isa = PBXGroup;
 		children = (
-			AA82AD3ACA5E2DE044D14893 /* UninstallAppIntent.swift */,
 			C6F02E16C32A208DAABE3322 /* ScanResidueIntent.swift */,
 			86EBDC7A6B2FFF21B7FFBA9A /* DeepCleanIntent.swift */,
 		);
@@ -1489,17 +1269,11 @@
 			597B9EC128A7CAC8315BA831 /* DS_DesignSystem */,
 			541BE480BD6342CA50028767 /* Data */,
 			B31AC5F5A4F7E20AE1F086A3 /* Features */,
-			AB9A6EBAA83058E1F2B4CCE0 /* FinderExtension */,
 			8737C58DE7045208C482770A /* Intents */,
 			D086B1D575B679BDD667F1C2 /* MenuBar */,
 			1119F24AE4A205A534838F74 /* Resources */,
-			080719DCC0589D18D62EF828 /* Store */,
-			F4D2E522CF9449BF1C2F0894 /* Widgets */,
 			BFF03A4B7DE5959B1AAD4165 /* Tests */,
 			EBA56EB89A9347CFCE560E19 /* Products */,
-			3EBAE220C65B95B5461A69F4 /* Info.plist */,
-			9A872BB5A2D10B44D7842336 /* kFresh.entitlements */,
-			028FE75EBC698AC1A1A03C74 /* kFreshDebug.entitlements */,
 		);
 		name = kFresh;
 		path = "";
@@ -1547,14 +1321,6 @@
 		name = Settings;
 		sourceTree = "<group>";
 	};
-	AB9A6EBAA83058E1F2B4CCE0 /* FinderExtension */ = {
-		isa = PBXGroup;
-		children = (
-			F75307E42A8914CFBC4E8183 /* FinderSync.swift */,
-		);
-		name = FinderExtension;
-		sourceTree = "<group>";
-	};
 	B31AC5F5A4F7E20AE1F086A3 /* Features */ = {
 		isa = PBXGroup;
 		children = (
@@ -1586,7 +1352,7 @@
 			2393A47879AB5770997F6712 /* DetectTests */,
 			92CF88F56CFAD37E6AF2955F /* CleanTests */,
 			5FE9C103B068D0D68C2FC09D /* RulesTests */,
-			D5C3C798E3485DAFB96FECAE /* IntegrationTests */,
+			49A7970DC5A10324A6DE3EBB /* DeepCleanTests */,
 			DE4BC60A55EFBB97F3644961 /* OnboardingTests */,
 			7FE9A0137F4E86ED27FE6667 /* AppListTests */,
 			6CA333BE487A53BDF1DF1567 /* DetailTests */,
@@ -1617,15 +1383,6 @@
 		name = MenuBar;
 		sourceTree = "<group>";
 	};
-	D5C3C798E3485DAFB96FECAE /* IntegrationTests */ = {
-		isa = PBXGroup;
-		children = (
-			53EF96BE26DB6B2A6C185799 /* UninstallFlowTests.swift */,
-			92285B8C36BFE1BC01B56B40 /* SandboxDegradationTests.swift */,
-		);
-		name = IntegrationTests;
-		sourceTree = "<group>";
-	};
 	DE4BC60A55EFBB97F3644961 /* OnboardingTests */ = {
 		isa = PBXGroup;
 		children = (
@@ -1643,15 +1400,6 @@
 			09C386C2F6D04F8712E2E85C /* kFreshTests.xctest */,
 		);
 		name = Products;
-		sourceTree = "<group>";
-	};
-	F4D2E522CF9449BF1C2F0894 /* Widgets */ = {
-		isa = PBXGroup;
-		children = (
-			5D0DC122863AABE458A77BA8 /* AppUsageWidget.swift */,
-			212440F390BC3282519C17C8 /* QuickUninstallWidget.swift */,
-		);
-		name = Widgets;
 		sourceTree = "<group>";
 	};
 /* End PBXGroup section */
@@ -1734,9 +1482,6 @@
 		isa = PBXResourcesBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
-			833DD4914D428A4BD9FA445C /* 833DD4914D428A4BD9FA445C */,
-			8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */,
-			75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */,
 			D3AAF3B1FCAF554EA1011E70 /* D3AAF3B1FCAF554EA1011E70 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
@@ -1748,7 +1493,6 @@
 		isa = PBXSourcesBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
-			30777437B37859FB155C273A /* 30777437B37859FB155C273A */,
 			9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */,
 			2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */,
 			F7BFFF484BD25D346DC5325E /* F7BFFF484BD25D346DC5325E */,
@@ -1771,8 +1515,8 @@
 			E94CD270DF464AAC0E5D44FA /* E94CD270DF464AAC0E5D44FA */,
 			F801232F5030C8ED84283BD4 /* F801232F5030C8ED84283BD4 */,
 			3BE308D215C0C793FBFFA7E1 /* 3BE308D215C0C793FBFFA7E1 */,
-			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
-			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
+			8373124E2F773E6CF5308DEF /* 8373124E2F773E6CF5308DEF */,
+			9B5089A563EDF2D5B2F21130 /* 9B5089A563EDF2D5B2F21130 */,
 			84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */,
 			AE2390F2F0CF6ADDADF8C5B0 /* AE2390F2F0CF6ADDADF8C5B0 */,
 		);
@@ -1815,6 +1559,7 @@
 			98D3A7E04EE8047A3A85CD0A /* 98D3A7E04EE8047A3A85CD0A */,
 			EC4C24611EC92CC86CD0E0C3 /* EC4C24611EC92CC86CD0E0C3 */,
 			7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */,
+			26CBD8381DA7FE7954125061 /* 26CBD8381DA7FE7954125061 */,
 			92D836BA8D75FD4D4FC20474 /* 92D836BA8D75FD4D4FC20474 */,
 			82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */,
 			C956C8E6486DF8E7AFEFB05C /* C956C8E6486DF8E7AFEFB05C */,
@@ -1834,23 +1579,9 @@
 			E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */,
 			0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */,
 			36A4128119D693CD510B5A08 /* 36A4128119D693CD510B5A08 */,
-			BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */,
-			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
-			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
-			46F29CFF7213344ECB37B6FD /* 46F29CFF7213344ECB37B6FD */,
 			BC48F4AE041C911676CB0F92 /* BC48F4AE041C911676CB0F92 */,
-			14522065F7DF933255DA0908 /* 14522065F7DF933255DA0908 */,
 			C883C2F4E652FE2954F54F86 /* C883C2F4E652FE2954F54F86 */,
 			05720CE11D0128121CC414D7 /* 05720CE11D0128121CC414D7 */,
-			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
-			7A6C1D27E747136FB9E0845C /* 7A6C1D27E747136FB9E0845C */,
-			9FE0E33F3FCD69A0A105C330 /* 9FE0E33F3FCD69A0A105C330 */,
-			5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */,
-			78F8A9DFEED2BD5C2BFE359D /* 78F8A9DFEED2BD5C2BFE359D */,
-			583B954A6A1E0563236FE408 /* 583B954A6A1E0563236FE408 */,
-			14841E6EE2613C55089B2896 /* 14841E6EE2613C55089B2896 */,
-			80FC5F8CBB595E37C8122AEB /* 80FC5F8CBB595E37C8122AEB */,
-			DEDCF62736EE4FE8EC3222B2 /* DEDCF62736EE4FE8EC3222B2 */,
 			A62C9F07E54CB81C7B1CA298 /* A62C9F07E54CB81C7B1CA298 */,
 			46AE690EBB45827AF102DFB2 /* 46AE690EBB45827AF102DFB2 */,
 			74154FD04BEEF2138155FFD4 /* 74154FD04BEEF2138155FFD4 */,
@@ -1901,7 +1632,6 @@
 		CURRENT_PROJECT_VERSION = 1;
 		DEVELOPMENT_TEAM = "";
 		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = Info.plist;
 		INFOPLIST_KEY_CFBundleDisplayName = kFresh;
 		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kfresh;
 		INFOPLIST_KEY_CFBundleName = kFresh;
@@ -1948,14 +1678,12 @@
 		isa = XCBuildConfiguration;
 		buildSettings = {
 		ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-		CODE_SIGN_ENTITLEMENTS = kFresh.entitlements;
 		CODE_SIGN_IDENTITY = "-";
 		CODE_SIGN_STYLE = Manual;
 		COMBINE_HIDPI_IMAGES = YES;
 		CURRENT_PROJECT_VERSION = 1;
 		DEVELOPMENT_TEAM = "";
 		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = Info.plist;
 		INFOPLIST_KEY_CFBundleDisplayName = kFresh;
 		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kfresh;
 		INFOPLIST_KEY_CFBundleName = kFresh;

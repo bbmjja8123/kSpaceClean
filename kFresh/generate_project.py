@@ -101,19 +101,16 @@ def main():
         "History": make_group("History"),
         "Onboarding": make_group("Onboarding"),
         "Settings": make_group("Settings"),
-        "FinderExtension": make_group("FinderExtension"),
         "Intents": make_group("Intents"),
         "Data": make_group("Data"),
         "DS_DesignSystem": make_group("DesignSystem"),
         "MenuBar": make_group("MenuBar"),
         "Resources": make_group("Resources"),
-        "Store": make_group("Store"),
-        "Widgets": make_group("Widgets"),
         "Tests": make_group("Tests"),
         "DetectTests": make_group("DetectTests"),
         "CleanTests": make_group("CleanTests"),
         "RulesTests": make_group("RulesTests"),
-        "IntegrationTests": make_group("IntegrationTests"),
+        "DeepCleanTests": make_group("DeepCleanTests"),
         "OnboardingTests": make_group("OnboardingTests"),
         "AppListTests": make_group("AppListTests"),
         "DetailTests": make_group("DetailTests"),
@@ -163,6 +160,7 @@ def main():
         ("Features/DeepClean/DeepCleanViewModel.swift", "DeepClean"),
         ("Features/DeepClean/DeepCleanView.swift", "DeepClean"),
         ("Features/DeepClean/SystemCleanGroupView.swift", "DeepClean"),
+        ("Features/DeepClean/SystemCleanRowView.swift", "DeepClean"),
         ("Features/Detail/AppDetailView.swift", "Detail"),
         ("Features/Detail/DetailViewModel.swift", "Detail"),
         ("Features/Detail/ResidueSectionView.swift", "Detail"),
@@ -182,23 +180,9 @@ def main():
         ("Features/StartupItems/StartupItemsView.swift", "StartupItems"),
         ("Features/StartupItems/StartupItemsViewModel.swift", "StartupItems"),
         ("Features/StartupItems/StartupItemRowView.swift", "StartupItems"),
-        ("Store/StoreDefinitions.swift", "Store"),
-        ("Store/StoreManager.swift", "Store"),
-        ("Store/PaywallView.swift", "Store"),
-        ("Store/ProGateModifier.swift", "Store"),
         ("MenuBar/MenuBarController.swift", "MenuBar"),
-        ("Intents/UninstallAppIntent.swift", "Intents"),
         ("Intents/ScanResidueIntent.swift", "Intents"),
         ("Intents/DeepCleanIntent.swift", "Intents"),
-        ("FinderExtension/FinderSync.swift", "FinderExtension"),
-        ("Widgets/AppUsageWidget.swift", "Widgets"),
-        ("Widgets/QuickUninstallWidget.swift", "Widgets"),
-        ("Data/CoreDataStack.swift", "Data"),
-        ("Data/Models/UninstallHistory+CoreDataClass.swift", "Data"),
-        ("Data/Models/UninstallHistory+CoreDataProperties.swift", "Data"),
-        ("Data/Models/AppAnalysis+CoreDataClass.swift", "Data"),
-        ("Data/Models/AppAnalysis+CoreDataProperties.swift", "Data"),
-        ("Data/AppAnalysisRepository.swift", "Data"),
         # DesignSystem source files (included directly, not as Swift Package)
         ("../kFoundation/Sources/DesignSystem/Colors.swift", "DS_DesignSystem"),
         ("../kFoundation/Sources/DesignSystem/Icons.swift", "DS_DesignSystem"),
@@ -211,7 +195,6 @@ def main():
 
     test_file_groups = {
         "DetectTests": [
-            "InstalledAppTests.swift",
             "AppCatalogServiceTests.swift",
             "ResidueDetectorTests.swift",
             "AppSourceClassifierTests.swift",
@@ -249,9 +232,9 @@ def main():
             "StartupItemManagerTests.swift",
             "StartupItemsViewModelTests.swift",
         ],
-        "IntegrationTests": [
-            "UninstallFlowTests.swift",
-            "SandboxDegradationTests.swift",
+        "DeepCleanTests": [
+            "DeepCleanEngineTests.swift",
+            "DeepCleanViewModelTests.swift",
         ],
         "UITests": [
             "OnboardingUITests.swift",
@@ -270,16 +253,9 @@ def main():
             objects[gid][1]["children"].append((ref_id, tf))
             test_build_files.append(bf_id)
 
-    static_files = [
-        "Info.plist",
-        "kFresh.entitlements",
-        "kFreshDebug.entitlements",
-    ]
+    static_files = []
 
     resource_dirs = [
-        ("Assets.xcassets", "Resources", "folder.assetcatalog"),
-        ("Localizable.xcstrings", "Resources", "text.json.xcstrings"),
-        ("PrivacyInfo.xcprivacy", "Resources", "text.plist.xml"),
         ("cask_rules.json", "Resources", "text.json"),
     ]
 
@@ -417,7 +393,6 @@ def main():
             "CURRENT_PROJECT_VERSION": "1",
             "DEVELOPMENT_TEAM": '""',
             "GENERATE_INFOPLIST_FILE": "YES",
-            "INFOPLIST_FILE": "Info.plist",
             "INFOPLIST_KEY_CFBundleDisplayName": "kFresh",
             "INFOPLIST_KEY_CFBundleIdentifier": "app.kraftly.kfresh",
             "INFOPLIST_KEY_CFBundleName": "kFresh",
@@ -440,14 +415,12 @@ def main():
         "name": "Release",
         "buildSettings": {
             "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
-            "CODE_SIGN_ENTITLEMENTS": "kFresh.entitlements",
             "CODE_SIGN_IDENTITY": '"-"',
             "CODE_SIGN_STYLE": "Manual",
             "COMBINE_HIDPI_IMAGES": "YES",
             "CURRENT_PROJECT_VERSION": "1",
             "DEVELOPMENT_TEAM": '""',
             "GENERATE_INFOPLIST_FILE": "YES",
-            "INFOPLIST_FILE": "Info.plist",
             "INFOPLIST_KEY_CFBundleDisplayName": "kFresh",
             "INFOPLIST_KEY_CFBundleIdentifier": "app.kraftly.kfresh",
             "INFOPLIST_KEY_CFBundleName": "kFresh",
@@ -591,14 +564,14 @@ def main():
 
     # Set Tests group children
     tests_children = []
-    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "HistoryTests", "StartupTests", "UITests"]:
+    for sub in ["DetectTests", "CleanTests", "RulesTests", "DeepCleanTests", "OnboardingTests", "AppListTests", "DetailTests", "HistoryTests", "StartupTests", "UITests"]:
         tests_children.append((group_ids[sub], sub))
     objects[group_ids["Tests"]][1]["children"] = tests_children
 
     # Set root group children
     root_children = []
-    for gname in ["App", "Core", "DS_DesignSystem", "Data", "Features", "FinderExtension", "Intents",
-                   "MenuBar", "Resources", "Store", "Widgets", "Tests",
+    for gname in ["App", "Core", "DS_DesignSystem", "Data", "Features", "Intents",
+                   "MenuBar", "Resources", "Tests",
                    "Products"]:
         root_children.append((group_ids[gname], gname))
     for fpath in static_files:
