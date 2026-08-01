@@ -44,7 +44,7 @@ targets:
     type: app-extension
     platform: macOS
     sources:
-      - Widget
+      - kWatchWidget
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch.widget
       MACOSX_DEPLOYMENT_TARGET: "13.0"
@@ -57,7 +57,7 @@ targets:
     type: app-extension
     platform: macOS
     sources:
-      - LiveActivity
+      - kWatchLiveActivity
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch.liveactivity
       MACOSX_DEPLOYMENT_TARGET: "14.0"
