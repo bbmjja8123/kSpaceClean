@@ -225,7 +225,6 @@ def main():
             "SandboxDegradationTests.swift",
         ],
         "UITests": [
-            "UninstallJourneyUITests.swift",
             "OnboardingUITests.swift",
         ],
     }

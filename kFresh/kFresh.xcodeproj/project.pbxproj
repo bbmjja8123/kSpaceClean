@@ -331,10 +331,6 @@
 		isa = PBXBuildFile;
 		fileRef = CF5DAA48D342F90110132D61;
 	};
-	E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */ = {
-		isa = PBXBuildFile;
-		fileRef = 83C79C522B962284BED63E66;
-	};
 	E4CBB2D4144A020738312A5F /* E4CBB2D4144A020738312A5F */ = {
 		isa = PBXBuildFile;
 		fileRef = EAA3EA03FFEDFA0DBA5545C7;
@@ -702,13 +698,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = Icons.swift;
 		path = ../kFoundation/Sources/DesignSystem/Icons.swift;
-		sourceTree = "<group>";
-	};
-	83C79C522B962284BED63E66 /* UninstallJourneyUITests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = UninstallJourneyUITests.swift;
-		path = Tests/UITests/UninstallJourneyUITests.swift;
 		sourceTree = "<group>";
 	};
 	86CB786A2E1C914FA035D064 /* ProGateModifier.swift */ = {
@@ -1120,7 +1109,6 @@
 	2220AFE70C0352F63AF55DB3 /* UITests */ = {
 		isa = PBXGroup;
 		children = (
-			83C79C522B962284BED63E66 /* UninstallJourneyUITests.swift */,
 			C9E078E86802779CEEDAD0F2 /* OnboardingUITests.swift */,
 		);
 		name = UITests;
@@ -1528,7 +1516,6 @@
 			DCECDEE27A83C4E5AE9BE6C4 /* DCECDEE27A83C4E5AE9BE6C4 */,
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
-			E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */,
 			84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
