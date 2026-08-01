@@ -26,9 +26,13 @@ public final class HistoryRepository: HistoryRepositoryProtocol, @unchecked Send
             record.cpuPercent = snapshot.values[.cpu].flatMap(valueToDouble) ?? 0
             record.memoryPercent = snapshot.values[.memory].flatMap(valueToDouble) ?? 0
             record.diskPercent = snapshot.values[.disk].flatMap(valueToDouble) ?? 0
+            // MetricValue.bytesPerSecond carries only the combined rate; the real
+            // send/receive split exists at the provider level but is not propagated
+            // through MetricValue yet.
+            // TODO: split via /proc/net/dev and persist per-direction values.
             if case let .bytesPerSecond(bytesPerSecond) = snapshot.values[.network] {
-                record.networkReceiveBytesPerSecond = bytesPerSecond / 2
-                record.networkSendBytesPerSecond = bytesPerSecond / 2
+                record.networkReceiveBytesPerSecond = bytesPerSecond
+                record.networkSendBytesPerSecond = 0
             } else {
                 record.networkReceiveBytesPerSecond = 0
                 record.networkSendBytesPerSecond = 0
