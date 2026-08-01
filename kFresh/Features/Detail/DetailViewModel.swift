@@ -1,126 +1,78 @@
+import Foundation
 import SwiftUI
 
+/// Backing state for the app-detail pane: the 5-step safety check, the
+/// residue scan lifecycle, and the uninstall eligibility decision.
+///
+/// Owned by ``AppDetailView`` as a `@StateObject`. Every mutation runs on the
+/// main actor so the `@Published` projections can drive SwiftUI directly.
 @MainActor
-class DetailViewModel: ObservableObject {
-    @Published var app: InstalledApp
-    @Published var showConfirmSheet = false
-    @Published var selectedResidues: Set<String> = []
-    @Published var isUninstalling = false
-    @Published var showUninstallToast = false
-    @Published var undoRemainingSeconds = 10
-    @Published var analysis: AppAnalysis?
-    /// The persisted uninstall record returned by `TrashMover.moveToTrash`.
-    /// The undo button MUST pass this exact record to `TrashMover.restore`
-    /// so that `actualTrashPath` (the Finder-de-duplicated `~/.Trash/...`
-    /// path captured at uninstall time) is available — restoring without
-    /// it forces the mover to guess the path, which breaks on Finder
-    /// rename collisions like `Foo.app` → `Foo 2.app`.
-    @Published var lastUninstallRecord: UninstallRecord?
+final class DetailViewModel: ObservableObject {
+    // MARK: - Nested types
 
-    /// The most recent `TrashMover.restore` failure, or `nil` if the last
-    /// restore attempt succeeded (or none has run yet).
-    ///
-    /// I3a: surfaced by `restore()` to drive a retry affordance. When
-    /// `.restoreResidueFailed` (or any other failure) fires, the backup
-    /// directory is intentionally preserved so the user can retry — but
-    /// only if `lastUninstallRecord` is still available. The UI should
-    /// observe this property and replace the undo countdown toast with a
-    /// persistent "Restore partially failed — backup preserved, tap to
-    /// retry" banner. Cleared on a subsequent successful restore.
-    @Published var lastRestoreError: TrashError?
+    enum SafetyCheck: Equatable {
+        case pending
+        case passed
+        case blocked(reason: String)
+    }
 
-    private let trashMover = TrashMover()
-    private let coordinator: AppCoordinator
-    private let analysisRepo = AppAnalysisRepository()
+    // MARK: - Published state
 
-    init(app: InstalledApp, coordinator: AppCoordinator) {
+    /// The app this pane describes. Immutable after init.
+    @Published internal(set) var app: InstalledApp
+    @Published internal(set) var safetyCheck: SafetyCheck = .pending
+    @Published internal(set) var isResidueScanRunning: Bool = false
+
+    /// Backing store for `residues`. Wrapping the published property keeps
+    /// the "always sorted by confidence descending" invariant on every write
+    /// path — including test seeding — instead of only in `rescanResidues`.
+    @Published private var residueStore: [ResidueFile] = []
+
+    /// Residue files found by the last scan, always sorted by confidence
+    /// descending.
+    var residues: [ResidueFile] {
+        get { residueStore }
+        set { residueStore = newValue.sorted { $0.confidence > $1.confidence } }
+    }
+
+    // MARK: - Dependencies
+
+    private let residueDetector: ResidueDetector
+
+    /// True when the safety check passed and the app is not system-protected.
+    var canUninstall: Bool {
+        safetyCheck == .passed && !app.isProtected
+    }
+
+    // MARK: - Init
+
+    init(app: InstalledApp, residueDetector: ResidueDetector) {
         self.app = app
-        self.coordinator = coordinator
-        self.selectedResidues = Set(app.residues.filter { $0.confidence >= 0.8 }.map { $0.id })
-        Task { await loadAnalysis() }
+        self.residueDetector = residueDetector
     }
 
-    private func loadAnalysis() async {
-        let fetched = await analysisRepo.fetchAnalysis(bundleID: app.bundleID)
-        await MainActor.run { self.analysis = fetched }
-    }
+    // MARK: - Actions
 
-    var totalFreedBytes: Int64 {
-        app.sizeBytes + app.residues.filter { selectedResidues.contains($0.id) }.reduce(0) { $0 + $1.sizeBytes }
-    }
-
-    func uninstall() async {
-        isUninstalling = true
-        let selected = app.residues.filter { selectedResidues.contains($0.id) }
-        let result = await trashMover.moveToTrash(app: app, residues: selected)
-        isUninstalling = false
-
-        switch result {
-        case .success(let record):
-            // Persist the record returned by moveToTrash so the undo
-            // button can restore from the EXACT trash path Finder
-            // produced (including `Foo 2.app` style dedup). A
-            // reconstructed record would have an empty
-            // `actualTrashPath`, forcing `restore` to guess and break
-            // on rename collisions.
-            lastUninstallRecord = record
-            showConfirmSheet = false
-            showUninstallToast = true
-            startUndoCountdown(with: record)
-        case .failure(let error):
-            break
+    /// Runs the safety check: protected apps are blocked up front; everything
+    /// else passes and immediately triggers a residue prescan.
+    func performSafetyCheck() async {
+        guard !app.isProtected else {
+            safetyCheck = .blocked(reason: app.protectionReason ?? "系统组件不可卸载")
+            return
         }
+        safetyCheck = .passed
+        await rescanResidues()
     }
 
-    private func startUndoCountdown(with record: UninstallRecord) {
-        undoRemainingSeconds = 10
-        Task {
-            // m7: `do`/`catch` instead of `try?` so cancellation (which
-            // throws `CancellationError` inside `Task.sleep`) exits the
-            // countdown cleanly. The previous `try? await Task.sleep(...)`
-            // silently turned cancellation into a no-op, so a SwiftUI view
-            // that destroyed `DetailViewModel` mid-countdown would still
-            // observe the next tick.
-            for i in stride(from: 10, through: 0, by: -1) {
-                undoRemainingSeconds = i
-                do {
-                    try await Task.sleep(nanoseconds: 1_000_000_000)
-                } catch {
-                    return
-                }
-                if i == 0 {
-                    showUninstallToast = false
-                }
-            }
-        }
-    }
-
-    func restore() async {
-        // Restore uses the persisted record from moveToTrash, which
-        // carries `actualTrashPath`. If uninstall never ran (or
-        // failed), `lastUninstallRecord` is nil — bail silently rather
-        // than constructing a broken record with an empty trash path.
-        guard let record = lastUninstallRecord else { return }
-        let result = await trashMover.restore(record: record)
-        // I3a: switch on the result so each failure mode drives a distinct
-        // UI outcome instead of always clearing the undo affordance.
-        // `.restoreResidueFailed` (and any other failure) means the app
-        // bundle is already back at its original path BUT the residue
-        // restore partially failed — the backup is intentionally preserved
-        // for retry. Clearing `lastUninstallRecord` here would destroy the
-        // user's only retry affordance.
-        switch result {
-        case .success:
-            lastRestoreError = nil
-            showUninstallToast = false
-            lastUninstallRecord = nil
-        case .failure(let error):
-            // Keep `lastUninstallRecord` so the undo button can retry.
-            // Surface the failure via `lastRestoreError` so the UI can
-            // show "Restore partially failed — backup preserved, tap to
-            // retry" (e.g. a persistent error banner replacing the
-            // countdown toast).
-            lastRestoreError = error
-        }
+    /// Manually re-runs the residue scan, replacing `residues`.
+    func rescanResidues() async {
+        isResidueScanRunning = true
+        defer { isResidueScanRunning = false }
+        let detected = await residueDetector.detectResidues(
+            bundleID: app.bundleID,
+            appName: app.displayName,
+            appURL: app.url
+        )
+        residues = detected.sorted { $0.confidence > $1.confidence }
     }
 }

@@ -116,6 +116,7 @@ def main():
         "IntegrationTests": make_group("IntegrationTests"),
         "OnboardingTests": make_group("OnboardingTests"),
         "AppListTests": make_group("AppListTests"),
+        "DetailTests": make_group("DetailTests"),
         "UITests": make_group("UITests"),
         "Products": make_group("Products"),
     }
@@ -155,6 +156,7 @@ def main():
         ("Features/Common/LoadingStateView.swift", "Common"),
         ("Features/Common/BrandStyles.swift", "Common"),
         ("Features/Common/BrandButtonStyle.swift", "Common"),
+        ("Features/Common/ProGatePlaceholder.swift", "Common"),
         ("Features/DeepClean/DeepCleanEngine.swift", "DeepClean"),
         ("Features/DeepClean/DeepCleanViewModel.swift", "DeepClean"),
         ("Features/DeepClean/DeepCleanView.swift", "DeepClean"),
@@ -163,6 +165,7 @@ def main():
         ("Features/Detail/DetailViewModel.swift", "Detail"),
         ("Features/Detail/ResidueSectionView.swift", "Detail"),
         ("Features/Detail/UninstallConfirmSheet.swift", "Detail"),
+        ("Features/Detail/UninstallToast.swift", "Detail"),
         ("Features/History/HistoryView.swift", "History"),
         ("Features/History/HistoryViewModel.swift", "History"),
         ("Features/Onboarding/FDAGuideController.swift", "Onboarding"),
@@ -228,6 +231,9 @@ def main():
         "AppListTests": [
             "AppListViewModelTests.swift",
             "AppListFilterSortTests.swift",
+        ],
+        "DetailTests": [
+            "DetailViewModelTests.swift",
         ],
         "IntegrationTests": [
             "UninstallFlowTests.swift",
@@ -571,7 +577,7 @@ def main():
 
     # Set Tests group children
     tests_children = []
-    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "UITests"]:
+    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "UITests"]:
         tests_children.append((group_ids[sub], sub))
     objects[group_ids["Tests"]][1]["children"] = tests_children
 
