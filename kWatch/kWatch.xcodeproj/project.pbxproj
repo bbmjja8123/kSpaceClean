@@ -295,6 +295,10 @@
 		isa = PBXBuildFile;
 		fileRef = FF3B633668A0E32697CC38F0;
 	};
+	A870777C0955E4956EAFCA52 /* A870777C0955E4956EAFCA52 */ = {
+		isa = PBXBuildFile;
+		fileRef = 77150D054169C6226C7EB412;
+	};
 	A8BBF15A1D10D4E6660E7CB0 /* A8BBF15A1D10D4E6660E7CB0 */ = {
 		isa = PBXBuildFile;
 		fileRef = E37721BEEA9C99BB4A0AA485;
@@ -778,6 +782,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = StartMonitoringIntent.swift;
 		path = Intents/StartMonitoringIntent.swift;
+		sourceTree = "<group>";
+	};
+	77150D054169C6226C7EB412 /* SnapshotRoundTripTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SnapshotRoundTripTests.swift;
+		path = Tests/SnapshotRoundTripTests.swift;
 		sourceTree = "<group>";
 	};
 	78528845AAD156289D52EE2F /* CoreDataStackTests.swift */ = {
@@ -1396,6 +1407,7 @@
 			B8C7D2F5F505A91B64D3C6F9 /* RestorePurchaseStubs.swift */,
 			CB9DB25AEDF2DBDA82889E8C /* SettingsViewModelRestoreTests.swift */,
 			170722350E893EFDAA96A1CD /* SettingsViewModelTests.swift */,
+			77150D054169C6226C7EB412 /* SnapshotRoundTripTests.swift */,
 			933426BE7C99ACFAC34C4F90 /* SnapshotWriterTests.swift */,
 			97D5754210E7D3F69530AAB5 /* StoreManagerTests.swift */,
 		);
@@ -1617,6 +1629,7 @@
 			DAA08C7C942D437F4D186DB6 /* DAA08C7C942D437F4D186DB6 */,
 			70399AFF00E668E0A8380B3D /* 70399AFF00E668E0A8380B3D */,
 			A237208B4D438763BC30B633 /* A237208B4D438763BC30B633 */,
+			A870777C0955E4956EAFCA52 /* A870777C0955E4956EAFCA52 */,
 			D9C83DAA5CA58B44EC554129 /* D9C83DAA5CA58B44EC554129 */,
 			DBF041637F69E6FAF31C49F7 /* DBF041637F69E6FAF31C49F7 */,
 		);

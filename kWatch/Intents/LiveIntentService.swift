@@ -52,11 +52,17 @@ public final class LiveIntentService: IntentServiceProtocol, @unchecked Sendable
     public func isPro() async -> Bool {
         guard let url = AppGroupConfiguration.snapshotURL(),
               let data = try? Data(contentsOf: url),
-              let snapshot = try? JSONDecoder().decode(SharedSnapshot.self, from: data) else {
+              let snapshot = try? Self.snapshotDecoder.decode(SharedSnapshot.self, from: data) else {
             return false
         }
         return snapshot.isPro
     }
+
+    private static let snapshotDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
 
     public func topProcesses(limit: Int) async throws -> [ProcessUsage] {
         // Process enumeration lives in the main app. We post a distributed

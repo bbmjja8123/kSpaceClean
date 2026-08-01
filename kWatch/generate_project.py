@@ -186,7 +186,8 @@ def main():
         "OnboardingViewModelTests.swift", "PaywallViewModelTermsTests.swift",
         "PreferencesRepositoryTests.swift", "ProcessesViewModelTests.swift", "RepositoryTests.swift",
         "RestorePurchaseStubs.swift", "SettingsViewModelRestoreTests.swift",
-        "SettingsViewModelTests.swift", "SnapshotWriterTests.swift", "StoreManagerTests.swift",
+        "SettingsViewModelTests.swift", "SnapshotRoundTripTests.swift",
+        "SnapshotWriterTests.swift", "StoreManagerTests.swift",
     ]
 
     static_files = [

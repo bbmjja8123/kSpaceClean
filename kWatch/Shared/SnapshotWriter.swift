@@ -31,10 +31,10 @@ public final class SnapshotWriter: SnapshotWriterProtocol, @unchecked Sendable {
         self.directory = directory
         self.filename = filename
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .secondsSince1970
+        encoder.dateEncodingStrategy = .iso8601
         self.encoder = encoder
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .secondsSince1970
+        decoder.dateDecodingStrategy = .iso8601
         self.decoder = decoder
     }
 
