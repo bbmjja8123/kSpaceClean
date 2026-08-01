@@ -431,7 +431,7 @@ final class AppRuleLibraryAudit: XCTestCase {
 
     /// Regression guard for the final-review I4 finding: GPT4All and LM Studio
     /// download GB-scale model files into their App Support root. A cleanable
-    /// action at the bare `Application Support/<Leaf>/` root would delete the
+    /// action at the bare `Application Support/<App>/` root would delete the
     /// model store. Cache/log subdirs are fine; the leaf root is not.
     ///
     /// Deliberately scoped to the two apps whose model store lives in App
@@ -439,8 +439,18 @@ final class AppRuleLibraryAudit: XCTestCase {
     /// `~/.ollama`, not App Support) and MacGPT keeps its `Data` soft action
     /// (API-only, no local model store) — both are off-by-default config/data
     /// actions in the same harm class as the other apps' `Data` actions.
+    ///
+    /// Banned roots are matched exactly (trailing slash normalized away) rather
+    /// than by path-shape, because the two model stores sit at different
+    /// depths (`Application Support/LM Studio/` vs
+    /// `Application Support/nomic.ai/GPT4All/`). Adding a NEW model-runner app
+    /// must add its model-store root to `bannedRoots` here too.
     func testModelRunnerActionsNeverCoverAppSupportRoot() throws {
         let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        let bannedRoots: Set<String> = [
+            "~/Library/Application Support/nomic.ai/GPT4All",
+            "~/Library/Application Support/LM Studio",
+        ]
         let modelRunnerIDs: Set<String> = [
             "com.nomic.gpt4all", "com.lmstudio.lmstudio"
         ]
@@ -451,16 +461,11 @@ final class AppRuleLibraryAudit: XCTestCase {
             for action in actions {
                 let paths = try XCTUnwrap(action["paths"] as? [String])
                 for path in paths {
-                    let comps = path.split(separator: "/")
-                    // Banned shape: "…/Application Support/<Leaf>/" with nothing after it —
-                    // the leaf root holds the downloaded model store.
-                    for i in 0..<comps.count {
-                        if comps[i] == "Application Support", i == comps.count - 2 {
-                            XCTFail("\(bundleID) action \(action["name"] ?? "?") declares "
-                                + "bare App Support root \(path) — LLM model store is user data; "
-                                + "cache/log subdirs only")
-                        }
-                    }
+                    let normalized = path.hasSuffix("/") ? String(path.dropLast()) : path
+                    XCTAssertFalse(bannedRoots.contains(normalized),
+                                   "\(bundleID) action \(action["name"] ?? "?") declares "
+                                   + "bare model-store root \(path) — downloaded LLM models are "
+                                   + "user data; cache/log subdirs only")
                 }
             }
         }
