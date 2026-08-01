@@ -177,4 +177,48 @@ final class BundleIDResolverTests: XCTestCase {
             )
         }
     }
+
+    func testLoadsActionsSchemaV2() async throws {
+        // v2 schema: apps[id].actions[{name, nameCN, type, paths}]
+        let url = makeFixture("""
+        {
+          "version": 2,
+          "apps": {
+            "com.example.app": {
+              "bundleID": "com.example.app",
+              "name": "Example",
+              "nameCN": "示例",
+              "actions": [{
+                "name": "Example Cache",
+                "nameCN": "示例缓存",
+                "type": "appcache",
+                "paths": ["~/Library/Caches/com.example.app"]
+              }]
+            }
+          }
+        }
+        """)
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let resolver = BundleIDResolver()
+        await resolver.load(from: url)
+
+        // `await` is hoisted out of the XCTest autoclosures: this project
+        // builds in Swift 5 mode, where `await` inside an autoclosure does
+        // not compile.
+        let appCount = await resolver.appCount
+        let app = await resolver.app(forBundleID: "com.example.app")
+        XCTAssertEqual(appCount, 1)
+        XCTAssertEqual(app?.name, "Example")
+        XCTAssertEqual(app?.nameCN, "示例")
+        XCTAssertEqual(app?.actions.count, 1)
+        XCTAssertEqual(app?.actions.first?.nameCN, "示例缓存")
+
+        // L1 prefix match through the v2 action path (real-home-rooted,
+        // mirroring the Part B pattern already in this file).
+        let realHome = try realHomeForTesting()
+        let path = realHome + "/Library/Caches/com.example.app/somefile.bin"
+        let resolved = await resolver.resolve(path: path)
+        XCTAssertEqual(resolved?.bundleID, "com.example.app")
+    }
 }

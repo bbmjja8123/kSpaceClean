@@ -22,6 +22,20 @@ import Foundation
 
 /// Public metadata about a single macOS app, hydrated from the JSON map.
 public struct ResolvedApp: Sendable, Equatable {
+    /// Semantic metadata for one cleanable unit of an app. Each action
+    /// carries a bilingual title plus the concrete paths to delete.
+    public struct ResolvedAction: Sendable, Equatable {
+        public let name: String
+        public let nameCN: String
+        public let paths: [String]
+
+        public init(name: String, nameCN: String, paths: [String]) {
+            self.name = name
+            self.nameCN = nameCN
+            self.paths = paths
+        }
+    }
+
     public let bundleID: String
     public let name: String
     public let nameCN: String
@@ -30,6 +44,9 @@ public struct ResolvedApp: Sendable, Equatable {
     public let riskLevel: String
     public let cleanPaths: [String]
     public let confidence: String
+    /// Per-action clean paths (v2 schema). For v1-style rows this holds a
+    /// single synthetic action whose title mirrors the app name.
+    public let actions: [ResolvedAction]
 
     public init(
         bundleID: String,
@@ -39,7 +56,8 @@ public struct ResolvedApp: Sendable, Equatable {
         type: String,
         riskLevel: String,
         cleanPaths: [String],
-        confidence: String
+        confidence: String,
+        actions: [ResolvedAction]
     ) {
         self.bundleID = bundleID
         self.name = name
@@ -49,6 +67,7 @@ public struct ResolvedApp: Sendable, Equatable {
         self.riskLevel = riskLevel
         self.cleanPaths = cleanPaths
         self.confidence = confidence
+        self.actions = actions
     }
 }
 
@@ -59,11 +78,12 @@ public struct ResolvedApp: Sendable, Equatable {
 /// and the in-memory table is reused.
 public actor BundleIDResolver {
     /// Indexed by bundle ID for the direct-lookup path. Each value carries a
-    /// pre-expanded copy of its clean paths so we do not retilde on every
-    /// ``resolve(path:)`` call.
+    /// pre-expanded copy of every action's clean paths (v1-first ordering:
+    /// the synthetic fallback action, then v2 actions in JSON order) so we do
+    /// not retilde on every ``resolve(path:)`` call.
     private struct Entry {
         let app: ResolvedApp
-        let expandedCleanPaths: [String]
+        let expandedActionPaths: [String]
     }
 
     private var mapping: [String: Entry] = [:]
@@ -91,8 +111,8 @@ public actor BundleIDResolver {
             }
             for (bundleID, dict) in apps {
                 guard let app = Self.makeApp(bundleID: bundleID, dict: dict) else { continue }
-                let expanded = app.cleanPaths.map(Self.expand)
-                mapping[bundleID] = Entry(app: app, expandedCleanPaths: expanded)
+                let expanded = app.actions.flatMap(\.paths).map(Self.expand)
+                mapping[bundleID] = Entry(app: app, expandedActionPaths: expanded)
             }
         } catch {
             loadError = "Failed to load BundleID mapping: \(error)"
@@ -114,8 +134,10 @@ public actor BundleIDResolver {
 
         // L1 — path-prefix match. O(n*m) over the table, but the table is
         // bounded to a few dozen apps in v1, and we exit on the first hit.
+        // Prefixes are the pre-expanded paths of every action (v1 fallback
+        // action first, then v2 actions in JSON order).
         for entry in mapping.values {
-            for prefix in entry.expandedCleanPaths {
+            for prefix in entry.expandedActionPaths {
                 if normalized.hasPrefix(prefix) {
                     return entry.app
                 }
@@ -137,6 +159,16 @@ public actor BundleIDResolver {
 
     /// Number of apps in the loaded map. Useful for assertions in tests.
     public var count: Int { mapping.count }
+
+    /// Number of apps in the loaded map (alias of ``count``). Convenience for
+    /// callers/tests that read the map as a dictionary.
+    public var appCount: Int { mapping.count }
+
+    /// Direct lookup by bundle ID. Returns ``nil`` when the map is unloaded
+    /// or the ID is unknown.
+    public func app(forBundleID id: String) -> ResolvedApp? {
+        mapping[id]?.app
+    }
 
     // MARK: - Public testable helpers
 
@@ -161,14 +193,42 @@ public actor BundleIDResolver {
     /// Build a ``ResolvedApp`` from a single record in the JSON ``apps`` map.
     /// Returns ``nil`` for malformed entries so a corrupt row can never crash
     /// the resolver — we just drop it and move on.
+    ///
+    /// Accepts both schema generations:
+    /// - **v2** — ``actions`` is an array of `{name, nameCN, type, paths}`;
+    ///   `nameCN` falls back to `name` per action.
+    /// - **v1** — flat ``cleanPaths``; it becomes a single synthetic action
+    ///   whose `name` and `nameCN` mirror the app's `nameCN`.
+    ///
+    /// A row with neither key is malformed and dropped.
     private static func makeApp(bundleID: String, dict: [String: Any]) -> ResolvedApp? {
         let name = (dict["name"] as? String) ?? ""
         let nameCN = (dict["nameCN"] as? String) ?? name
         let vendor = (dict["vendor"] as? String) ?? ""
         let type = (dict["type"] as? String) ?? "other"
         let risk = (dict["riskLevel"] as? String) ?? "recommended"
-        let cleanPaths = (dict["cleanPaths"] as? [String]) ?? []
         let confidence = (dict["confidence"] as? String) ?? "medium"
+
+        var actions: [ResolvedApp.ResolvedAction] = []
+        var legacyCleanPaths: [String] = []
+
+        if let v2 = dict["actions"] as? [[String: Any]] {
+            // v2 schema. A v2 action without `paths` is malformed and is
+            // skipped; actions without `name` degrade to an empty title.
+            actions = v2.compactMap { a in
+                guard let paths = a["paths"] as? [String] else { return nil }
+                let aName = (a["name"] as? String) ?? ""
+                let aNameCN = (a["nameCN"] as? String) ?? aName
+                return ResolvedApp.ResolvedAction(name: aName, nameCN: aNameCN, paths: paths)
+            }
+        } else if let cleanPaths = dict["cleanPaths"] as? [String] {
+            // v1 legacy fallback: one synthetic action titled after the app.
+            legacyCleanPaths = cleanPaths
+            actions = [ResolvedApp.ResolvedAction(name: nameCN, nameCN: nameCN, paths: cleanPaths)]
+        } else {
+            return nil
+        }
+
         return ResolvedApp(
             bundleID: bundleID,
             name: name,
@@ -176,8 +236,9 @@ public actor BundleIDResolver {
             vendor: vendor,
             type: type,
             riskLevel: risk,
-            cleanPaths: cleanPaths,
-            confidence: confidence
+            cleanPaths: legacyCleanPaths,
+            confidence: confidence,
+            actions: actions
         )
     }
 }
