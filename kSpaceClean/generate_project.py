@@ -359,6 +359,7 @@ def main():
         "ScanEngineIntegrationTests.swift",
         "ScanResultsViewModelSnapshotTests.swift",
         "MetricKitReceiverTests.swift",
+        "BundleIDResolverTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
     # CascadeCheckboxTests.swift — Task A5's 5 cascade-behaviour tests
     # (recommended-only parent selection, parent-off propagation,

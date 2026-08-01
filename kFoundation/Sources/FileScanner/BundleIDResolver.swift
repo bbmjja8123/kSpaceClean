@@ -138,10 +138,24 @@ public actor BundleIDResolver {
     /// Number of apps in the loaded map. Useful for assertions in tests.
     public var count: Int { mapping.count }
 
-    // MARK: - Private helpers
+    // MARK: - Public testable helpers
 
-    private static func expand(_ path: String) -> String {
-        (path as NSString).expandingTildeInPath
+    /// Expand a tilde-prefixed path against the **real** $HOME (passwd-based),
+    /// NOT the sandbox container home. `expandingTildeInPath` resolves `~` to
+    /// the container home inside a sandboxed app, which never matches the
+    /// orchestrator's enumerator output (also passwd-based via
+    /// `UserPathResolver.expandTilde`). This silent mismatch was the root cause
+    /// of the 2026-08-01 "应用缓存 → 应用缓存" duplication bug.
+    ///
+    /// Exposed as `public` (rather than `private`) so the regression test in
+    /// `BundleIDResolverTests` can assert the implementation uses the real
+    /// `$HOME` rather than the sandbox container, independent of whether the
+    /// test runner itself is sandboxed.
+    public static func expand(_ path: String) -> String {
+        guard path.hasPrefix("~/") else { return path }
+        let home = FileManager.default.homeDirectoryForCurrentUser
+            .standardizedFileURL.path
+        return home + String(path.dropFirst(1))
     }
 
     /// Build a ``ResolvedApp`` from a single record in the JSON ``apps`` map.
