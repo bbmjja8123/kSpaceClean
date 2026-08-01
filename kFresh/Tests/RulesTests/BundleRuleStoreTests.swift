@@ -48,4 +48,27 @@ final class BundleRuleStoreTests: XCTestCase {
         let count = await store.count
         XCTAssertEqual(count, 100)
     }
+
+    /// C-2 fix: `init(jsonData:)` decodes in-memory data. Pre-fix only
+    /// `init(jsonURL:)` existed, so tests and `loadFromBundledJSON`
+    /// both had to round-trip through disk.
+    func testInitFromInMemoryData() async throws {
+        let rules = [
+            KFreshBundleRule(bundleID: "com.example.alpha", appName: "Alpha"),
+        ]
+        let data = try JSONEncoder().encode(rules)
+        let store = try BundleRuleStore(jsonData: data)
+        let found = await store.lookup(bundleID: "com.example.alpha")
+        XCTAssertEqual(found?.appName, "Alpha")
+    }
+
+    /// C-2 fix: `loadFromBundledJSON()` returns `nil` for a missing
+    /// resource rather than throwing — the production scanner relies on
+    /// this graceful-degradation behaviour so an early-launch scan that
+    /// runs before the resource is staged doesn't crash.
+    func testLoadFromBundledJSONReturnsNilForMissingResource() async {
+        // Use a deliberately-missing resource name so the lookup fails.
+        let store = BundleRuleStore.loadFromBundledJSON(named: "definitely-not-bundled", in: .main)
+        XCTAssertNil(store)
+    }
 }

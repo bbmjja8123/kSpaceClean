@@ -47,6 +47,10 @@
 		isa = PBXBuildFile;
 		fileRef = A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */;
 	};
+	E91B7B5E5A1B1C5F0E5C3F7B /* E91B7B5E5A1B1C5F0E5C3F7B */ = {
+		isa = PBXBuildFile;
+		fileRef = F4D5A8B9C1234567890ABCDE /* ResidueScannerTests.swift */;
+	};
 	0B27AC77065D8C62DD6187C9 /* 0B27AC77065D8C62DD6187C9 */ = {
 		isa = PBXBuildFile;
 		fileRef = 89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */;
@@ -360,6 +364,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AuditLoggerTests.swift;
 		path = Tests/CleanTests/AuditLoggerTests.swift;
+		sourceTree = "<group>";
+	};
+	F4D5A8B9C1234567890ABCDE /* ResidueScannerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueScannerTests.swift;
+		path = Tests/CleanTests/ResidueScannerTests.swift;
 		sourceTree = "<group>";
 	};
 	89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */ = {
@@ -1191,6 +1202,7 @@
 			0089DAE711574808D00ABD0B /* TrashMoverTests.swift */,
 			D7B438A54B3D98707F22F4C7 /* BackupManagerTests.swift */,
 			A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */,
+			F4D5A8B9C1234567890ABCDE /* ResidueScannerTests.swift */,
 		);
 		name = CleanTests;
 		sourceTree = "<group>";
@@ -1421,6 +1433,7 @@
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
 			E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */,
 			3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */,
+			E91B7B5E5A1B1C5F0E5C3F7B /* E91B7B5E5A1B1C5F0E5C3F7B */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
