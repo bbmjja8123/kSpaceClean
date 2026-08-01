@@ -2,7 +2,7 @@
   "version": 2,
   "generatedAt": "2026-08-01",
   "source": "Lemon libcleaner cleaning-rule XML (item->action->path extraction, bilingual)",
-  "appCount": 90,
+  "appCount": 101,
   "apps": {
     "com.apple.dt.Xcode": {
       "bundleID": "com.apple.dt.Xcode",
@@ -1377,15 +1377,23 @@
           "nameCN": "Firefox 历史记录与缓存数据",
           "type": "manual-preserved",
           "paths": [
-            "~/Library/Caches/Mozilla",
-            "~/Library/Caches/org.mozilla.firefox"
+            "~/Library/Caches/Mozilla/",
+            "~/Library/Caches/org.mozilla.firefox/"
+          ]
+        },
+        {
+          "name": "Firefox User Data",
+          "nameCN": "Firefox 用户数据",
+          "type": "manual-preserved",
+          "paths": [
+            "~/Library/Application Support/Firefox/"
           ]
         }
       ],
       "vendor": "Org",
       "type": "general",
       "riskLevel": "recommended",
-      "confidence": "high"
+      "confidence": "medium"
     },
     "com.adobe.CreativeCloud": {
       "name": "Creative Cloud",
@@ -1743,16 +1751,32 @@
       "confidence": "high"
     },
     "com.brave.Browser": {
+      "bundleID": "com.brave.Browser",
+      "appstoreBundleID": null,
       "name": "Brave",
       "nameCN": "Brave",
       "vendor": "Brave",
       "type": "browser",
       "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.brave.Browser"
-      ],
-      "bundleID": "com.brave.Browser",
-      "confidence": "high"
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Brave Browser Cache",
+          "nameCN": "Brave 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.brave.Browser/"
+          ]
+        },
+        {
+          "name": "Brave Browser Data",
+          "nameCN": "Brave 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/BraveSoftware/Brave-Browser/"
+          ]
+        }
+      ]
     },
     "com.dingtalk.mac": {
       "bundleID": "com.dingtalk.mac",
@@ -1916,16 +1940,32 @@
       "confidence": "high"
     },
     "com.vivaldi.Vivaldi": {
+      "bundleID": "com.vivaldi.Vivaldi",
+      "appstoreBundleID": null,
       "name": "Vivaldi",
       "nameCN": "Vivaldi",
       "vendor": "Vivaldi",
       "type": "browser",
       "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.vivaldi.Vivaldi"
-      ],
-      "bundleID": "com.vivaldi.Vivaldi",
-      "confidence": "high"
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Vivaldi Browser Cache",
+          "nameCN": "Vivaldi 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.vivaldi.Vivaldi/"
+          ]
+        },
+        {
+          "name": "Vivaldi Browser Data",
+          "nameCN": "Vivaldi 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Vivaldi/"
+          ]
+        }
+      ]
     },
     "com.xianghu.cctalk.mac": {
       "bundleID": "com.xianghu.cctalk.mac",
@@ -2629,6 +2669,298 @@
           "type": "soft",
           "paths": [
             "~/Library/Application Support/Antigravity/"
+          ]
+        }
+      ]
+    },
+    "company.thebrowser.daily": {
+      "bundleID": "company.thebrowser.daily",
+      "appstoreBundleID": null,
+      "name": "Arc",
+      "nameCN": "Arc",
+      "vendor": "The Browser Company",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Arc Browser Cache",
+          "nameCN": "Arc 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/company.thebrowser.daily/"
+          ]
+        },
+        {
+          "name": "Arc Browser Data",
+          "nameCN": "Arc 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Arc/"
+          ]
+        }
+      ]
+    },
+    "com.kagi.kagimacOS": {
+      "bundleID": "com.kagi.kagimacOS",
+      "appstoreBundleID": null,
+      "name": "Orion",
+      "nameCN": "Orion",
+      "vendor": "Kagi",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Orion Browser Cache",
+          "nameCN": "Orion 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.kagi.kagimacOS/"
+          ]
+        },
+        {
+          "name": "Orion Browser Data",
+          "nameCN": "Orion 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.kagi.kagimacOS/"
+          ]
+        }
+      ]
+    },
+    "com.sigmaos.macos": {
+      "bundleID": "com.sigmaos.macos",
+      "appstoreBundleID": null,
+      "name": "SigmaOS",
+      "nameCN": "SigmaOS",
+      "vendor": "SigmaOS",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "SigmaOS Browser Cache",
+          "nameCN": "SigmaOS 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.sigmaos.macos/"
+          ]
+        },
+        {
+          "name": "SigmaOS Browser Data",
+          "nameCN": "SigmaOS 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.sigmaos.macos/"
+          ]
+        }
+      ]
+    },
+    "com.docker.docker": {
+      "bundleID": "com.docker.docker",
+      "appstoreBundleID": null,
+      "name": "Docker Desktop",
+      "nameCN": "Docker Desktop",
+      "vendor": "Docker",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Docker Desktop Cache",
+          "nameCN": "Docker 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.docker.docker/Data/Library/Caches/"
+          ]
+        },
+        {
+          "name": "Docker Desktop Logs",
+          "nameCN": "Docker 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.docker.docker/Data/Library/Logs/"
+          ]
+        },
+        {
+          "name": "Docker Desktop Data",
+          "nameCN": "Docker 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Group Containers/group.com.docker/"
+          ]
+        }
+      ]
+    },
+    "dev.orbstack.OrbStack": {
+      "bundleID": "dev.orbstack.OrbStack",
+      "appstoreBundleID": null,
+      "name": "OrbStack",
+      "nameCN": "OrbStack",
+      "vendor": "OrbStack",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "OrbStack Cache",
+          "nameCN": "OrbStack 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/dev.orbstack.OrbStack/"
+          ]
+        },
+        {
+          "name": "OrbStack Data",
+          "nameCN": "OrbStack 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/OrbStack/"
+          ]
+        }
+      ]
+    },
+    "abiosoft.colima": {
+      "bundleID": "abiosoft.colima",
+      "appstoreBundleID": null,
+      "name": "Colima",
+      "nameCN": "Colima",
+      "vendor": "Colima",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Colima Data",
+          "nameCN": "Colima 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Colima/"
+          ]
+        }
+      ]
+    },
+    "io.podman_desktop.PodmanDesktop": {
+      "bundleID": "io.podman_desktop.PodmanDesktop",
+      "appstoreBundleID": null,
+      "name": "Podman Desktop",
+      "nameCN": "Podman Desktop",
+      "vendor": "Red Hat",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Podman Desktop Cache",
+          "nameCN": "Podman Desktop 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/io.podman_desktop.PodmanDesktop/"
+          ]
+        },
+        {
+          "name": "Podman Desktop Data",
+          "nameCN": "Podman Desktop 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/io.podman_desktop.PodmanDesktop/"
+          ]
+        }
+      ]
+    },
+    "dev.warp.Warp-Stable": {
+      "bundleID": "dev.warp.Warp-Stable",
+      "appstoreBundleID": null,
+      "name": "Warp",
+      "nameCN": "Warp",
+      "vendor": "Warp",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Warp Cache",
+          "nameCN": "Warp 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/dev.warp.Warp-Stable/"
+          ]
+        },
+        {
+          "name": "Warp Data",
+          "nameCN": "Warp 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/dev.warp.Warp-Stable/"
+          ]
+        }
+      ]
+    },
+    "com.mitchellh.ghostty": {
+      "bundleID": "com.mitchellh.ghostty",
+      "appstoreBundleID": null,
+      "name": "Ghostty",
+      "nameCN": "Ghostty",
+      "vendor": "Ghostty",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Ghostty Data",
+          "nameCN": "Ghostty 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.mitchellh.ghostty/"
+          ]
+        }
+      ]
+    },
+    "com.raphaelamorim.rio": {
+      "bundleID": "com.raphaelamorim.rio",
+      "appstoreBundleID": null,
+      "name": "Rio",
+      "nameCN": "Rio",
+      "vendor": "Rio",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Rio Data",
+          "nameCN": "Rio 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.raphaelamorim.rio/"
+          ]
+        }
+      ]
+    },
+    "fig.tools.client": {
+      "bundleID": "fig.tools.client",
+      "appstoreBundleID": null,
+      "name": "Fig",
+      "nameCN": "Fig",
+      "vendor": "Fig",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Fig Cache",
+          "nameCN": "Fig 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/fig.tools.client/"
+          ]
+        },
+        {
+          "name": "Fig Data",
+          "nameCN": "Fig 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/fig/"
           ]
         }
       ]

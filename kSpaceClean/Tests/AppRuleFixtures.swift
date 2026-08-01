@@ -127,10 +127,13 @@ final class AppRuleFixtures: XCTestCase {
 /// in the app target (not a fixture). Guards the rule-library release gate:
 ///
 /// * Header invariants (`version == 2`, `appCount` matches the real dictionary
-///   count) and per-app well-formedness for ALL 90 entries (mixed v1/v2 schema:
+///   count) and per-app well-formedness for ALL 101 entries (mixed v1/v2 schema:
 ///   an entry may carry either v2 `actions[]` or legacy `cleanPaths`).
 /// * The 18 AI coding & agent-tool apps added in Task 8 are present and use the
 ///   v2 actions schema with an explicit `appstoreBundleID: null`.
+/// * The 11 browsers/containers/terminals apps added in Task 9 are present with
+///   v2 actions, and their cache/container/App-Support paths resolve through the
+///   public `resolve(path:)` API without cross-app prefix shadowing.
 /// * No bare broad cache prefix (e.g. a bare `~/Library/Caches/`) exists that
 ///   could vacuum the whole library into one bucket.
 /// * The L1 path-boundary fix resolves the Claude pair, Cursor, and Zed
@@ -169,6 +172,22 @@ final class AppRuleLibraryAudit: XCTestCase {
         "com.jetbrains.WebStorm",
         "dev.zed.Zed",
         "com.google.antigravity",
+    ]
+
+    /// The 11 net-new apps mandated by the Task 9 controller resolution
+    /// (browsers + containers + terminals batch).
+    private let task9BundleIDs = [
+        "company.thebrowser.daily",
+        "com.kagi.kagimacOS",
+        "com.sigmaos.macos",
+        "com.docker.docker",
+        "dev.orbstack.OrbStack",
+        "abiosoft.colima",
+        "io.podman_desktop.PodmanDesktop",
+        "dev.warp.Warp-Stable",
+        "com.mitchellh.ghostty",
+        "com.raphaelamorim.rio",
+        "fig.tools.client",
     ]
 
     private var root: [String: Any] {
@@ -272,5 +291,49 @@ final class AppRuleLibraryAudit: XCTestCase {
         XCTAssertEqual(cursor, "com.todesclient.unicorn")
         let zed = await resolved("~/Library/Caches/dev.zed.Zed/e.bin")
         XCTAssertEqual(zed, "dev.zed.Zed")
+    }
+
+    func testTask9NewAppsPresentWithV2Actions() throws {
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        for bundleID in task9BundleIDs {
+            let app = try XCTUnwrap(apps[bundleID],
+                                    "Task 9 app \(bundleID) missing from bundleIDMapping.json")
+            // JSONSerialization decodes JSON `null` as NSNull, so check the
+            // value IS NSNull (explicit null) rather than merely non-nil.
+            XCTAssertTrue(app["appstoreBundleID"] is NSNull,
+                          "\(bundleID) must declare appstoreBundleID: null")
+            let actions = try XCTUnwrap(app["actions"] as? [[String: Any]],
+                                        "\(bundleID) must use the v2 actions schema")
+            XCTAssertFalse(actions.isEmpty, "\(bundleID) has empty actions[]")
+        }
+    }
+
+    func testTask9ResolveSpotChecksOverRealMapping() async throws {
+        let resolver = BundleIDResolver()
+        await resolver.load(from: mappingURL)
+
+        func resolved(_ path: String) async -> String? {
+            await resolver.resolve(path: path)?.bundleID
+        }
+
+        // Arc is a Chromium browser: its cache tree resolves to Arc via the
+        // declared `~/Library/Caches/company.thebrowser.daily/` prefix.
+        let arcCache = await resolved("~/Library/Caches/company.thebrowser.daily/Default/Cache/f/data_0")
+        XCTAssertEqual(arcCache, "company.thebrowser.daily")
+
+        // Docker Desktop is sandboxed — the declared paths live in the app
+        // container and the group container, never in Application Support.
+        // The VM disk under `Data/vms/` is NOT declared and must NOT shadow
+        // these cache/group paths.
+        let dockerCache = await resolved("~/Library/Containers/com.docker.docker/Data/Library/Caches/c.bin")
+        XCTAssertEqual(dockerCache, "com.docker.docker")
+        let dockerGroup = await resolved("~/Library/Group Containers/group.com.docker/settings.json")
+        XCTAssertEqual(dockerGroup, "com.docker.docker")
+
+        // Terminal App Support data dirs resolve to their owning app.
+        let warp = await resolved("~/Library/Application Support/dev.warp.Warp-Stable/sessions/s.json")
+        XCTAssertEqual(warp, "dev.warp.Warp-Stable")
+        let ghostty = await resolved("~/Library/Application Support/com.mitchellh.ghostty/config")
+        XCTAssertEqual(ghostty, "com.mitchellh.ghostty")
     }
 }
