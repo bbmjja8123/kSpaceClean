@@ -2023,7 +2023,7 @@
       "vendor": "Zoom",
       "type": "chat",
       "riskLevel": "recommended",
-      "confidence": "high",
+      "confidence": "medium",
       "actions": [
         {
           "name": "Zoom Cache",

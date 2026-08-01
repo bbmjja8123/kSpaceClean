@@ -394,4 +394,38 @@ final class AppRuleLibraryAudit: XCTestCase {
         let teamsCache = await resolved("~/Library/Caches/com.microsoft.teams/Code Cache/js.js")
         XCTAssertEqual(teamsCache, "com.microsoft.teams")
     }
+
+    /// Regression guard for the Task 10 CRITICAL SAFETY CONSTRAINT: for every
+    /// messaging app, no cleanable action path may be the broad
+    /// `Application Support/<Leaf>/` root — that leaf root holds the chat
+    /// database (user data). Actions must be scoped to cache subdirs only.
+    /// The shipped data already complies; this test guards future edits.
+    func testMessagingAppActionsNeverCoverChatDataRoot() throws {
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        let messagingIDs: Set<String> = [
+            "com.slack.Slack", "com.hnc.Discord", "com.microsoft.teams",
+            "org.telegram.desktop", "org.whispersystems.signal-desktop",
+            "com.bytedance.lark", "com.bytedance.feishu", "net.whatsapp.WhatsApp"
+        ]
+        for bundleID in messagingIDs {
+            let app = try XCTUnwrap(apps[bundleID], "\(bundleID) missing from bundleIDMapping.json")
+            let actions = try XCTUnwrap(app["actions"] as? [[String: Any]],
+                                        "\(bundleID) must use the v2 actions schema")
+            for action in actions {
+                let paths = try XCTUnwrap(action["paths"] as? [String])
+                for path in paths {
+                    let comps = path.split(separator: "/")
+                    // Banned shape: "…/Application Support/<Leaf>/" with nothing after it —
+                    // the leaf root holds the chat database (user data).
+                    for i in 0..<comps.count {
+                        if comps[i] == "Application Support", i == comps.count - 2 {
+                            XCTFail("\(bundleID) action \(action["name"] ?? "?") declares "
+                                + "broad App Support root \(path) — chat data is user data; "
+                                + "cache subdirs only")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
