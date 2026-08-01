@@ -210,9 +210,8 @@ actor AppCatalogService {
             ?? url.deletingPathExtension().lastPathComponent
         let version = bundle?.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         // Best-effort install date = the bundle directory's creation date.
-        // `try?` is deliberate: a missing/unreadable creation date yields nil,
-        // matching the model's optionality.
-        let installDate: Date? = (try? FileManager.default.attributesOfItem(atPath: url.path)[.creationDate]) as? Date
+        // A missing/unreadable creation date yields nil, matching the model's optionality.
+        let installDate = Self.creationDate(of: url)
         return InstalledApp(
             url: url,
             displayName: displayName,
@@ -225,6 +224,22 @@ actor AppCatalogService {
             lastUsedDate: nil,
             installDate: installDate
         )
+    }
+
+    /// Returns the app bundle's creation date, or `nil` if it cannot be read.
+    ///
+    /// Best-effort install date: the bundle directory's creation date. The
+    /// error is swallowed deliberately — a missing or unreadable creation date
+    /// (e.g. the bundle was removed between enumeration and stat) must not
+    /// abort the candidate build. Callers degrade to `nil`, matching the
+    /// model's optionality.
+    private static func creationDate(of url: URL) -> Date? {
+        do {
+            let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
+            return attrs[.creationDate] as? Date
+        } catch {
+            return nil
+        }
     }
 
     /// Builds a synthetic bundle identifier for bundles whose `Info.plist` has
