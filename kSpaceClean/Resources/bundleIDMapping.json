@@ -2,7 +2,7 @@
   "version": 2,
   "generatedAt": "2026-08-01",
   "source": "Lemon libcleaner cleaning-rule XML (item->action->path extraction, bilingual)",
-  "appCount": 101,
+  "appCount": 108,
   "apps": {
     "com.apple.dt.Xcode": {
       "bundleID": "com.apple.dt.Xcode",
@@ -1878,16 +1878,38 @@
       "confidence": "high"
     },
     "com.slack.Slack": {
+      "bundleID": "com.slack.Slack",
+      "appstoreBundleID": null,
       "name": "Slack",
       "nameCN": "Slack",
       "vendor": "Slack",
       "type": "chat",
       "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.slack.Slack"
-      ],
-      "bundleID": "com.slack.Slack",
-      "confidence": "high"
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Slack Cache",
+          "nameCN": "Slack 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.slack.Slack/",
+            "~/Library/Application Support/Slack/Cache/",
+            "~/Library/Application Support/Slack/CachedData/",
+            "~/Library/Application Support/Slack/Code Cache/",
+            "~/Library/Application Support/Slack/GPUCache/",
+            "~/Library/Application Support/Slack/Service Worker/CacheStorage/"
+          ]
+        },
+        {
+          "name": "Slack Cookies & Local Storage",
+          "nameCN": "Slack Cookie 与本地存储",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/Slack/Cookies",
+            "~/Library/Application Support/Slack/Local Storage/"
+          ]
+        }
+      ]
     },
     "com.sogou.sogoupad": {
       "bundleID": "com.sogou.sogoupad",
@@ -1994,16 +2016,32 @@
       "confidence": "medium"
     },
     "us.zoom.xos": {
+      "bundleID": "us.zoom.xos",
+      "appstoreBundleID": null,
       "name": "Zoom",
       "nameCN": "Zoom",
       "vendor": "Zoom",
       "type": "chat",
       "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/us.zoom.xos"
-      ],
-      "bundleID": "us.zoom.xos",
-      "confidence": "high"
+      "confidence": "high",
+      "actions": [
+        {
+          "name": "Zoom Cache",
+          "nameCN": "Zoom 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/us.zoom.xos/"
+          ]
+        },
+        {
+          "name": "Zoom Temporary Data",
+          "nameCN": "Zoom 临时文件",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/zoom.us/data/tmp/"
+          ]
+        }
+      ]
     },
     "com.anthropic.claude": {
       "bundleID": "com.anthropic.claude",
@@ -2961,6 +2999,180 @@
           "type": "soft",
           "paths": [
             "~/Library/Application Support/fig/"
+          ]
+        }
+      ]
+    },
+    "com.hnc.Discord": {
+      "bundleID": "com.hnc.Discord",
+      "appstoreBundleID": null,
+      "name": "Discord",
+      "nameCN": "Discord",
+      "vendor": "Discord",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Discord Cache",
+          "nameCN": "Discord 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.hnc.Discord/",
+            "~/Library/Application Support/discord/Cache/",
+            "~/Library/Application Support/discord/CachedData/",
+            "~/Library/Application Support/discord/Code Cache/",
+            "~/Library/Application Support/discord/GPUCache/",
+            "~/Library/Application Support/discord/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "com.microsoft.teams": {
+      "bundleID": "com.microsoft.teams",
+      "appstoreBundleID": null,
+      "name": "Microsoft Teams",
+      "nameCN": "Microsoft Teams",
+      "vendor": "Microsoft",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Teams Cache",
+          "nameCN": "Teams 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.microsoft.teams/",
+            "~/Library/Application Support/Microsoft/Teams/Cache/",
+            "~/Library/Application Support/Microsoft/Teams/CachedData/",
+            "~/Library/Application Support/Microsoft/Teams/Code Cache/",
+            "~/Library/Application Support/Microsoft/Teams/GPUCache/",
+            "~/Library/Application Support/Microsoft/Teams/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "org.telegram.desktop": {
+      "bundleID": "org.telegram.desktop",
+      "appstoreBundleID": null,
+      "name": "Telegram Desktop",
+      "nameCN": "Telegram",
+      "vendor": "Telegram",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Telegram Cache",
+          "nameCN": "Telegram 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/org.telegram.desktop/",
+            "~/Library/Application Support/Telegram Desktop/tdata/user_data/cache/"
+          ]
+        }
+      ]
+    },
+    "org.whispersystems.signal-desktop": {
+      "bundleID": "org.whispersystems.signal-desktop",
+      "appstoreBundleID": null,
+      "name": "Signal Desktop",
+      "nameCN": "Signal",
+      "vendor": "Signal",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Signal Cache",
+          "nameCN": "Signal 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/org.whispersystems.signal-desktop/",
+            "~/Library/Application Support/Signal/Cache/",
+            "~/Library/Application Support/Signal/CachedData/",
+            "~/Library/Application Support/Signal/Code Cache/",
+            "~/Library/Application Support/Signal/GPUCache/",
+            "~/Library/Application Support/Signal/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "com.bytedance.lark": {
+      "bundleID": "com.bytedance.lark",
+      "appstoreBundleID": null,
+      "name": "Lark",
+      "nameCN": "飞书",
+      "vendor": "ByteDance",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Lark Cache",
+          "nameCN": "飞书缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.bytedance.lark/",
+            "~/Library/Application Support/Lark/Cache/",
+            "~/Library/Application Support/Lark/CachedData/",
+            "~/Library/Application Support/Lark/Code Cache/",
+            "~/Library/Application Support/Lark/GPUCache/",
+            "~/Library/Application Support/Lark/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "com.bytedance.feishu": {
+      "bundleID": "com.bytedance.feishu",
+      "appstoreBundleID": null,
+      "name": "Feishu",
+      "nameCN": "飞书",
+      "vendor": "ByteDance",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Feishu Cache",
+          "nameCN": "飞书缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.bytedance.feishu/",
+            "~/Library/Application Support/feishu/Cache/",
+            "~/Library/Application Support/feishu/CachedData/",
+            "~/Library/Application Support/feishu/Code Cache/",
+            "~/Library/Application Support/feishu/GPUCache/",
+            "~/Library/Application Support/feishu/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "net.whatsapp.WhatsApp": {
+      "bundleID": "net.whatsapp.WhatsApp",
+      "appstoreBundleID": null,
+      "name": "WhatsApp",
+      "nameCN": "WhatsApp",
+      "vendor": "WhatsApp",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "WhatsApp Cache",
+          "nameCN": "WhatsApp 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Caches/"
+          ]
+        },
+        {
+          "name": "WhatsApp Logs",
+          "nameCN": "WhatsApp 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Logs/"
           ]
         }
       ]

@@ -127,13 +127,16 @@ final class AppRuleFixtures: XCTestCase {
 /// in the app target (not a fixture). Guards the rule-library release gate:
 ///
 /// * Header invariants (`version == 2`, `appCount` matches the real dictionary
-///   count) and per-app well-formedness for ALL 101 entries (mixed v1/v2 schema:
+///   count) and per-app well-formedness for ALL 108 entries (mixed v1/v2 schema:
 ///   an entry may carry either v2 `actions[]` or legacy `cleanPaths`).
 /// * The 18 AI coding & agent-tool apps added in Task 8 are present and use the
 ///   v2 actions schema with an explicit `appstoreBundleID: null`.
 /// * The 11 browsers/containers/terminals apps added in Task 9 are present with
 ///   v2 actions, and their cache/container/App-Support paths resolve through the
 ///   public `resolve(path:)` API without cross-app prefix shadowing.
+/// * The 7 communication apps added in Task 10 are present with v2 actions
+///   scoped to Electron cache subdirs (never broad chat-data App Support dirs),
+///   and their cache paths resolve through the public `resolve(path:)` API.
 /// * No bare broad cache prefix (e.g. a bare `~/Library/Caches/`) exists that
 ///   could vacuum the whole library into one bucket.
 /// * The L1 path-boundary fix resolves the Claude pair, Cursor, and Zed
@@ -188,6 +191,18 @@ final class AppRuleLibraryAudit: XCTestCase {
         "com.mitchellh.ghostty",
         "com.raphaelamorim.rio",
         "fig.tools.client",
+    ]
+
+    /// The 7 net-new apps mandated by the Task 10 controller resolution
+    /// (communication & collaboration batch).
+    private let task10BundleIDs = [
+        "com.hnc.Discord",
+        "com.microsoft.teams",
+        "org.telegram.desktop",
+        "org.whispersystems.signal-desktop",
+        "com.bytedance.lark",
+        "com.bytedance.feishu",
+        "net.whatsapp.WhatsApp",
     ]
 
     private var root: [String: Any] {
@@ -335,5 +350,48 @@ final class AppRuleLibraryAudit: XCTestCase {
         XCTAssertEqual(warp, "dev.warp.Warp-Stable")
         let ghostty = await resolved("~/Library/Application Support/com.mitchellh.ghostty/config")
         XCTAssertEqual(ghostty, "com.mitchellh.ghostty")
+    }
+
+    func testTask10NewAppsPresentWithV2Actions() throws {
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        for bundleID in task10BundleIDs {
+            let app = try XCTUnwrap(apps[bundleID],
+                                    "Task 10 app \(bundleID) missing from bundleIDMapping.json")
+            // JSONSerialization decodes JSON `null` as NSNull, so check the
+            // value IS NSNull (explicit null) rather than merely non-nil.
+            XCTAssertTrue(app["appstoreBundleID"] is NSNull,
+                          "\(bundleID) must declare appstoreBundleID: null")
+            let actions = try XCTUnwrap(app["actions"] as? [[String: Any]],
+                                        "\(bundleID) must use the v2 actions schema")
+            XCTAssertFalse(actions.isEmpty, "\(bundleID) has empty actions[]")
+        }
+    }
+
+    func testTask10ResolveSpotChecksOverRealMapping() async throws {
+        let resolver = BundleIDResolver()
+        await resolver.load(from: mappingURL)
+
+        func resolved(_ path: String) async -> String? {
+            await resolver.resolve(path: path)?.bundleID
+        }
+
+        // Discord is an Electron chat app: the App-Support cache subdirs are
+        // declared (broad chat-data dirs are deliberately NOT), and they must
+        // resolve to Discord — never to a generic bucket.
+        let discordCache = await resolved("~/Library/Application Support/discord/Cache/f/data_0")
+        XCTAssertEqual(discordCache, "com.hnc.Discord")
+
+        // Telegram Desktop is a native Qt app: its file cache lives under
+        // `tdata/user_data/cache` (the `tdata` root holds the chat DB and is
+        // NOT declared).
+        let telegramCache = await resolved("~/Library/Application Support/Telegram Desktop/tdata/user_data/cache/g.data")
+        XCTAssertEqual(telegramCache, "org.telegram.desktop")
+
+        // Teams sits next to VS Code (`com.microsoft.VSCode`) and Edge
+        // (`com.microsoft.edgemac`) in the bundle-ID space, but the cache
+        // prefixes are distinct — the L1 path-boundary predicate must keep
+        // them separate.
+        let teamsCache = await resolved("~/Library/Caches/com.microsoft.teams/Code Cache/js.js")
+        XCTAssertEqual(teamsCache, "com.microsoft.teams")
     }
 }
