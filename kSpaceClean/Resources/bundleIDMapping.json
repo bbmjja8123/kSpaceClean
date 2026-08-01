@@ -128,7 +128,7 @@
         },
         {
           "nameCN": "QQ聊天记录中产生的图片[180天前]",
-          "name": "Pictures in your QQ Chats",
+          "name": "Pictures in your QQ Chats[180 days ago]",
           "paths": [
             "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Images"
           ]
@@ -207,28 +207,28 @@
         },
         {
           "nameCN": "微信聊天记录中产生的图片[90天前]",
-          "name": "Pictures in your WeChat Chats",
+          "name": "Pictures in your WeChat Chats[90 days ago]",
           "paths": [
             "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
           ]
         },
         {
           "nameCN": "微信接收到的文件",
-          "name": "Pictures in your WeChat Chats",
+          "name": "WeChat Received Files",
           "paths": [
             "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
           ]
         },
         {
           "nameCN": "微信接收到的视频文件",
-          "name": "Pictures in your WeChat Chats",
+          "name": "WeChat Received Video Files",
           "paths": [
             "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
           ]
         },
         {
           "nameCN": "微信接收到的语音文件",
-          "name": "Pictures in your WeChat Chats",
+          "name": "WeChat Received Audio Files",
           "paths": [
             "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
           ]
@@ -275,7 +275,7 @@
         },
         {
           "nameCN": "企业微信聊天记录中产生的图片[180天前]",
-          "name": "Pictures in your WeChatWork Chats",
+          "name": "Pictures in your WeChatWork Chats[180 days ago]",
           "paths": [
             "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Image/"
           ]
@@ -358,7 +358,7 @@
         },
         {
           "nameCN": "钉钉聊天记录中产生的图片[180天前]",
-          "name": "Pictures in your DingTalk Chats",
+          "name": "Pictures in your DingTalk Chats[180 days ago]",
           "paths": [
             "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
             "~/Library/Caches/com.alibaba.DingTalkMac/"
@@ -1120,6 +1120,48 @@
       "riskLevel": "recommended",
       "confidence": "high"
     },
+    "com.apple.Safari": {
+      "bundleID": "com.apple.Safari",
+      "appstoreBundleID": null,
+      "nameCN": "Safari",
+      "name": "Safari",
+      "actions": [
+        {
+          "nameCN": "Safari - Cache",
+          "name": "Safari - Cache",
+          "paths": [
+            "~/Library/Caches/com.apple.Safari/",
+            "~/Library/Caches/Metadata/Safari/",
+            "~/Library/Containers/com.apple.Safari.CacheDeleteExtension/",
+            "~/Library/Caches/com.apple.Safari.SafeBrowsing/",
+            "~/Library/Caches/com.apple.safaridavclient/"
+          ]
+        }
+      ],
+      "vendor": "Apple",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.google.Chrome": {
+      "bundleID": "com.google.Chrome",
+      "appstoreBundleID": null,
+      "nameCN": "Chrome",
+      "name": "Chrome",
+      "actions": [
+        {
+          "nameCN": "Chrome - Cache",
+          "name": "Chrome - Cache",
+          "paths": [
+            "~/Library/Caches/Google/Chrome/Default/Cache/"
+          ]
+        }
+      ],
+      "vendor": "Google",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
     "com.tencent.QQBrowser": {
       "bundleID": "com.tencent.QQBrowser",
       "appstoreBundleID": null,
@@ -1192,127 +1234,28 @@
       "riskLevel": "recommended",
       "confidence": "high"
     },
-    "com.apple.mail": {
-      "bundleID": "com.apple.mail",
-      "name": "Mail Attachments",
-      "nameCN": "Mail缓存",
-      "vendor": "Apple",
-      "type": "mail",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Containers/com.apple.mail/Data/Library/Mail Downloads",
-        "~/Library/Mail"
-      ],
-      "confidence": "high"
-    },
-    "com.microsoft.edgemac": {
-      "name": "Edge",
-      "nameCN": "Edge",
-      "vendor": "Microsoft",
-      "type": "browser",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.microsoft.edgemac"
-      ],
-      "bundleID": "com.microsoft.edgemac",
-      "confidence": "high"
-    },
-    "com.apple.Music": {
-      "name": "Music",
-      "nameCN": "音乐",
-      "vendor": "Apple",
-      "type": "media",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Music"
-      ],
-      "bundleID": "com.apple.Music",
-      "confidence": "high"
-    },
-    "com.apple.iWork": {
-      "name": "iWork",
-      "nameCN": "iWork",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.iWork.Keynote",
-        "~/Library/Caches/com.apple.iWork.Numbers",
-        "~/Library/Caches/com.apple.iWork.Pages"
-      ],
-      "bundleID": "com.apple.iWork",
-      "confidence": "high"
-    },
-    "com.apple.SystemPreferences": {
-      "name": "System Preferences",
-      "nameCN": "系统偏好设置",
+    "com.apple.cloudkit": {
+      "name": "CloudKit",
+      "nameCN": "CloudKit",
       "vendor": "Apple",
       "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.SystemPreferences"
-      ],
-      "bundleID": "com.apple.SystemPreferences",
-      "confidence": "high"
-    },
-    "com.apple.ActivityMonitor": {
-      "name": "Activity Monitor",
-      "nameCN": "活动监视器",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.ActivityMonitor"
-      ],
-      "bundleID": "com.apple.ActivityMonitor",
-      "confidence": "high"
-    },
-    "com.vivaldi.Vivaldi": {
-      "name": "Vivaldi",
-      "nameCN": "Vivaldi",
-      "vendor": "Vivaldi",
-      "type": "browser",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.vivaldi.Vivaldi"
+        "~/Library/Caches/com.apple.cloudkit"
       ],
-      "bundleID": "com.vivaldi.Vivaldi",
+      "bundleID": "com.apple.cloudkit",
       "confidence": "high"
     },
-    "com.apple.fileprovider.cs": {
-      "name": "FileProvider",
-      "nameCN": "文件提供器",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.fileprovider.cs"
-      ],
-      "bundleID": "com.apple.fileprovider.cs",
-      "confidence": "high"
-    },
-    "com.adobe.Lightroom": {
-      "name": "Lightroom",
-      "nameCN": "Lightroom",
+    "com.adobe.Illustrator": {
+      "name": "Illustrator",
+      "nameCN": "Illustrator",
       "vendor": "Adobe",
       "type": "design",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.adobe.Lightroom"
+        "~/Library/Caches/com.adobe.Illustrator"
       ],
-      "bundleID": "com.adobe.Lightroom",
-      "confidence": "high"
-    },
-    "com.adobe.InDesign": {
-      "name": "InDesign",
-      "nameCN": "InDesign",
-      "vendor": "Adobe",
-      "type": "design",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.adobe.InDesign"
-      ],
-      "bundleID": "com.adobe.InDesign",
+      "bundleID": "com.adobe.Illustrator",
       "confidence": "high"
     },
     "com.brave.Browser": {
@@ -1327,40 +1270,115 @@
       "bundleID": "com.brave.Browser",
       "confidence": "high"
     },
-    "com.apple.TV": {
-      "name": "TV",
-      "nameCN": "电视",
+    "com.vivaldi.Vivaldi": {
+      "name": "Vivaldi",
+      "nameCN": "Vivaldi",
+      "vendor": "Vivaldi",
+      "type": "browser",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.vivaldi.Vivaldi"
+      ],
+      "bundleID": "com.vivaldi.Vivaldi",
+      "confidence": "high"
+    },
+    "com.figma.Desktop": {
+      "name": "Figma",
+      "nameCN": "Figma",
+      "vendor": "Figma",
+      "type": "design",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.figma.Desktop"
+      ],
+      "bundleID": "com.figma.Desktop",
+      "confidence": "high"
+    },
+    "com.apple.QuickTimePlayerX": {
+      "name": "QuickTime",
+      "nameCN": "QuickTime",
       "vendor": "Apple",
       "type": "media",
       "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.TV"
+        "~/Library/Caches/com.apple.QuickTimePlayerX"
       ],
-      "bundleID": "com.apple.TV",
+      "bundleID": "com.apple.QuickTimePlayerX",
       "confidence": "high"
     },
-    "com.slack.Slack": {
-      "name": "Slack",
-      "nameCN": "Slack",
-      "vendor": "Slack",
+    "com.apple.FaceTime": {
+      "name": "FaceTime",
+      "nameCN": "FaceTime",
+      "vendor": "Apple",
       "type": "chat",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.FaceTime"
+      ],
+      "bundleID": "com.apple.FaceTime",
+      "confidence": "high"
+    },
+    "com.sogou.sogoupad": {
+      "bundleID": "com.sogou.sogoupad",
+      "name": "SoGou Pinyin",
+      "nameCN": "搜狗输入法",
+      "vendor": "搜狗",
+      "type": "inputmethod",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.slack.Slack"
+        "~//Library/Containers/com.sogou.sogoupad/Data/Library/Caches",
+        "~/Library/Application Support/Sogou/EmojiPanel/expressions",
+        "~/Library/Caches/SogouServices"
       ],
-      "bundleID": "com.slack.Slack",
       "confidence": "high"
     },
-    "com.github.GitHubClient": {
-      "name": "GitHub Desktop",
-      "nameCN": "GitHub Desktop",
-      "vendor": "GitHub",
+    "com.apple.Terminal": {
+      "name": "Terminal",
+      "nameCN": "终端",
+      "vendor": "Apple",
       "type": "developer",
-      "riskLevel": "optional",
+      "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Caches/com.github.GitHubClient"
+        "~/Library/Caches/com.apple.Terminal"
       ],
-      "bundleID": "com.github.GitHubClient",
+      "bundleID": "com.apple.Terminal",
+      "confidence": "high"
+    },
+    "com.adobe.Photoshop": {
+      "name": "Photoshop",
+      "nameCN": "Photoshop",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/Adobe",
+        "~/Library/Caches/com.adobe.Photoshop"
+      ],
+      "bundleID": "com.adobe.Photoshop",
+      "confidence": "high"
+    },
+    "com.spotify.client": {
+      "name": "Spotify",
+      "nameCN": "Spotify",
+      "vendor": "Spotify",
+      "type": "music",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.spotify.client"
+      ],
+      "bundleID": "com.spotify.client",
+      "confidence": "high"
+    },
+    "com.apple.Notes": {
+      "name": "Notes",
+      "nameCN": "备忘录",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Notes"
+      ],
+      "bundleID": "com.apple.Notes",
       "confidence": "high"
     },
     "com.apple.PhotoLibraryServices": {
@@ -1374,6 +1392,90 @@
         "~/Library/Caches/com.apple.photoanalysisd"
       ],
       "bundleID": "com.apple.PhotoLibraryServices",
+      "confidence": "high"
+    },
+    "com.apple.TV": {
+      "name": "TV",
+      "nameCN": "电视",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.TV"
+      ],
+      "bundleID": "com.apple.TV",
+      "confidence": "high"
+    },
+    "com.apple.iCal": {
+      "name": "Calendar",
+      "nameCN": "日历",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.iCal"
+      ],
+      "bundleID": "com.apple.iCal",
+      "confidence": "high"
+    },
+    "us.zoom.xos": {
+      "name": "Zoom",
+      "nameCN": "Zoom",
+      "vendor": "Zoom",
+      "type": "chat",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/us.zoom.xos"
+      ],
+      "bundleID": "us.zoom.xos",
+      "confidence": "high"
+    },
+    "com.microsoft.VSCode": {
+      "name": "VS Code",
+      "nameCN": "VS Code",
+      "vendor": "Microsoft",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.microsoft.VSCode"
+      ],
+      "bundleID": "com.microsoft.VSCode",
+      "confidence": "high"
+    },
+    "com.apple.SystemPreferences": {
+      "name": "System Preferences",
+      "nameCN": "系统偏好设置",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.SystemPreferences"
+      ],
+      "bundleID": "com.apple.SystemPreferences",
+      "confidence": "high"
+    },
+    "com.apple.reminders": {
+      "name": "Reminders",
+      "nameCN": "提醒事项",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.reminders"
+      ],
+      "bundleID": "com.apple.reminders",
+      "confidence": "high"
+    },
+    "com.apple.Maps": {
+      "name": "Maps",
+      "nameCN": "地图",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Maps"
+      ],
+      "bundleID": "com.apple.Maps",
       "confidence": "high"
     },
     "com.dingtalk.mac": {
@@ -1403,42 +1505,16 @@
       ],
       "confidence": "medium"
     },
-    "com.jetbrains.intellij": {
-      "name": "IntelliJ IDEA",
-      "nameCN": "IntelliJ",
-      "vendor": "JetBrains",
-      "type": "developer",
-      "riskLevel": "optional",
-      "cleanPaths": [
-        "~/Library/Caches/com.jetbrains.intellij"
-      ],
-      "bundleID": "com.jetbrains.intellij",
-      "confidence": "high"
-    },
-    "com.sogou.sogoupad": {
-      "bundleID": "com.sogou.sogoupad",
-      "name": "SoGou Pinyin",
-      "nameCN": "搜狗输入法",
-      "vendor": "搜狗",
-      "type": "inputmethod",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~//Library/Containers/com.sogou.sogoupad/Data/Library/Caches",
-        "~/Library/Application Support/Sogou/EmojiPanel/expressions",
-        "~/Library/Caches/SogouServices"
-      ],
-      "confidence": "high"
-    },
-    "com.apple.FaceTime": {
-      "name": "FaceTime",
-      "nameCN": "FaceTime",
+    "com.apple.ActivityMonitor": {
+      "name": "Activity Monitor",
+      "nameCN": "活动监视器",
       "vendor": "Apple",
-      "type": "chat",
+      "type": "system",
       "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.FaceTime"
+        "~/Library/Caches/com.apple.ActivityMonitor"
       ],
-      "bundleID": "com.apple.FaceTime",
+      "bundleID": "com.apple.ActivityMonitor",
       "confidence": "high"
     },
     "com.xianghu.cctalk.mac": {
@@ -1467,41 +1543,138 @@
       ],
       "confidence": "medium"
     },
-    "com.google.Chrome": {
-      "name": "Chrome",
-      "nameCN": "Chrome",
-      "vendor": "Google",
-      "type": "browser",
-      "riskLevel": "caution",
+    "com.github.GitHubClient": {
+      "name": "GitHub Desktop",
+      "nameCN": "GitHub Desktop",
+      "vendor": "GitHub",
+      "type": "developer",
+      "riskLevel": "optional",
       "cleanPaths": [
-        "~/Library/Caches/Google",
-        "~/Library/Caches/com.google.Chrome"
+        "~/Library/Caches/com.github.GitHubClient"
       ],
-      "bundleID": "com.google.Chrome",
+      "bundleID": "com.github.GitHubClient",
       "confidence": "high"
     },
-    "com.apple.MobileSMS": {
-      "name": "Messages",
-      "nameCN": "信息",
+    "com.adobe.CreativeCloud": {
+      "name": "Creative Cloud",
+      "nameCN": "Creative Cloud",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.CreativeCloud"
+      ],
+      "bundleID": "com.adobe.CreativeCloud",
+      "confidence": "high"
+    },
+    "com.apple.mail": {
+      "bundleID": "com.apple.mail",
+      "name": "Mail Attachments",
+      "nameCN": "Mail缓存",
       "vendor": "Apple",
+      "type": "mail",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.apple.mail/Data/Library/Mail Downloads",
+        "~/Library/Mail"
+      ],
+      "confidence": "high"
+    },
+    "com.tinyspeck.chatlyio": {
+      "name": "Chatly",
+      "nameCN": "Chatly",
+      "vendor": "Slack",
       "type": "chat",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.Messages"
+        "~/Library/Caches/com.tinyspeck.chatlyio"
       ],
-      "bundleID": "com.apple.MobileSMS",
+      "bundleID": "com.tinyspeck.chatlyio",
       "confidence": "high"
     },
-    "com.apple.Terminal": {
-      "name": "Terminal",
-      "nameCN": "终端",
+    "com.apple.Finder": {
+      "name": "Finder",
+      "nameCN": "访达",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.finder"
+      ],
+      "bundleID": "com.apple.Finder",
+      "confidence": "high"
+    },
+    "com.jetbrains.intellij": {
+      "name": "IntelliJ IDEA",
+      "nameCN": "IntelliJ",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.jetbrains.intellij"
+      ],
+      "bundleID": "com.jetbrains.intellij",
+      "confidence": "high"
+    },
+    "com.apple.QuickLook": {
+      "name": "Quick Look",
+      "nameCN": "快速查看",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.QuickLookThumbnailing",
+        "~/Library/Caches/com.apple.quicklook"
+      ],
+      "bundleID": "com.apple.QuickLook",
+      "confidence": "high"
+    },
+    "com.slack.Slack": {
+      "name": "Slack",
+      "nameCN": "Slack",
+      "vendor": "Slack",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.slack.Slack"
+      ],
+      "bundleID": "com.slack.Slack",
+      "confidence": "high"
+    },
+    "com.apple.ScriptEditor2": {
+      "name": "Script Editor",
+      "nameCN": "脚本编辑器",
       "vendor": "Apple",
       "type": "developer",
       "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.Terminal"
+        "~/Library/Caches/com.apple.ScriptEditor2"
       ],
-      "bundleID": "com.apple.Terminal",
+      "bundleID": "com.apple.ScriptEditor2",
+      "confidence": "high"
+    },
+    "com.apple.fileprovider.cs": {
+      "name": "FileProvider",
+      "nameCN": "文件提供器",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.fileprovider.cs"
+      ],
+      "bundleID": "com.apple.fileprovider.cs",
+      "confidence": "high"
+    },
+    "com.sublimetext.3": {
+      "name": "Sublime Text",
+      "nameCN": "Sublime Text",
+      "vendor": "Sublime HQ",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.sublimetext.3"
+      ],
+      "bundleID": "com.sublimetext.3",
       "confidence": "high"
     },
     "com.apple.Spotlight": {
@@ -1517,124 +1690,28 @@
       "bundleID": "com.apple.Spotlight",
       "confidence": "high"
     },
-    "com.apple.Finder": {
-      "name": "Finder",
-      "nameCN": "访达",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.finder"
-      ],
-      "bundleID": "com.apple.Finder",
-      "confidence": "high"
-    },
-    "com.apple.Podcasts": {
-      "name": "Podcasts",
-      "nameCN": "播客",
-      "vendor": "Apple",
-      "type": "media",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.podcasts"
-      ],
-      "bundleID": "com.apple.Podcasts",
-      "confidence": "high"
-    },
-    "com.apple.cloudkit": {
-      "name": "CloudKit",
-      "nameCN": "CloudKit",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.cloudkit"
-      ],
-      "bundleID": "com.apple.cloudkit",
-      "confidence": "high"
-    },
-    "com.apple.iCal": {
-      "name": "Calendar",
-      "nameCN": "日历",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.iCal"
-      ],
-      "bundleID": "com.apple.iCal",
-      "confidence": "high"
-    },
-    "com.figma.Desktop": {
-      "name": "Figma",
-      "nameCN": "Figma",
-      "vendor": "Figma",
-      "type": "design",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.figma.Desktop"
-      ],
-      "bundleID": "com.figma.Desktop",
-      "confidence": "high"
-    },
-    "com.adobe.CreativeCloud": {
-      "name": "Creative Cloud",
-      "nameCN": "Creative Cloud",
-      "vendor": "Adobe",
-      "type": "design",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.adobe.CreativeCloud"
-      ],
-      "bundleID": "com.adobe.CreativeCloud",
-      "confidence": "high"
-    },
-    "com.apple.QuickTimePlayerX": {
-      "name": "QuickTime",
-      "nameCN": "QuickTime",
-      "vendor": "Apple",
-      "type": "media",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.QuickTimePlayerX"
-      ],
-      "bundleID": "com.apple.QuickTimePlayerX",
-      "confidence": "high"
-    },
-    "com.apple.Siri": {
-      "name": "Siri",
-      "nameCN": "Siri",
-      "vendor": "Apple",
-      "type": "system",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Siri"
-      ],
-      "bundleID": "com.apple.Siri",
-      "confidence": "high"
-    },
-    "com.adobe.Illustrator": {
-      "name": "Illustrator",
-      "nameCN": "Illustrator",
+    "com.adobe.Lightroom": {
+      "name": "Lightroom",
+      "nameCN": "Lightroom",
       "vendor": "Adobe",
       "type": "design",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.adobe.Illustrator"
+        "~/Library/Caches/com.adobe.Lightroom"
       ],
-      "bundleID": "com.adobe.Illustrator",
+      "bundleID": "com.adobe.Lightroom",
       "confidence": "high"
     },
-    "com.tinyspeck.chatlyio": {
-      "name": "Chatly",
-      "nameCN": "Chatly",
-      "vendor": "Slack",
+    "com.apple.MobileSMS": {
+      "name": "Messages",
+      "nameCN": "信息",
+      "vendor": "Apple",
       "type": "chat",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/com.tinyspeck.chatlyio"
+        "~/Library/Caches/com.apple.Messages"
       ],
-      "bundleID": "com.tinyspeck.chatlyio",
+      "bundleID": "com.apple.MobileSMS",
       "confidence": "high"
     },
     "com.google.Chrome.canary": {
@@ -1649,134 +1726,16 @@
       "bundleID": "com.google.Chrome.canary",
       "confidence": "high"
     },
-    "com.sublimetext.3": {
-      "name": "Sublime Text",
-      "nameCN": "Sublime Text",
-      "vendor": "Sublime HQ",
-      "type": "developer",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.sublimetext.3"
-      ],
-      "bundleID": "com.sublimetext.3",
-      "confidence": "high"
-    },
-    "us.zoom.xos": {
-      "name": "Zoom",
-      "nameCN": "Zoom",
-      "vendor": "Zoom",
-      "type": "chat",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/us.zoom.xos"
-      ],
-      "bundleID": "us.zoom.xos",
-      "confidence": "high"
-    },
-    "com.apple.Safari": {
-      "bundleID": "com.apple.Safari",
-      "name": "Safari",
-      "nameCN": "Safari",
-      "vendor": "Apple",
-      "type": "browser",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/Metadata/Safari",
-        "~/Library/Caches/com.apple.Safari",
-        "~/Library/Caches/com.apple.Safari.SafeBrowsing",
-        "~/Library/Caches/com.apple.safaridavclient",
-        "~/Library/Containers/com.apple.Safari.CacheDeleteExtension",
-        "~/Library/Safari/Downloads.plist",
-        "~/Library/Safari/History.plist",
-        "~/Library/Safari/HistoryIndex.sk",
-        "~/Library/Safari/LocalStorage",
-        "~/Library/Safari/WebpageIcons.db"
-      ],
-      "confidence": "medium"
-    },
-    "com.apple.Notes": {
-      "name": "Notes",
-      "nameCN": "备忘录",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "caution",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Notes"
-      ],
-      "bundleID": "com.apple.Notes",
-      "confidence": "high"
-    },
-    "com.microsoft.VSCode": {
-      "name": "VS Code",
-      "nameCN": "VS Code",
+    "com.microsoft.edgemac": {
+      "name": "Edge",
+      "nameCN": "Edge",
       "vendor": "Microsoft",
-      "type": "developer",
-      "riskLevel": "optional",
-      "cleanPaths": [
-        "~/Library/Caches/com.microsoft.VSCode"
-      ],
-      "bundleID": "com.microsoft.VSCode",
-      "confidence": "high"
-    },
-    "com.apple.reminders": {
-      "name": "Reminders",
-      "nameCN": "提醒事项",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.reminders"
-      ],
-      "bundleID": "com.apple.reminders",
-      "confidence": "high"
-    },
-    "com.apple.ScriptEditor2": {
-      "name": "Script Editor",
-      "nameCN": "脚本编辑器",
-      "vendor": "Apple",
-      "type": "developer",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.ScriptEditor2"
-      ],
-      "bundleID": "com.apple.ScriptEditor2",
-      "confidence": "high"
-    },
-    "com.spotify.client": {
-      "name": "Spotify",
-      "nameCN": "Spotify",
-      "vendor": "Spotify",
-      "type": "music",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.spotify.client"
-      ],
-      "bundleID": "com.spotify.client",
-      "confidence": "high"
-    },
-    "com.apple.Maps": {
-      "name": "Maps",
-      "nameCN": "地图",
-      "vendor": "Apple",
-      "type": "productivity",
-      "riskLevel": "recommended",
-      "cleanPaths": [
-        "~/Library/Caches/com.apple.Maps"
-      ],
-      "bundleID": "com.apple.Maps",
-      "confidence": "high"
-    },
-    "com.adobe.Photoshop": {
-      "name": "Photoshop",
-      "nameCN": "Photoshop",
-      "vendor": "Adobe",
-      "type": "design",
+      "type": "browser",
       "riskLevel": "caution",
       "cleanPaths": [
-        "~/Library/Caches/Adobe",
-        "~/Library/Caches/com.adobe.Photoshop"
+        "~/Library/Caches/com.microsoft.edgemac"
       ],
-      "bundleID": "com.adobe.Photoshop",
+      "bundleID": "com.microsoft.edgemac",
       "confidence": "high"
     },
     "com.apple.Console": {
@@ -1791,17 +1750,66 @@
       "bundleID": "com.apple.Console",
       "confidence": "high"
     },
-    "com.apple.QuickLook": {
-      "name": "Quick Look",
-      "nameCN": "快速查看",
+    "com.adobe.InDesign": {
+      "name": "InDesign",
+      "nameCN": "InDesign",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.InDesign"
+      ],
+      "bundleID": "com.adobe.InDesign",
+      "confidence": "high"
+    },
+    "com.apple.Music": {
+      "name": "Music",
+      "nameCN": "音乐",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Music"
+      ],
+      "bundleID": "com.apple.Music",
+      "confidence": "high"
+    },
+    "com.apple.Podcasts": {
+      "name": "Podcasts",
+      "nameCN": "播客",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.podcasts"
+      ],
+      "bundleID": "com.apple.Podcasts",
+      "confidence": "high"
+    },
+    "com.apple.Siri": {
+      "name": "Siri",
+      "nameCN": "Siri",
       "vendor": "Apple",
       "type": "system",
       "riskLevel": "recommended",
       "cleanPaths": [
-        "~/Library/Caches/com.apple.QuickLookThumbnailing",
-        "~/Library/Caches/com.apple.quicklook"
+        "~/Library/Caches/com.apple.Siri"
       ],
-      "bundleID": "com.apple.QuickLook",
+      "bundleID": "com.apple.Siri",
+      "confidence": "high"
+    },
+    "com.apple.iWork": {
+      "name": "iWork",
+      "nameCN": "iWork",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.iWork.Keynote",
+        "~/Library/Caches/com.apple.iWork.Numbers",
+        "~/Library/Caches/com.apple.iWork.Pages"
+      ],
+      "bundleID": "com.apple.iWork",
       "confidence": "high"
     }
   }
