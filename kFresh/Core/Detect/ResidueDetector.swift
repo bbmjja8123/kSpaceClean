@@ -29,9 +29,10 @@ public actor ResidueDetector {
     /// - Parameters:
     ///   - bundleID: Reverse-DNS bundle identifier (e.g. `com.example.App`).
     ///     An empty string short-circuits and returns `[]`.
-    ///   - appName: Human-readable application name; URL-escaped before being
-    ///     embedded into file-system paths to defend against paths with spaces
-    ///     or other reserved characters.
+    ///   - appName: Human-readable application name; inserted verbatim into
+    ///     filesystem paths (e.g. `~/Library/Application Support/<appName>/`).
+    ///     No URL-encoding is applied — real macOS paths carry literal
+    ///     characters including spaces, parentheses, and CJK glyphs.
     ///   - appURL: Location of the `.app` bundle on disk; currently used for
     ///     context and future location-specific heuristics.
     /// - Returns: All matching residues, sorted by descending confidence.
@@ -79,14 +80,18 @@ public actor ResidueDetector {
         let library = homePath + "/Library"
         let systemLibrary = "/Library"
 
-        // appName must be URL-escaped for path safety
-        let escapedName = appName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? appName
+        // I-1 fix: paths on disk use literal characters, not URL-encoded
+        // escapes. Spaces, parentheses, and CJK characters all appear
+        // verbatim in real `~/Library/Application Support/<App>/` paths.
+        // URL-encoding here made the detector miss real residue directories
+        // for apps like `App With Spaces`, `Sketch (Legacy)`, or `钉钉`.
+        let nameToken = appName
 
         let templates: [(path: String, type: ResidueType, confidence: Double, isSystemLevel: Bool)] = [
             ("\(library)/Preferences/\(bundleID).plist",                .preferences,    0.99, false),
             ("\(library)/Caches/\(bundleID)/",                          .caches,         0.99, false),
-            ("\(library)/Application Support/\(escapedName)/",          .appSupport,     0.95, false),
-            ("\(library)/Logs/\(escapedName)/",                         .log,            0.85, false),
+            ("\(library)/Application Support/\(nameToken)/",            .appSupport,     0.95, false),
+            ("\(library)/Logs/\(nameToken)/",                           .log,            0.85, false),
             ("\(library)/Saved Application State/\(bundleID).savedState", .savedState, 0.99, false),
             ("\(library)/Containers/\(bundleID)/",                      .container,      0.99, false),
             ("\(library)/Cookies/\(bundleID).binarycookies",            .cookie,         0.85, false),
@@ -96,7 +101,7 @@ public actor ResidueDetector {
             ("\(library)/Application Scripts/\(bundleID)/",             .appleScript,    0.70, false),
             ("\(systemLibrary)/LaunchAgents/\(bundleID).plist",         .launchAgent,    0.95, true),
             ("\(systemLibrary)/LaunchDaemons/\(bundleID).plist",        .launchDaemon,   0.95, true),
-            ("\(systemLibrary)/PreferencePanes/\(escapedName).prefPane", .prefPane,      0.85, true),
+            ("\(systemLibrary)/PreferencePanes/\(nameToken).prefPane",  .prefPane,       0.85, true),
         ]
 
         return templates.map { t in

@@ -63,7 +63,7 @@ final class ResidueDetectorTests: XCTestCase {
         XCTAssertGreaterThan(residues.count, 0)
     }
 
-    func testDetectResiduesHandlesURLEscapeInAppName() async throws {
+    func testDetectResiduesPreservesLiteralSpacesInAppName() async throws {
         let data = try JSONEncoder().encode([KFreshBundleRule]())
         try data.write(to: tempRulesURL)
         let store = try BundleRuleStore(jsonURL: tempRulesURL)
@@ -75,8 +75,20 @@ final class ResidueDetectorTests: XCTestCase {
             appURL: URL(fileURLWithPath: "/Applications/App With Spaces.app")
         )
 
+        // I-1 fix: the template branch must NOT URL-escape the app name.
+        // Real macOS paths are `~/Library/Application Support/App With Spaces/`
+        // — literal spaces, not `%20`. URL-encoded paths would miss real
+        // residue directories on disk.
+        let appSupportPaths = residues.filter { $0.type == .appSupport }.map(\.url.path)
+        XCTAssertTrue(appSupportPaths.contains { $0.hasSuffix("/Library/Application Support/App With Spaces") },
+                      "Expected a literal-space app support path, got: \(appSupportPaths)")
+
+        let logPaths = residues.filter { $0.type == .log }.map(\.url.path)
+        XCTAssertTrue(logPaths.contains { $0.hasSuffix("/Library/Logs/App With Spaces") },
+                      "Expected a literal-space log path, got: \(logPaths)")
         for residue in residues {
-            XCTAssertFalse(residue.url.path.contains("App With Spaces"), "URL must not contain unescaped spaces")
+            XCTAssertFalse(residue.url.path.contains("%20"),
+                           "URL-encoded space found in residue path: \(residue.url.path)")
         }
     }
 }
