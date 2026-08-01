@@ -29,6 +29,17 @@ public final class PaywallViewModel: ObservableObject {
     /// localized banner.
     @Published public private(set) var errorMessage: String?
 
+    /// Whether the user has acknowledged the auto-renewal disclosure.
+    /// Defaults to `false`; the paywall disables the purchase button
+    /// until the user checks the terms checkbox (or is already Pro).
+    @Published public var acceptedTerms: Bool = false
+
+    /// Convenience flag combining `isPro` (Pro users can re-purchase
+    /// without re-accepting) and `acceptedTerms` for free-tier users.
+    public var canPurchase: Bool {
+        isPro || acceptedTerms
+    }
+
     /// Set when the user successfully completes a purchase so the view can
     /// dismiss itself.
     @Published public private(set) var didCompletePurchase: Bool = false
@@ -85,6 +96,11 @@ public final class PaywallViewModel: ObservableObject {
     public func clearError() {
         purchaseState.clearError()
         errorMessage = nil
+    }
+
+    /// Flip `acceptedTerms` to `true`. Called from the paywall checkbox.
+    public func acknowledgeTerms() {
+        acceptedTerms = true
     }
 
     // MARK: - Internals

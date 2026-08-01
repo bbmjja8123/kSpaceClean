@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>kWatch プライバシーポリシー</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #1d1d1f; }
+  h1 { font-size: 32px; margin-bottom: 8px; }
+  h2 { font-size: 20px; margin-top: 32px; border-bottom: 1px solid #e5e5e7; padding-bottom: 4px; }
+  .updated { color: #6e6e73; font-size: 14px; }
+  a { color: #0071e3; }
+</style>
+</head>
+<body>
+<h1>kWatch プライバシーポリシー</h1>
+<p class="updated">最終更新日：2026年8月1日</p>
+
+<h2>概要</h2>
+<p>kWatch はメニューバーで動作するシステムモニターです。すべての指標の計測値、アラートのしきい値、Pro の購読資格はあなたの Mac 上に存在します。当社はいかなる個人データの収集・送信・販売・共有も行いません。</p>
+
+<h2>kWatch が収集しないデータ</h2>
+<ul>
+  <li>個人情報（氏名、メールアドレス、電話番号）</li>
+  <li>位置情報</li>
+  <li>連絡先、カレンダー、写真</li>
+  <li>健康データ</li>
+  <li>閲覧履歴</li>
+  <li>利用統計、テレメトリ、クラッシュレポート</li>
+  <li>診断データ</li>
+</ul>
+
+<h2>kWatch が Mac でアクセスする情報</h2>
+<p>kWatch は指標を表示するために、以下のシステム信号をローカルで読み取ります：</p>
+<ul>
+  <li><strong>CPU、メモリ、ディスク、ネットワークのカウンター</strong> — <code>host_processor_info</code>、<code>sysctl</code>、<code>proc_listpids</code>、<code>getifaddrs</code> を介して読み取ります。</li>
+  <li><strong>温度、ファンの回転数</strong> — Apple の IO-kit API を通じて Apple System Management Controller（SMC）から読み取ります。これらのセンサーを備えたハードウェアでのみ利用可能であり、macOS は完全なディスクアクセスを要求する場合があります。</li>
+  <li><strong>バッテリーの状態</strong> — <code>IOPSCopyPowerSourcesInfo</code> を介して読み取ります。</li>
+</ul>
+<p>これらの読み取りはデバイス上で行われます。kWatch は計測値を送信するためにネットワーク接続を開くことはありません。</p>
+
+<h2>kWatch が要求する権限</h2>
+<ul>
+  <li><strong>完全なディスクアクセス</strong> — macOS 13 以降で保護されたシステムパスを読み取るために必要です。デフォルトでは拒否されます。<em>システム設定 → プライバシーとセキュリティ → 完全なディスクアクセス</em>から付与できます。</li>
+  <li><strong>通知</strong> — しきい値アラートに使用します。デフォルトでは拒否されます。</li>
+</ul>
+
+<h2>Pro サブスクリプション</h2>
+<p>Pro へのアップグレードは StoreKit を通じて Apple が処理します。当社はあなたの Apple ID、支払い方法、請求情報を一切把握しません。サブスクリプションの状態はすべて Apple が管理し、当社には<em>検証済みの購読資格</em>フラグのみが通知されます。</p>
+
+<h2>お子様のプライバシー</h2>
+<p>kWatch は 13 歳未満のお子様を対象としていません。当社はお子様のデータを故意に収集することはありません。</p>
+
+<h2>本ポリシーの変更</h2>
+<p>当社は本ポリシーを更新する場合があります。重要な変更は上部の「最終更新日」によって反映されます。変更後に kWatch を継続して使用することは、変更への同意とみなされます。</p>
+
+<h2>お問い合わせ</h2>
+<p>support@kraftly.app · <a href="https://kraftly.app/kwatch/support">kraftly.app/kwatch/support</a></p>
+</body>
+</html>

@@ -12,6 +12,12 @@ public final class StubIntentService: IntentServiceProtocol, @unchecked Sendable
     public let openCalls: AtomicCounter
     public let processes: [ProcessUsage]
     public let diagnosticsURL: URL?
+    public let showTopProcessesCalls: AtomicCounter
+    public let showDiskUsageCalls: AtomicCounter
+    public let showNetworkRateCalls: AtomicCounter
+    public private(set) var lastShowTopProcessesLimit: Int?
+    public private(set) var lastShowDiskUsageVolume: DiskVolumeParameter?
+    public private(set) var lastShowNetworkRateDirection: NetworkDirectionParameter?
 
     public init(
         snapshot: MetricSnapshot? = nil,
@@ -26,6 +32,9 @@ public final class StubIntentService: IntentServiceProtocol, @unchecked Sendable
         self.openCalls = AtomicCounter()
         self.processes = processes
         self.diagnosticsURL = diagnosticsURL
+        self.showTopProcessesCalls = AtomicCounter()
+        self.showDiskUsageCalls = AtomicCounter()
+        self.showNetworkRateCalls = AtomicCounter()
     }
 
     public func latestSnapshot() async -> MetricSnapshot? { snapshot }
@@ -45,6 +54,21 @@ public final class StubIntentService: IntentServiceProtocol, @unchecked Sendable
             throw IntentServiceError.exportFailed("Diagnostics unavailable in stub.")
         }
         return diagnosticsURL
+    }
+
+    public func showTopProcesses(limit: Int) async {
+        showTopProcessesCalls.increment()
+        lastShowTopProcessesLimit = limit
+    }
+
+    public func showDiskUsage(volume: DiskVolumeParameter) async {
+        showDiskUsageCalls.increment()
+        lastShowDiskUsageVolume = volume
+    }
+
+    public func showNetworkRate(direction: NetworkDirectionParameter) async {
+        showNetworkRateCalls.increment()
+        lastShowNetworkRateDirection = direction
     }
 }
 
