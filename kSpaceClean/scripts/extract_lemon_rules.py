@@ -203,8 +203,8 @@ def _merge_superseded_manual(manual, merged_app):
     """Fold a superseded manual entry's cleanPaths into the Lemon-derived entry
     as one supplementary `manual-preserved` action.
 
-    The manual entry may be the older flat-schema form (cleanPaths + no
-    actions) or an already-converted entry. Paths are normalized and deduped.
+    The manual entry is the older flat-schema form (cleanPaths + no actions).
+    Paths are normalized and deduped.
     """
     clean = manual.get("cleanPaths") or []
     if clean:
@@ -217,6 +217,27 @@ def _merge_superseded_manual(manual, merged_app):
         })
         merged_app["actions"] = _dedupe_actions(merged_app["actions"])
     return merged_app
+
+
+def _carry_manual_preserved(manual, merged_app):
+    """Carry a prior-output `manual-preserved` action into a freshly merged app.
+
+    Idempotent counterpart of `_merge_superseded_manual`: the first run folds a
+    superseded manual entry's cleanPaths into the Lemon-derived app as a
+    `manual-preserved` action and the committed output no longer carries
+    cleanPaths for that app. On every later run this re-appends the stored
+    action from the prior output, so a re-run reproduces the same merged
+    output instead of silently dropping the preserved paths. Returns True if
+    at least one action was carried.
+    """
+    carried = False
+    for action in manual.get("actions", []):
+        if action.get("type") == "manual-preserved":
+            merged_app["actions"].append(action)
+            carried = True
+    if carried:
+        merged_app["actions"] = _dedupe_actions(merged_app["actions"])
+    return carried
 
 
 def _dedupe_actions(actions):
@@ -265,12 +286,14 @@ def main():
     existing = {}
     if args.preserve_manual and args.output.exists():
         existing = json.loads(args.output.read_text()).get("apps", {})
-        for mid in set(existing.keys()) & set(merged.keys()):
+        for mid in sorted(set(existing.keys()) & set(merged.keys())):
             manual = existing[mid]
             if "cleanPaths" in manual:
                 merged[mid] = _merge_superseded_manual(manual, merged[mid])
                 print(f"Merged superseded manual: {mid}")
-        manual_ids = set(existing.keys()) - set(merged.keys())
+            elif _carry_manual_preserved(manual, merged[mid]):
+                print(f"Carried manual-preserved action: {mid}")
+        manual_ids = sorted(set(existing.keys()) - set(merged.keys()))
         for mid in manual_ids:
             merged[mid] = existing[mid]
             if isinstance(merged[mid].get("cleanPaths"), list):
