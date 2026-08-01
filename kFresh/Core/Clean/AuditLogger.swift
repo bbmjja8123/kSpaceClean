@@ -70,8 +70,19 @@ public actor AuditLogger {
 
         // First-write path: FileHandle(forWritingTo:) requires the file to exist.
         // We materialise the file with `createFile(atPath:contents:)` so subsequent
-        // opens always succeed, then append atomically. This avoids a TOCTOU race
-        // between `fileExists` and `FileHandle` initialisation.
+        // opens always succeed, then append atomically.
+        //
+        // Concurrency notes:
+        // - Within a single process, the actor serialises every `log` call so
+        //   there is no race between the `fileExists` check and the
+        //   `FileHandle(forWritingTo:)` open — both observe the file in the
+        //   same serialised execution.
+        // - Across processes (e.g. two kFresh instances writing to the same
+        //   log) the `fileExists` → `FileHandle(forWritingTo:)` window can
+        //   race; one process may create, the other may then clobber with a
+        //   `createFile` (zero-length) and lose the first event. Multi-
+        //   instance audit safety is a v1.1 follow-up — for v1 we accept that
+        //   only one kFresh process at a time writes to any given log.
         if !fileManager.fileExists(atPath: logURL.path) {
             guard fileManager.createFile(atPath: logURL.path, contents: data) else {
                 throw NSError(domain: "AuditLogger", code: -1,
