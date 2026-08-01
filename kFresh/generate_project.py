@@ -117,6 +117,7 @@ def main():
         "OnboardingTests": make_group("OnboardingTests"),
         "AppListTests": make_group("AppListTests"),
         "DetailTests": make_group("DetailTests"),
+        "HistoryTests": make_group("HistoryTests"),
         "UITests": make_group("UITests"),
         "Products": make_group("Products"),
     }
@@ -168,6 +169,7 @@ def main():
         ("Features/Detail/UninstallToast.swift", "Detail"),
         ("Features/History/HistoryView.swift", "History"),
         ("Features/History/HistoryViewModel.swift", "History"),
+        ("Features/History/HistoryRowView.swift", "History"),
         ("Features/Onboarding/FDAGuideController.swift", "Onboarding"),
         ("Features/Onboarding/FDAGuideView.swift", "Onboarding"),
         ("Features/Onboarding/FDAGuidePage.swift", "Onboarding"),
@@ -237,6 +239,9 @@ def main():
             "UninstallSafetyCheckTests.swift",
             "UninstallConfirmSheetTests.swift",
             "UninstallConfirmFlowTests.swift",
+        ],
+        "HistoryTests": [
+            "HistoryViewModelTests.swift",
         ],
         "IntegrationTests": [
             "UninstallFlowTests.swift",
@@ -580,7 +585,7 @@ def main():
 
     # Set Tests group children
     tests_children = []
-    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "UITests"]:
+    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "HistoryTests", "UITests"]:
         tests_children.append((group_ids[sub], sub))
     objects[group_ids["Tests"]][1]["children"] = tests_children
 

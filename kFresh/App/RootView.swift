@@ -13,7 +13,12 @@ struct RootView: View {
             )
         )
         .sheet(isPresented: $coordinator.showHistory) {
-            HistoryView()
+            HistoryView(
+                viewModel: HistoryViewModel(
+                    historyRepo: services.history,
+                    trashMover: TrashMover(auditLogger: nil, historyRepo: services.history)
+                )
+            )
         }
         .sheet(isPresented: $coordinator.showSettings) {
             SettingsView()
