@@ -91,6 +91,10 @@
 		isa = PBXBuildFile;
 		fileRef = B05401260A8D3F3FF758E59D;
 	};
+	36A4128119D693CD510B5A08 /* 36A4128119D693CD510B5A08 */ = {
+		isa = PBXBuildFile;
+		fileRef = 895153BA3B014A53963868BD;
+	};
 	39FEF37BBD65059F5FD0BA44 /* 39FEF37BBD65059F5FD0BA44 */ = {
 		isa = PBXBuildFile;
 		fileRef = 93E7385164CAC43BEEBF65ED;
@@ -98,6 +102,10 @@
 	3B2FCA3EF8D0F909AD81E7A3 /* 3B2FCA3EF8D0F909AD81E7A3 */ = {
 		isa = PBXBuildFile;
 		fileRef = 596A35B436635B564A7D09B5;
+	};
+	3BE308D215C0C793FBFFA7E1 /* 3BE308D215C0C793FBFFA7E1 */ = {
+		isa = PBXBuildFile;
+		fileRef = C23416101C38A9190842B730;
 	};
 	3BFC387ADC063EFCE1CEBC1D /* 3BFC387ADC063EFCE1CEBC1D */ = {
 		isa = PBXBuildFile;
@@ -414,6 +422,10 @@
 	F7BFFF484BD25D346DC5325E /* F7BFFF484BD25D346DC5325E */ = {
 		isa = PBXBuildFile;
 		fileRef = BD8372016B507E6E4A7A99AC;
+	};
+	F801232F5030C8ED84283BD4 /* F801232F5030C8ED84283BD4 */ = {
+		isa = PBXBuildFile;
+		fileRef = A1D1E204D0FEFB2109B4C7D3;
 	};
 	F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */ = {
 		isa = PBXBuildFile;
@@ -830,6 +842,13 @@
 		path = Intents/DeepCleanIntent.swift;
 		sourceTree = "<group>";
 	};
+	895153BA3B014A53963868BD /* StartupItemRowView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemRowView.swift;
+		path = Features/StartupItems/StartupItemRowView.swift;
+		sourceTree = "<group>";
+	};
 	8C2E92D5254BB63634A134D7 /* BrandButtonStyle.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -891,6 +910,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = "AppAnalysis+CoreDataProperties.swift";
 		path = "Data/Models/AppAnalysis+CoreDataProperties.swift";
+		sourceTree = "<group>";
+	};
+	A1D1E204D0FEFB2109B4C7D3 /* StartupItemManagerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemManagerTests.swift;
+		path = Tests/StartupTests/StartupItemManagerTests.swift;
 		sourceTree = "<group>";
 	};
 	A336DAF2982BFADFF3C0BCE9 /* DetailViewModelTests.swift */ = {
@@ -1003,6 +1029,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = HistoryViewModel.swift;
 		path = Features/History/HistoryViewModel.swift;
+		sourceTree = "<group>";
+	};
+	C23416101C38A9190842B730 /* StartupItemsViewModelTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = StartupItemsViewModelTests.swift;
+		path = Tests/StartupTests/StartupItemsViewModelTests.swift;
 		sourceTree = "<group>";
 	};
 	C6F02E16C32A208DAABE3322 /* ScanResidueIntent.swift */ = {
@@ -1325,6 +1358,15 @@
 		name = Detect;
 		sourceTree = "<group>";
 	};
+	3B7118F5D36A78D1BE068657 /* StartupTests */ = {
+		isa = PBXGroup;
+		children = (
+			A1D1E204D0FEFB2109B4C7D3 /* StartupItemManagerTests.swift */,
+			C23416101C38A9190842B730 /* StartupItemsViewModelTests.swift */,
+		);
+		name = StartupTests;
+		sourceTree = "<group>";
+	};
 	3C01BB5CC94D49CC05F47B00 /* AppList */ = {
 		isa = PBXGroup;
 		children = (
@@ -1490,6 +1532,7 @@
 		children = (
 			CF5DAA48D342F90110132D61 /* StartupItemsView.swift */,
 			1B365D303EAC1EE8F810E853 /* StartupItemsViewModel.swift */,
+			895153BA3B014A53963868BD /* StartupItemRowView.swift */,
 		);
 		name = StartupItems;
 		sourceTree = "<group>";
@@ -1548,6 +1591,7 @@
 			7FE9A0137F4E86ED27FE6667 /* AppListTests */,
 			6CA333BE487A53BDF1DF1567 /* DetailTests */,
 			51A79B58FC1B5FEFCADCA5DD /* HistoryTests */,
+			3B7118F5D36A78D1BE068657 /* StartupTests */,
 			2220AFE70C0352F63AF55DB3 /* UITests */,
 		);
 		name = Tests;
@@ -1725,6 +1769,8 @@
 			ECEB1D5CA495C3E904BBF26B /* ECEB1D5CA495C3E904BBF26B */,
 			50B92E24837F0F285E3E4137 /* 50B92E24837F0F285E3E4137 */,
 			E94CD270DF464AAC0E5D44FA /* E94CD270DF464AAC0E5D44FA */,
+			F801232F5030C8ED84283BD4 /* F801232F5030C8ED84283BD4 */,
+			3BE308D215C0C793FBFFA7E1 /* 3BE308D215C0C793FBFFA7E1 */,
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
 			84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */,
@@ -1787,6 +1833,7 @@
 			2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */,
 			E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */,
 			0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */,
+			36A4128119D693CD510B5A08 /* 36A4128119D693CD510B5A08 */,
 			BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */,
 			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
 			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
