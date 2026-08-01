@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// A form for creating or editing a threshold alert.
 ///
@@ -81,7 +82,7 @@ struct AlertEditorView: View {
                 .frame(width: 80)
                 .multilineTextAlignment(.trailing)
             Text(unitLabel(for: kind))
-                .foregroundColor(.secondary)
+                .foregroundColor(Color.textSecondary)
                 .frame(width: 40, alignment: .leading)
         }
     }

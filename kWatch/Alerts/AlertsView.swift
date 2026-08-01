@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// Displays the list of threshold alerts with enable/disable toggles,
 /// add and delete actions, and a notification-permission banner.
@@ -74,7 +75,7 @@ struct AlertsView: View {
         HStack {
             Text("Enable notifications to receive alert.")
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color.textSecondary)
             Spacer()
             Button("Enable") {
                 Task { await viewModel.requestNotificationPermission() }
@@ -91,12 +92,12 @@ struct AlertsView: View {
         VStack(spacing: 12) {
             Image(systemName: "bell.badge")
                 .font(.largeTitle)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color.textSecondary)
             Text("No Alerts")
                 .font(.headline)
             Text("Tap Add to create a threshold alert.")
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color.textSecondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -134,7 +135,7 @@ private struct AlertRow: View {
                     .font(.headline)
                 Text(conditionDescription)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color.textSecondary)
             }
             Spacer()
             Toggle(isOn: Binding(
