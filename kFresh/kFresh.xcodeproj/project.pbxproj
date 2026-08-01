@@ -215,6 +215,10 @@
 		isa = PBXBuildFile;
 		fileRef = 8C2E92D5254BB63634A134D7;
 	};
+	84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */ = {
+		isa = PBXBuildFile;
+		fileRef = C9E078E86802779CEEDAD0F2;
+	};
 	85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */ = {
 		isa = PBXBuildFile;
 		fileRef = F75307E42A8914CFBC4E8183;
@@ -306,6 +310,10 @@
 	D89C984500D05F1C3857B957 /* D89C984500D05F1C3857B957 */ = {
 		isa = PBXBuildFile;
 		fileRef = 4F7AD27F716655EB375F2412;
+	};
+	DCECDEE27A83C4E5AE9BE6C4 /* DCECDEE27A83C4E5AE9BE6C4 */ = {
+		isa = PBXBuildFile;
+		fileRef = 9A914D29E3FBE232544870A3;
 	};
 	DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */ = {
 		isa = PBXBuildFile;
@@ -759,6 +767,13 @@
 		path = kFresh.entitlements;
 		sourceTree = "<group>";
 	};
+	9A914D29E3FBE232544870A3 /* OnboardingRoutingTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = OnboardingRoutingTests.swift;
+		path = Tests/OnboardingTests/OnboardingRoutingTests.swift;
+		sourceTree = "<group>";
+	};
 	9C73A58BF662B0271D083EE3 /* Radius.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -869,6 +884,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = FDAuthorizer.swift;
 		path = Data/FDAuthorizer.swift;
+		sourceTree = "<group>";
+	};
+	C9E078E86802779CEEDAD0F2 /* OnboardingUITests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = OnboardingUITests.swift;
+		path = Tests/UITests/OnboardingUITests.swift;
 		sourceTree = "<group>";
 	};
 	CE04F6C7E85E205F424C65AC /* Spacing.swift */ = {
@@ -1099,6 +1121,7 @@
 		isa = PBXGroup;
 		children = (
 			83C79C522B962284BED63E66 /* UninstallJourneyUITests.swift */,
+			C9E078E86802779CEEDAD0F2 /* OnboardingUITests.swift */,
 		);
 		name = UITests;
 		sourceTree = "<group>";
@@ -1372,6 +1395,7 @@
 		children = (
 			B05401260A8D3F3FF758E59D /* FDAPermissionProbeTests.swift */,
 			EAA3EA03FFEDFA0DBA5545C7 /* FDAGuideControllerTests.swift */,
+			9A914D29E3FBE232544870A3 /* OnboardingRoutingTests.swift */,
 		);
 		name = OnboardingTests;
 		sourceTree = "<group>";
@@ -1501,9 +1525,11 @@
 			0704BB649CB8695E93175CE8 /* 0704BB649CB8695E93175CE8 */,
 			33D3B9276A837515275FF9DC /* 33D3B9276A837515275FF9DC */,
 			E4CBB2D4144A020738312A5F /* E4CBB2D4144A020738312A5F */,
+			DCECDEE27A83C4E5AE9BE6C4 /* DCECDEE27A83C4E5AE9BE6C4 */,
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
 			E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */,
+			84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

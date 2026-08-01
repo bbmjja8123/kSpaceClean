@@ -218,6 +218,7 @@ def main():
         "OnboardingTests": [
             "FDAPermissionProbeTests.swift",
             "FDAGuideControllerTests.swift",
+            "OnboardingRoutingTests.swift",
         ],
         "IntegrationTests": [
             "UninstallFlowTests.swift",
@@ -225,6 +226,7 @@ def main():
         ],
         "UITests": [
             "UninstallJourneyUITests.swift",
+            "OnboardingUITests.swift",
         ],
     }
 
