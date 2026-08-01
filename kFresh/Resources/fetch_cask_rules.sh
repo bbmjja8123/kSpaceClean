@@ -73,9 +73,17 @@ xargs -n 1 -P "$PARALLEL" -I {} bash -c 'fetch_one "$@"' _ {} < "$TMP/jobs.txt" 
 # extract_zap_stanzas.py <input> <output>`), but the bash→python boundary
 # is awkward enough that we accept the duplication for now. If you fix a
 # bug here, mirror the fix in the python script's `parse_zap`.
-python3 - "$TMP/fetched.txt" "$OUTPUT" <<'PY'
-import json, re, sys
-fetched_path, output_path = sys.argv[1], sys.argv[2]
+python3 - "$TMP/fetched.txt" "$OUTPUT" "$(dirname "$(readlink -f "$0")")" <<'PY'
+import json, os, re, sys
+import importlib.util
+fetched_path, output_path, resources_dir = sys.argv[1], sys.argv[2], sys.argv[3]
+_spec = importlib.util.spec_from_file_location(
+    "extract_cask_bundle_id",
+    os.path.join(resources_dir, "extract_cask_bundle_id.py"),
+)
+_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_mod)
+extract_bundle_id = _mod.extract_bundle_id
 
 rules = []
 for line in open(fetched_path):
@@ -91,8 +99,9 @@ for line in open(fetched_path):
     if not m:
         continue
     paths = re.findall(r'"([^"]+)"', m.group(1))
+    bundle_id = extract_bundle_id(ruby, token)
     rules.append({
-        "bundleID": token,
+        "bundleID": bundle_id,
         "appName": token,
         "residuePaths": [p for p in paths if p.startswith("~/")],
         "systemLevelPaths": [p for p in paths if not p.startswith("~/")],
