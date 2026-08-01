@@ -71,6 +71,10 @@
 		isa = PBXBuildFile;
 		fileRef = 948961CBE51968D7FA72F15F;
 	};
+	2D621405E1F92E68D3ED8A53 /* 2D621405E1F92E68D3ED8A53 */ = {
+		isa = PBXBuildFile;
+		fileRef = BCE1A89B85BEB373D851211E;
+	};
 	2E2245A790D86751CF57E071 /* 2E2245A790D86751CF57E071 */ = {
 		isa = PBXBuildFile;
 		fileRef = 8E5C043DA0B1F2CABCBA966C;
@@ -1399,6 +1403,13 @@
 		path = Features/RightPanel/RightPanelView.swift;
 		sourceTree = "<group>";
 	};
+	BCE1A89B85BEB373D851211E /* ScanTreeFilterTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanTreeFilterTests.swift;
+		path = Tests/ScanTreeFilterTests.swift;
+		sourceTree = "<group>";
+	};
 	BD459A36F0F036BA48364A7D /* MaintenanceView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1964,6 +1975,7 @@
 			54A176E88B00B6D5D4AD211C /* ScanResultsViewModelSnapshotTests.swift */,
 			5E6548C4E1A35147FDB30114 /* MetricKitReceiverTests.swift */,
 			7C5D1FF7151A5F45CD422CAD /* BundleIDResolverTests.swift */,
+			BCE1A89B85BEB373D851211E /* ScanTreeFilterTests.swift */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -2208,6 +2220,7 @@
 			C6C7A29A138E04AF3D9C8C14 /* C6C7A29A138E04AF3D9C8C14 */,
 			C5A9BB5E28B40052FCAF75D7 /* C5A9BB5E28B40052FCAF75D7 */,
 			C39BED983319CB793C67C426 /* C39BED983319CB793C67C426 */,
+			2D621405E1F92E68D3ED8A53 /* 2D621405E1F92E68D3ED8A53 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

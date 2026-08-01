@@ -57,6 +57,7 @@ public final class ScanResult: ScanTreeNode, @unchecked Sendable {
     public let riskLevel: RiskLevel
     public let isRecommended: Bool
     public let showAction: Bool = false
+    public var isHiddenByFilter: Bool = false
 
     /// Total size including nested results. Computed on read so the
     /// scanner can append to `nestedResults` after the row is already
@@ -82,7 +83,8 @@ public final class ScanResult: ScanTreeNode, @unchecked Sendable {
         nestedResults: [ScanResult] = [],
         state: CheckState = .off,
         riskLevel: RiskLevel = .recommended,
-        isRecommended: Bool = true
+        isRecommended: Bool = true,
+        isHiddenByFilter: Bool = false
     ) {
         self.id = id
         self.url = url
@@ -99,6 +101,7 @@ public final class ScanResult: ScanTreeNode, @unchecked Sendable {
         self.selectedSize = state == .on ? fileSize : 0
         self.riskLevel = riskLevel
         self.isRecommended = isRecommended
+        self.isHiddenByFilter = isHiddenByFilter
     }
 
     /// Cascade-toggle: flip own state, mirror `selectedSize` to `fileSize`

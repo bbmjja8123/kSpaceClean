@@ -27,9 +27,10 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
     public var state: CheckState
     public var actions: [ScanAction]
     public var directResults: [ScanResult]
-    public let showAction: Bool
+    public var showAction: Bool
     public let riskLevel: RiskLevel
     public let isRecommended: Bool
+    public var isHiddenByFilter: Bool = false
 
     /// Direct children flattened for SwiftUI outline rendering. Switches
     /// source array based on `showAction` so the parent picker doesn't have
@@ -52,7 +53,8 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
         directResults: [ScanResult] = [],
         showAction: Bool = true,
         riskLevel: RiskLevel = .recommended,
-        isRecommended: Bool = true
+        isRecommended: Bool = true,
+        isHiddenByFilter: Bool = false
     ) {
         self.id = id
         self.subCategoryID = subCategoryID
@@ -68,6 +70,7 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
         self.showAction = showAction
         self.riskLevel = riskLevel
         self.isRecommended = isRecommended
+        self.isHiddenByFilter = isHiddenByFilter
     }
 
     /// Cascade-toggle. Mirrors the v3 spec rule (CLAUDE.md §8.5):

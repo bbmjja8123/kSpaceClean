@@ -58,6 +58,7 @@ public final class ScanAction: ScanTreeNode, @unchecked Sendable {
     public let riskLevel: RiskLevel
     public let isRecommended: Bool
     public let showAction: Bool = false
+    public var isHiddenByFilter: Bool = false
 
     /// Direct children flattened for SwiftUI outline rendering.
     public var children: [any ScanTreeNode] { results }
@@ -74,7 +75,8 @@ public final class ScanAction: ScanTreeNode, @unchecked Sendable {
         results: [ScanResult] = [],
         recommend: Bool = true,
         riskLevel: RiskLevel = .recommended,
-        isRecommended: Bool = true
+        isRecommended: Bool = true,
+        isHiddenByFilter: Bool = false
     ) {
         self.id = id
         self.actionID = actionID
@@ -88,6 +90,7 @@ public final class ScanAction: ScanTreeNode, @unchecked Sendable {
         self.recommend = recommend
         self.riskLevel = riskLevel
         self.isRecommended = isRecommended
+        self.isHiddenByFilter = isHiddenByFilter
     }
 
     /// Cascade-toggle: propagate the new state to every result underneath.

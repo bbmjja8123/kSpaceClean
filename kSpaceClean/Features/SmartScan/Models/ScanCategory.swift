@@ -25,7 +25,8 @@ public final class ScanCategory: ScanTreeNode, @unchecked Sendable {
     public var subItems: [ScanSubCategory]
     public let riskLevel: RiskLevel
     public let isRecommended: Bool
-    public let showAction: Bool = false
+    public var showAction: Bool = false
+    public var isHiddenByFilter: Bool = false
 
     /// Direct children flattened for SwiftUI outline rendering.
     public var children: [any ScanTreeNode] { subItems }
@@ -40,7 +41,8 @@ public final class ScanCategory: ScanTreeNode, @unchecked Sendable {
         state: CheckState = .off,
         subItems: [ScanSubCategory] = [],
         riskLevel: RiskLevel = .recommended,
-        isRecommended: Bool = true
+        isRecommended: Bool = true,
+        isHiddenByFilter: Bool = false
     ) {
         self.id = id
         self.categoryID = categoryID
@@ -52,6 +54,7 @@ public final class ScanCategory: ScanTreeNode, @unchecked Sendable {
         self.subItems = subItems
         self.riskLevel = riskLevel
         self.isRecommended = isRecommended
+        self.isHiddenByFilter = isHiddenByFilter
     }
 
     /// Cascade-toggle: setting `.on`/`.off` flips every child to that exact

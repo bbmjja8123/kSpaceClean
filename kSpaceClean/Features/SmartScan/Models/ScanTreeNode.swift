@@ -35,6 +35,12 @@ public protocol ScanTreeNode: Identifiable, Hashable, Sendable {
     /// `true` only for `ScanSubCategory`; the other three types always return `false`.
     var showAction: Bool { get }
 
+    /// True when a default filter (e.g. the 100 KB size floor) would hide this
+    /// node from the default tree view. The node remains in the data model
+    /// so the cleanup pipeline can still select it; `ScanResultsView`
+    /// skips rendering unless `ScanResultsViewModel.showAllHidden` is on.
+    var isHiddenByFilter: Bool { get set }
+
     /// Propagate a user-driven state change from this node down to every descendant.
     /// Implementations must NOT mutate upward — the parent re-aggregates via `refreshState()`.
     func setState(_ newState: CheckState)
