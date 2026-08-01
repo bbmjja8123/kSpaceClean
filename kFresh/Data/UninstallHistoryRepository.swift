@@ -11,7 +11,11 @@ actor UninstallHistoryRepository {
         records.sorted { $0.uninstalledAt > $1.uninstalledAt }
     }
 
-    func fetch(id: UUID) -> UninstallRecord? {
+    /// Returns the uninstall record matching `id`, or `nil` if no record with
+    /// that ID has been saved. Used by `TrashMover.historyRecord(id:)` and
+    /// tests that need to assert post-conditions (e.g. `isRestored` flipped)
+    /// without reaching into the private storage.
+    func record(id: UUID) -> UninstallRecord? {
         records.first { $0.id == id }
     }
 
@@ -27,10 +31,6 @@ actor UninstallHistoryRepository {
     /// reaching into private storage.
     func recentRecords(limit: Int) -> [UninstallRecord] {
         Array(records.sorted { $0.uninstalledAt > $1.uninstalledAt }.prefix(limit))
-    }
-
-    func record(id: UUID) -> UninstallRecord? {
-        records.first { $0.id == id }
     }
 
     func deleteExpired(olderThan days: Int) {
