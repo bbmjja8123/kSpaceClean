@@ -44,6 +44,11 @@ final class DetailViewModel: ObservableObject {
     // MARK: - Dependencies
 
     private let residueDetector: ResidueDetector
+    /// The shared, app-wide ``TrashMover`` (C1). Injected from
+    /// `AppServices` via ``AppDetailView`` so the audit log and history
+    /// repository persist across calls — a per-call fresh mover would
+    /// rebuild a fresh repository each time and orphan history records.
+    private let mover: TrashMover
 
     /// True when the safety check passed and the app is not system-protected.
     var canUninstall: Bool {
@@ -52,9 +57,10 @@ final class DetailViewModel: ObservableObject {
 
     // MARK: - Init
 
-    init(app: InstalledApp, residueDetector: ResidueDetector) {
+    init(app: InstalledApp, residueDetector: ResidueDetector, mover: TrashMover) {
         self.app = app
         self.residueDetector = residueDetector
+        self.mover = mover
     }
 
     // MARK: - Actions
@@ -88,18 +94,34 @@ final class DetailViewModel: ObservableObject {
     /// check not yet passed) — the host view's confirm button should already
     /// be hidden in that case, so a `nil` here means "we reached the call
     /// from a path the UI didn't gate correctly". Otherwise returns the
-    /// `TrashMover` result verbatim and mirrors it onto
+    /// ``TrashMover`` result verbatim and mirrors it onto
     /// ``lastUninstallResult`` so the view can react without re-running the
     /// mover.
     ///
-    /// A fresh ``TrashMover`` is constructed per call. Task 5 swaps that for
-    /// a shared actor injected from `AppServices` so audit log + history
-    /// repository persist across calls.
-    func confirmUninstall() async -> Result<UninstallRecord, TrashError>? {
+    /// - Parameter includeResidues: When `true` (the recommended default),
+    ///   the currently-scanned residue files are trashed alongside the app
+    ///   bundle. When the user unchecks the residue toggle in
+    ///   ``UninstallConfirmSheet`` (I1), the residues are filtered out so
+    ///   the trash operation touches only the app bundle itself.
+    func confirmUninstall(includeResidues: Bool = true) async -> Result<UninstallRecord, TrashError>? {
         guard canUninstall else { return nil }
-        let mover = TrashMover()
-        let result = await mover.moveToTrash(app: app, residues: residues)
+        let residuesToDelete = includeResidues ? residues : []
+        let result = await mover.moveToTrash(app: app, residues: residuesToDelete)
         lastUninstallResult = result
         return result
+    }
+
+    /// Looks up the stored history record for `id` through the shared mover.
+    /// Used by ``AppDetailView.handleRestore()`` to resolve the undo toast's
+    /// `recordID` into a full ``UninstallRecord`` before calling ``restore``.
+    func historyRecord(id: UUID) async -> UninstallRecord? {
+        await mover.historyRecord(id: id)
+    }
+
+    /// Restores a previously-uninstalled app through the shared mover. The
+    /// result is returned verbatim so the host view can dismiss the undo
+    /// toast on success or surface ``TrashError`` on failure (C2).
+    func restore(record: UninstallRecord) async -> Result<URL, TrashError> {
+        await mover.restore(record: record)
     }
 }

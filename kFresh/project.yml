@@ -1,0 +1,62 @@
+name: kFresh
+options:
+  bundleIdPrefix: app.kraftly
+  deploymentTarget:
+    macOS: "13.0"
+  xcodeVersion: "15.0"
+
+settings:
+  SWIFT_STRICT_CONCURRENCY: complete
+  MACOSX_DEPLOYMENT_TARGET: "13.0"
+  SWIFT_VERSION: "5.9"
+
+targets:
+  kFresh:
+    type: application
+    platform: macOS
+    sources:
+      - path: .
+        excludes:
+          - "project.yml"
+          - "**/*.md"
+          - "Tests/**"
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kfresh
+      INFOPLIST_FILE: Info.plist
+      CODE_SIGN_STYLE: Automatic
+      DEVELOPMENT_TEAM: ""
+    dependencies:
+      - package: kFoundation
+    preBuildScripts:
+      - name: "SwiftLint"
+        script: "if which swiftlint >/dev/null; then swiftlint; fi"
+        basedOnDependencyAnalysis: false
+    entitlements:
+      path: kFresh.entitlements
+
+  kFreshTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kfresh.tests
+      MACOSX_DEPLOYMENT_TARGET: "13.0"
+      SWIFT_VERSION: "5.9"
+    dependencies:
+      - target: kFresh
+      - package: kFoundation
+
+  FinderSyncExtension:
+    type: app-extension
+    platform: macOS
+    sources:
+      - FinderExtension
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kfresh.finder-sync
+    dependencies:
+      - target: kFresh
+
+packages:
+  kFoundation:
+    path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation

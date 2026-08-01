@@ -22,7 +22,7 @@ final class AppListViewModelTests: XCTestCase {
     private func makeViewModel() -> AppListViewModel {
         AppListViewModel(
             catalog: AppCatalogService(),
-            historyRepo: UninstallHistoryRepository(),
+            historyRepo: UninstallHistoryRepository(inMemory: true),
             fdaProbe: FDAPermissionProbe()
         )
     }

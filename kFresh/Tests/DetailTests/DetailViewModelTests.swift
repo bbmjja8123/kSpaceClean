@@ -34,7 +34,11 @@ final class DetailViewModelTests: XCTestCase {
             sizeBytes: 1024,
             source: .appleBuiltIn
         )
-        let vm = DetailViewModel(app: protected, residueDetector: ResidueDetector(ruleStore: nil))
+        let vm = DetailViewModel(
+            app: protected,
+            residueDetector: ResidueDetector(ruleStore: nil),
+            mover: TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
+        )
         await vm.performSafetyCheck()
         XCTAssertFalse(vm.canUninstall)
         if case .blocked(let reason) = vm.safetyCheck {
@@ -45,7 +49,11 @@ final class DetailViewModelTests: XCTestCase {
     }
 
     func testRunningAppAllowsUninstallAfterAcknowledgment() async {
-        let vm = DetailViewModel(app: makeApp(running: true), residueDetector: ResidueDetector(ruleStore: nil))
+        let vm = DetailViewModel(
+            app: makeApp(running: true),
+            residueDetector: ResidueDetector(ruleStore: nil),
+            mover: TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
+        )
         await vm.performSafetyCheck()
         // Running app still passes; the sheet surfaces the running warning
         XCTAssertTrue(vm.canUninstall)
@@ -53,7 +61,11 @@ final class DetailViewModelTests: XCTestCase {
     }
 
     func testResiduesSortedByConfidenceDescending() async {
-        let vm = DetailViewModel(app: makeApp(), residueDetector: ResidueDetector(ruleStore: nil))
+        let vm = DetailViewModel(
+            app: makeApp(),
+            residueDetector: ResidueDetector(ruleStore: nil),
+            mover: TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
+        )
         vm.residues = [
             ResidueFile(url: URL(fileURLWithPath: "/tmp/a"), type: .preferences, sizeBytes: 100, confidence: 0.5, description: "low"),
             ResidueFile(url: URL(fileURLWithPath: "/tmp/b"), type: .caches, sizeBytes: 200, confidence: 0.9, description: "high"),

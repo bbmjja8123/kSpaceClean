@@ -27,7 +27,7 @@ final class UninstallConfirmSheetTests: XCTestCase {
         let view = UninstallConfirmSheet(
             app: app,
             residues: [],
-            onConfirm: { confirmFired = true },
+            onConfirm: { _ in confirmFired = true },
             onCancel: { cancelFired = true }
         )
 
@@ -75,7 +75,7 @@ final class UninstallConfirmSheetTests: XCTestCase {
         let view = UninstallConfirmSheet(
             app: app,
             residues: residues,
-            onConfirm: {},
+            onConfirm: { _ in },
             onCancel: {}
         )
 
@@ -102,7 +102,7 @@ final class UninstallConfirmSheetTests: XCTestCase {
         let view = UninstallConfirmSheet(
             app: app,
             residues: [],
-            onConfirm: {},
+            onConfirm: { _ in },
             onCancel: {}
         )
         let hosting = NSHostingView(rootView: view)

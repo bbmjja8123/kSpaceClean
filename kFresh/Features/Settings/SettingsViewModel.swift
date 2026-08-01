@@ -13,11 +13,18 @@ class SettingsViewModel: ObservableObject {
     private let probe: FDAPermissionProbe
     private let authorizer = FDAuthorizer()
 
+    /// The app-wide coordinator. ``showPaywall()`` sets `coordinator.showPaywall`
+    /// so ``RootView`` presents the store paywall as a sheet (C3).
+    private let coordinator: AppCoordinator
+
     /// Creates the view model.
     ///
-    /// - Parameter probe: Supplies the Full Disk Access status shown in Settings.
-    init(probe: FDAPermissionProbe = FDAPermissionProbe()) {
+    /// - Parameters:
+    ///   - probe: Supplies the Full Disk Access status shown in Settings.
+    ///   - coordinator: Receives the `showPaywall` signal for the paywall sheet.
+    init(probe: FDAPermissionProbe = FDAPermissionProbe(), coordinator: AppCoordinator) {
         self.probe = probe
+        self.coordinator = coordinator
         Task { await refreshFDAStatus() }
     }
 
@@ -36,7 +43,10 @@ class SettingsViewModel: ObservableObject {
         Task { await refreshFDAStatus() }
     }
 
+    /// Presents the paywall by flagging ``AppCoordinator.showPaywall``; the
+    /// ``RootView`` observes that flag and presents ``PaywallView`` as a sheet
+    /// (C3).
     func showPaywall() {
-        print("Show paywall")
+        coordinator.showPaywall = true
     }
 }

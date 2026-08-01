@@ -42,6 +42,30 @@ public enum TrashError: Error {
     case restoreResidueFailed(underlying: Error)
 }
 
+extension TrashError: LocalizedError {
+    /// User-readable Chinese descriptions so the restore / uninstall error
+    /// surfacing in `AppDetailView` and `HistoryViewModel` shows an actionable
+    /// message instead of a generic English `Error` default.
+    public var errorDescription: String? {
+        switch self {
+        case .protected(let reason):
+            return reason
+        case .trashFailed(let underlying):
+            return "移入废纸篓失败：\(underlying.localizedDescription)"
+        case .terminateFailed(let bundleID):
+            return "无法自动退出 \(bundleID)，请手动退出后重试"
+        case .auditLogFailed(let underlying):
+            return "审计日志写入失败：\(underlying.localizedDescription)"
+        case .restoreRefusedOverwrite(let path):
+            return "无法恢复：原路径已被占用（\(path)）"
+        case .trashedItemMissing(let bundleID):
+            return "无法恢复 \(bundleID)：废纸篓中的 App 已不存在"
+        case .restoreResidueFailed(let underlying):
+            return "残留文件恢复失败（备份已保留，可重试）：\(underlying.localizedDescription)"
+        }
+    }
+}
+
 /// Safe-delete engine for uninstalling a Mac app and its residue files.
 ///
 /// Three design properties distinguish this from a naive "move to Trash" loop:
@@ -65,33 +89,32 @@ public actor TrashMover {
     private let historyRepo: UninstallHistoryRepository
     private let auditLogger: AuditLogger?
 
-    /// Creates a `TrashMover` with optional audit logging. When `auditLogger`
-    /// is `nil`, the mover still works but no audit events are recorded.
-    /// `BackupManager` and `UninstallHistoryRepository` are created with their
-    /// default initialisers and live entirely inside this actor.
-    public init(auditLogger: AuditLogger? = nil) {
+    /// Creates a `TrashMover`.
+    ///
+    /// Internal (not `public`) because `UninstallHistoryRepository` — the
+    /// `historyRepo` parameter's type — is internal. All current callers
+    /// (`AppServices`, `DetailViewModel`, `HistoryViewModel`,
+    /// `UninstallAppIntent`, tests) live inside the kFresh module.
+    ///
+    /// - Parameters:
+    ///   - auditLogger: Optional audit-log destination. When `nil`, the mover
+    ///     still works but no audit events are recorded.
+    ///   - historyRepo: The uninstall-history backing store. When `nil`, a
+    ///     disk-backed `UninstallHistoryRepository` is created for the caller —
+    ///     used by production (`AppServices` passes its shared repository) and
+    ///     by App Intents, which have no environment objects. Tests inject an
+    ///     `inMemory` repository so they never touch the on-disk store.
+    init(auditLogger: AuditLogger? = nil, historyRepo: UninstallHistoryRepository? = nil) {
         self.backupManager = BackupManager()
-        self.historyRepo = UninstallHistoryRepository()
+        self.historyRepo = historyRepo ?? UninstallHistoryRepository()
         self.auditLogger = auditLogger
     }
 
-    /// TEST: test-only initialiser that lets a test inject a pre-populated
-    /// `UninstallHistoryRepository` so the assertion `record(id:).isRestored
-    /// == false` can prove `markRestored` was NOT called. The default
-    /// `init(auditLogger:)` constructs a fresh empty repository, which makes
-    /// `recentRecords` empty whether `markRestored` is correctly skipped or
-    /// incorrectly called — a vacuous assertion (see I3b).
-    init(auditLogger: AuditLogger? = nil, historyRepo: UninstallHistoryRepository) {
-        self.backupManager = BackupManager()
-        self.historyRepo = historyRepo
-        self.auditLogger = auditLogger
-    }
-
-    /// TEST: records a pre-built `UninstallRecord` into the in-memory history
-    /// so a test that drives `restore(record:)` directly can subsequently
-    /// inspect it via `record(id:)`. Production code never needs this —
-    /// `moveToTrash` writes the record itself. Marked internal (not
-    /// `public`) because `UninstallRecord` is internal.
+    /// Records a pre-built `UninstallRecord` into the history store so a test
+    /// that drives `restore(record:)` directly can subsequently inspect it via
+    /// `record(id:)`. Production code never needs this — `moveToTrash` writes
+    /// the record itself. Marked internal (not `public`) because
+    /// `UninstallRecord` is internal.
     func seedHistoryRecord(_ record: UninstallRecord) async {
         await historyRepo.save(record: record)
     }
@@ -333,8 +356,8 @@ public actor TrashMover {
         return .success(originalURL)
     }
 
-    /// Returns the most recent `limit` in-memory history records (newest
-    /// first). Exposed so tests verifying `restore`'s failure path can
+    /// Returns the most recent `limit` history records (newest first).
+    /// Exposed so tests verifying `restore`'s failure path can
     /// assert that `markRestored` was NOT called without reaching into
     /// private storage. Internal because `UninstallRecord` is internal.
     func recentRecords(limit: Int) async -> [UninstallRecord] {

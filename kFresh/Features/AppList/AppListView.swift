@@ -6,6 +6,7 @@ struct AppListView: View {
     @StateObject private var viewModel: AppListViewModel
     @State private var selectedApp: InstalledApp?
     @EnvironmentObject private var coordinator: AppCoordinator
+    @EnvironmentObject private var services: AppServices
 
     init(viewModel: AppListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -80,7 +81,7 @@ struct AppListView: View {
 
     @ViewBuilder private var detailPane: some View {
         if let app = selectedApp {
-            AppDetailView(app: app)
+            AppDetailView(app: app, mover: services.mover)
         } else {
             EmptyStateView(
                 title: "选择一个 App",

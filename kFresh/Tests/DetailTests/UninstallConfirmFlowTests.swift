@@ -28,7 +28,11 @@ final class UninstallConfirmFlowTests: XCTestCase {
             isRunning: false,
             lastUsedDate: nil
         )
-        let vm = DetailViewModel(app: app, residueDetector: ResidueDetector(ruleStore: nil))
+        let vm = DetailViewModel(
+            app: app,
+            residueDetector: ResidueDetector(ruleStore: nil),
+            mover: TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
+        )
         await vm.performSafetyCheck()
         XCTAssertTrue(vm.canUninstall)
 
@@ -44,7 +48,11 @@ final class UninstallConfirmFlowTests: XCTestCase {
             isRunning: false,
             lastUsedDate: nil
         )
-        let protectedVM = DetailViewModel(app: protected, residueDetector: ResidueDetector(ruleStore: nil))
+        let protectedVM = DetailViewModel(
+            app: protected,
+            residueDetector: ResidueDetector(ruleStore: nil),
+            mover: TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
+        )
         await protectedVM.performSafetyCheck()
         let blocked = await protectedVM.confirmUninstall()
         XCTAssertNil(blocked, "Protected app must short-circuit to nil")
@@ -75,7 +83,7 @@ final class UninstallConfirmFlowTests: XCTestCase {
         let view = UninstallConfirmSheet(
             app: app,
             residues: residues,
-            onConfirm: {},
+            onConfirm: { _ in },
             onCancel: {}
         )
         let hosting = NSHostingView(rootView: view)

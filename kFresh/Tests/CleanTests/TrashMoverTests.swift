@@ -14,7 +14,7 @@ final class TrashMoverTests: XCTestCase {
 
     func testMoveToTrashReturnsProtectedErrorForProtectedApp() async {
         let app = makeApp(bundleID: "com.apple.finder", path: "/System/Library/Finder.app", isProtected: true)
-        let mover = TrashMover(auditLogger: nil)
+        let mover = TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
         let result = await mover.moveToTrash(app: app, residues: [])
         switch result {
         case .failure(.protected(let reason)):
@@ -30,7 +30,7 @@ final class TrashMoverTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: tempDir) }
         let auditURL = tempDir.appendingPathComponent("audit.jsonl")
         let logger = try AuditLogger(logURL: auditURL)
-        let mover = TrashMover(auditLogger: logger)
+        let mover = TrashMover(auditLogger: logger, historyRepo: UninstallHistoryRepository(inMemory: true))
 
         let app = makeApp(bundleID: "com.example.test", path: "/tmp/Test-\(UUID().uuidString).app", isProtected: false)
         try FileManager.default.createDirectory(at: URL(fileURLWithPath: app.url.path), withIntermediateDirectories: true)
@@ -74,7 +74,7 @@ final class TrashMoverTests: XCTestCase {
             residues: []
         )
 
-        let mover = TrashMover(auditLogger: nil)
+        let mover = TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
         let result = await mover.restore(record: record)
 
         guard case .failure(.restoreRefusedOverwrite(let refusedPath)) = result else {
@@ -98,7 +98,7 @@ final class TrashMoverTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: tempDir) }
         let auditURL = tempDir.appendingPathComponent("audit.jsonl")
         let logger = try AuditLogger(logURL: auditURL)
-        let mover = TrashMover(auditLogger: logger)
+        let mover = TrashMover(auditLogger: logger, historyRepo: UninstallHistoryRepository(inMemory: true))
 
         // App to uninstall
         let appPath = tempDir.appendingPathComponent("Multi-\(UUID().uuidString).app")
@@ -191,7 +191,7 @@ final class TrashMoverTests: XCTestCase {
             residues: []
         )
 
-        let mover = TrashMover(auditLogger: nil)
+        let mover = TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
         let result = await mover.restore(record: record)
 
         guard case .failure(.trashedItemMissing(let bundleID)) = result else {
@@ -226,14 +226,14 @@ final class TrashMoverTests: XCTestCase {
         let auditURL = tempDir.appendingPathComponent("audit.jsonl")
         let logger = try AuditLogger(logURL: auditURL)
 
-        // Seed a real `UninstallRecord` into the in-memory history so the
+        // Seed a real `UninstallRecord` into an in-memory history repo so the
         // post-restore assertion can verify `isRestored` is still `false`.
-        // The default `TrashMover.init` creates an empty repository, which
-        // makes `recentRecords.allSatisfy { !$0.isRestored }` vacuously true
-        // — the assertion proves nothing because `recentRecords` was empty
-        // whether `markRestored` was correctly skipped or incorrectly called.
-        // I3b fix: use the test-only initialiser + `seedHistoryRecord`.
-        let seededRepo = UninstallHistoryRepository()
+        // A fresh empty repository would make `recentRecords.allSatisfy
+        // { !$0.isRestored }` vacuously true — the assertion proves nothing
+        // because `recentRecords` is empty whether `markRestored` was
+        // correctly skipped or incorrectly called.
+        // I3b fix: use the injected repo + `seedHistoryRecord`.
+        let seededRepo = UninstallHistoryRepository(inMemory: true)
         let mover = TrashMover(auditLogger: logger, historyRepo: seededRepo)
 
         // Real backup dir + sentinel that must survive a failed restore.

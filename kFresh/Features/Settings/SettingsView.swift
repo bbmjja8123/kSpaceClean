@@ -1,7 +1,13 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject private var viewModel = SettingsViewModel()
+    @StateObject private var viewModel: SettingsViewModel
+
+    /// - Parameter viewModel: Injected by ``RootView`` so the view can reach
+    ///   ``AppCoordinator`` for the paywall sheet (C3).
+    init(viewModel: SettingsViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         TabView {

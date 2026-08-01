@@ -7,12 +7,12 @@ final class HistoryViewModelTests: XCTestCase {
     // MARK: - Test fixtures
 
     /// Builds an in-memory repository + `TrashMover` pair that share the
-    /// same backing store. The test-only `init(auditLogger:historyRepo:)`
+    /// same backing store. The injected `init(auditLogger:historyRepo:)`
     /// constructor on `TrashMover` is the supported seam; the default
-    /// production `init(auditLogger:)` creates its own empty repository
+    /// production `init()` would create its own disk-backed repository
     /// which makes post-restore assertions vacuous (see I3b).
     private func makeRepoAndMover() -> (UninstallHistoryRepository, TrashMover) {
-        let repo = UninstallHistoryRepository()
+        let repo = UninstallHistoryRepository(inMemory: true)
         let mover = TrashMover(auditLogger: nil, historyRepo: repo)
         return (repo, mover)
     }

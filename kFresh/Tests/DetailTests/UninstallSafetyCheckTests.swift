@@ -23,7 +23,11 @@ final class UninstallSafetyCheckTests: XCTestCase {
             isRunning: false,
             lastUsedDate: nil
         )
-        let vm = DetailViewModel(app: app, residueDetector: ResidueDetector(ruleStore: nil))
+        let vm = DetailViewModel(
+            app: app,
+            residueDetector: ResidueDetector(ruleStore: nil),
+            mover: TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
+        )
         await vm.performSafetyCheck()
         XCTAssertFalse(vm.canUninstall)
         let outcome = await vm.confirmUninstall()
@@ -48,7 +52,11 @@ final class UninstallSafetyCheckTests: XCTestCase {
             isRunning: false,
             lastUsedDate: Date()
         )
-        let vm = DetailViewModel(app: app, residueDetector: ResidueDetector(ruleStore: nil))
+        let vm = DetailViewModel(
+            app: app,
+            residueDetector: ResidueDetector(ruleStore: nil),
+            mover: TrashMover(auditLogger: nil, historyRepo: UninstallHistoryRepository(inMemory: true))
+        )
         await vm.performSafetyCheck()
         XCTAssertTrue(vm.canUninstall, "Unprotected, non-running app must be uninstallable")
         let outcome = await vm.confirmUninstall()

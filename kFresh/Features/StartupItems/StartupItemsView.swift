@@ -7,9 +7,10 @@ import SwiftUI
 /// ## Pro gating
 ///
 /// `StartupItemsView` itself is NOT wrapped in `.proGate()` — Task 8
-/// wires the real Pro gate at the entry point in `AppListView` /
-/// `AppDetailView` so this view remains pure rendering (and easy to
-/// preview / snapshot test).
+/// wires the real Pro gate at the entry point in `AppDetailView` (the
+/// "启动项管理（Pro）" row, which only opens the sheet when the store is
+/// Pro) so this view remains pure rendering (and easy to preview /
+/// snapshot test).
 struct StartupItemsView: View {
     @StateObject private var viewModel: StartupItemsViewModel
 

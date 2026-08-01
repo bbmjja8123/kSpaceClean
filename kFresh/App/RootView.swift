@@ -16,12 +16,15 @@ struct RootView: View {
             HistoryView(
                 viewModel: HistoryViewModel(
                     historyRepo: services.history,
-                    trashMover: TrashMover(auditLogger: nil, historyRepo: services.history)
+                    trashMover: services.mover
                 )
             )
         }
         .sheet(isPresented: $coordinator.showSettings) {
-            SettingsView()
+            SettingsView(viewModel: SettingsViewModel(coordinator: coordinator))
+        }
+        .sheet(isPresented: $coordinator.showPaywall) {
+            PaywallView(store: services.store)
         }
         .sheet(isPresented: $coordinator.showAbout) {
             AboutView()

@@ -11,7 +11,11 @@ import SwiftUI
 struct UninstallConfirmSheet: View {
     let app: InstalledApp
     let residues: [ResidueFile]
-    let onConfirm: () -> Void
+    /// Called with the final `includeResidues` value when the user confirms,
+    /// so the host can decide whether the trash operation touches the residue
+    /// files at all (I1). A `Bool` argument rather than a bare `() -> Void`
+    /// makes the "cosmetic toggle" failure mode structurally impossible.
+    let onConfirm: (Bool) -> Void
     let onCancel: () -> Void
 
     /// When the residue scan found files, the user can opt out of including
@@ -21,7 +25,7 @@ struct UninstallConfirmSheet: View {
 
     init(app: InstalledApp,
          residues: [ResidueFile],
-         onConfirm: @escaping () -> Void,
+         onConfirm: @escaping (Bool) -> Void,
          onCancel: @escaping () -> Void) {
         self.app = app
         self.residues = residues
@@ -103,7 +107,7 @@ struct UninstallConfirmSheet: View {
                 .buttonStyle(.bordered)
                 .keyboardShortcut(.escape)
             Spacer()
-            Button("确认卸载", role: .destructive, action: onConfirm)
+            Button("确认卸载", role: .destructive) { onConfirm(includeResidues) }
                 .buttonStyle(.borderedProminent)
                 .tint(Color.danger)
         }
