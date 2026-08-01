@@ -556,6 +556,24 @@ public actor ScanOrchestrator {
         var totalSize: Int64 = 0
         var totalFiles: Int = 0
 
+        // Aggregate the visited files by *per-app bucket* so each
+        // ScanSubCategory corresponds to one owning app (or to the
+        // generic category bucket if the path is system-wide).
+        // The buckets are declared OUTSIDE the rootPath loop (Task 5 fix):
+        // an app whose files appear under several of the category's
+        // rootPaths must fold into ONE sub-category instead of one
+        // duplicate row per rootPath (the "sparse / mis-grouped" scan
+        // results complaint).
+        var bucketByApp: [String: [ScanResult]] = [:]
+        /// Per-app rule actions (level-3 grouping metadata) straight from
+        /// the BundleIDResolver. Populated on the first sighting of a
+        /// bucket key; action metadata is per-app, not per-path.
+        var bucketActions: [String: [ResolvedApp.ResolvedAction]] = [:]
+        var bucketSize: [String: Int64] = [:]
+        var bucketTitle: [String: String] = [:]
+        var bucketBundleID: [String: String] = [:]
+        var bucketAppName: [String: String] = [:]
+
         for rootPath in def.paths {
             // Sandbox fix: `expandingTildeInPath` would expand `~` against
             // the container home under App Sandbox, making `~/Library/Caches`
@@ -565,18 +583,10 @@ public actor ScanOrchestrator {
             // kDupe, so this stays here — orchestrator-level responsibility.
             let resolvedPath = UserPathResolver.expandTilde(rootPath)
 
-            // Aggregate the visited files by *per-app bucket* so each
-            // ScanSubCategory corresponds to one owning app (or to the
-            // generic category bucket if the path is system-wide).
             // F8: signpost marker around the FD-walk loop so an
             // Instruments run can attribute time to enumeration
             // (vs. classify / resolve / bucket folds).
             let _ = PerfInterval("scan.enumerate")
-            var bucketByApp: [String: [ScanResult]] = [:]
-            var bucketSize: [String: Int64] = [:]
-            var bucketTitle: [String: String] = [:]
-            var bucketBundleID: [String: String] = [:]
-            var bucketAppName: [String: String] = [:]
 
             for await info in await enumerator.enumerate(rootPath: resolvedPath) {
                 if info.isDirectory { continue }   // Skip dirs — we count files
@@ -603,15 +613,22 @@ public actor ScanOrchestrator {
                     bucketBundleID[bucketKey] = bundleID
                     bucketAppName[bucketKey] = app?.nameCN ?? app?.name
                 }
+                if bucketActions[bucketKey] == nil {
+                    bucketActions[bucketKey] = app?.actions ?? []
+                }
                 totalSize += info.size
                 totalFiles += 1
             }
+        }
 
-            // Emit one ScanSubCategory per bucket. When there are no
-            // results (the path didn't exist or FDA is missing), we
-            // skip rather than emit an empty row — the UI shows a
-            // placeholder via `totalSize == 0` instead.
-            for (key, results) in bucketByApp where !results.isEmpty {
+        // Emit one ScanSubCategory per bucket. When there are no
+        // results (the path didn't exist or FDA is missing), we
+        // skip rather than emit an empty row — the UI shows a
+        // placeholder via `totalSize == 0` instead.
+        for (key, results) in bucketByApp where !results.isEmpty {
+            if key == def.id {
+                // Generic category bucket (no app matched): keep the
+                // v1 flat file-row rendering exactly as before.
                 let sub = ScanSubCategory(
                     subCategoryID: "\(def.id).\(key)",
                     title: bucketTitle[key] ?? def.title,
@@ -620,6 +637,30 @@ public actor ScanOrchestrator {
                     totalSize: bucketSize[key] ?? 0,
                     directResults: results,
                     showAction: false,
+                    riskLevel: def.riskLevel,
+                    isRecommended: def.riskLevel == .recommended
+                )
+                subItems.append(sub)
+            } else {
+                // App-scoped bucket: build the level-3 action rows from
+                // the resolver's rule actions (Task 5). The sub-category
+                // renders actions as its children (`showAction: true`),
+                // so `directResults` stays empty.
+                let sub = ScanSubCategory(
+                    subCategoryID: "\(def.id).\(key)",
+                    title: bucketTitle[key] ?? def.title,
+                    bundleID: key,
+                    appName: bucketTitle[key],
+                    totalSize: bucketSize[key] ?? 0,
+                    actions: Self.buildActions(
+                        for: key,
+                        results: results,
+                        def: def,
+                        bucketActions: bucketActions,
+                        bucketTitle: bucketTitle
+                    ),
+                    directResults: [],
+                    showAction: true,
                     riskLevel: def.riskLevel,
                     isRecommended: def.riskLevel == .recommended
                 )
@@ -642,6 +683,69 @@ public actor ScanOrchestrator {
             fileCount: totalFiles,
             error: nil
         )
+    }
+
+    /// Build the level-3 `ScanAction` rows for one app-scoped bucket from
+    /// the resolver's per-app rule actions (Task 5).
+    ///
+    /// A result belongs to an action when `result.path` is prefixed by one
+    /// of the action's (tilde-expanded) paths; each result is assigned to
+    /// the FIRST matching action — `ra.paths` order, then action order. An
+    /// action is emitted only when it ends up with ≥1 result (no empty
+    /// rows). Results that matched no rule path fold into ONE synthetic
+    /// "other" action so nothing is orphaned under `showAction == true`
+    /// (whose `children` ignores `directResults`).
+    private static func buildActions(
+        for bundleID: String,
+        results: [ScanResult],
+        def: CategoryDefinition,
+        bucketActions: [String: [ResolvedApp.ResolvedAction]],
+        bucketTitle: [String: String]
+    ) -> [ScanAction] {
+        let ruleActions = bucketActions[bundleID] ?? []
+        var matched: [[ScanResult]] = Array(repeating: [], count: ruleActions.count)
+        var unmatched: [ScanResult] = []
+
+        for result in results {
+            var assigned = false
+            for (index, ruleAction) in ruleActions.enumerated() {
+                for actionPath in ruleAction.paths {
+                    let expandedPath = UserPathResolver.expandTilde(actionPath)
+                    if result.path.hasPrefix(expandedPath) {
+                        matched[index].append(result)
+                        assigned = true
+                        break
+                    }
+                }
+                if assigned { break }
+            }
+            if !assigned { unmatched.append(result) }
+        }
+
+        var actions: [ScanAction] = []
+        for (index, ruleAction) in ruleActions.enumerated() where !matched[index].isEmpty {
+            actions.append(ScanAction(
+                actionID: "\(def.id).\(bundleID).\(ruleAction.name)",
+                actionType: .cache,
+                title: ruleAction.nameCN,
+                results: matched[index],
+                recommend: true,
+                riskLevel: def.riskLevel,
+                isRecommended: true
+            ))
+        }
+        if !unmatched.isEmpty {
+            actions.append(ScanAction(
+                actionID: "\(def.id).\(bundleID).other",
+                actionType: .cache,
+                title: bucketTitle[bundleID] ?? def.title,
+                results: unmatched,
+                recommend: true,
+                riskLevel: def.riskLevel,
+                isRecommended: true
+            ))
+        }
+        return actions
     }
 
     // MARK: Helpers

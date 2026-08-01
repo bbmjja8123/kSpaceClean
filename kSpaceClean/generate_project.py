@@ -356,6 +356,7 @@ def main():
         "CleanupEngineTests.swift",
         "WarningDetectionServiceTests.swift",
         "ScanOrchestratorIntegrationTests.swift",
+        "AppRuleFixtures.swift",
         "ScanEngineIntegrationTests.swift",
         "ScanResultsViewModelSnapshotTests.swift",
         "MetricKitReceiverTests.swift",

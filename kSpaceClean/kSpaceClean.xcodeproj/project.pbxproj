@@ -11,6 +11,10 @@
 		isa = PBXBuildFile;
 		fileRef = 2D33DEE0D325F5BC1595C039;
 	};
+	0DC0D12394F005689361B445 /* 0DC0D12394F005689361B445 */ = {
+		isa = PBXBuildFile;
+		fileRef = E44EA51F3032272567E1D950;
+	};
 	0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */ = {
 		isa = PBXBuildFile;
 		fileRef = FC8F976B27828057A607616A;
@@ -1529,6 +1533,13 @@
 		path = Features/PrivacyClean/PrivacyView.swift;
 		sourceTree = "<group>";
 	};
+	E44EA51F3032272567E1D950 /* AppRuleFixtures.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppRuleFixtures.swift;
+		path = Tests/AppRuleFixtures.swift;
+		sourceTree = "<group>";
+	};
 	E4C62FD7FB4A1EAC51EC2224 /* RuleClassifierTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1971,6 +1982,7 @@
 			191F8E934AEB52731CDD715B /* CleanupEngineTests.swift */,
 			4B9C58B251FBC680211C9700 /* WarningDetectionServiceTests.swift */,
 			FDAC274167912B01766226D0 /* ScanOrchestratorIntegrationTests.swift */,
+			E44EA51F3032272567E1D950 /* AppRuleFixtures.swift */,
 			8CCDDEC518FCF92418BAD659 /* ScanEngineIntegrationTests.swift */,
 			54A176E88B00B6D5D4AD211C /* ScanResultsViewModelSnapshotTests.swift */,
 			5E6548C4E1A35147FDB30114 /* MetricKitReceiverTests.swift */,
@@ -2216,6 +2228,7 @@
 			E2C21456A0BE9B61B0AEF4F7 /* E2C21456A0BE9B61B0AEF4F7 */,
 			BDAF2D98CE93A2CDBB1A85AC /* BDAF2D98CE93A2CDBB1A85AC */,
 			728FD3C04FCBF2184C5BB501 /* 728FD3C04FCBF2184C5BB501 */,
+			0DC0D12394F005689361B445 /* 0DC0D12394F005689361B445 */,
 			398A062A24C3160A56D8F614 /* 398A062A24C3160A56D8F614 */,
 			C6C7A29A138E04AF3D9C8C14 /* C6C7A29A138E04AF3D9C8C14 */,
 			C5A9BB5E28B40052FCAF75D7 /* C5A9BB5E28B40052FCAF75D7 */,
