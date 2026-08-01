@@ -5,6 +5,7 @@ import WidgetKit
 struct kFreshApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var coordinator = AppCoordinator()
+    @StateObject private var services = AppServices()
     private let menuBarController = MenuBarController()
 
     var body: some Scene {
@@ -12,6 +13,7 @@ struct kFreshApp: App {
             RootView()
                 .environmentObject(appState)
                 .environmentObject(coordinator)
+                .environmentObject(services)
                 .onOpenURL { url in coordinator.handleDeepLink(url) }
                 .onAppear {
                     coordinator.appState = appState

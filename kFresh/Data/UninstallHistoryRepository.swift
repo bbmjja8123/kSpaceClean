@@ -11,6 +11,14 @@ actor UninstallHistoryRepository {
         records.sorted { $0.uninstalledAt > $1.uninstalledAt }
     }
 
+    /// Returns uninstall records whose `uninstalledAt` falls within the given
+    /// number of days, newest first. Non-throwing so the AppList scan can
+    /// refresh the recent-uninstall section without error handling.
+    func fetchAll(within days: Int) -> [UninstallRecord] {
+        let cutoff = Date().addingTimeInterval(-Double(days) * 86400)
+        return fetchAll().filter { $0.uninstalledAt >= cutoff }
+    }
+
     /// Returns the uninstall record matching `id`, or `nil` if no record with
     /// that ID has been saved. Used by `TrashMover.historyRecord(id:)` and
     /// tests that need to assert post-conditions (e.g. `isRestored` flipped)

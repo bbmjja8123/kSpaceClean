@@ -115,6 +115,7 @@ def main():
         "RulesTests": make_group("RulesTests"),
         "IntegrationTests": make_group("IntegrationTests"),
         "OnboardingTests": make_group("OnboardingTests"),
+        "AppListTests": make_group("AppListTests"),
         "UITests": make_group("UITests"),
         "Products": make_group("Products"),
     }
@@ -130,6 +131,7 @@ def main():
         ("App/AppState.swift", "App"),
         ("App/RootView.swift", "App"),
         ("App/AppCoordinator.swift", "App"),
+        ("App/AppServices.swift", "App"),
         ("Core/Detect/InstalledApp.swift", "Detect"),
         ("Core/Detect/AppCatalogService.swift", "Detect"),
         ("Core/Detect/ResidueDetector.swift", "Detect"),
@@ -145,7 +147,10 @@ def main():
         ("Data/FDAuthorizer.swift", "Data"),
         ("Features/AppList/AppListViewModel.swift", "AppList"),
         ("Features/AppList/AppListView.swift", "AppList"),
+        ("Features/AppList/AppListSidebar.swift", "AppList"),
         ("Features/AppList/AppRowView.swift", "AppList"),
+        ("Features/AppList/ScanProgressBanner.swift", "AppList"),
+        ("Features/AppList/HistoryRow.swift", "AppList"),
         ("Features/Common/EmptyStateView.swift", "Common"),
         ("Features/Common/LoadingStateView.swift", "Common"),
         ("Features/Common/BrandStyles.swift", "Common"),
@@ -220,12 +225,17 @@ def main():
             "FDAGuideControllerTests.swift",
             "OnboardingRoutingTests.swift",
         ],
+        "AppListTests": [
+            "AppListViewModelTests.swift",
+            "AppListFilterSortTests.swift",
+        ],
         "IntegrationTests": [
             "UninstallFlowTests.swift",
             "SandboxDegradationTests.swift",
         ],
         "UITests": [
             "OnboardingUITests.swift",
+            "AppListUITests.swift",
         ],
     }
 
@@ -561,7 +571,7 @@ def main():
 
     # Set Tests group children
     tests_children = []
-    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "UITests"]:
+    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "UITests"]:
         tests_children.append((group_ids[sub], sub))
     objects[group_ids["Tests"]][1]["children"] = tests_children
 
