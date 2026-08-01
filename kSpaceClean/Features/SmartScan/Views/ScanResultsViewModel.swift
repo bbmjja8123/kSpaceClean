@@ -13,7 +13,7 @@ import Combine
 /// of UI-driven configuration while still giving the user a fast way to
 /// narrow a noisy result set.
 ///
-/// Defaults follow the v1 UX decision: 1 MB size floor, no age floor,
+/// Defaults follow the v1 UX decision: 100 KB size floor, no age floor,
 /// dangerous items hidden, and files owned by running apps hidden.
 public struct ScanFilterOptions: Equatable, Sendable {
     /// Minimum file size (in bytes) for a leaf to appear in the tree.
@@ -30,7 +30,7 @@ public struct ScanFilterOptions: Equatable, Sendable {
 
     /// Memberwise init with the v1 defaults pre-filled.
     public init(
-        minimumSizeBytes: Int64 = 1_048_576,
+        minimumSizeBytes: Int64 = 102_400,
         minimumUnusedDays: Int = 0,
         skipDangerous: Bool = true,
         skipRunningApps: Bool = true
@@ -142,6 +142,10 @@ final class ScanResultsViewModel: ObservableObject {
     /// Set of tree-node ids whose subtree is currently expanded.
     /// Membership changes drive the SwiftUI `LazyVStack` rerender.
     @Published var expandedIDs: Set<UUID> = []
+    /// When `true`, the results tree renders `isHiddenByFilter` leaves too
+    /// (the "show all" toggle). Task 7 consumes it; added now so the
+    /// published surface exists for the view layer.
+    @Published var showAllHidden: Bool = false
     /// Filesystem path currently being inspected by the scanner.
     /// Empty when the scan is idle.
     @Published var currentPath: String = ""
@@ -448,7 +452,7 @@ final class ScanResultsViewModel: ObservableObject {
         // checkbox here does not race with engine updates.
         let raw = engine.categories.sorted { $0.categoryID < $1.categoryID }
         var newSnapshot = working
-        newSnapshot.categories = Self.applyFilters(raw, options: filters)
+        newSnapshot.categories = Self.annotateHidden(raw, options: filters)
         newSnapshot.isScanning = false
         newSnapshot.hasScanned = true
 
@@ -511,113 +515,134 @@ final class ScanResultsViewModel: ObservableObject {
         Set(NSWorkspace.shared.runningApplications.compactMap(\.bundleIdentifier))
     }
 
-    /// Applies ``filters`` to a freshly-scanned tree.
+    /// Applies ``filters`` to a freshly-scanned tree — fold-not-delete.
     ///
-    /// Pure transformation: leaves that fail the predicate are dropped and
-    /// every ancestor is rebuilt with a recomputed `totalSize` so the row
-    /// labels stay consistent with what is actually visible. Ancestors that
-    /// end up with no surviving children are removed entirely.
+    /// Leaves that fail the size / age / dangerous gates are annotated
+    /// `isHiddenByFilter = true` and KEPT in the tree, so the cleanup
+    /// pipeline can still select them while the default view hides them.
+    /// A parent folds up hidden when its entire subtree is hidden.
+    /// Empty categories (the 6 always-rendered skeletons) survive and stay
+    /// visible. The only delete is `skipRunningApps`: a sub-category owned
+    /// by a currently-running app truly cannot be cleaned right now.
     ///
-    /// - Parameters:
-    ///   - categories: The raw tree emitted by the scan engine.
-    ///   - options: Filter set to apply.
-    ///   - now: Injectable clock used for the age cutoff (tests).
-    /// - Returns: A new tree containing only the surviving nodes.
-    static func applyFilters(
+    /// Rebuilds new node instances (never mutates the engine's tree) —
+    /// same purity contract the old `applyFilters` had.
+    static func annotateHidden(
         _ categories: [ScanCategory],
         options: ScanFilterOptions,
         now: Date = Date()
     ) -> [ScanCategory] {
         // F8: signpost marker around the filter pipeline so an
         // Instruments run can attribute time spent walking the tree.
-        let _ = PerfInterval("filter.apply")
+        let _ = PerfInterval("filter.annotate")
         let runningBundleIDs: Set<String> = options.skipRunningApps
-            ? Self.snapshotRunningBundleIDs()
-            : []
+            ? Self.snapshotRunningBundleIDs() : []
         let ageCutoff: Date? = options.minimumUnusedDays > 0
             ? now.addingTimeInterval(-Double(options.minimumUnusedDays) * 86_400)
             : nil
 
-        return categories.compactMap { category in
-            let subs = category.subItems.compactMap {
-                filterSubCategory($0, options: options,
-                                  runningBundleIDs: runningBundleIDs,
-                                  ageCutoff: ageCutoff)
+        return categories.map { category in
+            let subs = category.subItems.compactMap { sub -> ScanSubCategory? in
+                // skipRunningApps keeps DELETE semantics — the only delete.
+                if options.skipRunningApps, let bundleID = sub.bundleID,
+                   runningBundleIDs.contains(bundleID) {
+                    return nil
+                }
+                return annotateSubHidden(sub, options: options, ageCutoff: ageCutoff)
             }
-            guard !subs.isEmpty else { return nil }
+            // Skeletons (zero children) stay visible; only a non-empty
+            // subtree whose children are ALL hidden folds up to hidden.
+            let allChildrenHidden = !subs.isEmpty && subs.allSatisfy(\.isHiddenByFilter)
             return ScanCategory(
                 categoryID: category.categoryID,
                 title: category.title,
                 tooltip: category.tooltip,
-                totalSize: subs.reduce(0) { $0 + $1.totalSize },
+                totalSize: category.totalSize,
                 subItems: subs,
                 riskLevel: category.riskLevel,
-                isRecommended: category.isRecommended
+                isRecommended: category.isRecommended,
+                isHiddenByFilter: allChildrenHidden
             )
         }
     }
 
-    /// Filters one level-2 node. Returns `nil` when nothing survives (or the
-    /// sub-category belongs to a running app and `skipRunningApps` is on).
-    private static func filterSubCategory(
+    /// Annotates one level-2 node, threading `isHiddenByFilter` through
+    /// its actions / direct results. Never returns `nil` (fold-not-delete).
+    private static func annotateSubHidden(
         _ sub: ScanSubCategory,
         options: ScanFilterOptions,
-        runningBundleIDs: Set<String>,
         ageCutoff: Date?
-    ) -> ScanSubCategory? {
-        if let bundleID = sub.bundleID, runningBundleIDs.contains(bundleID) {
-            return nil
-        }
-        let actions: [ScanAction] = sub.actions.compactMap { action in
-            let results = action.results.filter {
-                keep($0, options: options, ageCutoff: ageCutoff)
+    ) -> ScanSubCategory {
+        let actions: [ScanAction] = sub.actions.map { action in
+            let results = action.results.map {
+                annotateResultHidden($0, options: options, ageCutoff: ageCutoff)
             }
-            guard !results.isEmpty else { return nil }
+            let allHidden = !results.isEmpty && results.allSatisfy(\.isHiddenByFilter)
             return ScanAction(
                 actionID: action.actionID,
                 actionType: action.actionType,
                 title: action.title,
                 tooltip: action.tooltip,
-                totalSize: results.reduce(0) { $0 + $1.totalSize },
+                totalSize: action.totalSize,
                 results: results,
                 recommend: action.recommend,
                 riskLevel: action.riskLevel,
-                isRecommended: action.isRecommended
+                isRecommended: action.isRecommended,
+                isHiddenByFilter: allHidden
             )
         }
-        let direct = sub.directResults.filter {
-            keep($0, options: options, ageCutoff: ageCutoff)
+        let direct = sub.directResults.map {
+            annotateResultHidden($0, options: options, ageCutoff: ageCutoff)
         }
-        guard !(actions.isEmpty && direct.isEmpty) else { return nil }
-        let total = actions.reduce(0) { $0 + $1.totalSize }
-            + direct.reduce(0) { $0 + $1.totalSize }
+        let childrenHidden = actions.allSatisfy(\.isHiddenByFilter)
+            && direct.allSatisfy(\.isHiddenByFilter)
+        let allHidden = !(actions.isEmpty && direct.isEmpty) && childrenHidden
         return ScanSubCategory(
             subCategoryID: sub.subCategoryID,
             title: sub.title,
             bundleID: sub.bundleID,
             appName: sub.appName,
             tooltip: sub.tooltip,
-            totalSize: total,
+            totalSize: sub.totalSize,
             actions: actions,
             directResults: direct,
             showAction: sub.showAction,
             riskLevel: sub.riskLevel,
-            isRecommended: sub.isRecommended
+            isRecommended: sub.isRecommended,
+            isHiddenByFilter: allHidden
         )
     }
 
-    /// Leaf-level predicate — size floor, age floor, and the dangerous gate.
-    private static func keep(
+    /// Leaf-level annotation — size / age / dangerous become "mark hidden",
+    /// never delete. Rebuilds a new `ScanResult` (all `let` fields carried
+    /// over verbatim; `state` resets to `.off` exactly as the old filter
+    /// did, so selection is not preserved across a filter re-apply).
+    private static func annotateResultHidden(
         _ result: ScanResult,
         options: ScanFilterOptions,
         ageCutoff: Date?
-    ) -> Bool {
-        if result.totalSize < options.minimumSizeBytes { return false }
-        if options.skipDangerous, result.riskLevel == .dangerous { return false }
-        if let cutoff = ageCutoff, let modified = result.modificationDate,
-           modified > cutoff {
-            return false
-        }
-        return true
+    ) -> ScanResult {
+        let ageHidden: Bool = {
+            guard let cutoff = ageCutoff, let modified = result.modificationDate else { return false }
+            return modified > cutoff
+        }()
+        let hidden = result.totalSize < options.minimumSizeBytes
+            || (options.skipDangerous && result.riskLevel == .dangerous)
+            || ageHidden
+        return ScanResult(
+            url: result.url,
+            path: result.path,
+            title: result.title,
+            tooltip: result.tooltip,
+            iconSystemName: result.iconSystemName,
+            fileSize: result.fileSize,
+            modificationDate: result.modificationDate,
+            cleanType: result.cleanType,
+            cautionID: result.cautionID,
+            nestedResults: result.nestedResults,
+            riskLevel: result.riskLevel,
+            isRecommended: result.isRecommended,
+            isHiddenByFilter: hidden
+        )
     }
 }
