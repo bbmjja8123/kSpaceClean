@@ -429,15 +429,20 @@ final class AppRuleLibraryAudit: XCTestCase {
         }
     }
 
-    /// Regression guard for the final-review I4 finding: LLM model-runner apps
+    /// Regression guard for the final-review I4 finding: GPT4All and LM Studio
     /// download GB-scale model files into their App Support root. A cleanable
     /// action at the bare `Application Support/<Leaf>/` root would delete the
     /// model store. Cache/log subdirs are fine; the leaf root is not.
+    ///
+    /// Deliberately scoped to the two apps whose model store lives in App
+    /// Support. Ollama keeps its `Data` soft action (models live at
+    /// `~/.ollama`, not App Support) and MacGPT keeps its `Data` soft action
+    /// (API-only, no local model store) — both are off-by-default config/data
+    /// actions in the same harm class as the other apps' `Data` actions.
     func testModelRunnerActionsNeverCoverAppSupportRoot() throws {
         let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
         let modelRunnerIDs: Set<String> = [
-            "com.nomic.gpt4all", "com.lmstudio.lmstudio",
-            "com.electron.ollama", "com.macgpt.macgpt"
+            "com.nomic.gpt4all", "com.lmstudio.lmstudio"
         ]
         for bundleID in modelRunnerIDs {
             let app = try XCTUnwrap(apps[bundleID], "\(bundleID) missing from bundleIDMapping.json")
