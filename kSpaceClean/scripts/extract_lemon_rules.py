@@ -14,8 +14,9 @@ Usage:
 """
 import argparse
 import json
-import sys
+import re
 import xml.etree.ElementTree as ET
+from datetime import datetime
 from pathlib import Path
 
 LEMON_BASE = Path("/Users/mengjianjun/Documents/ai/aicoding/macapp/Lemon/LemonClener/LemonClener/libcleaner")
@@ -26,6 +27,22 @@ OUTPUT = Path(__file__).resolve().parents[1] / "Resources" / "bundleIDMapping.js
 
 def text_of(elem):
     return (elem.text or "").strip() if elem is not None else ""
+
+
+def _normalize_path(value):
+    """Collapse leading tilde slashes: `~//Library/...` -> `~/Library/...`."""
+    return re.sub(r"^~/+", "~/", value)
+
+
+def _dedupe_paths(paths):
+    """Dedupe paths preserving first-occurrence order."""
+    seen = set()
+    out = []
+    for p in paths:
+        if p not in seen:
+            seen.add(p)
+            out.append(p)
+    return out
 
 
 def parse_xml(path: Path):
@@ -48,7 +65,7 @@ def parse_xml(path: Path):
                 action_title = text_of(action.find("title"))
                 paths = []
                 for p in action.findall("path"):
-                    v = p.get("value", "")
+                    v = _normalize_path(p.get("value", ""))
                     if v.startswith("~/") or v.startswith("/"):
                         paths.append(v)
                 if paths:
@@ -135,7 +152,12 @@ def merge(zh_items, en_items):
                 recovered = en_title or _cache_suffix_name(item_title, paths)
                 nameCN = recovered
                 name = recovered
-            actions_out.append({"nameCN": nameCN, "name": name, "paths": paths})
+            actions_out.append({
+                "nameCN": nameCN,
+                "name": name,
+                "type": zh_action["type"],
+                "paths": _dedupe_paths([_normalize_path(p) for p in paths]),
+            })
         merged[bid] = {
             "bundleID": bid,
             "appstoreBundleID": zh.get("appstoreBundleID") or en.get("appstoreBundleID"),
@@ -160,6 +182,53 @@ def _cache_suffix_name(item_title, paths):
     if any("/Caches/" in p or "/Cache/" in p for p in paths):
         return f"{item_title} - Cache"
     return item_title
+
+
+# Bilingual titles for the supplementary action that preserves a superseded
+# manual app's cleanPaths (paths Lemon's XML does not cover).
+MANUAL_ACTION_TITLES = {
+    "com.apple.Safari": ("Safari History & Local Data", "Safari 历史记录与本地数据"),
+    "com.google.Chrome": ("Chrome History & Cache Data", "Chrome 历史记录与缓存数据"),
+    "org.mozilla.firefox": ("Firefox History & Cache Data", "Firefox 历史记录与缓存数据"),
+}
+
+
+def _manual_action_titles(app):
+    """Return (name, nameCN) for a manual app's supplementary action."""
+    return MANUAL_ACTION_TITLES.get(
+        app.get("bundleID"), (app.get("name", ""), app.get("nameCN", "")))
+
+
+def _merge_superseded_manual(manual, merged_app):
+    """Fold a superseded manual entry's cleanPaths into the Lemon-derived entry
+    as one supplementary `manual-preserved` action.
+
+    The manual entry may be the older flat-schema form (cleanPaths + no
+    actions) or an already-converted entry. Paths are normalized and deduped.
+    """
+    clean = manual.get("cleanPaths") or []
+    if clean:
+        name, nameCN = _manual_action_titles(manual)
+        merged_app["actions"].append({
+            "name": name,
+            "nameCN": nameCN,
+            "type": "manual-preserved",
+            "paths": _dedupe_paths([_normalize_path(p) for p in clean]),
+        })
+        merged_app["actions"] = _dedupe_actions(merged_app["actions"])
+    return merged_app
+
+
+def _dedupe_actions(actions):
+    """Dedupe actions whose path lists are identical (same type + same paths)."""
+    seen = set()
+    out = []
+    for a in actions:
+        key = (a["type"], tuple(a["paths"]))
+        if key not in seen:
+            seen.add(key)
+            out.append(a)
+    return out
 
 
 def _vendor_from_bundle_id(bid):
@@ -196,19 +265,27 @@ def main():
     existing = {}
     if args.preserve_manual and args.output.exists():
         existing = json.loads(args.output.read_text()).get("apps", {})
+        for mid in set(existing.keys()) & set(merged.keys()):
+            manual = existing[mid]
+            if "cleanPaths" in manual:
+                merged[mid] = _merge_superseded_manual(manual, merged[mid])
+                print(f"Merged superseded manual: {mid}")
         manual_ids = set(existing.keys()) - set(merged.keys())
         for mid in manual_ids:
             merged[mid] = existing[mid]
+            if isinstance(merged[mid].get("cleanPaths"), list):
+                merged[mid]["cleanPaths"] = _dedupe_paths(
+                    [_normalize_path(p) for p in merged[mid]["cleanPaths"]])
             print(f"Preserved manual: {mid}")
 
     out = {
         "version": 2,  # Bumped: actions[] schema
-        "generatedAt": "2026-08-01",
+        "generatedAt": datetime.now().date().isoformat(),
         "source": "Lemon libcleaner cleaning-rule XML (item->action->path extraction, bilingual)",
         "appCount": len(merged),
         "apps": merged,
     }
-    args.output.write_text(json.dumps(out, indent=2, ensure_ascii=False))
+    args.output.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n")
     print(f"Wrote {len(merged)} apps to {args.output}")
 
 
