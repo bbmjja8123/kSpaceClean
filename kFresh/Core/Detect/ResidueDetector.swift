@@ -44,11 +44,20 @@ public actor ResidueDetector {
             let ruleResidues = rule.residuePaths.map { template -> ResidueFile in
                 let expanded = expand(template: template)
                 let url = URL(fileURLWithPath: expanded, isDirectory: true)
+                let pathExists = exists(url)
+                // I-2 fix: rule branch now applies the same "halve on
+                // miss" policy as the template branch. Pre-fix: the rule
+                // branch returned the rule's declared confidence
+                // unconditionally, making a non-existent rule path look
+                // as confident as an existing one. Halving on miss keeps
+                // the rule-vs-template confidence scale comparable and
+                // gives TrashMover a meaningful signal to skip the entry.
+                let effectiveConfidence = pathExists ? rule.confidence : rule.confidence * 0.5
                 return ResidueFile(
                     url: url,
                     type: classify(path: expanded),
-                    sizeBytes: exists(url) ? directorySize(url) : 0,
-                    confidence: rule.confidence,
+                    sizeBytes: pathExists ? directorySize(url) : 0,
+                    confidence: effectiveConfidence,
                     description: rule.appName,
                     isSystemLevel: false,
                     isProtected: false
@@ -56,11 +65,15 @@ public actor ResidueDetector {
             }
             let systemResidues = rule.systemLevelPaths.map { template -> ResidueFile in
                 let url = URL(fileURLWithPath: template)
+                let pathExists = exists(url)
+                // I-2 fix: same convention as the user-level branch —
+                // halve on miss rather than multiplying by 0.7 always.
+                let baseConfidence = pathExists ? rule.confidence : rule.confidence * 0.5
                 return ResidueFile(
                     url: url,
                     type: classify(path: template),
-                    sizeBytes: exists(url) ? directorySize(url) : 0,
-                    confidence: rule.confidence * 0.7,  // system-level more cautious
+                    sizeBytes: pathExists ? directorySize(url) : 0,
+                    confidence: baseConfidence,
                     description: rule.appName,
                     isSystemLevel: true,
                     isProtected: true

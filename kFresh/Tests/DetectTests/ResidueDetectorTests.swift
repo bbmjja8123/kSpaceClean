@@ -63,6 +63,77 @@ final class ResidueDetectorTests: XCTestCase {
         XCTAssertGreaterThan(residues.count, 0)
     }
 
+    // MARK: - I-2 confidence consistency guard
+
+    /// I-2 fix: the rule branch and the template branch must apply the
+    /// same "halve confidence if the path doesn't exist on disk" policy.
+    /// Pre-fix: rule branch returned the rule's full declared confidence
+    /// regardless of existence (so a non-existent rule path was reported
+    /// at 0.85 confidence, indistinguishable from an existing one);
+    /// template branch halved it. The fix: both branches verify
+    /// existence and halve on miss.
+    ///
+    /// This test exercises the rule branch.
+    func testRuleBranchHalvesConfidenceWhenPathMissing() async throws {
+        // Path deliberately points at a directory that does NOT exist.
+        let rules = [
+            KFreshBundleRule(
+                bundleID: "com.example.MissingPath",
+                appName: "MissingPath",
+                residuePaths: ["~/Library/Application Support/MissingPath"],
+                systemLevelPaths: [],
+                zapStanzas: [],
+                confidence: 0.9,
+                source: "homebrew-cask"
+            )
+        ]
+        let data = try JSONEncoder().encode(rules)
+        try data.write(to: tempRulesURL)
+        let store = try BundleRuleStore(jsonURL: tempRulesURL)
+
+        // tempHomeURL is empty — neither App Support nor Preferences exists
+        // under it, so every residue path will report `exists == false`.
+        let detector = ResidueDetector(ruleStore: store, homeDirectory: tempHomeURL)
+        let residues = await detector.detectResidues(
+            bundleID: "com.example.MissingPath",
+            appName: "MissingPath",
+            appURL: URL(fileURLWithPath: "/Applications/MissingPath.app")
+        )
+
+        XCTAssertGreaterThanOrEqual(residues.count, 1)
+        for residue in residues {
+            XCTAssertEqual(residue.confidence, 0.45, accuracy: 0.001,
+                           "Non-existent rule path should be reported at half the rule's declared confidence, got \(residue.confidence) for \(residue.url.path)")
+        }
+    }
+
+    /// I-2 fix (template branch side): when a template path does not
+    /// exist, confidence should be halved. Pre-fix: this was already the
+    /// template behaviour, but it was inconsistent with the rule branch.
+    /// Post-fix: both branches halve consistently. This test pins the
+    /// template behaviour so it cannot regress.
+    func testTemplateBranchHalvesConfidenceWhenPathMissing() async throws {
+        let data = try JSONEncoder().encode([KFreshBundleRule]())
+        try data.write(to: tempRulesURL)
+        let store = try BundleRuleStore(jsonURL: tempRulesURL)
+
+        let detector = ResidueDetector(ruleStore: store, homeDirectory: tempHomeURL)
+        let residues = await detector.detectResidues(
+            bundleID: "com.example.MissingTemplate",
+            appName: "MissingTemplate",
+            appURL: URL(fileURLWithPath: "/Applications/MissingTemplate.app")
+        )
+
+        // The declared template confidence for `preferences` is 0.99; if
+        // the path is missing it should drop to 0.495.
+        let prefPaths = residues.filter { $0.type == .preferences }
+        XCTAssertGreaterThan(prefPaths.count, 0)
+        for residue in prefPaths {
+            XCTAssertEqual(residue.confidence, 0.495, accuracy: 0.001,
+                           "Non-existent template path should be reported at half its declared confidence, got \(residue.confidence) for \(residue.url.path)")
+        }
+    }
+
     func testDetectResiduesPreservesLiteralSpacesInAppName() async throws {
         let data = try JSONEncoder().encode([KFreshBundleRule]())
         try data.write(to: tempRulesURL)
