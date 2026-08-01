@@ -135,6 +135,74 @@ final class BackupManagerTests: XCTestCase {
         XCTAssertFalse(valid)
     }
 
+    // MARK: - I6 missing-backup-file guard
+
+    /// `BackupManager.restore` must throw `BackupError.missingBackupFile`
+    /// when the manifest references a file that no longer exists in the
+    /// backup directory. Previously the loop silently `continue`d, the
+    /// manifest claimed a successful restore, and `TrashMover.cleanup`
+    /// would then delete the entire backup directory — leaving the user
+    /// with a "successful restore" that restored nothing.
+    ///
+    /// The fix: throw `BackupError.missingBackupFile(path:)` so the caller
+    /// (TrashMover) sees the same error model as `missingManifest` /
+    /// `corruptManifest` and preserves the backup directory for retry.
+    func testRestoreThrowsWhenManifestReferencesMissingFile() async throws {
+        let manager = BackupManager(rootURL: tempDir.appendingPathComponent("backups"))
+
+        // Set up a valid destination file (the residue to be restored).
+        let residueName = "will-be-missing.plist"
+        let destination = tempDir.appendingPathComponent("destination")
+        try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
+        let destinationFile = destination.appendingPathComponent(residueName)
+        try "current-state".write(to: destinationFile, atomically: true, encoding: .utf8)
+
+        // Set up a backup directory with manifest but NO actual backup file.
+        let backupRoot = tempDir.appendingPathComponent("backups/com.example.missing/v1")
+        try FileManager.default.createDirectory(at: backupRoot, withIntermediateDirectories: true)
+        // Note: backupFile is deliberately NOT created.
+
+        let manifest = BackupManager.Manifest(
+            bundleID: "com.example.missing",
+            createdAt: Date(),
+            version: 1,
+            files: [
+                BackupManager.Manifest.ManifestEntry(
+                    relativePath: residueName,
+                    sizeBytes: 9,
+                    sha256: BackupManager.sha256HexForTest(Data("original".utf8))
+                )
+            ]
+        )
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        let manifestData = try encoder.encode(manifest)
+        try manifestData.write(to: backupRoot.appendingPathComponent("manifest.json"))
+
+        let residue = ResidueFile(
+            url: destinationFile,
+            type: .preferences,
+            sizeBytes: 9,
+            confidence: 0.9,
+            description: "restored-target",
+            isSystemLevel: false,
+            isProtected: false
+        )
+
+        do {
+            try await manager.restore(backupPath: backupRoot, originalResidues: [residue])
+            XCTFail("Expected BackupError.missingBackupFile to be thrown")
+        } catch let error as BackupError {
+            switch error {
+            case .missingBackupFile(let path):
+                XCTAssertTrue(path.hasSuffix(residueName),
+                              "Error path should point at the missing backup file: \(path)")
+            default:
+                XCTFail("Expected BackupError.missingBackupFile, got \(error)")
+            }
+        }
+    }
+
     // MARK: - I3d preservation guard
 
     /// When `BackupManager.restore` is asked to copy a backup over an

@@ -265,17 +265,22 @@ public actor BackupManager {
     ///   by ``backup(residues:bundleID:)``.
     /// - Parameter originalResidues: The residue set the user originally
     ///   backed up; used to look up destination URLs by file name.
-    /// - Throws: `BackupError.missingManifest`, `.corruptManifest`, or
-    ///   filesystem errors from the copy loop.
+    /// - Throws: `BackupError.missingManifest`, `.corruptManifest`,
+    ///   `.missingBackupFile`, or filesystem errors from the copy loop.
     public func restore(backupPath: URL, originalResidues: [ResidueFile]) async throws {
         let manifest = try Self.readManifest(at: backupPath, fileManager: fileManager)
 
         for entry in manifest.files {
             guard let residue = originalResidues.first(where: { $0.url.lastPathComponent == entry.relativePath }) else { continue }
             let backupFile = backupPath.appendingPathComponent(entry.relativePath)
+            // I6 fix: a manifest entry whose backup file is missing is a
+            // hard error, not a silent skip. Silently skipping used to let
+            // TrashMover treat restore as success and then `cleanup` the
+            // backup directory, leaving the user with no restore AND no
+            // recoverable data. Throw so the caller surfaces the failure
+            // and preserves the backup directory for inspection.
             guard fileManager.fileExists(atPath: backupFile.path) else {
-                print("BackupManager.restore: manifest entry references missing file \(entry.relativePath) in \(backupPath.path)")
-                continue
+                throw BackupError.missingBackupFile(path: backupFile.path)
             }
 
             // CRITICAL: never overwrite a more-recent file at the original
@@ -511,4 +516,10 @@ public enum BackupError: Error {
     /// `manifest.json` was readable but could not be decoded as a
     /// `Manifest`. `underlying` is the JSON decode error.
     case corruptManifest(path: String, underlying: Error)
+    /// `manifest.json` references a file (`relativePath`) that is no
+    /// longer present in the backup directory. This indicates the backup
+    /// was partially deleted or never fully written; the caller MUST
+    /// preserve the backup directory so the user can investigate or retry
+    /// rather than silently `cleanup`-ing it after a no-op restore.
+    case missingBackupFile(path: String)
 }
