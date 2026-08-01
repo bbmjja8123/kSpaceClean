@@ -11,6 +11,10 @@
 		isa = PBXBuildFile;
 		fileRef = 86EBDC7A6B2FFF21B7FFBA9A;
 	};
+	0704BB649CB8695E93175CE8 /* 0704BB649CB8695E93175CE8 */ = {
+		isa = PBXBuildFile;
+		fileRef = AA60B030305633EC645DBDE8;
+	};
 	0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */ = {
 		isa = PBXBuildFile;
 		fileRef = 1B365D303EAC1EE8F810E853;
@@ -39,21 +43,13 @@
 		isa = PBXBuildFile;
 		fileRef = 6733EE44B5FD81C4226C560C;
 	};
+	16DD6A0BD70B4AA953E77A46 /* 16DD6A0BD70B4AA953E77A46 */ = {
+		isa = PBXBuildFile;
+		fileRef = E7C75D71D1A007D0AE93042E;
+	};
 	1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */ = {
 		isa = PBXBuildFile;
 		fileRef = 0089DAE711574808D00ABD0B;
-	};
-	1AF08C2E107B6484E281B271 /* 1AF08C2E107B6484E281B271 */ = {
-		isa = PBXBuildFile;
-		fileRef = A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */;
-	};
-	E91B7B5E5A1B1C5F0E5C3F7B /* E91B7B5E5A1B1C5F0E5C3F7B */ = {
-		isa = PBXBuildFile;
-		fileRef = F4D5A8B9C1234567890ABCDE /* ResidueScannerTests.swift */;
-	};
-	0B27AC77065D8C62DD6187C9 /* 0B27AC77065D8C62DD6187C9 */ = {
-		isa = PBXBuildFile;
-		fileRef = 89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */;
 	};
 	1F1383F1C5BBAC11C885A8A9 /* 1F1383F1C5BBAC11C885A8A9 */ = {
 		isa = PBXBuildFile;
@@ -87,6 +83,10 @@
 		isa = PBXBuildFile;
 		fileRef = 06E33A55C4FF7FD14C728811;
 	};
+	33D3B9276A837515275FF9DC /* 33D3B9276A837515275FF9DC */ = {
+		isa = PBXBuildFile;
+		fileRef = B05401260A8D3F3FF758E59D;
+	};
 	39FEF37BBD65059F5FD0BA44 /* 39FEF37BBD65059F5FD0BA44 */ = {
 		isa = PBXBuildFile;
 		fileRef = 93E7385164CAC43BEEBF65ED;
@@ -94,6 +94,10 @@
 	3BFC387ADC063EFCE1CEBC1D /* 3BFC387ADC063EFCE1CEBC1D */ = {
 		isa = PBXBuildFile;
 		fileRef = E32F171EE23994CDA392D2E7;
+	};
+	3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */ = {
+		isa = PBXBuildFile;
+		fileRef = 10F292C7B928DAA8929F337E;
 	};
 	3C45097EB9D7EA5FFC202E91 /* 3C45097EB9D7EA5FFC202E91 */ = {
 		isa = PBXBuildFile;
@@ -151,6 +155,10 @@
 		isa = PBXBuildFile;
 		fileRef = 9C73A58BF662B0271D083EE3;
 	};
+	6DEA26C5ACF70B72832A1F3D /* 6DEA26C5ACF70B72832A1F3D */ = {
+		isa = PBXBuildFile;
+		fileRef = F64EB626B1651356DF05FAE6;
+	};
 	6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 6CAA3CF4C412CEDDEAA934C3;
@@ -183,10 +191,6 @@
 		isa = PBXBuildFile;
 		fileRef = 1656D17F4D90B00E30B9C367;
 	};
-	D36DD8A4B415769DF60160EC /* D36DD8A4B415769DF60160EC */ = {
-		isa = PBXBuildFile;
-		fileRef = 214C113C57AC8C9363D916D7 /* DirectorySizeCalculator.swift */;
-	};
 	7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */ = {
 		isa = PBXBuildFile;
 		fileRef = F5EE8978A09525D063479709;
@@ -218,6 +222,10 @@
 	8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */ = {
 		isa = PBXBuildFile;
 		fileRef = BFA7754C2E9614BC7641312C;
+	};
+	8C8D6B2C5A3EA74A2E0510A3 /* 8C8D6B2C5A3EA74A2E0510A3 */ = {
+		isa = PBXBuildFile;
+		fileRef = B3FEFF2A6B39C2EA456755D0;
 	};
 	92D836BA8D75FD4D4FC20474 /* 92D836BA8D75FD4D4FC20474 */ = {
 		isa = PBXBuildFile;
@@ -275,6 +283,10 @@
 		isa = PBXBuildFile;
 		fileRef = F6EF8E531BBFA21EF834D571;
 	};
+	D36DD8A4B415769DF60160EC /* D36DD8A4B415769DF60160EC */ = {
+		isa = PBXBuildFile;
+		fileRef = 214C113C57AC8C9363D916D7;
+	};
 	D3AAF3B1FCAF554EA1011E70 /* D3AAF3B1FCAF554EA1011E70 */ = {
 		isa = PBXBuildFile;
 		fileRef = 66DCDD3E8D4249951CFA3C37;
@@ -291,6 +303,10 @@
 		isa = PBXBuildFile;
 		fileRef = 5EF3C83CE85852F781B5EBA1;
 	};
+	D89C984500D05F1C3857B957 /* D89C984500D05F1C3857B957 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4F7AD27F716655EB375F2412;
+	};
 	DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */ = {
 		isa = PBXBuildFile;
 		fileRef = 2F003C23A18C74F51E543E30;
@@ -299,6 +315,10 @@
 		isa = PBXBuildFile;
 		fileRef = 4E0A28E26F67D15D01EC121B;
 	};
+	E233F62991DC0F46CF4D2FFE /* E233F62991DC0F46CF4D2FFE */ = {
+		isa = PBXBuildFile;
+		fileRef = 59B8F9CBC39A248FBD7FDE03;
+	};
 	E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */ = {
 		isa = PBXBuildFile;
 		fileRef = CF5DAA48D342F90110132D61;
@@ -306,6 +326,10 @@
 	E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */ = {
 		isa = PBXBuildFile;
 		fileRef = 83C79C522B962284BED63E66;
+	};
+	E4CBB2D4144A020738312A5F /* E4CBB2D4144A020738312A5F */ = {
+		isa = PBXBuildFile;
+		fileRef = EAA3EA03FFEDFA0DBA5545C7;
 	};
 	EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */ = {
 		isa = PBXBuildFile;
@@ -326,10 +350,6 @@
 	F7BFFF484BD25D346DC5325E /* F7BFFF484BD25D346DC5325E */ = {
 		isa = PBXBuildFile;
 		fileRef = BD8372016B507E6E4A7A99AC;
-	};
-	3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */ = {
-		isa = PBXBuildFile;
-		fileRef = 10F292C7B928DAA8929F337E /* DirectorySizeCalculatorTests.swift */;
 	};
 	F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */ = {
 		isa = PBXBuildFile;
@@ -357,27 +377,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = TrashMoverTests.swift;
 		path = Tests/CleanTests/TrashMoverTests.swift;
-		sourceTree = "<group>";
-	};
-	A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AuditLoggerTests.swift;
-		path = Tests/CleanTests/AuditLoggerTests.swift;
-		sourceTree = "<group>";
-	};
-	F4D5A8B9C1234567890ABCDE /* ResidueScannerTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ResidueScannerTests.swift;
-		path = Tests/CleanTests/ResidueScannerTests.swift;
-		sourceTree = "<group>";
-	};
-	89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AuditLogger.swift;
-		path = Core/Clean/AuditLogger.swift;
 		sourceTree = "<group>";
 	};
 	028FE75EBC698AC1A1A03C74 /* kFreshDebug.entitlements */ = {
@@ -444,6 +443,13 @@
 		path = Features/Common/BrandStyles.swift;
 		sourceTree = "<group>";
 	};
+	10F292C7B928DAA8929F337E /* DirectorySizeCalculatorTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DirectorySizeCalculatorTests.swift;
+		path = Tests/DetectTests/DirectorySizeCalculatorTests.swift;
+		sourceTree = "<group>";
+	};
 	136BEC5F911CA3A945CDC744 /* FDAGuideController.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -463,13 +469,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = BundleRuleStore.swift;
 		path = Core/Detect/BundleRuleStore.swift;
-		sourceTree = "<group>";
-	};
-	214C113C57AC8C9363D916D7 /* DirectorySizeCalculator.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DirectorySizeCalculator.swift;
-		path = Core/Detect/DirectorySizeCalculator.swift;
 		sourceTree = "<group>";
 	};
 	1890ACF921D842C7A68A1BBE /* DetailViewModel.swift */ = {
@@ -505,6 +504,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = QuickUninstallWidget.swift;
 		path = Widgets/QuickUninstallWidget.swift;
+		sourceTree = "<group>";
+	};
+	214C113C57AC8C9363D916D7 /* DirectorySizeCalculator.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DirectorySizeCalculator.swift;
+		path = Core/Detect/DirectorySizeCalculator.swift;
 		sourceTree = "<group>";
 	};
 	21590BBBDE883EFBD31EAEE8 /* FDAGuideView.swift */ = {
@@ -598,6 +604,13 @@
 		path = Data/AppAnalysisRepository.swift;
 		sourceTree = "<group>";
 	};
+	4F7AD27F716655EB375F2412 /* FDAGuidePage.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAGuidePage.swift;
+		path = Features/Onboarding/FDAGuidePage.swift;
+		sourceTree = "<group>";
+	};
 	53EF96BE26DB6B2A6C185799 /* UninstallFlowTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -612,6 +625,13 @@
 		name = kFresh.app;
 		path = kFresh.app;
 		sourceTree = BUILT_PRODUCTS_DIR;
+	};
+	59B8F9CBC39A248FBD7FDE03 /* AuditLogger.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AuditLogger.swift;
+		path = Core/Clean/AuditLogger.swift;
+		sourceTree = "<group>";
 	};
 	5D0DC122863AABE458A77BA8 /* AppUsageWidget.swift */ = {
 		isa = PBXFileReference;
@@ -767,6 +787,13 @@
 		path = Features/Detail/AppDetailView.swift;
 		sourceTree = "<group>";
 	};
+	AA60B030305633EC645DBDE8 /* AuditLoggerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AuditLoggerTests.swift;
+		path = Tests/CleanTests/AuditLoggerTests.swift;
+		sourceTree = "<group>";
+	};
 	AA82AD3ACA5E2DE044D14893 /* UninstallAppIntent.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -781,11 +808,25 @@
 		path = Core/Clean/ResidueScanner.swift;
 		sourceTree = "<group>";
 	};
+	B05401260A8D3F3FF758E59D /* FDAPermissionProbeTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAPermissionProbeTests.swift;
+		path = Tests/OnboardingTests/FDAPermissionProbeTests.swift;
+		sourceTree = "<group>";
+	};
 	B0FA94F96C119EFBD28B7F0B /* kUninstallApp.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = kUninstallApp.swift;
 		path = App/kUninstallApp.swift;
+		sourceTree = "<group>";
+	};
+	B3FEFF2A6B39C2EA456755D0 /* FDAPermissionProbe.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAPermissionProbe.swift;
+		path = Features/Onboarding/FDAPermissionProbe.swift;
 		sourceTree = "<group>";
 	};
 	B6830D0E035D1121B06CF64B /* SettingsViewModel.swift */ = {
@@ -800,13 +841,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppSourceClassifierTests.swift;
 		path = Tests/DetectTests/AppSourceClassifierTests.swift;
-		sourceTree = "<group>";
-	};
-	10F292C7B928DAA8929F337E /* DirectorySizeCalculatorTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DirectorySizeCalculatorTests.swift;
-		path = Tests/DetectTests/DirectorySizeCalculatorTests.swift;
 		sourceTree = "<group>";
 	};
 	BFA7754C2E9614BC7641312C /* Localizable.xcstrings */ = {
@@ -886,11 +920,25 @@
 		path = Features/Detail/UninstallConfirmSheet.swift;
 		sourceTree = "<group>";
 	};
+	E7C75D71D1A007D0AE93042E /* Animation.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = Animation.swift;
+		path = ../kFoundation/Sources/DesignSystem/Animation.swift;
+		sourceTree = "<group>";
+	};
 	EA66E191F044FFC4D9668848 /* LoadingStateView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = LoadingStateView.swift;
 		path = Features/Common/LoadingStateView.swift;
+		sourceTree = "<group>";
+	};
+	EAA3EA03FFEDFA0DBA5545C7 /* FDAGuideControllerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = FDAGuideControllerTests.swift;
+		path = Tests/OnboardingTests/FDAGuideControllerTests.swift;
 		sourceTree = "<group>";
 	};
 	F035EC8F6EE68C301CCA326E /* DeepCleanEngine.swift */ = {
@@ -912,6 +960,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = SystemCleanGroupView.swift;
 		path = Features/DeepClean/SystemCleanGroupView.swift;
+		sourceTree = "<group>";
+	};
+	F64EB626B1651356DF05FAE6 /* ResidueScannerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueScannerTests.swift;
+		path = Tests/CleanTests/ResidueScannerTests.swift;
 		sourceTree = "<group>";
 	};
 	F6EF8E531BBFA21EF834D571 /* ResidueSectionView.swift */ = {
@@ -1138,6 +1193,7 @@
 			9C73A58BF662B0271D083EE3 /* Radius.swift */,
 			E32F171EE23994CDA392D2E7 /* Shadow.swift */,
 			CE04F6C7E85E205F424C65AC /* Spacing.swift */,
+			E7C75D71D1A007D0AE93042E /* Animation.swift */,
 		);
 		name = DesignSystem;
 		sourceTree = "<group>";
@@ -1201,8 +1257,8 @@
 		children = (
 			0089DAE711574808D00ABD0B /* TrashMoverTests.swift */,
 			D7B438A54B3D98707F22F4C7 /* BackupManagerTests.swift */,
-			A043BAE1603803A839C0CB52 /* AuditLoggerTests.swift */,
-			F4D5A8B9C1234567890ABCDE /* ResidueScannerTests.swift */,
+			F64EB626B1651356DF05FAE6 /* ResidueScannerTests.swift */,
+			AA60B030305633EC645DBDE8 /* AuditLoggerTests.swift */,
 		);
 		name = CleanTests;
 		sourceTree = "<group>";
@@ -1212,6 +1268,8 @@
 		children = (
 			136BEC5F911CA3A945CDC744 /* FDAGuideController.swift */,
 			21590BBBDE883EFBD31EAEE8 /* FDAGuideView.swift */,
+			4F7AD27F716655EB375F2412 /* FDAGuidePage.swift */,
+			B3FEFF2A6B39C2EA456755D0 /* FDAPermissionProbe.swift */,
 		);
 		name = Onboarding;
 		sourceTree = "<group>";
@@ -1263,7 +1321,7 @@
 		children = (
 			DC9F358CA23F4689897454B8 /* TrashMover.swift */,
 			AF272D3718777F39FA504734 /* ResidueScanner.swift */,
-			89600FD4E81D9EA19CE58B2D /* AuditLogger.swift */,
+			59B8F9CBC39A248FBD7FDE03 /* AuditLogger.swift */,
 		);
 		name = Clean;
 		sourceTree = "<group>";
@@ -1275,6 +1333,7 @@
 			92CF88F56CFAD37E6AF2955F /* CleanTests */,
 			5FE9C103B068D0D68C2FC09D /* RulesTests */,
 			D5C3C798E3485DAFB96FECAE /* IntegrationTests */,
+			DE4BC60A55EFBB97F3644961 /* OnboardingTests */,
 			2220AFE70C0352F63AF55DB3 /* UITests */,
 		);
 		name = Tests;
@@ -1306,6 +1365,15 @@
 			92285B8C36BFE1BC01B56B40 /* SandboxDegradationTests.swift */,
 		);
 		name = IntegrationTests;
+		sourceTree = "<group>";
+	};
+	DE4BC60A55EFBB97F3644961 /* OnboardingTests */ = {
+		isa = PBXGroup;
+		children = (
+			B05401260A8D3F3FF758E59D /* FDAPermissionProbeTests.swift */,
+			EAA3EA03FFEDFA0DBA5545C7 /* FDAGuideControllerTests.swift */,
+		);
+		name = OnboardingTests;
 		sourceTree = "<group>";
 	};
 	EBA56EB89A9347CFCE560E19 /* Products */ = {
@@ -1424,16 +1492,18 @@
 			9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */,
 			2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */,
 			F7BFFF484BD25D346DC5325E /* F7BFFF484BD25D346DC5325E */,
+			3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */,
 			ABAE0D7916C85CCAB7B3C1B6 /* ABAE0D7916C85CCAB7B3C1B6 */,
 			1F2330F83330CD811E7D7A29 /* 1F2330F83330CD811E7D7A29 */,
 			1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */,
-			1AF08C2E107B6484E281B271 /* 1AF08C2E107B6484E281B271 */,
 			717B5017E8BA6330A45302F9 /* 717B5017E8BA6330A45302F9 */,
+			6DEA26C5ACF70B72832A1F3D /* 6DEA26C5ACF70B72832A1F3D */,
+			0704BB649CB8695E93175CE8 /* 0704BB649CB8695E93175CE8 */,
+			33D3B9276A837515275FF9DC /* 33D3B9276A837515275FF9DC */,
+			E4CBB2D4144A020738312A5F /* E4CBB2D4144A020738312A5F */,
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
 			E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */,
-			3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */,
-			E91B7B5E5A1B1C5F0E5C3F7B /* E91B7B5E5A1B1C5F0E5C3F7B */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -1454,6 +1524,7 @@
 			1F1383F1C5BBAC11C885A8A9 /* 1F1383F1C5BBAC11C885A8A9 */,
 			62E646831E0902B06DD4553A /* 62E646831E0902B06DD4553A */,
 			9F7D061010AC1F35C96F4929 /* 9F7D061010AC1F35C96F4929 */,
+			E233F62991DC0F46CF4D2FFE /* E233F62991DC0F46CF4D2FFE */,
 			3C45097EB9D7EA5FFC202E91 /* 3C45097EB9D7EA5FFC202E91 */,
 			25A10FE62B29AD4A68CDD057 /* 25A10FE62B29AD4A68CDD057 */,
 			F1B840EC59C8EF013434A941 /* F1B840EC59C8EF013434A941 */,
@@ -1476,12 +1547,13 @@
 			4AEDA9A9240B69654ED01077 /* 4AEDA9A9240B69654ED01077 */,
 			EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */,
 			C0BF1902E4AB186E1ED4C33C /* C0BF1902E4AB186E1ED4C33C */,
+			D89C984500D05F1C3857B957 /* D89C984500D05F1C3857B957 */,
+			8C8D6B2C5A3EA74A2E0510A3 /* 8C8D6B2C5A3EA74A2E0510A3 */,
 			115B97F3BA2B8AE4E280E771 /* 115B97F3BA2B8AE4E280E771 */,
 			EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */,
 			39FEF37BBD65059F5FD0BA44 /* 39FEF37BBD65059F5FD0BA44 */,
 			2422F783D185FC935A880678 /* 2422F783D185FC935A880678 */,
 			E36AE622041B0258EB01520F /* E36AE622041B0258EB01520F */,
-			0B27AC77065D8C62DD6187C9 /* 0B27AC77065D8C62DD6187C9 */,
 			0B68BECE3F04183454E65D6D /* 0B68BECE3F04183454E65D6D */,
 			BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */,
 			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
@@ -1506,6 +1578,7 @@
 			67823FEA09526598EB3ACBED /* 67823FEA09526598EB3ACBED */,
 			3BFC387ADC063EFCE1CEBC1D /* 3BFC387ADC063EFCE1CEBC1D */,
 			107421278965574C5112620B /* 107421278965574C5112620B */,
+			16DD6A0BD70B4AA953E77A46 /* 16DD6A0BD70B4AA953E77A46 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

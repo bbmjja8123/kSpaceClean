@@ -114,6 +114,7 @@ def main():
         "CleanTests": make_group("CleanTests"),
         "RulesTests": make_group("RulesTests"),
         "IntegrationTests": make_group("IntegrationTests"),
+        "OnboardingTests": make_group("OnboardingTests"),
         "UITests": make_group("UITests"),
         "Products": make_group("Products"),
     }
@@ -133,10 +134,12 @@ def main():
         ("Core/Detect/AppCatalogService.swift", "Detect"),
         ("Core/Detect/ResidueDetector.swift", "Detect"),
         ("Core/Detect/BundleRuleStore.swift", "Detect"),
+        ("Core/Detect/DirectorySizeCalculator.swift", "Detect"),
         ("Core/Rules/KFreshBundleRule.swift", "Rules"),
         ("Core/Rules/CaskParser.swift", "Rules"),
         ("Core/Clean/TrashMover.swift", "Clean"),
         ("Core/Clean/ResidueScanner.swift", "Clean"),
+        ("Core/Clean/AuditLogger.swift", "Clean"),
         ("Data/BackupManager.swift", "Data"),
         ("Data/UninstallHistoryRepository.swift", "Data"),
         ("Data/FDAuthorizer.swift", "Data"),
@@ -159,6 +162,8 @@ def main():
         ("Features/History/HistoryViewModel.swift", "History"),
         ("Features/Onboarding/FDAGuideController.swift", "Onboarding"),
         ("Features/Onboarding/FDAGuideView.swift", "Onboarding"),
+        ("Features/Onboarding/FDAGuidePage.swift", "Onboarding"),
+        ("Features/Onboarding/FDAPermissionProbe.swift", "Onboarding"),
         ("Features/Settings/SettingsView.swift", "Settings"),
         ("Features/Settings/SettingsViewModel.swift", "Settings"),
         ("Features/Settings/AboutView.swift", "Settings"),
@@ -189,6 +194,7 @@ def main():
         ("../kFoundation/Sources/DesignSystem/Radius.swift", "DS_DesignSystem"),
         ("../kFoundation/Sources/DesignSystem/Shadow.swift", "DS_DesignSystem"),
         ("../kFoundation/Sources/DesignSystem/Spacing.swift", "DS_DesignSystem"),
+        ("../kFoundation/Sources/DesignSystem/Animation.swift", "DS_DesignSystem"),
     ]
 
     test_file_groups = {
@@ -197,6 +203,7 @@ def main():
             "AppCatalogServiceTests.swift",
             "ResidueDetectorTests.swift",
             "AppSourceClassifierTests.swift",
+            "DirectorySizeCalculatorTests.swift",
         ],
         "RulesTests": [
             "CaskParserTests.swift",
@@ -205,6 +212,12 @@ def main():
         "CleanTests": [
             "TrashMoverTests.swift",
             "BackupManagerTests.swift",
+            "ResidueScannerTests.swift",
+            "AuditLoggerTests.swift",
+        ],
+        "OnboardingTests": [
+            "FDAPermissionProbeTests.swift",
+            "FDAGuideControllerTests.swift",
         ],
         "IntegrationTests": [
             "UninstallFlowTests.swift",
@@ -547,7 +560,7 @@ def main():
 
     # Set Tests group children
     tests_children = []
-    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "UITests"]:
+    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "UITests"]:
         tests_children.append((group_ids[sub], sub))
     objects[group_ids["Tests"]][1]["children"] = tests_children
 
