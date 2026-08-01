@@ -74,20 +74,36 @@ struct ScanResultsView: View {
                     )
                 }
             } else {
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 0) {
-                        ForEach(viewModel.categories) { category in
-                            RecursiveTreeNode(
-                                node: category,
-                                level: 0,
-                                expandedIDs: viewModel.expandedIDs,
-                                onToggleExpand: viewModel.toggleExpand,
-                                onToggleSelect: viewModel.toggleSelect
-                            )
-                            .equatable()
-                        }
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+                        Toggle("显示过滤掉的项", isOn: $viewModel.showAllHidden)
+                            .font(Typography.regularBody())
+                            .foregroundStyle(Color.textSecondary)
+                            .toggleStyle(.checkbox)
+                            .accessibilityLabel("显示过滤掉的项")
                     }
-                    .padding(.vertical, Spacing.sm)
+                    .padding(.horizontal, Spacing.md)
+                    .padding(.vertical, Spacing.xs)
+
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 0) {
+                            ForEach(viewModel.categories) { category in
+                                let treeNode = RecursiveTreeNode(
+                                    node: category,
+                                    level: 0,
+                                    expandedIDs: viewModel.expandedIDs,
+                                    showAllHidden: viewModel.showAllHidden,
+                                    onToggleExpand: viewModel.toggleExpand,
+                                    onToggleSelect: viewModel.toggleSelect
+                                )
+                                if treeNode.isVisibleWhenHidden(showAllHidden: viewModel.showAllHidden) {
+                                    treeNode.equatable()
+                                }
+                            }
+                        }
+                        .padding(.vertical, Spacing.sm)
+                    }
                 }
             }
 
@@ -276,10 +292,10 @@ struct PreScanPanel: View {
 ///
 /// `RecursiveTreeNode` conforms to `Equatable` so SwiftUI can skip the
 /// body re-evaluation for a whole subtree whose `(node.id, level,
-/// expandedIDs)` triple is unchanged. The two callbacks are stable
-/// references for the view tree's lifetime and would only force equality
-/// churn on every parent invalidation.
-private struct RecursiveTreeNode: View, Equatable {
+/// expandedIDs, showAllHidden)` tuple is unchanged. The two callbacks are
+/// stable references for the view tree's lifetime and would only force
+/// equality churn on every parent invalidation.
+struct RecursiveTreeNode: View, Equatable {
     /// Tree node being rendered. Polymorphic — `ScanTreeRow` handles the
     /// per-level field access via runtime `as?` checks.
     let node: any ScanTreeNode
@@ -287,6 +303,10 @@ private struct RecursiveTreeNode: View, Equatable {
     let level: Int
     /// Set of expanded node ids — mirrors the owning view-model state.
     let expandedIDs: Set<UUID>
+    /// When `true`, `isHiddenByFilter` nodes render too (the "显示过滤掉的项"
+    /// toggle). Fold-not-delete: hidden nodes stay in the data model and
+    /// are skipped by the renderer at every level unless revealed.
+    let showAllHidden: Bool
     /// User tapped the chevron. Parent toggles its expanded state.
     let onToggleExpand: (UUID) -> Void
     /// User tapped the checkbox. Parent routes through the cascade.
@@ -294,14 +314,17 @@ private struct RecursiveTreeNode: View, Equatable {
 
     /// Equatable conformance — drives `.equatable()` on the recursive
     /// children in `body` so subtrees whose `(node.id, level,
-    /// expandedIDs)` triple is unchanged skip body evaluation. This is
-    /// the key win for the leaf-level `.on → .off` flip case described
-    /// in the perf brief: a sibling leaf toggling no longer rebuilds
-    /// the HStack for every other row in the tree.
+    /// expandedIDs, showAllHidden)` tuple is unchanged skip body
+    /// evaluation. This is the key win for the leaf-level `.on → .off`
+    /// flip case described in the perf brief: a sibling leaf toggling no
+    /// longer rebuilds the HStack for every other row in the tree.
+    /// `showAllHidden` participates so flipping the "显示过滤掉的项" toggle
+    /// invalidates every row and forces a re-render.
     static func == (lhs: RecursiveTreeNode, rhs: RecursiveTreeNode) -> Bool {
         lhs.node.id == rhs.node.id
             && lhs.level == rhs.level
             && lhs.expandedIDs == rhs.expandedIDs
+            && lhs.showAllHidden == rhs.showAllHidden
     }
 
     /// Always renders the row; the children are wrapped in a single
@@ -319,17 +342,29 @@ private struct RecursiveTreeNode: View, Equatable {
         Group {
             if isExpanded {
                 ForEach(Array(node.children.enumerated()), id: \.element.id) { _, child in
-                    RecursiveTreeNode(
+                    let childNode = RecursiveTreeNode(
                         node: child,
                         level: level + 1,
                         expandedIDs: expandedIDs,
+                        showAllHidden: showAllHidden,
                         onToggleExpand: onToggleExpand,
                         onToggleSelect: onToggleSelect
                     )
-                    .equatable()
+                    if childNode.isVisibleWhenHidden(showAllHidden: showAllHidden) {
+                        childNode.equatable()
+                    }
                 }
             }
         }
+    }
+}
+
+extension RecursiveTreeNode {
+    /// Hidden nodes stay in the data model (fold-not-delete) but are
+    /// skipped by the renderer unless the user reveals them.
+    func isVisibleWhenHidden(showAllHidden: Bool) -> Bool {
+        if showAllHidden { return true }
+        return !node.isHiddenByFilter
     }
 }
 

@@ -77,3 +77,49 @@ final class ScanResultsViewModelFilterTests: XCTestCase {
                       "empty skeleton categories must stay VISIBLE, not fold up hidden")
     }
 }
+
+@MainActor
+final class ScanResultsViewHiddenRenderingTests: XCTestCase {
+    func testHiddenNodeVisibilityFollowsShowAllHidden() {
+        let hiddenResult = ScanResult(
+            url: URL(fileURLWithPath: "/tmp/hidden"),
+            path: "/tmp/hidden",
+            title: "hidden",
+            fileSize: 100,
+            cleanType: .cache,
+            isHiddenByFilter: true
+        )
+        let node = RecursiveTreeNode(
+            node: hiddenResult,
+            level: 0,
+            expandedIDs: [],
+            showAllHidden: false,
+            onToggleExpand: { _ in },
+            onToggleSelect: { _ in }
+        )
+        XCTAssertFalse(node.isVisibleWhenHidden(showAllHidden: false),
+                       "hidden node must not render when showAllHidden is off")
+        XCTAssertTrue(node.isVisibleWhenHidden(showAllHidden: true),
+                      "hidden node must render when showAllHidden is on")
+    }
+
+    func testRecursiveTreeNodeEqualityIncludesShowAllHidden() {
+        let result = ScanResult(
+            url: URL(fileURLWithPath: "/tmp/v"),
+            path: "/tmp/v",
+            title: "v",
+            fileSize: 10_000_000,
+            cleanType: .cache
+        )
+        let hidden = RecursiveTreeNode(
+            node: result, level: 0, expandedIDs: [],
+            showAllHidden: false, onToggleExpand: { _ in }, onToggleSelect: { _ in }
+        )
+        let shown = RecursiveTreeNode(
+            node: result, level: 0, expandedIDs: [],
+            showAllHidden: true, onToggleExpand: { _ in }, onToggleSelect: { _ in }
+        )
+        XCTAssertNotEqual(hidden, shown,
+                          "flipping showAllHidden must invalidate row equality so the tree re-renders")
+    }
+}
