@@ -101,6 +101,16 @@ final class StoreManager: ObservableObject {
         return true
     }
 
+    /// Applies the `-kFreshTestPro <0|1>` launch-argument pair to the override
+    /// key, unconditionally: a missing or `0` argument clears any stale `true`
+    /// from a previous launch, so the override always reflects this launch.
+    nonisolated static func applyTestProOverride(_ arguments: [String]) {
+        UserDefaults.standard.set(
+            parseTestProArgument(arguments),
+            forKey: testOverrideKey
+        )
+    }
+
     /// Whether Pro is unlocked. Honors the test override first, then consults
     /// the StoreKit entitlement stream. Nonisolated so App Intents can gate
     /// features without holding a long-lived manager.

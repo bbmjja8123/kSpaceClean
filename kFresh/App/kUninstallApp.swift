@@ -9,12 +9,11 @@ struct kFreshApp: App {
     private let menuBarController = MenuBarController()
 
     /// Honors the `-kFreshTestPro <0|1>` launch argument used by the Pro-gate
-    /// UI tests: writing the shared override key makes ``StoreManager`` start
-    /// in the requested Pro state before any view is built.
+    /// UI tests: applying the parsed value unconditionally makes ``StoreManager``
+    /// start in the requested Pro state before any view is built, and clears any
+    /// stale override from a previous launch when the argument is missing or `0`.
     init() {
-        if StoreManager.parseTestProArgument(ProcessInfo.processInfo.arguments) {
-            UserDefaults.standard.set(true, forKey: StoreManager.testOverrideKey)
-        }
+        StoreManager.applyTestProOverride(ProcessInfo.processInfo.arguments)
     }
 
     var body: some Scene {

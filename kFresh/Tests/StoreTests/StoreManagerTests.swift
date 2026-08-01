@@ -60,4 +60,23 @@ final class StoreManagerTests: XCTestCase {
         await manager.refresh()
         XCTAssertEqual(manager.state, .free)
     }
+
+    // MARK: - applyTestProOverride (unconditional write)
+
+    func testApplyTestProOverrideWithZeroClearsStaleTrue() {
+        UserDefaults.standard.set(true, forKey: StoreManager.testOverrideKey)
+        StoreManager.applyTestProOverride(["-kFreshTestPro", "0"])
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: StoreManager.testOverrideKey))
+    }
+
+    func testApplyTestProOverrideWithoutArgumentClearsStaleTrue() {
+        UserDefaults.standard.set(true, forKey: StoreManager.testOverrideKey)
+        StoreManager.applyTestProOverride([])
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: StoreManager.testOverrideKey))
+    }
+
+    func testApplyTestProOverrideWithOneSetsTrue() {
+        StoreManager.applyTestProOverride(["-kFreshTestPro", "1"])
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: StoreManager.testOverrideKey))
+    }
 }
