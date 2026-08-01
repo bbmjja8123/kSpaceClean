@@ -92,6 +92,13 @@ final class ScanResultsViewModel: ObservableObject {
         var categories: [ScanCategory] = []
         var totalSelectedSize: Int64 = 0
         var totalSelectedCount: Int = 0
+        /// Set when a scan completed but the sandbox lacks Full Disk Access,
+        /// so the result is known to be incomplete (zero files). The view
+        /// layer renders a "grant Full Disk Access" state instead of a
+        /// misleading "your Mac is clean". Default `false` keeps the
+        /// memberwise-init call sites (incl. the F4 regression test)
+        /// compiling unchanged.
+        var needsFullDiskAccess: Bool = false
     }
 
     /// Snapshot backing the legacy `@Published` accessors. Setting the
@@ -129,6 +136,8 @@ final class ScanResultsViewModel: ObservableObject {
     var totalSelectedSize: Int64 { snapshot.totalSelectedSize }
     /// Backward-compatible read-only accessor — see ``categories``.
     var totalSelectedCount: Int { snapshot.totalSelectedCount }
+    /// Backward-compatible read-only accessor — see ``categories``.
+    var needsFullDiskAccess: Bool { snapshot.needsFullDiskAccess }
 
     /// Set of tree-node ids whose subtree is currently expanded.
     /// Membership changes drive the SwiftUI `LazyVStack` rerender.
@@ -146,6 +155,18 @@ final class ScanResultsViewModel: ObservableObject {
     /// `@Published categories` array and folds them into its own state.
     /// `nil` in previews; supplied by `RootView` in production.
     let engine: ScanEngine?
+
+    /// Live progress snapshot forwarded from ``engine`` while a scan runs.
+    /// The scan-tab UI renders this with `ScanProgressView` so the user
+    /// sees real-time progress instead of a static placeholder.
+    @Published private(set) var engineProgress: ScanProgress = ScanProgress()
+
+    /// Combine subscription that mirrors `engine.$progress` into
+    /// ``engineProgress``. The engine publishes on the main actor; the
+    /// sink closure is invoked on whatever thread Combine delivers on, so
+    /// we hop back to the main actor explicitly. `MainActor.assumeIsolated`
+    /// (Swift 5.9+) is unavailable on this toolchain, hence the `Task`.
+    private var engineProgressCancellable: AnyCancellable?
 
     /// F6 perf sweep: the pre-scan slider writes into this draft, not
     /// `filters`. A Combine debounce flushes the draft into the real
@@ -175,6 +196,18 @@ final class ScanResultsViewModel: ObservableObject {
                 guard self.filters != newValue else { return }
                 self.filters = newValue
             }
+
+        // Mirror the engine's live progress into `engineProgress` so the
+        // scan tab can render a real progress view. Engine publishes are
+        // @MainActor-bound, but the Combine pipeline may deliver on a
+        // background thread; hop back explicitly.
+        if let engine {
+            engineProgressCancellable = engine.$progress.sink { [weak self] progress in
+                Task { @MainActor in
+                    self?.engineProgress = progress
+                }
+            }
+        }
     }
 
     /// Toggles the expansion state of the node identified by `id`.
@@ -378,19 +411,53 @@ final class ScanResultsViewModel: ObservableObject {
         working.isScanning = true
         // Pre-clear so the SwiftUI tree shows the loading state immediately.
         working.categories = []
+        working.needsFullDiskAccess = false
         snapshot = working
 
+        // Live progress: reset to a fresh `.scanning` snapshot so the
+        // progress view renders immediately, before the first engine
+        // publish lands.
+        engineProgress = ScanProgress(state: .scanning)
+
+        // FDA fast-fail: a sandboxed app without Full Disk Access cannot
+        // see any user files, so the scan would legitimately enumerate
+        // zero files and we'd show a false "clean" screen. Detect it up
+        // front and surface the FDA guidance state instead.
+        guard UserPathResolver.hasFullDiskAccess() else {
+            var noFDA = working
+            noFDA.isScanning = false
+            noFDA.hasScanned = true
+            noFDA.needsFullDiskAccess = true
+            snapshot = noFDA
+            return
+        }
+
         await engine.startScan()
-        // After `startScan` returns, subscribe to the engine's category
-        // stream and forward into our tree. The wrapper runs both the
-        // progress stream and the category stream in `runScan` and writes
-        // to `@Published categories`; we mirror those into our own array
-        // so toggling a checkbox here does not race with engine updates.
+        // Deterministic completion: `startScan()` is fire-and-forget (it
+        // returns as soon as the orchestrator's stream is created). Await
+        // `waitForScanCompletion()` so `engine.categories` below reflects
+        // the finished scan — reading it immediately (the pre-fix
+        // behaviour) always yielded an empty array and the UI showed
+        // "clean" while the scan ran unobserved.
+        await engine.waitForScanCompletion()
+
+        // After the engine finishes, fold its categories into our own
+        // array. The wrapper runs both the progress stream and the
+        // category stream in `runScan` and writes to `@Published
+        // categories`; we mirror those into our own array so toggling a
+        // checkbox here does not race with engine updates.
         let raw = engine.categories.sorted { $0.categoryID < $1.categoryID }
         var newSnapshot = working
         newSnapshot.categories = Self.applyFilters(raw, options: filters)
         newSnapshot.isScanning = false
         newSnapshot.hasScanned = true
+
+        // Post-scan FDA re-check: if the scan came back empty AND FDA is
+        // missing, the empty result is an artifact of sandboxing (the walk
+        // never saw real files), not a clean Mac. Surface the FDA state.
+        if newSnapshot.categories.isEmpty, !UserPathResolver.hasFullDiskAccess() {
+            newSnapshot.needsFullDiskAccess = true
+        }
 
         // Recompute summary on the new categories before publishing so
         // the summary bar never shows a transient "0 项" between the

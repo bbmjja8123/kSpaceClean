@@ -89,6 +89,13 @@ public final class ScanEngine: ObservableObject {
     /// `startScan()` (to abandon a prior run) and `cancelScan()`.
     private var scanTask: Task<Void, Never>?
 
+    /// Monotonic counter bumped every `startScan()` so the *previous* scan's
+    /// in-flight unstructured tasks (which cancellation does not reach — the
+    /// `Task {}` spawns inside `runScan` do not inherit their parent's
+    /// cancellation) can detect they are stale and stop ingesting into the
+    /// freshly-reset `@Published` state.
+    private var scanGeneration: UInt64 = 0
+
     /// Adaptive throttle window. Starts at 16ms; bumped to 33ms when the
     /// main thread is observed to be saturated.
     private var throttleInterval: TimeInterval = 0.016
@@ -134,6 +141,14 @@ public final class ScanEngine: ObservableObject {
         priorTask?.cancel()
         await orchestrator.cancel()
 
+        // Bump the generation so any *previous* scan's in-flight unstructured
+        // tasks (which cancellation does not reach — the `Task {}` spawns
+        // inside `runScan` do not inherit their parent's cancellation) detect
+        // they are stale and stop ingesting into the freshly-reset state
+        // below. See `scanGeneration` for the full rationale.
+        scanGeneration &+= 1
+        let generation = scanGeneration
+
         // Reset state.
         categories = []
         progress = ScanProgress(
@@ -162,7 +177,7 @@ public final class ScanEngine: ObservableObject {
         progressStream = stream
 
         scanTask = Task { [weak self] in
-            await self?.runScan(stream: stream)
+            await self?.runScan(stream: stream, generation: generation)
         }
     }
 
@@ -175,6 +190,19 @@ public final class ScanEngine: ObservableObject {
         scanTask = nil
         await orchestrator.cancel()
         progress = ScanProgress(state: .idle)
+    }
+
+    /// Wait for the in-flight scan to finish (completed, cancelled, or
+    /// failed). No-op when no scan is running.
+    ///
+    /// This is the deterministic way for a caller to learn the scan's final
+    /// state: `startScan()` is fire-and-forget (it returns as soon as the
+    /// orchestrator's stream is created), so a caller that needs the results
+    /// — e.g. `ScanResultsViewModel.startRealScan` — must await this before
+    /// reading `categories` or `progress`.
+    public func waitForScanCompletion() async {
+        guard let scanTask else { return }
+        await scanTask.value
     }
 
     // MARK: Stream Consumer
@@ -190,7 +218,7 @@ public final class ScanEngine: ObservableObject {
     ///    main thread is busy); otherwise keep it at 16ms.
     /// 4. Always forward the final state (so the UI doesn't sit on a
     ///    stale snapshot if the scan finishes inside a throttle window).
-    private func runScan(stream: AsyncStream<ScanProgress>) async {
+    private func runScan(stream: AsyncStream<ScanProgress>, generation: UInt64) async {
         // C2: also drain the orchestrator's per-category stream so the
         // `@Published categories` array populates incrementally. The
         // progress stream only carries aggregate counters, not the
@@ -200,7 +228,7 @@ public final class ScanEngine: ObservableObject {
         let progressTask = Task { [weak self] in
             guard let self else { return }
             for await snapshot in stream {
-                self.ingest(snapshot: snapshot)
+                self.ingest(snapshot: snapshot, generation: generation)
                 if Self.isTerminal(snapshot.state) { return }
             }
         }
@@ -209,15 +237,22 @@ public final class ScanEngine: ObservableObject {
             for await event in categoryStream {
                 switch event {
                 case .category(let catEvent):
-                    self.ingest(categoryEvent: catEvent)
+                    self.ingest(categoryEvent: catEvent, generation: generation)
                 case .terminal:
                     return
                 }
             }
         }
 
+        // NOTE: we do NOT cancel `categoryTask` after `progressTask`
+        // finishes. The orchestrator's `categoryStream` terminates itself:
+        // once `hasFinishedScan` flips it drains the remaining buffered
+        // events, yields a `.terminal`, and returns. Cancelling it early
+        // (the pre-fix behaviour) dropped buffered category events that
+        // arrived between the progress stream's last snapshot and the scan
+        // finishing — the same "results silently disappear" class of bug
+        // this pass fixes. Both tasks self-terminate; just await both.
         await progressTask.value
-        categoryTask.cancel()
         await categoryTask.value
     }
 
@@ -232,7 +267,14 @@ public final class ScanEngine: ObservableObject {
 
     /// Applies the adaptive throttle to a single progress snapshot and
     /// forwards it to the `@Published` property.
-    private func ingest(snapshot: ScanProgress) {
+    private func ingest(snapshot: ScanProgress, generation: UInt64) {
+        // Stale-guard: a *previous* scan's unstructured task (see
+        // `scanGeneration`) may still be draining its stream after a new
+        // scan has started. Dropping its writes keeps the fresh scan's
+        // state untouched. `generation` is only mutated on the main actor
+        // (this method is `@MainActor`), so the check is race-free.
+        guard generation == scanGeneration else { return }
+
         let now = Date()
         let elapsed = now.timeIntervalSince(lastEmitAt)
         if elapsed >= throttleInterval {
@@ -259,7 +301,11 @@ public final class ScanEngine: ObservableObject {
     /// Replaces any prior entry for the same `categoryID` so re-runs are
     /// idempotent, and applies the adaptive throttle so the UI does not
     /// redraw more than ~30 times per second.
-    private func ingest(categoryEvent: ScanCategoryEvent) {
+    private func ingest(categoryEvent: ScanCategoryEvent, generation: UInt64) {
+        // Same stale-guard as `ingest(snapshot:generation:)` — a previous
+        // scan's category task must not fold its tree into a fresh scan.
+        guard generation == scanGeneration else { return }
+
         // C2 fix: replace or append the category; the view layer sorts by
         // a stable key (we keep insertion order so the first match wins).
         if let idx = categories.firstIndex(where: { $0.categoryID == categoryEvent.categoryID }) {

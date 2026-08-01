@@ -63,6 +63,12 @@ final class ScanOrchestratorIntegrationTests: XCTestCase {
         ]
         let orchestrator = ScanOrchestrator(categoryDefinitions: cats)
 
+        // Drive the scan; break on terminal snapshot. The category-stream
+        // consumer attaches AFTER startScan(): `categoryStream()` snapshots
+        // the scan epoch at attach time, so a pre-startScan consumer would
+        // capture the stale epoch and terminate immediately.
+        let stream = await orchestrator.startScan()
+
         var emittedCategory: ScanCategoryEvent?
         var sawTerminalCompletion = false
         let consumer = Task { @MainActor in
@@ -81,8 +87,6 @@ final class ScanOrchestratorIntegrationTests: XCTestCase {
             }
         }
 
-        // Drive the scan; break on terminal snapshot.
-        let stream = await orchestrator.startScan()
         for await p in stream {
             if case .completed = p.state { break }
             if case .failed = p.state { XCTFail("scan failed") }
@@ -116,7 +120,11 @@ final class ScanOrchestratorIntegrationTests: XCTestCase {
 
         // Second scan: must still emit a terminal event (regression
         // guard for the C2 bug where pendingCategoryEvents was never
-        // cleared between scans).
+        // cleared between scans). The consumer attaches AFTER the second
+        // startScan() so it captures the new scan epoch, not the first
+        // scan's (now-stale) epoch.
+        let secondStream = await orchestrator.startScan()
+
         var sawTerminalCompletion = false
         let consumer = Task { @MainActor in
             for await event in await orchestrator.categoryStream() {
@@ -125,7 +133,6 @@ final class ScanOrchestratorIntegrationTests: XCTestCase {
                 }
             }
         }
-        let secondStream = await orchestrator.startScan()
         for await p in secondStream {
             if case .completed = p.state { break }
         }
@@ -152,13 +159,16 @@ final class ScanOrchestratorIntegrationTests: XCTestCase {
         ]
         let orchestrator = ScanOrchestrator(categoryDefinitions: cats)
 
+        // Consumer attaches after startScan() (epoch capture), before
+        // cancel() so it observes the cancellation path.
+        let stream = await orchestrator.startScan()
+
         var sawTerminal = false
         let consumer = Task { @MainActor in
             for await event in await orchestrator.categoryStream() {
                 if case .terminal = event { sawTerminal = true }
             }
         }
-        let stream = await orchestrator.startScan()
         await orchestrator.cancel()
         for await _ in stream { /* drain until termination */ }
 

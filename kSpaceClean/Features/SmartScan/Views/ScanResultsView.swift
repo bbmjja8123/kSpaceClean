@@ -1,5 +1,6 @@
 // kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift
 import SwiftUI
+import AppKit  // NSWorkspace for the "grant Full Disk Access" deep link
 
 /// Process-wide `ByteCountFormatter` shared by every visible byte label
 /// in the scan-results view (header, summary bar, and child rows). One
@@ -49,20 +50,29 @@ struct ScanResultsView: View {
 
             Divider().background(Color.divider)
 
-            // Tree — three states:
-            // 1. scan in flight  → progress empty state
+            // Tree — four states:
+            // 1. scan in flight  → live progress view
             // 2. never scanned   → pre-scan surface (filters + CTA)
-            // 3. scanned, empty  → "nothing to clean" + rescan CTA
+            // 3. scanned, empty  → "nothing to clean" + rescan CTA, or the
+            //    Full Disk Access guidance state when the empty result is a
+            //    sandbox artifact (no FDA means the walk never saw real files)
             // otherwise the real 4-level tree.
             if viewModel.isScanning {
-                EmptyStateScreen(scenario: .firstLaunch)
+                ScanProgressView(progress: viewModel.engineProgress)
             } else if !viewModel.hasScanned {
                 PreScanPanel(viewModel: viewModel)
             } else if viewModel.categories.isEmpty {
-                EmptyStateScreen(
-                    scenario: .noResults,
-                    primaryAction: ("重新扫描", { viewModel.startScan() })
-                )
+                if viewModel.needsFullDiskAccess {
+                    EmptyStateScreen(
+                        scenario: .noFDA,
+                        primaryAction: ("打开系统设置", openFullDiskAccessSettings)
+                    )
+                } else {
+                    EmptyStateScreen(
+                        scenario: .noResults,
+                        primaryAction: ("重新扫描", { viewModel.startScan() })
+                    )
+                }
             } else {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 0) {
@@ -122,6 +132,17 @@ struct ScanResultsView: View {
     /// disappears.
     private func formatBytes(_ bytes: Int64) -> String {
         sharedByteCountFormatter.string(fromByteCount: bytes)
+    }
+
+    /// Opens the macOS Full Disk Access privacy pane, where the user can
+    /// grant kSpaceClean permission to read the whole filesystem. Uses the
+    /// `x-apple.systempreferences:` deep link so the user lands directly on
+    /// the TCC settings page instead of hunting through System Settings.
+    private func openFullDiskAccessSettings() {
+        guard let url = URL(
+            string: "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
+        ) else { return }
+        NSWorkspace.shared.open(url)
     }
 }
 

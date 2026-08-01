@@ -234,6 +234,7 @@ def main():
         ("Features/Common/MetricKit/MetricKitReceiver.swift", "MetricKit"),
         ("Features/Common/KeyboardShortcuts.swift", "Common"),
         ("Features/Common/PerfSignpost.swift", "Common"),
+        ("Features/Common/UserPathResolver.swift", "Common"),
         ("Features/Common/Models/RiskLevel.swift", "Models"),
         ("Features/Common/Models/CheckState.swift", "Models"),
         ("Features/Common/Models/SelectionPolicy.swift", "Models"),
@@ -355,6 +356,7 @@ def main():
         "CleanupEngineTests.swift",
         "WarningDetectionServiceTests.swift",
         "ScanOrchestratorIntegrationTests.swift",
+        "ScanEngineIntegrationTests.swift",
         "ScanResultsViewModelSnapshotTests.swift",
         "MetricKitReceiverTests.swift",
     ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)

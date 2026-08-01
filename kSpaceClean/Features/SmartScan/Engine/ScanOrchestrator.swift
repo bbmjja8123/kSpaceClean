@@ -162,6 +162,14 @@ public actor ScanOrchestrator {
     // MARK: Mutable state
     private var categoriesScanned: Int = 0
     private var isCancelled: Bool = false
+    /// Monotonic counter bumped by every `startScan()`. Guards against a
+    /// *stale* scan's worker task (or a lingering `categoryStream()` poller)
+    /// writing its terminal state into a *newer* scan's freshly-reset
+    /// buffers — the re-entrancy bug where a second scan on the same
+    /// orchestrator was killed prematurely by the first scan's tail writes.
+    /// `startScan()` captures the current epoch and every state mutation
+    /// site checks it before writing.
+    private var scanEpoch: UInt64 = 0
     /// Cached `ScanCategory` events ready for the `categoryStream()` consumer.
     /// Populated as workers complete (writes from the actor); drained lazily
     /// on first `categoryStream()` call.
@@ -260,6 +268,13 @@ public actor ScanOrchestrator {
     /// the same orchestrator instance starts clean. The previous
     /// implementation's buffers would have leaked state across scans.
     public func startScan() -> AsyncStream<ScanProgress> {
+        // Bump the epoch first: any *stale* scan's runScan tail or
+        // categoryStream() poller that mutates shared state checks
+        // `epoch == scanEpoch` before writing, so this immediately
+        // invalidates whatever the previous scan left in flight.
+        scanEpoch &+= 1
+        let epoch = scanEpoch
+
         // Reset per-scan buffers.
         isCancelled = false
         pendingCategoryEvents.removeAll(keepingCapacity: true)
@@ -291,7 +306,7 @@ public actor ScanOrchestrator {
                     continuation.finish()
                     return
                 }
-                await self.runScan(continuation: continuation)
+                await self.runScan(continuation: continuation, epoch: epoch)
             }
             continuation.onTermination = { _ in
                 task.cancel()
@@ -303,7 +318,8 @@ public actor ScanOrchestrator {
 
     /// Main pipeline — fans out one Task per category, then aggregates.
     private func runScan(
-        continuation: AsyncStream<ScanProgress>.Continuation
+        continuation: AsyncStream<ScanProgress>.Continuation,
+        epoch: UInt64
     ) async {
         // F8: signpost marker so an Instruments run can attribute the
         // orchestrator's wall time without sifting through stack frames.
@@ -343,7 +359,10 @@ public actor ScanOrchestrator {
             }
 
             for await outcome in group {
-                if Task.isCancelled || isCancelled { break }
+                // Epoch guard: if a newer `startScan()` bumped the epoch
+                // while this group was running, this scan is stale — stop
+                // folding outcomes and let the fresh scan own the state.
+                if Task.isCancelled || isCancelled || epoch != scanEpoch { break }
                 completed += 1
                 totalBytes += outcome.bytes
                 totalFiles += outcome.fileCount
@@ -407,6 +426,15 @@ public actor ScanOrchestrator {
                 speed: .medium
             )
         }
+        // Epoch guard: if a newer `startScan()` bumped the epoch while we
+        // were folding outcomes, our tail must NOT write terminal state into
+        // the fresh scan's reset buffers — that was the re-entrancy bug that
+        // killed a second scan prematurely. Finish our own continuation and
+        // let the newer runScan own the state.
+        guard epoch == scanEpoch else {
+            continuation.finish()
+            return
+        }
         // C2: park the terminal snapshot so categoryStream() finishes in sync
         // with the progress stream.
         finalTerminalState = terminalState
@@ -433,12 +461,20 @@ public actor ScanOrchestrator {
         AsyncStream(bufferingPolicy: .bufferingNewest(4096)) { continuation in
             Task { [weak self] in
                 guard let self else { continuation.finish(); return }
+                // Capture the epoch this consumer is tied to. Every state read
+                // below is only meaningful while `scanEpoch` still equals it;
+                // if a newer scan bumps the epoch, this consumer is stale and
+                // sees itself as "finished" (see `isFinishedForEpoch`).
+                let epoch = await self.scanEpoch
                 // Drain anything produced before the consumer attached.
-                let buffered = await self.drainPendingCategoryEvents()
+                let buffered = await self.drainPendingCategoryEvents(epoch: epoch)
                 for event in buffered { continuation.yield(.category(event)) }
-                // If the scan has already finished, emit the terminal event and stop.
-                if await self.hasFinishedScan {
-                    continuation.yield(.terminal(await self.finalTerminalState))
+                // If the scan has already finished (or a newer scan superseded
+                // it), emit the terminal event and stop.
+                if await self.isFinishedForEpoch(epoch) {
+                    let terminal = await self.terminalStateForEpoch(epoch)
+                        ?? ScanProgress(state: .cancelled, finishedAt: Date())
+                    continuation.yield(.terminal(terminal))
                     continuation.finish()
                     return
                 }
@@ -446,13 +482,20 @@ public actor ScanOrchestrator {
                 // Polling is intentional: the actor's isolation model means we
                 // can only re-enter via `await`; the wrapper transforms the
                 // polling into a 50ms cadence so we don't burn CPU.
-                while !(await self.hasFinishedScan) {
+                while !(await self.isFinishedForEpoch(epoch)) {
                     try? await Task.sleep(nanoseconds: 50_000_000)  // 50ms
                     if Task.isCancelled { break }
-                    let more = await self.drainPendingCategoryEvents()
+                    let more = await self.drainPendingCategoryEvents(epoch: epoch)
                     for event in more { continuation.yield(.category(event)) }
                 }
-                let terminal = await self.finalTerminalState
+                // Final drain: events can land between the last poll iteration
+                // and the terminal-state write, so flush once more before
+                // yielding `.terminal` — otherwise the final category batch
+                // silently disappears (the "scan said clean" class of bug).
+                let remaining = await self.drainPendingCategoryEvents(epoch: epoch)
+                for event in remaining { continuation.yield(.category(event)) }
+                let terminal = await self.terminalStateForEpoch(epoch)
+                    ?? ScanProgress(state: .cancelled, finishedAt: Date())
                 continuation.yield(.terminal(terminal))
                 continuation.finish()
             }
@@ -460,10 +503,27 @@ public actor ScanOrchestrator {
     }
 
     /// Pop every event currently buffered and return them in arrival order.
-    private func drainPendingCategoryEvents() -> [ScanCategoryEvent] {
+    /// Only drains when `epoch` is still the live scan's epoch — a stale
+    /// consumer must not steal events enqueued by a newer scan.
+    private func drainPendingCategoryEvents(epoch: UInt64) -> [ScanCategoryEvent] {
+        guard epoch == scanEpoch else { return [] }
         let events = pendingCategoryEvents
         pendingCategoryEvents.removeAll(keepingCapacity: true)
         return events
+    }
+
+    /// True when the scan identified by `epoch` is over: either a newer scan
+    /// has bumped the epoch (stale), or the terminal state has been parked.
+    private func isFinishedForEpoch(_ epoch: UInt64) -> Bool {
+        epoch != scanEpoch || hasFinishedScan
+    }
+
+    /// The parked terminal snapshot for `epoch`, or `nil` when `epoch` is
+    /// stale (a newer scan owns the buffers, so reading `finalTerminalState`
+    /// would leak cross-scan state).
+    private func terminalStateForEpoch(_ epoch: UInt64) -> ScanProgress? {
+        guard epoch == scanEpoch else { return nil }
+        return finalTerminalState
     }
 
     // MARK: Category Worker (static so it can run inside the TaskGroup)
@@ -497,6 +557,14 @@ public actor ScanOrchestrator {
         var totalFiles: Int = 0
 
         for rootPath in def.paths {
+            // Sandbox fix: `expandingTildeInPath` would expand `~` against
+            // the container home under App Sandbox, making `~/Library/Caches`
+            // silently point inside the app's container and the walk find
+            // nothing. Resolve against the real home (libc passwd lookup)
+            // before enumerating. `FileEnumerator` itself is shared with
+            // kDupe, so this stays here — orchestrator-level responsibility.
+            let resolvedPath = UserPathResolver.expandTilde(rootPath)
+
             // Aggregate the visited files by *per-app bucket* so each
             // ScanSubCategory corresponds to one owning app (or to the
             // generic category bucket if the path is system-wide).
@@ -510,7 +578,7 @@ public actor ScanOrchestrator {
             var bucketBundleID: [String: String] = [:]
             var bucketAppName: [String: String] = [:]
 
-            for await info in await enumerator.enumerate(rootPath: rootPath) {
+            for await info in await enumerator.enumerate(rootPath: resolvedPath) {
                 if info.isDirectory { continue }   // Skip dirs — we count files
 
                 let risk = classifier.classify(path: info.path)
