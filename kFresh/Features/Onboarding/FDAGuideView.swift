@@ -39,6 +39,9 @@ struct FDAGuideView: View {
         .frame(width: 560, height: 520)
         .brandBackground()
         .task { await controller.refreshFDAStatus() }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            Task { await controller.refreshFDAStatus() }
+        }
         .onChange(of: controller.isCompleted) { completed in
             if completed { onFinished() }
         }
@@ -140,11 +143,11 @@ struct FDAGuideView: View {
             EmptyView()
         case .basic:
             Label("尚未授权 — 将以基础模式运行", systemImage: "exclamationmark.triangle.fill")
-                .font(.subheadline)
+                .font(AppFont.callout)
                 .foregroundColor(.warning)
         case .full:
             Label("已获得完全磁盘访问权限", systemImage: "checkmark.circle.fill")
-                .font(.subheadline)
+                .font(AppFont.callout)
                 .foregroundColor(.success)
         }
     }
@@ -173,6 +176,10 @@ struct FDAGuideView: View {
 
     /// Opens System Settings, then re-probes so the badge reflects the result
     /// when the user comes back.
+    ///
+    /// The status also refreshes when the app regains activation from System
+    /// Settings (via ``didBecomeActiveNotification``), so a grant made while
+    /// onboarding stays open is picked up without a manual re-trigger.
     private func requestFullDiskAccess() {
         authorizer.requestFDA()
         Task { await controller.refreshFDAStatus() }

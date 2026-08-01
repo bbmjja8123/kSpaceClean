@@ -33,25 +33,25 @@ struct FDAGuidePage: View {
             Spacer(minLength: AppSpacing.lg)
 
             Image(systemName: icon)
-                .font(.system(size: 56))
+                .font(AppFont.icon)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundColor(.brandPrimary)
                 .accessibilityHidden(true)
 
             Text(title)
-                .font(.largeTitle.weight(.bold))
+                .font(AppFont.largeTitle)
                 .foregroundColor(.textPrimary)
                 .multilineTextAlignment(.center)
 
             if let subtitle {
                 Text(subtitle)
-                    .font(.title3)
+                    .font(AppFont.title3)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
             }
 
             Text(message)
-                .font(.body)
+                .font(AppFont.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
@@ -71,7 +71,7 @@ struct FDAGuidePage: View {
                 if let secondaryTitle, let secondaryAction {
                     Button(secondaryTitle, action: secondaryAction)
                         .buttonStyle(.plain)
-                        .font(.subheadline)
+                        .font(AppFont.callout)
                         .foregroundColor(.textSecondary)
                 }
             }

@@ -78,7 +78,9 @@ final class FDAPermissionProbeTests: XCTestCase {
         XCTAssertEqual(before, .basic)
 
         // Simulate the user granting access while the app is running.
-        try? FileManager.default.createDirectory(at: granted, withIntermediateDirectories: true)
+        XCTAssertNoThrow(
+            try FileManager.default.createDirectory(at: granted, withIntermediateDirectories: true)
+        )
 
         let after = await probe.probe()
         XCTAssertEqual(after, .full, "probe() must re-check rather than return a stale value")
