@@ -47,6 +47,10 @@
 		isa = PBXBuildFile;
 		fileRef = E7C75D71D1A007D0AE93042E;
 	};
+	1AA4F80B1D5905E8A4C53605 /* 1AA4F80B1D5905E8A4C53605 */ = {
+		isa = PBXBuildFile;
+		fileRef = 3D3BD7487358C0C15544E0BC;
+	};
 	1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */ = {
 		isa = PBXBuildFile;
 		fileRef = 0089DAE711574808D00ABD0B;
@@ -142,6 +146,10 @@
 	50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */ = {
 		isa = PBXBuildFile;
 		fileRef = B0FA94F96C119EFBD28B7F0B;
+	};
+	50B92E24837F0F285E3E4137 /* 50B92E24837F0F285E3E4137 */ = {
+		isa = PBXBuildFile;
+		fileRef = D7374E7C28D6489848AF3698;
 	};
 	583B954A6A1E0563236FE408 /* 583B954A6A1E0563236FE408 */ = {
 		isa = PBXBuildFile;
@@ -379,6 +387,10 @@
 		isa = PBXBuildFile;
 		fileRef = FBDE7C50C5246FD21C67CBE5;
 	};
+	ECEB1D5CA495C3E904BBF26B /* ECEB1D5CA495C3E904BBF26B */ = {
+		isa = PBXBuildFile;
+		fileRef = 2CECBF48E3D876A389BF7752;
+	};
 	EE9D7758503EB5F8DD4D3E52 /* EE9D7758503EB5F8DD4D3E52 */ = {
 		isa = PBXBuildFile;
 		fileRef = B6830D0E035D1121B06CF64B;
@@ -571,6 +583,13 @@
 		path = Store/StoreManager.swift;
 		sourceTree = "<group>";
 	};
+	2CECBF48E3D876A389BF7752 /* UninstallConfirmSheetTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallConfirmSheetTests.swift;
+		path = Tests/DetailTests/UninstallConfirmSheetTests.swift;
+		sourceTree = "<group>";
+	};
 	2F003C23A18C74F51E543E30 /* AppCatalogService.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -597,6 +616,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppListFilterSortTests.swift;
 		path = Tests/AppListTests/AppListFilterSortTests.swift;
+		sourceTree = "<group>";
+	};
+	3D3BD7487358C0C15544E0BC /* UninstallSafetyCheckTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallSafetyCheckTests.swift;
+		path = Tests/DetailTests/UninstallSafetyCheckTests.swift;
 		sourceTree = "<group>";
 	};
 	3EBAE220C65B95B5461A69F4 /* Info.plist */ = {
@@ -999,6 +1025,13 @@
 		path = Features/StartupItems/StartupItemsView.swift;
 		sourceTree = "<group>";
 	};
+	D7374E7C28D6489848AF3698 /* UninstallConfirmFlowTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallConfirmFlowTests.swift;
+		path = Tests/DetailTests/UninstallConfirmFlowTests.swift;
+		sourceTree = "<group>";
+	};
 	D7B438A54B3D98707F22F4C7 /* BackupManagerTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1337,6 +1370,9 @@
 		isa = PBXGroup;
 		children = (
 			A336DAF2982BFADFF3C0BCE9 /* DetailViewModelTests.swift */,
+			3D3BD7487358C0C15544E0BC /* UninstallSafetyCheckTests.swift */,
+			2CECBF48E3D876A389BF7752 /* UninstallConfirmSheetTests.swift */,
+			D7374E7C28D6489848AF3698 /* UninstallConfirmFlowTests.swift */,
 		);
 		name = DetailTests;
 		sourceTree = "<group>";
@@ -1653,6 +1689,9 @@
 			9DFB3583F240A44BFBD52A8F /* 9DFB3583F240A44BFBD52A8F */,
 			EA95CA1BB79A58AE6B564B6B /* EA95CA1BB79A58AE6B564B6B */,
 			74FBAD73C878553C9BBBA878 /* 74FBAD73C878553C9BBBA878 */,
+			1AA4F80B1D5905E8A4C53605 /* 1AA4F80B1D5905E8A4C53605 */,
+			ECEB1D5CA495C3E904BBF26B /* ECEB1D5CA495C3E904BBF26B */,
+			50B92E24837F0F285E3E4137 /* 50B92E24837F0F285E3E4137 */,
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
 			84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */,

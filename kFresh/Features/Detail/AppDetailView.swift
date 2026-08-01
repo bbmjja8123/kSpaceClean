@@ -132,15 +132,17 @@ struct AppDetailView: View {
     private func handleUninstall() {
         showConfirmSheet = false
         Task {
-            let mover = TrashMover()
-            let result = await mover.moveToTrash(app: viewModel.app, residues: viewModel.residues)
-            if case .success(let record) = result {
-                undoToast = UninstallToast.State(
-                    recordID: record.id,
-                    appName: viewModel.app.displayName,
-                    appSize: viewModel.app.sizeBytes
-                )
+            let outcome = await viewModel.confirmUninstall()
+            if case .success(let record) = outcome {
+                withAnimation(.easeInOut(duration: KFAnimation.durationNormal)) {
+                    undoToast = UninstallToast.State(
+                        recordID: record.id,
+                        appName: viewModel.app.displayName,
+                        appSize: viewModel.app.sizeBytes
+                    )
+                }
             }
+            // `.failure` and `nil` outcomes: surface to UI is Wave 1.1 polish.
         }
     }
 

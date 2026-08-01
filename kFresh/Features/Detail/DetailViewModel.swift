@@ -23,6 +23,12 @@ final class DetailViewModel: ObservableObject {
     @Published internal(set) var safetyCheck: SafetyCheck = .pending
     @Published internal(set) var isResidueScanRunning: Bool = false
 
+    /// Result of the most recent ``confirmUninstall()`` call. `nil` until the
+    /// user confirms; `nil` again whenever the safety check refuses to
+    /// install (protected app). Published so the host view can drive the undo
+    /// toast and a future error-surfacing path without re-invoking the mover.
+    @Published internal(set) var lastUninstallResult: Result<UninstallRecord, TrashError>?
+
     /// Backing store for `residues`. Wrapping the published property keeps
     /// the "always sorted by confidence descending" invariant on every write
     /// path — including test seeding — instead of only in `rescanResidues`.
@@ -74,5 +80,26 @@ final class DetailViewModel: ObservableObject {
             appURL: app.url
         )
         residues = detected.sorted { $0.confidence > $1.confidence }
+    }
+
+    /// Drives the confirmation → trash flow for the currently-described app.
+    ///
+    /// Returns `nil` when ``canUninstall`` is false (protected app or safety
+    /// check not yet passed) — the host view's confirm button should already
+    /// be hidden in that case, so a `nil` here means "we reached the call
+    /// from a path the UI didn't gate correctly". Otherwise returns the
+    /// `TrashMover` result verbatim and mirrors it onto
+    /// ``lastUninstallResult`` so the view can react without re-running the
+    /// mover.
+    ///
+    /// A fresh ``TrashMover`` is constructed per call. Task 5 swaps that for
+    /// a shared actor injected from `AppServices` so audit log + history
+    /// repository persist across calls.
+    func confirmUninstall() async -> Result<UninstallRecord, TrashError>? {
+        guard canUninstall else { return nil }
+        let mover = TrashMover()
+        let result = await mover.moveToTrash(app: app, residues: residues)
+        lastUninstallResult = result
+        return result
     }
 }

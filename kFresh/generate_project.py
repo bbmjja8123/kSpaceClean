@@ -234,6 +234,9 @@ def main():
         ],
         "DetailTests": [
             "DetailViewModelTests.swift",
+            "UninstallSafetyCheckTests.swift",
+            "UninstallConfirmSheetTests.swift",
+            "UninstallConfirmFlowTests.swift",
         ],
         "IntegrationTests": [
             "UninstallFlowTests.swift",
