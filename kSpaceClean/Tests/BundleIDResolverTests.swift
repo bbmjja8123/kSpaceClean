@@ -221,4 +221,83 @@ final class BundleIDResolverTests: XCTestCase {
         let resolved = await resolver.resolve(path: path)
         XCTAssertEqual(resolved?.bundleID, "com.example.app")
     }
+
+    /// Regression for the 2026-08-01 L1 **string-prefix** misattribution bug:
+    /// `com.anthropic.claude` is a string prefix of `com.anthropic.claudefordesktop`,
+    /// so the old `normalized.hasPrefix(prefix)` match attributed Claude Desktop's
+    /// cache files to Claude Code whenever the resolver's dictionary iterated the
+    /// Claude Code entry first — non-deterministic (roughly 50% wrong).
+    ///
+    /// The fixture deliberately declares its clean paths **without** trailing
+    /// slashes, mirroring the v1 `cleanPaths` shape (`~/Library/Caches/com.slack.Slack`).
+    /// That is the shape under which the unfixed code genuinely misattributes: a
+    /// trailing-slash prefix would have carried a natural `/` boundary and masked
+    /// the bug. With the path-boundary fix
+    /// (`normalized == prefix || normalized.hasPrefix(prefix + "/")`) each bundle ID
+    /// resolves deterministically to its own cache directory regardless of
+    /// dictionary iteration order.
+    func testBoundaryFixClaudeDoesNotSwallowClaudeDesktop() async throws {
+        let url = makeFixture("""
+        {
+          "version": 2,
+          "apps": {
+            "com.anthropic.claude": {
+              "name": "Claude Code",
+              "nameCN": "Claude Code",
+              "vendor": "Anthropic",
+              "type": "developer",
+              "riskLevel": "caution",
+              "confidence": "high",
+              "actions": [{
+                "name": "Claude Cache",
+                "nameCN": "Claude 缓存",
+                "type": "appcache",
+                "paths": ["~/Library/Caches/com.anthropic.claude"]
+              }]
+            },
+            "com.anthropic.claudefordesktop": {
+              "name": "Claude Desktop",
+              "nameCN": "Claude 桌面版",
+              "vendor": "Anthropic",
+              "type": "developer",
+              "riskLevel": "caution",
+              "confidence": "medium",
+              "actions": [{
+                "name": "Claude Cache",
+                "nameCN": "Claude 缓存",
+                "type": "appcache",
+                "paths": ["~/Library/Caches/com.anthropic.claudefordesktop"]
+              }]
+            }
+          }
+        }
+        """)
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let resolver = BundleIDResolver()
+        await resolver.load(from: url)
+
+        let realHome = try realHomeForTesting()
+
+        let claudeCodePath = realHome
+            + "/Library/Caches/com.anthropic.claude/Console/repl_history.json"
+        let claudeDesktopPath = realHome
+            + "/Library/Caches/com.anthropic.claudefordesktop/Cache/4a3f/foo.dat"
+
+        let claudeCode = await resolver.resolve(path: claudeCodePath)
+        XCTAssertEqual(
+            claudeCode?.bundleID,
+            "com.anthropic.claude",
+            "Claude Code's own cache must resolve to Claude Code"
+        )
+
+        let claudeDesktop = await resolver.resolve(path: claudeDesktopPath)
+        XCTAssertEqual(
+            claudeDesktop?.bundleID,
+            "com.anthropic.claudefordesktop",
+            "Claude Desktop's cache must NOT be swallowed by the shorter "
+            + "com.anthropic.claude prefix. Got: "
+            + (claudeDesktop?.bundleID ?? "nil")
+        )
+    }
 }

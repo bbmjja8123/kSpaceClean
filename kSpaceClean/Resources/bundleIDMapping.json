@@ -2,7 +2,7 @@
   "version": 2,
   "generatedAt": "2026-08-01",
   "source": "Lemon libcleaner cleaning-rule XML (item->action->path extraction, bilingual)",
-  "appCount": 72,
+  "appCount": 90,
   "apps": {
     "com.apple.dt.Xcode": {
       "bundleID": "com.apple.dt.Xcode",
@@ -1964,6 +1964,674 @@
       ],
       "bundleID": "us.zoom.xos",
       "confidence": "high"
+    },
+    "com.anthropic.claude": {
+      "bundleID": "com.anthropic.claude",
+      "appstoreBundleID": null,
+      "name": "Claude Code",
+      "nameCN": "Claude Code",
+      "vendor": "Anthropic",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "high",
+      "actions": [
+        {
+          "name": "Claude Cache",
+          "nameCN": "Claude 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.anthropic.claude/",
+            "~/Library/Application Support/Claude/Cache/",
+            "~/Library/Application Support/Claude/CachedData/",
+            "~/Library/Application Support/Claude/Code Cache/",
+            "~/Library/Application Support/Claude/GPUCache/",
+            "~/.claude/cache/",
+            "~/.claude/paste-cache/"
+          ]
+        },
+        {
+          "name": "Claude Logs",
+          "nameCN": "Claude 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Claude/"
+          ]
+        },
+        {
+          "name": "Claude Code Data",
+          "nameCN": "Claude Code 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Claude/",
+            "~/Library/Application Support/com.anthropic.claude/"
+          ]
+        }
+      ]
+    },
+    "com.anthropic.claudefordesktop": {
+      "bundleID": "com.anthropic.claudefordesktop",
+      "appstoreBundleID": null,
+      "name": "Claude Desktop",
+      "nameCN": "Claude 桌面版",
+      "vendor": "Anthropic",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Claude Cache",
+          "nameCN": "Claude 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.anthropic.claudefordesktop/",
+            "~/Library/Application Support/Claude/Cache/",
+            "~/Library/Application Support/Claude/CachedData/",
+            "~/Library/Application Support/Claude/Code Cache/",
+            "~/Library/Application Support/Claude/GPUCache/",
+            "~/Library/Application Support/Claude/Local Storage/"
+          ]
+        }
+      ]
+    },
+    "com.todesclient.unicorn": {
+      "bundleID": "com.todesclient.unicorn",
+      "appstoreBundleID": null,
+      "name": "Cursor",
+      "nameCN": "Cursor",
+      "vendor": "Cursor Inc",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Cursor Cache",
+          "nameCN": "Cursor 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.todesclient.unicorn/",
+            "~/Library/Application Support/Cursor/Cache/",
+            "~/Library/Application Support/Cursor/CachedData/",
+            "~/Library/Application Support/Cursor/Code Cache/",
+            "~/Library/Application Support/Cursor/GPUCache/",
+            "~/Library/Application Support/Cursor/Local Storage/",
+            "~/Library/Application Support/Cursor/Service Worker/CacheStorage/"
+          ]
+        },
+        {
+          "name": "Cursor Logs",
+          "nameCN": "Cursor 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Cursor/"
+          ]
+        },
+        {
+          "name": "Cursor Data",
+          "nameCN": "Cursor 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Cursor/"
+          ]
+        }
+      ]
+    },
+    "com.codeium.windsurf": {
+      "bundleID": "com.codeium.windsurf",
+      "appstoreBundleID": null,
+      "name": "Windsurf",
+      "nameCN": "Windsurf",
+      "vendor": "Codeium",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Windsurf Cache",
+          "nameCN": "Windsurf 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.codeium.windsurf/",
+            "~/Library/Application Support/Windsurf/Cache/",
+            "~/Library/Application Support/Windsurf/CachedData/",
+            "~/Library/Application Support/Windsurf/Code Cache/",
+            "~/Library/Application Support/Windsurf/GPUCache/",
+            "~/Library/Application Support/Windsurf/Local Storage/"
+          ]
+        },
+        {
+          "name": "Windsurf Logs",
+          "nameCN": "Windsurf 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Windsurf/"
+          ]
+        },
+        {
+          "name": "Windsurf Data",
+          "nameCN": "Windsurf 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Windsurf/"
+          ]
+        }
+      ]
+    },
+    "com.trae.app": {
+      "bundleID": "com.trae.app",
+      "appstoreBundleID": null,
+      "name": "Trae",
+      "nameCN": "Trae",
+      "vendor": "ByteDance",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Trae Cache",
+          "nameCN": "Trae 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.trae.app/",
+            "~/Library/Application Support/Trae/Cache/",
+            "~/Library/Application Support/Trae/CachedData/",
+            "~/Library/Application Support/Trae/Code Cache/",
+            "~/Library/Application Support/Trae/GPUCache/",
+            "~/Library/Application Support/Trae/Local Storage/"
+          ]
+        },
+        {
+          "name": "Trae Logs",
+          "nameCN": "Trae 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Trae/"
+          ]
+        },
+        {
+          "name": "Trae Data",
+          "nameCN": "Trae 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Trae/"
+          ]
+        }
+      ]
+    },
+    "com.openai.chat": {
+      "bundleID": "com.openai.chat",
+      "appstoreBundleID": null,
+      "name": "ChatGPT",
+      "nameCN": "ChatGPT",
+      "vendor": "OpenAI",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "ChatGPT Cache",
+          "nameCN": "ChatGPT 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.openai.chat/",
+            "~/Library/Application Support/com.openai.chat/Cache/",
+            "~/Library/Application Support/com.openai.chat/CachedData/",
+            "~/Library/Application Support/com.openai.chat/Code Cache/",
+            "~/Library/Application Support/com.openai.chat/GPUCache/",
+            "~/Library/Application Support/com.openai.chat/Local Storage/"
+          ]
+        },
+        {
+          "name": "ChatGPT Logs",
+          "nameCN": "ChatGPT 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.openai.chat/"
+          ]
+        },
+        {
+          "name": "ChatGPT Data",
+          "nameCN": "ChatGPT 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.openai.chat/"
+          ]
+        }
+      ]
+    },
+    "com.perplexity.perplexity": {
+      "bundleID": "com.perplexity.perplexity",
+      "appstoreBundleID": null,
+      "name": "Perplexity",
+      "nameCN": "Perplexity",
+      "vendor": "Perplexity",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Perplexity Cache",
+          "nameCN": "Perplexity 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.perplexity.perplexity/",
+            "~/Library/Application Support/Perplexity/Cache/",
+            "~/Library/Application Support/Perplexity/CachedData/",
+            "~/Library/Application Support/Perplexity/Code Cache/",
+            "~/Library/Application Support/Perplexity/GPUCache/",
+            "~/Library/Application Support/Perplexity/Local Storage/"
+          ]
+        },
+        {
+          "name": "Perplexity Logs",
+          "nameCN": "Perplexity 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Perplexity/"
+          ]
+        },
+        {
+          "name": "Perplexity Data",
+          "nameCN": "Perplexity 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Perplexity/"
+          ]
+        }
+      ]
+    },
+    "com.raycast.macos": {
+      "bundleID": "com.raycast.macos",
+      "appstoreBundleID": null,
+      "name": "Raycast",
+      "nameCN": "Raycast",
+      "vendor": "Raycast",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Raycast Cache",
+          "nameCN": "Raycast 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.raycast.macos/"
+          ]
+        },
+        {
+          "name": "Raycast Logs",
+          "nameCN": "Raycast 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Raycast/"
+          ]
+        },
+        {
+          "name": "Raycast Data",
+          "nameCN": "Raycast 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.raycast.macos/"
+          ]
+        }
+      ]
+    },
+    "com.macgpt.macgpt": {
+      "bundleID": "com.macgpt.macgpt",
+      "appstoreBundleID": null,
+      "name": "MacGPT",
+      "nameCN": "MacGPT",
+      "vendor": "MacGPT",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "MacGPT Cache",
+          "nameCN": "MacGPT 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.macgpt.macgpt/",
+            "~/Library/Application Support/MacGPT/Cache/",
+            "~/Library/Application Support/MacGPT/CachedData/",
+            "~/Library/Application Support/MacGPT/Code Cache/",
+            "~/Library/Application Support/MacGPT/GPUCache/"
+          ]
+        },
+        {
+          "name": "MacGPT Logs",
+          "nameCN": "MacGPT 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/MacGPT/"
+          ]
+        },
+        {
+          "name": "MacGPT Data",
+          "nameCN": "MacGPT 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/MacGPT/"
+          ]
+        }
+      ]
+    },
+    "com.electron.ollama": {
+      "bundleID": "com.electron.ollama",
+      "appstoreBundleID": null,
+      "name": "Ollama",
+      "nameCN": "Ollama",
+      "vendor": "Ollama",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Ollama Cache",
+          "nameCN": "Ollama 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.electron.ollama/"
+          ]
+        },
+        {
+          "name": "Ollama App Data",
+          "nameCN": "Ollama 应用数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Ollama/"
+          ]
+        },
+        {
+          "name": "Ollama Logs",
+          "nameCN": "Ollama 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Ollama/"
+          ]
+        }
+      ]
+    },
+    "com.lmstudio.lmstudio": {
+      "bundleID": "com.lmstudio.lmstudio",
+      "appstoreBundleID": null,
+      "name": "LM Studio",
+      "nameCN": "LM Studio",
+      "vendor": "LM Studio",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "LM Studio Cache",
+          "nameCN": "LM Studio 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.lmstudio.lmstudio/"
+          ]
+        },
+        {
+          "name": "LM Studio App Data",
+          "nameCN": "LM Studio 应用数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/LM Studio/"
+          ]
+        }
+      ]
+    },
+    "com.jan.jan": {
+      "bundleID": "com.jan.jan",
+      "appstoreBundleID": null,
+      "name": "Jan",
+      "nameCN": "Jan",
+      "vendor": "Jan",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Jan Cache",
+          "nameCN": "Jan 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.jan.jan/",
+            "~/Library/Application Support/Jan/Cache/",
+            "~/Library/Application Support/Jan/CachedData/",
+            "~/Library/Application Support/Jan/Code Cache/",
+            "~/Library/Application Support/Jan/GPUCache/"
+          ]
+        },
+        {
+          "name": "Jan Logs",
+          "nameCN": "Jan 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Jan/"
+          ]
+        }
+      ]
+    },
+    "com.nomic.gpt4all": {
+      "bundleID": "com.nomic.gpt4all",
+      "appstoreBundleID": null,
+      "name": "GPT4All",
+      "nameCN": "GPT4All",
+      "vendor": "Nomic",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "GPT4All Cache",
+          "nameCN": "GPT4All 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.nomic.gpt4all/"
+          ]
+        },
+        {
+          "name": "GPT4All Data",
+          "nameCN": "GPT4All 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/nomic.ai/GPT4All/"
+          ]
+        },
+        {
+          "name": "GPT4All Logs",
+          "nameCN": "GPT4All 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/nomic.ai/"
+          ]
+        }
+      ]
+    },
+    "com.jetbrains.toolbox": {
+      "bundleID": "com.jetbrains.toolbox",
+      "appstoreBundleID": null,
+      "name": "JetBrains Toolbox",
+      "nameCN": "JetBrains Toolbox",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Toolbox Cache",
+          "nameCN": "Toolbox 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.jetbrains.toolbox/"
+          ]
+        },
+        {
+          "name": "Toolbox Logs",
+          "nameCN": "Toolbox 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/JetBrains/Toolbox/"
+          ]
+        },
+        {
+          "name": "Toolbox Data",
+          "nameCN": "Toolbox 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/JetBrains/Toolbox/"
+          ]
+        }
+      ]
+    },
+    "com.jetbrains.pycharm": {
+      "bundleID": "com.jetbrains.pycharm",
+      "appstoreBundleID": null,
+      "name": "PyCharm",
+      "nameCN": "PyCharm",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "PyCharm Cache",
+          "nameCN": "PyCharm 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/JetBrains/PyCharm2024.2/",
+            "~/Library/Caches/JetBrains/PyCharm2024.3/",
+            "~/Library/Caches/JetBrains/PyCharm2025.1/",
+            "~/Library/Caches/JetBrains/PyCharm2025.2/",
+            "~/Library/Caches/JetBrains/PyCharmCE2024.2/",
+            "~/Library/Caches/JetBrains/PyCharmCE2024.3/",
+            "~/Library/Caches/JetBrains/PyCharmCE2025.1/",
+            "~/Library/Caches/JetBrains/PyCharmCE2025.2/"
+          ]
+        },
+        {
+          "name": "PyCharm Logs",
+          "nameCN": "PyCharm 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/JetBrains/PyCharm2024.2/",
+            "~/Library/Logs/JetBrains/PyCharm2024.3/",
+            "~/Library/Logs/JetBrains/PyCharm2025.1/",
+            "~/Library/Logs/JetBrains/PyCharm2025.2/"
+          ]
+        }
+      ]
+    },
+    "com.jetbrains.WebStorm": {
+      "bundleID": "com.jetbrains.WebStorm",
+      "appstoreBundleID": null,
+      "name": "WebStorm",
+      "nameCN": "WebStorm",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "WebStorm Cache",
+          "nameCN": "WebStorm 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/JetBrains/WebStorm2024.2/",
+            "~/Library/Caches/JetBrains/WebStorm2024.3/",
+            "~/Library/Caches/JetBrains/WebStorm2025.1/",
+            "~/Library/Caches/JetBrains/WebStorm2025.2/"
+          ]
+        },
+        {
+          "name": "WebStorm Logs",
+          "nameCN": "WebStorm 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/JetBrains/WebStorm2024.2/",
+            "~/Library/Logs/JetBrains/WebStorm2024.3/",
+            "~/Library/Logs/JetBrains/WebStorm2025.1/",
+            "~/Library/Logs/JetBrains/WebStorm2025.2/"
+          ]
+        }
+      ]
+    },
+    "dev.zed.Zed": {
+      "bundleID": "dev.zed.Zed",
+      "appstoreBundleID": null,
+      "name": "Zed",
+      "nameCN": "Zed",
+      "vendor": "Zed",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Zed Cache",
+          "nameCN": "Zed 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/dev.zed.Zed/",
+            "~/Library/Application Support/Zed/Cache/"
+          ]
+        },
+        {
+          "name": "Zed Logs",
+          "nameCN": "Zed 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Zed/"
+          ]
+        },
+        {
+          "name": "Zed Data",
+          "nameCN": "Zed 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Zed/"
+          ]
+        }
+      ]
+    },
+    "com.google.antigravity": {
+      "bundleID": "com.google.antigravity",
+      "appstoreBundleID": null,
+      "name": "Antigravity",
+      "nameCN": "Antigravity",
+      "vendor": "Google",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "Antigravity Cache",
+          "nameCN": "Antigravity 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.google.antigravity/",
+            "~/Library/Application Support/Antigravity/Cache/",
+            "~/Library/Application Support/Antigravity/CachedData/",
+            "~/Library/Application Support/Antigravity/Code Cache/",
+            "~/Library/Application Support/Antigravity/GPUCache/",
+            "~/Library/Application Support/Antigravity/Local Storage/"
+          ]
+        },
+        {
+          "name": "Antigravity Logs",
+          "nameCN": "Antigravity 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Antigravity/"
+          ]
+        },
+        {
+          "name": "Antigravity Data",
+          "nameCN": "Antigravity 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Antigravity/"
+          ]
+        }
+      ]
     }
   }
 }

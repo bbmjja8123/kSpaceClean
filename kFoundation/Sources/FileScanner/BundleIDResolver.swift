@@ -111,7 +111,15 @@ public actor BundleIDResolver {
             }
             for (bundleID, dict) in apps {
                 guard let app = Self.makeApp(bundleID: bundleID, dict: dict) else { continue }
-                let expanded = app.actions.flatMap(\.paths).map(Self.expand)
+                // Strip trailing slashes so L1's prefix match can re-apply a
+                // path-boundary check (`prefix + "/"`) instead of relying on
+                // the JSON spelling. Without the strip, a trailing-slash
+                // prefix would double the separator (`prefix + "/"` becomes
+                // `...//`) and never match a real child path.
+                let expanded = app.actions.flatMap(\.paths).map { path in
+                    let e = Self.expand(path)
+                    return e.count > 1 && e.hasSuffix("/") ? String(e.dropLast()) : e
+                }
                 mapping[bundleID] = Entry(app: app, expandedActionPaths: expanded)
             }
         } catch {
@@ -138,7 +146,16 @@ public actor BundleIDResolver {
         // action first, then v2 actions in JSON order).
         for entry in mapping.values {
             for prefix in entry.expandedActionPaths {
-                if normalized.hasPrefix(prefix) {
+                // Path-boundary check: the prefix must match a whole path
+                // component, not merely a string prefix. Without this,
+                // `com.anthropic.claude` (prefix `.../com.anthropic.claude`)
+                // would swallow files owned by `com.anthropic.claudefordesktop`
+                // (prefix `.../com.anthropic.claudefordesktop`) whenever the
+                // dictionary iterates the shorter bundle ID first — a
+                // non-deterministic misattribution. Prefixes are pre-stripped
+                // of trailing slashes at load time, so the separator can be
+                // re-applied here safely.
+                if normalized == prefix || normalized.hasPrefix(prefix + "/") {
                     return entry.app
                 }
             }

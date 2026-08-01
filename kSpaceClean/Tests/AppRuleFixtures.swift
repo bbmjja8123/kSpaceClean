@@ -122,3 +122,155 @@ final class AppRuleFixtures: XCTestCase {
                              "action level must be built when resolver provides multiple actions")
     }
 }
+
+/// Structural + resolve-level audit of the REAL `bundleIDMapping.json` shipped
+/// in the app target (not a fixture). Guards the rule-library release gate:
+///
+/// * Header invariants (`version == 2`, `appCount` matches the real dictionary
+///   count) and per-app well-formedness for ALL 90 entries (mixed v1/v2 schema:
+///   an entry may carry either v2 `actions[]` or legacy `cleanPaths`).
+/// * The 18 AI coding & agent-tool apps added in Task 8 are present and use the
+///   v2 actions schema with an explicit `appstoreBundleID: null`.
+/// * No bare broad cache prefix (e.g. a bare `~/Library/Caches/`) exists that
+///   could vacuum the whole library into one bucket.
+/// * The L1 path-boundary fix resolves the Claude pair, Cursor, and Zed
+///   deterministically through the public `resolve(path:)` API.
+///
+/// Deliberately a plain (non-`@MainActor`) `XCTestCase`: the structural checks
+/// are synchronous JSON inspection and the resolve-level checks just `await`
+/// an actor, so no main-actor hop is needed.
+final class AppRuleLibraryAudit: XCTestCase {
+    /// Path to the real mapping file, derived from this source file's location:
+    /// `kSpaceClean/Tests/AppRuleFixtures.swift` → `kSpaceClean/Resources/...`.
+    private var mappingURL: URL {
+        URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Resources/bundleIDMapping.json")
+    }
+
+    /// The 18 net-new apps mandated by the Task 8 controller resolution.
+    private let newBundleIDs = [
+        "com.anthropic.claude",
+        "com.anthropic.claudefordesktop",
+        "com.todesclient.unicorn",
+        "com.codeium.windsurf",
+        "com.trae.app",
+        "com.openai.chat",
+        "com.perplexity.perplexity",
+        "com.raycast.macos",
+        "com.macgpt.macgpt",
+        "com.electron.ollama",
+        "com.lmstudio.lmstudio",
+        "com.jan.jan",
+        "com.nomic.gpt4all",
+        "com.jetbrains.toolbox",
+        "com.jetbrains.pycharm",
+        "com.jetbrains.WebStorm",
+        "dev.zed.Zed",
+        "com.google.antigravity",
+    ]
+
+    private var root: [String: Any] {
+        let data = try! Data(contentsOf: mappingURL)
+        return try! JSONSerialization.jsonObject(with: data) as! [String: Any]
+    }
+
+    func testMappingHeaderAndStructuralInvariants() throws {
+        let root = root
+        XCTAssertEqual(root["version"] as? Int, 2, "mapping version must be 2")
+
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        let declared = try XCTUnwrap(root["appCount"] as? Int)
+        XCTAssertEqual(declared, apps.count,
+                       "appCount header must match the real dictionary count")
+
+        let broadPrefixes = [
+            "~/", "~/Library/", "~/Library/Caches/", "~/Library/Logs/",
+            "~/Library/Application Support/",
+        ]
+        for (bundleID, app) in apps {
+            XCTAssertEqual(app["bundleID"] as? String, bundleID,
+                           "dict key must equal bundleID for \(bundleID)")
+            for key in ["name", "nameCN", "vendor", "type", "riskLevel", "confidence"] {
+                let value = app[key] as? String
+                XCTAssertNotNil(value, "\(bundleID) missing \(key)")
+                XCTAssertFalse(value!.isEmpty, "\(bundleID) has empty \(key)")
+            }
+
+            let actions = app["actions"] as? [[String: Any]]
+            let cleanPaths = app["cleanPaths"] as? [String]
+            XCTAssertTrue(actions != nil || cleanPaths != nil,
+                          "\(bundleID) must carry v2 actions[] or legacy cleanPaths")
+
+            if let actions = actions {
+                XCTAssertFalse(actions.isEmpty, "\(bundleID) has empty actions[]")
+                for action in actions {
+                    for key in ["name", "nameCN", "type"] {
+                        let value = action[key] as? String
+                        XCTAssertNotNil(value, "\(bundleID) action missing \(key)")
+                        XCTAssertFalse(value!.isEmpty, "\(bundleID) action has empty \(key)")
+                    }
+                    let paths = try XCTUnwrap(action["paths"] as? [String],
+                                              "\(bundleID) action missing paths[]")
+                    XCTAssertFalse(paths.isEmpty, "\(bundleID) action has empty paths[]")
+                    for path in paths {
+                        XCTAssertTrue(path.hasPrefix("~/") || path.hasPrefix("/"),
+                                      "\(bundleID): path not ~/-rooted or absolute: \(path)")
+                        for broad in broadPrefixes {
+                            XCTAssertNotEqual(path, broad,
+                                              "\(bundleID): bare broad prefix \(path)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func testTask8NewAppsPresentWithV2Actions() throws {
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        for bundleID in newBundleIDs {
+            let app = try XCTUnwrap(apps[bundleID],
+                                    "Task 8 app \(bundleID) missing from bundleIDMapping.json")
+            // JSONSerialization decodes JSON `null` as NSNull, so check the
+            // value IS NSNull (explicit null) rather than merely non-nil.
+            XCTAssertTrue(app["appstoreBundleID"] is NSNull,
+                          "\(bundleID) must declare appstoreBundleID: null")
+            let actions = try XCTUnwrap(app["actions"] as? [[String: Any]],
+                                        "\(bundleID) must use the v2 actions schema")
+            XCTAssertFalse(actions.isEmpty, "\(bundleID) has empty actions[]")
+        }
+    }
+
+    func testResolveSpotChecksOverRealMapping() async throws {
+        let resolver = BundleIDResolver()
+        await resolver.load(from: mappingURL)
+
+        func resolved(_ path: String) async -> String? {
+            await resolver.resolve(path: path)?.bundleID
+        }
+
+        // Claude pair — the exact collision the boundary fix addresses.
+        let claudeCode = await resolved("~/Library/Caches/com.anthropic.claude/Console/a.json")
+        XCTAssertEqual(claudeCode, "com.anthropic.claude")
+        let claudeDesktop = await resolved("~/Library/Caches/com.anthropic.claudefordesktop/Cache/b.dat")
+        XCTAssertEqual(claudeDesktop, "com.anthropic.claudefordesktop")
+
+        // Shared parent `~/Library/Application Support/Claude/` is owned by BOTH
+        // Anthropic apps (Claude Code's broad prefix + Claude Desktop's Electron
+        // subdirs). Either attribution is legitimate; it must never fall through
+        // to a generic bucket or a third-party app.
+        let sharedClaude = await resolved("~/Library/Application Support/Claude/Cache/c.bin")
+        XCTAssertTrue(
+            sharedClaude == "com.anthropic.claude" || sharedClaude == "com.anthropic.claudefordesktop",
+            "shared Application Support/Claude path must resolve inside the Anthropic "
+            + "pair, got: \(sharedClaude ?? "nil")"
+        )
+
+        // VSCode-fork IDE and native editor spot checks.
+        let cursor = await resolved("~/Library/Application Support/Cursor/CachedData/d.bin")
+        XCTAssertEqual(cursor, "com.todesclient.unicorn")
+        let zed = await resolved("~/Library/Caches/dev.zed.Zed/e.bin")
+        XCTAssertEqual(zed, "dev.zed.Zed")
+    }
+}
