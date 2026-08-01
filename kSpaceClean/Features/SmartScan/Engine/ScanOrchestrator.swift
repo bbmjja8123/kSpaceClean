@@ -710,8 +710,10 @@ public actor ScanOrchestrator {
             var assigned = false
             for (index, ruleAction) in ruleActions.enumerated() {
                 for actionPath in ruleAction.paths {
-                    let expandedPath = UserPathResolver.expandTilde(actionPath)
-                    if result.path.hasPrefix(expandedPath) {
+                    let rawPath = UserPathResolver.expandTilde(actionPath)
+                    let expandedPath = rawPath.count > 1 && rawPath.hasSuffix("/")
+                        ? String(rawPath.dropLast()) : rawPath
+                    if result.path == expandedPath || result.path.hasPrefix(expandedPath + "/") {
                         matched[index].append(result)
                         assigned = true
                         break

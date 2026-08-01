@@ -428,4 +428,36 @@ final class AppRuleLibraryAudit: XCTestCase {
             }
         }
     }
+
+    /// Regression guard for the final-review I4 finding: LLM model-runner apps
+    /// download GB-scale model files into their App Support root. A cleanable
+    /// action at the bare `Application Support/<Leaf>/` root would delete the
+    /// model store. Cache/log subdirs are fine; the leaf root is not.
+    func testModelRunnerActionsNeverCoverAppSupportRoot() throws {
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        let modelRunnerIDs: Set<String> = [
+            "com.nomic.gpt4all", "com.lmstudio.lmstudio",
+            "com.electron.ollama", "com.macgpt.macgpt"
+        ]
+        for bundleID in modelRunnerIDs {
+            let app = try XCTUnwrap(apps[bundleID], "\(bundleID) missing from bundleIDMapping.json")
+            let actions = try XCTUnwrap(app["actions"] as? [[String: Any]],
+                                        "\(bundleID) must use the v2 actions schema")
+            for action in actions {
+                let paths = try XCTUnwrap(action["paths"] as? [String])
+                for path in paths {
+                    let comps = path.split(separator: "/")
+                    // Banned shape: "…/Application Support/<Leaf>/" with nothing after it —
+                    // the leaf root holds the downloaded model store.
+                    for i in 0..<comps.count {
+                        if comps[i] == "Application Support", i == comps.count - 2 {
+                            XCTFail("\(bundleID) action \(action["name"] ?? "?") declares "
+                                + "bare App Support root \(path) — LLM model store is user data; "
+                                + "cache/log subdirs only")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

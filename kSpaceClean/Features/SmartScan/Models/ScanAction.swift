@@ -94,12 +94,21 @@ public final class ScanAction: ScanTreeNode, @unchecked Sendable {
     }
 
     /// Cascade-toggle: propagate the new state to every result underneath.
+    /// Results are gated per-result exactly like the direct-results branch
+    /// (`ScanSubCategory.setState`): a `.recommended` result auto-selects on
+    /// `.on`, everything else (`.optional`, `.caution`, `.dangerous`) stays
+    /// OFF so a cascade never force-selects a data-loss-risk leaf. The user
+    /// can still check any result manually via the per-row checkbox.
     public func setState(_ newState: CheckState) {
         guard state != newState else { return }
         state = newState
         guard newState != .mixed else { return }
         for result in results {
-            result.setState(newState)
+            if newState == .on {
+                result.setState(result.riskLevel.defaultChecked ? .on : .off)
+            } else {
+                result.setState(.off)
+            }
         }
     }
 

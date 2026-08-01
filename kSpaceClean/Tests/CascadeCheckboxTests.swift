@@ -168,6 +168,52 @@ final class CascadeCheckboxTests: XCTestCase {
         XCTAssertEqual(recAction.state, .on)
     }
 
+    /// Regression for the final-review I1 finding: a `.dangerous` RESULT inside a
+    /// `.recommended` ACTION must not be auto-selected when the action flips ON —
+    /// neither via the sub-category cascade nor via a manual action-level toggle.
+    func testParentOn_DangerousResultInRecommendedActionNotSelected() {
+        let safe = makeResult(riskLevel: .recommended)
+        let risky = makeResult(riskLevel: .dangerous)
+        let action = ScanAction(
+            actionID: "a1",
+            actionType: .cache,
+            title: "缓存",
+            results: [safe, risky],
+            recommend: true,
+            riskLevel: .recommended
+        )
+        let sub = ScanSubCategory(
+            subCategoryID: "sub1",
+            title: "Sub",
+            actions: [action],
+            showAction: true
+        )
+
+        // Path 1: cascade-ON — sub-category flips ON, action auto-selects.
+        sub.setState(.on)
+
+        XCTAssertEqual(action.state, .on)
+        XCTAssertEqual(safe.state, .on,
+                       "a .recommended result inside a .recommended action auto-selects")
+        XCTAssertEqual(risky.state, .off,
+                       "I1 regression: a .dangerous result must NOT auto-select when its action flips ON")
+
+        // Path 2: manual-ON — user clicks the action row directly.
+        let action2 = ScanAction(
+            actionID: "a2",
+            actionType: .cache,
+            title: "缓存",
+            results: [makeResult(riskLevel: .dangerous)],
+            recommend: true,
+            riskLevel: .recommended
+        )
+        action2.setState(.on)
+
+        XCTAssertEqual(action2.state, .on)
+        XCTAssertEqual(action2.results.first?.state, .off,
+                       "I1 regression: manual action toggle must respect the per-result risk gate")
+    }
+
     private func makeResult(riskLevel: RiskLevel) -> ScanResult {
         ScanResult(
             url: URL(fileURLWithPath: "/tmp/test"),

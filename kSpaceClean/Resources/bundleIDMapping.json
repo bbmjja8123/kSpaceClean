@@ -2382,14 +2382,6 @@
           "paths": [
             "~/Library/Logs/MacGPT/"
           ]
-        },
-        {
-          "name": "MacGPT Data",
-          "nameCN": "MacGPT 数据",
-          "type": "soft",
-          "paths": [
-            "~/Library/Application Support/MacGPT/"
-          ]
         }
       ]
     },
@@ -2409,14 +2401,6 @@
           "type": "appcache",
           "paths": [
             "~/Library/Caches/com.electron.ollama/"
-          ]
-        },
-        {
-          "name": "Ollama App Data",
-          "nameCN": "Ollama 应用数据",
-          "type": "soft",
-          "paths": [
-            "~/Library/Application Support/Ollama/"
           ]
         },
         {
@@ -2445,14 +2429,6 @@
           "type": "appcache",
           "paths": [
             "~/Library/Caches/com.lmstudio.lmstudio/"
-          ]
-        },
-        {
-          "name": "LM Studio App Data",
-          "nameCN": "LM Studio 应用数据",
-          "type": "soft",
-          "paths": [
-            "~/Library/Application Support/LM Studio/"
           ]
         }
       ]
@@ -2505,14 +2481,6 @@
           "type": "appcache",
           "paths": [
             "~/Library/Caches/com.nomic.gpt4all/"
-          ]
-        },
-        {
-          "name": "GPT4All Data",
-          "nameCN": "GPT4All 数据",
-          "type": "soft",
-          "paths": [
-            "~/Library/Application Support/nomic.ai/GPT4All/"
           ]
         },
         {
