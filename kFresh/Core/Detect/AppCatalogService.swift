@@ -67,27 +67,14 @@ actor AppCatalogService {
     ///     Defaults to 5.
     /// - Returns: Total size in bytes, or `0` if `url` cannot be enumerated.
     func sizeOfApp(at url: URL, maxDepth: Int = 5) async -> Int64 {
-        let keys: [URLResourceKey] = [.totalFileAllocatedSizeKey, .fileSizeKey]
-        guard let enumerator = fileManager.enumerator(
-            at: url,
-            includingPropertiesForKeys: keys,
-            options: [.skipsHiddenFiles]
-        ) else { return 0 }
-
-        var total: Int64 = 0
-        for case let fileURL as URL in enumerator {
-            // `enumerator(at:)` yields absolute URLs derived from `url`, so the
-            // path-component difference is the true depth below the bundle root.
-            // Skip the offending subtree instead of breaking out of the walk —
-            // breaking would silently truncate every sibling still unvisited.
-            let depth = fileURL.pathComponents.count - url.pathComponents.count
-            if depth > maxDepth {
-                enumerator.skipDescendants()
-                continue
-            }
-            total += Self.safeResourceSize(at: fileURL, keys: Set(keys))
-        }
-        return total
+        // m-4 fix: route through the shared `DirectorySizeCalculator`
+        // helper in kFoundation. This method previously reimplemented
+        // the enumerator + size-sum loop with a depth cap applied via
+        // `enumerator.skipDescendants()` on over-deep subtrees. The
+        // helper preserves that policy (depth policy `.limited(max:)`
+        // skips with `skipDescendants` rather than aborting the walk)
+        // and is the single source of truth for "how big is this tree".
+        DirectorySizeCalculator.size(of: url, depth: .limited(max: maxDepth), fileManager: fileManager)
     }
 
     /// Reads `URLResourceValues` for a file inside the bundle walk, returning
@@ -100,6 +87,9 @@ actor AppCatalogService {
     /// "this file is unknown size; skip it" — the same semantics that the
     /// previous inline `try?` had before this helper was extracted.
     ///
+    /// Note: retained for callers that still need per-file size contribution
+    /// outside the `DirectorySizeCalculator` walk. The bundled-size path
+    /// above no longer uses this helper.
     /// - Returns: Bytes contributed by `at`, or `0` if the values could not
     ///   be read or both `totalFileAllocatedSize` and `fileSize` are missing.
     private static func safeResourceSize(at url: URL, keys: Set<URLResourceKey>) -> Int64 {

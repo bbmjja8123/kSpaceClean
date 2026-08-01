@@ -145,14 +145,14 @@ public actor ResidueDetector {
     }
 
     private func directorySize(_ url: URL) -> Int64 {
-        let keys: [URLResourceKey] = [.totalFileAllocatedSizeKey, .fileSizeKey]
-        guard let enumerator = fileManager.enumerator(at: url, includingPropertiesForKeys: keys, options: [.skipsHiddenFiles]) else { return 0 }
-        var total: Int64 = 0
-        for case let fileURL as URL in enumerator {
-            let values = try? fileURL.resourceValues(forKeys: Set(keys))
-            total += Int64(values?.totalFileAllocatedSize ?? values?.fileSize ?? 0)
-        }
-        return total
+        // m-4 fix: route through the shared `DirectorySizeCalculator`
+        // helper in kFoundation instead of reimplementing the enumerator
+        // + size-sum loop here. `ResidueDetector` previously walked every
+        // descendant unconditionally while `AppCatalogService.sizeOfApp`
+        // enforced a `maxDepth` cap with `skipDescendants()` — two
+        // implementations of the same operation that had already drifted.
+        // Both call sites now share one policy and one code path.
+        DirectorySizeCalculator.size(of: url, depth: .unbounded)
     }
 
     private func classify(path: String) -> ResidueType {

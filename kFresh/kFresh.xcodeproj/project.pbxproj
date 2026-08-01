@@ -179,6 +179,10 @@
 		isa = PBXBuildFile;
 		fileRef = 1656D17F4D90B00E30B9C367;
 	};
+	D36DD8A4B415769DF60160EC /* D36DD8A4B415769DF60160EC */ = {
+		isa = PBXBuildFile;
+		fileRef = 214C113C57AC8C9363D916D7 /* DirectorySizeCalculator.swift */;
+	};
 	7B7293219A79743F6E32F89C /* 7B7293219A79743F6E32F89C */ = {
 		isa = PBXBuildFile;
 		fileRef = F5EE8978A09525D063479709;
@@ -319,6 +323,10 @@
 		isa = PBXBuildFile;
 		fileRef = BD8372016B507E6E4A7A99AC;
 	};
+	3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */ = {
+		isa = PBXBuildFile;
+		fileRef = 10F292C7B928DAA8929F337E /* DirectorySizeCalculatorTests.swift */;
+	};
 	F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */ = {
 		isa = PBXBuildFile;
 		fileRef = EA66E191F044FFC4D9668848;
@@ -444,6 +452,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = BundleRuleStore.swift;
 		path = Core/Detect/BundleRuleStore.swift;
+		sourceTree = "<group>";
+	};
+	214C113C57AC8C9363D916D7 /* DirectorySizeCalculator.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DirectorySizeCalculator.swift;
+		path = Core/Detect/DirectorySizeCalculator.swift;
 		sourceTree = "<group>";
 	};
 	1890ACF921D842C7A68A1BBE /* DetailViewModel.swift */ = {
@@ -776,6 +791,13 @@
 		path = Tests/DetectTests/AppSourceClassifierTests.swift;
 		sourceTree = "<group>";
 	};
+	10F292C7B928DAA8929F337E /* DirectorySizeCalculatorTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DirectorySizeCalculatorTests.swift;
+		path = Tests/DetectTests/DirectorySizeCalculatorTests.swift;
+		sourceTree = "<group>";
+	};
 	BFA7754C2E9614BC7641312C /* Localizable.xcstrings */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = text.json.xcstrings;
@@ -1031,6 +1053,7 @@
 			44A2613DA7CAFB830A1F06D3 /* AppCatalogServiceTests.swift */,
 			90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */,
 			BD8372016B507E6E4A7A99AC /* AppSourceClassifierTests.swift */,
+			10F292C7B928DAA8929F337E /* DirectorySizeCalculatorTests.swift */,
 		);
 		name = DetectTests;
 		sourceTree = "<group>";
@@ -1053,6 +1076,7 @@
 			2F003C23A18C74F51E543E30 /* AppCatalogService.swift */,
 			19E52988752B80FD541659FC /* ResidueDetector.swift */,
 			1656D17F4D90B00E30B9C367 /* BundleRuleStore.swift */,
+			214C113C57AC8C9363D916D7 /* DirectorySizeCalculator.swift */,
 		);
 		name = Detect;
 		sourceTree = "<group>";
@@ -1396,6 +1420,7 @@
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
 			E3EB924BD556271D50E906AE /* E3EB924BD556271D50E906AE */,
+			3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -1411,6 +1436,7 @@
 			DED2D39A014811631C96AFB7 /* DED2D39A014811631C96AFB7 */,
 			3D4A21BD659FC7020FF7156B /* 3D4A21BD659FC7020FF7156B */,
 			7AC3A31E4348CAAD16FDE399 /* 7AC3A31E4348CAAD16FDE399 */,
+			D36DD8A4B415769DF60160EC /* D36DD8A4B415769DF60160EC */,
 			0E85846AB9656CAED4DB998A /* 0E85846AB9656CAED4DB998A */,
 			1F1383F1C5BBAC11C885A8A9 /* 1F1383F1C5BBAC11C885A8A9 */,
 			62E646831E0902B06DD4553A /* 62E646831E0902B06DD4553A */,
