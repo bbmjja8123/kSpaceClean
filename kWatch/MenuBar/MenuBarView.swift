@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// The window-style content shown when the user clicks the kWatch status
 /// item. Renders the current metric readings (with an optional trend chart),
@@ -58,7 +59,7 @@ public struct MenuBarView: View {
                 Button("Settings…", action: onOpenSettings)
             }
             Divider()
-            Text("kWatch").font(.footnote).foregroundStyle(.secondary)
+            Text("kWatch").font(.footnote).foregroundStyle(Color.textSecondary)
         }
         .padding(12)
         .frame(width: 280)
@@ -71,7 +72,7 @@ public struct MenuBarView: View {
             Spacer()
             if purchaseState.isPro {
                 Text("Pro").font(.caption2.bold()).padding(.horizontal, 6).padding(.vertical, 2)
-                    .background(Color.accentColor.opacity(0.15))
+                    .background(Color.brandSecondary.opacity(0.15))
                     .clipShape(Capsule())
             }
         }

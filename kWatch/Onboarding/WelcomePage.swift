@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// First onboarding page: welcome message and "Get Started" entry point.
 struct WelcomePage: View {
@@ -8,11 +9,11 @@ struct WelcomePage: View {
         VStack(spacing: 16) {
             Image(systemName: "gauge.with.dots.needle.bottom.50percent")
                 .font(.system(size: 56))
-                .foregroundStyle(.tint)
+                .foregroundStyle(Color.brandSecondary)
             Text("Welcome to kWatch").font(.title).bold()
             Text("Lightweight, sandbox-safe system monitoring for your Mac.")
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
             Spacer()
             Button("Get Started", action: onNext)
                 .buttonStyle(.borderedProminent)

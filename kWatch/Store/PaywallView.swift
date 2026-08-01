@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Sheet content shown by the dashboard when the user opens the Pro gate.
 ///
@@ -55,7 +56,7 @@ public struct PaywallView: View {
         VStack(spacing: 8) {
             Image(systemName: "crown.fill")
                 .font(.system(size: 40))
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(Color.brandSecondary)
                 .accessibilityHidden(true)
 
             Text("kWatch Pro")
@@ -64,7 +65,7 @@ public struct PaywallView: View {
 
             Text("Unlock the full monitoring experience.")
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
         }
     }
@@ -81,12 +82,12 @@ public struct PaywallView: View {
     private func featureRow(icon: String, title: LocalizedStringKey) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
             Image(systemName: icon)
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(Color.brandSecondary)
                 .frame(width: 18)
                 .accessibilityHidden(true)
             Text(title)
                 .font(.callout)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.textPrimary)
         }
     }
 
@@ -94,10 +95,10 @@ public struct PaywallView: View {
         VStack(spacing: 2) {
             Text(viewModel.priceLine)
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
             Text("Sensor availability depends on your Mac hardware.")
                 .font(.caption)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Color.textSecondary.opacity(0.6))
                 .multilineTextAlignment(.center)
         }
     }
@@ -107,11 +108,11 @@ public struct PaywallView: View {
         return VStack(alignment: .leading, spacing: 6) {
             Text(disclosure.title)
                 .font(.caption.bold())
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
 
             Text(disclosure.body)
                 .font(.caption2)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Color.textSecondary.opacity(0.6))
                 .fixedSize(horizontal: false, vertical: true)
 
             Toggle(isOn: Binding(
@@ -125,18 +126,18 @@ public struct PaywallView: View {
             .controlSize(.small)
         }
         .padding(8)
-        .background(Color.secondary.opacity(0.08))
+        .background(Color.textSecondary.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
     private func errorBanner(message: String) -> some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(.orange)
+                .foregroundStyle(Color.brandAccent)
                 .accessibilityHidden(true)
             Text(message)
                 .font(.callout)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.textPrimary)
                 .multilineTextAlignment(.leading)
             Spacer()
             Button("Dismiss") {
@@ -145,7 +146,7 @@ public struct PaywallView: View {
             .controlSize(.small)
         }
         .padding(8)
-        .background(Color.orange.opacity(0.12))
+        .background(Color.brandAccent.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 

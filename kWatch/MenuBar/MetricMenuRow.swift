@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// A single icon + title + trailing value row used inside the menu-bar
 /// popover. Pure presentation with no monitoring side effects.
@@ -22,7 +23,7 @@ public struct MetricMenuRow: View {
             Spacer()
             Text(value)
                 .monospacedDigit()
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
         }
     }
 }

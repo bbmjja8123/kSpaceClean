@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// The process ranking screen, showing top processes sorted by CPU, memory,
 /// or network usage.
@@ -68,7 +69,7 @@ public struct ProcessesView: View {
 
             Text("Processes")
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
 
             Spacer()
 
@@ -87,7 +88,7 @@ public struct ProcessesView: View {
     private var searchBar: some View {
         HStack(spacing: 6) {
             Image(systemName: "magnifyingglass")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
 
             TextField("Search processes\u{2026}", text: $viewModel.searchQuery)
                 .textFieldStyle(.plain)
@@ -101,7 +102,7 @@ public struct ProcessesView: View {
                     viewModel.searchQuery = ""
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.textSecondary)
                 }
                 .buttonStyle(.plain)
                 .help("Clear search")
@@ -110,10 +111,10 @@ public struct ProcessesView: View {
         .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(.background)
+                .fill(Color.bgPrimary)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .stroke(.separator, lineWidth: 1)
+                        .stroke(Color.separatorColor, lineWidth: 1)
                 }
         )
     }
@@ -142,7 +143,7 @@ public struct ProcessesView: View {
                 .scaleEffect(1.2)
             Text("Loading processes\u{2026}")
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
             Spacer()
         }
     }
@@ -155,14 +156,14 @@ public struct ProcessesView: View {
 
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 36))
-                .foregroundStyle(.orange)
+                .foregroundStyle(Color.brandAccent)
 
             Text("Failed to Load Processes")
                 .font(.headline)
 
             Text(message)
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
@@ -183,14 +184,14 @@ public struct ProcessesView: View {
 
             Image(systemName: "tray")
                 .font(.system(size: 36))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
 
             Text("No Processes")
                 .font(.headline)
 
             Text("No processes found. Try adjusting the sort or search criteria.")
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
@@ -240,7 +241,7 @@ public struct ProcessesView: View {
                 .frame(width: 90, alignment: .trailing)
         }
         .font(.caption)
-        .foregroundStyle(.tertiary)
+        .foregroundStyle(Color.textSecondary.opacity(0.6))
     }
 
     // MARK: - Helpers

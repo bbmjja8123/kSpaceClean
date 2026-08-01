@@ -1,6 +1,7 @@
 import SwiftUI
 import AppKit
 import MetricsKit
+import DesignSystem
 
 /// About pane: app version, Pro status, support and policy links, open
 /// source licenses, and a diagnostics export action. Rendered inside the
@@ -49,7 +50,7 @@ struct AboutView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 80, height: 80)
-            .foregroundStyle(Color.accentColor)
+            .foregroundStyle(Color.brandSecondary)
             .accessibilityHidden(true)
     }
 
@@ -62,7 +63,7 @@ struct AboutView: View {
     private var versionLabel: some View {
         Text("Version \(viewModel.buildNumber)")
             .font(.callout)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(Color.textSecondary)
             .monospacedDigit()
     }
 
@@ -73,8 +74,8 @@ struct AboutView: View {
                 .font(.caption2.bold())
                 .padding(.horizontal, 8)
                 .padding(.vertical, 3)
-                .background(Color.accentColor.opacity(0.18))
-                .foregroundStyle(Color.accentColor)
+                .background(Color.brandSecondary.opacity(0.18))
+                .foregroundStyle(Color.brandSecondary)
                 .clipShape(Capsule())
                 .accessibilityLabel("Pro entitlement active")
         } else {
@@ -82,8 +83,8 @@ struct AboutView: View {
                 .font(.caption2.bold())
                 .padding(.horizontal, 8)
                 .padding(.vertical, 3)
-                .background(Color.secondary.opacity(0.15))
-                .foregroundStyle(.secondary)
+                .background(Color.textSecondary.opacity(0.15))
+                .foregroundStyle(Color.textSecondary)
                 .clipShape(Capsule())
                 .accessibilityLabel("Free tier")
         }
@@ -103,7 +104,7 @@ struct AboutView: View {
                 Text(title)
                 Spacer()
                 Image(systemName: "arrow.up.forward.app")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
             .contentShape(Rectangle())
         }
@@ -150,10 +151,10 @@ struct AboutView: View {
             VStack(spacing: 4) {
                 Text("Saved to:")
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
                 Text(url.path)
                     .font(.caption2.monospaced())
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
                     .lineLimit(2)
                     .truncationMode(.middle)
                     .textSelection(.enabled)

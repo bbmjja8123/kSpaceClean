@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// Menu Bar settings pane: presentation mode picker and per-metric-kind
 /// enable toggles. All mutations go through `SettingsViewModel` so they are
@@ -16,7 +17,7 @@ struct MenuBarSettingsView: View {
             } footer: {
                 Text("Choose how the menu bar status item renders your metrics.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
 
             Section {
@@ -26,7 +27,7 @@ struct MenuBarSettingsView: View {
             } footer: {
                 Text("Disable metrics you don't want to see. At least one must stay enabled.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
         }
         .formStyle(.grouped)

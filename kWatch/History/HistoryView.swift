@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// The history trends screen, showing a range selector, metric picker,
 /// summary statistics, and the trend chart.
@@ -64,7 +65,7 @@ public struct HistoryView: View {
 
             Text("History")
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
 
             Spacer()
 
@@ -110,7 +111,7 @@ public struct HistoryView: View {
 
             Image(systemName: "lock.fill")
                 .font(.system(size: 36))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
 
             Text("Metric History")
                 .font(.title2)
@@ -118,13 +119,13 @@ public struct HistoryView: View {
 
             Text("Upgrade to Pro to view historical trends, charts, and detailed summaries for all metrics.")
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
             Text("Free users can monitor live CPU, Memory, Disk, and Network.")
                 .font(.caption)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Color.textSecondary.opacity(0.6))
                 .multilineTextAlignment(.center)
 
             Button("View kWatch Pro") {
@@ -145,7 +146,7 @@ public struct HistoryView: View {
                 .scaleEffect(1.2)
             Text("Loading history\u{2026}")
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
             Spacer()
         }
     }
@@ -158,14 +159,14 @@ public struct HistoryView: View {
 
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 36))
-                .foregroundStyle(.orange)
+                .foregroundStyle(Color.brandAccent)
 
             Text("Failed to Load History")
                 .font(.headline)
 
             Text(message)
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
@@ -186,14 +187,14 @@ public struct HistoryView: View {
 
             Image(systemName: "chart.xyaxis.line")
                 .font(.system(size: 36))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
 
             Text("No Data")
                 .font(.headline)
 
             Text("No history records found for the selected range and metric. Data collection may have just started.")
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
@@ -235,11 +236,11 @@ public struct HistoryView: View {
         VStack(spacing: 2) {
             Text(label)
                 .font(.caption)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Color.textSecondary.opacity(0.6))
             Text(value ?? "--")
                 .font(.title3)
                 .fontWeight(.semibold)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.textPrimary)
         }
     }
 

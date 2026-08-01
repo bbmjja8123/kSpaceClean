@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// A single row in the process ranking table.
 ///
@@ -22,7 +23,7 @@ public struct ProcessRowView: View {
 
             Text("\(viewModel.pid)")
                 .frame(width: 50, alignment: .trailing)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .font(.caption)
 
             Text(viewModel.cpuDisplay)

@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Third onboarding page: introduce kWatch Pro without forcing the user
 /// to upgrade. The page is fully dismissible via "Skip" — Task 12 must
@@ -9,13 +10,13 @@ struct ProIntroPage: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Image(systemName: "star.circle.fill").font(.system(size: 36)).foregroundStyle(.tint)
+            Image(systemName: "star.circle.fill").font(.system(size: 36)).foregroundStyle(Color.brandSecondary)
             Text("Meet kWatch Pro").font(.title2).bold()
             Text("Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Activity, and 8 Shortcuts.")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
             Text("One-time purchase of $7.99. You can upgrade anytime from Settings.")
                 .font(.footnote)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Color.textSecondary.opacity(0.6))
             Spacer()
             HStack {
                 Button("Skip", action: onSkip)

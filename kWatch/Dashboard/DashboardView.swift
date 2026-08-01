@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// The main dashboard screen showing live metric cards and an optional
 /// onboarding banner.
@@ -51,14 +52,14 @@ public struct DashboardView: View {
             HStack(spacing: 12) {
                 Image(systemName: "hand.wave")
                     .font(.title2)
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(Color.brandSecondary)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Welcome to kWatch")
                         .font(.headline)
                     Text("Complete the setup to customize your experience.")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.textSecondary)
                 }
 
                 Spacer(minLength: 0)
@@ -74,7 +75,7 @@ public struct DashboardView: View {
                 } label: {
                     Image(systemName: "xmark")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.textSecondary)
                 }
                 .buttonStyle(.plain)
                 .help("Dismiss")
@@ -82,10 +83,10 @@ public struct DashboardView: View {
             .padding(12)
             .background(
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(.background)
+                    .fill(Color.bgPrimary)
                     .overlay {
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .stroke(.separator, lineWidth: 1)
+                            .stroke(Color.separatorColor, lineWidth: 1)
                     }
             )
         }
@@ -102,13 +103,13 @@ public struct DashboardView: View {
                 Text("Live")
             } else {
                 Circle()
-                    .fill(Color.gray)
+                    .fill(Color.textSecondary)
                     .frame(width: 8, height: 8)
                 Text("Paused")
             }
         }
         .font(.caption)
-        .foregroundStyle(.secondary)
+        .foregroundStyle(Color.textSecondary)
         .help(viewModel.isMonitoring ? "Monitoring is active" : "Monitoring is paused")
     }
 

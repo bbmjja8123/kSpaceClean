@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 // MARK: - Color resolution
 
@@ -82,7 +83,7 @@ public struct MetricCardView: View {
         HStack {
             Text(viewModel.subtitle)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.textSecondary)
                 .lineLimit(2, reservesSpace: true)
 
             Spacer(minLength: 0)
@@ -105,7 +106,7 @@ public struct MetricCardView: View {
             .padding(.vertical, 4)
             .background(
                 Capsule()
-                    .fill(Color.accentColor)
+                    .fill(Color.brandSecondary)
             )
         }
         .buttonStyle(.plain)
@@ -114,7 +115,7 @@ public struct MetricCardView: View {
 
     private var background: some View {
         RoundedRectangle(cornerRadius: 12, style: .continuous)
-            .fill(.background)
+            .fill(Color.bgPrimary)
             .overlay {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .stroke(viewModel.cardColor.color.opacity(0.3), lineWidth: 1)

@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import DesignSystem
 
 /// Container view for the Settings window. Renders a tabbed sidebar with
 /// four panes: Menu Bar, Notifications, General, and About. Each pane is
@@ -87,7 +88,7 @@ struct AlertSettingsView: View {
             } footer: {
                 Text("Allow kWatch to deliver alerts when a metric crosses your thresholds.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
 
             Section {
@@ -101,7 +102,7 @@ struct AlertSettingsView: View {
             } footer: {
                 Text("kWatch will display the welcome flow the next time you launch the app.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
         }
         .formStyle(.grouped)
@@ -119,7 +120,7 @@ struct AlertSettingsView: View {
                     .font(.headline)
                 Text(viewModel.isNotificationsAuthorized ? "Authorized" : "Not Authorized")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
             Spacer()
             if viewModel.isNotificationsAuthorized {
@@ -154,7 +155,7 @@ struct WidgetSettingsView: View {
             } footer: {
                 Text("Higher rates consume more CPU and battery. The default 2s is a good balance.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
 
             Section {
@@ -167,7 +168,7 @@ struct WidgetSettingsView: View {
                             .font(.headline)
                         Text("Start kWatch automatically when you sign in.")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.textSecondary)
                     }
                 }
                 .toggleStyle(.switch)
@@ -187,7 +188,7 @@ struct WidgetSettingsView: View {
                 Spacer()
                 Text(String(format: "%.1fs", viewModel.samplingIntervalSeconds))
                     .monospacedDigit()
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.textSecondary)
             }
             Slider(
                 value: Binding(
