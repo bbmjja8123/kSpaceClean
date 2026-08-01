@@ -120,6 +120,7 @@ def main():
         "HistoryTests": make_group("HistoryTests"),
         "StartupTests": make_group("StartupTests"),
         "DeepCleanTests": make_group("DeepCleanTests"),
+        "StoreTests": make_group("StoreTests"),
         "UITests": make_group("UITests"),
         "Products": make_group("Products"),
     }
@@ -159,7 +160,6 @@ def main():
         ("Features/Common/LoadingStateView.swift", "Common"),
         ("Features/Common/BrandStyles.swift", "Common"),
         ("Features/Common/BrandButtonStyle.swift", "Common"),
-        ("Features/Common/ProGatePlaceholder.swift", "Common"),
         ("Features/DeepClean/DeepCleanEngine.swift", "DeepClean"),
         ("Features/DeepClean/DeepCleanViewModel.swift", "DeepClean"),
         ("Features/DeepClean/DeepCleanView.swift", "DeepClean"),
@@ -255,6 +255,10 @@ def main():
             "DeepCleanEngineTests.swift",
             "DeepCleanViewModelTests.swift",
         ],
+        "StoreTests": [
+            "StoreManagerTests.swift",
+            "ProGateModifierTests.swift",
+        ],
         "IntegrationTests": [
             "UninstallFlowTests.swift",
             "SandboxDegradationTests.swift",
@@ -262,6 +266,7 @@ def main():
         "UITests": [
             "OnboardingUITests.swift",
             "AppListUITests.swift",
+            "ProGateUITests.swift",
         ],
     }
 
@@ -280,6 +285,7 @@ def main():
         "Info.plist",
         "kFresh.entitlements",
         "kFreshDebug.entitlements",
+        "Configuration.storekit",
     ]
 
     resource_dirs = [
@@ -309,7 +315,12 @@ def main():
 
     for fpath in static_files:
         fname = os.path.basename(fpath)
-        lkft = "text.plist.xml" if fpath.endswith(".plist") else "text.plist.entitlements"
+        if fpath.endswith(".plist"):
+            lkft = "text.plist.xml"
+        elif fpath.endswith(".storekit"):
+            lkft = "text.json"
+        else:
+            lkft = "text.plist.entitlements"
         ref_id = add(make_fileref(fname, fpath, last=lkft), f"ref_{fpath}")
         objects[root_group_id][1]["children"].append((ref_id, fname))
 
@@ -597,7 +608,7 @@ def main():
 
     # Set Tests group children
     tests_children = []
-    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "HistoryTests", "StartupTests", "DeepCleanTests", "UITests"]:
+    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "HistoryTests", "StartupTests", "DeepCleanTests", "StoreTests", "UITests"]:
         tests_children.append((group_ids[sub], sub))
     objects[group_ids["Tests"]][1]["children"] = tests_children
 

@@ -3,6 +3,7 @@ import SwiftUI
 /// Detail pane of the `NavigationSplitView`: hero, size overview, residue
 /// list, Pro-locked entries, and the uninstall entry point.
 struct AppDetailView: View {
+    @EnvironmentObject private var services: AppServices
     @StateObject private var viewModel: DetailViewModel
     @State private var showConfirmSheet = false
     @State private var undoToast: UninstallToast.State?
@@ -97,8 +98,7 @@ struct AppDetailView: View {
         }
     }
 
-    /// Pro-locked feature rows. Task 8 swaps the no-op `.proGate()` for the
-    /// real paywall-gated modifier.
+    /// Pro-locked feature rows, gated by the app-wide ``StoreManager``.
     private var proEntries: some View {
         VStack(spacing: AppSpacing.sm) {
             HStack {
@@ -111,7 +111,7 @@ struct AppDetailView: View {
             .padding()
             .background(Color.bgSecondary)
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .proGate()
+            .proGate(store: services.store)
 
             HStack {
                 Image(systemName: "lock.fill")
@@ -123,7 +123,7 @@ struct AppDetailView: View {
             .padding()
             .background(Color.bgSecondary)
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .proGate()
+            .proGate(store: services.store)
         }
     }
 

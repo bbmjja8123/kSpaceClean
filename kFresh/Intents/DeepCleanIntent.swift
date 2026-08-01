@@ -32,6 +32,9 @@ struct DeepCleanIntent: AppIntent {
     }
 
     func perform() async throws -> some IntentResult {
+        guard await StoreManager.isProUnlocked() else {
+            throw IntentProGateError.proRequired
+        }
         let engine = DeepCleanEngine(
             backupManager: BackupManager(),
             auditLogger: Self.defaultAuditLogger
@@ -46,5 +49,14 @@ struct DeepCleanIntent: AppIntent {
         return .result(
             value: "已清理 \(deleted) 项系统启动项，释放 \(ByteCountFormatter.string(fromByteCount: size, countStyle: .file))"
         )
+    }
+}
+
+/// Error thrown when a Pro-gated intent runs without an unlock.
+private enum IntentProGateError: LocalizedError {
+    case proRequired
+
+    var errorDescription: String? {
+        "此操作需要 kFresh Pro。请先在应用内解锁 Pro 后重试。"
     }
 }

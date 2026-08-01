@@ -1,0 +1,36 @@
+{
+  "identifier" : "B3D7E5A1-1234-5678-90AB-CDEF01234567",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "B7C9E1A2-3456-7890-ABCD-EF1234567890",
+      "localizations" : [
+        {
+          "description" : "解锁 kFresh 全部 Pro 功能",
+          "displayName" : "kFresh Pro",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "解锁 kFresh 全部 Pro 功能",
+          "displayName" : "kFresh Pro",
+          "locale" : "zh_CN"
+        }
+      ],
+      "productID" : "app.kraftly.kfresh.pro",
+      "referenceName" : "kFresh Pro Unlock",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

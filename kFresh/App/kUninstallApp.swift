@@ -8,6 +8,15 @@ struct kFreshApp: App {
     @StateObject private var services = AppServices()
     private let menuBarController = MenuBarController()
 
+    /// Honors the `-kFreshTestPro <0|1>` launch argument used by the Pro-gate
+    /// UI tests: writing the shared override key makes ``StoreManager`` start
+    /// in the requested Pro state before any view is built.
+    init() {
+        if StoreManager.parseTestProArgument(ProcessInfo.processInfo.arguments) {
+            UserDefaults.standard.set(true, forKey: StoreManager.testOverrideKey)
+        }
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()

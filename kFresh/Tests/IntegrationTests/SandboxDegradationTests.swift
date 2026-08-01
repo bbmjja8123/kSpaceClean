@@ -38,9 +38,12 @@ final class SandboxDegradationTests: XCTestCase {
         XCTAssertFalse(protectedApps.isEmpty)
     }
 
-    func testProGateBlocksWithoutPurchase() async {
-        // StoreManager should default to not Pro before any purchase
-        let isPro = await StoreManager.shared.isPro
-        XCTAssertFalse(isPro)
+    @MainActor
+    func testProGateBlocksWithoutPurchase() {
+        // A fresh StoreManager defaults to free unless the test override key
+        // says otherwise (set by setProForTesting / the -kFreshTestPro arg).
+        defer { UserDefaults.standard.set(false, forKey: StoreManager.testOverrideKey) }
+        let manager = StoreManager()
+        XCTAssertEqual(manager.state, .free)
     }
 }
