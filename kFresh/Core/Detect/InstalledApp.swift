@@ -109,9 +109,16 @@ struct InstalledApp: Identifiable, Hashable, @unchecked Sendable {
     let source: AppSource
     let isRunning: Bool
     let lastUsedDate: Date?
+    /// When the app bundle was created on disk, read from its
+    /// `FileAttributeKey.creationDate`. Populated by ``AppCatalogService``
+    /// from `FileManager` attributes; `nil` when the creation date cannot be
+    /// read (missing bundle, sandbox denial, filesystem glitch). Drives the
+    /// "最近安装" category filter and the "安装时间" sort option — the two
+    /// surfaces that let users reason about freshly installed apps.
+    let installDate: Date?
     var residues: [ResidueFile] = []
 
-    init(url: URL, displayName: String, bundleID: String, version: String, icon: NSImage = NSImage(), sizeBytes: Int64 = 0, source: AppSource = .unknown, isRunning: Bool = false, lastUsedDate: Date? = nil, residues: [ResidueFile] = []) {
+    init(url: URL, displayName: String, bundleID: String, version: String, icon: NSImage = NSImage(), sizeBytes: Int64 = 0, source: AppSource = .unknown, isRunning: Bool = false, lastUsedDate: Date? = nil, installDate: Date? = nil, residues: [ResidueFile] = []) {
         self.url = url
         self.displayName = displayName
         self.bundleID = bundleID
@@ -121,6 +128,7 @@ struct InstalledApp: Identifiable, Hashable, @unchecked Sendable {
         self.source = source
         self.isRunning = isRunning
         self.lastUsedDate = lastUsedDate
+        self.installDate = installDate
         self.residues = residues
     }
 

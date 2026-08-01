@@ -4,7 +4,7 @@ import AppKit
 
 @MainActor
 final class AppListFilterSortTests: XCTestCase {
-    func makeApp(name: String, bundleID: String, size: Int64, source: AppSource = .userInstalled) -> InstalledApp {
+    func makeApp(name: String, bundleID: String, size: Int64, source: AppSource = .userInstalled, installDate: Date? = Date(), lastUsedDate: Date? = Date()) -> InstalledApp {
         InstalledApp(
             url: URL(fileURLWithPath: "/Applications/\(name).app"),
             displayName: name,
@@ -14,7 +14,8 @@ final class AppListFilterSortTests: XCTestCase {
             sizeBytes: size,
             source: source,
             isRunning: false,
-            lastUsedDate: Date()
+            lastUsedDate: lastUsedDate,
+            installDate: installDate
         )
     }
 
@@ -66,24 +67,25 @@ final class AppListFilterSortTests: XCTestCase {
         XCTAssertEqual(vm.filteredApps.map(\.displayName), ["Finder", "Terminal"])
     }
 
-    func testRecentlyInstalledFiltersOnLastUsedDate() {
+    func testRecentlyInstalledFiltersOnInstallDate() {
         let vm = makeViewModel()
-        let fresh = makeApp(name: "Fresh", bundleID: "com.example.fresh", size: 100)
-        var stale = makeApp(name: "Stale", bundleID: "com.example.stale", size: 200)
-        stale = InstalledApp(
-            url: stale.url,
-            displayName: stale.displayName,
-            bundleID: stale.bundleID,
-            version: stale.version,
-            icon: stale.icon,
-            sizeBytes: stale.sizeBytes,
-            source: stale.source,
-            isRunning: false,
+        // Installed within the 7-day window but never opened since install:
+        // must appear in "最近安装" because the filter keys on installDate.
+        let freshInstall = makeApp(
+            name: "FreshInstall", bundleID: "com.example.fresh", size: 100,
+            installDate: Date(),
             lastUsedDate: Date().addingTimeInterval(-30 * 24 * 3600)
         )
-        vm.apps = [fresh, stale]
+        // Installed long ago but opened today: must NOT appear in "最近安装",
+        // even though its lastUsedDate is fresh — the two dates are distinct.
+        let openedToday = makeApp(
+            name: "OpenedToday", bundleID: "com.example.opened", size: 200,
+            installDate: Date().addingTimeInterval(-30 * 24 * 3600),
+            lastUsedDate: Date()
+        )
+        vm.apps = [freshInstall, openedToday]
         vm.category = .recentlyInstalled
-        XCTAssertEqual(vm.filteredApps.map(\.displayName), ["Fresh"])
+        XCTAssertEqual(vm.filteredApps.map(\.displayName), ["FreshInstall"])
     }
 
     func testSortBySizeDescending() {
@@ -108,5 +110,35 @@ final class AppListFilterSortTests: XCTestCase {
         vm.sortKey = .name
         vm.sortAscending = true
         XCTAssertEqual(vm.filteredApps.map(\.displayName), ["Atom", "Brave", "Zoom"])
+    }
+
+    func testSortByInstallDateOrdersInstallDateNotLastUsedDate() {
+        let vm = makeViewModel()
+        // Alpha: installed 30 days ago, opened today.
+        let alpha = makeApp(
+            name: "Alpha", bundleID: "a", size: 100,
+            installDate: Date().addingTimeInterval(-30 * 24 * 3600),
+            lastUsedDate: Date()
+        )
+        // Beta: installed today, opened 30 days ago.
+        let beta = makeApp(
+            name: "Beta", bundleID: "b", size: 200,
+            installDate: Date(),
+            lastUsedDate: Date().addingTimeInterval(-30 * 24 * 3600)
+        )
+        vm.apps = [alpha, beta]
+
+        // "安装时间" ascending: older install first — Alpha before Beta.
+        vm.sortKey = .installDate
+        vm.sortAscending = true
+        XCTAssertEqual(vm.filteredApps.map(\.displayName), ["Alpha", "Beta"],
+                       "installDate sort must order by installDate, not lastUsedDate")
+
+        // "最近使用" ascending on the same pair flips the order, proving the
+        // two sort keys are independent.
+        vm.sortKey = .lastUsedDate
+        vm.sortAscending = true
+        XCTAssertEqual(vm.filteredApps.map(\.displayName), ["Beta", "Alpha"],
+                       "lastUsedDate sort must order by lastUsedDate, diverging from installDate")
     }
 }

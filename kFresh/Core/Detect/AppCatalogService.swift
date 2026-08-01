@@ -209,6 +209,10 @@ actor AppCatalogService {
             ?? bundle?.infoDictionary?["CFBundleDisplayName"] as? String
             ?? url.deletingPathExtension().lastPathComponent
         let version = bundle?.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        // Best-effort install date = the bundle directory's creation date.
+        // `try?` is deliberate: a missing/unreadable creation date yields nil,
+        // matching the model's optionality.
+        let installDate: Date? = (try? FileManager.default.attributesOfItem(atPath: url.path)[.creationDate]) as? Date
         return InstalledApp(
             url: url,
             displayName: displayName,
@@ -218,7 +222,8 @@ actor AppCatalogService {
             sizeBytes: 0,
             source: sourceOverride ?? Self.classifySource(url: url, bundleID: bundleID),
             isRunning: isRunning,
-            lastUsedDate: nil
+            lastUsedDate: nil,
+            installDate: installDate
         )
     }
 
@@ -256,6 +261,7 @@ actor AppCatalogService {
             source: existing.source == .unknown ? new.source : existing.source,
             isRunning: existing.isRunning || new.isRunning,
             lastUsedDate: existing.lastUsedDate ?? new.lastUsedDate,
+            installDate: existing.installDate ?? new.installDate,
             residues: existing.residues.isEmpty ? new.residues : existing.residues
         )
     }

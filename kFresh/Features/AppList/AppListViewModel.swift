@@ -80,7 +80,7 @@ final class AppListViewModel: ObservableObject {
         case .recentlyInstalled:
             let cutoff = Date().addingTimeInterval(-7 * 24 * 3600)
             result = result.filter {
-                guard let date = $0.lastUsedDate else { return false }
+                guard let date = $0.installDate else { return false }
                 return date > cutoff
             }
         }
@@ -102,7 +102,9 @@ final class AppListViewModel: ObservableObject {
                 ascending = a.displayName.localizedCaseInsensitiveCompare(b.displayName) == .orderedAscending
             case .size:
                 ascending = a.sizeBytes < b.sizeBytes
-            case .installDate, .lastUsedDate:
+            case .installDate:
+                ascending = (a.installDate ?? .distantPast) < (b.installDate ?? .distantPast)
+            case .lastUsedDate:
                 ascending = (a.lastUsedDate ?? .distantPast) < (b.lastUsedDate ?? .distantPast)
             }
             return sortAscending ? ascending : !ascending

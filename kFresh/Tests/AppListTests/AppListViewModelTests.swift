@@ -4,7 +4,7 @@ import AppKit
 
 @MainActor
 final class AppListViewModelTests: XCTestCase {
-    func makeApp(name: String, bundleID: String, size: Int64) -> InstalledApp {
+    func makeApp(name: String, bundleID: String, size: Int64, installDate: Date? = Date()) -> InstalledApp {
         InstalledApp(
             url: URL(fileURLWithPath: "/Applications/\(name).app"),
             displayName: name,
@@ -14,7 +14,8 @@ final class AppListViewModelTests: XCTestCase {
             sizeBytes: size,
             source: .userInstalled,
             isRunning: false,
-            lastUsedDate: Date()
+            lastUsedDate: Date(),
+            installDate: installDate
         )
     }
 
