@@ -215,7 +215,7 @@ internal actor DeepCleanEngine: DeepCleanEngining {
             url: url,
             category: category,
             sizeBytes: sizeOfItem(at: url),
-            isProtected: isAppleOwned(label),
+            isProtected: isAppleOwned(bundleID ?? label),
             associatedBundleID: bundleID
         )
     }

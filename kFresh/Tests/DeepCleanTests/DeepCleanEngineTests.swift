@@ -152,6 +152,29 @@ final class DeepCleanEngineTests: XCTestCase {
         XCTAssertEqual(pane.isProtected, false)
     }
 
+    /// A preference pane whose folder name is NOT Apple-prefixed must still
+    /// be flagged `isProtected` when its `Contents/Info.plist` declares a
+    /// `com.apple.*` `CFBundleIdentifier` — protection keys off the bundle
+    /// ID when available, never the folder name.
+    func testScanProtectsPrefPaneByBundleIdentifier() async throws {
+        let paneDir = prefPanesDir.appendingPathComponent("MyUtility.prefPane")
+        let contentsDir = paneDir.appendingPathComponent("Contents")
+        try FileManager.default.createDirectory(at: contentsDir, withIntermediateDirectories: true)
+        try writePlist([
+            "CFBundleDisplayName": "My Utility",
+            "CFBundleIdentifier": "com.apple.someinternal",
+        ], to: contentsDir.appendingPathComponent("Info.plist"))
+        let engine = makeEngine()
+
+        let items = try await engine.scan()
+
+        XCTAssertEqual(items.count, 1)
+        guard let pane = items.first else { return }
+        XCTAssertEqual(pane.category, .preferencePanes)
+        XCTAssertEqual(pane.associatedBundleID, "com.apple.someinternal")
+        XCTAssertEqual(pane.isProtected, true, "A com.apple.* bundle ID must protect the pane regardless of its folder name")
+    }
+
     // MARK: - Clean
 
     /// An empty selection is a no-op returning zero.
