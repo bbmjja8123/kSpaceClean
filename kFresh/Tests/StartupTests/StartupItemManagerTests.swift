@@ -142,4 +142,74 @@ final class StartupItemManagerTests: XCTestCase {
         let backup = backupRoot.appendingPathComponent(tmp.lastPathComponent)
         XCTAssertTrue(FileManager.default.fileExists(atPath: backup.path), "Backup should exist at expected path")
     }
+
+    /// Strengthens `testListItemsReturnsArrayNotThrow` with a type-check:
+    /// `listItems()` must return an actual `[StartupItem]` (not an
+    /// optional or any) — locking in the protocol-shaped return type so
+    /// future refactors cannot silently change the contract.
+    func testListItemsReturnsTypedArray() async throws {
+        let manager = StartupItemManager()
+        // The type annotation on the LHS is the lock — future refactors
+        // that change `listItems()` to return `Any?` or `[String]?`
+        // will fail to compile here.
+        let items: [StartupItem] = try await manager.listItems()
+        XCTAssertGreaterThanOrEqual(items.count, 0, "listItems must return an array")
+    }
+
+    /// Locks in the **graceful-degradation contract**: when one of the
+    /// standard directories is unreadable (sandbox denial, missing path,
+    /// permission failure), `listItems()` must still return the items
+    /// from the directories it CAN read, and must NOT throw at the
+    /// public-API boundary.
+    ///
+    /// We construct a `FileManager` subclass that throws
+    /// `NSCocoaErrorDomain` `NSFileReadNoSuchFileError` whenever the
+    /// manager attempts to enumerate `/Library/LaunchDaemons` — the path
+    /// most likely to trigger a real-world FDA / TCC denial. All other
+    /// directories delegate to `super` so the manager can still surface
+    /// items from `~/Library/LaunchAgents` etc.
+    ///
+    /// If `FileManager` subclassing were ever unsupported by the
+    /// runtime, the test would crash at construction; that crash is the
+    /// signal to pivot to an `internal` seam on `scanItems`.
+    func testListItemsGracefulDegradationWhenOneDirectoryErrors() async throws {
+        final class FileManagerDenyingDaemons: FileManager {
+            override func contentsOfDirectory(
+                at url: URL,
+                includingPropertiesForKeys keys: [URLResourceKey]?,
+                options mask: FileManager.DirectoryEnumerationOptions = []
+            ) throws -> [URL] {
+                if url.path.hasSuffix("/Library/LaunchDaemons") {
+                    throw NSError(
+                        domain: NSCocoaErrorDomain,
+                        code: NSFileReadNoSuchFileError
+                    )
+                }
+                return try super.contentsOfDirectory(
+                    at: url,
+                    includingPropertiesForKeys: keys,
+                    options: mask
+                )
+            }
+        }
+
+        let manager = StartupItemManager(fileManager: FileManagerDenyingDaemons())
+
+        // The core contract: no throw bubbles up past the boundary.
+        // We capture-then-assert instead of using XCTAssertNoThrow
+        // because the latter's autoclosure cannot host an `async` call.
+        do {
+            let items: [StartupItem] = try await manager.listItems()
+            // No throw — graceful degradation succeeded.
+            // We additionally assert that no `launchDaemon` items
+            // leaked through the denied path: the manager had no way
+            // to read `/Library/LaunchDaemons`, so any surfaced
+            // daemon would mean the catch in `scanItems` was bypassed.
+            for item in items where item.type == .launchDaemon {
+                XCTFail("launchDaemon items must not appear when /Library/LaunchDaemons was denied, found \(item.url.path)")
+            }
+        } catch {
+            XCTFail("listItems() must not throw when one directory is unreadable, got: \(error)")
+        }
+    }
 }
