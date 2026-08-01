@@ -19,7 +19,7 @@ kWatch is a menu-bar Mac monitor. The icon represents the user's Mac, watched ov
 A circular gauge / meter centered in a rounded square. Single needle pointing roughly to 1 o'clock. Empty (negative space) interior. Color: kWatch brand blue background (#2563EB) with white gauge.
 
 ### Concept B — Eye
-A stylized eye inside a rounded square. Almond outline, a circle pupil. Subtle concentric ring in the pupil. Color: graphite background (#1C1C1E) with single blue accent.
+A stylized eye inside a rounded square. Almond outline, a circle pupil. Subtle concentric ring in the pupil. Color: graphite background (#1C1C1E) with single kWatch brand blue accent (#2563EB).
 
 ### Concept C — Waveform
 A horizontal heartbeat / waveform line traversing the icon. Rounded square. Single line that has 3 peaks. Color: dark gray background with kWatch brand blue (#2563EB) line.

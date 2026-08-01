@@ -79,3 +79,7 @@ ZIP named `kwatch-screenshots-<designer>-<date>.zip`. Each PNG named:
 - All text in English (Chinese / Japanese variants handled separately by you, the engineer)
 - Visual matches the kWatch design system in `kFoundation/Sources/DesignSystem/`
 - Designer confirms commercial rights transferred
+
+## Designer Notes
+
+Two pre-existing brief inconsistencies to keep in mind when laying out the renders. (1) The Concept list item 1 names "Menu bar live" while Screenshot 2 below describes a 6-card Dashboard — both can coexist, but the hero should not double as the dashboard. (2) Screenshot 2's caption claims "All seven metrics. One window." yet the card list enumerates six (CPU, Memory, Disk, Network, Temperature, Battery). Please flag a preferred resolution (drop one card, or update the caption) before final export so we do not ship a self-contradicting screenshot.
