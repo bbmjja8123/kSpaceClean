@@ -50,19 +50,15 @@ public actor FDAPermissionProbe {
     private let protectedPaths: [URL]
     private var cached: FDAStatus = .unknown
 
-    /// Creates a probe.
-    ///
-    /// - Parameters:
-    ///   - fileManager: File manager used for the enumeration check.
-    ///   - protectedPaths: TCC-gated directories to test. Defaults to
-    ///     ``defaultProtectedPaths``; tests inject their own paths to exercise
-    ///     both outcomes deterministically.
-    public init(
-        fileManager: FileManager = .default,
-        protectedPaths: [URL]? = nil
-    ) {
-        self.fileManager = fileManager
-        self.protectedPaths = protectedPaths ?? Self.defaultProtectedPaths
+    public init() {
+        self.fileManager = .default
+        self.protectedPaths = Self.defaultProtectedPaths
+    }
+
+    /// Creates a probe over custom TCC-gated paths (tests).
+    public init(protectedPaths: [URL]) {
+        self.fileManager = .default
+        self.protectedPaths = protectedPaths
     }
 
     /// The most recently probed status, without touching the file system.

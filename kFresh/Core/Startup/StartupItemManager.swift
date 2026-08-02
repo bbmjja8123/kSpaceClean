@@ -74,10 +74,17 @@ protocol StartupItemManaging: AnyObject, Sendable {
 actor StartupItemManager: StartupItemManaging {
     private let fileManager: FileManager
 
-    /// Designated initializer. `fileManager` defaults to `.default`; the
-    /// initializer exists for tests that need to redirect `~/Library` to a
-    /// scratch directory (though none of the current tests need it).
-    init(fileManager: FileManager = .default) {
+    /// Creates the manager with the default `FileManager`.
+    ///
+    /// `FileManager` is non-Sendable, so a defaulted parameter would emit
+    /// strict-concurrency warnings at every plain `StartupItemManager()` call
+    /// site; the explicit-injection init below exists for tests.
+    init() {
+        self.fileManager = .default
+    }
+
+    /// Creates the manager with an explicit file manager (tests only).
+    init(fileManager: FileManager) {
         self.fileManager = fileManager
     }
 
