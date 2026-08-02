@@ -15,7 +15,7 @@ final class HistoryViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false }
         do {
-            records = try await repository.loadScanHistory(limit: 50)
+            records = try await repository.loadScanRecords()
         } catch {
             records = []
         }
@@ -23,7 +23,7 @@ final class HistoryViewModel: ObservableObject {
 
     func delete(_ record: ScanRecord) async {
         do {
-            try await repository.deleteScan(id: record.id)
+            try await repository.deleteScanRecord(id: record.id)
             records.removeAll { $0.id == record.id }
         } catch {
             // Handle error

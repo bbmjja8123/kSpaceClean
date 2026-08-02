@@ -1,5 +1,5 @@
 import Foundation
-@testable import kDupe
+@testable import kSift
 
 // MARK: - Temp File Helpers
 
@@ -50,9 +50,25 @@ extension FileItem {
         url: URL = URL(fileURLWithPath: "/tmp/default"),
         size: Int64 = 0,
         modificationDate: Date = Date(),
-        hash: String? = nil
+        creationDate: Date? = nil,
+        hash: String? = nil,
+        fingerprint: String? = nil,
+        inode: UInt64? = nil,
+        isAPFSClone: Bool = false,
+        physicalSize: Int64? = nil
     ) -> FileItem {
-        FileItem(id: id, url: url, size: size, modificationDate: modificationDate, hash: hash)
+        FileItem(
+            id: id,
+            url: url,
+            size: size,
+            modificationDate: modificationDate,
+            creationDate: creationDate,
+            hash: hash,
+            fingerprint: fingerprint,
+            inode: inode,
+            isAPFSClone: isAPFSClone,
+            physicalSize: physicalSize
+        )
     }
 }
 
@@ -63,8 +79,42 @@ extension DuplicateGroup {
         category: DuplicateCategory = .identical,
         totalSize: Int64 = 0,
         fileCount: Int = 1,
-        files: [FileItem] = [.mock()]
+        files: [FileItem] = [.mock()],
+        categoryEvidence: CategoryEvidence? = nil,
+        similarity: Double? = nil,
+        scanTimestamp: Date = Date()
     ) -> DuplicateGroup {
-        DuplicateGroup(id: id, category: category, totalSize: totalSize, fileCount: fileCount, files: files)
+        DuplicateGroup(
+            id: id,
+            category: category,
+            totalSize: totalSize,
+            fileCount: fileCount,
+            files: files,
+            categoryEvidence: categoryEvidence ?? mockEvidence(for: category, files: files),
+            similarity: similarity,
+            scanTimestamp: scanTimestamp
+        )
+    }
+
+    private static func mockEvidence(
+        for category: DuplicateCategory,
+        files: [FileItem]
+    ) -> CategoryEvidence {
+        let first = files.first ?? .mock()
+        switch category {
+        case .identical:
+            return .byteIdentical(sha256: first.hash ?? "mock-hash", byteVerified: true)
+        case .directoryDedup:
+            return .directoryDuplicate(contentHash: first.hash ?? "mock-hash", fileCount: files.count)
+        case .perceptual:
+            return .perceptualSimilarity(distance: 0, method: .visionFeaturePrint)
+        case .largeFile:
+            return .largeFile
+        case .buildArtifact:
+            return .buildArtifact(pattern: .genericBuild)
+        case .rawJPEG:
+            let second = files.dropFirst().first ?? first
+            return .rawJPEGPair(rawFile: first, jpegFile: second, exifMatch: false)
+        }
     }
 }

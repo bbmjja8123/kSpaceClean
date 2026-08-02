@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import UniformTypeIdentifiers
 
 public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
     private let controller: PersistenceController
@@ -34,9 +35,17 @@ public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
                     fileEntity.filePath = file.url.path
                     fileEntity.size = file.size
                     fileEntity.modificationDate = file.modificationDate
-                    fileEntity.hashValue = file.hash
+                    fileEntity.creationDate = file.creationDate
+                    fileEntity.fileHash = file.hash
+                    fileEntity.fingerprint = file.fingerprint
+                    fileEntity.inode = ModelMapping.inodeValue(file.inode)
+                    fileEntity.isAPFSClone = file.isAPFSClone
+                    fileEntity.physicalSize = ModelMapping.physicalSizeValue(file.physicalSize)
+                    fileEntity.fileType = ModelMapping.fileTypeIdentifier(file.fileType)
                     fileEntity.group = groupEntity
                 }
+                groupEntity.evidenceData = ModelMapping.encodeEvidence(group.categoryEvidence)
+                groupEntity.similarity = ModelMapping.similarityValue(group.similarity)
             }
             try context.save()
         }
@@ -114,16 +123,32 @@ public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
     private func mapToRecord(_ entity: ScanRecordEntity) -> ScanRecord {
         let groups = entity.groups.map { groupEntity -> DuplicateGroup in
             let files = groupEntity.files.map { fileEntity -> FileItem in
-                FileItem(id: fileEntity.id, url: URL(fileURLWithPath: fileEntity.filePath),
-                         size: fileEntity.size, modificationDate: fileEntity.modificationDate,
-                         hash: fileEntity.hashValue)
+                FileItem(
+                    id: fileEntity.id,
+                    url: URL(fileURLWithPath: fileEntity.filePath),
+                    size: fileEntity.size,
+                    modificationDate: fileEntity.modificationDate,
+                    creationDate: fileEntity.creationDate,
+                    hash: fileEntity.fileHash,
+                    fingerprint: fileEntity.fingerprint,
+                    inode: ModelMapping.inodeFromStored(fileEntity.inode),
+                    isAPFSClone: fileEntity.isAPFSClone,
+                    physicalSize: ModelMapping.physicalSizeFromStored(fileEntity.physicalSize),
+                    fileType: ModelMapping.fileTypeFromIdentifier(fileEntity.fileType)
+                )
             }
+            let category = DuplicateCategory(rawValue: groupEntity.category) ?? .identical
+            let fileItems = Array(files)
             return DuplicateGroup(
                 id: groupEntity.id,
-                category: DuplicateCategory(rawValue: groupEntity.category) ?? .identical,
+                category: category,
                 totalSize: groupEntity.totalSize,
                 fileCount: Int(groupEntity.fileCount),
-                files: Array(files)
+                files: fileItems,
+                categoryEvidence: ModelMapping.decodeEvidence(groupEntity.evidenceData)
+                    ?? fallbackEvidence(for: category, files: fileItems),
+                similarity: ModelMapping.similarityFromStored(groupEntity.similarity),
+                scanTimestamp: entity.timestamp
             )
         }
         return ScanRecord(
@@ -135,5 +160,35 @@ public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
             duration: entity.duration,
             groups: Array(groups)
         )
+    }
+
+    private func fallbackEvidence(
+        for category: DuplicateCategory,
+        files: [FileItem]
+    ) -> CategoryEvidence {
+        let first = files.first ?? FileItem(
+            id: UUID(),
+            url: URL(fileURLWithPath: "/dev/null"),
+            size: 0,
+            modificationDate: .distantPast
+        )
+        switch category {
+        case .identical:
+            return .byteIdentical(sha256: first.hash ?? "", byteVerified: true)
+        case .directoryDedup:
+            return .directoryDuplicate(contentHash: first.hash ?? "", fileCount: files.count)
+        case .perceptual:
+            return .perceptualSimilarity(distance: 1, method: .visionFeaturePrint)
+        case .largeFile:
+            return .largeFile
+        case .buildArtifact:
+            return .buildArtifact(pattern: .genericBuild)
+        case .rawJPEG:
+            return .rawJPEGPair(
+                rawFile: first,
+                jpegFile: files.dropFirst().first ?? first,
+                exifMatch: false
+            )
+        }
     }
 }

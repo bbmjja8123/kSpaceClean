@@ -8,7 +8,7 @@ struct ProfileSetupView: View {
         VStack(spacing: 24) {
             Text("Choose Your Profile")
                 .font(.title2).bold()
-            Text("kDupe optimizes scanning based on your workflow")
+            Text("kSift optimizes scanning based on your workflow")
                 .foregroundColor(.secondary)
 
             ForEach(ProfileType.allCases, id: \.self) { profile in
@@ -51,9 +51,9 @@ struct ProfileSetupView: View {
 
     private func descriptionFor(_ profile: ProfileType) -> String {
         switch profile {
-        case .developer: return "Scans projects, build artifacts, and development directories"
-        case .photographer: return "Scans photos, RAW files, and creative assets"
-        case .simple: return "Scans desktop, downloads, and documents"
+        case .developer: return NSLocalizedString("Scans projects, build artifacts, and development directories", comment: "Developer profile description")
+        case .photographer: return NSLocalizedString("Scans photos, RAW files, and creative assets", comment: "Photographer profile description")
+        case .simple: return NSLocalizedString("Scans desktop, downloads, and documents", comment: "Simple profile description")
         }
     }
 }

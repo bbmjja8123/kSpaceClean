@@ -1,51 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>Products</key>
     <array>
         <dict>
             <key>Description</key>
-            <string>Weekly subscription to kDupe Pro</string>
+            <string>One-time $9.99 unlock for unlimited cleanup, the incremental index, and the Finder extension.</string>
             <key>Display Name</key>
-            <string>kDupe Pro Weekly</string>
-            <key>Family</key>
-            <string>kDupe Pro</string>
+            <string>kSift Pro</string>
             <key>ID</key>
-            <string>app.kraftly.kdupe.sub.weekly</string>
+            <string>app.kraftly.ksift.full_license</string>
             <key>Type</key>
-            <string>Auto-Renewable Subscription</string>
+            <string>Non-Consumable</string>
             <key>Price</key>
-            <integer>499</integer>
-        </dict>
-        <dict>
-            <key>Description</key>
-            <string>Yearly subscription to kDupe Pro</string>
-            <key>Display Name</key>
-            <string>kDupe Pro Yearly</string>
-            <key>Family</key>
-            <string>kDupe Pro</string>
-            <key>ID</key>
-            <string>app.kraftly.kdupe.sub.yearly</string>
-            <key>Type</key>
-            <string>Auto-Renewable Subscription</string>
-            <key>Price</key>
-            <integer>1999</integer>
-        </dict>
-        <dict>
-            <key>Description</key>
-            <string>Lifetime license for kDupe Pro</string>
-            <key>Display Name</key>
-            <string>kDupe Pro Lifetime</string>
-            <key>ID</key>
-            <string>app.kraftly.kdupe.purchase.lifetime</string>
-            <key>Type</key>
-            <string>Consumable</string>
-            <key>Price</key>
-            <integer>4999</integer>
+            <integer>999</integer>
         </dict>
     </array>
     <key>Version</key>
-    <string>1.0</string>
+    <integer>1</integer>
 </dict>
 </plist>

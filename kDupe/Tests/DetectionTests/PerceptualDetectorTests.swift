@@ -1,117 +1,170 @@
+import AppKit
 import XCTest
-@testable import kDupe
+@testable import kSift
 
 final class PerceptualDetectorTests: XCTestCase {
-    func testIdenticalImagesDetected() async throws {
-        guard #available(macOS 14, *) else {
-            throw XCTSkip("Perceptual detection requires macOS 14+")
-        }
+    func testIdenticalImagesPassVisionVerification() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let first = directory.appendingPathComponent("first.png")
+        let second = directory.appendingPathComponent("second.png")
+        try writeImage(at: first, pattern: .checkerboard)
+        try writeImage(at: second, pattern: .checkerboard)
 
-        let detector = PerceptualDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+        let groups = await PerceptualDetector().detect(
+            [first, second],
+            controller: ScanController()
+        )
 
-        let img1 = dir.appendingPathComponent("photo_a.jpg")
-        let img2 = dir.appendingPathComponent("photo_b.jpg")
-        try createTestImage(at: img1, color: .red)
-        try createTestImage(at: img2, color: .red)
-
-        let groups = try await detector.detect([img1, img2], controller: controller)
         XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups.first?.category, .perceptual)
-        XCTAssertEqual(groups.first?.files.count, 2)
+        XCTAssertEqual(groups[0].fileCount, 2)
+        let similarity = try XCTUnwrap(groups[0].similarity)
+        XCTAssertEqual(similarity, 1, accuracy: 0.001)
+        guard case .perceptualSimilarity(let distance, let method) = groups[0].categoryEvidence else {
+            return XCTFail("Expected perceptual evidence")
+        }
+        XCTAssertEqual(distance, 0, accuracy: 0.001)
+        XCTAssertEqual(method, .visionFeaturePrint)
     }
 
-    func testDifferentImagesNotGrouped() async throws {
-        guard #available(macOS 14, *) else {
-            throw XCTSkip("Perceptual detection requires macOS 14+")
-        }
+    func testVisuallyDifferentImagesAreNotGrouped() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let first = directory.appendingPathComponent("checkerboard.png")
+        let second = directory.appendingPathComponent("split.png")
+        try writeImage(at: first, pattern: .checkerboard)
+        try writeImage(at: second, pattern: .verticalSplit)
 
-        let detector = PerceptualDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+        let groups = await PerceptualDetector(
+            maximumHammingDistance: 64,
+            visionDistanceThreshold: 0.01
+        ).detect([first, second], controller: ScanController())
 
-        let img1 = dir.appendingPathComponent("red.jpg")
-        let img2 = dir.appendingPathComponent("blue.jpg")
-        try createTestImage(at: img1, color: .red)
-        try createTestImage(at: img2, color: .blue)
-
-        // Different solid colors produce different image hashes, so they
-        // should not be grouped. We primarily verify the API completes
-        // without error.
-        let groups = try await detector.detect([img1, img2], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Different images should not be perceptually similar")
+        XCTAssertTrue(groups.isEmpty)
     }
 
-    func testSingleImageNotGrouped() async throws {
-        guard #available(macOS 14, *) else {
-            throw XCTSkip("Perceptual detection requires macOS 14+")
-        }
-
+    func testDHashIsDeterministic() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let image = directory.appendingPathComponent("image.png")
+        try writeImage(at: image, pattern: .verticalSplit)
         let detector = PerceptualDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
 
-        let img = dir.appendingPathComponent("solo.jpg")
-        try createTestImage(at: img, color: .green)
+        let first = await detector.dHash(of: image)
+        let second = await detector.dHash(of: image)
 
-        let groups = try await detector.detect([img], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "A single image cannot form a duplicate group")
+        XCTAssertNotNil(first)
+        XCTAssertEqual(first, second)
     }
 
-    func testEmptyURLs() async throws {
-        guard #available(macOS 14, *) else {
-            throw XCTSkip("Perceptual detection requires macOS 14+")
-        }
-
+    func testHammingDistanceCountsChangedBits() async {
         let detector = PerceptualDetector()
-        let controller = ScanController()
-        let groups = try await detector.detect([], controller: controller)
+
+        let distance = await detector.hammingDistance(0b0000, 0b1011)
+
+        XCTAssertEqual(distance, 3)
+    }
+
+    func testSingleImageCannotCreateGroup() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let image = directory.appendingPathComponent("single.png")
+        try writeImage(at: image, pattern: .checkerboard)
+
+        let groups = await PerceptualDetector().detect(
+            [image],
+            controller: ScanController()
+        )
+
+        XCTAssertTrue(groups.isEmpty)
+    }
+
+    func testNonImageFileIsIgnored() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let text = try createTextFile(named: "notes.txt", in: directory, content: "not an image")
+
+        let groups = await PerceptualDetector().detect(
+            [text],
+            controller: ScanController()
+        )
+
+        XCTAssertTrue(groups.isEmpty)
+    }
+
+    func testCorruptImageIsIgnoredWithoutFailingBatch() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let first = directory.appendingPathComponent("first.png")
+        let second = directory.appendingPathComponent("second.png")
+        let corrupt = try createTextFile(named: "corrupt.jpg", in: directory, content: "invalid")
+        try writeImage(at: first, pattern: .checkerboard)
+        try writeImage(at: second, pattern: .checkerboard)
+
+        let groups = await PerceptualDetector().detect(
+            [corrupt, first, second],
+            controller: ScanController()
+        )
+
+        XCTAssertEqual(groups.count, 1)
+        XCTAssertEqual(Set(groups[0].files.map(\.url)), Set([first, second]))
+    }
+
+    func testRAWExtensionIsSkippedEvenWhenImageIOCanDecodeIt() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let raw = directory.appendingPathComponent("photo.dng")
+        try writeImage(at: raw, pattern: .checkerboard)
+        let detector = PerceptualDetector()
+
+        let groups = await detector.detect([raw, raw], controller: ScanController())
+
         XCTAssertTrue(groups.isEmpty)
     }
 
     func testCancellationReturnsEarly() async throws {
-        guard #available(macOS 14, *) else {
-            throw XCTSkip("Perceptual detection requires macOS 14+")
-        }
-
-        let detector = PerceptualDetector()
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let image = directory.appendingPathComponent("image.png")
+        try writeImage(at: image, pattern: .checkerboard)
         let controller = ScanController()
         controller.cancel()
 
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+        let groups = await PerceptualDetector().detect([image, image], controller: controller)
 
-        let img = dir.appendingPathComponent("test.jpg")
-        try createTestImage(at: img, color: .white)
-
-        let groups = try await detector.detect([img], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Cancelled scan should return empty results")
+        XCTAssertTrue(groups.isEmpty)
     }
 
-    // MARK: - Helpers
+    private enum Pattern {
+        case checkerboard
+        case verticalSplit
+    }
 
-    /// Creates a small solid-color JPEG file at the given URL.
-    @available(macOS 14, *)
-    private func createTestImage(at url: URL, color: NSColor) throws {
-        let size = NSSize(width: 64, height: 64)
+    private func writeImage(at url: URL, pattern: Pattern) throws {
+        let size = NSSize(width: 128, height: 128)
         let image = NSImage(size: size)
         image.lockFocus()
-        color.setFill()
+        NSColor.white.setFill()
         NSRect(origin: .zero, size: size).fill()
+
+        switch pattern {
+        case .checkerboard:
+            NSColor.black.setFill()
+            for row in 0..<8 {
+                for column in 0..<8 where (row + column).isMultiple(of: 2) {
+                    NSRect(x: column * 16, y: row * 16, width: 16, height: 16).fill()
+                }
+            }
+        case .verticalSplit:
+            NSColor.black.setFill()
+            NSRect(x: 0, y: 0, width: 64, height: 128).fill()
+        }
         image.unlockFocus()
 
-        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-            throw NSError(domain: "PerceptualDetectorTests", code: 1,
-                          userInfo: [NSLocalizedDescriptionKey: "Failed to create CGImage from NSImage"])
-        }
-        let bitmap = NSBitmapImageRep(cgImage: cgImage)
-        guard let data = bitmap.representation(using: .jpeg, properties: [.compressionFactor: 0.9]) else {
-            throw NSError(domain: "PerceptualDetectorTests", code: 2,
-                          userInfo: [NSLocalizedDescriptionKey: "Failed to create JPEG data"])
+        guard let representation = image.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: representation),
+              let data = bitmap.representation(using: .png, properties: [:]) else {
+            throw NSError(domain: "PerceptualDetectorTests", code: 1)
         }
         try data.write(to: url)
     }

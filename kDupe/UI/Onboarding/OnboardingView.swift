@@ -12,7 +12,7 @@ struct OnboardingView: View {
             Image(systemName: "doc.on.doc")
                 .font(.system(size: 64))
                 .foregroundColor(.brandPrimary)
-            Text("Welcome to kDupe")
+            Text("Welcome to kSift")
                 .font(.largeTitle).bold()
             Text("Find and remove duplicate files, reclaim disk space")
                 .foregroundColor(.secondary)
@@ -34,8 +34,13 @@ struct OnboardingView: View {
 
     private func completeOnboarding() {
         let config = viewModel.buildConfig()
+        // Persist so SettingsView reflects the onboarding choices on next
+        // launch, and so MainView's first scan uses them instead of the
+        // hard-coded ProfileConfig.default.
+        viewModel.persist()
         appState.selectedProfile = viewModel.selectedProfile
         appState.isOnboardingComplete = true
         appState.navigation = .scan
+        _ = config // keep the value visible until persistence is confirmed
     }
 }

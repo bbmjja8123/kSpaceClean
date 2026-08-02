@@ -1,48 +1,113 @@
 /* App name */
-"kDupe" = "kDupe";
-
-/* Intents */
-"Scan for Duplicates" = "Scan for Duplicates";
-"Scans a directory for identical and similar files." = "Scans a directory for identical and similar files.";
-"Clean Up Duplicates" = "Clean Up Duplicates";
-"Moves duplicate files in the selected category to the Trash." = "Moves duplicate files in the selected category to the Trash.";
-"Show Large Files" = "Show Large Files";
-"Finds files larger than the specified minimum size." = "Finds files larger than the specified minimum size.";
+"kSift" = "kSift";
 
 /* Onboarding */
-"Welcome to kDupe" = "Welcome to kDupe";
+"Welcome to kSift" = "Welcome to kSift";
 "Find and remove duplicate files, reclaim disk space" = "Find and remove duplicate files, reclaim disk space";
 "Get Started" = "Get Started";
 "Choose Your Profile" = "Choose Your Profile";
-"kDupe optimizes scanning based on your workflow" = "kDupe optimizes scanning based on your workflow";
+"kSift optimizes scanning based on your workflow" = "kSift optimizes scanning based on your workflow";
+
+/* Profile names */
+"Developer" = "Developer";
+"Photographer" = "Photographer";
+"Simple" = "Simple";
+
+/* Profile descriptions */
+"Scans projects, build artifacts, and development directories" = "Scans projects, build artifacts, and development directories";
+"Scans photos, RAW files, and creative assets" = "Scans photos, RAW files, and creative assets";
+"Scans desktop, downloads, and documents" = "Scans desktop, downloads, and documents";
 
 /* Scan */
 "Ready to Scan" = "Ready to Scan";
 "Choose a profile in Settings or start with Developer mode" = "Choose a profile in Settings or start with Developer mode";
+"Start Scan" = "Start Scan";
+"Scan Failed" = "Scan Failed";
 "Scan Complete" = "Scan Complete";
 "%lld files scanned" = "%lld files scanned";
 "%lld duplicates found" = "%lld duplicates found";
-
-/* Store / Paywall */
-"Unlock Full Power" = "Unlock Full Power";
-"Remove duplicate files, clean build artifacts, and reclaim gigabytes." = "Remove duplicate files, clean build artifacts, and reclaim gigabytes.";
-"Continue" = "Continue";
+"Scanning files..." = "Scanning files...";
+"Checking identical files..." = "Checking identical files...";
+"Cross-directory analysis..." = "Cross-directory analysis...";
+"Comparing images..." = "Comparing images...";
+"Finding large files..." = "Finding large files...";
+"Identifying build artifacts..." = "Identifying build artifacts...";
+"Matching RAW + JPEG pairs..." = "Matching RAW + JPEG pairs...";
+"Scan complete!" = "Scan complete!";
+"Duplicate Groups" = "Duplicate Groups";
+"Wasteable Space" = "Wasteable Space";
+"Review Results" = "Review Results";
+"Rescan" = "Rescan";
 
 /* Results */
+"Groups" = "Groups";
+"Duplicates" = "Duplicates";
+"All" = "All";
 "%lld groups selected" = "%lld groups selected";
-"%lld groups will be moved to Trash." = "%lld groups will be moved to Trash.";
+"Auto Select" = "Auto Select";
+"Move to Trash?" = "Move to Trash?";
+"Cancel" = "Cancel";
+"Delete" = "Delete";
+"%lld groups will be moved to Trash. The newest copy of each group is kept." = "%lld groups will be moved to Trash. The newest copy of each group is kept.";
+"Some files could not be moved" = "Some files could not be moved";
+"OK" = "OK";
+"%lld file(s) could not be moved to Trash and remain in place.\n\n%@" = "%lld file(s) could not be moved to Trash and remain in place.\n\n%@";
+"Delete (%@)" = "Delete (%@)";
+" · Upgrade" = " · Upgrade";
 "%lld files · %@" = "%lld files · %@";
 "%lld selected · %@" = "%lld selected · %@";
-"Last scan: %@" = "Last scan: %@";
-"%lld duplicates" = "%lld duplicates";
+"Auto Keep Newest (%lld to delete)" = "Auto Keep Newest (%lld to delete)";
+"Reveal in Finder" = "Reveal in Finder";
+"QuickLook" = "QuickLook";
+"Move %lld to Trash" = "Move %lld to Trash";
+"%lld file(s) will be moved to Trash. The newest copy of the group is kept." = "%lld file(s) will be moved to Trash. The newest copy of the group is kept.";
+"Cleaning %@ would exceed your %@ free-tier quota (only %@ left)." = "Cleaning %@ would exceed your %@ free-tier quota (only %@ left).";
 
 /* History */
 "Scan History" = "Scan History";
+"Loading history..." = "Loading history...";
+"No scans yet" = "No scans yet";
+"Run a scan to see history here" = "Run a scan to see history here";
 "%lld groups · %@" = "%lld groups · %@";
+"Waste" = "Waste";
+"Duration" = "Duration";
+"No groups in this scan" = "No groups in this scan";
+"The scan finished without finding any duplicates." = "The scan finished without finding any duplicates.";
 
 /* Settings */
 "Settings" = "Settings";
+"Profile" = "Profile";
+"Scan Profile" = "Scan Profile";
+"Scan Options" = "Scan Options";
 "Min file size: %@" = "Min file size: %@";
+"Enable perceptual similarity (macOS 14+)" = "Enable perceptual similarity (macOS 14+)";
+"Scan build artifacts" = "Scan build artifacts";
+"Scan Directories" = "Scan Directories";
+"Remove" = "Remove";
+"Add Directory" = "Add Directory";
+"kSift Pro" = "kSift Pro";
+"Free Tier" = "Free Tier";
+"Unlimited cleanup, incremental index, and Finder Sync." = "Unlimited cleanup, incremental index, and Finder Sync.";
+"Cleaned %@ of %@ free quota." = "Cleaned %@ of %@ free quota.";
+"Upgrade" = "Upgrade";
+"Restore" = "Restore";
+
+/* Store / Paywall */
+"Unlock kSift Pro" = "Unlock kSift Pro";
+"One-time purchase. Lifetime updates. No subscription." = "One-time purchase. Lifetime updates. No subscription.";
+"Unlimited cleanup" = "Unlimited cleanup";
+"Remove the 2 GB free-tier cap and free as much space as you need." = "Remove the 2 GB free-tier cap and free as much space as you need.";
+"Incremental index" = "Incremental index";
+"Re-scans only the files that actually changed — typically 10x faster." = "Re-scans only the files that actually changed — typically 10x faster.";
+"Finder Sync extension" = "Finder Sync extension";
+"Right-click any folder in Finder → \"Scan with kSift\"." = "Right-click any folder in Finder → \"Scan with kSift\".";
+"Future Pro features" = "Future Pro features";
+"Every paid feature we ship from now on, included." = "Every paid feature we ship from now on, included.";
+"Processing…" = "Processing…";
+"Buy %@" = "Buy %@";
+"Loading product…" = "Loading product…";
+"Restore Purchases" = "Restore Purchases";
+"Free tier includes up to 2 GB of cleanup. Quota resets after purchase." = "Free tier includes up to 2 GB of cleanup. Quota resets after purchase.";
 
 /* Category Display Names */
 "Identical" = "Identical";
@@ -51,3 +116,13 @@
 "Large" = "Large";
 "Artifacts" = "Artifacts";
 "RAW+JPEG" = "RAW+JPEG";
+
+/* Intents */
+"Scan for Duplicates" = "Scan for Duplicates";
+"Scans a directory for identical and similar files." = "Scans a directory for identical and similar files.";
+"Clean Up Duplicates" = "Clean Up Duplicates";
+"Moves duplicate files in the selected category to the Trash." = "Moves duplicate files in the selected category to the Trash.";
+"Show Large Files" = "Show Large Files";
+"Finds files larger than the specified minimum size." = "Finds files larger than the specified minimum size.";
+"Category" = "Category";
+"Minimum Size (MB)" = "Minimum Size (MB)";

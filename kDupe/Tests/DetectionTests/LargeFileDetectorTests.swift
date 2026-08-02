@@ -1,71 +1,114 @@
 import XCTest
-@testable import kDupe
+@testable import kSift
 
 final class LargeFileDetectorTests: XCTestCase {
-    func testFilesAboveThresholdDetected() async throws {
-        let threshold: Int64 = 10
-        let detector = LargeFileDetector(threshold: threshold)
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+    func testFileAboveThresholdIsReturnedDirectly() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = try createTempFile(named: "large.bin", in: directory, withSize: 100)
 
-        try createTempFile(named: "large.bin", in: dir, withSize: 100)
+        let files = await LargeFileDetector(threshold: 10).detect(
+            [url],
+            controller: ScanController()
+        )
 
-        let groups = await detector.detect([dir.appendingPathComponent("large.bin")], controller: controller)
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups.first?.category, .largeFile)
-        XCTAssertEqual(groups.first?.fileCount, 1)
+        XCTAssertEqual(files.count, 1)
+        XCTAssertEqual(files[0].url, url)
+        XCTAssertEqual(files[0].size, 100)
     }
 
-    func testFilesBelowThresholdExcluded() async throws {
-        let threshold: Int64 = 100
-        let detector = LargeFileDetector(threshold: threshold)
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+    func testFileBelowThresholdIsExcluded() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = try createTempFile(named: "small.bin", in: directory, withSize: 10)
 
-        try createTempFile(named: "small.bin", in: dir, withSize: 10)
+        let files = await LargeFileDetector(threshold: 100).detect(
+            [url],
+            controller: ScanController()
+        )
 
-        let groups = await detector.detect([dir.appendingPathComponent("small.bin")], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Files below threshold should be excluded")
+        XCTAssertTrue(files.isEmpty)
     }
 
-    func testCustomThreshold() async throws {
-        let threshold: Int64 = 50
-        let detector = LargeFileDetector(threshold: threshold)
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+    func testFileAtThresholdIsIncluded() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = try createTempFile(named: "exact.bin", in: directory, withSize: 100)
 
-        try createTempFile(named: "medium.bin", in: dir, withSize: 30)
-        try createTempFile(named: "big.bin", in: dir, withSize: 100)
+        let files = await LargeFileDetector(threshold: 100).detect(
+            [url],
+            controller: ScanController()
+        )
 
-        let mediumURL = dir.appendingPathComponent("medium.bin")
-        let bigURL = dir.appendingPathComponent("big.bin")
-        let groups = await detector.detect([mediumURL, bigURL], controller: controller)
-
-        XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups.first?.files.first?.url.lastPathComponent, "big.bin")
-        XCTAssertEqual(groups.first?.totalSize, 100)
+        XCTAssertEqual(files.map(\.url), [url])
     }
 
-    func testEmptyURLs() async throws {
-        let detector = LargeFileDetector(threshold: 10)
-        let controller = ScanController()
-        let groups = await detector.detect([], controller: controller)
-        XCTAssertTrue(groups.isEmpty)
+    func testResultsAreSortedBySizeDescending() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let small = try createTempFile(named: "small.bin", in: directory, withSize: 20)
+        let large = try createTempFile(named: "large.bin", in: directory, withSize: 200)
+        let medium = try createTempFile(named: "medium.bin", in: directory, withSize: 100)
+
+        let files = await LargeFileDetector(threshold: 1).detect(
+            [small, large, medium],
+            controller: ScanController()
+        )
+
+        XCTAssertEqual(files.map(\.size), [200, 100, 20])
+    }
+
+    func testURLDetectionLoadsFilesystemMetadata() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = try createTempFile(named: "metadata.bin", in: directory, withSize: 64)
+
+        let detected = await LargeFileDetector(threshold: 1).detect(
+            [url],
+            controller: ScanController()
+        )
+        let file = try XCTUnwrap(detected.first)
+
+        XCTAssertNotEqual(file.modificationDate, .distantPast)
+        XCTAssertNotNil(file.physicalSize)
+    }
+
+    func testPreenumeratedFileKeepsIdentityAndHash() async {
+        let id = UUID()
+        let item = FileItem.mock(
+            id: id,
+            url: URL(fileURLWithPath: "/tmp/large.bin"),
+            size: 200,
+            hash: "verified"
+        )
+
+        let files = await LargeFileDetector(threshold: 100).detect(
+            files: [item],
+            controller: ScanController()
+        )
+
+        XCTAssertEqual(files.first?.id, id)
+        XCTAssertEqual(files.first?.hash, "verified")
+    }
+
+    func testEmptyInputReturnsEmptyList() async {
+        let files = await LargeFileDetector(threshold: 1).detect(
+            [],
+            controller: ScanController()
+        )
+
+        XCTAssertTrue(files.isEmpty)
     }
 
     func testCancellationReturnsEarly() async throws {
-        let detector = LargeFileDetector(threshold: 1)
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = try createTempFile(named: "large.bin", in: directory, withSize: 100)
         let controller = ScanController()
         controller.cancel()
 
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
-        try createTempFile(named: "big.bin", in: dir, withSize: 999)
+        let files = await LargeFileDetector(threshold: 1).detect([url], controller: controller)
 
-        let groups = await detector.detect([dir.appendingPathComponent("big.bin")], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Cancelled scan should return empty results")
+        XCTAssertTrue(files.isEmpty)
     }
 }

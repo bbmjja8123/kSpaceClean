@@ -9,7 +9,6 @@ public final class CleanupActionEntity: NSManagedObject {
     @NSManaged public var method: String
     @NSManaged public var timestamp: Date
     @NSManaged public var isCompleted: Bool
-    @NSManaged public var scanRecord: ScanRecordEntity?
 }
 
 extension CleanupActionEntity {

@@ -3,9 +3,14 @@
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key><string>kDupe</string>
-    <key>CFBundleDisplayName</key><string>kDupe</string>
-    <key>CFBundleIdentifier</key><string>app.kraftly.kdupe</string>
+    <key>CFBundleName</key><string>kSift</string>
+    <key>CFBundleDisplayName</key><string>kSift</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>zh-Hans</string>
+    </array>
+    <key>CFBundleIdentifier</key><string>app.kraftly.ksift</string>
     <key>CFBundleVersion</key><string>1</string>
     <key>CFBundleShortVersionString</key><string>1.0.0</string>
     <key>CFBundlePackageType</key><string>APPL</string>
@@ -13,8 +18,8 @@
     <key>NSPrincipalClass</key><string>NSApplication</string>
     <key>NSSupportsAutomaticTermination</key><true/>
     <key>NSDocumentsFolderUsageDescription</key>
-    <string>kDupe needs access to find duplicate and large files.</string>
+    <string>kSift needs access to find duplicate and large files.</string>
     <key>NSDownloadsFolderUsageDescription</key>
-    <string>kDupe needs access to find duplicate and large files.</string>
+    <string>kSift needs access to find duplicate and large files.</string>
 </dict>
 </plist>

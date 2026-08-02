@@ -1,22 +1,22 @@
 import CoreData
 import Foundation
 
-public final class PersistenceController: Sendable {
+public final class PersistenceController: @unchecked Sendable {
     public static let shared = PersistenceController()
 
-    nonisolated(unsafe) public let container: NSPersistentContainer
+    public let container: NSPersistentContainer
 
     private init() {
         let bundle = Bundle(for: ScanRecordEntity.self)
-        guard let modelURL = bundle.url(forResource: "kDupe", withExtension: "momd"),
+        guard let modelURL = bundle.url(forResource: "kSift", withExtension: "momd"),
               let model = NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("Failed to load Core Data model")
         }
 
-        let container = NSPersistentContainer(name: "kDupe", managedObjectModel: model)
+        let container = NSPersistentContainer(name: "kSift", managedObjectModel: model)
         let storeURL = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: "group.app.kraftly.kdupe")!
-            .appendingPathComponent("kDupe.sqlite")
+            .containerURL(forSecurityApplicationGroupIdentifier: "group.app.kraftly.ksift")!
+            .appendingPathComponent("kSift.sqlite")
 
         container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: storeURL)]
         container.loadPersistentStores { _, error in

@@ -1,5 +1,5 @@
 import XCTest
-@testable import kDupe
+@testable import kSift
 
 final class DuplicateRepositoryTests: XCTestCase {
     func testSaveAndLoadRecords() async throws {

@@ -11,16 +11,20 @@ public actor DuplicateRepositoryJSON: DuplicateRepositoryProtocol {
         self.encoder = JSONEncoder()
         self.encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         self.decoder = JSONDecoder()
-        let baseURL = storeURL ?? fileManager.containerURL(
-            forSecurityApplicationGroupIdentifier: "group.app.kraftly.kdupe")!
-        self.storeURL = baseURL.appendingPathComponent("kdupe_data.json")
+        let resolved: URL
+        if let storeURL {
+            resolved = storeURL
+        } else {
+            resolved = URL(fileURLWithPath: NSTemporaryDirectory())
+                .appendingPathComponent("ksift_data.json")
+        }
+        self.storeURL = resolved
     }
 
     public func saveScanRecord(_ record: ScanRecord) async throws {
         var records = try await loadAllRecords()
         records.insert(record, at: 0)
-        let data = try encoder.encode(records)
-        try data.write(to: storeURL, options: .atomic)
+        try await write(records)
     }
 
     public func loadScanRecords() async throws -> [ScanRecord] {
@@ -34,8 +38,7 @@ public actor DuplicateRepositoryJSON: DuplicateRepositoryProtocol {
     public func deleteScanRecord(id: UUID) async throws {
         var records = try await loadAllRecords()
         records.removeAll { $0.id == id }
-        let data = try encoder.encode(records)
-        try data.write(to: storeURL, options: .atomic)
+        try await write(records)
     }
 
     public func saveCleanupAction(_ action: CleanupAction) async throws {
@@ -50,5 +53,12 @@ public actor DuplicateRepositoryJSON: DuplicateRepositoryProtocol {
         guard fileManager.fileExists(atPath: storeURL.path) else { return [] }
         let data = try Data(contentsOf: storeURL)
         return try decoder.decode([ScanRecord].self, from: data)
+    }
+
+    private func write(_ records: [ScanRecord]) async throws {
+        let parent = storeURL.deletingLastPathComponent()
+        try fileManager.createDirectory(at: parent, withIntermediateDirectories: true)
+        let data = try encoder.encode(records)
+        try data.write(to: storeURL, options: .atomic)
     }
 }

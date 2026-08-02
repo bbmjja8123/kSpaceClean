@@ -27,14 +27,14 @@ struct ScanProgressView: View {
 
     private var phaseTitle: String {
         switch progress.phase {
-        case .enumerating: return "Scanning files..."
-        case .byteIdentical: return "Checking identical files..."
-        case .directoryDedup: return "Cross-directory analysis..."
-        case .perceptual: return "Comparing images..."
-        case .largeFiles: return "Finding large files..."
-        case .buildArtifacts: return "Identifying build artifacts..."
-        case .rawJPEG: return "Matching RAW + JPEG pairs..."
-        case .completed: return "Scan complete!"
+        case .enumerating: return NSLocalizedString("Scanning files...", comment: "Scan phase title")
+        case .byteIdentical: return NSLocalizedString("Checking identical files...", comment: "Scan phase title")
+        case .directoryDedup: return NSLocalizedString("Cross-directory analysis...", comment: "Scan phase title")
+        case .perceptual: return NSLocalizedString("Comparing images...", comment: "Scan phase title")
+        case .largeFiles: return NSLocalizedString("Finding large files...", comment: "Scan phase title")
+        case .buildArtifacts: return NSLocalizedString("Identifying build artifacts...", comment: "Scan phase title")
+        case .rawJPEG: return NSLocalizedString("Matching RAW + JPEG pairs...", comment: "Scan phase title")
+        case .completed: return NSLocalizedString("Scan complete!", comment: "Scan phase title")
         }
     }
 }

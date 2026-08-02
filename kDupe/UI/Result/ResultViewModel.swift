@@ -37,6 +37,14 @@ final class ResultViewModel: ObservableObject {
 
     var totalGroupCount: Int { groups.count }
 
+    /// Replaces the displayed groups (from a scan hand-off or a history record).
+    /// Resets selection and category filter so stale state cannot leak between loads.
+    func loadGroups(_ newGroups: [DuplicateGroup]) {
+        groups = newGroups
+        selectedGroupIds.removeAll()
+        activeCategory = nil
+    }
+
     func autoSelectGroups() {
         selectedGroupIds = Set(groups.map(\.id))
     }
@@ -45,15 +53,36 @@ final class ResultViewModel: ObservableObject {
         selectedGroupIds.removeAll()
     }
 
-    func removeSelected(using manager: CleanupManager) async {
+    /// Trashes all-but-the-newest copy of every selected group (same semantics as
+    /// GroupDetailView's "Auto Keep Newest"), returning the per-file failures the
+    /// vault reported. Groups with any failure stay in the list for retry.
+    @discardableResult
+    func removeSelected(using manager: CleanupManager) async -> [VaultMoveFailure] {
         isProcessing = true
         defer { isProcessing = false }
+        var failures: [VaultMoveFailure] = []
+        var keepGroupIds: Set<UUID> = []
         let toRemove = groups.filter { selectedGroupIds.contains($0.id) }
+
         for group in toRemove {
-            let toDelete = group.files.dropFirst().map { $0 }
-            try? await manager.moveToTrash(Array(toDelete))
+            let newestFirst = group.files.sorted { $0.modificationDate > $1.modificationDate }
+            let toDelete = newestFirst.dropFirst() // keep the newest copy
+            guard !toDelete.isEmpty else { continue }
+            do {
+                let result = try await manager.moveToTrash(Array(toDelete))
+                failures.append(contentsOf: result.failures)
+                if !result.failures.isEmpty { keepGroupIds.insert(group.id) }
+            } catch {
+                failures.append(VaultMoveFailure(
+                    url: group.files.first?.url ?? URL(fileURLWithPath: "/"),
+                    reason: error.localizedDescription
+                ))
+                keepGroupIds.insert(group.id)
+            }
         }
-        groups.removeAll { selectedGroupIds.contains($0.id) }
+
+        groups.removeAll { selectedGroupIds.contains($0.id) && !keepGroupIds.contains($0.id) }
         selectedGroupIds.removeAll()
+        return failures
     }
 }

@@ -1,104 +1,134 @@
 import XCTest
-@testable import kDupe
+@testable import kSift
 
 final class BuildArtifactDetectorTests: XCTestCase {
-    func testObjectFileExtensionDetected() async throws {
+    func testCompiledFileExtensionsMapToEvidencePatterns() async {
         let detector = BuildArtifactDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+        let cases: [(String, BuildPattern)] = [
+            ("main.o", .objectFile),
+            ("cache.pyc", .pythonBytecode),
+            ("Main.class", .javaClass),
+            ("libCore.a", .staticLibrary),
+            ("Core.lib", .staticLibrary),
+            ("Core.obj", .staticLibrary),
+        ]
 
-        try createTempFile(named: "main.o", in: dir, withSize: 100)
+        for (path, expected) in cases {
+            let match = await detector.match(for: URL(fileURLWithPath: "/tmp/\(path)"))
+            XCTAssertEqual(match?.pattern, expected)
+        }
+    }
 
-        let groups = await detector.detect([dir.appendingPathComponent("main.o")], controller: controller)
+    func testNodeModulesFilesCollapseIntoOneGroup() async throws {
+        let root = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let modules = root.appendingPathComponent("node_modules/package")
+        try FileManager.default.createDirectory(at: modules, withIntermediateDirectories: true)
+        let first = try createTempFile(named: "a.js", in: modules, withSize: 100)
+        let second = try createTempFile(named: "b.js", in: modules, withSize: 50)
+
+        let groups = await BuildArtifactDetector().detect(
+            [first, second],
+            controller: ScanController()
+        )
+
         XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups.first?.category, .buildArtifact)
+        XCTAssertEqual(groups[0].fileCount, 2)
+        XCTAssertEqual(groups[0].totalSize, 150)
+        guard case .buildArtifact(let pattern) = groups[0].categoryEvidence else {
+            return XCTFail("Expected build-artifact evidence")
+        }
+        XCTAssertEqual(pattern, .nodeModules)
     }
 
-    func testAllExtensionPatterns() async throws {
+    func testXcodeAndSwiftDirectoryPatterns() async {
         let detector = BuildArtifactDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
-
-        let filenames = [
-            "module.o", "script.pyc", "Main.class",
-            "libfoo.a", "bar.lib", "object.obj",
+        let cases: [(String, BuildPattern)] = [
+            ("/tmp/DerivedData/App/Build/file", .xcodeDerivedData),
+            ("/tmp/App.xcworkspace/xcuserdata/user.xcuserdatad/file", .xcodeUserData),
+            ("/tmp/Package/.build/debug/file", .swiftBuild),
+            ("/tmp/Package/.swiftpm/configuration/file", .swiftPM),
         ]
-        var urls: [URL] = []
-        for name in filenames {
-            try createTempFile(named: name, in: dir, withSize: 50)
-            urls.append(dir.appendingPathComponent(name))
-        }
 
-        let groups = await detector.detect(urls, controller: controller)
-        XCTAssertEqual(groups.count, filenames.count)
-        for group in groups {
-            XCTAssertEqual(group.category, .buildArtifact)
+        for (path, expected) in cases {
+            let match = await detector.match(for: URL(fileURLWithPath: path))
+            XCTAssertEqual(match?.pattern, expected)
         }
     }
 
-    func testBuildDirectoriesDetected() async throws {
+    func testRustGoCocoaPodsAndCarthagePatterns() async {
         let detector = BuildArtifactDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
-
-        let buildDirNames = [
-            "node_modules", ".build", "DerivedData", "Pods",
-            ".gradle", "build", "dist", ".next",
+        let cases: [(String, BuildPattern)] = [
+            ("/tmp/rust/target/debug/app", .rustTarget),
+            ("/tmp/rust/target/release/app", .rustTarget),
+            ("/tmp/go/vendor/module/file.go", .goVendor),
+            ("/tmp/ios/Pods/Library/file", .cocoaPods),
+            ("/tmp/ios/Carthage/Build/Mac/lib.framework/file", .carthageBuild),
         ]
-        var urls: [URL] = []
-        for name in buildDirNames {
-            let subdir = dir.appendingPathComponent(name)
-            try FileManager.default.createDirectory(at: subdir, withIntermediateDirectories: true)
-            let file = try createTempFile(named: "artifact.bin", in: subdir, withSize: 50)
-            urls.append(file)
-        }
 
-        let groups = await detector.detect(urls, controller: controller)
-        XCTAssertEqual(groups.count, buildDirNames.count)
-        for group in groups {
-            XCTAssertEqual(group.category, .buildArtifact)
+        for (path, expected) in cases {
+            let match = await detector.match(for: URL(fileURLWithPath: path))
+            XCTAssertEqual(match?.pattern, expected)
         }
     }
 
-    func testNonMatchingFilesExcluded() async throws {
+    func testCacheAndGenericBuildPatterns() async {
         let detector = BuildArtifactDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
-
-        try createTempFile(named: "source.swift", in: dir, withSize: 100)
-        try createTempFile(named: "readme.md", in: dir, withSize: 100)
-        try createTempFile(named: "image.png", in: dir, withSize: 100)
-
-        let urls = [
-            dir.appendingPathComponent("source.swift"),
-            dir.appendingPathComponent("readme.md"),
-            dir.appendingPathComponent("image.png"),
+        let cases: [(String, BuildPattern)] = [
+            ("/tmp/web/.next/cache/file", .nextCache),
+            ("/tmp/node/.cache/file", .cache),
+            ("/tmp/android/.gradle/cache/file", .gradle),
+            ("/tmp/project/build/output", .genericBuild),
+            ("/tmp/project/dist/output", .genericBuild),
         ]
-        let groups = await detector.detect(urls, controller: controller)
-        XCTAssertTrue(groups.isEmpty)
+
+        for (path, expected) in cases {
+            let match = await detector.match(for: URL(fileURLWithPath: path))
+            XCTAssertEqual(match?.pattern, expected)
+        }
     }
 
-    func testEmptyURLs() async throws {
-        let detector = BuildArtifactDetector()
-        let controller = ScanController()
-        let groups = await detector.detect([], controller: controller)
+    func testSeparateArtifactRootsRemainSeparateGroups() async throws {
+        let root = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let firstRoot = root.appendingPathComponent("one/node_modules")
+        let secondRoot = root.appendingPathComponent("two/node_modules")
+        try FileManager.default.createDirectory(at: firstRoot, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: secondRoot, withIntermediateDirectories: true)
+        let first = try createTempFile(named: "file.js", in: firstRoot, withSize: 10)
+        let second = try createTempFile(named: "file.js", in: secondRoot, withSize: 10)
+
+        let groups = await BuildArtifactDetector().detect(
+            [first, second],
+            controller: ScanController()
+        )
+
+        XCTAssertEqual(groups.count, 2)
+    }
+
+    func testNonmatchingSourceFilesAreExcluded() async throws {
+        let root = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let swift = try createTempFile(named: "Source.swift", in: root, withSize: 10)
+        let markdown = try createTempFile(named: "README.md", in: root, withSize: 10)
+
+        let groups = await BuildArtifactDetector().detect(
+            [swift, markdown],
+            controller: ScanController()
+        )
+
         XCTAssertTrue(groups.isEmpty)
     }
 
     func testCancellationReturnsEarly() async throws {
-        let detector = BuildArtifactDetector()
+        let root = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let object = try createTempFile(named: "main.o", in: root, withSize: 10)
         let controller = ScanController()
         controller.cancel()
 
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
-        try createTempFile(named: "test.o", in: dir, withSize: 100)
+        let groups = await BuildArtifactDetector().detect([object], controller: controller)
 
-        let groups = await detector.detect([dir.appendingPathComponent("test.o")], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Cancelled scan should return empty results")
+        XCTAssertTrue(groups.isEmpty)
     }
 }

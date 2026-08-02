@@ -3,11 +3,17 @@ import DesignSystem
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
+    @EnvironmentObject var store: StoreManager
+    @State private var showPaywall = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Settings")
                 .font(.title).bold()
+
+            // Pro / Free tier section is always first — it's the user's
+            // most actionable upgrade signal.
+            proSection
 
             Form {
                 Section("Profile") {
@@ -56,8 +62,51 @@ struct SettingsView: View {
             }
         }
         .padding()
-        .task { viewModel.load() }
-        .onChange(of: viewModel.selectedProfile) { _ in viewModel.save() }
+        .task {
+            viewModel.load()
+            await store.loadProducts()
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .environmentObject(store)
+        }
+    }
+
+    @ViewBuilder
+    private var proSection: some View {
+        GlassPanel {
+            HStack(spacing: 16) {
+                Image(systemName: store.isPaidUser ? "checkmark.seal.fill" : "sparkles")
+                    .font(.title)
+                    .foregroundColor(store.isPaidUser ? .green : .brandPrimary)
+                    .frame(width: 36)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(store.isPaidUser ? "kSift Pro" : "Free Tier")
+                        .font(.headline)
+                    if store.isPaidUser {
+                        Text("Unlimited cleanup, incremental index, and Finder Sync.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    } else {
+                        Text("Cleaned \(formatBytes(store.freeTierBytesCleaned)) of \(formatBytes(StoreManager.freeCleanupQuotaBytes)) free quota.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                Spacer()
+                if !store.isPaidUser {
+                    Button("Upgrade") { showPaywall = true }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.brandPrimary)
+                } else {
+                    Button("Restore") {
+                        Task { await store.restorePurchases() }
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
+            .padding(12)
+        }
     }
 
     private func profileIcon(_ profile: ProfileType) -> String {

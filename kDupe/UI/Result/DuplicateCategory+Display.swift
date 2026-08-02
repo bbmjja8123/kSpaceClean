@@ -3,12 +3,12 @@ import SwiftUI
 extension DuplicateCategory {
     var displayName: String {
         switch self {
-        case .identical: return "Identical"
-        case .directoryDedup: return "Directory"
-        case .perceptual: return "Similar"
-        case .largeFile: return "Large"
-        case .buildArtifact: return "Artifacts"
-        case .rawJPEG: return "RAW+JPEG"
+        case .identical: return NSLocalizedString("Identical", comment: "Duplicate category")
+        case .directoryDedup: return NSLocalizedString("Directory", comment: "Duplicate category")
+        case .perceptual: return NSLocalizedString("Similar", comment: "Duplicate category")
+        case .largeFile: return NSLocalizedString("Large", comment: "Duplicate category")
+        case .buildArtifact: return NSLocalizedString("Artifacts", comment: "Duplicate category")
+        case .rawJPEG: return NSLocalizedString("RAW+JPEG", comment: "Duplicate category")
         }
     }
 

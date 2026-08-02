@@ -3,9 +3,11 @@ import DesignSystem
 
 struct GroupDetailView: View {
     let group: DuplicateGroup
-    @ObservedObject var viewModel: ResultViewModel
+    @EnvironmentObject var store: StoreManager
     @State private var selectedFileIds: Set<UUID> = []
     @State private var previewUrl: URL?
+    @State private var showPaywall = false
+    @State private var showConfirmation = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -16,7 +18,7 @@ struct GroupDetailView: View {
                         .font(.title2)
                         .foregroundColor(group.category.color)
                     VStack(alignment: .leading) {
-                        Text(group.title).font(.headline)
+                        Text(group.category.displayName).font(.headline)
                         Text("\(group.files.count) files · \(formatBytes(group.totalSize))")
                             .font(.caption).foregroundColor(.secondary)
                     }
@@ -58,8 +60,8 @@ struct GroupDetailView: View {
             HStack {
                 Text("\(selectedFileIds.count) selected · \(formatBytes(selectedSize))")
                 Spacer()
-                Button("Move \(selectedFileIds.count) to Trash") {
-                    Task { await deleteSelected() }
+                Button(deleteButtonLabel) {
+                    attemptCleanup()
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.red)
@@ -67,16 +69,53 @@ struct GroupDetailView: View {
             }
             .padding(16)
         }
+        .alert("Move to Trash?", isPresented: $showConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) {
+                Task { await deleteSelected() }
+            }
+        } message: {
+            Text("\(selectedFileIds.count) file(s) will be moved to Trash. The newest copy of the group is kept.")
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .environmentObject(store)
+        }
+    }
+
+    private var deleteButtonLabel: String {
+        let base = String(format: NSLocalizedString("Move %lld to Trash", comment: "Move selected files to Trash"), selectedFileIds.count)
+        if !store.isPaidUser,
+           store.freeTierBytesCleaned + selectedSize > StoreManager.freeCleanupQuotaBytes {
+            return base + NSLocalizedString(" · Upgrade", comment: "Upgrade hint appended to delete label")
+        }
+        return base
     }
 
     private var selectedSize: Int64 {
         group.files.filter { selectedFileIds.contains($0.id) }.reduce(0) { $0 + $1.size }
     }
 
+    private func attemptCleanup() {
+        let bytes = selectedSize
+        if store.canCleanup(additionalBytes: bytes) {
+            showConfirmation = true
+        } else {
+            showPaywall = true
+        }
+    }
+
     private func deleteSelected() async {
         let manager = CleanupManager()
         let filesToDelete = group.files.filter { selectedFileIds.contains($0.id) }
-        try? await manager.moveToTrash(filesToDelete)
+        let bytes = filesToDelete.reduce(Int64(0)) { $0 + $1.size }
+        do {
+            try await manager.moveToTrash(filesToDelete)
+            store.recordFreeTierCleanup(bytes: bytes)
+        } catch {
+            // Manager surfaces failures as exceptions; the user already saw
+            // the confirmation alert, so just log and let them re-attempt.
+        }
     }
 
     private func formatBytes(_ bytes: Int64) -> String {

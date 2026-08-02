@@ -1,48 +1,113 @@
 /* App name */
-"kDupe" = "kDupe";
-
-/* Intents */
-"Scan for Duplicates" = "扫描重复文件";
-"Scans a directory for identical and similar files." = "扫描目录中的相同和相似文件。";
-"Clean Up Duplicates" = "清理重复文件";
-"Moves duplicate files in the selected category to the Trash." = "将选定类别中的重复文件移到废纸篓。";
-"Show Large Files" = "显示大文件";
-"Finds files larger than the specified minimum size." = "查找大于指定大小的文件。";
+"kSift" = "kSift";
 
 /* Onboarding */
-"Welcome to kDupe" = "欢迎使用 kDupe";
+"Welcome to kSift" = "欢迎使用 kSift";
 "Find and remove duplicate files, reclaim disk space" = "查找并删除重复文件，回收磁盘空间";
 "Get Started" = "开始使用";
-"Choose Your Profile" = "选择配置文件";
-"kDupe optimizes scanning based on your workflow" = "kDupe 根据您的工作流程优化扫描";
+"Choose Your Profile" = "选择使用场景";
+"kSift optimizes scanning based on your workflow" = "kSift 会根据你的使用习惯优化扫描";
+
+/* Profile names */
+"Developer" = "开发者";
+"Photographer" = "摄影师";
+"Simple" = "极简";
+
+/* Profile descriptions */
+"Scans projects, build artifacts, and development directories" = "扫描项目、构建产物和开发目录";
+"Scans photos, RAW files, and creative assets" = "扫描照片、RAW 文件和创意素材";
+"Scans desktop, downloads, and documents" = "扫描桌面、下载和文稿";
 
 /* Scan */
-"Ready to Scan" = "准备扫描";
-"Choose a profile in Settings or start with Developer mode" = "在设置中选择配置文件或使用开发者模式开始";
+"Ready to Scan" = "准备就绪";
+"Choose a profile in Settings or start with Developer mode" = "在设置中选择使用场景，或直接开始开发者模式";
+"Start Scan" = "开始扫描";
+"Scan Failed" = "扫描失败";
 "Scan Complete" = "扫描完成";
 "%lld files scanned" = "已扫描 %lld 个文件";
 "%lld duplicates found" = "发现 %lld 个重复文件";
-
-/* Store / Paywall */
-"Unlock Full Power" = "解锁全部功能";
-"Remove duplicate files, clean build artifacts, and reclaim gigabytes." = "删除重复文件，清理构建产物，回收数十GB空间。";
-"Continue" = "继续";
+"Scanning files..." = "正在扫描文件...";
+"Checking identical files..." = "正在比对相同文件...";
+"Cross-directory analysis..." = "正在跨目录分析...";
+"Comparing images..." = "正在比较图片...";
+"Finding large files..." = "正在查找大文件...";
+"Identifying build artifacts..." = "正在识别构建产物...";
+"Matching RAW + JPEG pairs..." = "正在匹配 RAW + JPEG 组合...";
+"Scan complete!" = "扫描完成！";
+"Duplicate Groups" = "重复文件组";
+"Wasteable Space" = "可回收空间";
+"Review Results" = "查看结果";
+"Rescan" = "重新扫描";
 
 /* Results */
+"Groups" = "分组";
+"Duplicates" = "重复";
+"All" = "全部";
 "%lld groups selected" = "已选 %lld 组";
-"%lld groups will be moved to Trash." = "%lld 组将被移到废纸篓。";
+"Auto Select" = "自动选择";
+"Move to Trash?" = "移到废纸篓？";
+"Cancel" = "取消";
+"Delete" = "删除";
+"%lld groups will be moved to Trash. The newest copy of each group is kept." = "将有 %lld 组文件移到废纸篓，每组保留最新的一份。";
+"Some files could not be moved" = "部分文件无法移动";
+"OK" = "好";
+"%lld file(s) could not be moved to Trash and remain in place.\n\n%@" = "%lld 个文件无法移到废纸篓，仍保留在原位置。\n\n%@";
+"Delete (%@)" = "删除（%@）";
+" · Upgrade" = " · 升级";
 "%lld files · %@" = "%lld 个文件 · %@";
 "%lld selected · %@" = "已选 %lld 个 · %@";
-"Last scan: %@" = "上次扫描：%@";
-"%lld duplicates" = "%lld 个重复文件";
+"Auto Keep Newest (%lld to delete)" = "自动保留最新（将删除 %lld 个）";
+"Reveal in Finder" = "在 Finder 中显示";
+"QuickLook" = "快速查看";
+"Move %lld to Trash" = "移动 %lld 个文件到废纸篓";
+"%lld file(s) will be moved to Trash. The newest copy of the group is kept." = "将有 %lld 个文件移到废纸篓，组内保留最新的一份。";
+"Cleaning %@ would exceed your %@ free-tier quota (only %@ left)." = "清理 %@ 将超出 %@ 的免费额度（剩余 %@）。";
 
 /* History */
 "Scan History" = "扫描历史";
+"Loading history..." = "正在加载历史记录...";
+"No scans yet" = "暂无扫描记录";
+"Run a scan to see history here" = "运行一次扫描后，历史记录会显示在这里";
 "%lld groups · %@" = "%lld 组 · %@";
+"Waste" = "可回收";
+"Duration" = "用时";
+"No groups in this scan" = "本次扫描没有分组";
+"The scan finished without finding any duplicates." = "扫描未发现任何重复文件。";
 
 /* Settings */
 "Settings" = "设置";
+"Profile" = "使用场景";
+"Scan Profile" = "扫描场景";
+"Scan Options" = "扫描选项";
 "Min file size: %@" = "最小文件大小：%@";
+"Enable perceptual similarity (macOS 14+)" = "启用相似图片识别（macOS 14+）";
+"Scan build artifacts" = "扫描构建产物";
+"Scan Directories" = "扫描目录";
+"Remove" = "移除";
+"Add Directory" = "添加目录";
+"kSift Pro" = "kSift Pro";
+"Free Tier" = "免费版";
+"Unlimited cleanup, incremental index, and Finder Sync." = "无限清理、增量索引和 Finder 同步。";
+"Cleaned %@ of %@ free quota." = "已清理 %@（免费额度 %@）。";
+"Upgrade" = "升级";
+"Restore" = "恢复购买";
+
+/* Store / Paywall */
+"Unlock kSift Pro" = "解锁 kSift Pro";
+"One-time purchase. Lifetime updates. No subscription." = "一次购买，终身更新，无需订阅。";
+"Unlimited cleanup" = "无限清理";
+"Remove the 2 GB free-tier cap and free as much space as you need." = "取消 2 GB 免费额度限制，想清理多少就清理多少。";
+"Incremental index" = "增量索引";
+"Re-scans only the files that actually changed — typically 10x faster." = "只重新扫描真正变化的文件——通常快 10 倍。";
+"Finder Sync extension" = "Finder 同步扩展";
+"Right-click any folder in Finder → \"Scan with kSift\"." = "在 Finder 中右键任意文件夹 → “使用 kSift 扫描”。";
+"Future Pro features" = "未来的 Pro 功能";
+"Every paid feature we ship from now on, included." = "我们今后推出的所有付费功能全部包含在内。";
+"Processing…" = "处理中…";
+"Buy %@" = "购买 %@";
+"Loading product…" = "正在加载商品…";
+"Restore Purchases" = "恢复购买";
+"Free tier includes up to 2 GB of cleanup. Quota resets after purchase." = "免费版可清理最多 2 GB。购买后额度限制解除。";
 
 /* Category Display Names */
 "Identical" = "完全相同";
@@ -51,3 +116,13 @@
 "Large" = "大文件";
 "Artifacts" = "构建产物";
 "RAW+JPEG" = "RAW+JPEG";
+
+/* Intents */
+"Scan for Duplicates" = "扫描重复文件";
+"Scans a directory for identical and similar files." = "扫描目录中的相同和相似文件。";
+"Clean Up Duplicates" = "清理重复文件";
+"Moves duplicate files in the selected category to the Trash." = "将选定类别中的重复文件移到废纸篓。";
+"Show Large Files" = "显示大文件";
+"Finds files larger than the specified minimum size." = "查找大于指定最小大小的文件。";
+"Category" = "类别";
+"Minimum Size (MB)" = "最小大小（MB）";

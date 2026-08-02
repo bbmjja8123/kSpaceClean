@@ -12,26 +12,31 @@ struct HistoryView: View {
 
             if viewModel.isLoading {
                 Spacer()
-                LoadingStateView(message: "Loading history...")
+                LoadingStateView(title: NSLocalizedString("Loading history...", comment: "History loading"))
                 Spacer()
             } else if viewModel.records.isEmpty {
                 Spacer()
-                EmptyStateView(icon: "clock", title: "No scans yet",
-                              message: "Run a scan to see history here")
+                EmptyStateView(
+                    icon: "clock",
+                    title: NSLocalizedString("No scans yet", comment: "Empty history title"),
+                    subtitle: NSLocalizedString("Run a scan to see history here", comment: "Empty history subtitle")
+                )
                 Spacer()
             } else {
                 List {
                     ForEach(viewModel.records) { record in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(record.date, style: .date)
-                                    .font(.headline)
-                                Text("\(record.groupCount) groups · \(formatBytes(record.totalSize))")
+                        NavigationLink(destination: HistoryDetailView(record: record)) {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(record.timestamp, style: .date)
+                                        .font(.headline)
+                                    Text("\(record.groups.count) groups · \(formatBytes(record.totalWasteSize))")
+                                        .font(.caption).foregroundColor(.secondary)
+                                }
+                                Spacer()
+                                Text(record.duration.formatted())
                                     .font(.caption).foregroundColor(.secondary)
                             }
-                            Spacer()
-                            Text(record.duration.formatted())
-                                .font(.caption).foregroundColor(.secondary)
                         }
                         .swipeActions {
                             Button("Delete", role: .destructive) {

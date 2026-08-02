@@ -8,7 +8,7 @@ struct FilterBarView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 6) {
-                filterChip(title: "All", count: counts.values.reduce(0, +),
+                filterChip(title: NSLocalizedString("All", comment: "All categories filter chip"), count: counts.values.reduce(0, +),
                           isSelected: activeCategory == nil) {
                     activeCategory = nil
                 }

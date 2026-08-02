@@ -16,6 +16,8 @@
         <attribute name="category" attributeType="String"/>
         <attribute name="totalSize" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="fileCount" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="evidenceData" attributeType="Binary" optional="YES"/>
+        <attribute name="similarity" attributeType="Double" defaultValueString="-1"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade"
             destinationEntity="FileItemEntity" inverseName="group" inverseEntity="FileItemEntity"/>
         <relationship name="scanRecord" optional="YES" maxCount="1" deletionRule="Nullify"
@@ -26,7 +28,13 @@
         <attribute name="filePath" attributeType="String"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="modificationDate" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="hashValue" attributeType="String" optional="YES"/>
+        <attribute name="fileHash" attributeType="String" optional="YES" renamingIdentifier="hashValue"/>
+        <attribute name="fingerprint" attributeType="String" optional="YES"/>
+        <attribute name="inode" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="isAPFSClone" attributeType="Boolean" defaultValueString="NO"/>
+        <attribute name="physicalSize" attributeType="Integer 64" defaultValueString="-1"/>
+        <attribute name="fileType" attributeType="String" optional="YES"/>
+        <attribute name="creationDate" attributeType="Date" optional="YES" usesScalarValueType="NO"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify"
             destinationEntity="DuplicateGroupEntity" inverseName="files" inverseEntity="DuplicateGroupEntity"/>
     </entity>
@@ -37,5 +45,30 @@
         <attribute name="method" attributeType="String"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="isCompleted" attributeType="Boolean" defaultValueString="NO"/>
+    </entity>
+    <entity name="IncrementalIndexEntity" representedClassName="IncrementalIndexEntity" syncable="YES">
+        <attribute name="path" attributeType="String"/>
+        <attribute name="size" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="modificationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="inode" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="fingerprint" attributeType="String"/>
+        <attribute name="sha256" attributeType="String"/>
+    </entity>
+    <entity name="VaultItemEntity" representedClassName="VaultItemEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="originalPath" attributeType="String"/>
+        <attribute name="vaultPath" attributeType="String"/>
+        <attribute name="vaultedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expiresAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="originalSize" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="sha256" attributeType="String"/>
+        <attribute name="parentSessionId" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="status" attributeType="String" defaultValueString="vaulted"/>
+    </entity>
+    <entity name="CleanupSessionEntity" representedClassName="CleanupSessionEntity" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="timestamp" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="profileType" attributeType="String"/>
+        <attribute name="totalReclaimable" attributeType="Integer 64" defaultValueString="0"/>
     </entity>
 </model>

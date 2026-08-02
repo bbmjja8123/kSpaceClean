@@ -3,6 +3,7 @@ import DesignSystem
 
 struct RootView: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.paidUserFlag) private var paidFlag: PaidUserFlag?
 
     var body: some View {
         HStack(spacing: 0) {
@@ -11,8 +12,13 @@ struct RootView: View {
                     .frame(width: 48)
                     .padding(.leading, 8)
             }
-            mainContent
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // NavigationStack is required so NavigationLink (used by
+            // ResultView→GroupDetailView and HistoryView→HistoryDetailView)
+            // actually pushes a detail view. Without it the click is a no-op.
+            NavigationStack {
+                mainContent
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
     }
 
@@ -22,7 +28,9 @@ struct RootView: View {
         case .onboarding:
             OnboardingView()
         case .scan:
-            MainView()
+            // Forward the paid flag so MainView can wire IncrementalIndex
+            // into its ScanViewModel at construction time.
+            MainView(paidFlag: paidFlag)
         case .results:
             ResultView()
         case .history:

@@ -1,112 +1,192 @@
+import CoreGraphics
+import ImageIO
+import UniformTypeIdentifiers
 import XCTest
-@testable import kDupe
+@testable import kSift
 
 final class RawJPEGPairDetectorTests: XCTestCase {
-    func testBasicPairDetected() async throws {
-        let detector = RawJPEGPairDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+    func testBasicPairUsesSameDirectoryAndStem() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let raw = try createTempFile(named: "photo.cr3", in: directory, withSize: 5_000)
+        let jpeg = try createTempFile(named: "photo.jpg", in: directory, withSize: 500)
 
-        try createTempFile(named: "photo.raf", in: dir, withSize: 5000)
-        try createTempFile(named: "photo.jpg", in: dir, withSize: 500)
+        let groups = await RawJPEGPairDetector().detect(
+            [raw, jpeg],
+            controller: ScanController()
+        )
 
-        let urls = [
-            dir.appendingPathComponent("photo.raf"),
-            dir.appendingPathComponent("photo.jpg"),
-        ]
-        let groups = await detector.detect(urls, controller: controller)
         XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups.first?.category, .rawJPEG)
-        XCTAssertEqual(groups.first?.files.count, 2)
-    }
-
-    func testAllRAWExtensionsPaired() async throws {
-        let detector = RawJPEGPairDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
-
-        let rawExts = ["raf", "cr2", "nef", "arw", "dng", "orf"]
-        var urls: [URL] = []
-        for ext in rawExts {
-            try createTempFile(named: "img.\(ext)", in: dir, withSize: 5000)
-            urls.append(dir.appendingPathComponent("img.\(ext)"))
+        XCTAssertEqual(groups[0].files.map(\.url), [raw, jpeg])
+        XCTAssertEqual(groups[0].totalSize, 0, "No keep choice has been made yet")
+        guard case .rawJPEGPair(let evidenceRaw, let evidenceJPEG, let exifMatch) = groups[0].categoryEvidence else {
+            return XCTFail("Expected RAW/JPEG evidence")
         }
-        try createTempFile(named: "img.jpg", in: dir, withSize: 500)
-        urls.append(dir.appendingPathComponent("img.jpg"))
+        XCTAssertEqual(evidenceRaw.url, raw)
+        XCTAssertEqual(evidenceJPEG.url, jpeg)
+        XCTAssertFalse(exifMatch)
+    }
 
-        let groups = await detector.detect(urls, controller: controller)
+    func testSameStemInDifferentDirectoriesDoesNotPair() async throws {
+        let root = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let firstDirectory = root.appendingPathComponent("first")
+        let secondDirectory = root.appendingPathComponent("second")
+        try FileManager.default.createDirectory(at: firstDirectory, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: secondDirectory, withIntermediateDirectories: true)
+        let raw = try createTempFile(named: "photo.nef", in: firstDirectory, withSize: 100)
+        let jpeg = try createTempFile(named: "photo.jpg", in: secondDirectory, withSize: 100)
+
+        let groups = await RawJPEGPairDetector().detect(
+            [raw, jpeg],
+            controller: ScanController()
+        )
+
+        XCTAssertTrue(groups.isEmpty)
+    }
+
+    func testDifferentStemsDoNotPair() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let raw = try createTempFile(named: "photo-a.arw", in: directory, withSize: 100)
+        let jpeg = try createTempFile(named: "photo-b.jpg", in: directory, withSize: 100)
+
+        let groups = await RawJPEGPairDetector().detect(
+            [raw, jpeg],
+            controller: ScanController()
+        )
+
+        XCTAssertTrue(groups.isEmpty)
+    }
+
+    func testPairingIsOneToOne() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let rawA = try createTempFile(named: "photo.cr2", in: directory, withSize: 100)
+        let rawB = try createTempFile(named: "photo.nef", in: directory, withSize: 100)
+        let jpeg = try createTempFile(named: "photo.jpg", in: directory, withSize: 100)
+
+        let groups = await RawJPEGPairDetector().detect(
+            [rawA, rawB, jpeg],
+            controller: ScanController()
+        )
+
         XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups.first?.files.count, 7) // 6 raw + 1 jpeg
+        XCTAssertEqual(groups[0].files.count, 2)
     }
 
-    func testJPEGVariants() async throws {
-        let detector = RawJPEGPairDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+    func testExtendedRAWExtensionsAreSupported() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let extensions = ["raf", "cr2", "cr3", "nef", "nrw", "arw", "dng", "orf", "rw2"]
+        var urls: [URL] = []
+        for (index, fileExtension) in extensions.enumerated() {
+            urls.append(try createTempFile(
+                named: "photo-\(index).\(fileExtension)",
+                in: directory,
+                withSize: 100
+            ))
+            urls.append(try createTempFile(
+                named: "photo-\(index).jpg",
+                in: directory,
+                withSize: 10
+            ))
+        }
 
-        try createTempFile(named: "vacation.raf", in: dir, withSize: 5000)
-        try createTempFile(named: "vacation.jpeg", in: dir, withSize: 500)
-        try createTempFile(named: "vacation.jpe", in: dir, withSize: 400)
+        let groups = await RawJPEGPairDetector().detect(urls, controller: ScanController())
 
-        let urls = [
-            dir.appendingPathComponent("vacation.raf"),
-            dir.appendingPathComponent("vacation.jpeg"),
-            dir.appendingPathComponent("vacation.jpe"),
-        ]
-        let groups = await detector.detect(urls, controller: controller)
+        XCTAssertEqual(groups.count, extensions.count)
+    }
+
+    func testEXIFDatesWithinToleranceAreMarkedAsMatch() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let raw = directory.appendingPathComponent("capture.dng")
+        let jpeg = directory.appendingPathComponent("capture.jpg")
+        try writeJPEG(at: raw, exifDate: "2026:08:01 10:00:00")
+        try writeJPEG(at: jpeg, exifDate: "2026:08:01 10:00:02")
+
+        let groups = await RawJPEGPairDetector().detect(
+            [raw, jpeg],
+            controller: ScanController()
+        )
+
         XCTAssertEqual(groups.count, 1)
-        XCTAssertEqual(groups.first?.files.count, 3)
+        guard case .rawJPEGPair(_, _, let exifMatch) = groups[0].categoryEvidence else {
+            return XCTFail("Expected RAW/JPEG evidence")
+        }
+        XCTAssertTrue(exifMatch)
     }
 
-    func testUnmatchedRawFileExcluded() async throws {
-        let detector = RawJPEGPairDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+    func testEXIFDatesOutsideToleranceRejectPair() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let raw = directory.appendingPathComponent("capture.dng")
+        let jpeg = directory.appendingPathComponent("capture.jpg")
+        try writeJPEG(at: raw, exifDate: "2026:08:01 10:00:00")
+        try writeJPEG(at: jpeg, exifDate: "2026:08:01 10:00:03")
 
-        try createTempFile(named: "orphan.raf", in: dir, withSize: 5000)
+        let groups = await RawJPEGPairDetector().detect(
+            [raw, jpeg],
+            controller: ScanController()
+        )
 
-        let groups = await detector.detect([dir.appendingPathComponent("orphan.raf")], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Unmatched RAW file without JPEG should not produce a group")
+        XCTAssertTrue(groups.isEmpty)
     }
 
-    func testUnmatchedJPEGFileExcluded() async throws {
-        let detector = RawJPEGPairDetector()
-        let controller = ScanController()
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
+    func testUnmatchedFilesAreExcluded() async throws {
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let raw = try createTempFile(named: "raw-only.raf", in: directory, withSize: 100)
+        let jpeg = try createTempFile(named: "jpeg-only.jpg", in: directory, withSize: 100)
 
-        try createTempFile(named: "alone.jpg", in: dir, withSize: 500)
+        let groups = await RawJPEGPairDetector().detect(
+            [raw, jpeg],
+            controller: ScanController()
+        )
 
-        let groups = await detector.detect([dir.appendingPathComponent("alone.jpg")], controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Unmatched JPEG without RAW should not produce a group")
-    }
-
-    func testEmptyURLs() async throws {
-        let detector = RawJPEGPairDetector()
-        let controller = ScanController()
-        let groups = await detector.detect([], controller: controller)
         XCTAssertTrue(groups.isEmpty)
     }
 
     func testCancellationReturnsEarly() async throws {
-        let detector = RawJPEGPairDetector()
+        let directory = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let raw = try createTempFile(named: "photo.raf", in: directory, withSize: 100)
+        let jpeg = try createTempFile(named: "photo.jpg", in: directory, withSize: 100)
         let controller = ScanController()
         controller.cancel()
 
-        let dir = try createTempDirectory()
-        defer { try? FileManager.default.removeItem(at: dir) }
-        try createTempFile(named: "photo.raf", in: dir, withSize: 5000)
-        try createTempFile(named: "photo.jpg", in: dir, withSize: 500)
+        let groups = await RawJPEGPairDetector().detect([raw, jpeg], controller: controller)
 
-        let urls = [
-            dir.appendingPathComponent("photo.raf"),
-            dir.appendingPathComponent("photo.jpg"),
+        XCTAssertTrue(groups.isEmpty)
+    }
+
+    private func writeJPEG(at url: URL, exifDate: String) throws {
+        guard let context = CGContext(
+            data: nil,
+            width: 8,
+            height: 8,
+            bitsPerComponent: 8,
+            bytesPerRow: 32,
+            space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        ), let image = context.makeImage(),
+        let destination = CGImageDestinationCreateWithURL(
+            url as CFURL,
+            UTType.jpeg.identifier as CFString,
+            1,
+            nil
+        ) else {
+            throw NSError(domain: "RawJPEGPairDetectorTests", code: 1)
+        }
+        let properties: [CFString: Any] = [
+            kCGImagePropertyExifDictionary: [
+                kCGImagePropertyExifDateTimeOriginal: exifDate,
+            ],
         ]
-        let groups = await detector.detect(urls, controller: controller)
-        XCTAssertTrue(groups.isEmpty, "Cancelled scan should return empty results")
+        CGImageDestinationAddImage(destination, image, properties as CFDictionary)
+        guard CGImageDestinationFinalize(destination) else {
+            throw NSError(domain: "RawJPEGPairDetectorTests", code: 2)
+        }
     }
 }

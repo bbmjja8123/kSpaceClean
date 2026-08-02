@@ -1,51 +1,35 @@
 import Foundation
 
+/// Facade over `VaultManager` for the cleanup UI. All cleanup now goes through
+/// the Trash + Vault dual-write; permanent delete is no longer offered.
 public actor CleanupManager {
-    private let fileManager: FileManager
+    private let vault: VaultManager
 
-    public init(fileManager: FileManager = .default) {
-        self.fileManager = fileManager
+    public init(vault: VaultManager = VaultManager()) {
+        self.vault = vault
     }
 
-    public enum CleanupError: Error {
-        case fileNotFound(URL)
-        case trashFailed(URL, Error)
+    public func moveToTrash(_ items: [FileItem], profileType: String = "") async throws -> VaultMoveResult {
+        try await vault.moveToTrash(items, profileType: profileType)
     }
 
-    /// Moves files to trash. Returns list of successfully trashed files.
-    public func moveToTrash(_ items: [FileItem]) async throws -> [CleanupAction] {
-        var actions: [CleanupAction] = []
-        for item in items {
-            guard fileManager.fileExists(atPath: item.url.path) else {
-                continue
-            }
-            do {
-                var resultingURL: NSURL?
-                try fileManager.trashItem(at: item.url, resultingItemURL: &resultingURL)
-                let action = CleanupAction(
-                    id: UUID(), file: item, method: .trash,
-                    timestamp: Date(), isCompleted: true
-                )
-                actions.append(action)
-            } catch {
-                throw CleanupError.trashFailed(item.url, error)
-            }
+    public func restore(vaultItemIds: [UUID]) async throws -> [VaultItem] {
+        var restored: [VaultItem] = []
+        for id in vaultItemIds {
+            restored.append(try await vault.restore(itemID: id))
         }
-        return actions
+        return restored
     }
 
-    /// Permanently deletes files. Use with caution.
-    public func permanentlyDelete(_ items: [FileItem]) async throws -> [CleanupAction] {
-        var actions: [CleanupAction] = []
-        for item in items {
-            guard fileManager.fileExists(atPath: item.url.path) else { continue }
-            try fileManager.removeItem(at: item.url)
-            let action = CleanupAction(
-                id: UUID(), file: item, method: .delete,
-                timestamp: Date(), isCompleted: true
-            )
-            actions.append(action)
-        }
-        return actions
+    public func vaultItems() async throws -> [VaultItem] {
+        try await vault.vaultItems()
+    }
+
+    public func vaultSize() async throws -> Int64 {
+        try await vault.vaultSize()
+    }
+
+    public func deleteExpired() async throws -> Int {
+        try await vault.deleteExpired()
     }
 }
