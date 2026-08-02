@@ -676,7 +676,7 @@ public actor ScanOrchestrator {
 
                 let risk = classifier.classify(path: info.path)
                 let app = await resolver.resolve(path: info.path)
-                let bucketKey = app?.bundleID ?? def.id
+                let bucketKey = app?.bundleID ?? Self.pseudoAppKey(for: def.id, rootPath: resolvedPath, filePath: info.path)
 
                 let result = ScanResult(
                     url: URL(fileURLWithPath: info.path),
@@ -709,9 +709,44 @@ public actor ScanOrchestrator {
         // skip rather than emit an empty row — the UI shows a
         // placeholder via `totalSize == 0` instead.
         for (key, results) in bucketByApp where !results.isEmpty {
-            if key == def.id {
-                // Generic category bucket (no app matched): keep the
-                // v1 flat file-row rendering exactly as before.
+            let folderPrefix = "\(def.id).folder."
+            if key.hasPrefix(folderPrefix) {
+                // Pseudo-app bucket (Task B1): an unmatched top-level folder
+                // becomes its own row titled with the REAL folder name.
+                // Default OFF — `.caution` risk, isRecommended false.
+                let folderName = String(key.dropFirst(folderPrefix.count))
+                let sub = ScanSubCategory(
+                    subCategoryID: key,
+                    title: folderName,
+                    bundleID: nil,
+                    appName: folderName,
+                    totalSize: bucketSize[key] ?? 0,
+                    directResults: results,
+                    showAction: false,
+                    riskLevel: .caution,
+                    isRecommended: false,
+                    isPseudoApp: true
+                )
+                subItems.append(sub)
+            } else if key == "\(def.id).unrecognized" {
+                // Sentinel bucket (Task B1): files directly in the category
+                // root with no app rule and no owning folder.
+                let sub = ScanSubCategory(
+                    subCategoryID: key,
+                    title: "其他未识别",
+                    bundleID: nil,
+                    appName: nil,
+                    totalSize: bucketSize[key] ?? 0,
+                    directResults: results,
+                    showAction: false,
+                    riskLevel: def.riskLevel,
+                    isRecommended: def.riskLevel == .recommended,
+                    isPseudoApp: false
+                )
+                subItems.append(sub)
+            } else if key == def.id {
+                // Generic category bucket — defensive only; `pseudoAppKey`
+                // now handles every non-app key so this branch is unreachable.
                 let sub = ScanSubCategory(
                     subCategoryID: "\(def.id).\(key)",
                     title: bucketTitle[key] ?? def.title,
@@ -725,10 +760,8 @@ public actor ScanOrchestrator {
                 )
                 subItems.append(sub)
             } else {
-                // App-scoped bucket: build the level-3 action rows from
-                // the resolver's rule actions (Task 5). The sub-category
-                // renders actions as its children (`showAction: true`),
-                // so `directResults` stays empty.
+                // App-scoped bucket (unchanged, Task 5): build the level-3
+                // action rows from the resolver's rule actions.
                 let sub = ScanSubCategory(
                     subCategoryID: "\(def.id).\(key)",
                     title: bucketTitle[key] ?? def.title,
@@ -834,6 +867,25 @@ public actor ScanOrchestrator {
     }
 
     // MARK: Helpers
+
+    /// Computes the bucket key for a file no app rule matched (Task B1).
+    /// - A file nested ≥2 levels under the category root folds into a
+    ///   per-folder pseudo-app bucket keyed `"<categoryID>.folder.<leaf>"`.
+    /// - A file sitting directly in the category root (or exactly on it)
+    ///   folds into the sentinel bucket `"<categoryID>.unrecognized"`.
+    private static func pseudoAppKey(for categoryID: String, rootPath: String, filePath: String) -> String {
+        let root = rootPath.count > 1 && rootPath.hasSuffix("/")
+            ? String(rootPath.dropLast()) : rootPath
+        guard filePath == root || filePath.hasPrefix(root + "/") else {
+            return "\(categoryID).unrecognized"
+        }
+        let remainder = String(filePath.dropFirst(root.count))
+            .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard !remainder.isEmpty else { return "\(categoryID).unrecognized" }
+        let parts = remainder.split(separator: "/", omittingEmptySubsequences: true)
+        guard parts.count > 1 else { return "\(categoryID).unrecognized" }
+        return "\(categoryID).folder.\(parts[0])"
+    }
 
     /// Build the per-category progress rows shown in `ScanProgressView`.
     /// Static so it doesn't need actor isolation.

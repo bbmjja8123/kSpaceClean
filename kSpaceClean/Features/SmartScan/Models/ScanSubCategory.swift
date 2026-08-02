@@ -30,6 +30,11 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
     public var showAction: Bool
     public let riskLevel: RiskLevel
     public let isRecommended: Bool
+    /// True when this sub-category is a synthesized "pseudo-app" row for an
+    /// unmatched top-level folder (Task B1). Pseudo-app rows are always
+    /// `.caution` risk (never auto-selected) and exempt from the small-file
+    /// fold (see `ScanResultsViewModel.annotateSubHidden`).
+    public let isPseudoApp: Bool
     public var isHiddenByFilter: Bool = false
 
     /// Direct children flattened for SwiftUI outline rendering. Switches
@@ -54,6 +59,7 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
         showAction: Bool = true,
         riskLevel: RiskLevel = .recommended,
         isRecommended: Bool = true,
+        isPseudoApp: Bool = false,
         isHiddenByFilter: Bool = false
     ) {
         self.id = id
@@ -70,6 +76,7 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
         self.showAction = showAction
         self.riskLevel = riskLevel
         self.isRecommended = isRecommended
+        self.isPseudoApp = isPseudoApp
         self.isHiddenByFilter = isHiddenByFilter
     }
 

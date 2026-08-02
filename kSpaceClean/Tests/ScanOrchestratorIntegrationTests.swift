@@ -301,3 +301,73 @@ final class ScanProgressComposerTests: XCTestCase {
                       "terminal snapshot must force-complete every row so the ring reaches 100%")
     }
 }
+
+/// Task B1 — pseudo-app splitting. Unmatched top-level folders become their
+/// own rows titled with the REAL folder name; files directly in the category
+/// root fold into the "其他未识别" sentinel.
+@MainActor
+final class ScanPseudoAppSplittingTests: XCTestCase {
+    private func scanOneCategory(_ categoryRoot: URL) async -> ScanCategory {
+        let cats = [
+            CategoryDefinition(
+                id: "app.cache",
+                title: "App Cache",
+                paths: [categoryRoot.path],
+                riskLevel: .caution
+            )
+        ]
+        let orchestrator = ScanOrchestrator(categoryDefinitions: cats)
+        let stream = await orchestrator.startScan()
+        var emitted: [ScanCategory] = []
+        let consumer = Task { @MainActor in
+            for await event in await orchestrator.categoryStream() {
+                if case .category(let catEvent) = event {
+                    emitted.append(catEvent.category)
+                }
+            }
+        }
+        for await p in stream {
+            if case .completed = p.state { break }
+            if case .failed(let err) = p.state { XCTFail("scan failed: \(err)") }
+        }
+        await consumer.value
+        return try! XCTUnwrap(emitted.first, "scan must emit exactly one category")
+    }
+
+    func testUnmatchedTopLevelFolderBecomesPseudoAppRow() async throws {
+        let root = URL(fileURLWithPath: "/tmp")
+            .appendingPathComponent("sclean-b1-pseudo-\(UUID().uuidString)", isDirectory: true)
+        let categoryRoot = root.appendingPathComponent("AppCache", isDirectory: true)
+        let appDir = categoryRoot.appendingPathComponent("SomeRandomApp", isDirectory: true)
+        try FileManager.default.createDirectory(at: appDir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        try Data(repeating: 0xAB, count: 256).write(to: appDir.appendingPathComponent("cache.bin"))
+
+        let category = await scanOneCategory(categoryRoot)
+        let sub = try XCTUnwrap(category.subItems.first)
+        XCTAssertTrue(sub.isPseudoApp,
+                      "unmatched top-level folder must become a pseudo-app row")
+        XCTAssertEqual(sub.title, "SomeRandomApp",
+                       "pseudo-app row must be titled with the REAL folder name")
+        XCTAssertFalse(sub.showAction)
+        XCTAssertEqual(sub.directResults.count, 1)
+        XCTAssertEqual(sub.riskLevel, .caution)
+        XCTAssertFalse(sub.isRecommended,
+                       "pseudo-app rows must be off-by-default, never auto-selected")
+    }
+
+    func testUnrecognizedRootFilesGoToSentinelSub() async throws {
+        let root = URL(fileURLWithPath: "/tmp")
+            .appendingPathComponent("sclean-b1-sentinel-\(UUID().uuidString)", isDirectory: true)
+        let categoryRoot = root.appendingPathComponent("AppCache", isDirectory: true)
+        try FileManager.default.createDirectory(at: categoryRoot, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        try Data(repeating: 0xCD, count: 128).write(to: categoryRoot.appendingPathComponent("stray.bin"))
+
+        let category = await scanOneCategory(categoryRoot)
+        let sub = try XCTUnwrap(category.subItems.first)
+        XCTAssertEqual(sub.title, "其他未识别")
+        XCTAssertEqual(sub.directResults.count, 1)
+        XCTAssertFalse(sub.isPseudoApp)
+    }
+}
