@@ -155,10 +155,6 @@
 		isa = PBXBuildFile;
 		fileRef = 780EBDE21893F54287CDD30D;
 	};
-	50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */ = {
-		isa = PBXBuildFile;
-		fileRef = B0FA94F96C119EFBD28B7F0B;
-	};
 	50B92E24837F0F285E3E4137 /* 50B92E24837F0F285E3E4137 */ = {
 		isa = PBXBuildFile;
 		fileRef = D7374E7C28D6489848AF3698;
@@ -306,6 +302,10 @@
 	A62C9F07E54CB81C7B1CA298 /* A62C9F07E54CB81C7B1CA298 */ = {
 		isa = PBXBuildFile;
 		fileRef = F075F2C88B6E1045A56D681A;
+	};
+	A6E9F9A6658624651BE814E5 /* A6E9F9A6658624651BE814E5 */ = {
+		isa = PBXBuildFile;
+		fileRef = F7F3E7D250CE93D51E86C9E4;
 	};
 	A7E806B246A4F0307D48718E /* A7E806B246A4F0307D48718E */ = {
 		isa = PBXBuildFile;
@@ -986,13 +986,6 @@
 		path = Tests/OnboardingTests/FDAPermissionProbeTests.swift;
 		sourceTree = "<group>";
 	};
-	B0FA94F96C119EFBD28B7F0B /* kUninstallApp.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = kUninstallApp.swift;
-		path = App/kUninstallApp.swift;
-		sourceTree = "<group>";
-	};
 	B3FEFF2A6B39C2EA456755D0 /* FDAPermissionProbe.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1215,6 +1208,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppListViewModelTests.swift;
 		path = Tests/AppListTests/AppListViewModelTests.swift;
+		sourceTree = "<group>";
+	};
+	F7F3E7D250CE93D51E86C9E4 /* kFreshApp.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = kFreshApp.swift;
+		path = App/kFreshApp.swift;
 		sourceTree = "<group>";
 	};
 	F86D4AC4F12BECB5A60374D9 /* StartupItemManager.swift */ = {
@@ -1636,7 +1636,7 @@
 	C2EDC4814724351A3444C62A /* App */ = {
 		isa = PBXGroup;
 		children = (
-			B0FA94F96C119EFBD28B7F0B /* kUninstallApp.swift */,
+			F7F3E7D250CE93D51E86C9E4 /* kFreshApp.swift */,
 			14679243FC833D0C8D16C74A /* AppState.swift */,
 			F9F5DB4F736723C6F2F5DC63 /* RootView.swift */,
 			FC8F976B27828057A607616A /* AppCoordinator.swift */,
@@ -1823,7 +1823,7 @@
 		isa = PBXSourcesBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
-			50B3B4F948134CC9D64FEAF3 /* 50B3B4F948134CC9D64FEAF3 */,
+			A6E9F9A6658624651BE814E5 /* A6E9F9A6658624651BE814E5 */,
 			AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */,
 			7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */,
 			0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */,

@@ -132,7 +132,7 @@ def main():
 
     # ========== File references and build files ==========
     swift_files = [
-        ("App/kUninstallApp.swift", "App"),
+        ("App/kFreshApp.swift", "App"),
         ("App/AppState.swift", "App"),
         ("App/RootView.swift", "App"),
         ("App/AppCoordinator.swift", "App"),
