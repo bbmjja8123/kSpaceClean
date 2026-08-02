@@ -118,21 +118,23 @@ final class StoreManager: ObservableObject {
         if UserDefaults.standard.bool(forKey: kFreshTestProOverrideKey) {
             return true
         }
-        let manager: StoreManager = await MainActor.run { StoreManager() }
-        return await manager.scanEntitlements()
+        return await scanCurrentEntitlements()
     }
 
     // MARK: - Private
 
     private func refreshEntitlements() async {
-        let unlocked = await scanEntitlements()
+        let unlocked = await Self.scanCurrentEntitlements()
         // The test override takes precedence over real entitlements.
         if !UserDefaults.standard.bool(forKey: kFreshTestProOverrideKey) {
             state = unlocked ? .pro : .free
         }
     }
 
-    private func scanEntitlements() async -> Bool {
+    /// Reads the StoreKit entitlement stream without holding a long-lived
+    /// ``StoreManager``. Nonisolated so ``isProUnlocked()`` can query it
+    /// directly instead of constructing a throwaway manager per call.
+    private nonisolated static func scanCurrentEntitlements() async -> Bool {
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result,
                StoreProduct(rawValue: transaction.productID) != nil {
