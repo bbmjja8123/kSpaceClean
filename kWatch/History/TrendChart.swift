@@ -1,65 +1,61 @@
 import SwiftUI
+import Charts
+import DesignSystem
 
-/// A pure-SwiftUI line chart that renders the supplied `ChartPoint` series.
+/// A Swift Charts trend view that renders the supplied `ChartPoint` series
+/// as a line with a gradient area fill and time/numeric axes.
 ///
 /// This view has **no repository access, no formatting logic, and no side
 /// effects**. It auto-scales to the min/max of the data and spaces points
 /// evenly along the x-axis.
 ///
-/// Uses `Canvas` (available since macOS 12) to avoid a dependency on
-/// Swift Charts, keeping the deployment target at macOS 13.
+/// Uses Swift Charts, which ships with the macOS 13 SDK — no deployment
+/// target change is required.
 public struct TrendChart: View {
     public let points: [ChartPoint]
     public let lineColor: Color
-    public let fillColor: Color?
 
-    public init(
-        points: [ChartPoint],
-        lineColor: Color = .accentColor,
-        fillColor: Color? = nil
-    ) {
+    public init(points: [ChartPoint], lineColor: Color = .brandPrimary) {
         self.points = points
         self.lineColor = lineColor
-        self.fillColor = fillColor
     }
 
     public var body: some View {
-        Canvas { context, size in
-            guard points.count > 1 else { return }
+        Chart(points) { point in
+            // The area must be declared before the line so the line draws
+            // on top of the fill instead of being washed out.
+            AreaMark(
+                x: .value("Time", point.date),
+                y: .value("Value", point.value)
+            )
+            .interpolationMethod(.monotone)
+            .foregroundStyle(
+                LinearGradient(
+                    colors: [lineColor.opacity(0.35), .clear],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
 
-            let values = points.map(\.value)
-            let maxValue = values.max() ?? 1
-            let minValue = values.min() ?? 0
-            let valueRange = max(maxValue - minValue, 0.0001)
-            let firstDate = points.first?.date ?? Date()
-            let lastDate = points.last?.date ?? firstDate
-            let timeRange = max(lastDate.timeIntervalSince(firstDate), 0.0001)
-
-            // Build the line path using real timestamp spacing.
-            var linePath = Path()
-            for (index, point) in points.enumerated() {
-                let x = size.width * CGFloat(point.date.timeIntervalSince(firstDate) / timeRange)
-                let y = size.height * (1 - CGFloat((point.value - minValue) / valueRange))
-                let pt = CGPoint(x: x, y: y)
-                if index == 0 {
-                    linePath.move(to: pt)
-                } else {
-                    linePath.addLine(to: pt)
-                }
+            LineMark(
+                x: .value("Time", point.date),
+                y: .value("Value", point.value)
+            )
+            .interpolationMethod(.monotone)
+            .foregroundStyle(lineColor)
+        }
+        .chartXAxis {
+            AxisMarks(values: .automatic(desiredCount: 6)) { _ in
+                AxisGridLine().foregroundStyle(Color.separatorColor)
+                AxisTick()
+                AxisValueLabel(format: .dateTime.hour())
             }
-
-            // Optional fill beneath the line.
-            if let fillColor {
-                var fillPath = linePath
-                if points.last != nil {
-                    fillPath.addLine(to: CGPoint(x: size.width, y: size.height))
-                    fillPath.addLine(to: CGPoint(x: 0, y: size.height))
-                    fillPath.closeSubpath()
-                }
-                context.fill(fillPath, with: .color(fillColor))
+        }
+        .chartYAxis {
+            AxisMarks(position: .leading) { _ in
+                AxisGridLine().foregroundStyle(Color.separatorColor)
+                AxisValueLabel()
             }
-
-            context.stroke(linePath, with: .color(lineColor), lineWidth: 1.5)
         }
     }
 }
@@ -77,8 +73,7 @@ struct TrendChart_Data_Previews: PreviewProvider {
         }
         TrendChart(
             points: points,
-            lineColor: .blue,
-            fillColor: .blue.opacity(0.1)
+            lineColor: .blue
         )
         .frame(height: 200)
         .padding()

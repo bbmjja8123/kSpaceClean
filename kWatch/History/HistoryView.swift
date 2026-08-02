@@ -220,8 +220,7 @@ public struct HistoryView: View {
             // Chart
             TrendChart(
                 points: viewModel.points,
-                lineColor: chartColor(for: viewModel.selectedMetric),
-                fillColor: chartColor(for: viewModel.selectedMetric).opacity(0.08)
+                lineColor: chartColor(for: viewModel.selectedMetric)
             )
             .frame(minHeight: 180, maxHeight: 240)
             .padding(.horizontal)
