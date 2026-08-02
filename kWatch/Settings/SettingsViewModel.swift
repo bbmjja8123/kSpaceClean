@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import DesignSystem
 import AppKit
 import MetricsKit
 import StoreKit
@@ -36,6 +37,11 @@ public final class SettingsViewModel: ObservableObject {
     /// Whether kWatch should be launched automatically at user login. Bound
     /// to a toggle in `WidgetSettingsView`.
     @Published public var launchAtLogin: Bool
+
+    /// Per-metric menu-bar icon style theme. Each metric can independently
+    /// render as sparkline, numeric, or minimal; mutations are persisted
+    /// immediately through the preferences repository.
+    @Published public var iconTheme: MenuBarIconTheme
 
     /// Whether the user has granted notification permission. Refreshed via
     /// `syncNotificationAuthorization()` whenever the view appears.
@@ -86,6 +92,7 @@ public final class SettingsViewModel: ObservableObject {
         self.enabledKinds = preferences.enabledKinds
         self.samplingIntervalSeconds = max(0.5, preferences.samplingIntervalSeconds)
         self.launchAtLogin = preferences.launchAtLogin
+        self.iconTheme = preferences.menuBarIconTheme
         self.isPro = purchaseState.isPro
 
         // Cache version strings from the main bundle. Fall back to "0.0.0"
@@ -108,6 +115,14 @@ public final class SettingsViewModel: ObservableObject {
         guard menuBarMode != mode else { return }
         menuBarMode = mode
         preferences.menuBarMode = mode
+    }
+
+    /// Set the menu-bar icon style for a single metric. Persisted on every
+    /// change so the menu bar reflects the new style the next time it
+    /// re-renders that metric's status icon.
+    public func setIconStyle(_ style: MenuBarIcons.Style, for kind: MetricKind) {
+        iconTheme.set(style, for: kind)
+        preferences.menuBarIconTheme = iconTheme
     }
 
     /// Toggle a single metric kind on or off. Persisted immediately.

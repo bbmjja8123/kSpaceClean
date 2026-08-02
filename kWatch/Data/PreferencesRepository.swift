@@ -1,5 +1,6 @@
 import Foundation
 import MetricsKit
+import DesignSystem
 
 public enum AlertOperator: String, Codable, Sendable {
     case above
@@ -13,6 +14,7 @@ public protocol PreferencesRepositoryProtocol: Sendable {
     var samplingIntervalSeconds: Double { get set }
     var onboardingCompleted: Bool { get set }
     var launchAtLogin: Bool { get set }
+    var menuBarIconTheme: MenuBarIconTheme { get set }
 }
 
 /// App Group-backed user preferences for the production application.
@@ -24,6 +26,7 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
     private static let samplingIntervalKey = "kWatch.samplingIntervalSeconds"
     private static let onboardingCompletedKey = "kWatch.onboardingCompleted"
     private static let launchAtLoginKey = "kWatch.launchAtLogin"
+    private static let menuBarIconThemeKey = "kWatch.menuBarIconTheme"
 
     public init(defaults: UserDefaults) {
         self.defaults = defaults
@@ -65,6 +68,19 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
         set { defaults.set(newValue, forKey: Self.launchAtLoginKey) }
     }
 
+    public var menuBarIconTheme: MenuBarIconTheme {
+        get {
+            guard let data = defaults.data(forKey: Self.menuBarIconThemeKey),
+                  let theme = try? JSONDecoder().decode(MenuBarIconTheme.self, from: data) else {
+                return .default
+            }
+            return theme
+        }
+        set {
+            defaults.set(try? JSONEncoder().encode(newValue), forKey: Self.menuBarIconThemeKey)
+        }
+    }
+
     private func registerDefaults() {
         defaults.register(defaults: [
             Self.menuBarModeKey: MenuBarMode.trend.rawValue,
@@ -88,6 +104,7 @@ public final class InMemoryPreferences: PreferencesRepositoryProtocol, @unchecke
     public var samplingIntervalSeconds: Double = 2.0
     public var onboardingCompleted = false
     public var launchAtLogin = false
+    public var menuBarIconTheme: MenuBarIconTheme = .default
 
     public init() {}
 }

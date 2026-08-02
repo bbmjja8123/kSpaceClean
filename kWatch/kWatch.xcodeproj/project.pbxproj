@@ -127,6 +127,10 @@
 		isa = PBXBuildFile;
 		fileRef = 0ADB26D41ACA3A15E19ABEE3;
 	};
+	5BD62E81B0F33800CCE8C893 /* 5BD62E81B0F33800CCE8C893 */ = {
+		isa = PBXBuildFile;
+		fileRef = 7D3632F28B178B4934AEB9E5;
+	};
 	5BF62D5F32C77B3E2C20ACFD /* 5BF62D5F32C77B3E2C20ACFD */ = {
 		isa = PBXBuildFile;
 		fileRef = 1B71C81D108972C624F49028;
@@ -142,6 +146,10 @@
 	61C6D81024D3617BD61AB1C8 /* 61C6D81024D3617BD61AB1C8 */ = {
 		isa = PBXBuildFile;
 		fileRef = FE986E9F52381180BA28CA3C;
+	};
+	62DD2B2A146B30FC1666A265 /* 62DD2B2A146B30FC1666A265 */ = {
+		isa = PBXBuildFile;
+		fileRef = EDA8E236CF307FFD01EAB981;
 	};
 	671E289ADC376CB571A8FF1B /* 671E289ADC376CB571A8FF1B */ = {
 		isa = PBXBuildFile;
@@ -816,6 +824,13 @@
 		path = Intents/ShowNetworkRateIntent.swift;
 		sourceTree = "<group>";
 	};
+	7D3632F28B178B4934AEB9E5 /* MenuBarIconTheme.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MenuBarIconTheme.swift;
+		path = MenuBar/MenuBarIconTheme.swift;
+		sourceTree = "<group>";
+	};
 	7ECE422A857C4BC9B14B1768 /* DashboardViewModel.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1087,6 +1102,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AlertsView.swift;
 		path = Alerts/AlertsView.swift;
+		sourceTree = "<group>";
+	};
+	EDA8E236CF307FFD01EAB981 /* MenuBarIconThemeTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MenuBarIconThemeTests.swift;
+		path = Tests/MenuBarIconThemeTests.swift;
 		sourceTree = "<group>";
 	};
 	EDFEA602AB2A5352BBD64650 /* MenuBarSettingsView.swift */ = {
@@ -1408,6 +1430,7 @@
 			AAEA3FCC869E5B9F1AF52EF4 /* HistoryViewModelTests.swift */,
 			443B69E3590BADE5F657F64E /* IntentParameterTests.swift */,
 			03B411213CED55739D9FB3DE /* IntentTests.swift */,
+			EDA8E236CF307FFD01EAB981 /* MenuBarIconThemeTests.swift */,
 			77BF1B73572625F9518ED83C /* MenuBarViewModelTests.swift */,
 			48CBBF63493E2A8BC8F68341 /* MetricCardViewModelTests.swift */,
 			2906D24E92EE5AE02B27EE3D /* NotificationSchedulerTests.swift */,
@@ -1439,6 +1462,7 @@
 	D086B1D575B679BDD667F1C2 /* MenuBar */ = {
 		isa = PBXGroup;
 		children = (
+			7D3632F28B178B4934AEB9E5 /* MenuBarIconTheme.swift */,
 			D6DCAF56A82C475B6EB3E767 /* MenuBarView.swift */,
 			FF3B633668A0E32697CC38F0 /* MenuBarViewModel.swift */,
 			3F5A280592344A01BF293381 /* MetricMenuRow.swift */,
@@ -1509,6 +1533,7 @@
 		name = kWatchTests;
 		packageProductDependencies = (
 			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
+			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
 		);
 		productName = kWatchTests;
 		productReference = 09C386C2F6D04F8712E2E85C;
@@ -1631,6 +1656,7 @@
 			98F18BEC132E0558BF27B792 /* 98F18BEC132E0558BF27B792 */,
 			F635ABC2DE1E32C726E6861A /* F635ABC2DE1E32C726E6861A */,
 			5098DD3CB6A57977716F8E78 /* 5098DD3CB6A57977716F8E78 */,
+			62DD2B2A146B30FC1666A265 /* 62DD2B2A146B30FC1666A265 */,
 			92BEC11FC8DD9F77F04CEF4F /* 92BEC11FC8DD9F77F04CEF4F */,
 			2B65BC3402FD3269056DFF7F /* 2B65BC3402FD3269056DFF7F */,
 			50462B0A78871C43A4E77B9B /* 50462B0A78871C43A4E77B9B */,
@@ -1691,6 +1717,7 @@
 			DD92D548C385F21DE431F1E6 /* DD92D548C385F21DE431F1E6 */,
 			29A4D3320F9CB93A6CDF1715 /* 29A4D3320F9CB93A6CDF1715 */,
 			6D7CC1394A444868F8FBE0F1 /* 6D7CC1394A444868F8FBE0F1 */,
+			5BD62E81B0F33800CCE8C893 /* 5BD62E81B0F33800CCE8C893 */,
 			E4F5BB78841CF956AA3F9FF4 /* E4F5BB78841CF956AA3F9FF4 */,
 			A2A2B2D52E52A0038A70163C /* A2A2B2D52E52A0038A70163C */,
 			D96937041669DA5D4CFD772D /* D96937041669DA5D4CFD772D */,

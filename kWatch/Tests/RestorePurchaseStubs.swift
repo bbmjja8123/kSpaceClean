@@ -14,6 +14,7 @@ final class StubPreferencesRepository: PreferencesRepositoryProtocol, @unchecked
     var samplingIntervalSeconds: Double = 2.0
     var onboardingCompleted: Bool = false
     var launchAtLogin: Bool = false
+    var menuBarIconTheme: MenuBarIconTheme = .default
 
     init() {}
 }

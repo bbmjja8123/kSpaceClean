@@ -143,6 +143,7 @@ def main():
         ("Intents/StartMonitoringIntent.swift", "Intents"),
         ("Intents/StopMonitoringIntent.swift", "Intents"),
         ("Intents/StubIntentService.swift", "Intents"),
+        ("MenuBar/MenuBarIconTheme.swift", "MenuBar"),
         ("MenuBar/MenuBarView.swift", "MenuBar"),
         ("MenuBar/MenuBarViewModel.swift", "MenuBar"),
         ("MenuBar/MetricMenuRow.swift", "MenuBar"),
@@ -182,7 +183,7 @@ def main():
         "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
         "AppShortcutsVerificationTests.swift", "CoreDataStackTests.swift", "DashboardViewModelTests.swift",
         "DiagnosticsExporterTests.swift", "HistoryViewModelTests.swift", "IntentParameterTests.swift",
-        "IntentTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift",
+        "IntentTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift",
         "NotificationSchedulerTests.swift",
         "OnboardingViewModelTests.swift", "PaywallViewModelTermsTests.swift",
         "PreferencesRepositoryTests.swift", "ProcessesViewModelTests.swift", "RepositoryTests.swift",
@@ -605,7 +606,7 @@ def main():
                             (test_frameworks_phase_id, "Frameworks")],
             "buildRules": [],
             "dependencies": test_deps,
-            "packageProductDependencies": [(prod_metrics_id, "MetricsKit")],
+            "packageProductDependencies": [(prod_metrics_id, "MetricsKit"), (prod_ds_id, "DesignSystem")],
         }), "target_kWatchTests")
 
     # ========== Project ==========
