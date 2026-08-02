@@ -18,6 +18,8 @@ public struct MetricMenuRow: View {
     /// the paywall; unlocked rows keep it `nil` and render as inert text.
     public var onTap: (() -> Void)?
 
+    /// Configures a presentation-only metric row with an optional locked
+    /// state and an optional tap action.
     public init(
         title: String,
         value: String,

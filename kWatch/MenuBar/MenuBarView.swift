@@ -3,8 +3,9 @@ import MetricsKit
 import DesignSystem
 
 /// The window-style content shown when the user clicks the kWatch status
-/// item. Renders the current metric readings (with an optional trend chart),
-/// a mode picker, and navigation actions into the dashboard windows.
+/// item. Lays out a header with the Pro capsule, the QuickToggleBar, the
+/// seven metric rows, a mode picker, footer navigation actions, and the
+/// version footer.
 public struct MenuBarView: View {
     @ObservedObject public var viewModel: MenuBarViewModel
     @ObservedObject public var appState: AppState
@@ -19,6 +20,9 @@ public struct MenuBarView: View {
     /// hosting scene can present the paywall sheet.
     public let onOpenPaywall: (() -> Void)?
 
+    /// Creates the popover, wiring up the view model, app/purchase state,
+    /// and the navigation callbacks. `onOpenPaywall` presents the paywall
+    /// for locked (Pro-gated) metric rows.
     public init(
         viewModel: MenuBarViewModel,
         appState: AppState,
