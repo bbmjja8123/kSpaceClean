@@ -93,7 +93,12 @@ public struct QuickToggleBar: View {
         let process = Process()
         process.launchPath = "/usr/sbin/networksetup"
         process.arguments = ["-setairportpower", "en0", enabled ? "on" : "off"]
-        try? process.run()
+        do {
+            try process.run()
+            process.waitUntilExit()
+        } catch {
+            NSLog("kWatch: setWiFi(\(enabled)) failed: \(error.localizedDescription)")
+        }
     }
 
     public static func setBluetooth(_ enabled: Bool) {
