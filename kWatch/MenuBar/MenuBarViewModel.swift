@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import MetricsKit
+import DesignSystem
 
 /// Drives the menu-bar surface: consumes the shared `MetricsAggregator`
 /// stream, exposes formatted display values, and persists the current
@@ -27,6 +28,11 @@ public final class MenuBarViewModel: ObservableObject {
             if mode != oldValue { preferences.menuBarMode = mode }
         }
     }
+    @Published public var iconStyle: MenuBarIcons.Style {
+        didSet {
+            if iconStyle != oldValue { preferences.menuBarIconTheme.set(iconStyle, for: .cpu) }
+        }
+    }
     @Published public private(set) var isPro: Bool = false
 
     private let container: any AppContainerProtocol
@@ -39,6 +45,7 @@ public final class MenuBarViewModel: ObservableObject {
         self.preferences = container.preferences
         self.historyCapacity = historyCapacity
         self.mode = preferences.menuBarMode
+        self.iconStyle = preferences.menuBarIconTheme.style(for: .cpu)
         self.isPro = container.purchaseState.isPro
     }
 

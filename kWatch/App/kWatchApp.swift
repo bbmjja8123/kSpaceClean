@@ -1,6 +1,7 @@
 import SwiftUI
 import AppKit
 import MetricsKit
+import DesignSystem
 
 @main
 struct kWatchApp: App {
@@ -34,10 +35,18 @@ struct kWatchApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra("kWatch", systemImage: "gauge.with.dots.needle.bottom.50percent") {
+        MenuBarExtra {
             MenuBarContent(viewModel: menuBarViewModel, appState: appState, purchaseState: purchaseState)
                 .environmentObject(menuBarViewModel)
                 .task { menuBarViewModel.start() }
+        } label: {
+            MenuBarIcons.statusIcon(
+                kind: .cpu,
+                style: menuBarViewModel.iconStyle,
+                values: menuBarViewModel.cpuHistory,
+                currentValue: menuBarViewModel.cpuPercent,
+                unit: "%"
+            )
         }
         .menuBarExtraStyle(.window)
 
