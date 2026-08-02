@@ -78,6 +78,12 @@ public final class AppCoordinator: ObservableObject {
                     Task.detached {
                         await scheduler.schedule(alert: alert, value: value)
                     }
+                    // Start a Live Activity for Pro users on macOS 14+. The
+                    // coordinator's `isAvailable` guard handles the user
+                    // having disabled Live Activities for kWatch.
+                    if container.purchaseState.isPro {
+                        startLiveActivityIfPossible(for: alert, value: value, at: now)
+                    }
                 }
             }
         } catch {
@@ -90,5 +96,34 @@ public final class AppCoordinator: ObservableObject {
             menuBarMode: container.preferences.menuBarMode
         )
         try? container.snapshotWriter.write(shared)
+    }
+
+    /// Start a Live Activity for an alert fire, gated by macOS 14+ and the
+    /// runtime authorization flag.
+    private func startLiveActivityIfPossible(
+        for alert: MetricAlert,
+        value: MetricValue,
+        at timestamp: Date
+    ) {
+        if #available(macOS 14.0, *) {
+            let numeric: Double
+            switch value {
+            case let .percentage(v): numeric = v
+            case let .degreesCelsius(v): numeric = v
+            case let .revolutionsPerMinute(v): numeric = v
+            case let .bytesPerSecond(v): numeric = Double(v)
+            default: return
+            }
+            let trend: LiveActivityCoordinator.Trend =
+                alert.op == .above ? .up : .down
+            Task {
+                await LiveActivityCoordinator.shared.startAlert(
+                    kind: alert.kind,
+                    value: numeric,
+                    trend: trend,
+                    timestamp: timestamp
+                )
+            }
+        }
     }
 }

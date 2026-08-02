@@ -1,3 +1,4 @@
+#if canImport(ActivityKit)
 import ActivityKit
 import Foundation
 
@@ -145,3 +146,4 @@ extension MetricActivityAttributes.ContentState {
         try container.encode(displayUnit, forKey: .displayUnit)
     }
 }
+#endif

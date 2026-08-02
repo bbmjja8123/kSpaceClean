@@ -94,7 +94,7 @@ def main():
 
     group_names = [
         "Alerts", "App", "DI", "Dashboard", "Data", "Diagnostics", "History",
-        "Integrations", "Intents", "MenuBar", "Onboarding", "Processes",
+        "Integrations", "Intents", "LiveActivity", "MenuBar", "Onboarding", "Processes",
         "Resources", "Settings", "Shared", "State", "Store", "Tests", "Products",
     ]
     group_ids = {}
@@ -131,6 +131,8 @@ def main():
         ("History/HistoryViewModel.swift", "History"),
         ("History/TrendChart.swift", "History"),
         ("Integrations/KWatchSpotlightIndexer.swift", "Integrations"),
+        ("LiveActivity/LiveActivityCoordinator.swift", "LiveActivity"),
+        ("LiveActivity/MetricActivityAttributes.swift", "LiveActivity"),
         ("Intents/ExportDiagnosticsIntent.swift", "Intents"),
         ("Intents/IntentService.swift", "Intents"),
         ("Intents/KWatchAppShortcuts.swift", "Intents"),
@@ -186,10 +188,10 @@ def main():
         "AlertEditorViewModelTests.swift", "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
         "AppShortcutsVerificationTests.swift", "CoreDataStackTests.swift", "DashboardViewModelTests.swift",
         "DiagnosticsExporterTests.swift", "HistoryViewModelTests.swift", "IntentParameterTests.swift",
-        "IntentTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift",
+        "IntentTests.swift", "InteractiveWidgetIntentTests.swift", "LiveActivityCoordinatorTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift",
         "NotificationSchedulerTests.swift",
         "OnboardingViewModelTests.swift", "PaywallViewModelTermsTests.swift",
-        "PreferencesRepositoryTests.swift", "ProcessesViewModelTests.swift", "QuickToggleBarTests.swift", "RepositoryTests.swift",
+        "PreferencesRepositoryTests.swift", "ProcessNetworkSortTests.swift", "ProcessesViewModelTests.swift", "QuickToggleBarTests.swift", "RepositoryTests.swift",
         "RestorePurchaseStubs.swift", "SettingsViewModelRestoreTests.swift",
         "SettingsViewModelTests.swift", "SnapshotRoundTripTests.swift",
         "SnapshotWriterTests.swift", "StoreManagerTests.swift",
