@@ -143,6 +143,14 @@ struct ScanProgressView: View {
                 value: String(format: "%.0f", progress.stats.filesPerSecond),
                 caption: "文件/秒"
             )
+
+            divider
+
+            statColumn(
+                title: "预计剩余",
+                value: etaText,
+                caption: ""
+            )
         }
         .padding(.horizontal, Spacing.lg)
     }
@@ -212,23 +220,27 @@ struct ScanProgressView: View {
         180
     }
 
-    /// Fractional completion derived from completed / total categories.
-    /// Falls back to `0` when the orchestrator hasn't published a total
-    /// yet (e.g. before the first `categoryProgress` arrives), which the
-    /// ring renderer clamps to `0`.
+    /// Fractional completion via `ScanProgressMath` (Task A2) — categories
+    /// completed + in-flight files + stats so the ring moves continuously
+    /// instead of freezing between category boundaries.
     private var progressFraction: Double {
-        guard progress.categoryProgress.count > 0 else { return 0 }
-        let done = Double(progress.categoryProgress.filter { $0.status == .completed }.count)
-        let total = Double(progress.categoryProgress.count)
-        let ratio = total > 0 ? done / total : 0
-        // Blend in stats-based progress so the ring moves while a long
-        // single category is being scanned (otherwise it appears frozen
-        // for minutes between category boundaries).
-        let statsFraction = min(
-            Double(progress.stats.fileCount) / max(Double(progress.stats.fileCount) + 1, 1),
-            1
+        ScanProgressMath.completionFraction(
+            categoryProgress: progress.categoryProgress,
+            stats: progress.stats
         )
-        return min(max(ratio, statsFraction * 0.15), 1)
+    }
+
+    /// Live ETA string; shows "—" until the math has enough signal.
+    private var etaText: String {
+        if case .scanning = progress.state {
+            if let eta = ScanProgressMath.estimatedRemainingSeconds(
+                categoryProgress: progress.categoryProgress,
+                stats: progress.stats
+            ) {
+                return ScanProgressMath.formatClock(eta)
+            }
+        }
+        return "—"
     }
 
     /// Icon for the active stage — pulled from ``ScanStage/icon``.
