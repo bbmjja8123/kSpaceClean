@@ -26,4 +26,25 @@ final class CaskParserTests: XCTestCase {
         XCTAssertEqual(rule.bundleID, "com.microsoft.VSCode")
         XCTAssertGreaterThan(rule.residuePaths.count, 0)
     }
+
+    func testParseSlackCaskReturnsCanonicalBundleID() {
+        let ruby = """
+        cask "slack" do
+          version "4.36.0"
+          sha256 "deadbeef"
+
+          url "https://example.com/slack.dmg"
+          name "Slack"
+          desc "Team communication"
+          homepage "https://slack.com"
+
+          app "Slack.app"
+        end
+        """
+
+        let rule = try! CaskParser.parse(ruby, caskName: "slack")
+
+        XCTAssertEqual(rule.bundleID, "com.slack.client",
+                       "CaskParser must emit the canonical com.slack.client, not the legacy com.tinyspeck.chatlyio")
+    }
 }

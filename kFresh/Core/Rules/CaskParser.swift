@@ -80,7 +80,7 @@ public enum CaskParser {
             "iterm2": "com.googlecode.iterm2",
             "google-chrome": "com.google.Chrome",
             "firefox": "org.mozilla.firefox",
-            "slack": "com.tinyspeck.chatlyio",
+            "slack": "com.slack.client",
             "discord": "com.hnc.Discord",
             "notion": "notion.id",
             "figma": "com.figma.Desktop",
