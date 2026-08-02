@@ -198,3 +198,106 @@ final class ScanOrchestratorIntegrationTests: XCTestCase {
                       "FileEnumerator must surface the fixture's dataless.bin path")
     }
 }
+
+/// Task A1 — live progress composer. Drives a scan over a 5000-file fixture
+/// and asserts the interim `.scanning` snapshots carry real-time stats
+/// (the complaint: the ring froze near 0 until the final yield).
+@MainActor
+final class ScanProgressComposerTests: XCTestCase {
+    private var a1Root: URL!
+    private var cachesRoot: URL!
+
+    override func setUp() async throws {
+        try await super.setUp()
+        let root = URL(fileURLWithPath: "/tmp")
+            .appendingPathComponent("sclean-a1-progress-\(UUID().uuidString)", isDirectory: true)
+        let caches = root.appendingPathComponent("Caches", isDirectory: true)
+        try FileManager.default.createDirectory(at: caches, withIntermediateDirectories: true)
+        for i in 0..<5000 {
+            try Data(repeating: 0x01, count: 256)
+                .write(to: caches.appendingPathComponent("f\(i).bin"))
+        }
+        a1Root = root
+        cachesRoot = caches
+    }
+
+    override func tearDown() async throws {
+        if let root = a1Root {
+            try? FileManager.default.removeItem(at: root)
+        }
+        try await super.tearDown()
+    }
+
+    private func scanToCompletion(_ orchestrator: ScanOrchestrator) async -> [ScanProgress] {
+        let stream = await orchestrator.startScan()
+        var snapshots: [ScanProgress] = []
+        for await p in stream {
+            snapshots.append(p)
+            if case .completed = p.state { break }
+            if case .failed(let err) = p.state { XCTFail("scan failed: \(err)") }
+        }
+        return snapshots
+    }
+
+    func testInterimScanningSnapshotAndTerminalCompletion() async throws {
+        let cats = [
+            CategoryDefinition(
+                id: "app.cache",
+                title: "App Cache",
+                paths: [cachesRoot.path],
+                riskLevel: .caution
+            )
+        ]
+        let orchestrator = ScanOrchestrator(categoryDefinitions: cats)
+        let snapshots = await scanToCompletion(orchestrator)
+
+        let first = try XCTUnwrap(snapshots.first)
+        XCTAssertEqual(first.state, .scanning,
+                       "first snapshot must be a live .scanning state, not idle")
+
+        // Complaint #1 regression: at least one interim snapshot must carry
+        // real-time stats (file count > 0, live current path) so the ring
+        // and the stats row move continuously, not only at the end.
+        let interimSnapshot = try XCTUnwrap(
+            snapshots.first { $0.state == .scanning && $0.stats.fileCount > 0 },
+            "interim scanning snapshot with real-time stats required"
+        )
+        XCTAssertFalse(interimSnapshot.currentNodePath?.isEmpty ?? true,
+                       "interim snapshot must carry the currently-scanned file path")
+        XCTAssertEqual(interimSnapshot.categoryProgress.count, 1,
+                       "interim snapshot must carry the seeded per-category rows")
+
+        let final = try XCTUnwrap(snapshots.last)
+        XCTAssertEqual(final.state, .completed)
+        let row = try XCTUnwrap(final.categoryProgress.first)
+        XCTAssertEqual(row.status, .completed)
+        XCTAssertEqual(row.filesFound, 5000)
+        XCTAssertEqual(row.totalSize, 1_280_000)
+        XCTAssertEqual(final.stats.fileCount, 5000)
+        XCTAssertGreaterThan(final.stats.elapsed, 0)
+        XCTAssertGreaterThan(final.stats.filesPerSecond, 0)
+    }
+
+    func testProgressStreamStartsWithPendingRowsSeeded() async throws {
+        let emptyA = a1Root.appendingPathComponent("EmptyA", isDirectory: true)
+        let emptyB = a1Root.appendingPathComponent("EmptyB", isDirectory: true)
+        try FileManager.default.createDirectory(at: emptyA, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: emptyB, withIntermediateDirectories: true)
+        let cats = [
+            CategoryDefinition(id: "system.cache", title: "System Cache", paths: [emptyA.path], riskLevel: .recommended),
+            CategoryDefinition(id: "system.logs", title: "System Logs", paths: [emptyB.path], riskLevel: .recommended),
+        ]
+        let orchestrator = ScanOrchestrator(categoryDefinitions: cats)
+        let snapshots = await scanToCompletion(orchestrator)
+
+        let first = try XCTUnwrap(snapshots.first)
+        XCTAssertEqual(first.categoryProgress.count, 2,
+                       "first snapshot must seed one pending row per category")
+        XCTAssertTrue(first.categoryProgress.allSatisfy { $0.status == .pending })
+
+        let final = try XCTUnwrap(snapshots.last)
+        XCTAssertEqual(final.categoryProgress.count, 2)
+        XCTAssertTrue(final.categoryProgress.allSatisfy { $0.status == .completed },
+                      "terminal snapshot must force-complete every row so the ring reaches 100%")
+    }
+}

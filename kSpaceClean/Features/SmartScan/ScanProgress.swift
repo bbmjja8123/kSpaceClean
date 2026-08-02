@@ -116,3 +116,21 @@ public struct ScanStats: Sendable {
         self.filesPerSecond = filesPerSecond
     }
 }
+
+/// One incremental file-discovery event emitted by a category worker.
+/// Consumed by the orchestrator's live progress composer (Task A1) so the
+/// progress ring / stats move continuously instead of only at category
+/// boundaries.
+public struct ScanDelta: Sendable {
+    public let categoryID: String
+    public let filePath: String
+    public let bytesIncrement: Int64
+    public let filesIncrement: Int
+
+    public init(categoryID: String, filePath: String, bytesIncrement: Int64, filesIncrement: Int = 1) {
+        self.categoryID = categoryID
+        self.filePath = filePath
+        self.bytesIncrement = bytesIncrement
+        self.filesIncrement = filesIncrement
+    }
+}

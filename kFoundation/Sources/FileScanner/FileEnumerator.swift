@@ -87,7 +87,7 @@ public actor FileEnumerator {
         rootPath: String,
         skipPaths: Set<String> = []
     ) -> AsyncStream<FileInfo> {
-        AsyncStream(bufferingPolicy: .bufferingNewest(4096)) { continuation in
+        AsyncStream(bufferingPolicy: .bufferingNewest(65536)) { continuation in
             Task.detached(priority: .background) {
                 await Self.walk(
                     rootPath: rootPath,
@@ -102,10 +102,13 @@ public actor FileEnumerator {
     /// Pure walker — runs as `nonisolated static` so concurrent callers do
     /// not serialise on the `FileEnumerator` actor (I2 fix).
     ///
-    /// I3 fix: the stream is now bounded (`bufferingNewest(4096)`) so a
+    /// I3 fix: the stream is now bounded (`bufferingNewest(65536)`) so a
     /// consumer that falls behind does not cause the walker to allocate an
     /// unbounded queue of `FileInfo` values; the stream drops the oldest
-    /// entry when full. The walker also honours `Task.isCancelled` and the
+    /// entry when full. The bound is sized well above a single scan
+    /// category's typical file count so per-file `onProgress` actor hops in
+    /// `ScanOrchestrator` cannot starve a category worker (A1 regression).
+    /// The walker also honours `Task.isCancelled` and the
     /// `continuation.onTermination` cleanup so a cancellation midway tears
     /// down properly instead of running to completion in the background.
     nonisolated private static func walk(

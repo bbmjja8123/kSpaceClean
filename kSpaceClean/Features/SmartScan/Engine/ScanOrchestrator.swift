@@ -193,6 +193,16 @@ public actor ScanOrchestrator {
         stats: ScanStats()
     )
 
+    // MARK: Live progress composer (Task A1)
+    private var liveCategoryProgress: [String: CategoryProgress] = [:]
+    private var runningFiles: Int = 0
+    private var runningBytes: Int64 = 0
+    private var scanStartedAt: Date = Date()
+    private var currentNodePath: String?
+    private var currentCategoryID: String = ""
+    private var lastYieldAt: Date = .distantPast
+    private var activeProgressContinuation: AsyncStream<ScanProgress>.Continuation?
+
     // MARK: Init
 
     /// Default initializer used by `ScanEngine.startScan()` (Task B4).
@@ -295,6 +305,19 @@ public actor ScanOrchestrator {
             stats: ScanStats()
         )
 
+        // Seed the live composer for this scan (Task A1). Row order follows
+        // `categoryDefs` and is preserved by every `composeSnapshot`.
+        liveCategoryProgress = Dictionary(
+            uniqueKeysWithValues: categoryDefs.map { ($0.id, Self.makeCategoryProgress(for: $0)) }
+        )
+        runningFiles = 0
+        runningBytes = 0
+        scanStartedAt = Date()
+        currentNodePath = nil
+        currentCategoryID = categoryDefs.first?.id ?? ""
+        lastYieldAt = .distantPast
+        activeProgressContinuation = nil
+
         return AsyncStream { continuation in
             // Spawn the worker task on the orchestrator actor so all
             // shared state mutations are serialised. The continuation
@@ -324,36 +347,27 @@ public actor ScanOrchestrator {
         // F8: signpost marker so an Instruments run can attribute the
         // orchestrator's wall time without sifting through stack frames.
         let _ = PerfInterval("scan.orchestrate")
-        let total = categoryDefs.count
+        activeProgressContinuation = continuation
+        defer { activeProgressContinuation = nil }
         var completed = 0
-        var totalBytes: Int64 = 0
-        var totalFiles: Int = 0
         var failedCategories: [String] = []
 
         // Initial snapshot — UI shows total=6 immediately so the
         // progress ring can render even before the first Task returns.
-        continuation.yield(ScanProgress(
-            state: .scanning,
-            filesDiscovered: 0,
-            totalBytes: 0,
-            currentDirectory: "",
-            currentCategory: categoryDefs.first?.title ?? "",
-            currentSubCategory: "",
-            errors: [],
-            finishedAt: nil,
-            speed: .medium,
-            categoryProgress: categoryDefs.map(Self.makeCategoryProgress),
-            currentStage: Self.stage(for: categoryDefs.first?.id ?? "") ?? .cache
-        ))
+        continuation.yield(composeSnapshot(state: .scanning))
 
         await withTaskGroup(of: ScanOutcome.self) { group in
             for def in categoryDefs {
-                group.addTask { [riskClassifier, bundleIDResolver, fileEnumerator] in
+                group.addTask { [riskClassifier, bundleIDResolver, fileEnumerator, weak self] in
                     await Self.scanCategory(
                         def,
                         classifier: riskClassifier,
                         resolver: bundleIDResolver,
-                        enumerator: fileEnumerator
+                        enumerator: fileEnumerator,
+                        onProgress: { delta in
+                            guard let self else { return }
+                            await self.recordProgress(delta, epoch: epoch)
+                        }
                     )
                 }
             }
@@ -364,8 +378,6 @@ public actor ScanOrchestrator {
                 // folding outcomes and let the fresh scan own the state.
                 if Task.isCancelled || isCancelled || epoch != scanEpoch { break }
                 completed += 1
-                totalBytes += outcome.bytes
-                totalFiles += outcome.fileCount
                 if let err = outcome.error {
                     failedCategories.append("\(outcome.category.title): \(err)")
                 }
@@ -379,52 +391,23 @@ public actor ScanOrchestrator {
                     totalSize: outcome.bytes
                 ))
 
-                continuation.yield(ScanProgress(
-                    state: .scanning,
-                    filesDiscovered: totalFiles,
-                    totalBytes: totalBytes,
-                    currentDirectory: "",
-                    currentCategory: outcome.category.title,
-                    currentSubCategory: "",
-                    errors: [],
-                    finishedAt: nil,
-                    speed: .medium,
-                    categoryProgress: [],
-                    currentStage: Self.stage(for: outcome.category.categoryID) ?? .cache
-                ))
+                await markCategoryCompleted(outcome, epoch: epoch)
+                continuation.yield(composeSnapshot(state: .scanning))
             }
         }
 
         let terminalState: ScanProgress
         if Task.isCancelled || isCancelled {
-            terminalState = ScanProgress(
-                state: .cancelled,
-                filesDiscovered: totalFiles,
-                totalBytes: totalBytes,
-                errors: [],
-                finishedAt: Date(),
-                speed: .medium
-            )
+            terminalState = composeSnapshot(state: .cancelled, finishedAt: Date())
         } else if !failedCategories.isEmpty {
             // Partial failure: surface the first error but still mark as
             // completed so the user can review what was found.
-            terminalState = ScanProgress(
+            terminalState = composeSnapshot(
                 state: .failed(failedCategories.first ?? "unknown"),
-                filesDiscovered: totalFiles,
-                totalBytes: totalBytes,
-                errors: [],
-                finishedAt: Date(),
-                speed: .medium
+                finishedAt: Date()
             )
         } else {
-            terminalState = ScanProgress(
-                state: .completed,
-                filesDiscovered: totalFiles,
-                totalBytes: totalBytes,
-                errors: [],
-                finishedAt: Date(),
-                speed: .medium
-            )
+            terminalState = composeSnapshot(state: .completed, finishedAt: Date())
         }
         // Epoch guard: if a newer `startScan()` bumped the epoch while we
         // were folding outcomes, our tail must NOT write terminal state into
@@ -446,6 +429,103 @@ public actor ScanOrchestrator {
         // second scan (we do not currently expose this, but it keeps the
         // semantics correct for tests that drive multiple cycles).
         categoriesScanned = completed
+    }
+
+    // MARK: - Live progress composer (Task A1)
+
+    /// Folds one per-file discovery event into the live counters and emits a
+    /// throttled snapshot. Epoch-guarded so a stale scan cannot write into a
+    /// newer scan's buffers.
+    private func recordProgress(_ delta: ScanDelta, epoch: UInt64) async {
+        guard epoch == scanEpoch else { return }
+        runningFiles += delta.filesIncrement
+        runningBytes += delta.bytesIncrement
+        currentNodePath = delta.filePath
+        currentCategoryID = delta.categoryID
+        if var row = liveCategoryProgress[delta.categoryID] {
+            row = CategoryProgress(
+                id: row.id,
+                title: row.title,
+                status: row.status == .pending ? .scanning : row.status,
+                subCategories: row.subCategories,
+                filesFound: row.filesFound + delta.filesIncrement,
+                totalSize: row.totalSize + delta.bytesIncrement
+            )
+            liveCategoryProgress[delta.categoryID] = row
+        }
+        await yieldSnapshot()
+    }
+
+    /// Marks one category worker's outcome complete in the live rows, then emits.
+    private func markCategoryCompleted(_ outcome: ScanOutcome, epoch: UInt64) async {
+        guard epoch == scanEpoch,
+              var row = liveCategoryProgress[outcome.category.categoryID] else { return }
+        row = CategoryProgress(
+            id: row.id,
+            title: row.title,
+            status: .completed,
+            subCategories: row.subCategories,
+            filesFound: outcome.fileCount,
+            totalSize: outcome.bytes
+        )
+        liveCategoryProgress[outcome.category.categoryID] = row
+        await yieldSnapshot()
+    }
+
+    /// Throttled snapshot emission (~max 10/s) so high-frequency per-file
+    /// deltas do not flood the AsyncStream or the UI.
+    private func yieldSnapshot() async {
+        let now = Date()
+        guard now.timeIntervalSince(lastYieldAt) >= 0.1 else { return }
+        lastYieldAt = now
+        activeProgressContinuation?.yield(composeSnapshot(state: .scanning))
+    }
+
+    /// Composes the full live `ScanProgress` from the composer state.
+    /// Row order follows `categoryDefs` (definition order preserved). On
+    /// `.completed` any still-pending/scanning row is force-completed so the
+    /// ring reaches 100% even when a category produced zero files.
+    private func composeSnapshot(
+        state: ScanProgress.State,
+        finishedAt: Date? = nil
+    ) -> ScanProgress {
+        let now = finishedAt ?? Date()
+        let rows = categoryDefs.compactMap { def -> CategoryProgress? in
+            guard var row = liveCategoryProgress[def.id] else { return nil }
+            if state == .completed, row.status == .pending || row.status == .scanning {
+                row = CategoryProgress(
+                    id: row.id,
+                    title: row.title,
+                    status: .completed,
+                    subCategories: row.subCategories,
+                    filesFound: row.filesFound,
+                    totalSize: row.totalSize
+                )
+            }
+            return row
+        }
+        let elapsed = now.timeIntervalSince(scanStartedAt)
+        let filesPerSecond = elapsed > 0 ? Double(runningFiles) / elapsed : 0
+        return ScanProgress(
+            state: state,
+            filesDiscovered: runningFiles,
+            totalBytes: runningBytes,
+            currentDirectory: currentNodePath ?? "",
+            currentCategory: currentCategoryID,
+            currentSubCategory: "",
+            errors: [],
+            finishedAt: finishedAt,
+            speed: .medium,   // ScanSpeed type; the live 速度 column reads stats.filesPerSecond
+            categoryProgress: rows,
+            currentStage: Self.stage(for: currentCategoryID) ?? .cache,
+            currentNodePath: currentNodePath,
+            stats: ScanStats(
+                discoveredSize: runningBytes,
+                fileCount: runningFiles,
+                elapsed: elapsed,
+                filesPerSecond: filesPerSecond
+            )
+        )
     }
 
     // MARK: - Category stream (C2)
@@ -550,7 +630,8 @@ public actor ScanOrchestrator {
         _ def: CategoryDefinition,
         classifier: RiskClassifier,
         resolver: BundleIDResolver,
-        enumerator: FileEnumerator
+        enumerator: FileEnumerator,
+        onProgress: (ScanDelta) async -> Void
     ) async -> ScanOutcome {
         var subItems: [ScanSubCategory] = []
         var totalSize: Int64 = 0
@@ -590,6 +671,8 @@ public actor ScanOrchestrator {
 
             for await info in await enumerator.enumerate(rootPath: resolvedPath) {
                 if info.isDirectory { continue }   // Skip dirs — we count files
+
+                await onProgress(ScanDelta(categoryID: def.id, filePath: info.path, bytesIncrement: info.size))
 
                 let risk = classifier.classify(path: info.path)
                 let app = await resolver.resolve(path: info.path)
