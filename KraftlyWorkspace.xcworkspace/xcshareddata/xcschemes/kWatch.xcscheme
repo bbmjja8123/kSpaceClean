@@ -17,7 +17,7 @@
                BlueprintIdentifier = "0EEA7C819FA2C1B860563983"
                BuildableName = "kWatch.app"
                BlueprintName = "kWatch"
-               ReferencedContainer = "container:kWatch.xcodeproj">
+               ReferencedContainer = "container:kWatch/kWatch.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "93A0A59B7AB918DD71BF8E5F"
                BuildableName = "kWatchTests.xctest"
                BlueprintName = "kWatchTests"
-               ReferencedContainer = "container:kWatch.xcodeproj">
+               ReferencedContainer = "container:kWatch/kWatch.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,7 +57,7 @@
             BlueprintIdentifier = "0EEA7C819FA2C1B860563983"
             BuildableName = "kWatch.app"
             BlueprintName = "kWatch"
-            ReferencedContainer = "container:kWatch.xcodeproj">
+            ReferencedContainer = "container:kWatch/kWatch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -74,7 +74,7 @@
             BlueprintIdentifier = "0EEA7C819FA2C1B860563983"
             BuildableName = "kWatch.app"
             BlueprintName = "kWatch"
-            ReferencedContainer = "container:kWatch.xcodeproj">
+            ReferencedContainer = "container:kWatch/kWatch.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
