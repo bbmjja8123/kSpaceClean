@@ -50,6 +50,7 @@ public actor FDAPermissionProbe {
     private let protectedPaths: [URL]
     private var cached: FDAStatus = .unknown
 
+    /// Creates a probe over the default TCC-gated paths.
     public init() {
         self.fileManager = .default
         self.protectedPaths = Self.defaultProtectedPaths
