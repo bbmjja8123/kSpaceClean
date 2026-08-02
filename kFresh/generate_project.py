@@ -195,12 +195,8 @@ def main():
         ("FinderExtension/FinderSync.swift", "FinderExtension"),
         ("Widgets/AppUsageWidget.swift", "Widgets"),
         ("Widgets/QuickUninstallWidget.swift", "Widgets"),
-        ("Data/CoreDataStack.swift", "Data"),
         ("Data/Models/UninstallHistory+CoreDataClass.swift", "Data"),
         ("Data/Models/UninstallHistory+CoreDataProperties.swift", "Data"),
-        ("Data/Models/AppAnalysis+CoreDataClass.swift", "Data"),
-        ("Data/Models/AppAnalysis+CoreDataProperties.swift", "Data"),
-        ("Data/AppAnalysisRepository.swift", "Data"),
         # DesignSystem source files (included directly, not as Swift Package)
         ("../kFoundation/Sources/DesignSystem/Colors.swift", "DS_DesignSystem"),
         ("../kFoundation/Sources/DesignSystem/Icons.swift", "DS_DesignSystem"),

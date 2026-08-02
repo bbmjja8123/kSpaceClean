@@ -39,10 +39,6 @@
 		isa = PBXBuildFile;
 		fileRef = AA82AD3ACA5E2DE044D14893;
 	};
-	14841E6EE2613C55089B2896 /* 14841E6EE2613C55089B2896 */ = {
-		isa = PBXBuildFile;
-		fileRef = 6733EE44B5FD81C4226C560C;
-	};
 	16DD6A0BD70B4AA953E77A46 /* 16DD6A0BD70B4AA953E77A46 */ = {
 		isa = PBXBuildFile;
 		fileRef = E7C75D71D1A007D0AE93042E;
@@ -175,10 +171,6 @@
 		isa = PBXBuildFile;
 		fileRef = 06873BB0E2C32B0E84C3FFEF;
 	};
-	5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */ = {
-		isa = PBXBuildFile;
-		fileRef = 0ADB26D41ACA3A15E19ABEE3;
-	};
 	5C4EFA638CBDB874AF7029E1 /* 5C4EFA638CBDB874AF7029E1 */ = {
 		isa = PBXBuildFile;
 		fileRef = 41AE15279A2A10C596DFAB23;
@@ -246,10 +238,6 @@
 	7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */ = {
 		isa = PBXBuildFile;
 		fileRef = F9F5DB4F736723C6F2F5DC63;
-	};
-	80FC5F8CBB595E37C8122AEB /* 80FC5F8CBB595E37C8122AEB */ = {
-		isa = PBXBuildFile;
-		fileRef = A1B2D98C4D9054D86EB64B87;
 	};
 	82527FCFD49BD63A8F328A23 /* 82527FCFD49BD63A8F328A23 */ = {
 		isa = PBXBuildFile;
@@ -387,10 +375,6 @@
 		isa = PBXBuildFile;
 		fileRef = 2F003C23A18C74F51E543E30;
 	};
-	DEDCF62736EE4FE8EC3222B2 /* DEDCF62736EE4FE8EC3222B2 */ = {
-		isa = PBXBuildFile;
-		fileRef = 4E0A28E26F67D15D01EC121B;
-	};
 	E233F62991DC0F46CF4D2FFE /* E233F62991DC0F46CF4D2FFE */ = {
 		isa = PBXBuildFile;
 		fileRef = 59B8F9CBC39A248FBD7FDE03;
@@ -517,13 +501,6 @@
 		name = kFreshTests.xctest;
 		path = kFreshTests.xctest;
 		sourceTree = BUILT_PRODUCTS_DIR;
-	};
-	0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = CoreDataStack.swift;
-		path = Data/CoreDataStack.swift;
-		sourceTree = "<group>";
 	};
 	0C25FC9BBBD612C35A333C8F /* BackupManager.swift */ = {
 		isa = PBXFileReference;
@@ -749,13 +726,6 @@
 		path = Data/UninstallHistoryRepository.swift;
 		sourceTree = "<group>";
 	};
-	4E0A28E26F67D15D01EC121B /* AppAnalysisRepository.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppAnalysisRepository.swift;
-		path = Data/AppAnalysisRepository.swift;
-		sourceTree = "<group>";
-	};
 	4F7AD27F716655EB375F2412 /* FDAGuidePage.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -818,13 +788,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = "UninstallHistory+CoreDataClass.swift";
 		path = "Data/Models/UninstallHistory+CoreDataClass.swift";
-		sourceTree = "<group>";
-	};
-	6733EE44B5FD81C4226C560C /* AppAnalysis+CoreDataClass.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = "AppAnalysis+CoreDataClass.swift";
-		path = "Data/Models/AppAnalysis+CoreDataClass.swift";
 		sourceTree = "<group>";
 	};
 	69534F9EAC28CF4D641D8DC3 /* EmptyStateView.swift */ = {
@@ -958,13 +921,6 @@
 		lastKnownFileType = text.json;
 		name = Configuration.storekit;
 		path = Configuration.storekit;
-		sourceTree = "<group>";
-	};
-	A1B2D98C4D9054D86EB64B87 /* AppAnalysis+CoreDataProperties.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = "AppAnalysis+CoreDataProperties.swift";
-		path = "Data/Models/AppAnalysis+CoreDataProperties.swift";
 		sourceTree = "<group>";
 	};
 	A1C2B87E1ED2C573006DA178 /* SystemCleanRowView.swift */ = {
@@ -1478,12 +1434,8 @@
 			0C25FC9BBBD612C35A333C8F /* BackupManager.swift */,
 			4DB6B5CBAB9D12D12D1702D7 /* UninstallHistoryRepository.swift */,
 			C9436B5A5555F38E15906412 /* FDAuthorizer.swift */,
-			0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */,
 			66EBF85D7D7569CED79F5DF4 /* UninstallHistory+CoreDataClass.swift */,
 			06873BB0E2C32B0E84C3FFEF /* UninstallHistory+CoreDataProperties.swift */,
-			6733EE44B5FD81C4226C560C /* AppAnalysis+CoreDataClass.swift */,
-			A1B2D98C4D9054D86EB64B87 /* AppAnalysis+CoreDataProperties.swift */,
-			4E0A28E26F67D15D01EC121B /* AppAnalysisRepository.swift */,
 		);
 		name = Data;
 		sourceTree = "<group>";
@@ -1934,12 +1886,8 @@
 			85273CFD97FF8391664B1148 /* 85273CFD97FF8391664B1148 */,
 			7A6C1D27E747136FB9E0845C /* 7A6C1D27E747136FB9E0845C */,
 			9FE0E33F3FCD69A0A105C330 /* 9FE0E33F3FCD69A0A105C330 */,
-			5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */,
 			78F8A9DFEED2BD5C2BFE359D /* 78F8A9DFEED2BD5C2BFE359D */,
 			583B954A6A1E0563236FE408 /* 583B954A6A1E0563236FE408 */,
-			14841E6EE2613C55089B2896 /* 14841E6EE2613C55089B2896 */,
-			80FC5F8CBB595E37C8122AEB /* 80FC5F8CBB595E37C8122AEB */,
-			DEDCF62736EE4FE8EC3222B2 /* DEDCF62736EE4FE8EC3222B2 */,
 			A62C9F07E54CB81C7B1CA298 /* A62C9F07E54CB81C7B1CA298 */,
 			46AE690EBB45827AF102DFB2 /* 46AE690EBB45827AF102DFB2 */,
 			74154FD04BEEF2138155FFD4 /* 74154FD04BEEF2138155FFD4 */,
