@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "MetricsKit", targets: ["MetricsKit"]),
     ],
     targets: [
-        .target(name: "DesignSystem"),
+        .target(name: "DesignSystem", dependencies: ["MetricsKit"]),
         .target(name: "FileScanner", dependencies: ["CommonUtils"]),
         .target(name: "Capabilities"),
         .target(name: "CommonUtils"),
