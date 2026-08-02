@@ -76,7 +76,7 @@ struct SettingsView: View {
     private var aboutTab: some View {
         VStack(spacing: 12) {
             Image(systemName: "trash.square.fill")
-                .font(.system(size: 48))
+                .font(AppFont.display)
                 .foregroundColor(.brandPrimary)
                 .symbolRenderingMode(.hierarchical)
 

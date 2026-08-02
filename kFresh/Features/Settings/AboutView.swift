@@ -7,7 +7,7 @@ struct AboutView: View {
         VStack(spacing: 20) {
             // Brand icon
             Image(systemName: "trash.square.fill")
-                .font(.system(size: 64))
+                .font(AppFont.appIcon)
                 .foregroundColor(.brandPrimary)
                 .symbolRenderingMode(.hierarchical)
 
