@@ -85,7 +85,20 @@ private struct MenuBarContent: View {
     @ObservedObject var viewModel: MenuBarViewModel
     @ObservedObject var appState: AppState
     @ObservedObject var purchaseState: PurchaseState
+    @StateObject private var paywallViewModel: PaywallViewModel
+    @State private var showPaywallSheet = false
     @Environment(\.openWindow) private var openWindow
+
+    init(viewModel: MenuBarViewModel, appState: AppState, purchaseState: PurchaseState) {
+        self.viewModel = viewModel
+        self.appState = appState
+        self.purchaseState = purchaseState
+        let container = kWatchAppDelegate.shared.container
+        _paywallViewModel = StateObject(wrappedValue: PaywallViewModel(
+            storeManager: container.storeManager,
+            purchaseState: container.purchaseState
+        ))
+    }
 
     var body: some View {
         MenuBarView(
@@ -96,8 +109,15 @@ private struct MenuBarContent: View {
             onOpenSettings: { NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil) },
             onOpenHistory: { openWindow(id: "dashboard"); appState.navigate(to: .history) },
             onOpenProcesses: { openWindow(id: "dashboard"); appState.navigate(to: .processes) },
-            onOpenAlerts: { openWindow(id: "dashboard"); appState.navigate(to: .alerts) }
+            onOpenAlerts: { openWindow(id: "dashboard"); appState.navigate(to: .alerts) },
+            onOpenPaywall: { showPaywallSheet = true }
         )
+        .sheet(isPresented: $showPaywallSheet) {
+            PaywallView(
+                viewModel: paywallViewModel,
+                onDismiss: { showPaywallSheet = false }
+            )
+        }
     }
 }
 

@@ -15,6 +15,10 @@ public struct MenuBarView: View {
     public let onOpenProcesses: () -> Void
     public let onOpenAlerts: () -> Void
 
+    /// Fired when the user taps a Pro-gated (locked) metric row so the
+    /// hosting scene can present the paywall sheet.
+    public let onOpenPaywall: (() -> Void)?
+
     public init(
         viewModel: MenuBarViewModel,
         appState: AppState,
@@ -23,7 +27,8 @@ public struct MenuBarView: View {
         onOpenSettings: @escaping () -> Void,
         onOpenHistory: @escaping () -> Void,
         onOpenProcesses: @escaping () -> Void,
-        onOpenAlerts: @escaping () -> Void
+        onOpenAlerts: @escaping () -> Void,
+        onOpenPaywall: (() -> Void)? = nil
     ) {
         self.viewModel = viewModel
         self.appState = appState
@@ -33,36 +38,80 @@ public struct MenuBarView: View {
         self.onOpenHistory = onOpenHistory
         self.onOpenProcesses = onOpenProcesses
         self.onOpenAlerts = onOpenAlerts
+        self.onOpenPaywall = onOpenPaywall
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             header
-            if viewModel.mode == .trend {
-                MiniTrendChart(values: viewModel.cpuHistory)
-                    .frame(height: 28)
-            }
-            VStack(alignment: .leading, spacing: 8) {
-                Divider()
-                MetricMenuRow(title: "CPU", value: "\(Int(viewModel.cpuPercent))%", icon: "cpu")
-                MetricMenuRow(title: "Memory", value: "\(Int(viewModel.memoryPercent))%", icon: "memorychip")
-                MetricMenuRow(title: "Disk", value: "\(Int(viewModel.diskPercent))%", icon: "internaldrive")
-                MetricMenuRow(title: "Network", value: formatBytes(viewModel.networkBytesPerSecond) + "/s", icon: "network")
-            }
-            modePicker
-            VStack(alignment: .leading, spacing: 8) {
-                Divider()
-                Button("Open Dashboard…", action: onOpenDashboard)
-                Button("History…", action: onOpenHistory)
-                Button("Processes…", action: onOpenProcesses)
-                Button("Alerts…", action: onOpenAlerts)
-                Button("Settings…", action: onOpenSettings)
-            }
+            QuickToggleBar()
+                .padding(.horizontal, 4)
             Divider()
-            Text("kWatch").font(.footnote).foregroundStyle(Color.textSecondary)
+            metricList
+            Divider()
+            modePicker
+            Divider()
+            footerActions
+            Text("kWatch v1.0").font(.caption2).foregroundStyle(Color.textSecondary)
         }
         .padding(12)
-        .frame(width: 280)
+        .frame(width: 360)
+    }
+
+    private var metricList: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(MetricKind.menuBarDisplayOrder, id: \.self) { kind in
+                metricRow(for: kind)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func metricRow(for kind: MetricKind) -> some View {
+        let row = makeRow(for: kind)
+        MetricMenuRow(
+            title: row.title,
+            value: row.value,
+            icon: row.icon,
+            isLocked: row.isLocked,
+            onTap: row.isLocked ? { onOpenPaywall?() } : nil
+        )
+    }
+
+    private func makeRow(for kind: MetricKind) -> (title: String, value: String, icon: String, isLocked: Bool) {
+        switch kind {
+        case .cpu:
+            return ("CPU", "\(Int(viewModel.cpuPercent))%", "cpu", false)
+        case .memory:
+            return ("Memory", "\(Int(viewModel.memoryPercent))%", "memorychip", false)
+        case .disk:
+            return ("Disk", "\(Int(viewModel.diskPercent))%", "internaldrive", false)
+        case .network:
+            let kbps = Double(viewModel.networkBytesSent + viewModel.networkBytesReceived) / 1024
+            return ("Network", String(format: "%.0f KB/s", kbps), "network", false)
+        case .temperature:
+            let v = viewModel.temperatureCelsius
+            return ("Temperature", v.map { String(format: "%.0f°C", $0) } ?? "—",
+                    "thermometer.medium", !purchaseState.isPro)
+        case .fan:
+            let v = viewModel.fanRPM
+            return ("Fan", v.map { "\($0) RPM" } ?? "—",
+                    "fan.fill", !purchaseState.isPro)
+        case .battery:
+            let v = viewModel.batteryPercent
+            return ("Battery", v.map { "\(Int($0))%" } ?? "—",
+                    "battery.100", !purchaseState.isPro)
+        }
+    }
+
+    private var footerActions: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Button("Open Dashboard…", action: onOpenDashboard)
+            Button("History…", action: onOpenHistory)
+            Button("Processes…", action: onOpenProcesses)
+            Button("Alerts…", action: onOpenAlerts)
+            Button("Settings…", action: onOpenSettings)
+        }
     }
 
     private var header: some View {
@@ -89,16 +138,5 @@ public struct MenuBarView: View {
         }
         .pickerStyle(.segmented)
         .labelsHidden()
-    }
-
-    private func formatBytes(_ bytes: UInt64) -> String {
-        let units = ["B", "KB", "MB", "GB"]
-        var value = Double(bytes)
-        var unitIndex = 0
-        while value >= 1024 && unitIndex < units.count - 1 {
-            value /= 1024
-            unitIndex += 1
-        }
-        return String(format: value < 10 ? "%.1f %@" : "%.0f %@", value, units[unitIndex])
     }
 }

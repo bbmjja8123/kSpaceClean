@@ -5,6 +5,13 @@ public enum MetricKind: String, CaseIterable, Codable, Sendable {
     case cpu, memory, disk, network, temperature, fan, battery
 }
 
+extension MetricKind {
+    /// Canonical display order for menu-bar presentation.
+    public static var menuBarDisplayOrder: [MetricKind] {
+        [.cpu, .memory, .disk, .network, .temperature, .fan, .battery]
+    }
+}
+
 /// A single, strongly-typed metric reading.
 ///
 /// Cases carry only value-type payloads so that `MetricValue` is
