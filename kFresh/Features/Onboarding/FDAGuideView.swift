@@ -36,7 +36,7 @@ struct FDAGuideView: View {
             pageIndicator
                 .padding(.bottom, AppSpacing.xl)
         }
-        .frame(width: 560, height: 520)
+        .frame(width: WindowFrame.onboarding.width, height: WindowFrame.onboarding.height)
         .brandBackground()
         .task { await controller.refreshFDAStatus() }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in

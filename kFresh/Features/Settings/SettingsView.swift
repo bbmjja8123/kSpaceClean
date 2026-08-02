@@ -17,7 +17,7 @@ struct SettingsView: View {
             aboutTab
                 .tabItem { Label("关于", systemImage: "info.circle") }
         }
-        .frame(width: 450, height: 300)
+        .frame(width: WindowFrame.settings.width, height: WindowFrame.settings.height)
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             Task { await viewModel.refreshFDAStatus() }
         }

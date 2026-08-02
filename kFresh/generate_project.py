@@ -160,6 +160,7 @@ def main():
         ("Features/Common/LoadingStateView.swift", "Common"),
         ("Features/Common/BrandStyles.swift", "Common"),
         ("Features/Common/BrandButtonStyle.swift", "Common"),
+        ("Features/Common/WindowFrames.swift", "Common"),
         ("Features/DeepClean/DeepCleanEngine.swift", "DeepClean"),
         ("Features/DeepClean/DeepCleanViewModel.swift", "DeepClean"),
         ("Features/DeepClean/DeepCleanView.swift", "DeepClean"),

@@ -52,7 +52,7 @@ struct AboutView: View {
             .padding(.top, 8)
         }
         .padding(40)
-        .frame(width: 360)
+        .frame(width: WindowFrame.aboutWidth)
         .background(Color.bgPrimary)
         .cornerRadius(16)
     }

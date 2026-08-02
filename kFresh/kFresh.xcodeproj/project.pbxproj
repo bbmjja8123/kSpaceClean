@@ -179,6 +179,10 @@
 		isa = PBXBuildFile;
 		fileRef = DC9F358CA23F4689897454B8;
 	};
+	6673A188EF7CD51EFACA678E /* 6673A188EF7CD51EFACA678E */ = {
+		isa = PBXBuildFile;
+		fileRef = 2593BDD3F1336F1EE1F05B43;
+	};
 	67823FEA09526598EB3ACBED /* 67823FEA09526598EB3ACBED */ = {
 		isa = PBXBuildFile;
 		fileRef = 9C73A58BF662B0271D083EE3;
@@ -598,6 +602,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = ProGateModifierTests.swift;
 		path = Tests/StoreTests/ProGateModifierTests.swift;
+		sourceTree = "<group>";
+	};
+	2593BDD3F1336F1EE1F05B43 /* WindowFrames.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WindowFrames.swift;
+		path = Features/Common/WindowFrames.swift;
 		sourceTree = "<group>";
 	};
 	29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */ = {
@@ -1407,6 +1418,7 @@
 			EA66E191F044FFC4D9668848 /* LoadingStateView.swift */,
 			0E68C8E554FB84F8812F9963 /* BrandStyles.swift */,
 			8C2E92D5254BB63634A134D7 /* BrandButtonStyle.swift */,
+			2593BDD3F1336F1EE1F05B43 /* WindowFrames.swift */,
 		);
 		name = Common;
 		sourceTree = "<group>";
@@ -1851,6 +1863,7 @@
 			F9C1C4D396CDF507C7174639 /* F9C1C4D396CDF507C7174639 */,
 			744A4F0B8F52B196A492AEA1 /* 744A4F0B8F52B196A492AEA1 */,
 			845606ED7B3C17AE42B3EFCB /* 845606ED7B3C17AE42B3EFCB */,
+			6673A188EF7CD51EFACA678E /* 6673A188EF7CD51EFACA678E */,
 			476DC124F31EEA92FB2F9F94 /* 476DC124F31EEA92FB2F9F94 */,
 			98D3A7E04EE8047A3A85CD0A /* 98D3A7E04EE8047A3A85CD0A */,
 			EC4C24611EC92CC86CD0E0C3 /* EC4C24611EC92CC86CD0E0C3 */,

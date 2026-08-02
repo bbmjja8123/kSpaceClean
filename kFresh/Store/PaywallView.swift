@@ -40,7 +40,7 @@ struct PaywallView: View {
             Button("取消", role: .cancel) { dismiss() }
         }
         .padding(AppSpacing.lg)
-        .frame(width: 420)
+        .frame(width: WindowFrame.paywallWidth)
         .task {
             await store.refresh()
             didAttemptLoad = true

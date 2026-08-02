@@ -40,7 +40,7 @@ struct UninstallConfirmSheet: View {
             footer
         }
         .padding(AppSpacing.lg)
-        .frame(width: 480)
+        .frame(width: WindowFrame.confirmSheetWidth)
         .background(Color.bgPrimary)
     }
 
