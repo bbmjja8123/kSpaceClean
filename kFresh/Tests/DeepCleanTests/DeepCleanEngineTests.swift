@@ -179,9 +179,18 @@ final class DeepCleanEngineTests: XCTestCase {
     /// NOT be flagged protected when its label is third-party — the derived
     /// bundle ID is surfaced for display but never drives protection.
     func testScanLaunchAgentNotProtectedWhenProgramArgumentsLaunchesAppleApp() async throws {
+        // Hermetic Apple-owned .app fixture — no dependency on the host's
+        // /Applications (Safari may be absent or renamed).
+        let appleAppDir = tempDir.appendingPathComponent("Apple.app")
+        let contentsDir = appleAppDir.appendingPathComponent("Contents")
+        try FileManager.default.createDirectory(at: contentsDir, withIntermediateDirectories: true)
+        try writePlist([
+            "CFBundleIdentifier": "com.apple.someinternal",
+        ], to: contentsDir.appendingPathComponent("Info.plist"))
+
         try writePlist([
             "Label": "com.thirdparty.someagent",
-            "ProgramArguments": ["/usr/bin/open", "/Applications/Safari.app"],
+            "ProgramArguments": ["/usr/bin/open", appleAppDir.path],
         ], to: launchAgentsDir.appendingPathComponent("thirdparty-agent.plist"))
         let engine = makeEngine()
 
@@ -191,7 +200,7 @@ final class DeepCleanEngineTests: XCTestCase {
             return XCTFail("Expected the launch agent to be scanned")
         }
         XCTAssertEqual(agent.category, .launchAgents)
-        XCTAssertEqual(agent.associatedBundleID, "com.apple.Safari",
+        XCTAssertEqual(agent.associatedBundleID, "com.apple.someinternal",
                        "The Apple app bundle ID is derived for display even though it does not drive protection")
         XCTAssertEqual(agent.isProtected, false,
                        "A third-party launch agent must never be protected via a ProgramArguments-derived bundle ID")
