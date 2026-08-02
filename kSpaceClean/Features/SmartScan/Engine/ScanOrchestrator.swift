@@ -511,7 +511,7 @@ public actor ScanOrchestrator {
             filesDiscovered: runningFiles,
             totalBytes: runningBytes,
             currentDirectory: currentNodePath ?? "",
-            currentCategory: currentCategoryID,
+            currentCategory: liveCategoryProgress[currentCategoryID]?.title ?? currentCategoryID,
             currentSubCategory: "",
             errors: [],
             finishedAt: finishedAt,

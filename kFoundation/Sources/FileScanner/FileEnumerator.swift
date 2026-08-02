@@ -102,15 +102,17 @@ public actor FileEnumerator {
     /// Pure walker — runs as `nonisolated static` so concurrent callers do
     /// not serialise on the `FileEnumerator` actor (I2 fix).
     ///
-    /// I3 fix: the stream is now bounded (`bufferingNewest(65536)`) so a
+    /// I3 fix: the stream is bounded (`bufferingNewest(65536)`) so a
     /// consumer that falls behind does not cause the walker to allocate an
-    /// unbounded queue of `FileInfo` values; the stream drops the oldest
-    /// entry when full. The bound is sized well above a single scan
-    /// category's typical file count so per-file `onProgress` actor hops in
-    /// `ScanOrchestrator` cannot starve a category worker (A1 regression).
-    /// The walker also honours `Task.isCancelled` and the
-    /// `continuation.onTermination` cleanup so a cancellation midway tears
-    /// down properly instead of running to completion in the background.
+    /// unbounded queue of `FileInfo` values. The bound is a memory ceiling,
+    /// NOT a correctness guarantee — the walker no longer relies on it for
+    /// accuracy. On buffer-full the walker self-paces: it sleeps ~1ms so the
+    /// consumer can drain before walking further instead of silently evicting
+    /// the oldest buffered entries (which would under-count scan results for
+    /// very large file trees). The walker also honours `Task.isCancelled` and
+    /// the `continuation.onTermination` cleanup so a cancellation midway
+    /// tears down properly instead of running to completion in the
+    /// background.
     nonisolated private static func walk(
         rootPath: String,
         skipPaths: Set<String>,
@@ -155,10 +157,22 @@ public actor FileEnumerator {
                 modificationDate: attrs?.contentModificationDate,
                 isDirectory: attrs?.isDirectory ?? false
             )
-            // `yield` returns a `YieldResult` distinguishing accepted (`.enqueued(remaining:)`)
-            // from `dropped` (`.dropped(_)`) when the bounded buffer is full.
-            // We ignore the result — the bounded policy is best-effort, not strict.
-            _ = continuation.yield(info)
+            // `yield` returns a `YieldResult`: `.enqueued(remaining:)` when the value
+            // was buffered, `.dropped(_)` when the bounded buffer is full (oldest
+            // entry silently evicted), `.terminated` when the consumer has finished
+            // or cancelled the stream. On `.dropped` the walker pauses ~1ms so the
+            // consumer can drain before walking further — without this the bounded
+            // policy would silently under-count scan results for large file trees.
+            switch continuation.yield(info) {
+            case .enqueued:
+                break
+            case .dropped:
+                try? await Task.sleep(nanoseconds: 1_000_000)
+            case .terminated:
+                return
+            @unknown default:
+                break
+            }
         }
     }
 
