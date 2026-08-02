@@ -104,15 +104,16 @@ public actor FileEnumerator {
     ///
     /// I3 fix: the stream is bounded (`bufferingNewest(65536)`) so a
     /// consumer that falls behind does not cause the walker to allocate an
-    /// unbounded queue of `FileInfo` values. The bound is a memory ceiling,
-    /// NOT a correctness guarantee — the walker no longer relies on it for
-    /// accuracy. On buffer-full the walker self-paces: it sleeps ~1ms so the
-    /// consumer can drain before walking further instead of silently evicting
-    /// the oldest buffered entries (which would under-count scan results for
-    /// very large file trees). The walker also honours `Task.isCancelled` and
-    /// the `continuation.onTermination` cleanup so a cancellation midway
-    /// tears down properly instead of running to completion in the
-    /// background.
+    /// unbounded queue of `FileInfo` values. The bound is a memory ceiling
+    /// and an EVICTION CEILING, NOT a correctness guarantee: each `.dropped`
+    /// yield means one previously-buffered entry was already evicted before
+    /// the consumer could drain it (lossless back-pressure is impossible with
+    /// the bounded buffer alone). The walker self-paces on `.dropped` by
+    /// sleeping ~1ms so the consumer can drain before walking further,
+    /// reducing the *frequency* of evictions rather than preventing each
+    /// individual loss. The walker also honours `Task.isCancelled` and the
+    /// `continuation.onTermination` cleanup so a cancellation midway tears
+    /// down properly instead of running to completion in the background.
     nonisolated private static func walk(
         rootPath: String,
         skipPaths: Set<String>,
@@ -158,11 +159,14 @@ public actor FileEnumerator {
                 isDirectory: attrs?.isDirectory ?? false
             )
             // `yield` returns a `YieldResult`: `.enqueued(remaining:)` when the value
-            // was buffered, `.dropped(_)` when the bounded buffer is full (oldest
-            // entry silently evicted), `.terminated` when the consumer has finished
-            // or cancelled the stream. On `.dropped` the walker pauses ~1ms so the
-            // consumer can drain before walking further — without this the bounded
-            // policy would silently under-count scan results for large file trees.
+            // was buffered, `.dropped(_)` when the bounded buffer was full (one
+            // previously-buffered entry has ALREADY been evicted by this point
+            // — `.dropped` reports the loss of the new value AND the prior
+            // eviction; subsequent `.enqueued` yields do not undo the loss),
+            // `.terminated` when the consumer has finished or cancelled the
+            // stream. On `.dropped` the walker pauses ~1ms so the consumer can
+            // drain before walking further, reducing future eviction frequency
+            // (it cannot recover the entry already lost).
             switch continuation.yield(info) {
             case .enqueued:
                 break
