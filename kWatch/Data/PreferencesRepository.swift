@@ -15,6 +15,8 @@ public protocol PreferencesRepositoryProtocol: Sendable {
     var onboardingCompleted: Bool { get set }
     var launchAtLogin: Bool { get set }
     var menuBarIconTheme: MenuBarIconTheme { get set }
+    var perMetricMenuBar: Bool { get set }
+    var menuBarOrder: [MetricKind] { get set }
 }
 
 /// App Group-backed user preferences for the production application.
@@ -27,6 +29,8 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
     private static let onboardingCompletedKey = "kWatch.onboardingCompleted"
     private static let launchAtLoginKey = "kWatch.launchAtLogin"
     private static let menuBarIconThemeKey = "kWatch.menuBarIconTheme"
+    private static let perMetricMenuBarKey = "kWatch.perMetricMenuBar"
+    private static let menuBarOrderKey = "kWatch.menuBarOrder"
 
     public init(defaults: UserDefaults) {
         self.defaults = defaults
@@ -81,6 +85,24 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
         }
     }
 
+    public var perMetricMenuBar: Bool {
+        get { defaults.bool(forKey: Self.perMetricMenuBarKey) }
+        set { defaults.set(newValue, forKey: Self.perMetricMenuBarKey) }
+    }
+
+    public var menuBarOrder: [MetricKind] {
+        get {
+            guard let raw = defaults.array(forKey: Self.menuBarOrderKey) as? [String] else {
+                return MetricKind.menuBarDisplayOrder
+            }
+            let parsed = raw.compactMap(MetricKind.init(rawValue:))
+            return parsed.isEmpty ? MetricKind.menuBarDisplayOrder : parsed
+        }
+        set {
+            defaults.set(newValue.map(\.rawValue), forKey: Self.menuBarOrderKey)
+        }
+    }
+
     private func registerDefaults() {
         defaults.register(defaults: [
             Self.menuBarModeKey: MenuBarMode.trend.rawValue,
@@ -92,7 +114,9 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
             ],
             Self.samplingIntervalKey: 2.0,
             Self.onboardingCompletedKey: false,
-            Self.launchAtLoginKey: false
+            Self.launchAtLoginKey: false,
+            Self.perMetricMenuBarKey: false,
+            Self.menuBarOrderKey: MetricKind.menuBarDisplayOrder.map(\.rawValue)
         ])
     }
 }
@@ -105,6 +129,8 @@ public final class InMemoryPreferences: PreferencesRepositoryProtocol, @unchecke
     public var onboardingCompleted = false
     public var launchAtLogin = false
     public var menuBarIconTheme: MenuBarIconTheme = .default
+    public var perMetricMenuBar: Bool = false
+    public var menuBarOrder: [MetricKind] = MetricKind.menuBarDisplayOrder
 
     public init() {}
 }

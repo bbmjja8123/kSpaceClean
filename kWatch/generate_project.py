@@ -146,6 +146,8 @@ def main():
         ("MenuBar/MenuBarIconTheme.swift", "MenuBar"),
         ("MenuBar/MenuBarView.swift", "MenuBar"),
         ("MenuBar/MenuBarViewModel.swift", "MenuBar"),
+        ("MenuBar/MultiIconStatusItemController.swift", "MenuBar"),
+        ("MenuBar/AppWindowRouter.swift", "MenuBar"),
         ("MenuBar/QuickToggleBar.swift", "MenuBar"),
         ("MenuBar/MetricMenuRow.swift", "MenuBar"),
         ("MenuBar/MiniTrendChart.swift", "MenuBar"),

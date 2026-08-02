@@ -87,6 +87,27 @@ public final class MenuBarViewModel: ObservableObject {
         }
     }
 
+    /// Returns the history values, current value, and unit for a metric's
+    /// menu-bar icon. Used by `MultiIconStatusItemController` to render one
+    /// status item per metric.
+    public func displayData(for kind: MetricKind) -> (values: [Double], currentValue: Double, unit: String) {
+        switch kind {
+        case .cpu: return (cpuHistory, cpuPercent, "%")
+        case .memory: return ([], memoryPercent, "%")
+        case .disk: return ([], diskPercent, "%")
+        case .network: return ([], Double(networkBytesPerSecond), "B/s")
+        case .temperature: return ([], temperatureCelsius ?? 0, "°C")
+        case .fan: return ([], Double(fanRPM ?? 0), "RPM")
+        case .battery: return ([], batteryPercent ?? 0, "%")
+        }
+    }
+
+    /// Returns the icon style configured for a given metric, delegating to
+    /// the preferences theme so multi-icon mode honors per-metric styling.
+    public func iconStyle(for kind: MetricKind) -> MenuBarIcons.Style {
+        preferences.menuBarIconTheme.style(for: kind)
+    }
+
     private func consume(snapshot: MetricSnapshot) {
         cpuPercent = snapshot.values[.cpu]?.percentage ?? 0
         memoryPercent = snapshot.values[.memory]?.percentage ?? 0

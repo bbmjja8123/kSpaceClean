@@ -263,6 +263,10 @@
 		isa = PBXBuildFile;
 		fileRef = BFA7754C2E9614BC7641312C;
 	};
+	8B4C6717D22271144EDB9965 /* 8B4C6717D22271144EDB9965 */ = {
+		isa = PBXBuildFile;
+		fileRef = 282BA7C1EF08746DEE167794;
+	};
 	8B87D472FA584CEBEE1F4F7E /* 8B87D472FA584CEBEE1F4F7E */ = {
 		isa = PBXBuildFile;
 		fileRef = 20AE518F458646658B17671B;
@@ -318,6 +322,10 @@
 	A8BBF15A1D10D4E6660E7CB0 /* A8BBF15A1D10D4E6660E7CB0 */ = {
 		isa = PBXBuildFile;
 		fileRef = E37721BEEA9C99BB4A0AA485;
+	};
+	AC146A5743413D01DA1ED2CB /* AC146A5743413D01DA1ED2CB */ = {
+		isa = PBXBuildFile;
+		fileRef = 340B6EC4BCEB13C7C0CA9C0E;
 	};
 	AED6A965AEBDDECE519EEBAA /* AED6A965AEBDDECE519EEBAA */ = {
 		isa = PBXBuildFile;
@@ -610,6 +618,13 @@
 		path = Shared/AppGroupConfiguration.swift;
 		sourceTree = "<group>";
 	};
+	282BA7C1EF08746DEE167794 /* MultiIconStatusItemController.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MultiIconStatusItemController.swift;
+		path = MenuBar/MultiIconStatusItemController.swift;
+		sourceTree = "<group>";
+	};
 	2906D24E92EE5AE02B27EE3D /* NotificationSchedulerTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -643,6 +658,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = TestAppContainer.swift;
 		path = DI/TestAppContainer.swift;
+		sourceTree = "<group>";
+	};
+	340B6EC4BCEB13C7C0CA9C0E /* AppWindowRouter.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppWindowRouter.swift;
+		path = MenuBar/AppWindowRouter.swift;
 		sourceTree = "<group>";
 	};
 	360159E7F6FB1F6FCD8DF23A /* SettingsView.swift */ = {
@@ -1500,6 +1522,8 @@
 			7D3632F28B178B4934AEB9E5 /* MenuBarIconTheme.swift */,
 			D6DCAF56A82C475B6EB3E767 /* MenuBarView.swift */,
 			FF3B633668A0E32697CC38F0 /* MenuBarViewModel.swift */,
+			282BA7C1EF08746DEE167794 /* MultiIconStatusItemController.swift */,
+			340B6EC4BCEB13C7C0CA9C0E /* AppWindowRouter.swift */,
 			50983C2E12673DF28C54327B /* QuickToggleBar.swift */,
 			3F5A280592344A01BF293381 /* MetricMenuRow.swift */,
 			1A0A0A15E64EB867EFF75DCC /* MiniTrendChart.swift */,
@@ -1758,6 +1782,8 @@
 			5BD62E81B0F33800CCE8C893 /* 5BD62E81B0F33800CCE8C893 */,
 			E4F5BB78841CF956AA3F9FF4 /* E4F5BB78841CF956AA3F9FF4 */,
 			A2A2B2D52E52A0038A70163C /* A2A2B2D52E52A0038A70163C */,
+			8B4C6717D22271144EDB9965 /* 8B4C6717D22271144EDB9965 */,
+			AC146A5743413D01DA1ED2CB /* AC146A5743413D01DA1ED2CB */,
 			DE329FEA4CF5EFB872CD11D0 /* DE329FEA4CF5EFB872CD11D0 */,
 			D96937041669DA5D4CFD772D /* D96937041669DA5D4CFD772D */,
 			D51E25C332D9477453D0AF63 /* D51E25C332D9477453D0AF63 */,

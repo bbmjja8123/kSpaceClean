@@ -15,6 +15,8 @@ final class StubPreferencesRepository: PreferencesRepositoryProtocol, @unchecked
     var onboardingCompleted: Bool = false
     var launchAtLogin: Bool = false
     var menuBarIconTheme: MenuBarIconTheme = .default
+    var perMetricMenuBar: Bool = false
+    var menuBarOrder: [MetricKind] = MetricKind.menuBarDisplayOrder
 
     init() {}
 }

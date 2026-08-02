@@ -29,6 +29,22 @@ struct MenuBarSettingsView: View {
                     .font(.caption)
                     .foregroundStyle(Color.textSecondary)
             }
+
+            Section {
+                if viewModel.perMetricMenuBar {
+                    reorderList
+                }
+                Toggle("Show one icon per metric", isOn: Binding(
+                    get: { viewModel.perMetricMenuBar },
+                    set: { viewModel.setPerMetricMenuBar($0) }
+                ))
+            } header: {
+                Text("Multi-icon mode")
+            } footer: {
+                Text("Show a separate menu bar icon for each metric, then drag to reorder them.")
+                    .font(.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
         }
         .formStyle(.grouped)
         .padding(.horizontal, 4)
@@ -68,6 +84,17 @@ struct MenuBarSettingsView: View {
                 Label(title(for: kind), systemImage: icon(for: kind))
             }
             .toggleStyle(.switch)
+        }
+    }
+
+    // MARK: - Multi-icon reorder
+
+    private var reorderList: some View {
+        ForEach(viewModel.menuBarOrder, id: \.self) { kind in
+            Label(title(for: kind), systemImage: icon(for: kind))
+        }
+        .onMove { source, destination in
+            viewModel.moveMetric(source, to: destination)
         }
     }
 

@@ -43,6 +43,13 @@ public final class SettingsViewModel: ObservableObject {
     /// immediately through the preferences repository.
     @Published public var iconTheme: MenuBarIconTheme
 
+    /// Whether each metric renders as its own menu-bar status item.
+    @Published public var perMetricMenuBar: Bool
+
+    /// Order in which per-metric status items appear (left to right).
+    /// Falls back to `MetricKind.menuBarDisplayOrder` when unset.
+    @Published public var menuBarOrder: [MetricKind]
+
     /// Whether the user has granted notification permission. Refreshed via
     /// `syncNotificationAuthorization()` whenever the view appears.
     @Published public private(set) var isNotificationsAuthorized: Bool = false
@@ -93,6 +100,10 @@ public final class SettingsViewModel: ObservableObject {
         self.samplingIntervalSeconds = max(0.5, preferences.samplingIntervalSeconds)
         self.launchAtLogin = preferences.launchAtLogin
         self.iconTheme = preferences.menuBarIconTheme
+        self.perMetricMenuBar = preferences.perMetricMenuBar
+        self.menuBarOrder = preferences.menuBarOrder.isEmpty
+            ? MetricKind.menuBarDisplayOrder
+            : preferences.menuBarOrder
         self.isPro = purchaseState.isPro
 
         // Cache version strings from the main bundle. Fall back to "0.0.0"
@@ -161,6 +172,24 @@ public final class SettingsViewModel: ObservableObject {
         guard launchAtLogin != enabled else { return }
         launchAtLogin = enabled
         preferences.launchAtLogin = enabled
+    }
+
+    /// Toggle multi-icon mode: one menu-bar status item per metric.
+    /// Persisted immediately so the next launch restores the same layout.
+    public func setPerMetricMenuBar(_ enabled: Bool) {
+        guard enabled != perMetricMenuBar else { return }
+        perMetricMenuBar = enabled
+        preferences.perMetricMenuBar = enabled
+    }
+
+    /// Move a metric to a new position in the menu-bar order. Persisted
+    /// immediately; the menu bar reflects the new order on the next update.
+    public func moveMetric(_ source: IndexSet, to destination: Int) {
+        var order = menuBarOrder
+        order.move(fromOffsets: source, toOffset: destination)
+        guard order != menuBarOrder else { return }
+        menuBarOrder = order
+        preferences.menuBarOrder = order
     }
 
     // MARK: - Onboarding reset

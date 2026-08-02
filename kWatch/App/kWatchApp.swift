@@ -32,16 +32,44 @@ struct kWatchApp: App {
         // surface kWatch's quick actions. Safe to call on every launch;
         // `KWatchSpotlightIndexer` deletes the previous index first.
         Task { await KWatchSpotlightIndexer().reindex() }
+
+        // Wire up multi-icon mode: the AppKit controller owns one status
+        // item per metric and the shared router opens the dashboard from
+        // AppKit contexts (status-item popovers). The `openWindow` action is
+        // captured later by `MenuBarContent`'s `onAppear`.
+        kWatchAppDelegate.shared.configureMultiIcon(
+            settings: settingsViewModel,
+            menuBar: menuBarViewModel,
+            appState: container.appState,
+            purchaseState: container.purchaseState,
+            onOpenSettings: { NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil) },
+            onOpenHistory: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .history) },
+            onOpenProcesses: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .processes) },
+            onOpenAlerts: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .alerts) },
+            onOpenPaywall: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .history) }
+        )
+    }
+
+    /// The metric the `MenuBarExtra` label renders. In multi-icon mode the
+    /// status bar shows one item per metric: the SwiftUI extra covers the
+    /// FIRST metric in `menuBarOrder` and `MultiIconStatusItemController`
+    /// covers the rest, so the first item is not duplicated.
+    private var labelKind: MetricKind {
+        settingsViewModel.perMetricMenuBar
+            ? (settingsViewModel.menuBarOrder.first ?? .cpu)
+            : .cpu
     }
 
     var body: some Scene {
         MenuBarExtra {
             MenuBarContent(viewModel: menuBarViewModel, appState: appState, purchaseState: purchaseState)
                 .environmentObject(menuBarViewModel)
-                .task { menuBarViewModel.start() }
+                .task {
+                    menuBarViewModel.start()
+                }
         } label: {
             MenuBarIcons.statusIcon(
-                kind: .cpu,
+                kind: labelKind,
                 style: menuBarViewModel.iconStyle,
                 values: menuBarViewModel.cpuHistory,
                 currentValue: menuBarViewModel.cpuPercent,
@@ -121,6 +149,13 @@ private struct MenuBarContent: View {
             onOpenAlerts: { openWindow(id: "dashboard"); appState.navigate(to: .alerts) },
             onOpenPaywall: { showPaywallSheet = true }
         )
+        .onAppear {
+            // Capture the SwiftUI `openWindow` action so the AppKit
+            // status items can open the dashboard via AppWindowRouter.
+            AppWindowRouter.openDashboard = { _ in
+                openWindow(id: "dashboard")
+            }
+        }
         .sheet(isPresented: $showPaywallSheet) {
             PaywallView(
                 viewModel: paywallViewModel,
