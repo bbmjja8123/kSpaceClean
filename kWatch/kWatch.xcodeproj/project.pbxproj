@@ -267,6 +267,10 @@
 		isa = PBXBuildFile;
 		fileRef = 412E1108FFF483BAE72A6509;
 	};
+	92BEC11FC8DD9F77F04CEF4F /* 92BEC11FC8DD9F77F04CEF4F */ = {
+		isa = PBXBuildFile;
+		fileRef = 77BF1B73572625F9518ED83C;
+	};
 	931E0DDB1639A5531174CF32 /* 931E0DDB1639A5531174CF32 */ = {
 		isa = PBXBuildFile;
 		fileRef = 97D8C41CF6C4CF8C7C52E96E;
@@ -789,6 +793,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = SnapshotRoundTripTests.swift;
 		path = Tests/SnapshotRoundTripTests.swift;
+		sourceTree = "<group>";
+	};
+	77BF1B73572625F9518ED83C /* MenuBarViewModelTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MenuBarViewModelTests.swift;
+		path = Tests/MenuBarViewModelTests.swift;
 		sourceTree = "<group>";
 	};
 	78528845AAD156289D52EE2F /* CoreDataStackTests.swift */ = {
@@ -1397,6 +1408,7 @@
 			AAEA3FCC869E5B9F1AF52EF4 /* HistoryViewModelTests.swift */,
 			443B69E3590BADE5F657F64E /* IntentParameterTests.swift */,
 			03B411213CED55739D9FB3DE /* IntentTests.swift */,
+			77BF1B73572625F9518ED83C /* MenuBarViewModelTests.swift */,
 			48CBBF63493E2A8BC8F68341 /* MetricCardViewModelTests.swift */,
 			2906D24E92EE5AE02B27EE3D /* NotificationSchedulerTests.swift */,
 			519386D7F436003927EAABCB /* OnboardingViewModelTests.swift */,
@@ -1619,6 +1631,7 @@
 			98F18BEC132E0558BF27B792 /* 98F18BEC132E0558BF27B792 */,
 			F635ABC2DE1E32C726E6861A /* F635ABC2DE1E32C726E6861A */,
 			5098DD3CB6A57977716F8E78 /* 5098DD3CB6A57977716F8E78 */,
+			92BEC11FC8DD9F77F04CEF4F /* 92BEC11FC8DD9F77F04CEF4F */,
 			2B65BC3402FD3269056DFF7F /* 2B65BC3402FD3269056DFF7F */,
 			50462B0A78871C43A4E77B9B /* 50462B0A78871C43A4E77B9B */,
 			D231F2291A20553B6F352E9F /* D231F2291A20553B6F352E9F */,

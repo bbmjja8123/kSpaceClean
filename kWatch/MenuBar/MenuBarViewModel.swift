@@ -16,6 +16,11 @@ public final class MenuBarViewModel: ObservableObject {
     @Published public private(set) var memoryPercent: Double = 0
     @Published public private(set) var diskPercent: Double = 0
     @Published public private(set) var networkBytesPerSecond: UInt64 = 0
+    @Published public private(set) var networkBytesSent: UInt64 = 0
+    @Published public private(set) var networkBytesReceived: UInt64 = 0
+    @Published public private(set) var temperatureCelsius: Double? = nil
+    @Published public private(set) var fanRPM: Int? = nil
+    @Published public private(set) var batteryPercent: Double? = nil
     @Published public private(set) var cpuHistory: [Double] = []
     @Published public var mode: MenuBarMode = .trend {
         didSet {
@@ -76,14 +81,34 @@ public final class MenuBarViewModel: ObservableObject {
     }
 
     private func consume(snapshot: MetricSnapshot) {
-        if case .percentage(let v) = snapshot.values[.cpu] { cpuPercent = v }
-        if case .percentage(let v) = snapshot.values[.memory] { memoryPercent = v }
-        if case .percentage(let v) = snapshot.values[.disk] { diskPercent = v }
-        if case .bytesPerSecond(let v) = snapshot.values[.network] { networkBytesPerSecond = v }
-        cpuHistory.append(cpuPercent)
+        cpuPercent = snapshot.values[.cpu]?.percentage ?? 0
+        memoryPercent = snapshot.values[.memory]?.percentage ?? 0
+        diskPercent = snapshot.values[.disk]?.percentage ?? 0
+
+        // `MetricValue.bytesPerSecond` carries a single combined total; the
+        // send/receive split is not yet available at the monitor level.
+        if case let .bytesPerSecond(total) = snapshot.values[.network] {
+            networkBytesSent = 0
+            networkBytesReceived = total
+            networkBytesPerSecond = total
+            // TODO: split via /proc/net/dev
+        } else {
+            networkBytesSent = 0
+            networkBytesReceived = 0
+            networkBytesPerSecond = 0
+        }
+
+        // Pro-only metrics: cleared for free users (the UI renders a lock).
+        let pro = container.purchaseState.isPro
+        temperatureCelsius = pro ? snapshot.values[.temperature]?.degreesCelsius : nil
+        fanRPM = pro ? snapshot.values[.fan]?.revolutionsPerMinute.map(Int.init) : nil
+        batteryPercent = pro ? snapshot.values[.battery]?.percentage : nil
+
+        // Append to history, normalized to 0...1 (MiniTrendChart auto-scales).
+        cpuHistory.append(cpuPercent / 100)
         if cpuHistory.count > historyCapacity {
             cpuHistory.removeFirst(cpuHistory.count - historyCapacity)
         }
-        isPro = container.purchaseState.isPro
+        isPro = pro
     }
 }

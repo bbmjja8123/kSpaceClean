@@ -19,6 +19,36 @@ public enum MetricValue: Codable, Equatable, Sendable {
     case volts(Double)
     case text(String)
     case unavailable(MetricError)
+
+    /// The payload of `.percentage`, or `nil` for any other case.
+    public var percentage: Double? {
+        if case .percentage(let v) = self { return v }
+        return nil
+    }
+
+    /// The payload of `.bytes`, or `nil` for any other case.
+    public var bytes: UInt64? {
+        if case .bytes(let v) = self { return v }
+        return nil
+    }
+
+    /// The payload of `.bytesPerSecond`, or `nil` for any other case.
+    public var bytesPerSecond: UInt64? {
+        if case .bytesPerSecond(let v) = self { return v }
+        return nil
+    }
+
+    /// The payload of `.degreesCelsius`, or `nil` for any other case.
+    public var degreesCelsius: Double? {
+        if case .degreesCelsius(let v) = self { return v }
+        return nil
+    }
+
+    /// The payload of `.revolutionsPerMinute`, or `nil` for any other case.
+    public var revolutionsPerMinute: Double? {
+        if case .revolutionsPerMinute(let v) = self { return v }
+        return nil
+    }
 }
 
 /// Whether a metric can be produced on the current machine/OS.
