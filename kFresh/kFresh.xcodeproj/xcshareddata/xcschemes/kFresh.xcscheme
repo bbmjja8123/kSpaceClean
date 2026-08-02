@@ -38,6 +38,16 @@
                ReferencedContainer = "container:kFresh.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "ED2A67728C45DFC305BDA228"
+               BuildableName = "kFreshUITests.xctest"
+               BlueprintName = "kFreshUITests"
+               ReferencedContainer = "container:kFresh.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

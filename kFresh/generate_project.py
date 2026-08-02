@@ -122,6 +122,7 @@ def main():
         "DeepCleanTests": make_group("DeepCleanTests"),
         "StoreTests": make_group("StoreTests"),
         "UITests": make_group("UITests"),
+        "UI": make_group("UI"),
         "Products": make_group("Products"),
     }
 
@@ -278,6 +279,19 @@ def main():
             objects[gid][1]["children"].append((ref_id, tf))
             test_build_files.append(bf_id)
 
+    # UI-test bundle sources (kFreshUITests): a separate target whose tests
+    # launch the real app via XCUIApplication.
+    ui_test_files = [
+        "AppLaunchUITests.swift",
+    ]
+    ui_build_files = []
+    for tf in ui_test_files:
+        tpath = f"Tests/UI/{tf}"
+        ref_id = add(make_fileref(tf, tpath, last="sourcecode.swift"), f"ref_{tpath}")
+        bf_id = add(make_buildfile(ref_id), f"bf_{tpath}")
+        objects[group_ids["UI"]][1]["children"].append((ref_id, tf))
+        ui_build_files.append(bf_id)
+
     static_files = [
         "Info.plist",
         "kFresh.entitlements",
@@ -337,9 +351,13 @@ def main():
     test_product_id = add(make_fileref("kFreshTests.xctest", "kFreshTests.xctest",
                                          explicit='"wrapper.cfbundle"', includeInIndex=0,
                                          sourceTree="BUILT_PRODUCTS_DIR"), "prod_test")
+    ui_product_id = add(make_fileref("kFreshUITests.xctest", "kFreshUITests.xctest",
+                                     explicit='"wrapper.cfbundle"', includeInIndex=0,
+                                     sourceTree="BUILT_PRODUCTS_DIR"), "prod_ui_test")
 
     objects[group_ids["Products"]][1]["children"] = [
-        (app_product_id, "kFresh.app"), (test_product_id, "kFreshTests.xctest")]
+        (app_product_id, "kFresh.app"), (test_product_id, "kFreshTests.xctest"),
+        (ui_product_id, "kFreshUITests.xctest")]
 
     # (Swift Package section removed — DesignSystem sources included directly)
 
@@ -363,6 +381,14 @@ def main():
     test_frameworks_phase_id = add(("PBXFrameworksBuildPhase", {
         "buildActionMask": 2147483647, "files": [], "runOnlyForDeploymentPostprocessing": 0
     }), "phase_test_frameworks")
+
+    ui_sources_phase_id = add(("PBXSourcesBuildPhase", {
+        "buildActionMask": 2147483647, "files": [(fid, "") for fid in ui_build_files],
+        "runOnlyForDeploymentPostprocessing": 0
+    }), "phase_ui_sources")
+    ui_frameworks_phase_id = add(("PBXFrameworksBuildPhase", {
+        "buildActionMask": 2147483647, "files": [], "runOnlyForDeploymentPostprocessing": 0
+    }), "phase_ui_frameworks")
 
     # ========== Configurations ==========
     proj_debug_id = add(("XCBuildConfiguration", {
@@ -526,6 +552,45 @@ def main():
         "defaultConfigurationIsVisible": 0, "defaultConfigurationName": "Release"
     }), "configlist_test")
 
+    ui_debug_id = add(("XCBuildConfiguration", {
+        "name": "Debug",
+        "buildSettings": {
+            "CODE_SIGN_STYLE": "Automatic",
+            "CURRENT_PROJECT_VERSION": "1",
+            "DEVELOPMENT_TEAM": '""',
+            "GENERATE_INFOPLIST_FILE": "YES",
+            "MACOSX_DEPLOYMENT_TARGET": "13.0",
+            "MARKETING_VERSION": "1.0",
+            "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kfresh.uitests",
+            "PRODUCT_NAME": "$(TARGET_NAME)",
+            "SDKROOT": "macosx",
+            "SWIFT_VERSION": "5.0",
+            "TEST_TARGET_NAME": "kFresh",
+        }
+    }), "config_ui_debug")
+
+    ui_release_id = add(("XCBuildConfiguration", {
+        "name": "Release",
+        "buildSettings": {
+            "CODE_SIGN_STYLE": "Automatic",
+            "CURRENT_PROJECT_VERSION": "1",
+            "DEVELOPMENT_TEAM": '""',
+            "GENERATE_INFOPLIST_FILE": "YES",
+            "MACOSX_DEPLOYMENT_TARGET": "13.0",
+            "MARKETING_VERSION": "1.0",
+            "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kfresh.uitests",
+            "PRODUCT_NAME": "$(TARGET_NAME)",
+            "SDKROOT": "macosx",
+            "SWIFT_VERSION": "5.0",
+            "TEST_TARGET_NAME": "kFresh",
+        }
+    }), "config_ui_release")
+
+    ui_config_list_id = add(("XCConfigurationList", {
+        "buildConfigurations": [(ui_debug_id, "Debug"), (ui_release_id, "Release")],
+        "defaultConfigurationIsVisible": 0, "defaultConfigurationName": "Release"
+    }), "configlist_ui")
+
     # ========== Target Dependencies ==========
     cip_id = add(("PBXContainerItemProxy", {
         "containerPortal": oid("project_object"),
@@ -539,6 +604,19 @@ def main():
         "target": oid("target_kFresh"),
         "targetProxy": cip_id,
     }), "dep_main")
+
+    cip_ui_id = add(("PBXContainerItemProxy", {
+        "containerPortal": oid("project_object"),
+        "proxyType": 1,
+        "remoteGlobalIDString": oid("target_kFresh"),
+        "remoteInfo": "kFresh",
+    }), "cip_ui")
+
+    dep_ui_id = add(("PBXTargetDependency", {
+        "name": "kFresh",
+        "target": oid("target_kFresh"),
+        "targetProxy": cip_ui_id,
+    }), "dep_ui")
 
     # ========== Targets ==========
     main_target_id = add(("PBXNativeTarget", {
@@ -567,6 +645,18 @@ def main():
         "dependencies": [(target_dep_id, "kFresh")],
     }), "target_kFreshTests")
 
+    ui_target_id = add(("PBXNativeTarget", {
+        "name": "kFreshUITests",
+        "productName": "kFreshUITests",
+        "productReference": ui_product_id,
+        "productType": '"com.apple.product-type.bundle.ui-testing"',
+        "buildConfigurationList": ui_config_list_id,
+        "buildPhases": [(ui_sources_phase_id, "Sources"),
+                        (ui_frameworks_phase_id, "Frameworks")],
+        "buildRules": [],
+        "dependencies": [(dep_ui_id, "kFresh")],
+    }), "target_kFreshUITests")
+
     # ========== Project ==========
     project_id = add(("PBXProject", {
         "name": "kFresh",
@@ -579,7 +669,8 @@ def main():
         "productRefGroup": group_ids["Products"],
         "projectDirPath": '""',
         "projectRoot": '""',
-        "targets": [(main_target_id, "kFresh"), (test_target_id, "kFreshTests")],
+        "targets": [(main_target_id, "kFresh"), (test_target_id, "kFreshTests"),
+                    (ui_target_id, "kFreshUITests")],
         "attributes": {
             "BuildIndependentTargetsInParallel": 1,
             "LastSwiftUpdateCheck": 1430,
@@ -587,6 +678,7 @@ def main():
             "TargetAttributes": {
                 main_target_id: {"CreatedOnToolsVersion": "14.3"},
                 test_target_id: {"CreatedOnToolsVersion": "14.3", "TestTargetID": main_target_id},
+                ui_target_id: {"CreatedOnToolsVersion": "14.3", "TestTargetID": main_target_id},
             },
         },
     }), "project_object")
@@ -605,7 +697,7 @@ def main():
 
     # Set Tests group children
     tests_children = []
-    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "HistoryTests", "StartupTests", "DeepCleanTests", "StoreTests", "UITests"]:
+    for sub in ["DetectTests", "CleanTests", "RulesTests", "IntegrationTests", "OnboardingTests", "AppListTests", "DetailTests", "HistoryTests", "StartupTests", "DeepCleanTests", "StoreTests", "UITests", "UI"]:
         tests_children.append((group_ids[sub], sub))
     objects[group_ids["Tests"]][1]["children"] = tests_children
 

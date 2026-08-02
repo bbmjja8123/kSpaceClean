@@ -279,6 +279,10 @@
 		isa = PBXBuildFile;
 		fileRef = 0410DBDC2573D4A43ABE15F7;
 	};
+	9A23215081B824DC52BE4AAF /* 9A23215081B824DC52BE4AAF */ = {
+		isa = PBXBuildFile;
+		fileRef = B5276FFCD73FD8FA1391B364;
+	};
 	9ADFF4DD9B5140998FE2D9BC /* 9ADFF4DD9B5140998FE2D9BC */ = {
 		isa = PBXBuildFile;
 		fileRef = 44A2613DA7CAFB830A1F06D3;
@@ -447,6 +451,13 @@
 
 /* Begin PBXContainerItemProxy section */
 	3412E6574B98EDF3F54840ED /* 3412E6574B98EDF3F54840ED */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = AE77F0E9602ACC1A9F8C75FB;
+		remoteInfo = kFresh;
+	};
+	4406F3D98539AE0204884238 /* 4406F3D98539AE0204884238 */ = {
 		isa = PBXContainerItemProxy;
 		containerPortal = 59601E391B529B07AE11313D;
 		proxyType = 1;
@@ -773,6 +784,14 @@
 		path = Core/Clean/AuditLogger.swift;
 		sourceTree = "<group>";
 	};
+	59EA29FA7665DB646C1C7F32 /* kFreshUITests.xctest */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.cfbundle";
+		includeInIndex = 0;
+		name = kFreshUITests.xctest;
+		path = kFreshUITests.xctest;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
 	5D0DC122863AABE458A77BA8 /* AppUsageWidget.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1002,6 +1021,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = FDAPermissionProbe.swift;
 		path = Features/Onboarding/FDAPermissionProbe.swift;
+		sourceTree = "<group>";
+	};
+	B5276FFCD73FD8FA1391B364 /* AppLaunchUITests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppLaunchUITests.swift;
+		path = Tests/UI/AppLaunchUITests.swift;
 		sourceTree = "<group>";
 	};
 	B6830D0E035D1121B06CF64B /* SettingsViewModel.swift */ = {
@@ -1266,6 +1292,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+	1BAB862FF24A68B83B7365B2 /* 1BAB862FF24A68B83B7365B2 */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
 	4012D4C9DAE5CD9D31F3FFB2 /* 4012D4C9DAE5CD9D31F3FFB2 */ = {
 		isa = PBXFrameworksBuildPhase;
 		buildActionMask = 2147483647;
@@ -1542,6 +1575,14 @@
 		path = "";
 		sourceTree = "<group>";
 	};
+	9174A71FD81BEEA874A3B571 /* UI */ = {
+		isa = PBXGroup;
+		children = (
+			B5276FFCD73FD8FA1391B364 /* AppLaunchUITests.swift */,
+		);
+		name = UI;
+		sourceTree = "<group>";
+	};
 	92CF88F56CFAD37E6AF2955F /* CleanTests */ = {
 		isa = PBXGroup;
 		children = (
@@ -1641,6 +1682,7 @@
 			49A7970DC5A10324A6DE3EBB /* DeepCleanTests */,
 			AD71FEFC8488DCCC299A10D7 /* StoreTests */,
 			2220AFE70C0352F63AF55DB3 /* UITests */,
+			9174A71FD81BEEA874A3B571 /* UI */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -1689,6 +1731,7 @@
 		children = (
 			592A3E8DE2005013EFE473D7 /* kFresh.app */,
 			09C386C2F6D04F8712E2E85C /* kFreshTests.xctest */,
+			59EA29FA7665DB646C1C7F32 /* kFreshUITests.xctest */,
 		);
 		name = Products;
 		sourceTree = "<group>";
@@ -1741,6 +1784,23 @@
 		productReference = 592A3E8DE2005013EFE473D7;
 		productType = "com.apple.product-type.application";
 	};
+	ED2A67728C45DFC305BDA228 /* kFreshUITests */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 48D26A2B1E78ECA89B8E82A0;
+		buildPhases = (
+			24CCD12BADFB26AC51467511 /* Sources */,
+			1BAB862FF24A68B83B7365B2 /* Frameworks */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+			D36E381E503BB9687B9CBED9 /* kFresh */,
+		);
+		name = kFreshUITests;
+		productName = kFreshUITests;
+		productReference = 59EA29FA7665DB646C1C7F32;
+		productType = "com.apple.product-type.bundle.ui-testing";
+	};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1753,6 +1813,7 @@
 			TargetAttributes = {
 				AE77F0E9602ACC1A9F8C75FB /* kFresh */ = {CreatedOnToolsVersion = 14.3; };
 				2F05DDC4153075C742663358 /* kFreshTests */ = {CreatedOnToolsVersion = 14.3; TestTargetID = AE77F0E9602ACC1A9F8C75FB; };
+				ED2A67728C45DFC305BDA228 /* kFreshUITests */ = {CreatedOnToolsVersion = 14.3; TestTargetID = AE77F0E9602ACC1A9F8C75FB; };
 			};
 		};
 		buildConfigurationList = CF35BBADA1B6673793B45974;
@@ -1773,6 +1834,7 @@
 		targets = (
 			AE77F0E9602ACC1A9F8C75FB /* kFresh */,
 			2F05DDC4153075C742663358 /* kFreshTests */,
+			ED2A67728C45DFC305BDA228 /* kFreshUITests */,
 		);
 	};
 /* End PBXProject section */
@@ -1792,6 +1854,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+	24CCD12BADFB26AC51467511 /* 24CCD12BADFB26AC51467511 */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			9A23215081B824DC52BE4AAF /* 9A23215081B824DC52BE4AAF */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
 	A3EBA454EB2F5C879CA40B0C /* A3EBA454EB2F5C879CA40B0C */ = {
 		isa = PBXSourcesBuildPhase;
 		buildActionMask = 2147483647;
@@ -1919,6 +1989,12 @@
 		name = kFresh;
 		target = AE77F0E9602ACC1A9F8C75FB;
 		targetProxy = 3412E6574B98EDF3F54840ED;
+	};
+	D36E381E503BB9687B9CBED9 /* kFresh */ = {
+		isa = PBXTargetDependency;
+		name = kFresh;
+		target = AE77F0E9602ACC1A9F8C75FB;
+		targetProxy = 4406F3D98539AE0204884238;
 	};
 /* End PBXTargetDependency section */
 
@@ -2072,6 +2148,40 @@
 		};
 		name = Debug;
 	};
+	9F930EEFB248555424AC869B /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kfresh.uitests;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_VERSION = 5.0;
+		TEST_TARGET_NAME = kFresh;
+		};
+		name = Release;
+	};
+	CBCD922ECBDE43C6B3400084 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kfresh.uitests;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_VERSION = 5.0;
+		TEST_TARGET_NAME = kFresh;
+		};
+		name = Debug;
+	};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2080,6 +2190,15 @@
 		buildConfigurations = (
 			8E49F43A56D207D9CACB92D7 /* Debug */,
 			327A485C172AB8BDAA4E2848 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	48D26A2B1E78ECA89B8E82A0 /* 48D26A2B1E78ECA89B8E82A0 */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			CBCD922ECBDE43C6B3400084 /* Debug */,
+			9F930EEFB248555424AC869B /* Release */,
 		);
 		defaultConfigurationIsVisible = 0;
 		defaultConfigurationName = Release;
