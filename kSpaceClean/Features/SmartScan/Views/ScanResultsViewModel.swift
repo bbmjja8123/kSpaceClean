@@ -596,7 +596,11 @@ final class ScanResultsViewModel: ObservableObject {
         }
         let childrenHidden = actions.allSatisfy(\.isHiddenByFilter)
             && direct.allSatisfy(\.isHiddenByFilter)
-        let allHidden = !(actions.isEmpty && direct.isEmpty) && childrenHidden
+        // Task B2: a pseudo-app row with any content is exempt from the
+        // small-file fold — it must stay visible even when every leaf is
+        // sub-100KB (the row is the only "name" the user has for that folder).
+        let pseudoExempt = sub.isPseudoApp && sub.totalSize > 0
+        let allHidden = !(actions.isEmpty && direct.isEmpty) && childrenHidden && !pseudoExempt
         return ScanSubCategory(
             subCategoryID: sub.subCategoryID,
             title: sub.title,
@@ -609,6 +613,7 @@ final class ScanResultsViewModel: ObservableObject {
             showAction: sub.showAction,
             riskLevel: sub.riskLevel,
             isRecommended: sub.isRecommended,
+            isPseudoApp: sub.isPseudoApp,
             isHiddenByFilter: allHidden
         )
     }

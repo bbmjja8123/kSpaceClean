@@ -123,3 +123,65 @@ final class ScanResultsViewHiddenRenderingTests: XCTestCase {
                           "flipping showAllHidden must invalidate row equality so the tree re-renders")
     }
 }
+
+@MainActor
+final class PseudoAppFilterExemptionTests: XCTestCase {
+    func testPseudoAppRowWithContentNeverFoldsUpHidden() {
+        let result = ScanResult(
+            url: URL(fileURLWithPath: "/tmp/folder/file.bin"),
+            path: "/tmp/folder/file.bin",
+            title: "file.bin",
+            fileSize: 100,
+            cleanType: .cache
+        )
+        let pseudo = ScanSubCategory(
+            subCategoryID: "c1.folder.SomeApp",
+            title: "SomeApp",
+            totalSize: 100,
+            directResults: [result],
+            showAction: false,
+            riskLevel: .caution,
+            isRecommended: false,
+            isPseudoApp: true
+        )
+        let cat = ScanCategory(categoryID: "c1", title: "Test", subItems: [pseudo])
+
+        let options = ScanFilterOptions(minimumSizeBytes: 102_400)  // 100 KB
+        let resultCat = try! XCTUnwrap(
+            ScanResultsViewModel.annotateHidden([cat], options: options, now: Date()).first
+        )
+        let resultSub = try! XCTUnwrap(resultCat.subItems.first)
+        XCTAssertFalse(resultSub.isHiddenByFilter,
+                       "pseudo-app row with content must stay visible even when all leaves are sub-100KB")
+        XCTAssertFalse(resultCat.isHiddenByFilter,
+                       "a visible pseudo-app row must keep its parent category visible too")
+    }
+
+    func testRegularSubWithAllHiddenLeavesFoldsUp() {
+        let result = ScanResult(
+            url: URL(fileURLWithPath: "/tmp/folder/file.bin"),
+            path: "/tmp/folder/file.bin",
+            title: "file.bin",
+            fileSize: 100,
+            cleanType: .cache
+        )
+        let sub = ScanSubCategory(
+            subCategoryID: "s1",
+            title: "Regular",
+            totalSize: 100,
+            directResults: [result],
+            showAction: false,
+            isRecommended: false
+        )
+        let cat = ScanCategory(categoryID: "c1", title: "Test", subItems: [sub])
+
+        let options = ScanFilterOptions(minimumSizeBytes: 102_400)
+        let resultCat = try! XCTUnwrap(
+            ScanResultsViewModel.annotateHidden([cat], options: options, now: Date()).first
+        )
+        let resultSub = try! XCTUnwrap(resultCat.subItems.first)
+        XCTAssertTrue(resultSub.isHiddenByFilter,
+                      "control: a regular sub with all leaves hidden folds up hidden")
+        XCTAssertTrue(resultCat.isHiddenByFilter)
+    }
+}
