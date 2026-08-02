@@ -103,13 +103,25 @@ final class AppListViewModel: ObservableObject {
             case .size:
                 ascending = a.sizeBytes < b.sizeBytes
             case .installDate:
-                ascending = (a.installDate ?? .distantPast) < (b.installDate ?? .distantPast)
+                return Self.sortByDate(a.installDate, b.installDate, ascending: sortAscending)
             case .lastUsedDate:
-                ascending = (a.lastUsedDate ?? .distantPast) < (b.lastUsedDate ?? .distantPast)
+                return Self.sortByDate(a.lastUsedDate, b.lastUsedDate, ascending: sortAscending)
             }
             return sortAscending ? ascending : !ascending
         }
         return result
+    }
+
+    /// Orders two optional dates with nil pinned to the bottom in both
+    /// directions: an app with an unknown install/last-used date never ranks
+    /// above an app that has one.
+    private static func sortByDate(_ lhs: Date?, _ rhs: Date?, ascending: Bool) -> Bool {
+        switch (lhs, rhs) {
+        case (nil, nil): return false
+        case (nil, _): return false
+        case (_, nil): return true
+        case (let lhs?, let rhs?): return ascending ? lhs < rhs : lhs > rhs
+        }
     }
 
     // MARK: - Actions

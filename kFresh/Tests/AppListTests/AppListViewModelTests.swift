@@ -32,7 +32,8 @@ final class AppListViewModelTests: XCTestCase {
         XCTAssertEqual(vm.scanState, .idle)
         await vm.startScan()
         if case .completed(let count) = vm.scanState {
-            XCTAssertGreaterThanOrEqual(count, 0)
+            XCTAssertEqual(count, vm.apps.count,
+                           "completed state must report the number of apps the scan actually found")
         } else {
             XCTFail("Expected .completed, got \(vm.scanState)")
         }
@@ -75,5 +76,21 @@ final class AppListViewModelTests: XCTestCase {
         } else {
             XCTFail("Expected .completed after refresh, got \(vm.scanState)")
         }
+    }
+
+    func testInstallDateSortPinsNilDatesToBottomBothDirections() {
+        let vm = makeViewModel()
+        vm.apps = [
+            makeApp(name: "Alpha", bundleID: "com.example.alpha", size: 100, installDate: Date(timeIntervalSince1970: 1_000_000)),
+            makeApp(name: "Beta", bundleID: "com.example.beta", size: 200, installDate: Date(timeIntervalSince1970: 2_000_000)),
+            makeApp(name: "Gamma", bundleID: "com.example.gamma", size: 300, installDate: nil)
+        ]
+        vm.sortKey = .installDate
+        vm.sortAscending = true
+        XCTAssertEqual(vm.filteredApps.map(\.displayName), ["Alpha", "Beta", "Gamma"],
+                       "nil install dates must sort to the bottom in ascending order")
+        vm.sortAscending = false
+        XCTAssertEqual(vm.filteredApps.map(\.displayName), ["Beta", "Alpha", "Gamma"],
+                       "nil install dates must stay at the bottom in descending order")
     }
 }
