@@ -171,4 +171,12 @@ enum StoreError: LocalizedError {
         case .unknown: return "未知错误"
         }
     }
+
+    /// Whether the error represents the user cancelling a StoreKit purchase
+    /// sheet (`.userCancelled`). Paywall call sites use this to suppress the
+    /// "已取消" error message.
+    var isCancellation: Bool {
+        if case .userCancelled = self { return true }
+        return false
+    }
 }

@@ -79,4 +79,14 @@ final class StoreManagerTests: XCTestCase {
         StoreManager.applyTestProOverride(["-kFreshTestPro", "1"])
         XCTAssertTrue(UserDefaults.standard.bool(forKey: StoreManager.testOverrideKey))
     }
+
+    // MARK: - StoreError.isCancellation
+
+    func testUserCancelledIsCancellation() {
+        XCTAssertTrue(StoreError.userCancelled.isCancellation)
+        XCTAssertFalse(StoreError.productNotFound.isCancellation)
+        XCTAssertFalse(StoreError.verificationFailed.isCancellation)
+        XCTAssertFalse(StoreError.pending.isCancellation)
+        XCTAssertFalse(StoreError.unknown.isCancellation)
+    }
 }

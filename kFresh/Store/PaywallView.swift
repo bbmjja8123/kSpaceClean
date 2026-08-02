@@ -31,7 +31,7 @@ struct PaywallView: View {
                         try await store.restorePurchases()
                         dismiss()
                     } catch {
-                        purchaseError = error.localizedDescription
+                        present(error)
                     }
                 }
             }
@@ -120,7 +120,15 @@ struct PaywallView: View {
             try await store.purchase(.proUnlock)
             dismiss()
         } catch {
-            purchaseError = error.localizedDescription
+            present(error)
         }
+    }
+
+    /// Surfaces a purchase/restore error in the paywall, unless the user
+    /// simply cancelled the StoreKit sheet — that is not an error worth
+    /// showing.
+    private func present(_ error: Error) {
+        if (error as? StoreError)?.isCancellation == true { return }
+        purchaseError = error.localizedDescription
     }
 }
