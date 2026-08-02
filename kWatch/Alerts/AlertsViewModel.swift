@@ -95,6 +95,44 @@ public final class AlertsViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Pro gating
+
+    /// Whether the current user holds a Pro entitlement.  Free users see the
+    /// temperature / fan / battery sections locked in the editor.
+    public var isPro: Bool { purchaseState.isPro }
+
+    /// The loaded alert for the given metric kind, if any.
+    public func alert(for kind: MetricKind) -> MetricAlert? {
+        alerts.first { $0.kind == kind }
+    }
+
+    // MARK: - Batch configuration
+
+    /// Persist a full per-metric alert configuration in one batch.
+    ///
+    /// Each enabled draft is upserted; any existing alert whose kind is NOT
+    /// represented by an enabled draft (i.e. toggled off in the editor) is
+    /// deleted.  Then the list is reloaded and the editor sheet is dismissed.
+    public func applyConfig(_ drafts: [MetricAlert]) {
+        do {
+            let enabled = drafts.filter(\.isEnabled)
+            for alert in enabled {
+                try repository.upsert(alert)
+            }
+            let representedKinds = Set(enabled.map(\.kind))
+            for existing in alerts {
+                if !representedKinds.contains(existing.kind) {
+                    try repository.delete(id: existing.id)
+                }
+            }
+            refresh()
+            isPresentingEditor = false
+            editingAlert = nil
+        } catch {
+            purchaseState.recordError("Failed to save alert config: \(error.localizedDescription)")
+        }
+    }
+
     // MARK: - Editor sheet
 
     /// Prepare the editor for creating a new alert with default values.

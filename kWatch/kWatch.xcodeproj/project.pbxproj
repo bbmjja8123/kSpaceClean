@@ -403,6 +403,10 @@
 		isa = PBXBuildFile;
 		fileRef = 78528845AAD156289D52EE2F;
 	};
+	E07E6E132E02DA40D44308CA /* E07E6E132E02DA40D44308CA */ = {
+		isa = PBXBuildFile;
+		fileRef = F1A34B16C0E46D22F48F6148;
+	};
 	E1C3ED4675E1F975DB11D883 /* E1C3ED4675E1F975DB11D883 */ = {
 		isa = PBXBuildFile;
 		fileRef = F5D549D758B8D2ABE78ECD3A;
@@ -1147,6 +1151,13 @@
 		path = Tests/DashboardViewModelTests.swift;
 		sourceTree = "<group>";
 	};
+	F1A34B16C0E46D22F48F6148 /* AlertEditorViewModelTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AlertEditorViewModelTests.swift;
+		path = Tests/AlertEditorViewModelTests.swift;
+		sourceTree = "<group>";
+	};
 	F4AFB5925141C7DADE945D68 /* MetricCardView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1442,6 +1453,7 @@
 	BFF03A4B7DE5959B1AAD4165 /* Tests */ = {
 		isa = PBXGroup;
 		children = (
+			F1A34B16C0E46D22F48F6148 /* AlertEditorViewModelTests.swift */,
 			950B093D752E8DD14ADDCB38 /* AlertsViewModelTests.swift */,
 			8EFDA98B20F0167B99720C0B /* AppContainerTests.swift */,
 			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
@@ -1670,6 +1682,7 @@
 		isa = PBXSourcesBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
+			E07E6E132E02DA40D44308CA /* E07E6E132E02DA40D44308CA */,
 			6F9B450F2A998EADF70F625F /* 6F9B450F2A998EADF70F625F */,
 			84BD3D0C65879977E026D9A9 /* 84BD3D0C65879977E026D9A9 */,
 			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,

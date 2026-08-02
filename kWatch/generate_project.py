@@ -181,7 +181,7 @@ def main():
 
     # ========== Test sources ==========
     test_files = [
-        "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
+        "AlertEditorViewModelTests.swift", "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
         "AppShortcutsVerificationTests.swift", "CoreDataStackTests.swift", "DashboardViewModelTests.swift",
         "DiagnosticsExporterTests.swift", "HistoryViewModelTests.swift", "IntentParameterTests.swift",
         "IntentTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift",

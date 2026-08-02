@@ -177,32 +177,32 @@ final class AlertsViewModelTests: XCTestCase {
         let alert = MetricAlert(
             kind: .cpu, op: .above, threshold: 80,
             isEnabled: true, cooldownSeconds: 60,
-            lastTriggeredAt: Date(timeIntervalSince1970: 10)
+            lastTriggeredAt: Date(timeIntervalSince1970: 0)
         )
         try repo.upsert(alert)
         vm.refresh()
 
-        // Cooldown still active (30 < 10 + 60)
+        // Cooldown still active (100 < 0 + 300s floor).
         let earlySnapshot = MetricSnapshot(
-            timestamp: Date(timeIntervalSince1970: 30),
+            timestamp: Date(timeIntervalSince1970: 100),
             values: [.cpu: .percentage(95)]
         )
         let earlyResult = AlertEvaluator.evaluate(
             snapshot: earlySnapshot,
             alerts: vm.alerts,
-            now: Date(timeIntervalSince1970: 30)
+            now: Date(timeIntervalSince1970: 100)
         )
         XCTAssertTrue(earlyResult.isEmpty)
 
-        // Cooldown expired (80 >= 10 + 60)
+        // Cooldown expired (301 >= 0 + 300s floor).
         let lateSnapshot = MetricSnapshot(
-            timestamp: Date(timeIntervalSince1970: 80),
+            timestamp: Date(timeIntervalSince1970: 301),
             values: [.cpu: .percentage(95)]
         )
         let lateResult = AlertEvaluator.evaluate(
             snapshot: lateSnapshot,
             alerts: vm.alerts,
-            now: Date(timeIntervalSince1970: 80)
+            now: Date(timeIntervalSince1970: 301)
         )
         XCTAssertEqual(lateResult.count, 1)
     }
