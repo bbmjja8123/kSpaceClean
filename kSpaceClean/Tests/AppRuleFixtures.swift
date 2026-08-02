@@ -205,6 +205,55 @@ final class AppRuleLibraryAudit: XCTestCase {
         "net.whatsapp.WhatsApp",
     ]
 
+    /// The 43 net-new apps mandated by the Task B3 controller resolution
+    /// (user-installed apps missing from the 108-entry library; includes
+    /// DingTalk's two variants).
+    private let task12BundleIDs = [
+        "org.115Browser.115Browser",
+        "com.baidu.BaiduNetdisk-mac",
+        "com.ScooterSoftware.BeyondCompare",
+        "com.ccswitch.desktop",
+        "org.cmake.cmake",
+        "com.xk72.Charles",
+        "com.tencent.codebuddycn",
+        "net.sourceforge.sqlitebrowser",
+        "com.fiplab.appshredder",
+        "com.bot.neotix.doubao",
+        "com.trendmicro.DrUnzip",
+        "com.getdropbox.dropbox",
+        "com.tencent.Foxmail",
+        "com.cryptic-apps.hopper-web-4",
+        "com.microsoft.Powerpoint",
+        "com.microsoft.rdc.macos",
+        "com.microsoft.Word",
+        "com.MockingBot.MockingBotMAC",
+        "org.outline.macos.client",
+        "com.postmanlabs.mac",
+        "com.initex.proxifier.macosx",
+        "com.alibaba.tongyi",
+        "clowwindy.ShadowsocksX",
+        "com.sogou.SogouInputSwitchHelper",
+        "com.torusknot.SourceTreeNotMAS",
+        "org.springframework.boot.ide.branding.sts4",
+        "com.surfshark.vpnclient.macos.direct",
+        "com.tencent.Lemon",
+        "com.tencent.meeting",
+        "com.culturedcode.ThingsMac",
+        "com.vmware.fusion",
+        "com.vscode.weterm",
+        "com.tencent.mac.weiyun",
+        "org.wireshark.Wireshark",
+        "com.xiaomi.xmrouter",
+        "com.youdao.note.YoudaoNoteMac",
+        "net.toolinbox.ihosts",
+        "cn.better365.ishot",
+        "com.googlecode.iterm2",
+        "com.krightmenu.app",
+        "com.yinxiang.Mac",
+        "com.dingtalk.mac",
+        "5ZSL2CJU2T.com.dingtalk.mac",
+    ]
+
     private var root: [String: Any] {
         let data = try! Data(contentsOf: mappingURL)
         return try! JSONSerialization.jsonObject(with: data) as! [String: Any]
@@ -466,6 +515,60 @@ final class AppRuleLibraryAudit: XCTestCase {
                                    "\(bundleID) action \(action["name"] ?? "?") declares "
                                    + "bare model-store root \(path) — downloaded LLM models are "
                                    + "user data; cache/log subdirs only")
+                }
+            }
+        }
+    }
+
+    /// Task B3: all 43 net-new apps are present, use the v2 actions schema,
+    /// and declare an explicit `appstoreBundleID: null`.
+    func testTask12NewAppsPresentWithV2Actions() throws {
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        for bundleID in task12BundleIDs {
+            let app = try XCTUnwrap(apps[bundleID],
+                                    "Task B3 app \(bundleID) missing from bundleIDMapping.json")
+            XCTAssertTrue(app["appstoreBundleID"] is NSNull,
+                          "\(bundleID) must declare appstoreBundleID: null")
+            let actions = try XCTUnwrap(app["actions"] as? [[String: Any]],
+                                        "\(bundleID) must use the v2 actions schema")
+            XCTAssertFalse(actions.isEmpty, "\(bundleID) has empty actions[]")
+        }
+    }
+
+    /// Task B3 SAFETY CONSTRAINT: the 43 net-new apps must never declare a
+    /// cleanable action at a bare user-data root — either the
+    /// `Application Support/<Leaf>/` root (chat/model databases) or the
+    /// `Containers/<Bundle>/Data` container home. Actions must be scoped to
+    /// cache/log subdirs. Banned shapes are matched by path shape so new
+    /// entries cannot sneak a bare root back in.
+    func testTask12AppsNeverCoverBareUserDataRoots() throws {
+        let apps = try XCTUnwrap(root["apps"] as? [String: [String: Any]])
+        for bundleID in task12BundleIDs {
+            let app = try XCTUnwrap(apps[bundleID],
+                                    "\(bundleID) missing from bundleIDMapping.json")
+            let actions = try XCTUnwrap(app["actions"] as? [[String: Any]],
+                                        "\(bundleID) must use the v2 actions schema")
+            for action in actions {
+                let paths = try XCTUnwrap(action["paths"] as? [String])
+                for path in paths {
+                    let comps = path.split(separator: "/")
+                    for i in 0..<comps.count {
+                        // Banned shape 1: "…/Application Support/<Leaf>/" with
+                        // nothing after it — the leaf root holds user data.
+                        if comps[i] == "Application Support", i == comps.count - 2 {
+                            XCTFail("\(bundleID) action \(action["name"] ?? "?") declares "
+                                + "bare App Support root \(path) — leaf root is user data; "
+                                + "cache/log subdirs only")
+                        }
+                        // Banned shape 2: "…/Containers/<Bundle>/Data" — the
+                        // container home holds the sandboxed app data.
+                        if comps[i] == "Containers", i == comps.count - 3,
+                           comps[i + 2] == "Data" {
+                            XCTFail("\(bundleID) action \(action["name"] ?? "?") declares "
+                                + "bare container home \(path) — container data is user data; "
+                                + "scope to <container>/Data/Library/Caches/…")
+                        }
+                    }
                 }
             }
         }
