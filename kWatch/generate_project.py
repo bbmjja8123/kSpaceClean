@@ -138,6 +138,7 @@ def main():
         ("Intents/KWatchAppShortcuts.swift", "Intents"),
         ("Intents/LiveIntentService.swift", "Intents"),
         ("Intents/OpenDashboardIntent.swift", "Intents"),
+        ("Intents/PauseMonitoringIntent.swift", "Intents"),
         ("Intents/QueryMetricIntent.swift", "Intents"),
         ("Intents/ShowDiskUsageIntent.swift", "Intents"),
         ("Intents/ShowNetworkRateIntent.swift", "Intents"),
@@ -186,7 +187,7 @@ def main():
     # ========== Test sources ==========
     test_files = [
         "AlertEditorViewModelTests.swift", "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
-        "AppShortcutsVerificationTests.swift", "CoreDataStackTests.swift", "DashboardViewModelTests.swift",
+        "AppShortcutsIntegrationTests.swift", "AppShortcutsVerificationTests.swift", "CoreDataStackTests.swift", "DashboardViewModelTests.swift",
         "DiagnosticsExporterTests.swift", "HistoryViewModelTests.swift", "IntentParameterTests.swift",
         "IntentTests.swift", "InteractiveWidgetIntentTests.swift", "LiveActivityCoordinatorTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift",
         "NotificationSchedulerTests.swift",
