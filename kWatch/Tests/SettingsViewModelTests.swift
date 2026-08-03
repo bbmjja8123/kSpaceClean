@@ -45,7 +45,21 @@ final class SettingsViewModelTests: XCTestCase {
         XCTAssertEqual(preferences.menuBarMode, .trend)
     }
 
-    // MARK: - Enabled kinds
+    // MARK: - Icon style
+
+    func testSettingSameIconStyleIsNoop() {
+        let preferences = InMemoryPreferences()
+        let vm = makeModel(preferences: preferences)
+
+        vm.setIconStyle(.sparkline, for: .cpu)
+        let persistedTheme = preferences.menuBarIconTheme
+
+        vm.setIconStyle(.sparkline, for: .cpu)
+
+        XCTAssertEqual(preferences.menuBarIconTheme, persistedTheme)
+        XCTAssertEqual(vm.iconTheme, persistedTheme)
+    }
+
 
     func testDisablingEnabledKindPersists() {
         let preferences = InMemoryPreferences()

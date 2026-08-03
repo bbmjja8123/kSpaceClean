@@ -132,6 +132,7 @@ public final class SettingsViewModel: ObservableObject {
     /// change so the menu bar reflects the new style the next time it
     /// re-renders that metric's status icon.
     public func setIconStyle(_ style: MenuBarIcons.Style, for kind: MetricKind) {
+        guard iconTheme.style(for: kind) != style else { return }
         iconTheme.set(style, for: kind)
         preferences.menuBarIconTheme = iconTheme
     }
