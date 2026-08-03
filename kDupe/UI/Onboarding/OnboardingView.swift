@@ -4,6 +4,7 @@ import DesignSystem
 struct OnboardingView: View {
     @EnvironmentObject var appState: AppState
     @StateObject private var viewModel = OnboardingViewModel()
+    @State private var fdaStatus: FDAStatus = .unknown
 
     var body: some View {
         VStack(spacing: 32) {
@@ -20,6 +21,12 @@ struct OnboardingView: View {
             ProfileSetupView(viewModel: viewModel)
                 .frame(maxWidth: 400)
 
+            // Non-blocking permission card: green when granted, orange
+            // call-out with "Open System Settings" / "Re-check" when denied.
+            // The user can skip it and still finish onboarding.
+            PermissionView(fdaStatus: $fdaStatus)
+                .frame(maxWidth: 400)
+
             Spacer()
 
             Button(action: completeOnboarding) {
@@ -29,6 +36,9 @@ struct OnboardingView: View {
             .buttonStyle(.borderedProminent)
             .tint(.brandPrimary)
             .padding(.bottom, 40)
+        }
+        .onAppear {
+            fdaStatus = FDAChecker.status()
         }
     }
 

@@ -140,7 +140,10 @@ public actor VaultManager {
                 try fileManager.trashItem(at: item.originalURL, resultingItemURL: nil)
                 trashed.append(item)
             } catch {
-                try? fileManager.removeItem(at: item.vaultPath)
+                // Use FileManager.default (not the injected one) so the cleanup
+                // of our own vault copy doesn't leak through test-only fakes
+                // like TrashRedirectingFileManager.
+                try? FileManager.default.removeItem(at: item.vaultPath)
                 failures.append(VaultMoveFailure(url: item.originalURL, reason: "移入废纸篓失败: \(error.localizedDescription)"))
             }
         }

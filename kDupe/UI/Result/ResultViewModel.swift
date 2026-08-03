@@ -7,6 +7,7 @@ final class ResultViewModel: ObservableObject {
     @Published var selectedGroupIds: Set<UUID> = []
     @Published var activeCategory: DuplicateCategory?
     @Published var sortOrder: SortOrder = .sizeDesc
+    @Published var searchText: String = ""
     @Published var isProcessing = false
     @Published var showCleanupConfirmation = false
 
@@ -14,6 +15,7 @@ final class ResultViewModel: ObservableObject {
         case sizeDesc = "Size (High→Low)"
         case sizeAsc = "Size (Low→High)"
         case countDesc = "Count (High→Low)"
+        case wasteDesc = "Reclaimable (High→Low)"
         case type = "Category"
     }
 
@@ -22,10 +24,17 @@ final class ResultViewModel: ObservableObject {
         if let cat = activeCategory {
             result = result.filter { $0.category == cat }
         }
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !query.isEmpty {
+            result = result.filter { group in
+                group.files.contains { $0.url.lastPathComponent.localizedCaseInsensitiveContains(query) }
+            }
+        }
         switch sortOrder {
         case .sizeDesc: result.sort { $0.totalSize > $1.totalSize }
         case .sizeAsc: result.sort { $0.totalSize < $1.totalSize }
         case .countDesc: result.sort { $0.files.count > $1.files.count }
+        case .wasteDesc: result.sort { ($0.totalSize - ($0.files.map(\.size).max() ?? 0)) > ($1.totalSize - ($1.files.map(\.size).max() ?? 0)) }
         case .type: result.sort { $0.category.rawValue < $1.category.rawValue }
         }
         return result

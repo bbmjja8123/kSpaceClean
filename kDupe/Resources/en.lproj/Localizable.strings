@@ -8,6 +8,15 @@
 "Choose Your Profile" = "Choose Your Profile";
 "kSift optimizes scanning based on your workflow" = "kSift optimizes scanning based on your workflow";
 
+/* Full Disk Access */
+"Full Disk Access granted" = "Full Disk Access granted";
+"Full Disk Access required" = "Full Disk Access required";
+"kSift can scan protected folders like Desktop, Documents, and Downloads." = "kSift can scan protected folders like Desktop, Documents, and Downloads.";
+"kSift needs Full Disk Access to scan protected folders like Desktop, Documents, and Downloads." = "kSift needs Full Disk Access to scan protected folders like Desktop, Documents, and Downloads.";
+"Open System Settings" = "Open System Settings";
+"Re-check" = "Re-check";
+"Scan anyway" = "Scan anyway";
+
 /* Profile names */
 "Developer" = "Developer";
 "Photographer" = "Photographer";
@@ -38,6 +47,10 @@
 "Wasteable Space" = "Wasteable Space";
 "Review Results" = "Review Results";
 "Rescan" = "Rescan";
+"Cancel scan" = "Cancel scan";
+"Elapsed" = "Elapsed";
+"Groups found" = "Groups found";
+"Current folder" = "Current folder";
 
 /* Results */
 "Groups" = "Groups";
@@ -126,3 +139,48 @@
 "Finds files larger than the specified minimum size." = "Finds files larger than the specified minimum size.";
 "Category" = "Category";
 "Minimum Size (MB)" = "Minimum Size (MB)";
+
+/* Vault */
+"Vault" = "Vault";
+"Loading vault..." = "Loading vault...";
+"Vault is empty" = "Vault is empty";
+"Files you clean will be kept here for 30 days so you can restore them." = "Files you clean will be kept here for 30 days so you can restore them.";
+"Files are kept for 30 days after cleanup. Restore or purge them at any time." = "Files are kept for 30 days after cleanup. Restore or purge them at any time.";
+"Purge expired" = "Purge expired";
+"Items" = "Items";
+"Total size" = "Total size";
+"Vaulted" = "Vaulted";
+"Restored" = "Restored";
+"Restore" = "Restore";
+"Show" = "Show";
+"Vault error" = "Vault error";
+"Vault unavailable: %@" = "Vault unavailable: %@";
+"Failed to copy %@ into the vault: %@" = "Failed to copy %@ into the vault: %@";
+"SHA-256 mismatch for %@" = "SHA-256 mismatch for %@";
+"This vault item no longer exists." = "This vault item no longer exists.";
+"The vault copy of %@ is missing." = "The vault copy of %@ is missing.";
+"Cannot restore: %@ already exists." = "Cannot restore: %@ already exists.";
+"Failed to restore %@: %@" = "Failed to restore %@: %@";
+"Cannot restore" = "Cannot restore";
+"Show in Finder" = "Show in Finder";
+"'%@' already exists at the original location. Move it aside, then try again." = "'%@' already exists at the original location. Move it aside, then try again.";
+"Moved to Vault" = "Moved to Vault";
+"Open Vault" = "Open Vault";
+"Done" = "Done";
+"%lld file(s) were moved to Trash and safely stored in the vault for 30 days." = "%lld file(s) were moved to Trash and safely stored in the vault for 30 days.";
+
+/* Task 3 — P0-9 scan range preview */
+"Scan range" = "Scan range";
+"Estimating scan range…" = "Estimating scan range…";
+"Will scan %@" = "Will scan %@";
+"%lld folder(s)" = "%lld folder(s)";
+"about %@ files" = "about %@ files";
+"about %@" = "about %@";
+"50k+ files" = "50k+ files";
+"over %@" = "over %@";
+"no files to scan" = "no files to scan";
+"No folders to scan" = "No folders to scan";
+"Drop a folder here, or choose directories in Settings." = "Drop a folder here, or choose directories in Settings.";
+
+/* Task 4 — P0-5 drag-and-drop scan */
+"Drop to start scanning" = "Drop to start scanning";

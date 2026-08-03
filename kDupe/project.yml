@@ -6,9 +6,18 @@ options:
   xcodeVersion: "15.0"
 
 settings:
-  SWIFT_STRICT_CONCURRENCY: complete
-  MACOSX_DEPLOYMENT_TARGET: "13.0"
-  SWIFT_VERSION: "5.9"
+  base:
+    SWIFT_VERSION: "5.9"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+  configs:
+    Debug:
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      ENABLE_TESTABILITY: YES
+      GCC_PREPROCESSOR_DEFINITIONS: DEBUG=1 $(inherited)
+    Release:
+      SWIFT_OPTIMIZATION_LEVEL: -O
 
 targets:
   kSift:
@@ -50,7 +59,13 @@ targets:
     sources:
       - Tests
     settings:
-      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.ksift.tests
+      base:
+        PRODUCT_NAME: kSiftTests
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.ksift.tests
+      configs:
+        Debug:
+          TEST_HOST: "$(BUILT_PRODUCTS_DIR)/kSift.app/Contents/MacOS/kSift"
+          BUNDLE_LOADER: "$(TEST_HOST)"
     dependencies:
       - target: kSift
       - package: kFoundation

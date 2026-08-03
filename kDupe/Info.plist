@@ -21,5 +21,7 @@
     <string>kSift needs access to find duplicate and large files.</string>
     <key>NSDownloadsFolderUsageDescription</key>
     <string>kSift needs access to find duplicate and large files.</string>
+    <key>NSDesktopFolderUsageDescription</key>
+    <string>kSift needs access to find duplicate and large files.</string>
 </dict>
 </plist>

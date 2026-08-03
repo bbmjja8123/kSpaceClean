@@ -8,6 +8,15 @@
 "Choose Your Profile" = "选择使用场景";
 "kSift optimizes scanning based on your workflow" = "kSift 会根据你的使用习惯优化扫描";
 
+/* Full Disk Access */
+"Full Disk Access granted" = "已获得完全磁盘访问权限";
+"Full Disk Access required" = "需要完全磁盘访问权限";
+"kSift can scan protected folders like Desktop, Documents, and Downloads." = "kSift 可以扫描桌面、文稿、下载等受保护文件夹。";
+"kSift needs Full Disk Access to scan protected folders like Desktop, Documents, and Downloads." = "kSift 需要完全磁盘访问权限才能扫描桌面、文稿、下载等受保护文件夹。";
+"Open System Settings" = "打开系统设置";
+"Re-check" = "重新检测";
+"Scan anyway" = "仍要扫描";
+
 /* Profile names */
 "Developer" = "开发者";
 "Photographer" = "摄影师";
@@ -38,6 +47,10 @@
 "Wasteable Space" = "可回收空间";
 "Review Results" = "查看结果";
 "Rescan" = "重新扫描";
+"Cancel scan" = "取消扫描";
+"Elapsed" = "已用时";
+"Groups found" = "已发现";
+"Current folder" = "当前目录";
 
 /* Results */
 "Groups" = "分组";
@@ -126,3 +139,48 @@
 "Finds files larger than the specified minimum size." = "查找大于指定最小大小的文件。";
 "Category" = "类别";
 "Minimum Size (MB)" = "最小大小（MB）";
+
+/* Vault */
+"Vault" = "保险库";
+"Loading vault..." = "正在加载保险库...";
+"Vault is empty" = "保险库为空";
+"Files you clean will be kept here for 30 days so you can restore them." = "清理后的文件将在此保留 30 天，可随时恢复。";
+"Files are kept for 30 days after cleanup. Restore or purge them at any time." = "清理后的文件会保留 30 天，可随时恢复或清除。";
+"Purge expired" = "清理过期";
+"Items" = "条目";
+"Total size" = "总占用";
+"Vaulted" = "保险中";
+"Restored" = "已恢复";
+"Restore" = "恢复";
+"Show" = "查看";
+"Vault error" = "保险库错误";
+"Vault unavailable: %@" = "保险库不可用：%@";
+"Failed to copy %@ into the vault: %@" = "无法将 %@ 复制到保险库：%@";
+"SHA-256 mismatch for %@" = "%@ 的 SHA-256 校验失败";
+"This vault item no longer exists." = "该保险库条目已不存在。";
+"The vault copy of %@ is missing." = "保险库中 %@ 的副本已丢失。";
+"Cannot restore: %@ already exists." = "无法恢复：%@ 已存在。";
+"Failed to restore %@: %@" = "无法恢复 %@：%@";
+"Cannot restore" = "无法恢复";
+"Show in Finder" = "在 Finder 中显示";
+"'%@' already exists at the original location. Move it aside, then try again." = "“%@”在原位置已存在，请先将原文件移开，然后再尝试恢复。";
+"Moved to Vault" = "已移入保险库";
+"Open Vault" = "打开保险库";
+"Done" = "完成";
+"%lld file(s) were moved to Trash and safely stored in the vault for 30 days." = "%lld 个文件已移入废纸篓，并在保险库中安全保存 30 天。";
+
+/* Task 3 — P0-9 扫描前范围预览 */
+"Scan range" = "扫描范围";
+"Estimating scan range…" = "正在估算扫描范围…";
+"Will scan %@" = "将扫描 %@";
+"%lld folder(s)" = "%lld 个文件夹";
+"about %@ files" = "约 %@ 个文件";
+"about %@" = "约 %@";
+"50k+ files" = "5 万+ 个文件";
+"over %@" = "超过 %@";
+"no files to scan" = "没有可扫描的文件";
+"No folders to scan" = "没有可扫描的文件夹";
+"Drop a folder here, or choose directories in Settings." = "将文件夹拖到这里，或在设置中选择目录。";
+
+/* Task 4 — P0-5 拖拽目录扫描 */
+"Drop to start scanning" = "松手开始扫描";

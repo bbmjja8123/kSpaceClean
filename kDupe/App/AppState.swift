@@ -15,7 +15,7 @@ public final class AppState: ObservableObject {
     @Published public var pendingScanPath: String?
 
     public enum NavigationItem: String, CaseIterable {
-        case onboarding, scan, results, history, settings
+        case onboarding, scan, results, history, vault, settings
 
         public var iconName: String {
             switch self {
@@ -23,6 +23,7 @@ public final class AppState: ObservableObject {
             case .scan: return "magnifyingglass"
             case .results: return "doc.on.doc"
             case .history: return "clock"
+            case .vault: return "shippingbox"
             case .settings: return "gear"
             }
         }

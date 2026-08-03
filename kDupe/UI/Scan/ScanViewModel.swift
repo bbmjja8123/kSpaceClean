@@ -9,9 +9,14 @@ public final class ScanViewModel: ObservableObject {
     @Published public var largeFiles: [FileItem] = []
     @Published public var warnings: [ScanWarning] = []
     @Published public var summary: ScanSummary?
+    @Published public var groupsFound = 0
+    @Published public var elapsed: TimeInterval = 0
 
     private let orchestrator: ScanOrchestrator
     private var controller = ScanController()
+    private var scanTask: Task<Void, Never>?
+    private var elapsedTask: Task<Void, Never>?
+    private var scanGeneration = UUID()
     /// Optional mirror of paid status. When set, the orchestrator wires up
     /// an `IncrementalIndex` so paid users get hash-cache hits on re-scan.
     /// Free users still get correct results — the index just stays inert.
@@ -47,16 +52,32 @@ public final class ScanViewModel: ObservableObject {
         warnings = []
         summary = nil
         progress = nil
+        groupsFound = 0
+        elapsed = 0
+        elapsedTask?.cancel()
+        let startDate = Date()
+        elapsedTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 500_000_000)
+                guard !Task.isCancelled else { return }
+                self?.elapsed = Date().timeIntervalSince(startDate)
+            }
+        }
 
-        Task {
+        scanTask?.cancel()
+        let generation = UUID()
+        scanGeneration = generation
+        scanTask = Task {
             let stream = await orchestrator.run(config: config, controller: controller)
             for await event in stream {
+                guard scanGeneration == generation else { return }
                 switch event {
                 case .progress(let p):
                     progress = p
                     scanState = .scanning(p.progress)
                 case .group(let group):
                     scanResult.append(group)
+                    groupsFound += 1
                 case .largeFiles(let items):
                     largeFiles = items
                 case .warning(let warning):
@@ -68,7 +89,14 @@ public final class ScanViewModel: ObservableObject {
                 }
             }
 
-            guard let summary else { return }
+            guard let summary else {
+                elapsedTask?.cancel()
+                elapsedTask = nil
+                return
+            }
+            elapsedTask?.cancel()
+            elapsedTask = nil
+            elapsed = Date().timeIntervalSince(startDate)
             try? await orchestrator.saveResults(
                 scanResult,
                 config: config,
@@ -84,6 +112,11 @@ public final class ScanViewModel: ObservableObject {
 
     public func cancelScan() {
         controller.cancel()
+        scanGeneration = UUID()
+        scanTask?.cancel()
+        elapsedTask?.cancel()
+        elapsedTask = nil
+        // Return to idle immediately; the cancelled stream must not publish a result.
         scanState = .idle
     }
 }

@@ -6,8 +6,11 @@ struct ResultView: View {
     @EnvironmentObject var store: StoreManager
     @StateObject private var viewModel = ResultViewModel()
     @State private var cleanupFailures: [VaultMoveFailure] = []
+    @State private var cleanupSuccessCount: Int = 0
+    @State private var showCleanupSuccess: Bool = false
     @State private var showPaywall = false
     @State private var paywallReason: String = ""
+    @FocusState private var searchFocused: Bool
 
     var body: some View {
         VStack(spacing: 0) {
@@ -32,17 +35,76 @@ struct ResultView: View {
             FilterBarView(activeCategory: $viewModel.activeCategory,
                          counts: categoryCounts)
 
-            // Group list
-            ScrollView {
-                LazyVStack(spacing: 8) {
-                    ForEach(viewModel.filteredGroups) { group in
-                        NavigationLink(destination: GroupDetailView(group: group)) {
-                            GroupRowView(group: group)
-                        }
-                        .buttonStyle(.plain)
+            // Search field (⌘F to focus). Sits above the sort row so the
+            // filter→sort→results hierarchy stays intact.
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass").foregroundColor(.secondary)
+                TextField(
+                    String(localized: "Search filename…", defaultValue: "Search filename…"),
+                    text: $viewModel.searchText
+                )
+                .textFieldStyle(.plain)
+                .focused($searchFocused)
+                if !viewModel.searchText.isEmpty {
+                    Button { viewModel.searchText = "" } label: {
+                        Image(systemName: "xmark.circle.fill").foregroundColor(.secondary)
                     }
+                    .buttonStyle(.plain)
                 }
-                .padding(16)
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background(Color(NSColor.controlBackgroundColor))
+            .clipShape(RoundedRectangle(cornerRadius: AppRadius.sm))
+            .padding(.horizontal, 16)
+            .padding(.bottom, 4)
+            .keyboardShortcut("f", modifiers: .command)
+
+            // Sort row (sits under the filter bar so it doesn't compete with
+            // the primary selection/count chips for attention).
+            HStack {
+                Spacer()
+                Menu {
+                    ForEach(ResultViewModel.SortOrder.allCases, id: \.self) { order in
+                        Button {
+                            viewModel.sortOrder = order
+                        } label: {
+                            HStack {
+                                Text(order.rawValue)
+                                if viewModel.sortOrder == order {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.up.arrow.down")
+                        Text(viewModel.sortOrder.rawValue)
+                    }
+                    .font(.caption)
+                }
+                .menuStyle(.borderlessButton)
+                .fixedSize()
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 4)
+
+            // Group list
+            if viewModel.filteredGroups.isEmpty {
+                emptyState
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        ForEach(viewModel.filteredGroups) { group in
+                            NavigationLink(destination: GroupDetailView(group: group)) {
+                                GroupRowView(group: group)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(16)
+                }
             }
 
             // Bottom action bar
@@ -78,6 +140,21 @@ struct ResultView: View {
             Button("OK", role: .cancel) { cleanupFailures = [] }
         } message: {
             Text("\(cleanupFailures.count) file(s) could not be moved to Trash and remain in place.\n\n\(cleanupFailures.map { $0.url.lastPathComponent }.joined(separator: ", "))")
+        }
+        .alert(
+            NSLocalizedString("Moved to Vault", comment: "Cleanup success title"),
+            isPresented: $showCleanupSuccess
+        ) {
+            Button(NSLocalizedString("Open Vault", comment: "Open vault after cleanup")) {
+                showCleanupSuccess = false
+                appState.navigation = .vault
+            }
+            Button(NSLocalizedString("Done", comment: "Dismiss cleanup success"), role: .cancel) {
+                showCleanupSuccess = false
+            }
+        } message: {
+            Text(String(format: NSLocalizedString("%lld file(s) were moved to Trash and safely stored in the vault for 30 days.", comment: "Cleanup success message"),
+                        cleanupSuccessCount))
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
@@ -130,7 +207,14 @@ struct ResultView: View {
                 .flatMap(\.files)
                 .filter { failedUrls.contains($0.url) }
                 .reduce(0) { $0 + $1.size }
-            store.recordFreeTierCleanup(bytes: bytes - failedBytes)
+            let succeeded = bytes - failedBytes
+            store.recordFreeTierCleanup(bytes: succeeded)
+            // Surface cleanup success so the user can jump straight to the
+            // Vault. Only show when at least one file actually moved.
+            if succeeded > 0 {
+                cleanupSuccessCount = viewModel.selectedGroupIds.count
+                showCleanupSuccess = true
+            }
         }
     }
 
@@ -163,6 +247,32 @@ struct ResultView: View {
     private func formatBytes(_ bytes: Int64) -> String {
         ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
     }
+
+    private var emptyState: some View {
+        VStack(spacing: 16) {
+            Image(systemName: viewModel.searchText.isEmpty ? "sparkles" : "magnifyingglass")
+                .font(.system(size: 48))
+                .foregroundColor(.success)
+            Text(viewModel.searchText.isEmpty
+                 ? NSLocalizedString("No duplicates in this scan", comment: "Empty result body title")
+                 : NSLocalizedString("No matches", comment: "Empty search body title"))
+                .font(.title3).bold()
+            Text(viewModel.searchText.isEmpty
+                 ? NSLocalizedString("Try a different folder or enable more detectors in Settings.", comment: "Empty result body subtitle")
+                 : NSLocalizedString("Try a different filename or clear the search.", comment: "Empty search body subtitle"))
+                .font(.callout)
+                .multilineTextAlignment(.center)
+                .foregroundColor(.secondary)
+                .frame(maxWidth: 360)
+            Button(NSLocalizedString("Back to scan", comment: "Empty state CTA")) {
+                appState.navigation = .scan
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.brandPrimary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(32)
+    }
 }
 
 struct StatItem: View {
@@ -192,6 +302,11 @@ struct GroupRowView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
+                // Perceptual groups preview the first image inline; other
+                // categories stay text-only to keep the row visually calm.
+                if group.category == .perceptual, let first = group.files.first {
+                    ThumbnailView(url: first.url, size: 36)
+                }
                 Image(systemName: "chevron.right")
                     .foregroundColor(.secondary)
             }

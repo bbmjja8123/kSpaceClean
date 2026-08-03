@@ -35,6 +35,8 @@ struct RootView: View {
             ResultView()
         case .history:
             HistoryView()
+        case .vault:
+            VaultView()
         case .settings:
             SettingsView()
         }
