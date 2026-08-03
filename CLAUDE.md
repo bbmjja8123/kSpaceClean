@@ -13,15 +13,16 @@
 
 | App | Bundle ID | 主轴 | 定价 | 状态 |
 |---|---|---|---|---|
-| **kSpaceClean**（磁盘清理） | `app.kraftly.sclean` | AI + 视觉（3D 磁盘星系图） | Free Trial 7 天 → $19.99/年 | ✅ **v1 设计定稿** |
+| **kWise**（Mac 管家 / CMM 对标） | `app.kraftly.sclean` | 对标 CleanMyMac X：Smart Care + 启动项 + 隐私 + 磁盘健康 + 基础卸载/粉碎 | Free Trial 7 天 → $19.99/年 | 🔄 **v1.5 路线定稿** |
 | **kWatch**（菜单栏监控） | `app.kraftly.kwatch` | 平台集成 + Widget | 待设计 | 📋 Backlog |
-| **kDupe**（重复/大文件） | `app.kraftly.kdupe` | 极客 + AI（开发者场景） | 待设计 | 📋 Backlog |
+| **kSift**（重复/大文件/粉碎） | `app.kraftly.ksift` | 极客 + AI（开发者场景） | $9.99 买断 | 📋 Spec 定稿 |
 | **kUninstall**（应用卸载） | `app.kraftly.kuninstall` | 平台集成 + 自动化 | 待设计 | 📋 Backlog |
 
 ### 1.3 品牌
-- 命名规范：所有 App 以 `k` 前缀开头（kSpaceClean, kWatch, kDupe, kUninstall）
+- 命名规范：所有 App 以 `k` 前缀开头（kWise, kWatch, kSift, kUninstall）
 - 统一品牌：**Kraftly**（App Store 元数据、官网、社交账号统一）
 - Slogan 候选：`Kraft — Cleaner Mac tools, made with care`
+- **历史改名**：原 `kSpaceClean` 已重命名为 `kWise`（2026-08-03 锁定）。bundle ID `app.kraftly.sclean` 保持不变以保留 App Store 历史评分、评论、内购项目。详见 §3.10。
 
 ---
 
@@ -87,10 +88,20 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 
 ---
 
-## 3. kSpaceClean 详细设计（v1 定稿）
+## 3. kWise 详细设计（v1.5 路线定稿）
+
+> **v1 → v1.5 演进**：原 kSpaceClean v1（2026-07-25 定稿）已重命名为 kWise，对标 CleanMyMac X。v1 已完成模块（4 级扫描树 / 150+ 应用缓存规则 / FDA 引导 / Widget / Shortcuts 等）全部继承。v1.5 新增 6 个模块作为 App Store 上架硬门槛。详细 roadmap 见 `docs/superpowers/specs/2026-08-03-kwise-cmm-parity-roadmap.md`。
+
+### 3.0 命名与定位
+
+- **产品名**：kWise（CN: 智洁）
+- **bundle ID**：`app.kraftly.sclean`（不变，保留 App Store 历史）
+- **Slogan**：Smarter care for your Mac / 智能清理，焕然如新
+- **对标**：CleanMyMac X
+- **产品矩阵**：kWise 主 + kWatch / kSift / kUninstall 独立 App（双层矩阵，B1a）
 
 ### 3.1 一句话定位
-让 Mac 存储空间回到"足够"，最聪明的磁盘清理。
+让 Mac 回到"最佳状态"——一键智能清理 + 启动项 + 隐私 + 磁盘健康，对标 CleanMyMac X 的全能 Mac 管家。
 
 ### 3.2 目标用户
 - **主**：MacBook 256GB/512GB 用户，频繁弹"磁盘已满"告警
@@ -107,21 +118,30 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 | 一键清理 | ✅ | ❌ | ✅ + Interactive Widget 一键清理（macOS 14+） |
 | App Store 集成 | ✅ | ❌ | ✅ + Shortcuts 集成 |
 
-### 3.4 v1 完整功能（首发即包含全部）
-| 模块 | v1 内容 |
-|---|---|
-| 3D 磁盘星系图 | Metal + SceneKit 主视觉，根目录 → 子目录球体化 |
-| 智能扫描引擎 | 系统缓存 / 应用残留 / 大文件 / 重复文件 |
-| CoreML AI 分类 | 本地 embedding 分组（图片/视频/文档/缓存/开发文件） |
-| 一键清理 | 移入废纸篓 + 30 天清理历史可回滚 |
-| FDA 引导 | 教育性 Full Disk Access 引导流程 |
-| 菜单栏图标 | 显示已用空间 + 一键扫描入口 |
-| 桌面 Widget | 基础版（13）+ Interactive 版（14+） |
-| Shortcuts App Intents | 扫描 / 清理缓存 / 显示大文件 三个 action |
-| Live Activities | macOS 14+，清理进度长任务显示 |
-| Finder 扩展 | 右键"用 kSpaceClean 扫描" |
-| Spotlight 集成 | 搜"Mac 空间"出现操作 |
-| 本地化 | 英文 + 简体中文 + 日文 |
+### 3.4 v1.5 完整功能（首发即包含全部）
+
+> v1 已完成模块（标记为 ✅）全部继承；v1.5 新增模块（标记为 🆕）为 App Store 上架硬门槛。
+
+| 模块 | v1.5 内容 | 状态 |
+|---|---|---|
+| 4 级扫描树 | 实时合成 + ETA + 应用级粒度（150+ App 规则） | ✅ 继承 v1 |
+| 智能扫描引擎 | 系统缓存 / 应用残留 / 大文件 / 重复文件 | ✅ 继承 v1 |
+| CoreML AI 分类 | 本地 embedding 分组（图片/视频/文档/缓存/开发文件） | ✅ 继承 v1 |
+| 一键清理 | 移入废纸篓 + 30 天清理历史可回滚 | ✅ 继承 v1 |
+| 🆕 **Smart Care** | 一键智能清理（扫描→展示→一键确认清理） | 🔴 v1.5 新增 |
+| 🆕 **启动项管理** | login items / launch agents / daemons | 🔴 v1.5 新增 |
+| 🆕 **隐私清理** | 浏览器历史 / 应用权限概览 | 🔴 v1.5 新增 |
+| 🆕 **磁盘健康卡片** | S.M.A.R.T. 状态 + 卷诊断 | 🔴 v1.5 新增 |
+| 🆕 **应用卸载（基础）** | CMM X parity 级别 | 🔴 v1.5 新增 |
+| 🆕 **文件粉碎（基础）** | CMM X parity 级别 | 🔴 v1.5 新增 |
+| FDA 引导 | 教育性 Full Disk Access 引导流程 | ✅ 继承 v1 |
+| 菜单栏图标 | 显示已用空间 + 一键扫描入口 | ✅ 继承 v1 |
+| 桌面 Widget | 基础版（13）+ Interactive 版（14+） | ✅ 继承 v1 |
+| Shortcuts App Intents | 扫描 / 清理缓存 / 显示大文件 | ✅ 继承 v1 |
+| Live Activities | macOS 14+，清理进度长任务显示 | ✅ 继承 v1 |
+| Finder 扩展 | 右键"用 kWise 扫描" | ✅ 继承 v1 |
+| Spotlight 集成 | 搜"Mac 空间"出现操作 | ✅ 继承 v1 |
+| 本地化 | 英文 + 简体中文 + 日文 | ✅ 继承 v1 |
 
 ### 3.5 kSpaceClean 内部模块
 ```
@@ -173,6 +193,25 @@ kSpaceClean/
 2. 联系 5-10 位 Mac 评测博主送 Pro 兑换码
 3. 申请 App Store 编辑推荐（Apple 开发者后台）
 4. 建立 Discord/Telegram 用户群收集反馈
+
+### 3.10 v1.5 CMM Parity 上架门槛（硬约束）
+
+**⛔ kWise v1.5 必须完成下列 6 个模块才能提交 App Store：**
+
+| # | 模块 | 来源 |
+|---|---|---|
+| M1 | **Smart Care**（一键智能清理） | 本会话主轴 |
+| M2 | **启动项管理** | CMM X parity |
+| M3 | **隐私清理**（浏览器历史 + 应用权限概览） | CMM X parity |
+| M4 | **磁盘健康卡片**（S.M.A.R.T. + 卷状态） | CMM X parity |
+| M5 | **应用卸载（基础版）** | 由 kUninstall 集成 |
+| M6 | **文件粉碎（基础版）** | 由 kSift 集成 |
+
+**强烈建议（非阻塞）：** 定时自动清理 / 3D 磁盘星系图 / CoreML 本地 AI 分类。
+
+**功能范围待 grill：** UI 重做方案 / Smart Care 具体行为 / 启动项 UI 位置 / 隐私权限数据源 / 基础 vs 深度卸载切分线。
+
+详细 spec：`docs/superpowers/specs/2026-08-03-kwise-cmm-parity-roadmap.md`。
 
 ---
 
