@@ -33,6 +33,9 @@ public final class AppCoordinator: ObservableObject, @unchecked Sendable {
         case "results":
             appState?.navigation = .results
             return true
+        case "vault":
+            appState?.navigation = .vault
+            return true
         default:
             return false
         }

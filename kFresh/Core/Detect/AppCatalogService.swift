@@ -93,6 +93,8 @@ actor AppCatalogService {
     /// - Returns: Bytes contributed by `at`, or `0` if the values could not
     ///   be read or both `totalFileAllocatedSize` and `fileSize` are missing.
     private static func safeResourceSize(at url: URL, keys: Set<URLResourceKey>) -> Int64 {
+        // best-effort: resource values unavailable for some files (e.g. symlinks, broken perms)
+        // swiftlint:disable:next no_silent_try_question_mark
         guard let values = try? url.resourceValues(forKeys: keys) else { return 0 }
         return Int64(values.totalFileAllocatedSize ?? values.fileSize ?? 0)
     }
@@ -173,6 +175,8 @@ actor AppCatalogService {
     }
 
     private func childDirectories(of url: URL) -> [URL] {
+        // best-effort: directory may not exist or be inaccessible
+        // swiftlint:disable:next no_silent_try_question_mark
         (try? fileManager.contentsOfDirectory(
             at: url,
             includingPropertiesForKeys: nil,

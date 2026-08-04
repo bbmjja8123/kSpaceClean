@@ -74,6 +74,8 @@ enum DirectorySizeCalculator {
                     continue
                 }
             }
+            // best-effort: resource values unavailable for some files (e.g. symlinks, broken perms)
+            // swiftlint:disable:next no_silent_try_question_mark
             let values = try? fileURL.resourceValues(forKeys: keys)
             total += Int64(values?.totalFileAllocatedSize ?? values?.fileSize ?? 0)
         }

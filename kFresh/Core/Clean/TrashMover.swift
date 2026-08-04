@@ -409,6 +409,8 @@ public actor TrashMover {
             status: status,
             errorMessage: error
         )
+        // best-effort: audit log failure must not block the uninstall
+        // swiftlint:disable:next no_silent_try_question_mark
         try? await logger.log(event)
     }
 }

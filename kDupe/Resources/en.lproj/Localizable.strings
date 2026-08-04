@@ -1,4 +1,9 @@
-/* App name */
+"Quick Scan…" = "Quick Scan…";
+"Recent Results" = "Recent Results";
+"Show Vault" = "Show Vault";
+"Quit kSift" = "Quit kSift";
+"Open kSift" = "Open kSift";
+"freed" = "freed";
 "kSift" = "kSift";
 
 /* Onboarding */
@@ -123,6 +128,7 @@
 "Free tier includes up to 2 GB of cleanup. Quota resets after purchase." = "Free tier includes up to 2 GB of cleanup. Quota resets after purchase.";
 
 /* Category Display Names */
+"Categories" = "Categories";
 "Identical" = "Identical";
 "Directory" = "Directory";
 "Similar" = "Similar";
@@ -184,3 +190,28 @@
 
 /* Task 4 — P0-5 drag-and-drop scan */
 "Drop to start scanning" = "Drop to start scanning";
+
+/* Task 5 — P1-5 keyboard navigation */
+"Select all groups (⌘A)" = "Select all groups (⌘A)";
+"Start a new scan (⌘N)" = "Start a new scan (⌘N)";
+"Clear selection (Esc)" = "Clear selection (Esc)";
+"QuickLook selected file (Space)" = "QuickLook selected file (Space)";
+
+/* Task 1 — P1-1 multi-dim filters */
+"More filters" = "More filters";
+"Less filters" = "Less filters";
+"Size range" = "Size range";
+"Min" = "Min";
+"Max" = "Max";
+"Date range" = "Date range";
+"From" = "From";
+"To" = "To";
+"Any date" = "Any date";
+"Clear date" = "Clear date";
+"Any size" = "Any size";
+"Any" = "Any";
+"Reset filters" = "Reset filters";
+"Missing" = "Missing";
+"This group shares the same name with %d other groups" = "This group shares the same name with %d other groups";
+"APFS clones share physical blocks — cleaning frees logical size only" = "APFS clones share physical blocks — cleaning frees logical size only";
+"%d clones" = "%d clones";

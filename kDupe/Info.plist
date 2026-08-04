@@ -15,7 +15,7 @@
     <key>CFBundleShortVersionString</key><string>1.0.0</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>LSMinimumSystemVersion</key><string>13.0</string>
-    <key>NSPrincipalClass</key><string>NSApplication</string>
+    <key>LSUIElement</key><true/>
     <key>NSSupportsAutomaticTermination</key><true/>
     <key>NSDocumentsFolderUsageDescription</key>
     <string>kSift needs access to find duplicate and large files.</string>

@@ -16,6 +16,7 @@ struct kSiftApp: App {
     /// Retains the Combine subscription so the mirror stays alive for the
     /// lifetime of the app process.
     @State private var paidSubscription: AnyCancellable?
+    @State private var menuBarController: MenuBarController?
 
     init() {
         // The App Intents run in the app process when openAppWhenRun=true;
@@ -40,6 +41,10 @@ struct kSiftApp: App {
                 }
                 .onAppear {
                     coordinator.appState = appState
+                    if menuBarController == nil {
+                        NSApp.setActivationPolicy(.accessory)
+                        menuBarController = MenuBarController(coordinator: coordinator, appState: appState)
+                    }
                     if #available(macOS 14, *) {
                         ScanDirectoryIntent.appState = appState
                     }

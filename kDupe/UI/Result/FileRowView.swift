@@ -7,25 +7,55 @@ struct FileRowView: View {
 
     @State private var icon: NSImage?
 
+    /// True when the file no longer exists on disk (trashed, moved, or
+    /// unmounted between scan and view). Used to surface a warning badge
+    /// so the user doesn't double-select a path that can no longer be cleaned.
+    private var isMissing: Bool {
+        !FileManager.default.fileExists(atPath: file.url.path)
+    }
+
     var body: some View {
         HStack(spacing: 8) {
-            // Async icon: placeholder is a generic doc icon so the row is
-            // never blank. The cached NSWorkspace icon replaces it once loaded.
-            if let icon {
-                Image(nsImage: icon)
-                    .resizable()
-                    .frame(width: 24, height: 24)
-            } else {
-                Image(systemName: "doc")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(.secondary)
+            // Type-aware placeholder first so the row is never blank while
+            // NSWorkspace loads the real icon. Falls back to the generic
+            // doc symbol when UTType is unknown.
+            Group {
+                if let icon {
+                    Image(nsImage: icon)
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                } else if let typeIcon = FileIconCache.shared.icon(for: file.fileType) {
+                    Image(nsImage: typeIcon)
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.secondary)
+                } else {
+                    Image(systemName: "doc")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.secondary)
+                }
             }
+            .opacity(isMissing ? 0.4 : 1.0)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(file.url.lastPathComponent)
-                    .font(.body)
-                    .lineLimit(1)
+                HStack(spacing: 4) {
+                    Text(file.url.lastPathComponent)
+                        .font(.body)
+                        .lineLimit(1)
+                    if isMissing {
+                        // Inline warning label so the user knows the path is
+                        // gone (trashed, unmounted, renamed) before they try
+                        // to select/clean it.
+                        Label(
+                            NSLocalizedString("Missing", comment: "File-row warning when path no longer exists"),
+                            systemImage: "exclamationmark.triangle.fill"
+                        )
+                        .labelStyle(.titleAndIcon)
+                        .font(.caption2)
+                        .foregroundColor(.orange)
+                    }
+                }
                 Text(file.url.deletingLastPathComponent().path)
                     .font(.caption)
                     .foregroundColor(.secondary)

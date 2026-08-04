@@ -92,6 +92,8 @@ public actor AuditLogger {
         }
 
         let handle = try FileHandle(forWritingTo: logURL)
+        // best-effort: close failure in defer is non-fatal
+        // swiftlint:disable:next no_silent_try_question_mark
         defer { try? handle.close() }
         try handle.seekToEnd()
         try handle.write(contentsOf: data)
@@ -100,10 +102,14 @@ public actor AuditLogger {
     /// Returns the most recent `limit` audit events, newest first. Decode errors
     /// on individual lines are silently skipped (best-effort read).
     public func recentEvents(limit: Int) -> [AuditEvent] {
+        // best-effort: log file may not exist yet on first launch
+        // swiftlint:disable:next no_silent_try_question_mark
         guard let data = try? Data(contentsOf: logURL) else { return [] }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let lines = data.split(separator: 0x0A)
+        // best-effort: malformed lines are silently skipped
+        // swiftlint:disable:next no_silent_try_question_mark
         let events = lines.reversed().compactMap { try? decoder.decode(AuditEvent.self, from: Data($0)) }
         return Array(events.prefix(limit))
     }

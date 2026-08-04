@@ -10,6 +10,7 @@ struct ResultView: View {
     @State private var showCleanupSuccess: Bool = false
     @State private var showPaywall = false
     @State private var paywallReason: String = ""
+    @State private var showAdvancedFilters: Bool = false
     @FocusState private var searchFocused: Bool
 
     var body: some View {
@@ -24,6 +25,10 @@ struct ResultView: View {
                         appState.navigation = .scan
                     }
                     .buttonStyle(.bordered)
+                    .help(NSLocalizedString(
+                        "Start a new scan (⌘N)",
+                        comment: "Tooltip for Command-N new-scan shortcut"
+                    ))
                 }
                 .padding(.horizontal, 16)
                 .frame(height: 44)
@@ -31,9 +36,55 @@ struct ResultView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
 
+            // Category breakdown
+            if !viewModel.groups.isEmpty {
+                CategoryBreakdownBar(groups: viewModel.groups)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+                    .padding(.bottom, 4)
+            }
+
             // Filter bar
             FilterBarView(activeCategory: $viewModel.activeCategory,
                          counts: categoryCounts)
+
+            // P1-1: collapsible advanced filter chips (size range + date
+            // range). Toggled via a small "More filters" / "Less filters"
+            // button so the default result page stays visually quiet.
+            HStack {
+                Button {
+                    showAdvancedFilters.toggle()
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: showAdvancedFilters
+                              ? "chevron.up"
+                              : "slider.horizontal.3")
+                        Text(showAdvancedFilters
+                             ? NSLocalizedString("Less filters", comment: "Collapse advanced filters")
+                             : NSLocalizedString("More filters", comment: "Expand advanced filters"))
+                    }
+                    .font(.caption)
+                }
+                .buttonStyle(.borderless)
+                if showAdvancedFilters || viewModel.hasActiveFilters {
+                    Text(activeFiltersSummary)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 4)
+
+            if showAdvancedFilters {
+                FilterChipsView(
+                    minSize: $viewModel.minSize,
+                    maxSize: $viewModel.maxSize,
+                    dateFrom: $viewModel.dateFrom,
+                    dateTo: $viewModel.dateTo,
+                    onReset: { viewModel.resetFilters() }
+                )
+            }
 
             // Search field (⌘F to focus). Sits above the sort row so the
             // filter→sort→results hierarchy stays intact.
@@ -98,7 +149,10 @@ struct ResultView: View {
                     LazyVStack(spacing: 8) {
                         ForEach(viewModel.filteredGroups) { group in
                             NavigationLink(destination: GroupDetailView(group: group)) {
-                                GroupRowView(group: group)
+                                GroupRowView(
+                                    group: group,
+                                    sameNameSiblingCount: sameNameCounts[group.files.first?.url.lastPathComponent ?? ""] ?? 0
+                                )
                             }
                             .buttonStyle(.plain)
                         }
@@ -113,6 +167,10 @@ struct ResultView: View {
                     .foregroundColor(.secondary)
                 Spacer()
                 Button("Auto Select", action: viewModel.autoSelectGroups)
+                    .help(NSLocalizedString(
+                        "Select all groups (⌘A)",
+                        comment: "Tooltip for Command-A select-all shortcut"
+                    ))
                 Button(deleteButtonLabel) {
                     attemptCleanup()
                 }
@@ -162,6 +220,54 @@ struct ResultView: View {
         }
         .onAppear {
             loadGroups()
+        }
+        // Hidden keyboard-shortcut buttons so ⌘A / ⌘N / Esc work whether or
+        // not the on-screen action buttons are visible (e.g. in the empty
+        // state). `.frame(0)` keeps the layout intact while still exposing
+        // the shortcut to SwiftUI's menu/keyboard routing.
+        .background {
+            Group {
+                // ⌘A — select every group (same as tapping "Auto Select")
+                Button("Select All") {
+                    viewModel.autoSelectGroups()
+                }
+                .keyboardShortcut("a", modifiers: .command)
+                .help(NSLocalizedString(
+                    "Select all groups (⌘A)",
+                    comment: "Tooltip for Command-A select-all shortcut"
+                ))
+                .frame(width: 0, height: 0)
+                .opacity(0)
+                .accessibilityHidden(true)
+
+                // ⌘N — jump to the scan page to start a fresh scan
+                Button("New Scan") {
+                    appState.navigation = .scan
+                }
+                .keyboardShortcut("n", modifiers: .command)
+                .help(NSLocalizedString(
+                    "Start a new scan (⌘N)",
+                    comment: "Tooltip for Command-N new-scan shortcut"
+                ))
+                .frame(width: 0, height: 0)
+                .opacity(0)
+                .accessibilityHidden(true)
+
+                // Esc — clear current selection. macOS 14+ routes the key
+                // press through `onKeyPress`; older macOS still gets the
+                // shortcut via SwiftUI's command set so both paths work.
+                Button("Clear Selection") {
+                    viewModel.clearSelection()
+                }
+                .keyboardShortcut(.cancelAction)
+                .help(NSLocalizedString(
+                    "Clear selection (Esc)",
+                    comment: "Tooltip for Escape clear-selection shortcut"
+                ))
+                .frame(width: 0, height: 0)
+                .opacity(0)
+                .accessibilityHidden(true)
+            }
         }
     }
 
@@ -244,8 +350,47 @@ struct ResultView: View {
             .reduce(0) { $0 + $1.totalSize }
     }
 
+    /// Counts of how many groups share each first-file basename. Pre-computed
+    /// once per render pass so GroupRowView can show "×N" without recomputing
+    /// the dictionary on every list cell. Empty-string keys are skipped
+    /// (groups with no files shouldn't happen, but guard anyway).
+    private var sameNameCounts: [String: Int] {
+        Dictionary(
+            grouping: viewModel.filteredGroups.compactMap { $0.files.first?.url.lastPathComponent },
+            by: { $0 }
+        ).mapValues { $0.count }
+    }
+
     private func formatBytes(_ bytes: Int64) -> String {
         ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+    }
+
+    /// Short human-readable summary of currently active filter bounds
+    /// ("1 MB – 10 GB · 2024-01-01 – now"). Used as a chip next to the
+    /// expand toggle so users can see what's filtering their results
+    /// without opening the panel.
+    private var activeFiltersSummary: String {
+        var parts: [String] = []
+        if viewModel.minSize > 0 || viewModel.maxSize < Int64.max {
+            let lo = viewModel.minSize > 0
+                ? ByteCountFormatter.string(fromByteCount: viewModel.minSize, countStyle: .file)
+                : NSLocalizedString("Any", comment: "Unbounded filter bound")
+            let hi = viewModel.maxSize < Int64.max
+                ? ByteCountFormatter.string(fromByteCount: viewModel.maxSize, countStyle: .file)
+                : NSLocalizedString("Any", comment: "Unbounded filter bound")
+            parts.append("\(lo) – \(hi)")
+        }
+        if viewModel.dateFrom != nil || viewModel.dateTo != nil {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .none
+            let from = viewModel.dateFrom.map { formatter.string(from: $0) }
+                ?? NSLocalizedString("Any", comment: "Unbounded filter bound")
+            let to = viewModel.dateTo.map { formatter.string(from: $0) }
+                ?? NSLocalizedString("Any", comment: "Unbounded filter bound")
+            parts.append("\(from) – \(to)")
+        }
+        return parts.joined(separator: " · ")
     }
 
     private var emptyState: some View {
@@ -288,6 +433,17 @@ struct StatItem: View {
 
 struct GroupRowView: View {
     let group: DuplicateGroup
+    /// How many sibling groups share the same first-file name. > 1 means this
+    /// row is part of a same-name cluster (e.g. "IMG_1234.jpg" duplicated
+    /// across 3 different folders). Computed upstream so the row stays O(1).
+    var sameNameSiblingCount: Int = 0
+    /// Total count of APFS-clone-tagged files in the group. 0 means no
+    /// clones; > 0 surfaces a "N clones" badge so the user knows freeing
+    /// them is essentially free (no real disk reclaimed).
+    private var cloneCount: Int {
+        group.files.filter(\.isAPFSClone).count
+    }
+
     var body: some View {
         GlassPanel {
             HStack {
@@ -295,8 +451,42 @@ struct GroupRowView: View {
                     .foregroundColor(group.category.color)
                     .frame(width: 24)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(group.category.displayName)
-                        .font(.headline)
+                    HStack(spacing: 6) {
+                        Text(group.category.displayName)
+                            .font(.headline)
+                        // Same-name cluster badge: "×N" tells the user that
+                        // another group elsewhere also starts with this name,
+                        // so the cleanup buttons will collapse them together.
+                        if sameNameSiblingCount > 1 {
+                            Text("×\(sameNameSiblingCount)")
+                                .font(.caption2)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.accentColor.opacity(0.15))
+                                .foregroundColor(.accentColor)
+                                .clipShape(Capsule())
+                                .help(NSLocalizedString(
+                                    "This group shares the same name with %d other groups",
+                                    comment: "Same-name cluster tooltip"
+                                ).replacingOccurrences(of: "%d", with: "\(sameNameSiblingCount)"))
+                        }
+                        // APFS-clone badge: lets the user know these files
+                        // share physical blocks; cleaning them only frees
+                        // logical size, not on-disk blocks.
+                        if cloneCount > 0 {
+                            Label("\(cloneCount)", systemImage: "bolt.horizontal.fill")
+                                .font(.caption2)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.green.opacity(0.15))
+                                .foregroundColor(.green)
+                                .clipShape(Capsule())
+                                .help(NSLocalizedString(
+                                    "APFS clones share physical blocks — cleaning frees logical size only",
+                                    comment: "APFS clone tooltip"
+                                ))
+                        }
+                    }
                     Text("\(group.files.count) files · \(ByteCountFormatter.string(fromByteCount: group.totalSize, countStyle: .file))")
                         .font(.caption)
                         .foregroundColor(.secondary)

@@ -200,7 +200,10 @@ actor UninstallHistoryRepository {
     /// Builds the `UninstallHistory` entity description matching
     /// `UninstallHistory+CoreDataProperties.swift` plus the `actualTrashPath`
     /// attribute added for the restore-from-actual-path fix.
-    private static func makeModel() -> NSManagedObjectModel {
+    ///
+    /// `internal` (not `private`) so unit tests can build an in-memory store
+    /// that matches the production entity schema.
+    static func makeModel() -> NSManagedObjectModel {
         let entity = NSEntityDescription()
         entity.name = "UninstallHistory"
         entity.managedObjectClassName = NSStringFromClass(UninstallHistory.self)

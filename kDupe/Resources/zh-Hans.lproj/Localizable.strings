@@ -1,4 +1,9 @@
-/* App name */
+"Quick Scan…" = "快速扫描…";
+"Recent Results" = "最近结果";
+"Show Vault" = "打开保险库";
+"Quit kSift" = "退出 kSift";
+"Open kSift" = "打开 kSift";
+"freed" = "已释放";
 "kSift" = "kSift";
 
 /* Onboarding */
@@ -123,6 +128,7 @@
 "Free tier includes up to 2 GB of cleanup. Quota resets after purchase." = "免费版可清理最多 2 GB。购买后额度限制解除。";
 
 /* Category Display Names */
+"Categories" = "类别";
 "Identical" = "完全相同";
 "Directory" = "目录重复";
 "Similar" = "相似图片";
@@ -184,3 +190,28 @@
 
 /* Task 4 — P0-5 拖拽目录扫描 */
 "Drop to start scanning" = "松手开始扫描";
+
+/* Task 5 — P1-5 键盘导航 */
+"Select all groups (⌘A)" = "全选所有分组（⌘A）";
+"Start a new scan (⌘N)" = "开始新一次扫描（⌘N）";
+"Clear selection (Esc)" = "清除选择（Esc）";
+"QuickLook selected file (Space)" = "快速查看所选文件（空格）";
+
+/* Task 1 — P1-1 多维筛选 */
+"More filters" = "更多筛选";
+"Less filters" = "收起筛选";
+"Size range" = "大小范围";
+"Min" = "最小";
+"Max" = "最大";
+"Date range" = "日期范围";
+"From" = "起始";
+"To" = "结束";
+"Any date" = "不限日期";
+"Clear date" = "清除日期";
+"Any size" = "不限大小";
+"Any" = "不限";
+"Reset filters" = "重置筛选";
+"Missing" = "已丢失";
+"This group shares the same name with %d other groups" = "此分组与另外 %d 个分组共享相同文件名";
+"APFS clones share physical blocks — cleaning frees logical size only" = "APFS 克隆文件共享物理块，清理仅释放逻辑大小";
+"%d clones" = "%d 个克隆";

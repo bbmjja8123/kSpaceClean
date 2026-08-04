@@ -30,3 +30,37 @@ function_body_length:
 type_body_length:
   warning: 500
   error: 1000
+
+# === v1.x-A: Kraftly custom rules (warning baseline) ===
+custom_rules:
+  no_silent_try_question_mark:
+    name: "Silent try? in production code"
+    regex: '\btry\?'
+    message: "Use do/catch + Result or explicit error handling. try? silently swallows errors. If best-effort is intentional, add `// swiftlint:disable:next no_silent_try_question_mark` with a one-line DocC explanation."
+    severity: error
+    match_kinds:
+      - keyword
+
+  no_hardcoded_design_tokens:
+    name: "Hardcoded design tokens"
+    regex: '\.system\(size:|\.system\(weight:|padding\(\d+\.?\d*\)|frame\(width:\s*\d+\.?\d*,\s*height:\s*\d+\.?\d*\)'
+    message: "Use AppFont / AppSpacing / WindowFrame tokens from kFoundation DesignSystem."
+    severity: warning
+    match_kinds:
+      - identifier
+      - keyword
+
+  no_kuninstall_string:
+    name: "kUninstall literal in source"
+    regex: '"kUninstall"|kUninstall/|app\.kraftly\.kuninstall'
+    message: "kFresh rename complete; remove all kUninstall literals from source."
+    severity: error
+    match_kinds:
+      - string
+      - identifier
+
+  no_unchecked_sendable:
+    name: "@unchecked Sendable"
+    regex: '@unchecked\s+Sendable'
+    message: "@unchecked Sendable requires explicit justification; see CLAUDE.md §5.1."
+    severity: warning

@@ -50,7 +50,7 @@ public enum CaskParser {
 
     /// Run `pattern` once over `source` and return the first capture group, if any.
     private static func extract(_ source: String, pattern: String) -> String? {
-        guard let regex = try? NSRegularExpression(pattern: pattern),
+        guard let regex = makeRegex(pattern),
               let match = regex.firstMatch(in: source, range: NSRange(source.startIndex..., in: source)),
               let range = Range(match.range(at: 1), in: source) else { return nil }
         return String(source[range])
@@ -62,12 +62,20 @@ public enum CaskParser {
     private static func extractArray(_ source: String, key: String) -> [String] {
         let pattern = "(?s)\(key):\\s*\\[(.*?)\\]"
         guard let body = extract(source, pattern: pattern) else { return [] }
-        let regex = try? NSRegularExpression(pattern: #""([^"]+)""#)
-        guard let regex = regex else { return [] }
+        guard let regex = makeRegex(#""([^"]+)""#) else { return [] }
         let range = NSRange(body.startIndex..., in: body)
         return regex.matches(in: body, range: range).compactMap {
             Range($0.range(at: 1), in: body).map { String(body[$0]) }
         }
+    }
+
+    // MARK: - Helpers
+
+    /// Best-effort regex compilation. Returns `nil` instead of crashing on
+    /// invalid patterns so callers can degrade gracefully.
+    private static func makeRegex(_ pattern: String) -> NSRegularExpression? {
+        // swiftlint:disable:next no_silent_try_question_mark
+        try? NSRegularExpression(pattern: pattern)
     }
 
     /// Infer the bundle ID for a known cask; fall back to `com.example.<lowercased-cask-name>`.

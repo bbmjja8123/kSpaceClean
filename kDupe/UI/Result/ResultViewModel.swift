@@ -8,6 +8,12 @@ final class ResultViewModel: ObservableObject {
     @Published var activeCategory: DuplicateCategory?
     @Published var sortOrder: SortOrder = .sizeDesc
     @Published var searchText: String = ""
+    // P1-1 multi-dim filters: defaults are pass-through so P0 callers and
+    // tests keep their existing behavior.
+    @Published var minSize: Int64 = 0
+    @Published var maxSize: Int64 = .max
+    @Published var dateFrom: Date?
+    @Published var dateTo: Date?
     @Published var isProcessing = false
     @Published var showCleanupConfirmation = false
 
@@ -30,6 +36,29 @@ final class ResultViewModel: ObservableObject {
                 group.files.contains { $0.url.lastPathComponent.localizedCaseInsensitiveContains(query) }
             }
         }
+        // Size range filter: keep groups whose largest file lies in
+        // [minSize, maxSize]. Either bound being at its default sentinel
+        // (0 / .max) is treated as "no limit on that side".
+        if minSize > 0 || maxSize < Int64.max {
+            let lo = minSize
+            let hi = maxSize
+            result = result.filter { group in
+                let largest = group.files.map(\.size).max() ?? 0
+                return largest >= lo && largest <= hi
+            }
+        }
+        // Date range filter: keep groups whose newest file lies in
+        // [dateFrom, dateTo]. nil on either side = unbounded.
+        if dateFrom != nil || dateTo != nil {
+            let from = dateFrom
+            let to = dateTo
+            result = result.filter { group in
+                guard let newest = group.files.map(\.modificationDate).max() else { return false }
+                if let from, newest < from { return false }
+                if let to, newest > to { return false }
+                return true
+            }
+        }
         switch sortOrder {
         case .sizeDesc: result.sort { $0.totalSize > $1.totalSize }
         case .sizeAsc: result.sort { $0.totalSize < $1.totalSize }
@@ -38,6 +67,24 @@ final class ResultViewModel: ObservableObject {
         case .type: result.sort { $0.category.rawValue < $1.category.rawValue }
         }
         return result
+    }
+
+    /// Restores the four filter dimensions to their pass-through defaults.
+    /// Called by the "Reset" button on `FilterChipsView`.
+    func resetFilters() {
+        minSize = 0
+        maxSize = .max
+        dateFrom = nil
+        dateTo = nil
+    }
+
+    /// True when any of the four filter dimensions has been narrowed from
+    /// its default, so the UI can offer a visible reset affordance.
+    var hasActiveFilters: Bool {
+        minSize > 0
+            || maxSize < Int64.max
+            || dateFrom != nil
+            || dateTo != nil
     }
 
     var totalDuplicateSize: Int64 {
@@ -52,6 +99,7 @@ final class ResultViewModel: ObservableObject {
         groups = newGroups
         selectedGroupIds.removeAll()
         activeCategory = nil
+        resetFilters()
     }
 
     func autoSelectGroups() {

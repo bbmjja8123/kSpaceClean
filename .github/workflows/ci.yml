@@ -34,13 +34,7 @@ jobs:
         with:
           xcode-version: '15.0'
 
-      # WORKAROUND: The whole-suite `xcodebuild test` invocation fails because the
-      # `UninstallJourneyUITests.swift` file is currently compiled into the unit test
-      # bundle (`kFreshTests`) instead of a separate UI test bundle. `XCUIApplication()`
-      # in a unit bundle throws at test-suite construction with `targetApplicationPath:(null)`.
-      # Each test class is therefore listed explicitly via `-only-testing:` until the
-      # target structure is fixed (tracked as a follow-up sub-task; see kFresh generate_project.py
-      # and Tests/UITests/ for the multi-file refactor required).
+      # All 33 test suites run; skip only the UI test bundle which requires a simulator host.
       - name: Run kFresh unit tests
         run: |
           xcodebuild test \
@@ -48,17 +42,7 @@ jobs:
             -scheme kFresh \
             -destination 'platform=macOS' \
             -quiet \
-            -only-testing:kFreshTests/AppCatalogServiceTests \
-            -only-testing:kFreshTests/AppSourceClassifierTests \
-            -only-testing:kFreshTests/InstalledAppTests \
-            -only-testing:kFreshTests/ResidueDetectorTests \
-            -only-testing:kFreshTests/AuditLoggerTests \
-            -only-testing:kFreshTests/BackupManagerTests \
-            -only-testing:kFreshTests/TrashMoverTests \
-            -only-testing:kFreshTests/BundleRuleStoreTests \
-            -only-testing:kFreshTests/CaskParserTests \
-            -only-testing:kFreshTests/SandboxDegradationTests \
-            -only-testing:kFreshTests/UninstallFlowTests
+            -skip-testing:kFreshUITests
 
       # WORKAROUND: `FileHasherTests.testHashProducesString` aborts with SIGILL on
       # `cd kFoundation && swift test`. The crash is pre-existing (reproduced after

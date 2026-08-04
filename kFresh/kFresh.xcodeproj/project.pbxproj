@@ -399,6 +399,10 @@
 		isa = PBXBuildFile;
 		fileRef = 4B4EBB8963FE59BC0A93699E;
 	};
+	D2E3F4A5B6C7D8E9F0A1B2C3 /* D2E3F4A5B6C7D8E9F0A1B2C3 */ = {
+		isa = PBXBuildFile;
+		fileRef = C1D2E3F4A5B6C7D8E9F0A1B2;
+	};
 	EA87728C5D51DB5852AC93BE /* EA87728C5D51DB5852AC93BE */ = {
 		isa = PBXBuildFile;
 		fileRef = 136BEC5F911CA3A945CDC744;
@@ -732,6 +736,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = HistoryViewModelTests.swift;
 		path = Tests/HistoryTests/HistoryViewModelTests.swift;
+		sourceTree = "<group>";
+	};
+	C1D2E3F4A5B6C7D8E9F0A1B2 /* UninstallHistoryTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = UninstallHistoryTests.swift;
+		path = Tests/DataTests/UninstallHistoryTests.swift;
 		sourceTree = "<group>";
 	};
 	4D863FD91ECB3118002568D4 /* CaskParserTests.swift */ = {
@@ -1473,6 +1484,14 @@
 		name = HistoryTests;
 		sourceTree = "<group>";
 	};
+	E3F4A5B6C7D8E9F0A1B2C3D4 /* DataTests */ = {
+		isa = PBXGroup;
+		children = (
+			C1D2E3F4A5B6C7D8E9F0A1B2 /* UninstallHistoryTests.swift */,
+		);
+		name = DataTests;
+		sourceTree = "<group>";
+	};
 	541BE480BD6342CA50028767 /* Data */ = {
 		isa = PBXGroup;
 		children = (
@@ -1678,6 +1697,7 @@
 			7FE9A0137F4E86ED27FE6667 /* AppListTests */,
 			6CA333BE487A53BDF1DF1567 /* DetailTests */,
 			51A79B58FC1B5FEFCADCA5DD /* HistoryTests */,
+			E3F4A5B6C7D8E9F0A1B2C3D4 /* DataTests */,
 			3B7118F5D36A78D1BE068657 /* StartupTests */,
 			49A7970DC5A10324A6DE3EBB /* DeepCleanTests */,
 			AD71FEFC8488DCCC299A10D7 /* StoreTests */,
@@ -1898,6 +1918,7 @@
 			84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */,
 			AE2390F2F0CF6ADDADF8C5B0 /* AE2390F2F0CF6ADDADF8C5B0 */,
 			558CE0CC156B25691F44B9E3 /* 558CE0CC156B25691F44B9E3 */,
+			D2E3F4A5B6C7D8E9F0A1B2C3 /* D2E3F4A5B6C7D8E9F0A1B2C3 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};

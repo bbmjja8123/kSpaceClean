@@ -47,4 +47,9 @@ final class CaskParserTests: XCTestCase {
         XCTAssertEqual(rule.bundleID, "com.slack.client",
                        "CaskParser must emit the canonical com.slack.client, not the legacy com.tinyspeck.chatlyio")
     }
+
+    func testExtractInvalidPatternReturnsNilInsteadOfCrashing() throws {
+        let rule = try CaskParser.parse("name \"TestApp\"", caskName: "test-app")
+        XCTAssertFalse(rule.bundleID.isEmpty)
+    }
 }
