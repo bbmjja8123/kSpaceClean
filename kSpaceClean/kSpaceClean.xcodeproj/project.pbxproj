@@ -379,6 +379,10 @@
 		isa = PBXBuildFile;
 		fileRef = D36BFC84ADBE33E80B654D65;
 	};
+	F1A2B3C4D5E6F7A8B9C0D1E2 /* F1A2B3C4D5E6F7A8B9C0D1E2 */ = {
+		isa = PBXBuildFile;
+		fileRef = E5F0A9BC8D3F4E1A7B2C6D8E /* ScanResultsTwoColumnView.swift */;
+	};
 	A6C5E37BB573D6D3DB661344 /* A6C5E37BB573D6D3DB661344 */ = {
 		isa = PBXBuildFile;
 		fileRef = 7DD6D8CA13CAD5BF5BAE4FF5;
@@ -1498,6 +1502,13 @@
 		path = Features/SmartScan/ScanResultsTreeView.swift;
 		sourceTree = "<group>";
 	};
+	E5F0A9BC8D3F4E1A7B2C6D8E /* ScanResultsTwoColumnView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanResultsTwoColumnView.swift;
+		path = Features/SmartScan/Views/ScanResultsTwoColumnView.swift;
+		sourceTree = "<group>";
+	};
 	D9CC080B6158B19096CA7028 /* ScanRecord.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -2053,6 +2064,7 @@
 			3DD7A3BF34DFF3DF1B53E435 /* AppScanRules.swift */,
 			A8EA70D8512CACC310B47BDC /* ScanSpeed.swift */,
 			D36BFC84ADBE33E80B654D65 /* ScanResultsTreeView.swift */,
+			E5F0A9BC8D3F4E1A7B2C6D8E /* ScanResultsTwoColumnView.swift */,
 			3D86B916EE61C62C7FA46592 /* ScanViewModel.swift */,
 			63EA5F35D593E2AD9287E295 /* SpecializedScanners.swift */,
 			257E6C9131E85B4341DA45A6 /* ScanTreeNode.swift */,
@@ -2310,6 +2322,7 @@
 			A386F03ADB25C97DF7B073BA /* A386F03ADB25C97DF7B073BA */,
 			9F598378294DE4163E969601 /* 9F598378294DE4163E969601 */,
 			A5EF019BB4A793139AD57F3F /* A5EF019BB4A793139AD57F3F */,
+			F1A2B3C4D5E6F7A8B9C0D1E2 /* F1A2B3C4D5E6F7A8B9C0D1E2 */,
 			B0A429370631945D856D7395 /* B0A429370631945D856D7395 */,
 			84AB0CDA9E7FB1631357B6FD /* 84AB0CDA9E7FB1631357B6FD */,
 			D69D0010AA39A5FDDF6ED28F /* D69D0010AA39A5FDDF6ED28F */,

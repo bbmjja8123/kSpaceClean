@@ -518,7 +518,7 @@ struct RiskFilterBar: View {
 // MARK: - Keyboard Shortcuts
 
 /// macOS 13+ keyboard shortcuts for scan results using NSEvent monitor.
-private struct ScanResultsKeyboardShortcuts: ViewModifier {
+struct ScanResultsKeyboardShortcuts: ViewModifier {
     @Binding var riskFilter: RiskFilter
     let onCleanup: () -> Void
     @State private var monitor: Any?
