@@ -2,13 +2,13 @@ import Foundation
 
 /// The category of a system metric that kWatch can observe.
 public enum MetricKind: String, CaseIterable, Codable, Sendable {
-    case cpu, memory, disk, network, temperature, fan, battery
+    case cpu, memory, disk, network, temperature, fan, battery, gpu
 }
 
 extension MetricKind {
     /// Canonical display order for menu-bar presentation.
     public static var menuBarDisplayOrder: [MetricKind] {
-        [.cpu, .memory, .disk, .network, .temperature, .fan, .battery]
+        [.cpu, .memory, .disk, .network, .temperature, .fan, .battery, .gpu]
     }
 }
 

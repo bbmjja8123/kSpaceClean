@@ -56,6 +56,7 @@ public enum MenuBarIcons {
         case .temperature: return "thermometer.medium"
         case .fan: return "fan.fill"
         case .battery: return "battery.100"
+        case .gpu: return "display"
         }
     }
 
@@ -69,6 +70,7 @@ public enum MenuBarIcons {
         case .temperature: return Color.warning
         case .fan: return Color.brandSecondary
         case .battery: return Color.success
+        case .gpu: return Color.brandPrimary
         }
     }
 }

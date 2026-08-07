@@ -1,5 +1,7 @@
 import XCTest
+import SwiftUI
 @testable import CommonUtils
+@testable import DesignSystem
 
 final class FileSizeFormatterTests: XCTestCase {
     func testAbbreviatedBytes() {
