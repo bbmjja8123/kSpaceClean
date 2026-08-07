@@ -7,3 +7,5 @@ DerivedData/
 Packages/
 *.ipa
 __pycache__/
+.claude/
+.superpowers/brainstorm/
