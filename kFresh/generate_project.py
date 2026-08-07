@@ -140,6 +140,7 @@ def main():
         ("App/AppServices.swift", "App"),
         ("Core/Detect/InstalledApp.swift", "Detect"),
         ("Core/Detect/AppCatalogService.swift", "Detect"),
+        ("Core/Detect/AppSizeCalculator.swift", "Detect"),
         ("Core/Detect/ResidueDetector.swift", "Detect"),
         ("Core/Detect/BundleRuleStore.swift", "Detect"),
         ("Core/Detect/DirectorySizeCalculator.swift", "Detect"),
@@ -213,6 +214,7 @@ def main():
         "DetectTests": [
             "InstalledAppTests.swift",
             "AppCatalogServiceTests.swift",
+            "AppSizeCalculatorTests.swift",
             "ResidueDetectorTests.swift",
             "AppSourceClassifierTests.swift",
             "DirectorySizeCalculatorTests.swift",

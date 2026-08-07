@@ -2,8 +2,13 @@ import SwiftUI
 
 /// One row of the app list: icon, name, source badge, size, and a running
 /// indicator. Layout uses the shared DesignSystem spacing / font tokens.
+///
+/// The `sizeBytes` parameter comes from the parent's resolved-size lookup so
+/// the view renders the most recently measured value without owning the
+/// `sizeMap` itself.
 struct AppRowView: View {
     let app: InstalledApp
+    let sizeBytes: Int64
 
     var body: some View {
         HStack(spacing: AppSpacing.md) {
@@ -22,7 +27,7 @@ struct AppRowView: View {
                         .foregroundStyle(app.source.tint)
                     Text("·")
                         .foregroundStyle(Color.textSecondary.opacity(0.6))
-                    Text(app.sizeFormatted)
+                    Text(ByteCountFormatter.string(fromByteCount: sizeBytes, countStyle: .file))
                         .font(AppFont.caption)
                         .foregroundStyle(Color.textSecondary)
                 }

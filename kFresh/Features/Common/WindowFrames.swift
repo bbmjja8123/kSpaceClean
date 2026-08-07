@@ -7,8 +7,9 @@ import Foundation
 enum WindowFrame {
     /// Full-screen onboarding guide (FDA education flow).
     static let onboarding = CGSize(width: 560, height: 520)
-    /// Settings window.
-    static let settings = CGSize(width: 450, height: 300)
+    /// Settings window. Sized to fit a `TabView` with two tabs of `Form`
+    /// content on macOS without scrolling or overflow.
+    static let settings = CGSize(width: 480, height: 380)
     /// Pro paywall sheet width.
     static let paywallWidth: CGFloat = 420
     /// Uninstall confirmation sheet width.

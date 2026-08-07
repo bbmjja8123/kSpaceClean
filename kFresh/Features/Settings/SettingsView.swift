@@ -65,7 +65,7 @@ struct SettingsView: View {
                         .foregroundColor(.orange)
                 } else {
                     Button("升级 Pro") {
-                        viewModel.showPaywall()
+                        viewModel.dismissAndShowPaywall()
                     }
                 }
             }

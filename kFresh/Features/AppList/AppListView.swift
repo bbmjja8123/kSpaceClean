@@ -37,7 +37,7 @@ struct AppListView: View {
             }
             List(selection: $selectedApp) {
                 ForEach(viewModel.filteredApps, id: \.bundleID) { app in
-                    AppRowView(app: app)
+                    AppRowView(app: app, sizeBytes: viewModel.sizeBytes(for: app))
                         .tag(app)
                 }
                 if !viewModel.uninstalledApps.isEmpty {
@@ -81,7 +81,7 @@ struct AppListView: View {
 
     @ViewBuilder private var detailPane: some View {
         if let app = selectedApp {
-            AppDetailView(app: app, mover: services.mover)
+            AppDetailView(app: app, mover: services.mover, sizeBytes: viewModel.sizeBytes(for: app))
         } else {
             EmptyStateView(
                 title: "选择一个 App",

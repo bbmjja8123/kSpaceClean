@@ -3,6 +3,7 @@
 *.xcworkspace/xcuserdata/
 DerivedData/
 .build/
+**/build/
 Packages/
 *.ipa
 __pycache__/

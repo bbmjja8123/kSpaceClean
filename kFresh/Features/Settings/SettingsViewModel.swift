@@ -49,4 +49,18 @@ class SettingsViewModel: ObservableObject {
     func showPaywall() {
         coordinator.showPaywall = true
     }
+
+    /// Dismisses the Settings sheet before raising the paywall.
+    ///
+    /// Presenting the paywall while Settings is still on screen stacks a
+    /// sheet on top of another sheet on macOS, which renders as a partially
+    /// occluded window with no clear focus. Closing Settings first and
+    /// re-raising the paywall on the next runloop tick gives the Settings
+    /// sheet time to tear down before the new sheet appears.
+    func dismissAndShowPaywall() {
+        coordinator.showSettings = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [coordinator] in
+            coordinator.showPaywall = true
+        }
+    }
 }

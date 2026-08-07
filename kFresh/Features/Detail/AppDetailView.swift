@@ -11,17 +11,28 @@ struct AppDetailView: View {
     @State private var showStartupItems = false
     @State private var restoreError: String?
 
+    /// Creates the detail view for `app`. The displayed size comes from the
+    /// `sizeBytes` parameter so a freshly measured value can flow in without
+    /// reconstructing the detail viewmodel (which would re-run the safety
+    /// check and residue scan).
+    ///
     /// - Parameter mover: The shared ``TrashMover`` from ``AppServices``
     ///   (C1). Threaded through ``AppListView.detailPane`` so the detail
     ///   pane's uninstall writes into the same history repository the
     ///   History tab and undo-toast restore read from.
-    init(app: InstalledApp, mover: TrashMover) {
+    init(app: InstalledApp, mover: TrashMover, sizeBytes: Int64) {
         _viewModel = StateObject(wrappedValue: DetailViewModel(
             app: app,
             residueDetector: ResidueDetector(ruleStore: BundleRuleStore.loadFromBundledJSON()),
             mover: mover
         ))
+        _sizeBytes = State(initialValue: sizeBytes)
     }
+
+    /// Size to render in the "占用" row. Decoupled from ``viewModel.app``
+    /// so the background size pass can update it without rebuilding the
+    /// detail viewmodel.
+    @State private var sizeBytes: Int64
 
     var body: some View {
         ScrollView {
@@ -120,7 +131,7 @@ struct AppDetailView: View {
             Text("占用")
                 .font(AppFont.body)
             Spacer()
-            Text(viewModel.app.sizeFormatted)
+            Text(ByteCountFormatter.string(fromByteCount: sizeBytes, countStyle: .file))
                 .font(AppFont.body.monospacedDigit())
         }
     }
@@ -186,7 +197,7 @@ struct AppDetailView: View {
                     undoToast = UninstallToast.State(
                         recordID: record.id,
                         appName: viewModel.app.displayName,
-                        appSize: viewModel.app.sizeBytes
+                        appSize: sizeBytes
                     )
                 }
             }
