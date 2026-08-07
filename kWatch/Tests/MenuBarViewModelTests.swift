@@ -5,9 +5,9 @@ import MetricsKit
 @MainActor
 final class MenuBarViewModelTests: XCTestCase {
 
-    /// A pro user sees all 7 metrics flowing through the menu bar view
-    /// model, including the Pro-only temperature / fan / battery values.
-    func testMenuBarViewModelExposesAllSevenMetrics() async {
+    /// A pro user sees all 8 metrics flowing through the menu bar view
+    /// model, including the Pro-only temperature / fan / battery / GPU values.
+    func testMenuBarViewModelExposesAllEightMetrics() async {
         let container = TestAppContainer(
             cpu: .percentage(40),
             memory: .percentage(60),
@@ -15,7 +15,8 @@ final class MenuBarViewModelTests: XCTestCase {
             network: .bytesPerSecond(3000),
             temperature: .degreesCelsius(65),
             fan: .revolutionsPerMinute(2200),
-            battery: .percentage(90)
+            battery: .percentage(90),
+            gpu: .degreesCelsius(58)
         )
         container.purchaseState.update(isPro: true)
         let vm = MenuBarViewModel(container: container)
@@ -34,6 +35,7 @@ final class MenuBarViewModelTests: XCTestCase {
         XCTAssertEqual(vm.temperatureCelsius ?? -1, 65, accuracy: 0.5)
         XCTAssertEqual(vm.fanRPM, 2200)
         XCTAssertEqual(vm.batteryPercent ?? -1, 90, accuracy: 0.5)
+        XCTAssertEqual(vm.gpuTemperature ?? -1, 58, accuracy: 0.5)
 
         vm.stop()
         await container.aggregator.stop()

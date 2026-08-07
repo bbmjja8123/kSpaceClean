@@ -131,7 +131,7 @@ public actor NotificationScheduler: NotificationSchedulerProtocol {
             return "\(Int(threshold))%"
         case .network:
             return ByteCountFormatter.string(fromByteCount: Int64(threshold), countStyle: .file) + "/s"
-        case .temperature:
+        case .temperature, .gpu:
             return "\(Int(threshold))°C"
         case .fan:
             return "\(Int(threshold)) RPM"

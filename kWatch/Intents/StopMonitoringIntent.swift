@@ -37,5 +37,5 @@ public struct StopMonitoringIntent: AppIntent {
 /// appears for every Pro-gated intent.
 @available(macOS 13.0, *)
 public func lockedDialogText() -> String {
-    "This action requires kWatch Pro. Open the app and upgrade from Settings."
+    String(localized: "This action requires kWatch Pro. Open the app and upgrade from Settings.")
 }

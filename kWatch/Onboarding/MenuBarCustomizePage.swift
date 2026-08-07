@@ -4,7 +4,7 @@ import MetricsKit
 /// Second onboarding page: let the user pick a menu-bar style and the
 /// free-tier metrics they want enabled by default.
 ///
-/// Temperature, fan, and battery readings are intentionally hidden here —
+/// Temperature, fan, battery, and GPU readings are intentionally hidden here —
 /// they are Pro features and are surfaced in the Pro intro page.
 struct MenuBarCustomizePage: View {
     @ObservedObject var viewModel: OnboardingViewModel
@@ -13,16 +13,16 @@ struct MenuBarCustomizePage: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Pick your menu-bar style").font(.title2).bold()
-            Picker("Style", selection: $viewModel.selectedMode) {
-                Text("Trend").tag(MenuBarMode.trend)
-                Text("Numeric").tag(MenuBarMode.numeric)
-                Text("Minimal").tag(MenuBarMode.minimal)
+            Text(String(localized: "Pick your menu-bar style")).font(.title2).bold()
+            Picker(String(localized: "Style"), selection: $viewModel.selectedMode) {
+                Text(String(localized: "Trend")).tag(MenuBarMode.trend)
+                Text(String(localized: "Numeric")).tag(MenuBarMode.numeric)
+                Text(String(localized: "Minimal")).tag(MenuBarMode.minimal)
             }
             .pickerStyle(.segmented)
 
-            Text("Show in menu bar").font(.headline)
-            ForEach(MetricKind.allCases.filter { $0 != .temperature && $0 != .fan && $0 != .battery }, id: \.self) { kind in
+            Text(String(localized: "Show in menu bar")).font(.headline)
+            ForEach(MetricKind.allCases.filter { $0 != .temperature && $0 != .fan && $0 != .battery && $0 != .gpu }, id: \.self) { kind in
                 Toggle(kind.rawValue.capitalized, isOn: Binding(
                     get: { viewModel.enabledKinds.contains(kind) },
                     set: { isOn in
@@ -33,9 +33,9 @@ struct MenuBarCustomizePage: View {
             }
             Spacer()
             HStack {
-                Button("Back", action: onBack)
+                Button(String(localized: "Back"), action: onBack)
                 Spacer()
-                Button("Next", action: onNext).keyboardShortcut(.defaultAction)
+                Button(String(localized: "Next"), action: onNext).keyboardShortcut(.defaultAction)
             }
         }
         .padding(24)

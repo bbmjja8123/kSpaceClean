@@ -51,9 +51,9 @@ final class AppCoordinatorTests: XCTestCase {
         )
         try container.alertRepository.upsert(alert)
 
-        var scheduled: [ScheduledNotificationInfo] = []
+        let box = SendableBox<[ScheduledNotificationInfo]>([])
         let scheduler = container.notificationScheduler as! NotificationScheduler
-        await scheduler.setOnSchedule { scheduled.append($0) }
+        await scheduler.setOnSchedule { box.value.append($0) }
 
         let coordinator = AppCoordinator(container: container)
         coordinator.start()
@@ -63,8 +63,8 @@ final class AppCoordinatorTests: XCTestCase {
 
         let alerts = try container.alertRepository.all()
         XCTAssertNotNil(alerts.first?.lastTriggeredAt, "Alert should have triggered")
-        XCTAssertFalse(scheduled.isEmpty, "Scheduler should have been invoked")
-        XCTAssertEqual(scheduled.first?.identifier, alert.id.uuidString)
+        XCTAssertFalse(box.value.isEmpty, "Scheduler should have been invoked")
+        XCTAssertEqual(box.value.first?.identifier, alert.id.uuidString)
     }
 
     func testCoordinatorDoesNotScheduleWhenNotificationDenied() async throws {
@@ -78,9 +78,9 @@ final class AppCoordinatorTests: XCTestCase {
         )
         try container.alertRepository.upsert(alert)
 
-        var scheduled: [ScheduledNotificationInfo] = []
+        let box = SendableBox<[ScheduledNotificationInfo]>([])
         let scheduler = container.notificationScheduler as! NotificationScheduler
-        await scheduler.setOnSchedule { scheduled.append($0) }
+        await scheduler.setOnSchedule { box.value.append($0) }
 
         let coordinator = AppCoordinator(container: container)
         coordinator.start()
@@ -88,7 +88,7 @@ final class AppCoordinatorTests: XCTestCase {
 
         try await Task.sleep(for: .milliseconds(80))
 
-        XCTAssertTrue(scheduled.isEmpty, "Scheduler must not fire when permission is denied")
+        XCTAssertTrue(box.value.isEmpty, "Scheduler must not fire when permission is denied")
         // lastTriggeredAt is still updated so cooldown is honored once
         // the user later grants permission.
         let alerts = try container.alertRepository.all()

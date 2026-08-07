@@ -91,7 +91,7 @@ public struct MetricCardViewModel: Identifiable, Equatable {
 
         let isProFeature: Bool
         switch kind {
-        case .temperature, .fan, .battery: isProFeature = true
+        case .temperature, .fan, .battery, .gpu: isProFeature = true
         case .cpu, .memory, .disk, .network: isProFeature = false
         }
 
@@ -105,9 +105,9 @@ public struct MetricCardViewModel: Identifiable, Equatable {
 
         // Subtitle
         if hardwareUnavailable {
-            subtitle = reason.isEmpty ? "Unavailable" : reason
+            subtitle = reason.isEmpty ? String(localized: "Unavailable") : reason
         } else if isLocked {
-            subtitle = "Pro Feature"
+            subtitle = String(localized: "Pro Feature")
         } else {
             subtitle = Self.defaultSubtitle(for: kind)
         }
@@ -129,7 +129,7 @@ public struct MetricCardViewModel: Identifiable, Equatable {
         }
 
         // Lock description
-        lockDescription = "Upgrade to Pro to monitor \(kind.rawValue)."
+        lockDescription = String(localized: "Upgrade to Pro to monitor \(kind.rawValue).")
     }
 
     // MARK: - Equatable
@@ -151,25 +151,27 @@ public struct MetricCardViewModel: Identifiable, Equatable {
 
     private static func title(for kind: MetricKind) -> String {
         switch kind {
-        case .cpu: return "CPU"
-        case .memory: return "Memory"
-        case .disk: return "Disk"
-        case .network: return "Network"
-        case .temperature: return "Temperature"
-        case .fan: return "Fan"
-        case .battery: return "Battery"
+        case .cpu: return String(localized: "CPU")
+        case .memory: return String(localized: "Memory")
+        case .disk: return String(localized: "Disk")
+        case .network: return String(localized: "Network")
+        case .temperature: return String(localized: "Temperature")
+        case .fan: return String(localized: "Fan")
+        case .battery: return String(localized: "Battery")
+        case .gpu: return String(localized: "GPU")
         }
     }
 
     private static func defaultSubtitle(for kind: MetricKind) -> String {
         switch kind {
-        case .cpu: return "System CPU"
-        case .memory: return "Memory Pressure"
-        case .disk: return "Disk Usage"
-        case .network: return "Network Traffic"
-        case .temperature: return "System Temperature"
-        case .fan: return "Fan Speed"
-        case .battery: return "Battery Charge"
+        case .cpu: return String(localized: "System CPU")
+        case .memory: return String(localized: "Memory Pressure")
+        case .disk: return String(localized: "Disk Usage")
+        case .network: return String(localized: "Network Traffic")
+        case .temperature: return String(localized: "System Temperature")
+        case .fan: return String(localized: "Fan Speed")
+        case .battery: return String(localized: "Battery Charge")
+        case .gpu: return String(localized: "GPU Temperature")
         }
     }
 
@@ -182,6 +184,7 @@ public struct MetricCardViewModel: Identifiable, Equatable {
         case .temperature: return "thermometer"
         case .fan: return "fan"
         case .battery: return "battery.100"
+        case .gpu: return "display"
         }
     }
 
@@ -194,6 +197,7 @@ public struct MetricCardViewModel: Identifiable, Equatable {
         case .temperature: return .red
         case .fan: return .yellow
         case .battery: return .green
+        case .gpu: return .purple
         }
     }
 
@@ -215,7 +219,7 @@ public struct MetricCardViewModel: Identifiable, Equatable {
         case .text(let t):
             return t
         case .unavailable:
-            return "N/A"
+            return String(localized: "N/A")
         }
     }
 

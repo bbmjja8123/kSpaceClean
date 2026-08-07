@@ -4,7 +4,8 @@ import MetricsKit
 /// Test stub for `IntentServiceProtocol`. Always returns canned data so intent
 /// tests stay hermetic. Default values are designed to exercise both the
 /// happy path and the Pro-gating path.
-public final class StubIntentService: IntentServiceProtocol, @unchecked Sendable {
+@MainActor
+public final class StubIntentService: IntentServiceProtocol {
     public let snapshot: MetricSnapshot?
     public let proFlag: Bool
     public let startCalls: AtomicCounter

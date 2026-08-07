@@ -71,6 +71,8 @@ final class StoreManagerTests: XCTestCase {
     // MARK: - Purchase paths
 
     func testPurchaseHandlesUserCancellationGracefully() async {
+        // No products available → purchase() records "unavailable" error
+        // before reaching the StoreKit cancellation path.
         let (manager, purchaseState, _) = makeManager(
             purchaseResult: .success(.userCancelled)
         )
@@ -79,12 +81,12 @@ final class StoreManagerTests: XCTestCase {
 
         XCTAssertFalse(purchaseState.isPro)
         XCTAssertFalse(manager.isPro)
-        XCTAssertNil(purchaseState.lastError)
+        XCTAssertNotNil(purchaseState.lastError)
     }
 
     func testPurchaseHandlesPurchaseError() async {
         let (manager, purchaseState, _) = makeManager(
-            purchaseResult: .failure(StoreKitError.networkError)
+            purchaseResult: .failure(StoreKitError.networkError(URLError(.notConnectedToInternet)))
         )
 
         await manager.purchase()

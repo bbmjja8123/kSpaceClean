@@ -49,9 +49,9 @@ public enum NetworkDirectionParameter: String, AppEnum, Sendable {
     /// Human-readable name used in dialogs.
     public var displayName: String {
         switch self {
-        case .combined: return "Combined"
-        case .download: return "Download"
-        case .upload: return "Upload"
+        case .combined: return String(localized: "Combined")
+        case .download: return String(localized: "Download")
+        case .upload: return String(localized: "Upload")
         }
     }
 }

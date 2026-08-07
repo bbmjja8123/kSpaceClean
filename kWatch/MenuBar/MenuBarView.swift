@@ -85,36 +85,40 @@ public struct MenuBarView: View {
     private func makeRow(for kind: MetricKind) -> (title: String, value: String, icon: String, isLocked: Bool) {
         switch kind {
         case .cpu:
-            return ("CPU", "\(Int(viewModel.cpuPercent))%", "cpu", false)
+            return (String(localized: "CPU"), "\(Int(viewModel.cpuPercent))%", "cpu", false)
         case .memory:
-            return ("Memory", "\(Int(viewModel.memoryPercent))%", "memorychip", false)
+            return (String(localized: "Memory"), "\(Int(viewModel.memoryPercent))%", "memorychip", false)
         case .disk:
-            return ("Disk", "\(Int(viewModel.diskPercent))%", "internaldrive", false)
+            return (String(localized: "Disk"), "\(Int(viewModel.diskPercent))%", "internaldrive", false)
         case .network:
             let kbps = Double(viewModel.networkBytesSent + viewModel.networkBytesReceived) / 1024
-            return ("Network", String(format: "%.0f KB/s", kbps), "network", false)
+            return (String(localized: "Network"), String(format: "%.0f KB/s", kbps), "network", false)
         case .temperature:
             let v = viewModel.temperatureCelsius
-            return ("Temperature", v.map { String(format: "%.0f°C", $0) } ?? "—",
+            return (String(localized: "Temperature"), v.map { String(format: "%.0f°C", $0) } ?? "—",
                     "thermometer.medium", !purchaseState.isPro)
         case .fan:
             let v = viewModel.fanRPM
-            return ("Fan", v.map { "\($0) RPM" } ?? "—",
+            return (String(localized: "Fan"), v.map { "\($0) RPM" } ?? "—",
                     "fan.fill", !purchaseState.isPro)
         case .battery:
             let v = viewModel.batteryPercent
-            return ("Battery", v.map { "\(Int($0))%" } ?? "—",
+            return (String(localized: "Battery"), v.map { "\(Int($0))%" } ?? "—",
                     "battery.100", !purchaseState.isPro)
+        case .gpu:
+            let v = viewModel.gpuTemperature
+            return (String(localized: "GPU"), v.map { String(format: "%.0f°C", $0) } ?? "—",
+                    "display", !purchaseState.isPro)
         }
     }
 
     private var footerActions: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Button("Open Dashboard…", action: onOpenDashboard)
-            Button("History…", action: onOpenHistory)
-            Button("Processes…", action: onOpenProcesses)
-            Button("Alerts…", action: onOpenAlerts)
-            Button("Settings…", action: onOpenSettings)
+            Button(String(localized: "Open Dashboard…"), action: onOpenDashboard)
+            Button(String(localized: "History…"), action: onOpenHistory)
+            Button(String(localized: "Processes…"), action: onOpenProcesses)
+            Button(String(localized: "Alerts…"), action: onOpenAlerts)
+            Button(String(localized: "Settings…"), action: onOpenSettings)
         }
     }
 
@@ -132,13 +136,13 @@ public struct MenuBarView: View {
     }
 
     private var modePicker: some View {
-        Picker("Mode", selection: Binding(
+        Picker(String(localized: "Mode"), selection: Binding(
             get: { viewModel.mode },
             set: { viewModel.setMode($0) }
         )) {
-            Text("Trend").tag(MenuBarMode.trend)
-            Text("Numeric").tag(MenuBarMode.numeric)
-            Text("Minimal").tag(MenuBarMode.minimal)
+            Text(String(localized: "Trend")).tag(MenuBarMode.trend)
+            Text(String(localized: "Numeric")).tag(MenuBarMode.numeric)
+            Text(String(localized: "Minimal")).tag(MenuBarMode.minimal)
         }
         .pickerStyle(.segmented)
         .labelsHidden()

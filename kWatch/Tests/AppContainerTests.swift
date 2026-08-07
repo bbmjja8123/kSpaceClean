@@ -16,8 +16,9 @@ final class AppContainerTests: XCTestCase {
         await container.aggregator.stop()
     }
 
-    func testLiveAppContainerConformsToProtocol() {
-        let container: any AppContainerProtocol = LiveAppContainer()
+    @MainActor
+    func testLiveAppContainerConformsToProtocol() async {
+        let container: any AppContainerProtocol = await LiveAppContainer()
         XCTAssertNotNil(container.aggregator)
         XCTAssertNotNil(container.appState)
         XCTAssertNotNil(container.purchaseState)

@@ -27,10 +27,10 @@ struct PurchaseButton: View {
                 if isLoading {
                     ProgressView()
                         .controlSize(.small)
-                    Text("Processing…")
+                    Text(String(localized: "Processing…"))
                 } else if didSucceed {
                     Image(systemName: "checkmark.circle.fill")
-                    Text("Purchased")
+                    Text(String(localized: "Purchased"))
                 } else {
                     Text(label)
                 }

@@ -2,10 +2,11 @@ import SwiftUI
 import MetricsKit
 import DesignSystem
 
-/// Container view for the Settings window. Renders a tabbed sidebar with
-/// four panes: Menu Bar, Notifications, General, and About. Each pane is
-/// a small dedicated view that owns its own sub-state but reads/writes
-/// through `SettingsViewModel` so changes are persisted immediately.
+/// Container view for the Settings window. Renders a sidebar-style
+/// tabbed navigation with six panes: Menu Bar, Alerts, Metrics,
+/// Appearance, General, and About. Each pane is a small dedicated view
+/// that owns its own sub-state but reads/writes through
+/// `SettingsViewModel` so changes are persisted immediately.
 public struct SettingsView: View {
     @ObservedObject public var viewModel: SettingsViewModel
     public let onCloseRequested: () -> Void
@@ -21,25 +22,37 @@ public struct SettingsView: View {
         TabView(selection: $selectedTab) {
             MenuBarSettingsView(viewModel: viewModel)
                 .tabItem {
-                    Label("Menu Bar", systemImage: "menubar.rectangle")
+                    Label(String(localized: "Menu Bar"), systemImage: "menubar.rectangle")
                 }
                 .tag(SettingsTab.menuBar)
 
             AlertSettingsView(viewModel: viewModel)
                 .tabItem {
-                    Label("Alerts", systemImage: "bell.badge")
+                    Label(String(localized: "Alerts"), systemImage: "bell.badge")
                 }
                 .tag(SettingsTab.alerts)
 
+            MetricSettingsView(viewModel: viewModel)
+                .tabItem {
+                    Label(String(localized: "Metrics"), systemImage: "chart.line.uptrend.xyaxis")
+                }
+                .tag(SettingsTab.metrics)
+
+            AppearanceSettingsView(viewModel: viewModel)
+                .tabItem {
+                    Label(String(localized: "Appearance"), systemImage: "paintbrush")
+                }
+                .tag(SettingsTab.appearance)
+
             WidgetSettingsView(viewModel: viewModel)
                 .tabItem {
-                    Label("General", systemImage: "gearshape")
+                    Label(String(localized: "General"), systemImage: "gearshape")
                 }
                 .tag(SettingsTab.general)
 
             AboutView(viewModel: viewModel, onCloseRequested: onCloseRequested)
                 .tabItem {
-                    Label("About", systemImage: "info.circle")
+                    Label(String(localized: "About"), systemImage: "info.circle")
                 }
                 .tag(SettingsTab.about)
         }
@@ -55,7 +68,7 @@ public struct SettingsView: View {
             ),
             presenting: viewModel.lastErrorMessage
         ) { _ in
-            Button("OK", role: .cancel) { viewModel.clearError() }
+            Button(String(localized: "OK"), role: .cancel) { viewModel.clearError() }
         } message: { message in
             Text(message)
         }
@@ -66,6 +79,8 @@ public struct SettingsView: View {
     public enum SettingsTab: Hashable {
         case menuBar
         case alerts
+        case metrics
+        case appearance
         case general
         case about
     }
@@ -84,9 +99,9 @@ struct AlertSettingsView: View {
             Section {
                 permissionRow
             } header: {
-                Text("Notifications")
+                Text(String(localized: "Notifications"))
             } footer: {
-                Text("Allow kWatch to deliver alerts when a metric crosses your thresholds.")
+                Text(String(localized: "Allow kWatch to deliver alerts when a metric crosses your thresholds."))
                     .font(.caption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -95,12 +110,12 @@ struct AlertSettingsView: View {
                 Button(role: .destructive) {
                     viewModel.resetOnboarding()
                 } label: {
-                    Label("Show Onboarding Again", systemImage: "arrow.uturn.left")
+                    Label(String(localized: "Show Onboarding Again"), systemImage: "arrow.uturn.left")
                 }
             } header: {
-                Text("Onboarding")
+                Text(String(localized: "Onboarding"))
             } footer: {
-                Text("kWatch will display the welcome flow the next time you launch the app.")
+                Text(String(localized: "kWatch will display the welcome flow the next time you launch the app."))
                     .font(.caption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -116,20 +131,20 @@ struct AlertSettingsView: View {
     private var permissionRow: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text("System Permission")
+                Text(String(localized: "System Permission"))
                     .font(.headline)
-                Text(viewModel.isNotificationsAuthorized ? "Authorized" : "Not Authorized")
+                Text(viewModel.isNotificationsAuthorized ? String(localized: "Authorized") : String(localized: "Not Authorized"))
                     .font(.caption)
                     .foregroundStyle(Color.textSecondary)
             }
             Spacer()
             if viewModel.isNotificationsAuthorized {
-                Button("Open System Settings…") {
+                Button(String(localized: "Open System Settings...")) {
                     viewModel.openNotificationSystemSettings()
                 }
                 .controlSize(.small)
             } else {
-                Button("Enable Notifications") {
+                Button(String(localized: "Enable Notifications")) {
                     Task { await viewModel.requestNotificationPermission() }
                 }
                 .controlSize(.small)
@@ -138,66 +153,34 @@ struct AlertSettingsView: View {
     }
 }
 
-// MARK: - General / sampling pane
+// MARK: - General / startup pane
 
-/// Sampling interval slider and launch-at-login toggle. macOS 13+ already
-/// supports `SMAppService` for login items so we keep the preference as the
-/// source of truth and let `LaunchAtLoginManager` reconcile on launch.
+/// Launch-at-login toggle. The sampling interval has been moved to the
+/// dedicated Metrics tab. Kept as the "General" pane for app-wide settings.
 struct WidgetSettingsView: View {
     @ObservedObject var viewModel: SettingsViewModel
 
     var body: some View {
         Form {
             Section {
-                samplingRow
-            } header: {
-                Text("Sampling")
-            } footer: {
-                Text("Higher rates consume more CPU and battery. The default 2s is a good balance.")
-                    .font(.caption)
-                    .foregroundStyle(Color.textSecondary)
-            }
-
-            Section {
                 Toggle(isOn: Binding(
                     get: { viewModel.launchAtLogin },
                     set: { viewModel.setLaunchAtLogin($0) }
                 )) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Launch at Login")
+                        Text(String(localized: "Launch at Login"))
                             .font(.headline)
-                        Text("Start kWatch automatically when you sign in.")
+                        Text(String(localized: "Start kWatch automatically when you sign in."))
                             .font(.caption)
                             .foregroundStyle(Color.textSecondary)
                     }
                 }
                 .toggleStyle(.switch)
             } header: {
-                Text("Startup")
+                Text(String(localized: "Startup"))
             }
         }
         .formStyle(.grouped)
         .padding(.horizontal, 4)
-    }
-
-    private var samplingRow: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack {
-                Text("Interval")
-                    .font(.headline)
-                Spacer()
-                Text(String(format: "%.1fs", viewModel.samplingIntervalSeconds))
-                    .monospacedDigit()
-                    .foregroundStyle(Color.textSecondary)
-            }
-            Slider(
-                value: Binding(
-                    get: { viewModel.samplingIntervalSeconds },
-                    set: { viewModel.setSamplingInterval($0) }
-                ),
-                in: 0.5...10.0,
-                step: 0.5
-            )
-        }
     }
 }

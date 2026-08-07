@@ -38,21 +38,32 @@ private func makeSamples(
 ) -> [MetricSnapshot] {
     let firstTimestamp = start
         ?? Date().addingTimeInterval(-Double(max(count - 1, 0)) * interval).timeIntervalSince1970
-    return (0..<count).map { i in
-        MetricSnapshot(
-            timestamp: Date(timeIntervalSince1970: firstTimestamp + Double(i) * interval),
+    var result: [MetricSnapshot] = []
+    result.reserveCapacity(count)
+    for i in 0..<count {
+        let ts = Date(timeIntervalSince1970: firstTimestamp + Double(i) * interval)
+        let cpu: Double = Double(i).truncatingRemainder(dividingBy: 100)
+        let mem: Double = Double(i * 2).truncatingRemainder(dividingBy: 100)
+        let disk: Double = Double(i * 3).truncatingRemainder(dividingBy: 100)
+        let net: UInt64 = UInt64(i * 1024)
+        let temp: Double = Double(i).truncatingRemainder(dividingBy: 40) + 20
+        let fan: Double = Double(i * 100).truncatingRemainder(dividingBy: 3000) + 1000
+        let bat: Double = Double(i).truncatingRemainder(dividingBy: 50) + 30
+        result.append(MetricSnapshot(
+            timestamp: ts,
             values: [
-                .cpu: .percentage(Double(i).truncatingRemainder(dividingBy: 100)),
-                .memory: .percentage(Double(i * 2).truncatingRemainder(dividingBy: 100)),
-                .disk: .percentage(Double(i * 3).truncatingRemainder(dividingBy: 100)),
-                .network: .bytesPerSecond(UInt64(i * 1024)),
-                .temperature: .degreesCelsius(Double(i).truncatingRemainder(dividingBy: 40) + 20),
-                .fan: .revolutionsPerMinute(Double(i * 100).truncatingRemainder(dividingBy: 3000) + 1000),
-                .battery: .percentage(Double(i).truncatingRemainder(dividingBy: 50) + 30)
+                .cpu: .percentage(cpu),
+                .memory: .percentage(mem),
+                .disk: .percentage(disk),
+                .network: .bytesPerSecond(net),
+                .temperature: .degreesCelsius(temp),
+                .fan: .revolutionsPerMinute(fan),
+                .battery: .percentage(bat)
             ],
             availability: [:]
-        )
+        ))
     }
+    return result
 }
 
 // MARK: - Tests

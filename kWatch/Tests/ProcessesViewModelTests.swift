@@ -19,15 +19,21 @@ private final class StubProcessProvider: ProcessProvider, @unchecked Sendable {
 // MARK: - Helpers
 
 private func makeProcesses(count: Int) -> [ProcessInfoSnapshot] {
-    (0..<count).map { i in
-        ProcessInfoSnapshot(
-            pid: Int32(1000 + i),
-            name: "Process-\(i)",
-            cpuPercent: Double(i).truncatingRemainder(dividingBy: 100),
-            memoryBytes: UInt64(i * 1024 * 1024),
-            networkBytesPerSecond: UInt64(i * 1000)
-        )
+    var result: [ProcessInfoSnapshot] = []
+    result.reserveCapacity(count)
+    for i in 0..<count {
+        let pid = Int32(1000 + i)
+        let name = "Process-\(i)"
+        let cpu: Double = Double(i).truncatingRemainder(dividingBy: 100)
+        let mem: UInt64 = UInt64(i) * 1_048_576  // i * 1MB
+        let net: UInt64 = UInt64(i) * 1_000
+        result.append(ProcessInfoSnapshot(
+            pid: pid, name: name,
+            cpuPercent: cpu, memoryBytes: mem,
+            networkBytesPerSecond: net
+        ))
     }
+    return result
 }
 
 // MARK: - Tests
@@ -271,7 +277,7 @@ final class ProcessesViewModelTests: XCTestCase {
         XCTAssertEqual(row.name, "TestApp")
         XCTAssertEqual(row.pid, 1234)
         XCTAssertEqual(row.cpuDisplay, "13%") // rounded
-        XCTAssertEqual(row.memoryDisplay, "145 MB")
-        XCTAssertEqual(row.networkDisplay, "2.3 MB/s")
+        XCTAssertEqual(row.memoryDisplay, "138 MB") // 145_000_000 / 1024² ≈ 138
+        XCTAssertEqual(row.networkDisplay, "2.2 MB/s") // 2_300_000 / 1024² ≈ 2.2
     }
 }

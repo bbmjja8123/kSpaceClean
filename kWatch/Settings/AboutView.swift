@@ -33,7 +33,7 @@ struct AboutView: View {
 
             HStack {
                 Spacer()
-                Button("Done") {
+                Button(String(localized: "Done")) {
                     onCloseRequested()
                 }
                 .keyboardShortcut(.defaultAction)
@@ -70,31 +70,31 @@ struct AboutView: View {
     @ViewBuilder
     private var proBadge: some View {
         if viewModel.isPro {
-            Text("Pro")
+            Text(String(localized: "Pro"))
                 .font(.caption2.bold())
                 .padding(.horizontal, 8)
                 .padding(.vertical, 3)
                 .background(Color.brandSecondary.opacity(0.18))
                 .foregroundStyle(Color.brandSecondary)
                 .clipShape(Capsule())
-                .accessibilityLabel("Pro entitlement active")
+                .accessibilityLabel(String(localized: "Pro entitlement active"))
         } else {
-            Text("Free")
+            Text(String(localized: "Free"))
                 .font(.caption2.bold())
                 .padding(.horizontal, 8)
                 .padding(.vertical, 3)
                 .background(Color.textSecondary.opacity(0.15))
                 .foregroundStyle(Color.textSecondary)
                 .clipShape(Capsule())
-                .accessibilityLabel("Free tier")
+                .accessibilityLabel(String(localized: "Free tier"))
         }
     }
 
     private var links: some View {
         VStack(spacing: 6) {
-            linkRow(title: "Privacy Policy", action: viewModel.openPrivacyPolicy)
-            linkRow(title: "Support", action: viewModel.openSupport)
-            linkRow(title: "Open Source Licenses", action: viewModel.openLicenses)
+            linkRow(title: String(localized: "Privacy Policy"), action: viewModel.openPrivacyPolicy)
+            linkRow(title: String(localized: "Support"), action: viewModel.openSupport)
+            linkRow(title: String(localized: "Open Source Licenses"), action: viewModel.openLicenses)
         }
     }
 
@@ -122,7 +122,7 @@ struct AboutView: View {
                 } else {
                     Image(systemName: "stethoscope")
                 }
-                Text(isExportingDiagnostics ? "Exporting…" : "Export Diagnostics…")
+                Text(isExportingDiagnostics ? String(localized: "Exporting…") : String(localized: "Export Diagnostics…"))
             }
             .frame(maxWidth: .infinity)
         }
@@ -137,19 +137,19 @@ struct AboutView: View {
         } label: {
             HStack {
                 Image(systemName: "arrow.clockwise.circle")
-                Text("Restore Purchases")
+                Text(String(localized: "Restore Purchases"))
             }
             .frame(maxWidth: .infinity)
         }
         .controlSize(.regular)
-        .help("Restore a previous Pro purchase linked to your Apple ID.")
+        .help(String(localized: "Restore a previous Pro purchase linked to your Apple ID."))
     }
 
     @ViewBuilder
     private var exportStatus: some View {
         if let url = lastExportURL {
             VStack(spacing: 4) {
-                Text("Saved to:")
+                Text(String(localized: "Saved to:"))
                     .font(.caption2)
                     .foregroundStyle(Color.textSecondary)
                 Text(url.path)
@@ -158,7 +158,7 @@ struct AboutView: View {
                     .lineLimit(2)
                     .truncationMode(.middle)
                     .textSelection(.enabled)
-                Button("Reveal in Finder") {
+                Button(String(localized: "Reveal in Finder")) {
                     NSWorkspace.shared.activateFileViewerSelecting([url])
                 }
                 .controlSize(.small)

@@ -26,6 +26,7 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
         temperature: MetricValue = .unavailable(.unsupported("test")),
         fan: MetricValue = .unavailable(.unsupported("test")),
         battery: MetricValue = .percentage(0),
+        gpu: MetricValue = .unavailable(.unsupported("test")),
         processMonitor: ProcessMonitor? = nil,
         notificationScheduler: NotificationSchedulerProtocol? = nil,
         storeManager: StoreManagerProtocol? = nil,
@@ -57,7 +58,8 @@ public final class TestAppContainer: AppContainerProtocol, @unchecked Sendable {
             StubTestMonitor(kind: .network, value: network),
             StubTestMonitor(kind: .temperature, value: temperature),
             StubTestMonitor(kind: .fan, value: fan),
-            StubTestMonitor(kind: .battery, value: battery)
+            StubTestMonitor(kind: .battery, value: battery),
+            StubTestMonitor(kind: .gpu, value: gpu)
         ]
         self.aggregator = MetricsAggregator(
             monitors: monitors,

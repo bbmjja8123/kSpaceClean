@@ -59,11 +59,11 @@ public struct PaywallView: View {
                 .foregroundStyle(Color.brandSecondary)
                 .accessibilityHidden(true)
 
-            Text("kWatch Pro")
+            Text(String(localized: "kWatch Pro"))
                 .font(.title)
                 .fontWeight(.bold)
 
-            Text("Unlock the full monitoring experience.")
+            Text(String(localized: "Unlock the full monitoring experience."))
                 .font(.callout)
                 .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
@@ -96,7 +96,7 @@ public struct PaywallView: View {
             Text(viewModel.priceLine)
                 .font(.callout)
                 .foregroundStyle(Color.textSecondary)
-            Text("Sensor availability depends on your Mac hardware.")
+            Text(String(localized: "Sensor availability depends on your Mac hardware."))
                 .font(.caption)
                 .foregroundStyle(Color.textSecondary.opacity(0.6))
                 .multilineTextAlignment(.center)
@@ -140,7 +140,7 @@ public struct PaywallView: View {
                 .foregroundStyle(Color.textPrimary)
                 .multilineTextAlignment(.leading)
             Spacer()
-            Button("Dismiss") {
+            Button(String(localized: "Dismiss")) {
                 viewModel.clearError()
             }
             .controlSize(.small)
@@ -159,16 +159,16 @@ public struct PaywallView: View {
                     ProgressView()
                         .controlSize(.small)
                 }
-                Text(viewModel.isRestoring ? "Restoring…" : "Restore Purchases")
+                Text(viewModel.isRestoring ? String(localized: "Restoring…") : String(localized: "Restore Purchases"))
             }
         }
         .controlSize(.small)
         .disabled(viewModel.isRestoring)
-        .help("Restore a previous Pro purchase tied to your Apple ID.")
+        .help(String(localized: "Restore a previous Pro purchase tied to your Apple ID."))
     }
 
     private var dismissButton: some View {
-        Button("Not Now") {
+        Button(String(localized: "Not Now")) {
             onDismiss()
         }
         .keyboardShortcut(.cancelAction)

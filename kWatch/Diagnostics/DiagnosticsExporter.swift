@@ -11,11 +11,11 @@ public enum DiagnosticsExportFailure: LocalizedError, Sendable {
     public var errorDescription: String? {
         switch self {
         case .userCancelled:
-            return "Export cancelled"
+            return String(localized: "Export cancelled")
         case .encodingFailed(let reason):
-            return "Failed to encode diagnostics: \(reason)"
+            return String(localized: "Failed to encode diagnostics: \(reason)")
         case .writeFailed(let reason):
-            return "Failed to write diagnostics: \(reason)"
+            return String(localized: "Failed to write diagnostics: \(reason)")
         }
     }
 }
@@ -37,8 +37,8 @@ public struct SystemSavePanel: DiagnosticsSavePanel, @unchecked Sendable {
     public func prompt(defaultFilename: String) async -> URL? {
         await MainActor.run {
             let panel = NSSavePanel()
-            panel.title = "Export kWatch Diagnostics"
-            panel.prompt = "Export"
+            panel.title = String(localized: "Export kWatch Diagnostics")
+            panel.prompt = String(localized: "Export")
             panel.nameFieldStringValue = defaultFilename
             panel.allowedContentTypes = [.json]
             panel.canCreateDirectories = true
@@ -231,6 +231,7 @@ public final class DiagnosticsExporter: DiagnosticsExporting, @unchecked Sendabl
             case .temperature: availability["temperature"] = snapshots.last?.temperatureAvailable ?? false
             case .fan: availability["fan"] = snapshots.last?.fanAvailable ?? false
             case .battery: availability["battery"] = snapshots.last?.batteryAvailable ?? false
+            case .gpu: availability["gpu"] = snapshots.last?.gpuAvailable ?? false
             }
         }
 

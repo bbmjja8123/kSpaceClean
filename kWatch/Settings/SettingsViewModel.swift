@@ -50,6 +50,16 @@ public final class SettingsViewModel: ObservableObject {
     /// Falls back to `MetricKind.menuBarDisplayOrder` when unset.
     @Published public var menuBarOrder: [MetricKind]
 
+    /// User-selected theme mode (light / dark / system). Persisted through
+    /// `PreferencesRepositoryProtocol` so the next launch restores the same
+    /// appearance.
+    @Published public var themeMode: ThemeMode
+
+    /// Stable identifier for the user-selected sparkline color theme.
+    /// Persisted through `PreferencesRepositoryProtocol` so the menu bar
+    /// sparklines restore the same palette across launches.
+    @Published public var sparklineThemeID: String
+
     /// Whether the user has granted notification permission. Refreshed via
     /// `syncNotificationAuthorization()` whenever the view appears.
     @Published public private(set) var isNotificationsAuthorized: Bool = false
@@ -104,6 +114,8 @@ public final class SettingsViewModel: ObservableObject {
         self.menuBarOrder = preferences.menuBarOrder.isEmpty
             ? MetricKind.menuBarDisplayOrder
             : preferences.menuBarOrder
+        self.themeMode = preferences.themeMode
+        self.sparklineThemeID = preferences.sparklineThemeID
         self.isPro = purchaseState.isPro
 
         // Cache version strings from the main bundle. Fall back to "0.0.0"
@@ -191,6 +203,23 @@ public final class SettingsViewModel: ObservableObject {
         guard order != menuBarOrder else { return }
         menuBarOrder = order
         preferences.menuBarOrder = order
+    }
+
+    /// Update the user-selected theme mode. Persisted immediately so the
+    /// resolved `ColorScheme` reflects the new selection on the next view
+    /// body evaluation.
+    public func setThemeMode(_ mode: ThemeMode) {
+        guard themeMode != mode else { return }
+        themeMode = mode
+        preferences.themeMode = mode
+    }
+
+    /// Update the sparkline color theme. Persisted immediately so the menu
+    /// bar sparklines reflect the new palette on the next rendering pass.
+    public func setSparklineTheme(_ id: String) {
+        guard sparklineThemeID != id else { return }
+        sparklineThemeID = id
+        preferences.sparklineThemeID = id
     }
 
     // MARK: - Onboarding reset
@@ -359,7 +388,7 @@ public enum DiagnosticsExporterError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .notConfigured:
-            return "Diagnostics export is not configured in this build."
+            return String(localized: "Diagnostics export is not configured in this build.")
         }
     }
 }

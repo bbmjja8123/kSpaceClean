@@ -115,8 +115,8 @@ struct MediumStatusView: View {
     }
 
     private var lastUpdatedLabel: String {
-        guard let snapshot = entry.snapshot else { return "No data" }
-        return "Updated \(snapshot.timestamp.formatted(date: .omitted, time: .standard))"
+        guard let snapshot = entry.snapshot else { return String(localized: "No data") }
+        return String(localized: "Updated \(snapshot.timestamp.formatted(date: .omitted, time: .standard))")
     }
 }
 
@@ -138,13 +138,13 @@ struct LargeStatusView: View {
 
             if let snapshot = entry.snapshot {
                 if snapshot.temperatureAvailable, let temp = snapshot.temperatureCelsius {
-                    SensorRow(label: "Temperature", value: String(format: "%.0f °C", temp))
+                    SensorRow(label: String(localized: "Temperature"), value: String(format: "%.0f °C", temp))
                 }
                 if snapshot.fanAvailable, let rpm = snapshot.fanRPM {
-                    SensorRow(label: "Fan", value: String(format: "%.0f RPM", rpm))
+                    SensorRow(label: String(localized: "Fan"), value: String(format: "%.0f RPM", rpm))
                 }
                 if snapshot.batteryAvailable, let battery = snapshot.batteryPercent {
-                    SensorRow(label: "Battery", value: String(format: "%.0f%%", battery))
+                    SensorRow(label: String(localized: "Battery"), value: String(format: "%.0f%%", battery))
                 }
             }
 
@@ -163,8 +163,8 @@ struct LargeStatusView: View {
     }
 
     private var lastUpdatedLabel: String {
-        guard let snapshot = entry.snapshot else { return "No data" }
-        return "Updated \(snapshot.timestamp.formatted(date: .omitted, time: .standard))"
+        guard let snapshot = entry.snapshot else { return String(localized: "No data") }
+        return String(localized: "Updated \(snapshot.timestamp.formatted(date: .omitted, time: .standard))")
     }
 }
 
@@ -178,10 +178,10 @@ struct MiniCard: View {
 
         var label: String {
             switch self {
-            case .cpu: return "CPU"
-            case .memory: return "MEM"
-            case .disk: return "DISK"
-            case .network: return "NET"
+            case .cpu: return String(localized: "CPU")
+            case .memory: return String(localized: "MEM")
+            case .disk: return String(localized: "DISK")
+            case .network: return String(localized: "NET")
             }
         }
     }
@@ -203,21 +203,21 @@ struct MiniCard: View {
         .padding(6)
         .background(
             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(.background.secondary)
+                .fill(.black.opacity(0.05))
         )
     }
 
     private var valueText: String {
-        guard let snapshot else { return "N/A" }
+        guard let snapshot else { return String(localized: "N/A") }
         switch metric {
         case .cpu:
-            return snapshot.cpuAvailable ? String(format: "%.0f%%", snapshot.cpuPercent) : "N/A"
+            return snapshot.cpuAvailable ? String(format: "%.0f%%", snapshot.cpuPercent) : String(localized: "N/A")
         case .memory:
-            return snapshot.memoryAvailable ? String(format: "%.0f%%", snapshot.memoryPercent) : "N/A"
+            return snapshot.memoryAvailable ? String(format: "%.0f%%", snapshot.memoryPercent) : String(localized: "N/A")
         case .disk:
-            return snapshot.diskAvailable ? String(format: "%.0f%%", snapshot.diskPercent) : "N/A"
+            return snapshot.diskAvailable ? String(format: "%.0f%%", snapshot.diskPercent) : String(localized: "N/A")
         case .network:
-            guard snapshot.networkAvailable else { return "N/A" }
+            guard snapshot.networkAvailable else { return String(localized: "N/A") }
             return formatBytes(snapshot.networkBytesPerSecond) + "/s"
         }
     }
@@ -238,7 +238,7 @@ struct SparklinePlaceholder: View {
         RoundedRectangle(cornerRadius: 6, style: .continuous)
             .stroke(.secondary, lineWidth: 1)
             .overlay(
-                Text("Sparkline (coming soon)")
+                Text(String(localized: "Sparkline (coming soon)"))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             )
@@ -271,7 +271,7 @@ struct StaleBadgeModifier: ViewModifier {
     func body(content: Content) -> some View {
         if state == .stale {
             content.overlay(alignment: .topTrailing) {
-                Text("Stale")
+                Text(String(localized: "Stale"))
                     .font(.caption2.bold())
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
@@ -287,26 +287,15 @@ struct StaleBadgeModifier: ViewModifier {
     }
 }
 
-/// macOS 14 interactive "Open" button. On macOS 13, this is a no-op label
-/// because `Button(intent:)` requires macOS 14.
+/// "Open" button using a deep link. `Button(intent:)` requires macOS 14+
+/// SDK which may not be available when building against macOS 13 SDK, so
+/// we use a plain `Link` that opens via URL scheme.
 struct OpenDashboardButton: View {
     var body: some View {
-        if #available(macOS 14.0, *) {
-            // Widgets get a deep link + an interactive button. The button
-            // launches the intent on macOS 14; the deep link guarantees the
-            // app opens even if intents are not delivered (e.g. notification
-            // center out-of-process).
-            Button(intent: OpenDashboardIntent()) {
-                Label("Open", systemImage: "arrow.up.right.square")
-                    .font(.caption2)
-            }
-            .buttonStyle(.plain)
-            .widgetURL(URL(string: "kwatch://open"))
-        } else {
-            // macOS 13: only the deep link is available; widgets cannot host
-            // `Button(intent:)` actions. We render an empty placeholder so
-            // the HStack keeps its layout.
-            EmptyView()
+        Link(destination: URL(string: "kwatch://open")!) {
+            Label(String(localized: "Open"), systemImage: "arrow.up.right.square")
+                .font(.caption2)
         }
+        .buttonStyle(.plain)
     }
 }

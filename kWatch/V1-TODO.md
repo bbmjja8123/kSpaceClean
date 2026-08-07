@@ -1,9 +1,9 @@
 # kWatch v1.0 — Gap TODO List
 
 > **状态**：进行中（半成品 → 上架就绪）
-> **日期**：2026-08-01
-> **依据**：kWatch 与 iStat Menus / iPulse / Stats 的全面 gap 分析
-> **执行路径**：阶段 0（合规冲刺）→ 阶段 1（核心交互）→ 阶段 2（深化打磨）→ 阶段 3（生态补全）
+> **日期**：2026-08-05
+> **依据**：kWatch 与 iStat Menus / iPulse / Stats 的全面 gap 分析（含 2026-08-04 功能维度）
+> **执行路径**：阶段 0（合规冲刺）→ 阶段 1（核心交互）→ 阶段 2（深化打磨）→ 阶段 3（生态补全）→ 阶段 4（gap 补齐·候选）
 
 ---
 
@@ -350,6 +350,102 @@
 - [ ] **P3** P3 项：Finder Extension / Crashlytics
 
 **阶段 3 验收**：v2 上架 + 申请 Apple Design Award
+
+---
+
+## 阶段 4（候选 · 来自 2026-08-04 gap 分析）[gap-2026-08-04]
+
+> **目标**：补齐与 iStat Menus / iPulse / Stats 的功能差距
+> **来源**：`docs/gap-analysis/2026-08-04-kwatch-vs-top3.md`
+> **触发条件**：阶段 2/3 完成后，根据竞品动态 + 用户反馈决定
+> **优先级说明**：P0=3 款竞品都有; P1=1-2 款独有+高频; P2=独有+低频
+
+### P0 Gap（3 款竞品都具备）
+
+- [ ] **[gap-2026-08-04] G-F1** GPU 监控（usage % + VRAM + temperature）
+  - 文件：`kFoundation/Sources/MetricsKit/Monitors/GPUMonitor.swift`（新增）
+  - API：IOReport / Metal Performance Counters
+  - Apple Silicon 与 Intel 分支
+  - 嵌入 Dashboard 卡片 + 菜单栏 popover
+
+- [ ] **[gap-2026-08-04] G-U2** 全局快捷键（10+ configurable）
+  - 文件：`kWatch/Settings/HotKeySettingsView.swift`（新增）
+  - 每个 metric 独立快捷键（如 Cmd+Shift+1 = CPU）
+  - 用 `MASShortcut` 或 `KeyboardShortcuts` 库
+  - 设置页配置 + 默认值
+
+- [ ] **[gap-2026-08-04] G-U3** 右键/Command-click 菜单（每 metric）
+  - 文件：各 `MetricCardView` 加 `.contextMenu`
+  - 菜单项：Copy Value / Open Activity Monitor / Set Alert / History
+  - 统一 `MetricContextMenu` modifier
+
+- [ ] **[gap-2026-08-04] G-E1** CSV/JSON 历史数据导出
+  - 文件：`kWatch/History/HistoryExporter.swift`（新增）
+  - 导出格式：CSV（Excel 友好）+ JSON（开发者友好）
+  - 时间范围选择：24h / 7d / 30d / Custom
+  - 文件保存到 ~/Documents/kWatch/
+
+### P1 Gap（1-2 款独有 + 高频）
+
+- [ ] **[gap-2026-08-04] G-V3** 颜色阈值带（绿/橙/红 自动着色）
+  - 文件：`kFoundation/Sources/DesignSystem/ThresholdColors.swift`（新增）
+  - 每 metric 可配置阈值（如 CPU: <50 green, 50-80 orange, >80 red）
+  - 菜单栏图标 + Dashboard 卡片 + 历史图表 全局着色
+
+- [ ] **[gap-2026-08-04] G-E2** 采样间隔可配置（1s-10s per module）
+  - 文件：`kWatch/Settings/SamplingSettingsView.swift`（新增）
+  - 每 metric 独立采样频率（CPU 1s, Battery 10s）
+  - 影响 CPU 占用 + 电池消耗
+
+- [ ] **[gap-2026-08-04] G-V1** 6+ 内置主题
+  - 文件：`kFoundation/Sources/DesignSystem/Themes.swift`（新增）
+  - 主题：Light / Dark / Black / Solarized / Graphite / Ocean
+  - 每主题定义 bg/text/accent/sparkline 色板
+
+- [ ] **[gap-2026-08-04] G-U4** 配置导出/导入
+  - 文件：`kWatch/Settings/SettingsExporter.swift`（新增）
+  - 导出：全量 settings → JSON 文件
+  - 导入：JSON → merge or replace
+  - AirDrop / iCloud Drive 共享
+
+- [ ] **[gap-2026-08-04] G-V2** 图表缩放/拖拽检查
+  - 文件：`kWatch/History/TrendChartView.swift`（重构）
+  - 手势：pinch-to-zoom + drag-to-pan
+  - Tooltip：精确到秒的数值显示
+
+### P2 Gap（独有 + 低频 / 锦上添花）
+
+- [ ] **[gap-2026-08-04] G-I1** AppleScript 字典
+  - 文件：`kWatch/Scripting/`（新增）
+  - 支持：`tell application "kWatch" to get CPU usage`
+  - 每 metric 暴露 get/set 命令
+
+- [ ] **[gap-2026-08-04] G-E3** 简化版规则引擎
+  - 文件：`kWatch/Rules/RuleEngine.swift`（新增）
+  - 条件：metric > threshold → action（notify/script/quit）
+  - 时间调度：工作日/工作时间过滤
+  - UI：RuleEditorView（简化版，非 iStat 复杂度）
+
+- [ ] **[gap-2026-08-04] G-F5** Disk SMART 健康
+  - 文件：`kFoundation/Sources/MetricsKit/Monitors/SMARTMonitor.swift`（新增）
+  - 读取：温度 / 坏块 / 通电时间 / 寿命百分比
+  - 需要 FDA 权限
+
+---
+
+### 🆕 灵感池（未来候选，不一定做）
+
+> 来自竞品启发，但不保证实施。仅作参考。
+
+| ID | 概念 | 来源 | 说明 | 实施难度 |
+|---|---|---|---|---|
+| G-F4 | Weather 预报嵌入菜单栏 | iStat Menus F9 | yr.no API（免费无 key），显示温度+天气图标 | 中 |
+| G-U5 | Drift 浮动窗口 | iStat Menus U2 | 可拖拽独立面板，always-on-top，auto-fade | 高 |
+| G-E5 | CLI 命令行工具 | Stats E5 | `kwatch-cli cpu` → 23%，供脚本调用 | 中 |
+| G-E6 | HTTP API 模式 | Stats E6 | `localhost:9090/metrics` 暴露 JSON，供 Grafana | 中 |
+| G-I3 | Finder Quick Look 扩展 | iStat Menus I7 | 右键快速查看磁盘健康状态 | 低 |
+| G-V4 | 自定义图标集导入 | iStat Menus V4 | PNG/SDF 图标导入，用户自定义菜单栏外观 | 中 |
+| G-V5 | Tabular Figures 字体控制 | iStat Menus E9 | 等宽数字字体，防止数值变化时菜单栏抖动 | 低 |
 
 ---
 

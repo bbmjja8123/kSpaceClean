@@ -11,17 +11,17 @@ struct ProIntroPage: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Image(systemName: "star.circle.fill").font(.system(size: 36)).foregroundStyle(Color.brandSecondary)
-            Text("Meet kWatch Pro").font(.title2).bold()
-            Text("Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Activity, and 8 Shortcuts.")
+            Text(String(localized: "Meet kWatch Pro")).font(.title2).bold()
+            Text(String(localized: "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Activity, and 8 Shortcuts."))
                 .foregroundStyle(Color.textSecondary)
-            Text("One-time purchase of $7.99. You can upgrade anytime from Settings.")
+            Text(String(localized: "One-time purchase of $7.99. You can upgrade anytime from Settings."))
                 .font(.footnote)
                 .foregroundStyle(Color.textSecondary.opacity(0.6))
             Spacer()
             HStack {
-                Button("Skip", action: onSkip)
+                Button(String(localized: "Skip"), action: onSkip)
                 Spacer()
-                Button("Continue", action: onContinue).keyboardShortcut(.defaultAction)
+                Button(String(localized: "Continue"), action: onContinue).keyboardShortcut(.defaultAction)
             }
         }
         .padding(24)

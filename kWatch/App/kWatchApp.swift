@@ -238,7 +238,10 @@ private struct DashboardSceneContent: View {
         DashboardView(
             viewModel: viewModel,
             onOpenOnboarding: { openWindow(id: "onboarding") },
-            onOpenPaywall: { showPaywallSheet = true }
+            onOpenPaywall: { showPaywallSheet = true },
+            historyRepo: kWatchAppDelegate.shared.container.historyRepository,
+            purchaseState: kWatchAppDelegate.shared.container.purchaseState,
+            processMonitor: kWatchAppDelegate.shared.container.processMonitor
         )
     }
 }

@@ -35,21 +35,21 @@ struct AlertsView: View {
     private var toolbar: some View {
         HStack {
             Button(action: onBack) {
-                Label("Back", systemImage: "chevron.left")
+                Label(String(localized: "Back"), systemImage: "chevron.left")
             }
-            .help("Back to dashboard")
+            .help(String(localized: "Back to dashboard"))
 
             Spacer()
 
-            Text("Alerts")
+            Text(String(localized: "Alerts"))
                 .font(.headline)
 
             Spacer()
 
             Button(action: viewModel.beginAdd) {
-                Label("Add", systemImage: "plus")
+                Label(String(localized: "Add"), systemImage: "plus")
             }
-            .help("Add alert")
+            .help(String(localized: "Add alert"))
         }
         .padding()
     }
@@ -73,11 +73,11 @@ struct AlertsView: View {
 
     private var notificationPermissionBanner: some View {
         HStack {
-            Text("Enable notifications to receive alert.")
+            Text(String(localized: "Enable notifications to receive alert."))
                 .font(.caption)
                 .foregroundColor(Color.textSecondary)
             Spacer()
-            Button("Enable") {
+            Button(String(localized: "Enable")) {
                 Task { await viewModel.requestNotificationPermission() }
             }
             .controlSize(.small)
@@ -93,9 +93,9 @@ struct AlertsView: View {
             Image(systemName: "bell.badge")
                 .font(.largeTitle)
                 .foregroundColor(Color.textSecondary)
-            Text("No Alerts")
+            Text(String(localized: "No Alerts"))
                 .font(.headline)
-            Text("Tap Add to create a threshold alert.")
+            Text(String(localized: "Tap Add to create a threshold alert."))
                 .font(.caption)
                 .foregroundColor(Color.textSecondary)
         }
@@ -157,7 +157,7 @@ private struct AlertRow: View {
             unit = "%"
         case .network:
             unit = " B/s"
-        case .temperature:
+        case .temperature, .gpu:
             unit = "°C"
         case .fan:
             unit = " RPM"

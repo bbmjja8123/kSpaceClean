@@ -18,7 +18,7 @@ struct AlertEditorView: View {
     @State private var sharedCooldown: Int
 
     private static let metricOrder: [MetricKind] = MetricKind.menuBarDisplayOrder
-    private static let proKinds: Set<MetricKind> = [.temperature, .fan, .battery]
+    private static let proKinds: Set<MetricKind> = [.temperature, .fan, .battery, .gpu]
     nonisolated fileprivate static let cooldownDefault = 300
     private static let cooldownRange = 300...86_400
 
@@ -40,7 +40,7 @@ struct AlertEditorView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Text("Alert Settings")
+            Text(String(localized: "Alert Settings"))
                 .font(AppFont.title3)
                 .padding(.top, AppSpacing.md)
 
@@ -61,7 +61,7 @@ struct AlertEditorView: View {
         Section {
             Stepper(value: $sharedCooldown, in: Self.cooldownRange, step: 60) {
                 HStack {
-                    Text("Cooldown")
+                    Text(String(localized: "Cooldown"))
                         .font(AppFont.body)
                     Spacer()
                     Text(cooldownLabel)
@@ -69,7 +69,7 @@ struct AlertEditorView: View {
                         .foregroundColor(Color.textSecondary)
                 }
             }
-            Text("At most one alert per metric every 5 minutes. A longer cooldown is honored.")
+            Text(String(localized: "At most one alert per metric every 5 minutes. A longer cooldown is honored."))
                 .font(AppFont.caption)
                 .foregroundColor(Color.textSecondary)
         }
@@ -96,13 +96,13 @@ struct AlertEditorView: View {
         let isLocked = Self.proKinds.contains(kind) && !viewModel.isPro
 
         return Section {
-            Toggle("Enabled", isOn: draft.isEnabled)
+            Toggle(String(localized: "Enabled"), isOn: draft.isEnabled)
                 .font(AppFont.body)
                 .disabled(isLocked)
 
-            Picker("Condition", selection: draft.op) {
-                Text("Above").tag(MetricAlert.Operator.above)
-                Text("Below").tag(MetricAlert.Operator.below)
+            Picker(String(localized: "Condition"), selection: draft.op) {
+                Text(String(localized: "Above")).tag(MetricAlert.Operator.above)
+                Text(String(localized: "Below")).tag(MetricAlert.Operator.below)
             }
             .disabled(isLocked)
 
@@ -110,7 +110,7 @@ struct AlertEditorView: View {
                 .disabled(isLocked)
 
             if isLocked {
-                Label("Pro feature — upgrade to configure", systemImage: "lock.fill")
+                Label(String(localized: "Pro feature — upgrade to configure"), systemImage: "lock.fill")
                     .font(AppFont.caption)
                     .foregroundColor(Color.textSecondary)
             }
@@ -131,7 +131,7 @@ struct AlertEditorView: View {
     private func thresholdControl(draft: Binding<MetricDraft>, kind: MetricKind) -> some View {
         if kind == .network {
             HStack {
-                Text("Threshold")
+                Text(String(localized: "Threshold"))
                     .font(AppFont.body)
                 Spacer()
                 Text(networkThresholdLabel(draft.wrappedValue.threshold))
@@ -139,12 +139,12 @@ struct AlertEditorView: View {
                     .foregroundColor(Color.textSecondary)
             }
             Slider(value: draft.threshold, in: 0...100_000_000, step: 1_000_000)
-            Text("0–100 MB/s")
+            Text(String(localized: "0–100 MB/s"))
                 .font(AppFont.caption)
                 .foregroundColor(Color.textSecondary)
         } else {
             HStack {
-                Text("Threshold")
+                Text(String(localized: "Threshold"))
                     .font(AppFont.body)
                 Spacer()
                 Text("\(Int(draft.wrappedValue.threshold))\(unitLabel(for: kind))")
@@ -159,7 +159,7 @@ struct AlertEditorView: View {
 
     private var buttons: some View {
         HStack {
-            Button("Cancel") {
+            Button(String(localized: "Cancel")) {
                 viewModel.isPresentingEditor = false
                 viewModel.editingAlert = nil
             }
@@ -167,7 +167,7 @@ struct AlertEditorView: View {
 
             Spacer()
 
-            Button("Save") {
+            Button(String(localized: "Save")) {
                 saveDrafts()
             }
             .keyboardShortcut(.defaultAction)
@@ -219,13 +219,14 @@ struct AlertEditorView: View {
 
     private func metricTitle(for kind: MetricKind) -> String {
         switch kind {
-        case .cpu: return "CPU"
-        case .memory: return "Memory"
-        case .disk: return "Disk"
-        case .network: return "Network"
-        case .temperature: return "Temperature"
-        case .fan: return "Fan"
-        case .battery: return "Battery"
+        case .cpu: return String(localized: "CPU")
+        case .memory: return String(localized: "Memory")
+        case .disk: return String(localized: "Disk")
+        case .network: return String(localized: "Network")
+        case .temperature: return String(localized: "Temperature")
+        case .fan: return String(localized: "Fan")
+        case .battery: return String(localized: "Battery")
+        case .gpu: return String(localized: "GPU")
         }
     }
 
@@ -237,6 +238,7 @@ struct AlertEditorView: View {
         case .temperature: return 80
         case .fan: return 3_000
         case .battery: return 80
+        case .gpu: return 80
         }
     }
 
@@ -250,6 +252,8 @@ struct AlertEditorView: View {
             return "°C"
         case .fan:
             return "RPM"
+        case .gpu:
+            return "°C"
         }
     }
 }

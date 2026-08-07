@@ -239,6 +239,7 @@ public enum IntentFormatter {
         case .temperature: return "Temp N/A"
         case .fan: return "Fan N/A"
         case .battery: return "Battery N/A"
+        case .gpu: return "GPU N/A"
         }
     }
 

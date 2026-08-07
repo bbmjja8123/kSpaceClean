@@ -142,9 +142,10 @@ final class DiagnosticsExporterTests: XCTestCase {
     func testExportWritesToProvidedDestination() async throws {
         let destination = tempURL()
         let panel = StubSavePanel(destination: destination)
+        let snapshot = makeSnapshot()
         let exporter = DiagnosticsExporter(
             panel: panel,
-            snapshotProvider: { [makeSnapshot()] },
+            snapshotProvider: { [snapshot] },
             now: { Date(timeIntervalSince1970: 1_700_000_000) }
         )
         let url = try await exporter.export()

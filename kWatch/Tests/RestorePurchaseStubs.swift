@@ -1,6 +1,8 @@
 import Foundation
 import UserNotifications
+import StoreKit
 import MetricsKit
+import DesignSystem
 @testable import kWatch
 
 // MARK: - StubPreferencesRepository
@@ -17,6 +19,8 @@ final class StubPreferencesRepository: PreferencesRepositoryProtocol, @unchecked
     var menuBarIconTheme: MenuBarIconTheme = .default
     var perMetricMenuBar: Bool = false
     var menuBarOrder: [MetricKind] = MetricKind.menuBarDisplayOrder
+    var themeMode: ThemeMode = .dark
+    var sparklineThemeID: String = SparklineTheme.default.id
 
     init() {}
 }
@@ -27,6 +31,7 @@ final class StubPreferencesRepository: PreferencesRepositoryProtocol, @unchecked
 /// status, returns it on demand, and swallows all schedule/remove calls so
 /// `SettingsViewModel` can be exercised without touching
 /// `UNUserNotificationCenter`.
+@MainActor
 final class StubNotificationScheduler: NotificationSchedulerProtocol, @unchecked Sendable {
     var authorizationStatusValue: UNAuthorizationStatus
 

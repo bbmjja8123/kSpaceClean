@@ -16,15 +16,24 @@ public struct DashboardView: View {
 
     private let onOpenOnboarding: (() -> Void)?
     private let onOpenPaywall: (() -> Void)?
+    private let historyRepo: (any HistoryRepositoryProtocol)?
+    private let purchaseState: PurchaseState?
+    private let processMonitor: ProcessMonitor?
 
     public init(
         viewModel: DashboardViewModel,
         onOpenOnboarding: (() -> Void)? = nil,
-        onOpenPaywall: (() -> Void)? = nil
+        onOpenPaywall: (() -> Void)? = nil,
+        historyRepo: (any HistoryRepositoryProtocol)? = nil,
+        purchaseState: PurchaseState? = nil,
+        processMonitor: ProcessMonitor? = nil
     ) {
         self.viewModel = viewModel
         self.onOpenOnboarding = onOpenOnboarding
         self.onOpenPaywall = onOpenPaywall
+        self.historyRepo = historyRepo
+        self.purchaseState = purchaseState
+        self.processMonitor = processMonitor
     }
 
     public var body: some View {
@@ -35,12 +44,22 @@ public struct DashboardView: View {
             }
             .padding()
         }
-        .navigationTitle("Dashboard")
+        .navigationTitle(String(localized: "Dashboard"))
         .toolbar {
             ToolbarItemGroup {
                 liveIndicator
                 navigationControls
             }
+        }
+        .sheet(item: $viewModel.selectedKind) { kind in
+            MetricDetailView(
+                viewModel: MetricDetailViewModel(
+                    kind: kind,
+                    historyRepo: historyRepo ?? InMemoryHistoryRepository(),
+                    purchaseState: purchaseState ?? PurchaseState(),
+                    processMonitor: processMonitor
+                )
+            )
         }
     }
 
@@ -55,16 +74,16 @@ public struct DashboardView: View {
                     .foregroundStyle(Color.brandSecondary)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Welcome to kWatch")
+                    Text(String(localized: "Welcome to kWatch"))
                         .font(.headline)
-                    Text("Complete the setup to customize your experience.")
+                    Text(String(localized: "Complete the setup to customize your experience."))
                         .font(.caption)
                         .foregroundStyle(Color.textSecondary)
                 }
 
                 Spacer(minLength: 0)
 
-                Button("Set Up") {
+                Button(String(localized: "Set Up")) {
                     onOpenOnboarding?()
                 }
                 .buttonStyle(.borderedProminent)
@@ -78,7 +97,7 @@ public struct DashboardView: View {
                         .foregroundStyle(Color.textSecondary)
                 }
                 .buttonStyle(.plain)
-                .help("Dismiss")
+                .help(String(localized: "Dismiss"))
             }
             .padding(12)
             .background(
@@ -100,30 +119,30 @@ public struct DashboardView: View {
             if viewModel.isMonitoring {
                 ProgressView()
                     .controlSize(.small)
-                Text("Live")
+                Text(String(localized: "Live"))
             } else {
                 Circle()
                     .fill(Color.textSecondary)
                     .frame(width: 8, height: 8)
-                Text("Paused")
+                Text(String(localized: "Paused"))
             }
         }
         .font(.caption)
         .foregroundStyle(Color.textSecondary)
-        .help(viewModel.isMonitoring ? "Monitoring is active" : "Monitoring is paused")
+        .help(viewModel.isMonitoring ? String(localized: "Monitoring is active") : String(localized: "Monitoring is paused"))
     }
 
     /// Navigation controls for sub-views required by the plan.
     @ViewBuilder
     private var navigationControls: some View {
-        Button("History") { viewModel.navigateToHistory() }
-            .help("View metric history")
+        Button(String(localized: "History")) { viewModel.navigateToHistory() }
+            .help(String(localized: "View metric history"))
 
-        Button("Processes") { viewModel.navigateToProcesses() }
-            .help("View running processes")
+        Button(String(localized: "Processes")) { viewModel.navigateToProcesses() }
+            .help(String(localized: "View running processes"))
 
-        Button("Alerts") { viewModel.navigateToAlerts() }
-            .help("View alerts")
+        Button(String(localized: "Alerts")) { viewModel.navigateToAlerts() }
+            .help(String(localized: "View alerts"))
     }
 
     // MARK: - Card grid

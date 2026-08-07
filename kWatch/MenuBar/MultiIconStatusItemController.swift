@@ -160,6 +160,7 @@ public final class MultiIconStatusItemController: NSObject {
         case .temperature: return "Temperature"
         case .fan: return "Fan"
         case .battery: return "Battery"
+        case .gpu: return "GPU"
         }
     }
 

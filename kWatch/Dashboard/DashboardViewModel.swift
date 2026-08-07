@@ -119,11 +119,11 @@ public final class DashboardViewModel: ObservableObject {
             let availability: MetricAvailability
 
             if let snapshot {
-                value = snapshot.values[kind] ?? .unavailable(.unsupported("No data"))
-                availability = snapshot.availability[kind] ?? .unavailable(reason: "No data")
+                value = snapshot.values[kind] ?? .unavailable(.unsupported(String(localized: "No data")))
+                availability = snapshot.availability[kind] ?? .unavailable(reason: String(localized: "No data"))
             } else {
-                value = .unavailable(.unsupported("Waiting for data"))
-                availability = .unavailable(reason: "Waiting for data")
+                value = .unavailable(.unsupported(String(localized: "Waiting for data")))
+                availability = .unavailable(reason: String(localized: "Waiting for data"))
             }
 
             return MetricCardViewModel(

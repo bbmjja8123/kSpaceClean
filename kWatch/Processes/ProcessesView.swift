@@ -59,21 +59,21 @@ public struct ProcessesView: View {
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "chevron.left")
-                    Text("Dashboard")
+                    Text(String(localized: "Dashboard"))
                 }
             }
             .buttonStyle(.plain)
-            .help("Return to Dashboard")
+            .help(String(localized: "Return to Dashboard"))
 
             Spacer()
 
-            Text("Processes")
+            Text(String(localized: "Processes"))
                 .font(.headline)
                 .foregroundStyle(Color.textSecondary)
 
             Spacer()
 
-            Picker("Sort", selection: $viewModel.selectedSort) {
+            Picker(String(localized: "Sort"), selection: $viewModel.selectedSort) {
                 ForEach(viewModel.availableSorts, id: \.self) { sort in
                     Text(sortLabel(sort)).tag(sort)
                 }
@@ -90,7 +90,7 @@ public struct ProcessesView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(Color.textSecondary)
 
-            TextField("Search processes\u{2026}", text: $viewModel.searchQuery)
+            TextField(String(localized: "Search processes\u{2026}"), text: $viewModel.searchQuery)
                 .textFieldStyle(.plain)
                 .font(.callout)
                 .onChange(of: viewModel.searchQuery) { _ in
@@ -105,7 +105,7 @@ public struct ProcessesView: View {
                         .foregroundStyle(Color.textSecondary)
                 }
                 .buttonStyle(.plain)
-                .help("Clear search")
+                .help(String(localized: "Clear search"))
             }
         }
         .padding(8)
@@ -141,7 +141,7 @@ public struct ProcessesView: View {
             Spacer()
             ProgressView()
                 .scaleEffect(1.2)
-            Text("Loading processes\u{2026}")
+            Text(String(localized: "Loading processes…"))
                 .font(.callout)
                 .foregroundStyle(Color.textSecondary)
             Spacer()
@@ -158,7 +158,7 @@ public struct ProcessesView: View {
                 .font(.system(size: 36))
                 .foregroundStyle(Color.brandAccent)
 
-            Text("Failed to Load Processes")
+            Text(String(localized: "Failed to Load Processes"))
                 .font(.headline)
 
             Text(message)
@@ -167,7 +167,7 @@ public struct ProcessesView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
-            Button("Retry") {
+            Button(String(localized: "Retry")) {
                 Task { await viewModel.refresh() }
             }
             .buttonStyle(.borderedProminent)
@@ -186,10 +186,10 @@ public struct ProcessesView: View {
                 .font(.system(size: 36))
                 .foregroundStyle(Color.textSecondary)
 
-            Text("No Processes")
+            Text(String(localized: "No Processes"))
                 .font(.headline)
 
-            Text("No processes found. Try adjusting the sort or search criteria.")
+            Text(String(localized: "No processes found. Try adjusting the sort or search criteria."))
                 .font(.callout)
                 .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
@@ -225,19 +225,19 @@ public struct ProcessesView: View {
 
     private var tableHeader: some View {
         HStack(spacing: 8) {
-            Text("Name")
+            Text(String(localized: "Name"))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Text("PID")
+            Text(String(localized: "PID"))
                 .frame(width: 50, alignment: .trailing)
 
-            Text("CPU")
+            Text(String(localized: "CPU"))
                 .frame(width: 50, alignment: .trailing)
 
-            Text("Memory")
+            Text(String(localized: "Memory"))
                 .frame(width: 80, alignment: .trailing)
 
-            Text("Network")
+            Text(String(localized: "Network"))
                 .frame(width: 90, alignment: .trailing)
         }
         .font(.caption)
@@ -248,9 +248,9 @@ public struct ProcessesView: View {
 
     private func sortLabel(_ sort: ProcessSort) -> String {
         switch sort {
-        case .cpu:     return "CPU"
-        case .memory:  return "Memory"
-        case .network: return "Network"
+        case .cpu:     return String(localized: "CPU")
+        case .memory:  return String(localized: "Memory")
+        case .network: return String(localized: "Network")
         }
     }
 }

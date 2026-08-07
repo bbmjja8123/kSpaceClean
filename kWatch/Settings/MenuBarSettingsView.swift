@@ -13,9 +13,9 @@ struct MenuBarSettingsView: View {
             Section {
                 modePicker
             } header: {
-                Text("Style")
+                Text(String(localized: "Style"))
             } footer: {
-                Text("Choose how the menu bar status item renders your metrics.")
+                Text(String(localized: "Choose how the menu bar status item renders your metrics."))
                     .font(.caption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -23,9 +23,9 @@ struct MenuBarSettingsView: View {
             Section {
                 metricToggles
             } header: {
-                Text("Metrics")
+                Text(String(localized: "Metrics"))
             } footer: {
-                Text("Disable metrics you don't want to see. At least one must stay enabled.")
+                Text(String(localized: "Disable metrics you don't want to see. At least one must stay enabled."))
                     .font(.caption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -34,14 +34,14 @@ struct MenuBarSettingsView: View {
                 if viewModel.perMetricMenuBar {
                     reorderList
                 }
-                Toggle("Show one icon per metric", isOn: Binding(
+                Toggle(String(localized: "Show one icon per metric"), isOn: Binding(
                     get: { viewModel.perMetricMenuBar },
                     set: { viewModel.setPerMetricMenuBar($0) }
                 ))
             } header: {
-                Text("Multi-icon mode")
+                Text(String(localized: "Multi-icon mode"))
             } footer: {
-                Text("Show a separate menu bar icon for each metric, then drag to reorder them.")
+                Text(String(localized: "Show a separate menu bar icon for each metric, then drag to reorder them."))
                     .font(.caption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -53,7 +53,7 @@ struct MenuBarSettingsView: View {
     // MARK: - Mode picker
 
     private var modePicker: some View {
-        Picker("Style", selection: Binding(
+        Picker(String(localized: "Style"), selection: Binding(
             get: { viewModel.menuBarMode },
             set: { viewModel.setMenuBarMode($0) }
         )) {
@@ -67,9 +67,9 @@ struct MenuBarSettingsView: View {
 
     private func label(for mode: MenuBarMode) -> String {
         switch mode {
-        case .trend: return "Trend"
-        case .numeric: return "Numeric"
-        case .minimal: return "Minimal"
+        case .trend: return String(localized: "Trend")
+        case .numeric: return String(localized: "Numeric")
+        case .minimal: return String(localized: "Minimal")
         }
     }
 
@@ -100,13 +100,14 @@ struct MenuBarSettingsView: View {
 
     private func title(for kind: MetricKind) -> String {
         switch kind {
-        case .cpu: return "CPU"
-        case .memory: return "Memory"
-        case .disk: return "Disk"
-        case .network: return "Network"
-        case .temperature: return "Temperature"
-        case .fan: return "Fan"
-        case .battery: return "Battery"
+        case .cpu: return String(localized: "CPU")
+        case .memory: return String(localized: "Memory")
+        case .disk: return String(localized: "Disk")
+        case .network: return String(localized: "Network")
+        case .temperature: return String(localized: "Temperature")
+        case .fan: return String(localized: "Fan")
+        case .battery: return String(localized: "Battery")
+        case .gpu: return String(localized: "GPU")
         }
     }
 
@@ -119,6 +120,7 @@ struct MenuBarSettingsView: View {
         case .temperature: return "thermometer"
         case .fan: return "fan.fill"
         case .battery: return "battery.100"
+        case .gpu: return "display"
         }
     }
 }

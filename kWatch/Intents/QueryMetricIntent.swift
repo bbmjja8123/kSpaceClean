@@ -53,7 +53,8 @@ public struct MetricKindParameter: AppEnum, Sendable {
         .network: DisplayRepresentation(title: "Network"),
         .temperature: DisplayRepresentation(title: "Temperature"),
         .fan: DisplayRepresentation(title: "Fan"),
-        .battery: DisplayRepresentation(title: "Battery")
+        .battery: DisplayRepresentation(title: "Battery"),
+        .gpu: DisplayRepresentation(title: "GPU")
     ]
 
     public let kind: MetricKind
@@ -76,6 +77,7 @@ public struct MetricKindParameter: AppEnum, Sendable {
     public static let temperature = MetricKindParameter(kind: .temperature)
     public static let fan = MetricKindParameter(kind: .fan)
     public static let battery = MetricKindParameter(kind: .battery)
+    public static let gpu = MetricKindParameter(kind: .gpu)
 
     public static var allCases: [MetricKindParameter] {
         MetricKind.allCases.map { MetricKindParameter(kind: $0) }
@@ -87,13 +89,14 @@ public extension MetricKind {
     /// Human-readable name used in dialogs.
     var displayName: String {
         switch self {
-        case .cpu: return "CPU"
-        case .memory: return "Memory"
-        case .disk: return "Disk"
-        case .network: return "Network"
-        case .temperature: return "Temperature"
-        case .fan: return "Fan"
-        case .battery: return "Battery"
+        case .cpu: return String(localized: "CPU")
+        case .memory: return String(localized: "Memory")
+        case .disk: return String(localized: "Disk")
+        case .network: return String(localized: "Network")
+        case .temperature: return String(localized: "Temperature")
+        case .fan: return String(localized: "Fan")
+        case .battery: return String(localized: "Battery")
+        case .gpu: return String(localized: "GPU")
         }
     }
 }

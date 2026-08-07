@@ -55,29 +55,29 @@ public struct HistoryView: View {
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "chevron.left")
-                    Text("Dashboard")
+                    Text(String(localized: "Dashboard"))
                 }
             }
             .buttonStyle(.plain)
-            .help("Return to Dashboard")
+            .help(String(localized: "Return to Dashboard"))
 
             Spacer()
 
-            Text("History")
+            Text(String(localized: "History"))
                 .font(.headline)
                 .foregroundStyle(Color.textSecondary)
 
             Spacer()
 
-            Picker("Range", selection: $viewModel.selectedRange) {
-                Text("24h").tag(HistoryRange.hours24)
-                Text("7d").tag(HistoryRange.days7)
-                Text("30d").tag(HistoryRange.days30)
+            Picker(String(localized: "Range"), selection: $viewModel.selectedRange) {
+                Text(String(localized: "24 Hours")).tag(HistoryRange.hours24)
+                Text(String(localized: "7 Days")).tag(HistoryRange.days7)
+                Text(String(localized: "30 Days")).tag(HistoryRange.days30)
             }
             .pickerStyle(.segmented)
             .frame(width: 200)
 
-            Picker("Metric", selection: $viewModel.selectedMetric) {
+            Picker(String(localized: "Metric"), selection: $viewModel.selectedMetric) {
                 ForEach(MetricKind.allCases, id: \.self) { kind in
                     Text(metricLabel(kind)).tag(kind)
                 }
@@ -113,22 +113,22 @@ public struct HistoryView: View {
                 .font(.system(size: 36))
                 .foregroundStyle(Color.textSecondary)
 
-            Text("Metric History")
+            Text(String(localized: "Metric History"))
                 .font(.title2)
                 .fontWeight(.semibold)
 
-            Text("Upgrade to Pro to view historical trends, charts, and detailed summaries for all metrics.")
+            Text(String(localized: "Upgrade to Pro to view historical trends, charts, and detailed summaries for all metrics."))
                 .font(.callout)
                 .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
-            Text("Free users can monitor live CPU, Memory, Disk, and Network.")
+            Text(String(localized: "Free users can monitor live CPU, Memory, Disk, and Network."))
                 .font(.caption)
                 .foregroundStyle(Color.textSecondary.opacity(0.6))
                 .multilineTextAlignment(.center)
 
-            Button("View kWatch Pro") {
+            Button(String(localized: "View kWatch Pro")) {
                 onOpenPaywall?()
             }
             .buttonStyle(.borderedProminent)
@@ -144,7 +144,7 @@ public struct HistoryView: View {
             Spacer()
             ProgressView()
                 .scaleEffect(1.2)
-            Text("Loading history\u{2026}")
+            Text(String(localized: "Loading history…"))
                 .font(.callout)
                 .foregroundStyle(Color.textSecondary)
             Spacer()
@@ -161,7 +161,7 @@ public struct HistoryView: View {
                 .font(.system(size: 36))
                 .foregroundStyle(Color.brandAccent)
 
-            Text("Failed to Load History")
+            Text(String(localized: "Failed to Load History"))
                 .font(.headline)
 
             Text(message)
@@ -170,7 +170,7 @@ public struct HistoryView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
-            Button("Retry") {
+            Button(String(localized: "Retry")) {
                 Task { await viewModel.load() }
             }
             .buttonStyle(.borderedProminent)
@@ -189,10 +189,10 @@ public struct HistoryView: View {
                 .font(.system(size: 36))
                 .foregroundStyle(Color.textSecondary)
 
-            Text("No Data")
+            Text(String(localized: "No Data"))
                 .font(.headline)
 
-            Text("No history records found for the selected range and metric. Data collection may have just started.")
+            Text(String(localized: "No history records found for the selected range and metric. Data collection may have just started."))
                 .font(.callout)
                 .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
@@ -208,11 +208,11 @@ public struct HistoryView: View {
         VStack(spacing: 12) {
             // Summary row
             HStack(spacing: 0) {
-                summaryItem(label: "Min", value: viewModel.minDisplay)
+                summaryItem(label: String(localized: "Min"), value: viewModel.minDisplay)
                 Spacer()
-                summaryItem(label: "Average", value: viewModel.averageDisplay)
+                summaryItem(label: String(localized: "Average"), value: viewModel.averageDisplay)
                 Spacer()
-                summaryItem(label: "Max", value: viewModel.maxDisplay)
+                summaryItem(label: String(localized: "Max"), value: viewModel.maxDisplay)
             }
             .padding(.horizontal)
             .padding(.top, 12)
@@ -247,13 +247,14 @@ public struct HistoryView: View {
 
     private func metricLabel(_ kind: MetricKind) -> String {
         switch kind {
-        case .cpu:         return "CPU"
-        case .memory:      return "Memory"
-        case .disk:        return "Disk"
-        case .network:     return "Network"
-        case .temperature: return "Temperature"
-        case .fan:         return "Fan"
-        case .battery:     return "Battery"
+        case .cpu:         return String(localized: "CPU")
+        case .memory:      return String(localized: "Memory")
+        case .disk:        return String(localized: "Disk")
+        case .network:     return String(localized: "Network")
+        case .temperature: return String(localized: "Temperature")
+        case .fan:         return String(localized: "Fan")
+        case .battery:     return String(localized: "Battery")
+        case .gpu:         return String(localized: "GPU")
         }
     }
 
@@ -266,6 +267,7 @@ public struct HistoryView: View {
         case .temperature: return .red
         case .fan:         return .yellow
         case .battery:     return .green
+        case .gpu:         return .purple
         }
     }
 }

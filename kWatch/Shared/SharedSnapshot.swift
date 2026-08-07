@@ -14,6 +14,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
     public let temperatureCelsius: Double?
     public let fanRPM: Double?
     public let batteryPercent: Double?
+    public let gpuTemperature: Double?
     public let cpuAvailable: Bool
     public let memoryAvailable: Bool
     public let diskAvailable: Bool
@@ -21,6 +22,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
     public let temperatureAvailable: Bool
     public let fanAvailable: Bool
     public let batteryAvailable: Bool
+    public let gpuAvailable: Bool
     public let isPro: Bool
     public let menuBarModeRaw: String
 
@@ -33,6 +35,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
         temperatureCelsius: Double?,
         fanRPM: Double?,
         batteryPercent: Double?,
+        gpuTemperature: Double? = nil,
         cpuAvailable: Bool,
         memoryAvailable: Bool,
         diskAvailable: Bool,
@@ -40,6 +43,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
         temperatureAvailable: Bool,
         fanAvailable: Bool,
         batteryAvailable: Bool,
+        gpuAvailable: Bool = false,
         isPro: Bool,
         menuBarModeRaw: String
     ) {
@@ -51,6 +55,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
         self.temperatureCelsius = temperatureCelsius
         self.fanRPM = fanRPM
         self.batteryPercent = batteryPercent
+        self.gpuTemperature = gpuTemperature
         self.cpuAvailable = cpuAvailable
         self.memoryAvailable = memoryAvailable
         self.diskAvailable = diskAvailable
@@ -58,6 +63,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
         self.temperatureAvailable = temperatureAvailable
         self.fanAvailable = fanAvailable
         self.batteryAvailable = batteryAvailable
+        self.gpuAvailable = gpuAvailable
         self.isPro = isPro
         self.menuBarModeRaw = menuBarModeRaw
     }
@@ -76,6 +82,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
         self.temperatureCelsius = SharedSnapshot.value(of: snapshot.values[.temperature])
         self.fanRPM = SharedSnapshot.value(of: snapshot.values[.fan])
         self.batteryPercent = SharedSnapshot.value(of: snapshot.values[.battery])
+        self.gpuTemperature = SharedSnapshot.value(of: snapshot.values[.gpu])
         self.cpuAvailable = SharedSnapshot.isAvailable(snapshot.availability[.cpu])
         self.memoryAvailable = SharedSnapshot.isAvailable(snapshot.availability[.memory])
         self.diskAvailable = SharedSnapshot.isAvailable(snapshot.availability[.disk])
@@ -83,6 +90,7 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
         self.temperatureAvailable = SharedSnapshot.isAvailable(snapshot.availability[.temperature])
         self.fanAvailable = SharedSnapshot.isAvailable(snapshot.availability[.fan])
         self.batteryAvailable = SharedSnapshot.isAvailable(snapshot.availability[.battery])
+        self.gpuAvailable = SharedSnapshot.isAvailable(snapshot.availability[.gpu])
         self.isPro = isPro
         self.menuBarModeRaw = menuBarMode.rawValue
     }

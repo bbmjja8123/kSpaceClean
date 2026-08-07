@@ -29,7 +29,7 @@ final class MetricCardViewModelTests: XCTestCase {
             availability: .available,
             isPro: false
         )
-        XCTAssertEqual(vm.displayValue, "8 GB")
+        XCTAssertEqual(vm.displayValue, "8.0 GB")
         XCTAssertEqual(vm.subtitle, "Memory Pressure")
         XCTAssertEqual(vm.cardColor, .green)
     }
@@ -52,7 +52,7 @@ final class MetricCardViewModelTests: XCTestCase {
             availability: .available,
             isPro: false
         )
-        XCTAssertEqual(vm.displayValue, "1 MB/s")
+        XCTAssertEqual(vm.displayValue, "1.0 MB/s")
         XCTAssertEqual(vm.subtitle, "Network Traffic")
     }
 

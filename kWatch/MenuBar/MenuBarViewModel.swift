@@ -22,6 +22,7 @@ public final class MenuBarViewModel: ObservableObject {
     @Published public private(set) var temperatureCelsius: Double? = nil
     @Published public private(set) var fanRPM: Int? = nil
     @Published public private(set) var batteryPercent: Double? = nil
+    @Published public private(set) var gpuTemperature: Double? = nil
     @Published public private(set) var cpuHistory: [Double] = []
     @Published public var mode: MenuBarMode = .trend {
         didSet {
@@ -99,6 +100,7 @@ public final class MenuBarViewModel: ObservableObject {
         case .temperature: return ([], temperatureCelsius ?? 0, "°C")
         case .fan: return ([], Double(fanRPM ?? 0), "RPM")
         case .battery: return ([], batteryPercent ?? 0, "%")
+        case .gpu: return ([], Double(gpuTemperature ?? 0), "°C")
         }
     }
 
@@ -131,6 +133,7 @@ public final class MenuBarViewModel: ObservableObject {
         temperatureCelsius = pro ? snapshot.values[.temperature]?.degreesCelsius : nil
         fanRPM = pro ? snapshot.values[.fan]?.revolutionsPerMinute.map(Int.init) : nil
         batteryPercent = pro ? snapshot.values[.battery]?.percentage : nil
+        gpuTemperature = pro ? snapshot.values[.gpu]?.degreesCelsius : nil
 
         // Append to history, normalized to 0...1 (MiniTrendChart auto-scales).
         cpuHistory.append(cpuPercent / 100)

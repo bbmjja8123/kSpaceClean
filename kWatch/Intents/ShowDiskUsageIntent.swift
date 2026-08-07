@@ -49,9 +49,9 @@ public enum DiskVolumeParameter: String, AppEnum, Sendable {
     /// Human-readable name used in dialogs.
     public var displayName: String {
         switch self {
-        case .system: return "System"
-        case .data: return "Data"
-        case .external: return "External"
+        case .system: return String(localized: "System")
+        case .data: return String(localized: "Data")
+        case .external: return String(localized: "External")
         }
     }
 }

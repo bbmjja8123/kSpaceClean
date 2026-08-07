@@ -7,6 +7,16 @@ public enum AlertOperator: String, Codable, Sendable {
     case below
 }
 
+/// User-selectable theme preference.
+///
+/// `.system` follows the system appearance, `.light` and `.dark` force the
+/// respective mode regardless of OS setting.
+public enum ThemeMode: String, Codable, Sendable, CaseIterable {
+    case light
+    case dark
+    case system
+}
+
 /// Preferences that may be read and updated by kWatch presentation layers.
 public protocol PreferencesRepositoryProtocol: Sendable {
     var menuBarMode: MenuBarMode { get set }
@@ -17,6 +27,8 @@ public protocol PreferencesRepositoryProtocol: Sendable {
     var menuBarIconTheme: MenuBarIconTheme { get set }
     var perMetricMenuBar: Bool { get set }
     var menuBarOrder: [MetricKind] { get set }
+    var themeMode: ThemeMode { get set }
+    var sparklineThemeID: String { get set }
 }
 
 /// App Group-backed user preferences for the production application.
@@ -31,6 +43,8 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
     private static let menuBarIconThemeKey = "kWatch.menuBarIconTheme"
     private static let perMetricMenuBarKey = "kWatch.perMetricMenuBar"
     private static let menuBarOrderKey = "kWatch.menuBarOrder"
+    private static let themeModeKey = "kWatch.themeMode"
+    private static let sparklineThemeIDKey = "kWatch.sparklineThemeID"
 
     public init(defaults: UserDefaults) {
         self.defaults = defaults
@@ -103,6 +117,25 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
         }
     }
 
+    public var themeMode: ThemeMode {
+        get {
+            let rawValue = defaults.string(forKey: Self.themeModeKey) ?? ThemeMode.dark.rawValue
+            return ThemeMode(rawValue: rawValue) ?? .dark
+        }
+        set {
+            defaults.set(newValue.rawValue, forKey: Self.themeModeKey)
+        }
+    }
+
+    public var sparklineThemeID: String {
+        get {
+            defaults.string(forKey: Self.sparklineThemeIDKey) ?? SparklineTheme.default.id
+        }
+        set {
+            defaults.set(newValue, forKey: Self.sparklineThemeIDKey)
+        }
+    }
+
     private func registerDefaults() {
         defaults.register(defaults: [
             Self.menuBarModeKey: MenuBarMode.trend.rawValue,
@@ -110,13 +143,16 @@ public final class PreferencesRepository: PreferencesRepositoryProtocol, @unchec
                 MetricKind.cpu.rawValue,
                 MetricKind.memory.rawValue,
                 MetricKind.disk.rawValue,
-                MetricKind.network.rawValue
+                MetricKind.network.rawValue,
+                MetricKind.gpu.rawValue
             ],
             Self.samplingIntervalKey: 2.0,
             Self.onboardingCompletedKey: false,
             Self.launchAtLoginKey: false,
             Self.perMetricMenuBarKey: false,
-            Self.menuBarOrderKey: MetricKind.menuBarDisplayOrder.map(\.rawValue)
+            Self.menuBarOrderKey: MetricKind.menuBarDisplayOrder.map(\.rawValue),
+            Self.themeModeKey: ThemeMode.dark.rawValue,
+            Self.sparklineThemeIDKey: SparklineTheme.default.id
         ])
     }
 }
@@ -131,6 +167,8 @@ public final class InMemoryPreferences: PreferencesRepositoryProtocol, @unchecke
     public var menuBarIconTheme: MenuBarIconTheme = .default
     public var perMetricMenuBar: Bool = false
     public var menuBarOrder: [MetricKind] = MetricKind.menuBarDisplayOrder
+    public var themeMode: ThemeMode = .dark
+    public var sparklineThemeID: String = SparklineTheme.default.id
 
     public init() {}
 }

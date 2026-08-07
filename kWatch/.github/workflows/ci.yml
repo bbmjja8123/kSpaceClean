@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  INCLUDE_APPEX: "0"
+
+defaults:
+  run:
+    working-directory: kWatch
+
+jobs:
+  build-and-test:
+    runs-on: macos-13
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 15.2
+        run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
+
+      - name: Generate Xcode project
+        run: python3 generate_project.py
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme kWatch \
+            -destination 'platform=macOS' \
+            | xcpretty && exit ${PIPESTATUS[0]}
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -scheme kWatch \
+            -destination 'platform=macOS' \
+            | xcpretty && exit ${PIPESTATUS[0]}

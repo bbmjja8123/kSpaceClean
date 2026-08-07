@@ -30,8 +30,8 @@ public struct SystemStatusWidget: Widget {
         StaticConfiguration(kind: kind, provider: WidgetSnapshotProvider()) { entry in
             SystemStatusWidgetView(entry: entry)
         }
-        .configurationDisplayName("System Status")
-        .description("Live CPU, memory, disk, and network at a glance.")
+        .configurationDisplayName(String(localized: "System Status"))
+        .description(String(localized: "Live CPU, memory, disk, and network at a glance."))
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

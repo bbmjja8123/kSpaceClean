@@ -17,25 +17,25 @@ public struct QuickToggleBar: View {
         HStack(spacing: 12) {
             Toggle(isOn: $wifiEnabled) { icon("wifi", enabled: wifiEnabled) }
                 .toggleStyle(.button)
-                .help("Wi-Fi")
+                .help(String(localized: "Wi-Fi"))
                 .onChange(of: wifiEnabled) { newValue in
                     QuickToggleBar.setWiFi(newValue)
                 }
             Toggle(isOn: $bluetoothEnabled) { icon("personalhotspot", enabled: bluetoothEnabled) }
                 .toggleStyle(.button)
-                .help("Bluetooth")
+                .help(String(localized: "Bluetooth"))
                 .onChange(of: bluetoothEnabled) { newValue in
                     QuickToggleBar.setBluetooth(newValue)
                 }
             Toggle(isOn: $nightShiftEnabled) { icon("moon.fill", enabled: nightShiftEnabled) }
                 .toggleStyle(.button)
-                .help("Night Shift")
+                .help(String(localized: "Night Shift"))
                 .onChange(of: nightShiftEnabled) { newValue in
                     QuickToggleBar.setNightShift(newValue)
                 }
             Toggle(isOn: $dndEnabled) { icon("moon.circle.fill", enabled: dndEnabled) }
                 .toggleStyle(.button)
-                .help("Do Not Disturb")
+                .help(String(localized: "Do Not Disturb"))
                 .onChange(of: dndEnabled) { newValue in
                     QuickToggleBar.setDND(newValue)
                 }

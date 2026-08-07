@@ -227,7 +227,8 @@ internal func extractDouble(from value: MetricValue?, for kind: MetricKind) -> D
         return number
     case (.network, .bytesPerSecond(let bytesPerSecond)):
         return Double(bytesPerSecond)
-    case (.temperature, .degreesCelsius(let degrees)):
+    case (.temperature, .degreesCelsius(let degrees)),
+         (.gpu, .degreesCelsius(let degrees)):
         return degrees
     case (.fan, .revolutionsPerMinute(let rpm)):
         return rpm
@@ -299,7 +300,7 @@ internal func formatMetricValue(_ value: Double, for kind: MetricKind) -> String
         }
         if unitIndex == 0 { return "\(bytes) B/s" }
         return String(format: v < 10 ? "%.1f %@/s" : "%.0f %@/s", v, units[unitIndex])
-    case .temperature:
+    case .temperature, .gpu:
         return "\(Int(round(value)))°C"
     case .fan:
         return "\(Int(round(value))) RPM"

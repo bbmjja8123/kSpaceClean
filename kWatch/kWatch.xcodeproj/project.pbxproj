@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+	013D61A70C1AF22B263E391A /* 013D61A70C1AF22B263E391A */ = {
+		isa = PBXBuildFile;
+		fileRef = E3AE5C0A4342834CD9EBC485;
+	};
 	06EEC4E6AC4F52932B175794 /* 06EEC4E6AC4F52932B175794 */ = {
 		isa = PBXBuildFile;
 		fileRef = 69EB0B0622236B9768337050;
@@ -35,13 +39,25 @@
 		isa = PBXBuildFile;
 		fileRef = 5C86CEE8DB95B9A6854B7FDA;
 	};
+	1221B49D9C14EEFF06BD129B /* 1221B49D9C14EEFF06BD129B */ = {
+		isa = PBXBuildFile;
+		fileRef = 573656E9AEDAA16D9C8FB2A8;
+	};
 	12808F75D4C835148295B24A /* 12808F75D4C835148295B24A */ = {
 		isa = PBXBuildFile;
 		fileRef = 45998CFD96B10AA003C9A45A;
 	};
+	13CB88A31BA3DBB41BBA3686 /* 13CB88A31BA3DBB41BBA3686 */ = {
+		isa = PBXBuildFile;
+		fileRef = 850549EF72103F28B4766B06;
+	};
 	1502EA48D8C6DCB048BC60FB /* 1502EA48D8C6DCB048BC60FB */ = {
 		isa = PBXBuildFile;
 		fileRef = EC7AC2A12DE9FDACAF5C7302;
+	};
+	1578E2645DDE9FF630F86870 /* 1578E2645DDE9FF630F86870 */ = {
+		isa = PBXBuildFile;
+		fileRef = E4D32DAFD639987B4156B38E;
 	};
 	174ADA3EB2B832B4B928161E /* 174ADA3EB2B832B4B928161E */ = {
 		isa = PBXBuildFile;
@@ -55,6 +71,10 @@
 		isa = PBXBuildFile;
 		fileRef = C24F07B10668382339D44CB4;
 	};
+	1EF98D12306759D7C668C238 /* 1EF98D12306759D7C668C238 */ = {
+		isa = PBXBuildFile;
+		fileRef = 20AE518F458646658B17671B;
+	};
 	1FCA59498704879B83EAD38D /* 1FCA59498704879B83EAD38D */ = {
 		isa = PBXBuildFile;
 		fileRef = EBAEA6EE6E87228840E53575;
@@ -63,6 +83,10 @@
 		isa = PBXBuildFile;
 		fileRef = BD56D4A7FC8C8A288F6D2929;
 	};
+	21A87195E055CF6E9635EA0D /* 21A87195E055CF6E9635EA0D */ = {
+		isa = PBXBuildFile;
+		fileRef = 94C7B14022E755AC60EF55BD;
+	};
 	21D44ACFBB293C6063406191 /* 21D44ACFBB293C6063406191 */ = {
 		isa = PBXBuildFile;
 		fileRef = 99FA0B3AAC6F206137CA6D88;
@@ -70,6 +94,10 @@
 	232A95C7D99C371A3FB4D6C8 /* 232A95C7D99C371A3FB4D6C8 */ = {
 		isa = PBXBuildFile;
 		fileRef = 10CE68CC65989FDAC81A76A8;
+	};
+	23902937173293A28723E119 /* 23902937173293A28723E119 */ = {
+		isa = PBXBuildFile;
+		fileRef = 37D497C12E3BFCD7D1C437EA;
 	};
 	2450760FDBBA95BA3831B679 /* 2450760FDBBA95BA3831B679 */ = {
 		isa = PBXBuildFile;
@@ -103,6 +131,10 @@
 		isa = PBXBuildFile;
 		fileRef = FECC79E0002C91CC89A14B48;
 	};
+	3914674CDC322EE925016E12 /* 3914674CDC322EE925016E12 */ = {
+		isa = PBXBuildFile;
+		fileRef = E37721BEEA9C99BB4A0AA485;
+	};
 	3D8B42AC13457AE5AF392D2E /* 3D8B42AC13457AE5AF392D2E */ = {
 		isa = PBXBuildFile;
 		fileRef = 293E1FA023FFEB05490F4B02;
@@ -110,6 +142,10 @@
 	437F83DF9CE86644C8F5A457 /* 437F83DF9CE86644C8F5A457 */ = {
 		isa = PBXBuildFile;
 		fileRef = 6FE5F15008CB18403BBDBB92;
+	};
+	457F893F00F2425273D33534 /* 457F893F00F2425273D33534 */ = {
+		isa = PBXBuildFile;
+		fileRef = E37721BEEA9C99BB4A0AA485;
 	};
 	4989CE2EF8D6A12482179081 /* 4989CE2EF8D6A12482179081 */ = {
 		isa = PBXBuildFile;
@@ -130,6 +166,18 @@
 	5098DD3CB6A57977716F8E78 /* 5098DD3CB6A57977716F8E78 */ = {
 		isa = PBXBuildFile;
 		fileRef = 03B411213CED55739D9FB3DE;
+	};
+	50D1D3011755FDB7763A9A80 /* 50D1D3011755FDB7763A9A80 */ = {
+		isa = PBXBuildFile;
+		fileRef = 50DC2D83A733C1BF5C4929F8;
+	};
+	56A6F7FD86C7E1CA55F0E78D /* 56A6F7FD86C7E1CA55F0E78D */ = {
+		isa = PBXBuildFile;
+		fileRef = 20AE518F458646658B17671B;
+	};
+	5989688F44F8AE746569FFB8 /* 5989688F44F8AE746569FFB8 */ = {
+		isa = PBXBuildFile;
+		fileRef = 20AE518F458646658B17671B;
 	};
 	5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */ = {
 		isa = PBXBuildFile;
@@ -162,6 +210,10 @@
 	62DD2B2A146B30FC1666A265 /* 62DD2B2A146B30FC1666A265 */ = {
 		isa = PBXBuildFile;
 		fileRef = EDA8E236CF307FFD01EAB981;
+	};
+	63770470650F58347C4A5767 /* 63770470650F58347C4A5767 */ = {
+		isa = PBXBuildFile;
+		fileRef = 8E6073E09384508C1CD9618F;
 	};
 	671E289ADC376CB571A8FF1B /* 671E289ADC376CB571A8FF1B */ = {
 		isa = PBXBuildFile;
@@ -198,6 +250,10 @@
 	6D8A3D5F2985B28C9E886A81 /* 6D8A3D5F2985B28C9E886A81 */ = {
 		isa = PBXBuildFile;
 		fileRef = 14F6CCBD9BD786F8D93438BB;
+	};
+	6E550E08DAFC516BAD575DAF /* 6E550E08DAFC516BAD575DAF */ = {
+		isa = PBXBuildFile;
+		fileRef = 2CF8DC4F0E4143E5C0979667;
 	};
 	6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */ = {
 		isa = PBXBuildFile;
@@ -243,6 +299,10 @@
 		isa = PBXBuildFile;
 		fileRef = BD56D4A7FC8C8A288F6D2929;
 	};
+	7C4297C9B447DE44801F8420 /* 7C4297C9B447DE44801F8420 */ = {
+		isa = PBXBuildFile;
+		fileRef = F5D549D758B8D2ABE78ECD3A;
+	};
 	7CFC339001174BDEEDCD407E /* 7CFC339001174BDEEDCD407E */ = {
 		isa = PBXBuildFile;
 		fileRef = C7BC5CEB13C59B9B5F16B91E;
@@ -254,6 +314,10 @@
 	808356CB94DC1A5EA501A606 /* 808356CB94DC1A5EA501A606 */ = {
 		isa = PBXBuildFile;
 		fileRef = 8B74A86F52E77C4FB7C7020B;
+	};
+	81BEFFCCB5544120D118575E /* 81BEFFCCB5544120D118575E */ = {
+		isa = PBXBuildFile;
+		fileRef = F76C139168DC281117DEEACB;
 	};
 	82E0B01159B09B9D2C690377 /* 82E0B01159B09B9D2C690377 */ = {
 		isa = PBXBuildFile;
@@ -271,6 +335,10 @@
 		isa = PBXBuildFile;
 		fileRef = E37721BEEA9C99BB4A0AA485;
 	};
+	88E1770D02B3D40EF1566F47 /* 88E1770D02B3D40EF1566F47 */ = {
+		isa = PBXBuildFile;
+		fileRef = 176A31D2206F32C458902EC6;
+	};
 	8A7BA831214CAE887B0437E1 /* 8A7BA831214CAE887B0437E1 */ = {
 		isa = PBXBuildFile;
 		fileRef = 1BF74DE0B495D314D07467D4;
@@ -286,6 +354,10 @@
 	8B4C6717D22271144EDB9965 /* 8B4C6717D22271144EDB9965 */ = {
 		isa = PBXBuildFile;
 		fileRef = 282BA7C1EF08746DEE167794;
+	};
+	8B78D281B81E67B1F43A3161 /* 8B78D281B81E67B1F43A3161 */ = {
+		isa = PBXBuildFile;
+		fileRef = F5D549D758B8D2ABE78ECD3A;
 	};
 	8B87D472FA584CEBEE1F4F7E /* 8B87D472FA584CEBEE1F4F7E */ = {
 		isa = PBXBuildFile;
@@ -310,6 +382,10 @@
 	98CF7DD3B9667F19997F7EB3 /* 98CF7DD3B9667F19997F7EB3 */ = {
 		isa = PBXBuildFile;
 		fileRef = EC7AC2A12DE9FDACAF5C7302;
+	};
+	98EB07B138F64BA84292C44A /* 98EB07B138F64BA84292C44A */ = {
+		isa = PBXBuildFile;
+		fileRef = E37721BEEA9C99BB4A0AA485;
 	};
 	98F18BEC132E0558BF27B792 /* 98F18BEC132E0558BF27B792 */ = {
 		isa = PBXBuildFile;
@@ -347,6 +423,10 @@
 		isa = PBXBuildFile;
 		fileRef = 340B6EC4BCEB13C7C0CA9C0E;
 	};
+	AD4B131A673D15859CC25D38 /* AD4B131A673D15859CC25D38 */ = {
+		isa = PBXBuildFile;
+		fileRef = A93D454F0C41DB76BBED1DB9;
+	};
 	AED6A965AEBDDECE519EEBAA /* AED6A965AEBDDECE519EEBAA */ = {
 		isa = PBXBuildFile;
 		fileRef = DEEE9528EA5DE4ED7AC00281;
@@ -371,6 +451,10 @@
 		isa = PBXBuildFile;
 		fileRef = 653A10396E298C1B05E94EC6;
 	};
+	BC7C77518AE68CBA406DDDEE /* BC7C77518AE68CBA406DDDEE */ = {
+		isa = PBXBuildFile;
+		fileRef = 64C76C3AF6D7C1D08AE81C00;
+	};
 	C0435261C99720AB8B4075FD /* C0435261C99720AB8B4075FD */ = {
 		isa = PBXBuildFile;
 		fileRef = 360159E7F6FB1F6FCD8DF23A;
@@ -383,6 +467,10 @@
 		isa = PBXBuildFile;
 		fileRef = 42A8FD07BDDC626DBA3184A4;
 	};
+	C7673D98A5C5888376193C31 /* C7673D98A5C5888376193C31 */ = {
+		isa = PBXBuildFile;
+		fileRef = DF22949BA727DFE5918DA961;
+	};
 	C8BF3F2FAC5AB2BD54696262 /* C8BF3F2FAC5AB2BD54696262 */ = {
 		isa = PBXBuildFile;
 		fileRef = 69EB0B0622236B9768337050;
@@ -390,6 +478,10 @@
 	CECA1D74EFFCEEE270B086DC /* CECA1D74EFFCEEE270B086DC */ = {
 		isa = PBXBuildFile;
 		fileRef = F4AFB5925141C7DADE945D68;
+	};
+	D170A7B277F4C85C902FD749 /* D170A7B277F4C85C902FD749 */ = {
+		isa = PBXBuildFile;
+		fileRef = 42A8FD07BDDC626DBA3184A4;
 	};
 	D231F2291A20553B6F352E9F /* D231F2291A20553B6F352E9F */ = {
 		isa = PBXBuildFile;
@@ -406,6 +498,10 @@
 	D553641DE1EC897E61632421 /* D553641DE1EC897E61632421 */ = {
 		isa = PBXBuildFile;
 		fileRef = C800D4DC1D31F795B415E42C;
+	};
+	D66B415948FDFBEC1509A926 /* D66B415948FDFBEC1509A926 */ = {
+		isa = PBXBuildFile;
+		fileRef = 42A8FD07BDDC626DBA3184A4;
 	};
 	D9270252174563095501DDD8 /* D9270252174563095501DDD8 */ = {
 		isa = PBXBuildFile;
@@ -455,6 +551,10 @@
 		isa = PBXBuildFile;
 		fileRef = 7176DCD3604F7D24DDE333F3;
 	};
+	E7105B8E71C5C943345B089D /* E7105B8E71C5C943345B089D */ = {
+		isa = PBXBuildFile;
+		fileRef = 42A8FD07BDDC626DBA3184A4;
+	};
 	E9E2596369EBFE703821D9D6 /* E9E2596369EBFE703821D9D6 */ = {
 		isa = PBXBuildFile;
 		fileRef = 408D99E9B7E338183780E5D7;
@@ -475,6 +575,10 @@
 		isa = PBXBuildFile;
 		fileRef = EDFEA602AB2A5352BBD64650;
 	};
+	F362A109E353E9169FDBA84F /* F362A109E353E9169FDBA84F */ = {
+		isa = PBXBuildFile;
+		fileRef = 293E1FA023FFEB05490F4B02;
+	};
 	F490CB5E664CFD7BC1D0DDC4 /* F490CB5E664CFD7BC1D0DDC4 */ = {
 		isa = PBXBuildFile;
 		fileRef = A9521DBAEC8BDFC7B589022D;
@@ -487,9 +591,17 @@
 		isa = PBXBuildFile;
 		fileRef = 443B69E3590BADE5F657F64E;
 	};
+	F75FAF8410131F408861706E /* F75FAF8410131F408861706E */ = {
+		isa = PBXBuildFile;
+		fileRef = C04667034C299F1C3195FD02;
+	};
 	F799F1C8FD709366D6824FC0 /* F799F1C8FD709366D6824FC0 */ = {
 		isa = PBXBuildFile;
 		fileRef = 20AE518F458646658B17671B;
+	};
+	F8020BF51162D654C015B5C1 /* F8020BF51162D654C015B5C1 */ = {
+		isa = PBXBuildFile;
+		fileRef = 9938DF78C5FA02BEE2726CC4;
 	};
 	FB4404A665137F70FC5DA848 /* FB4404A665137F70FC5DA848 */ = {
 		isa = PBXBuildFile;
@@ -499,6 +611,10 @@
 		isa = PBXBuildFile;
 		fileRef = 29548BE5AD0B39AAFE6CF22F;
 	};
+	FE9E4E390D38ABEBA2A2872B /* FE9E4E390D38ABEBA2A2872B */ = {
+		isa = PBXBuildFile;
+		fileRef = 9BFBC8ED06E21A4F05B62022;
+	};
 	FFD4B1A3AA6C19DFA3A94412 /* FFD4B1A3AA6C19DFA3A94412 */ = {
 		isa = PBXBuildFile;
 		fileRef = 7B8C9586EC2FD67B8EB631DA;
@@ -506,6 +622,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+	160B7F3CC4D615776DED3668 /* 160B7F3CC4D615776DED3668 */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = F60074A8E0CBD13BA6151A26;
+		remoteInfo = kWatchLiveActivity;
+	};
+	21CFF3840A31CA42273B798F /* 21CFF3840A31CA42273B798F */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = 65EEE750073530D58467161C;
+		remoteInfo = kWatchControlWidget;
+	};
 	2DFC6E306D615E17DB05D8CE /* 2DFC6E306D615E17DB05D8CE */ = {
 		isa = PBXContainerItemProxy;
 		containerPortal = 59601E391B529B07AE11313D;
@@ -520,12 +650,40 @@
 		remoteGlobalIDString = 0EEA7C819FA2C1B860563983;
 		remoteInfo = kWatch;
 	};
+	63F82361BDA34B4B26DBD7D8 /* 63F82361BDA34B4B26DBD7D8 */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = F60074A8E0CBD13BA6151A26;
+		remoteInfo = kWatchLiveActivity;
+	};
+	A224ED99DE95FF68A7FBE62D /* A224ED99DE95FF68A7FBE62D */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = 0E760447DBF5C92EAE429848;
+		remoteInfo = kWatchWidget;
+	};
+	C8D58F73D9C40A91D5361984 /* C8D58F73D9C40A91D5361984 */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = 65EEE750073530D58467161C;
+		remoteInfo = kWatchControlWidget;
+	};
 	D74C8E1A7421B7C3F492BC2C /* D74C8E1A7421B7C3F492BC2C */ = {
 		isa = PBXContainerItemProxy;
 		containerPortal = 59601E391B529B07AE11313D;
 		proxyType = 1;
 		remoteGlobalIDString = A24AE00D850A572453BAC933;
 		remoteInfo = kWatchIntents;
+	};
+	EE0BC38940A6DC77CE9D8F70 /* EE0BC38940A6DC77CE9D8F70 */ = {
+		isa = PBXContainerItemProxy;
+		containerPortal = 59601E391B529B07AE11313D;
+		proxyType = 1;
+		remoteGlobalIDString = 0E760447DBF5C92EAE429848;
+		remoteInfo = kWatchWidget;
 	};
 /* End PBXContainerItemProxy section */
 
@@ -629,6 +787,13 @@
 		path = Tests/SettingsViewModelTests.swift;
 		sourceTree = "<group>";
 	};
+	176A31D2206F32C458902EC6 /* WidgetSnapshotProvider.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WidgetSnapshotProvider.swift;
+		path = kWatchWidget/WidgetSnapshotProvider.swift;
+		sourceTree = "<group>";
+	};
 	1A0A0A15E64EB867EFF75DCC /* MiniTrendChart.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -656,6 +821,14 @@
 		name = AppGroupConfiguration.swift;
 		path = Shared/AppGroupConfiguration.swift;
 		sourceTree = "<group>";
+	};
+	226991BF3D28520B833DC3C6 /* kWatchWidget.appex */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.app-extension";
+		includeInIndex = 0;
+		name = kWatchWidget.appex;
+		path = kWatchWidget.appex;
+		sourceTree = BUILT_PRODUCTS_DIR;
 	};
 	282BA7C1EF08746DEE167794 /* MultiIconStatusItemController.swift */ = {
 		isa = PBXFileReference;
@@ -690,6 +863,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = ManagedObjects.swift;
 		path = Data/ManagedObjects.swift;
+		sourceTree = "<group>";
+	};
+	2CF8DC4F0E4143E5C0979667 /* ControlWidgetTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ControlWidgetTests.swift;
+		path = Tests/ControlWidgetTests.swift;
 		sourceTree = "<group>";
 	};
 	2DECC88B7BA0D84E8211F331 /* ShowDiskUsageIntent.swift */ = {
@@ -734,6 +914,13 @@
 		path = Store/PurchaseButton.swift;
 		sourceTree = "<group>";
 	};
+	37D497C12E3BFCD7D1C437EA /* ControlWidgetEntry.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ControlWidgetEntry.swift;
+		path = kWatchControlWidget/ControlWidgetEntry.swift;
+		sourceTree = "<group>";
+	};
 	3BE6F2F521E5B82DD44D9B50 /* DiagnosticsExporter.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -769,6 +956,13 @@
 		path = Tests/ProcessesViewModelTests.swift;
 		sourceTree = "<group>";
 	};
+	41C12C02A3F239D3C8342333 /* Info.plist */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = Info.plist;
+		path = kWatchControlWidget/Info.plist;
+		sourceTree = "<group>";
+	};
 	42A8FD07BDDC626DBA3184A4 /* SharedSnapshot.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -797,6 +991,13 @@
 		path = Tests/MetricCardViewModelTests.swift;
 		sourceTree = "<group>";
 	};
+	4BDFF8C6D7658CF6B907FDCF /* Info.plist */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = Info.plist;
+		path = kWatchLiveActivity/Info.plist;
+		sourceTree = "<group>";
+	};
 	4E08A802CAF3AAC9CE0905B4 /* kWatchIntents.appex */ = {
 		isa = PBXFileReference;
 		explicitFileType = "wrapper.app-extension";
@@ -812,11 +1013,25 @@
 		path = MenuBar/QuickToggleBar.swift;
 		sourceTree = "<group>";
 	};
+	50DC2D83A733C1BF5C4929F8 /* WidgetBundle.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WidgetBundle.swift;
+		path = kWatchWidget/WidgetBundle.swift;
+		sourceTree = "<group>";
+	};
 	519386D7F436003927EAABCB /* OnboardingViewModelTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = OnboardingViewModelTests.swift;
 		path = Tests/OnboardingViewModelTests.swift;
+		sourceTree = "<group>";
+	};
+	573656E9AEDAA16D9C8FB2A8 /* ControlWidgetView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ControlWidgetView.swift;
+		path = kWatchControlWidget/ControlWidgetView.swift;
 		sourceTree = "<group>";
 	};
 	57B9ABD1FDA51F02494FAB4F /* CompletePage.swift */ = {
@@ -846,6 +1061,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = StopMonitoringIntent.swift;
 		path = Intents/StopMonitoringIntent.swift;
+		sourceTree = "<group>";
+	};
+	64C76C3AF6D7C1D08AE81C00 /* MetricSettingsView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MetricSettingsView.swift;
+		path = Settings/MetricSettingsView.swift;
 		sourceTree = "<group>";
 	};
 	653A10396E298C1B05E94EC6 /* InteractiveWidgetIntentTests.swift */ = {
@@ -960,6 +1182,13 @@
 		path = Intents/StubIntentService.swift;
 		sourceTree = "<group>";
 	};
+	850549EF72103F28B4766B06 /* SystemStatusWidget.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SystemStatusWidget.swift;
+		path = kWatchWidget/SystemStatusWidget.swift;
+		sourceTree = "<group>";
+	};
 	85467F0AE21D25713C3894F5 /* AlertEvaluator.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -995,6 +1224,13 @@
 		path = History/HistoryView.swift;
 		sourceTree = "<group>";
 	};
+	8E6073E09384508C1CD9618F /* ControlWidgetProvider.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ControlWidgetProvider.swift;
+		path = kWatchControlWidget/ControlWidgetProvider.swift;
+		sourceTree = "<group>";
+	};
 	8ECCE3506745FB1153CB8267 /* QuickToggleBarTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1009,6 +1245,14 @@
 		path = Tests/AppContainerTests.swift;
 		sourceTree = "<group>";
 	};
+	916F7B47C22D469EEFCF0C37 /* kWatchLiveActivity.appex */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.app-extension";
+		includeInIndex = 0;
+		name = kWatchLiveActivity.appex;
+		path = kWatchLiveActivity.appex;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
 	933426BE7C99ACFAC34C4F90 /* SnapshotWriterTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1021,6 +1265,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = MetricsRepository.swift;
 		path = Data/MetricsRepository.swift;
+		sourceTree = "<group>";
+	};
+	94C7B14022E755AC60EF55BD /* ControlWidget.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ControlWidget.swift;
+		path = kWatchControlWidget/ControlWidget.swift;
 		sourceTree = "<group>";
 	};
 	950B093D752E8DD14ADDCB38 /* AlertsViewModelTests.swift */ = {
@@ -1044,6 +1295,13 @@
 		path = Tests/PaywallViewModelTermsTests.swift;
 		sourceTree = "<group>";
 	};
+	9938DF78C5FA02BEE2726CC4 /* AppearanceSettingsView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppearanceSettingsView.swift;
+		path = Settings/AppearanceSettingsView.swift;
+		sourceTree = "<group>";
+	};
 	99FA0B3AAC6F206137CA6D88 /* SubscriptionTerms.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1058,11 +1316,25 @@
 		path = State/AppState.swift;
 		sourceTree = "<group>";
 	};
+	9BFBC8ED06E21A4F05B62022 /* SendableBox.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SendableBox.swift;
+		path = Tests/SendableBox.swift;
+		sourceTree = "<group>";
+	};
 	A29162E0D77513BD4BA5B451 /* OpenDashboardIntent.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = OpenDashboardIntent.swift;
 		path = Intents/OpenDashboardIntent.swift;
+		sourceTree = "<group>";
+	};
+	A93D454F0C41DB76BBED1DB9 /* MetricDetailViewModelTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MetricDetailViewModelTests.swift;
+		path = Tests/MetricDetailViewModelTests.swift;
 		sourceTree = "<group>";
 	};
 	A9521DBAEC8BDFC7B589022D /* TrendChart.swift */ = {
@@ -1121,6 +1393,13 @@
 		path = Resources/Localizable.xcstrings;
 		sourceTree = "<group>";
 	};
+	C04667034C299F1C3195FD02 /* MetricDetailView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MetricDetailView.swift;
+		path = Dashboard/MetricDetailView.swift;
+		sourceTree = "<group>";
+	};
 	C24F07B10668382339D44CB4 /* RepositoryTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1142,11 +1421,26 @@
 		path = Integrations/KWatchSpotlightIndexer.swift;
 		sourceTree = "<group>";
 	};
+	C8620777E51DC1E62B029214 /* kWatchControlWidget.appex */ = {
+		isa = PBXFileReference;
+		explicitFileType = "wrapper.app-extension";
+		includeInIndex = 0;
+		name = kWatchControlWidget.appex;
+		path = kWatchControlWidget.appex;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
 	CB9DB25AEDF2DBDA82889E8C /* SettingsViewModelRestoreTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = SettingsViewModelRestoreTests.swift;
 		path = Tests/SettingsViewModelRestoreTests.swift;
+		sourceTree = "<group>";
+	};
+	D129CE46C4ADC2445395633A /* Info.plist */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.plist.xml;
+		name = Info.plist;
+		path = kWatchWidget/Info.plist;
 		sourceTree = "<group>";
 	};
 	D69C4DDC1546D9CE51A13A24 /* LiveIntentService.swift */ = {
@@ -1184,6 +1478,13 @@
 		path = State/PurchaseState.swift;
 		sourceTree = "<group>";
 	};
+	DF22949BA727DFE5918DA961 /* WidgetViews.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WidgetViews.swift;
+		path = kWatchWidget/WidgetViews.swift;
+		sourceTree = "<group>";
+	};
 	E37721BEEA9C99BB4A0AA485 /* MenuBarMode.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1191,11 +1492,25 @@
 		path = Shared/MenuBarMode.swift;
 		sourceTree = "<group>";
 	};
+	E3AE5C0A4342834CD9EBC485 /* WidgetEntry.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WidgetEntry.swift;
+		path = kWatchWidget/WidgetEntry.swift;
+		sourceTree = "<group>";
+	};
 	E4AEAE19CF431C4F59AAD577 /* AlertsViewModel.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
 		name = AlertsViewModel.swift;
 		path = Alerts/AlertsViewModel.swift;
+		sourceTree = "<group>";
+	};
+	E4D32DAFD639987B4156B38E /* MetricDetailViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MetricDetailViewModel.swift;
+		path = Dashboard/MetricDetailViewModel.swift;
 		sourceTree = "<group>";
 	};
 	E579DA7F8DDCF448ECFD9806 /* ProcessNetworkSortTests.swift */ = {
@@ -1275,6 +1590,13 @@
 		path = Shared/SnapshotWriter.swift;
 		sourceTree = "<group>";
 	};
+	F76C139168DC281117DEEACB /* MetricLiveActivity.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MetricLiveActivity.swift;
+		path = kWatchLiveActivity/MetricLiveActivity.swift;
+		sourceTree = "<group>";
+	};
 	F7805EC4C5BDFD41408CE1E6 /* HistoryRepository.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1334,6 +1656,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+	2EED09CF04DE8FB46B11D40F /* 2EED09CF04DE8FB46B11D40F */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
 	4012D4C9DAE5CD9D31F3FFB2 /* 4012D4C9DAE5CD9D31F3FFB2 */ = {
 		isa = PBXFrameworksBuildPhase;
 		buildActionMask = 2147483647;
@@ -1342,6 +1671,20 @@
 		runOnlyForDeploymentPostprocessing = 0;
 	};
 	639838777480095AEC9EAF3D /* 639838777480095AEC9EAF3D */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	9052CB934E114EC8A438CACE /* 9052CB934E114EC8A438CACE */ = {
+		isa = PBXFrameworksBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	993C060E920F12FFBC071F64 /* 993C060E920F12FFBC071F64 */ = {
 		isa = PBXFrameworksBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
@@ -1464,6 +1807,8 @@
 			7ECE422A857C4BC9B14B1768 /* DashboardViewModel.swift */,
 			F4AFB5925141C7DADE945D68 /* MetricCardView.swift */,
 			EA7D9B08DA006024D4AE3931 /* MetricCardViewModel.swift */,
+			C04667034C299F1C3195FD02 /* MetricDetailView.swift */,
+			E4D32DAFD639987B4156B38E /* MetricDetailViewModel.swift */,
 		);
 		name = Dashboard;
 		sourceTree = "<group>";
@@ -1531,6 +1876,9 @@
 			41F3CFCCAD5EAB7C8719BDD0 /* State */,
 			080719DCC0589D18D62EF828 /* Store */,
 			BFF03A4B7DE5959B1AAD4165 /* Tests */,
+			95161E3521C5AA2890E692F0 /* kWatchWidget */,
+			8F6A4720D143F3A3B68EFCDE /* kWatchLiveActivity */,
+			BA163C79D930A5064014CA4C /* kWatchControlWidget */,
 			EBA56EB89A9347CFCE560E19 /* Products */,
 			09B44A2A4904872CFA147FCA /* Frameworks */,
 			3EBAE220C65B95B5461A69F4 /* Info.plist */,
@@ -1538,6 +1886,15 @@
 		);
 		name = kWatch;
 		path = "";
+		sourceTree = "<group>";
+	};
+	8F6A4720D143F3A3B68EFCDE /* kWatchLiveActivity */ = {
+		isa = PBXGroup;
+		children = (
+			F76C139168DC281117DEEACB /* MetricLiveActivity.swift */,
+			4BDFF8C6D7658CF6B907FDCF /* Info.plist */,
+		);
+		name = kWatchLiveActivity;
 		sourceTree = "<group>";
 	};
 	948A46E6570A8D25B50581C8 /* Onboarding */ = {
@@ -1553,15 +1910,42 @@
 		name = Onboarding;
 		sourceTree = "<group>";
 	};
+	95161E3521C5AA2890E692F0 /* kWatchWidget */ = {
+		isa = PBXGroup;
+		children = (
+			50DC2D83A733C1BF5C4929F8 /* WidgetBundle.swift */,
+			850549EF72103F28B4766B06 /* SystemStatusWidget.swift */,
+			E3AE5C0A4342834CD9EBC485 /* WidgetEntry.swift */,
+			176A31D2206F32C458902EC6 /* WidgetSnapshotProvider.swift */,
+			DF22949BA727DFE5918DA961 /* WidgetViews.swift */,
+			D129CE46C4ADC2445395633A /* Info.plist */,
+		);
+		name = kWatchWidget;
+		sourceTree = "<group>";
+	};
 	969679DE865F3E68DEC65C79 /* Settings */ = {
 		isa = PBXGroup;
 		children = (
 			14F6CCBD9BD786F8D93438BB /* AboutView.swift */,
+			9938DF78C5FA02BEE2726CC4 /* AppearanceSettingsView.swift */,
 			EDFEA602AB2A5352BBD64650 /* MenuBarSettingsView.swift */,
+			64C76C3AF6D7C1D08AE81C00 /* MetricSettingsView.swift */,
 			360159E7F6FB1F6FCD8DF23A /* SettingsView.swift */,
 			7176DCD3604F7D24DDE333F3 /* SettingsViewModel.swift */,
 		);
 		name = Settings;
+		sourceTree = "<group>";
+	};
+	BA163C79D930A5064014CA4C /* kWatchControlWidget */ = {
+		isa = PBXGroup;
+		children = (
+			94C7B14022E755AC60EF55BD /* ControlWidget.swift */,
+			573656E9AEDAA16D9C8FB2A8 /* ControlWidgetView.swift */,
+			8E6073E09384508C1CD9618F /* ControlWidgetProvider.swift */,
+			37D497C12E3BFCD7D1C437EA /* ControlWidgetEntry.swift */,
+			41C12C02A3F239D3C8342333 /* Info.plist */,
+		);
+		name = kWatchControlWidget;
 		sourceTree = "<group>";
 	};
 	BFF03A4B7DE5959B1AAD4165 /* Tests */ = {
@@ -1573,6 +1957,7 @@
 			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
 			7B090475EC1BDC2834C61076 /* AppShortcutsIntegrationTests.swift */,
 			1B71C81D108972C624F49028 /* AppShortcutsVerificationTests.swift */,
+			2CF8DC4F0E4143E5C0979667 /* ControlWidgetTests.swift */,
 			78528845AAD156289D52EE2F /* CoreDataStackTests.swift */,
 			EFDE86780F58671C82353994 /* DashboardViewModelTests.swift */,
 			10CE68CC65989FDAC81A76A8 /* DiagnosticsExporterTests.swift */,
@@ -1584,6 +1969,7 @@
 			EDA8E236CF307FFD01EAB981 /* MenuBarIconThemeTests.swift */,
 			77BF1B73572625F9518ED83C /* MenuBarViewModelTests.swift */,
 			48CBBF63493E2A8BC8F68341 /* MetricCardViewModelTests.swift */,
+			A93D454F0C41DB76BBED1DB9 /* MetricDetailViewModelTests.swift */,
 			2906D24E92EE5AE02B27EE3D /* NotificationSchedulerTests.swift */,
 			519386D7F436003927EAABCB /* OnboardingViewModelTests.swift */,
 			97D8C41CF6C4CF8C7C52E96E /* PaywallViewModelTermsTests.swift */,
@@ -1593,6 +1979,7 @@
 			8ECCE3506745FB1153CB8267 /* QuickToggleBarTests.swift */,
 			C24F07B10668382339D44CB4 /* RepositoryTests.swift */,
 			B8C7D2F5F505A91B64D3C6F9 /* RestorePurchaseStubs.swift */,
+			9BFBC8ED06E21A4F05B62022 /* SendableBox.swift */,
 			CB9DB25AEDF2DBDA82889E8C /* SettingsViewModelRestoreTests.swift */,
 			170722350E893EFDAA96A1CD /* SettingsViewModelTests.swift */,
 			77150D054169C6226C7EB412 /* SnapshotRoundTripTests.swift */,
@@ -1632,6 +2019,9 @@
 		children = (
 			592A3E8DE2005013EFE473D7 /* kWatch.app */,
 			4E08A802CAF3AAC9CE0905B4 /* kWatchIntents.appex */,
+			226991BF3D28520B833DC3C6 /* kWatchWidget.appex */,
+			916F7B47C22D469EEFCF0C37 /* kWatchLiveActivity.appex */,
+			C8620777E51DC1E62B029214 /* kWatchControlWidget.appex */,
 			09C386C2F6D04F8712E2E85C /* kWatchTests.xctest */,
 		);
 		name = Products;
@@ -1651,6 +2041,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+	0E760447DBF5C92EAE429848 /* kWatchWidget */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 54697D4C03E36964B1FE8389;
+		buildPhases = (
+			D398B53A29660D5F2A6FD051 /* Sources */,
+			993C060E920F12FFBC071F64 /* Frameworks */,
+			A93BB72237C723A47648B0BB /* Resources */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+		);
+		name = kWatchWidget;
+		packageProductDependencies = (
+			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
+			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
+		);
+		productName = kWatchWidget;
+		productReference = 226991BF3D28520B833DC3C6;
+		productType = "com.apple.product-type.app-extension";
+	};
 	0EEA7C819FA2C1B860563983 /* kWatch */ = {
 		isa = PBXNativeTarget;
 		buildConfigurationList = 6080F8A7C5D6A84AD151124F;
@@ -1663,6 +2074,9 @@
 		);
 		dependencies = (
 			B8D243EA7E5A3995160721BD /* kWatchIntents */,
+			1080EC1160D86FB1A0437978 /* kWatchWidget */,
+			6D418A4BADBF7AFA4371D3BB /* kWatchLiveActivity */,
+			68D4FB61BEB350497827F7BB /* kWatchControlWidget */,
 		);
 		name = kWatch;
 		packageProductDependencies = (
@@ -1672,6 +2086,27 @@
 		productName = kWatch;
 		productReference = 592A3E8DE2005013EFE473D7;
 		productType = "com.apple.product-type.application";
+	};
+	65EEE750073530D58467161C /* kWatchControlWidget */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 7A7D141192D0A0B985E295E8;
+		buildPhases = (
+			23B189365444EF1FE3991600 /* Sources */,
+			9052CB934E114EC8A438CACE /* Frameworks */,
+			CB086274F2429AD780B7E54F /* Resources */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+		);
+		name = kWatchControlWidget;
+		packageProductDependencies = (
+			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
+			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
+		);
+		productName = kWatchControlWidget;
+		productReference = C8620777E51DC1E62B029214;
+		productType = "com.apple.product-type.app-extension";
 	};
 	93A0A59B7AB918DD71BF8E5F /* kWatchTests */ = {
 		isa = PBXNativeTarget;
@@ -1685,6 +2120,9 @@
 		dependencies = (
 			644EF10CD79DF6ED03438275 /* kWatch */,
 			C13845957E96785DA490046A /* kWatchIntents */,
+			58F910C1F3C54930F80A893F /* kWatchWidget */,
+			F858CCC16066B6216329C017 /* kWatchLiveActivity */,
+			2B1F31556199259E31FD88A6 /* kWatchControlWidget */,
 		);
 		name = kWatchTests;
 		packageProductDependencies = (
@@ -1715,6 +2153,26 @@
 		productReference = 4E08A802CAF3AAC9CE0905B4;
 		productType = "com.apple.product-type.app-extension";
 	};
+	F60074A8E0CBD13BA6151A26 /* kWatchLiveActivity */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 538C555C2F7182AB8348B3C9;
+		buildPhases = (
+			7D004A528876FEBE1D000AB4 /* Sources */,
+			2EED09CF04DE8FB46B11D40F /* Frameworks */,
+			3B88BA4ED52CA8D77599A7BA /* Resources */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+		);
+		name = kWatchLiveActivity;
+		packageProductDependencies = (
+			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
+		);
+		productName = kWatchLiveActivity;
+		productReference = 916F7B47C22D469EEFCF0C37;
+		productType = "com.apple.product-type.app-extension";
+	};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1727,6 +2185,9 @@
 			TargetAttributes = {
 				0EEA7C819FA2C1B860563983 /* kWatch */ = {CreatedOnToolsVersion = 14.3; };
 				A24AE00D850A572453BAC933 /* kWatchIntents */ = {CreatedOnToolsVersion = 14.3; };
+				0E760447DBF5C92EAE429848 /* kWatchWidget */ = {CreatedOnToolsVersion = 14.3; };
+				F60074A8E0CBD13BA6151A26 /* kWatchLiveActivity */ = {CreatedOnToolsVersion = 14.3; };
+				65EEE750073530D58467161C /* kWatchControlWidget */ = {CreatedOnToolsVersion = 14.3; };
 				93A0A59B7AB918DD71BF8E5F /* kWatchTests */ = {CreatedOnToolsVersion = 14.3; TestTargetID = 0EEA7C819FA2C1B860563983; };
 			};
 		};
@@ -1751,6 +2212,9 @@
 		targets = (
 			0EEA7C819FA2C1B860563983 /* kWatch */,
 			A24AE00D850A572453BAC933 /* kWatchIntents */,
+			0E760447DBF5C92EAE429848 /* kWatchWidget */,
+			F60074A8E0CBD13BA6151A26 /* kWatchLiveActivity */,
+			65EEE750073530D58467161C /* kWatchControlWidget */,
 			93A0A59B7AB918DD71BF8E5F /* kWatchTests */,
 		);
 	};
@@ -1766,7 +2230,28 @@
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
+	3B88BA4ED52CA8D77599A7BA /* 3B88BA4ED52CA8D77599A7BA */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
 	9BCB017F584213CF3AA3CD71 /* 9BCB017F584213CF3AA3CD71 */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	A93BB72237C723A47648B0BB /* A93BB72237C723A47648B0BB */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	CB086274F2429AD780B7E54F /* CB086274F2429AD780B7E54F */ = {
 		isa = PBXResourcesBuildPhase;
 		buildActionMask = 2147483647;
 		files = (
@@ -1799,6 +2284,33 @@
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
+	23B189365444EF1FE3991600 /* 23B189365444EF1FE3991600 */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			21A87195E055CF6E9635EA0D /* 21A87195E055CF6E9635EA0D */,
+			1221B49D9C14EEFF06BD129B /* 1221B49D9C14EEFF06BD129B */,
+			63770470650F58347C4A5767 /* 63770470650F58347C4A5767 */,
+			23902937173293A28723E119 /* 23902937173293A28723E119 */,
+			1EF98D12306759D7C668C238 /* 1EF98D12306759D7C668C238 */,
+			457F893F00F2425273D33534 /* 457F893F00F2425273D33534 */,
+			D66B415948FDFBEC1509A926 /* D66B415948FDFBEC1509A926 */,
+			7C4297C9B447DE44801F8420 /* 7C4297C9B447DE44801F8420 */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	7D004A528876FEBE1D000AB4 /* 7D004A528876FEBE1D000AB4 */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			81BEFFCCB5544120D118575E /* 81BEFFCCB5544120D118575E */,
+			56A6F7FD86C7E1CA55F0E78D /* 56A6F7FD86C7E1CA55F0E78D */,
+			98EB07B138F64BA84292C44A /* 98EB07B138F64BA84292C44A */,
+			E7105B8E71C5C943345B089D /* E7105B8E71C5C943345B089D */,
+			F362A109E353E9169FDBA84F /* F362A109E353E9169FDBA84F */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
 	A3EBA454EB2F5C879CA40B0C /* A3EBA454EB2F5C879CA40B0C */ = {
 		isa = PBXSourcesBuildPhase;
 		buildActionMask = 2147483647;
@@ -1809,6 +2321,7 @@
 			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,
 			7D33D9492BE6DC52F230B582 /* 7D33D9492BE6DC52F230B582 */,
 			5BF62D5F32C77B3E2C20ACFD /* 5BF62D5F32C77B3E2C20ACFD */,
+			6E550E08DAFC516BAD575DAF /* 6E550E08DAFC516BAD575DAF */,
 			DF0CBDCDDE0EE468325C863B /* DF0CBDCDDE0EE468325C863B */,
 			82E0B01159B09B9D2C690377 /* 82E0B01159B09B9D2C690377 */,
 			232A95C7D99C371A3FB4D6C8 /* 232A95C7D99C371A3FB4D6C8 */,
@@ -1820,6 +2333,7 @@
 			62DD2B2A146B30FC1666A265 /* 62DD2B2A146B30FC1666A265 */,
 			92BEC11FC8DD9F77F04CEF4F /* 92BEC11FC8DD9F77F04CEF4F */,
 			2B65BC3402FD3269056DFF7F /* 2B65BC3402FD3269056DFF7F */,
+			AD4B131A673D15859CC25D38 /* AD4B131A673D15859CC25D38 */,
 			50462B0A78871C43A4E77B9B /* 50462B0A78871C43A4E77B9B */,
 			D231F2291A20553B6F352E9F /* D231F2291A20553B6F352E9F */,
 			931E0DDB1639A5531174CF32 /* 931E0DDB1639A5531174CF32 */,
@@ -1829,11 +2343,28 @@
 			A23A4B553335D12B0C078995 /* A23A4B553335D12B0C078995 */,
 			1CB34D4640ED9149922B3F46 /* 1CB34D4640ED9149922B3F46 */,
 			DAA08C7C942D437F4D186DB6 /* DAA08C7C942D437F4D186DB6 */,
+			FE9E4E390D38ABEBA2A2872B /* FE9E4E390D38ABEBA2A2872B */,
 			70399AFF00E668E0A8380B3D /* 70399AFF00E668E0A8380B3D */,
 			A237208B4D438763BC30B633 /* A237208B4D438763BC30B633 */,
 			A870777C0955E4956EAFCA52 /* A870777C0955E4956EAFCA52 */,
 			D9C83DAA5CA58B44EC554129 /* D9C83DAA5CA58B44EC554129 */,
 			DBF041637F69E6FAF31C49F7 /* DBF041637F69E6FAF31C49F7 */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+	D398B53A29660D5F2A6FD051 /* D398B53A29660D5F2A6FD051 */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			50D1D3011755FDB7763A9A80 /* 50D1D3011755FDB7763A9A80 */,
+			13CB88A31BA3DBB41BBA3686 /* 13CB88A31BA3DBB41BBA3686 */,
+			013D61A70C1AF22B263E391A /* 013D61A70C1AF22B263E391A */,
+			88E1770D02B3D40EF1566F47 /* 88E1770D02B3D40EF1566F47 */,
+			C7673D98A5C5888376193C31 /* C7673D98A5C5888376193C31 */,
+			5989688F44F8AE746569FFB8 /* 5989688F44F8AE746569FFB8 */,
+			3914674CDC322EE925016E12 /* 3914674CDC322EE925016E12 */,
+			D170A7B277F4C85C902FD749 /* D170A7B277F4C85C902FD749 */,
+			8B78D281B81E67B1F43A3161 /* 8B78D281B81E67B1F43A3161 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
@@ -1855,6 +2386,8 @@
 			EA98837D17977FDF07F448F5 /* EA98837D17977FDF07F448F5 */,
 			CECA1D74EFFCEEE270B086DC /* CECA1D74EFFCEEE270B086DC */,
 			8AA0AB5412E4A5C724DB8D0A /* 8AA0AB5412E4A5C724DB8D0A */,
+			F75FAF8410131F408861706E /* F75FAF8410131F408861706E */,
+			1578E2645DDE9FF630F86870 /* 1578E2645DDE9FF630F86870 */,
 			8F2107E120FFE5D47C3098D2 /* 8F2107E120FFE5D47C3098D2 */,
 			437F83DF9CE86644C8F5A457 /* 437F83DF9CE86644C8F5A457 */,
 			5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */,
@@ -1901,7 +2434,9 @@
 			EE70942A2C65E584BF0830B6 /* EE70942A2C65E584BF0830B6 */,
 			6135F5B5AA64C89E3D5BE3E1 /* 6135F5B5AA64C89E3D5BE3E1 */,
 			6D8A3D5F2985B28C9E886A81 /* 6D8A3D5F2985B28C9E886A81 */,
+			F8020BF51162D654C015B5C1 /* F8020BF51162D654C015B5C1 */,
 			F34814A681F8DF89DABE34ED /* F34814A681F8DF89DABE34ED */,
+			BC7C77518AE68CBA406DDDEE /* BC7C77518AE68CBA406DDDEE */,
 			C0435261C99720AB8B4075FD /* C0435261C99720AB8B4075FD */,
 			E5D84FBAEC4E2364C7F69DA0 /* E5D84FBAEC4E2364C7F69DA0 */,
 			F799F1C8FD709366D6824FC0 /* F799F1C8FD709366D6824FC0 */,
@@ -1922,11 +2457,41 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+	1080EC1160D86FB1A0437978 /* kWatchWidget */ = {
+		isa = PBXTargetDependency;
+		name = kWatchWidget;
+		target = 0E760447DBF5C92EAE429848;
+		targetProxy = A224ED99DE95FF68A7FBE62D;
+	};
+	2B1F31556199259E31FD88A6 /* kWatchControlWidget */ = {
+		isa = PBXTargetDependency;
+		name = kWatchControlWidget;
+		target = 65EEE750073530D58467161C;
+		targetProxy = C8D58F73D9C40A91D5361984;
+	};
+	58F910C1F3C54930F80A893F /* kWatchWidget */ = {
+		isa = PBXTargetDependency;
+		name = kWatchWidget;
+		target = 0E760447DBF5C92EAE429848;
+		targetProxy = EE0BC38940A6DC77CE9D8F70;
+	};
 	644EF10CD79DF6ED03438275 /* kWatch */ = {
 		isa = PBXTargetDependency;
 		name = kWatch;
 		target = 0EEA7C819FA2C1B860563983;
 		targetProxy = 3DBD54FC5449A7EA29465702;
+	};
+	68D4FB61BEB350497827F7BB /* kWatchControlWidget */ = {
+		isa = PBXTargetDependency;
+		name = kWatchControlWidget;
+		target = 65EEE750073530D58467161C;
+		targetProxy = 21CFF3840A31CA42273B798F;
+	};
+	6D418A4BADBF7AFA4371D3BB /* kWatchLiveActivity */ = {
+		isa = PBXTargetDependency;
+		name = kWatchLiveActivity;
+		target = F60074A8E0CBD13BA6151A26;
+		targetProxy = 160B7F3CC4D615776DED3668;
 	};
 	B8D243EA7E5A3995160721BD /* kWatchIntents */ = {
 		isa = PBXTargetDependency;
@@ -1939,6 +2504,12 @@
 		name = kWatchIntents;
 		target = A24AE00D850A572453BAC933;
 		targetProxy = D74C8E1A7421B7C3F492BC2C;
+	};
+	F858CCC16066B6216329C017 /* kWatchLiveActivity */ = {
+		isa = PBXTargetDependency;
+		name = kWatchLiveActivity;
+		target = F60074A8E0CBD13BA6151A26;
+		targetProxy = 63F82361BDA34B4B26DBD7D8;
 	};
 /* End PBXTargetDependency section */
 
@@ -2049,6 +2620,36 @@
 		};
 		name = Release;
 	};
+	59CF87EDE9B701F734066E74 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		APPLICATION_EXTENSION_API_ONLY = YES;
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = kWatchLiveActivity/Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kWatchLiveActivity;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.activity;
+		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.activitykit-extension;
+		LD_RUNPATH_SEARCH_PATHS = (
+			"$(inherited)",
+			"@executable_path/../Frameworks",
+			"@executable_path/../../../../Frameworks",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.activity;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
+	};
 	65D020E0F24C38EEE5DF94C4 /* Release */ = {
 		isa = XCBuildConfiguration;
 		buildSettings = {
@@ -2078,6 +2679,67 @@
 		SWIFT_VERSION = 5.0;
 		};
 		name = Release;
+	};
+	68964450EEA7F4E5EA3E340A /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		APPLICATION_EXTENSION_API_ONLY = YES;
+		CODE_SIGN_IDENTITY = "-";
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = kWatchLiveActivity/Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kWatchLiveActivity;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.activity;
+		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.activitykit-extension;
+		LD_RUNPATH_SEARCH_PATHS = (
+			"$(inherited)",
+			"@executable_path/../Frameworks",
+			"@executable_path/../../../../Frameworks",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.activity;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+	7BE651AC12657E16937A8E23 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		APPLICATION_EXTENSION_API_ONLY = YES;
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = kWatchControlWidget/Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kWatchControlWidget;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.controlwidget;
+		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
+		LD_RUNPATH_SEARCH_PATHS = (
+			"$(inherited)",
+			"@executable_path/../Frameworks",
+			"@executable_path/../../../../Frameworks",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.controlwidget;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
 	};
 	7E1FBBBBDF2C6831C341A92D /* Debug */ = {
 		isa = XCBuildConfiguration;
@@ -2156,6 +2818,98 @@
 		};
 		name = Debug;
 	};
+	A7E3BA798290AD643D04264D /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		APPLICATION_EXTENSION_API_ONLY = YES;
+		CODE_SIGN_IDENTITY = "-";
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = kWatchWidget/Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kWatchWidget;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.widget;
+		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
+		LD_RUNPATH_SEARCH_PATHS = (
+			"$(inherited)",
+			"@executable_path/../Frameworks",
+			"@executable_path/../../../../Frameworks",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.widget;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+	B399F305E40164444AF843A1 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		APPLICATION_EXTENSION_API_ONLY = YES;
+		CODE_SIGN_IDENTITY = "-";
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = kWatchControlWidget/Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kWatchControlWidget;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.controlwidget;
+		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
+		LD_RUNPATH_SEARCH_PATHS = (
+			"$(inherited)",
+			"@executable_path/../Frameworks",
+			"@executable_path/../../../../Frameworks",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.controlwidget;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+	C263197CF18599117A3C372A /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+		APPLICATION_EXTENSION_API_ONLY = YES;
+		CODE_SIGN_STYLE = Automatic;
+		CURRENT_PROJECT_VERSION = 1;
+		DEVELOPMENT_TEAM = "";
+		GENERATE_INFOPLIST_FILE = YES;
+		INFOPLIST_FILE = kWatchWidget/Info.plist;
+		INFOPLIST_KEY_CFBundleDisplayName = kWatchWidget;
+		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.widget;
+		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
+		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
+		INFOPLIST_KEY_CFBundleVersion = 1;
+		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
+		LD_RUNPATH_SEARCH_PATHS = (
+			"$(inherited)",
+			"@executable_path/../Frameworks",
+			"@executable_path/../../../../Frameworks",
+		);
+		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MARKETING_VERSION = 1.0;
+		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.widget;
+		PRODUCT_NAME = "$(TARGET_NAME)";
+		SDKROOT = macosx;
+		SWIFT_EMIT_LOC_STRINGS = YES;
+		SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
+	};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2177,11 +2931,38 @@
 		defaultConfigurationIsVisible = 0;
 		defaultConfigurationName = Release;
 	};
+	538C555C2F7182AB8348B3C9 /* 538C555C2F7182AB8348B3C9 */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			59CF87EDE9B701F734066E74 /* Debug */,
+			68964450EEA7F4E5EA3E340A /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	54697D4C03E36964B1FE8389 /* 54697D4C03E36964B1FE8389 */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			C263197CF18599117A3C372A /* Debug */,
+			A7E3BA798290AD643D04264D /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
 	6080F8A7C5D6A84AD151124F /* 6080F8A7C5D6A84AD151124F */ = {
 		isa = XCConfigurationList;
 		buildConfigurations = (
 			3A75C3F04A5A46A06A715410 /* Debug */,
 			40AC8DB68C57EFEB661DB3D0 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	7A7D141192D0A0B985E295E8 /* 7A7D141192D0A0B985E295E8 */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			7BE651AC12657E16937A8E23 /* Debug */,
+			B399F305E40164444AF843A1 /* Release */,
 		);
 		defaultConfigurationIsVisible = 0;
 		defaultConfigurationName = Release;

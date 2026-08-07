@@ -98,7 +98,7 @@ public struct MetricCardView: View {
             HStack(spacing: 4) {
                 Image(systemName: "lock.fill")
                     .font(.caption2)
-                Text("Upgrade to Pro")
+                Text(String(localized: "Upgrade to Pro"))
                     .font(.caption)
             }
             .foregroundStyle(.white)

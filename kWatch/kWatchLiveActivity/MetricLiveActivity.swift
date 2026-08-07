@@ -14,6 +14,7 @@
 //     macOS 14+ and only after the user opts in through Preferences.
 //  -------------------------------------------------------------------------
 
+#if canImport(ActivityKit)
 import ActivityKit
 import SwiftUI
 import WidgetKit
@@ -46,7 +47,7 @@ public struct MetricLiveActivity: Widget {
             kind: "app.kraftly.kwatch.activity.placeholder",
             provider: PlaceholderProvider()
         ) { _ in
-            Text("Live Activity requires macOS 14")
+            Text(String(localized: "Live Activity requires macOS 14"))
                 .font(.caption)
         }
     }
@@ -79,9 +80,9 @@ private struct MetricLiveActivityView: View {
 
     private func trendLabel(for trend: MetricActivityAttributes.ContentState.Trend) -> String {
         switch trend {
-        case .up: return "Trending up"
-        case .down: return "Trending down"
-        case .flat: return "Stable"
+        case .up: return String(localized: "Trending up")
+        case .down: return String(localized: "Trending down")
+        case .flat: return String(localized: "Stable")
         }
     }
 }
@@ -91,10 +92,10 @@ private struct MetricValueText: View {
 
     var body: some View {
         if state.isAvailable {
-            Text("\(state.value, specifier: \"%.1f\")\(state.displayUnit)")
+            Text(verbatim: String(format: "%.1f\(state.displayUnit)", state.value))
                 .monospacedDigit()
         } else {
-            Text("Unavailable")
+            Text(String(localized: "Unavailable"))
         }
     }
 }
@@ -118,4 +119,5 @@ private struct PlaceholderProvider: TimelineProvider {
 private struct PlaceholderEntry: TimelineEntry {
     let date: Date
 }
-#endif
+#endif // os(macOS)
+#endif // canImport(ActivityKit)

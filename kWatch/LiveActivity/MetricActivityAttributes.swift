@@ -74,7 +74,7 @@ public struct MetricActivityAttributes: ActivityAttributes, Codable, Hashable, S
 
         private static func unit(for kindRaw: String) -> String {
             switch kindRaw {
-            case "temperature": return "°C"
+            case "temperature", "gpu": return "°C"
             case "fan": return "RPM"
             case "network": return "B/s"
             case "cpu", "memory", "disk", "battery": return "%"

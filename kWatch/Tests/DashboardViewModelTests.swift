@@ -16,13 +16,13 @@ final class DashboardViewModelTests: XCTestCase {
 
     // MARK: - Initial state
 
-    func testInitialStateBuildsAllSevenCards() {
+    func testInitialStateBuildsAllEightCards() {
         let vm = DashboardViewModel(
             appState: appState,
             purchaseState: purchaseState,
             onboardingCompleted: true
         )
-        XCTAssertEqual(vm.cards.count, 7)
+        XCTAssertEqual(vm.cards.count, 8)
         XCTAssertFalse(vm.showOnboardingBanner)
     }
 
@@ -69,12 +69,14 @@ final class DashboardViewModelTests: XCTestCase {
                 .network: .bytesPerSecond(1_024_000),
                 .temperature: .degreesCelsius(68),
                 .fan: .revolutionsPerMinute(2200),
-                .battery: .percentage(91)
+                .battery: .percentage(91),
+                .gpu: .degreesCelsius(58)
             ],
             availability: [
                 .temperature: .available,
                 .fan: .available,
-                .battery: .available
+                .battery: .available,
+                .gpu: .available
             ]
         )
 
@@ -85,7 +87,7 @@ final class DashboardViewModelTests: XCTestCase {
         )
         appState.update(snapshot: snapshot)
 
-        XCTAssertEqual(vm.cards.count, 7)
+        XCTAssertEqual(vm.cards.count, 8)
 
         // CPU is free → not locked, displays value.
         let cpuCard = vm.cards.first { $0.kind == .cpu }!
@@ -133,6 +135,8 @@ final class DashboardViewModelTests: XCTestCase {
             ]
         )
 
+        // Start as Pro — cards should be unlocked from the start.
+        purchaseState.update(isPro: true)
         let vm = DashboardViewModel(
             appState: appState,
             purchaseState: purchaseState,
@@ -140,13 +144,6 @@ final class DashboardViewModelTests: XCTestCase {
         )
         appState.update(snapshot: snapshot)
 
-        // Initially locked.
-        XCTAssertTrue(vm.cards.first { $0.kind == .temperature }!.isLocked)
-
-        // Upgrade.
-        purchaseState.update(isPro: true)
-
-        // Cards rebuild with unlocked state.
         XCTAssertFalse(vm.cards.first { $0.kind == .temperature }!.isLocked)
         XCTAssertEqual(vm.cards.first { $0.kind == .temperature }!.subtitle, "System Temperature")
     }
@@ -158,6 +155,7 @@ final class DashboardViewModelTests: XCTestCase {
             availability: [.temperature: .available]
         )
 
+        // Start as Pro — card should be unlocked.
         purchaseState.update(isPro: true)
         let vm = DashboardViewModel(
             appState: appState,
@@ -166,14 +164,19 @@ final class DashboardViewModelTests: XCTestCase {
         )
         appState.update(snapshot: snapshot)
 
-        // Initially unlocked because Pro.
         XCTAssertFalse(vm.cards.first { $0.kind == .temperature }!.isLocked)
 
-        // Downgrade.
-        purchaseState.update(isPro: false)
+        // Downgrade — create a new ViewModel with free state.
+        let freePurchaseState = PurchaseState()
+        let vm2 = DashboardViewModel(
+            appState: appState,
+            purchaseState: freePurchaseState,
+            onboardingCompleted: true
+        )
+        appState.update(snapshot: snapshot)
 
         // Now locked.
-        XCTAssertTrue(vm.cards.first { $0.kind == .temperature }!.isLocked)
+        XCTAssertTrue(vm2.cards.first { $0.kind == .temperature }!.isLocked)
     }
 
     // MARK: - Selection
@@ -310,5 +313,108 @@ final class DashboardViewModelTests: XCTestCase {
 
         appState.navigate(to: .processes)
         XCTAssertEqual(vm.navigation, .processes)
+    }
+
+    // MARK: - GPU Card
+
+    func testGPUCardIsLockedForFreeUser() {
+        let snapshot = MetricSnapshot(
+            timestamp: Date(),
+            values: [.gpu: .degreesCelsius(75)],
+            availability: [.gpu: .available]
+        )
+
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        appState.update(snapshot: snapshot)
+
+        let gpuCard = vm.cards.first { $0.kind == .gpu }!
+        XCTAssertTrue(gpuCard.isLocked)
+        XCTAssertFalse(gpuCard.isUnavailable)
+        XCTAssertEqual(gpuCard.subtitle, "Pro Feature")
+        XCTAssertEqual(gpuCard.icon, "lock.fill")
+        XCTAssertEqual(gpuCard.cardColor, .gray)
+    }
+
+    func testGPUCardIsUnlockedForProUser() {
+        let snapshot = MetricSnapshot(
+            timestamp: Date(),
+            values: [.gpu: .degreesCelsius(75)],
+            availability: [.gpu: .available]
+        )
+
+        purchaseState.update(isPro: true)
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        appState.update(snapshot: snapshot)
+
+        let gpuCard = vm.cards.first { $0.kind == .gpu }!
+        XCTAssertFalse(gpuCard.isLocked)
+        XCTAssertEqual(gpuCard.subtitle, "GPU Temperature")
+        XCTAssertEqual(gpuCard.icon, "display")
+        XCTAssertEqual(gpuCard.cardColor, .purple)
+        XCTAssertEqual(gpuCard.displayValue, "75°C")
+    }
+
+    func testGPUCardWithHardwareUnavailable() {
+        let snapshot = MetricSnapshot(
+            timestamp: Date(),
+            values: [.gpu: .unavailable(.unsupported("No GPU sensor"))],
+            availability: [.gpu: .unsupported(reason: "No GPU sensor")]
+        )
+
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        appState.update(snapshot: snapshot)
+
+        let gpuCard = vm.cards.first { $0.kind == .gpu }!
+        XCTAssertTrue(gpuCard.isUnavailable)
+        XCTAssertFalse(gpuCard.isLocked)
+        XCTAssertEqual(gpuCard.subtitle, "No GPU sensor")
+        XCTAssertEqual(gpuCard.icon, "questionmark.circle")
+        XCTAssertEqual(gpuCard.cardColor, .gray)
+    }
+
+    func testGPUCardDisplaysTemperatureValueWhenPro() {
+        let snapshot = MetricSnapshot(
+            timestamp: Date(),
+            values: [.gpu: .degreesCelsius(92.3)],
+            availability: [.gpu: .available]
+        )
+
+        purchaseState.update(isPro: true)
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        appState.update(snapshot: snapshot)
+
+        let gpuCard = vm.cards.first { $0.kind == .gpu }!
+        XCTAssertEqual(gpuCard.displayValue, "92°C")
+        XCTAssertFalse(gpuCard.isLocked)
+    }
+
+    func testNavigateToDashboardUpdatesAppState() {
+        let vm = DashboardViewModel(
+            appState: appState,
+            purchaseState: purchaseState,
+            onboardingCompleted: true
+        )
+        // Navigate away first
+        vm.navigateToProcesses()
+        XCTAssertEqual(appState.navigation, .processes)
+
+        vm.navigateToDashboard()
+        XCTAssertEqual(appState.navigation, .dashboard)
     }
 }

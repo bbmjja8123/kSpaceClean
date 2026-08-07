@@ -11,8 +11,8 @@ final class NotificationSchedulerTests: XCTestCase {
 
     func testDoesNotScheduleWhenPermissionUndetermined() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .notDetermined)
-        var scheduled: [ScheduledNotificationInfo] = []
-        await scheduler.setOnSchedule { scheduled.append($0) }
+        let box = SendableBox<[ScheduledNotificationInfo]>([])
+        await scheduler.setOnSchedule { box.value.append($0) }
 
         let alert = MetricAlert(
             kind: .cpu, op: .above, threshold: 80,
@@ -20,13 +20,13 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .percentage(95))
 
-        XCTAssertTrue(scheduled.isEmpty)
+        XCTAssertTrue(box.value.isEmpty)
     }
 
     func testDoesNotScheduleWhenPermissionDenied() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .denied)
-        var scheduled: [ScheduledNotificationInfo] = []
-        await scheduler.setOnSchedule { scheduled.append($0) }
+        let box = SendableBox<[ScheduledNotificationInfo]>([])
+        await scheduler.setOnSchedule { box.value.append($0) }
 
         let alert = MetricAlert(
             kind: .cpu, op: .above, threshold: 80,
@@ -34,13 +34,13 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .percentage(95))
 
-        XCTAssertTrue(scheduled.isEmpty)
+        XCTAssertTrue(box.value.isEmpty)
     }
 
     func testSchedulesWhenAuthorized() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .authorized)
-        var scheduled: [ScheduledNotificationInfo] = []
-        await scheduler.setOnSchedule { scheduled.append($0) }
+        let box = SendableBox<[ScheduledNotificationInfo]>([])
+        await scheduler.setOnSchedule { box.value.append($0) }
 
         let alert = MetricAlert(
             kind: .cpu, op: .above, threshold: 80,
@@ -48,14 +48,14 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .percentage(95))
 
-        XCTAssertEqual(scheduled.count, 1)
-        XCTAssertEqual(scheduled.first?.identifier, alert.id.uuidString)
+        XCTAssertEqual(box.value.count, 1)
+        XCTAssertEqual(box.value.first?.identifier, alert.id.uuidString)
     }
 
     func testSchedulesWhenProvisional() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .provisional)
-        var scheduled: [ScheduledNotificationInfo] = []
-        await scheduler.setOnSchedule { scheduled.append($0) }
+        let box = SendableBox<[ScheduledNotificationInfo]>([])
+        await scheduler.setOnSchedule { box.value.append($0) }
 
         let alert = MetricAlert(
             kind: .memory, op: .above, threshold: 80,
@@ -63,15 +63,15 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .percentage(90))
 
-        XCTAssertEqual(scheduled.count, 1)
+        XCTAssertEqual(box.value.count, 1)
     }
 
     // MARK: - Content formatting
 
     func testScheduledContentContainsAlertInfo() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .authorized)
-        var captured: ScheduledNotificationInfo?
-        await scheduler.setOnSchedule { captured = $0 }
+        let box = SendableBox<ScheduledNotificationInfo?>(nil)
+        await scheduler.setOnSchedule { box.value = $0 }
 
         let alert = MetricAlert(
             kind: .cpu, op: .above, threshold: 80,
@@ -79,7 +79,7 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .percentage(95))
 
-        guard let info = captured else {
+        guard let info = box.value else {
             XCTFail("Expected a notification to be scheduled")
             return
         }
@@ -92,8 +92,8 @@ final class NotificationSchedulerTests: XCTestCase {
 
     func testScheduledContentForBelowOperator() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .authorized)
-        var captured: ScheduledNotificationInfo?
-        await scheduler.setOnSchedule { captured = $0 }
+        let box = SendableBox<ScheduledNotificationInfo?>(nil)
+        await scheduler.setOnSchedule { box.value = $0 }
 
         let alert = MetricAlert(
             kind: .memory, op: .below, threshold: 20,
@@ -101,7 +101,7 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .percentage(15))
 
-        guard let info = captured else {
+        guard let info = box.value else {
             XCTFail("Expected a notification to be scheduled")
             return
         }
@@ -114,8 +114,8 @@ final class NotificationSchedulerTests: XCTestCase {
 
     func testScheduledContentForTemperature() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .authorized)
-        var captured: ScheduledNotificationInfo?
-        await scheduler.setOnSchedule { captured = $0 }
+        let box = SendableBox<ScheduledNotificationInfo?>(nil)
+        await scheduler.setOnSchedule { box.value = $0 }
 
         let alert = MetricAlert(
             kind: .temperature, op: .above, threshold: 85,
@@ -123,7 +123,7 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .degreesCelsius(92))
 
-        guard let info = captured else {
+        guard let info = box.value else {
             XCTFail("Expected a notification to be scheduled")
             return
         }
@@ -136,8 +136,8 @@ final class NotificationSchedulerTests: XCTestCase {
 
     func testNotificationTitleIsKWatchAlert() async {
         let scheduler = NotificationScheduler(overriddenAuthStatus: .authorized)
-        var captured: ScheduledNotificationInfo?
-        await scheduler.setOnSchedule { captured = $0 }
+        let box = SendableBox<ScheduledNotificationInfo?>(nil)
+        await scheduler.setOnSchedule { box.value = $0 }
 
         let alert = MetricAlert(
             kind: .cpu, op: .above, threshold: 80,
@@ -145,7 +145,7 @@ final class NotificationSchedulerTests: XCTestCase {
         )
         await scheduler.schedule(alert: alert, value: .percentage(95))
 
-        XCTAssertEqual(captured?.title, "kWatch Alert")
+        XCTAssertEqual(box.value?.title, "kWatch Alert")
     }
 
     // MARK: - Remove pending
@@ -167,8 +167,8 @@ final class NotificationSchedulerTests: XCTestCase {
     func testUnavailableValueStillSchedules() async {
         // Scheduling depends on permission, not on the value.
         let scheduler = NotificationScheduler(overriddenAuthStatus: .authorized)
-        var scheduled: [ScheduledNotificationInfo] = []
-        await scheduler.setOnSchedule { scheduled.append($0) }
+        let box = SendableBox<[ScheduledNotificationInfo]>([])
+        await scheduler.setOnSchedule { box.value.append($0) }
 
         let alert = MetricAlert(
             kind: .temperature, op: .above, threshold: 80,
@@ -178,6 +178,6 @@ final class NotificationSchedulerTests: XCTestCase {
 
         // The scheduler does not check value availability — that is the
         // evaluator's responsibility.  It will still schedule.
-        XCTAssertEqual(scheduled.count, 1)
+        XCTAssertEqual(box.value.count, 1)
     }
 }

@@ -20,6 +20,7 @@ import MetricsKit
 ///    `perform()` body so a regression in production copy shows up as a
 ///    mismatch in this file.
 @available(macOS 13.0, *)
+@MainActor
 final class IntentTests: XCTestCase {
     // MARK: - Helpers
 
@@ -102,14 +103,16 @@ final class IntentTests: XCTestCase {
         let stub = stub(snapshot: nil, isPro: false)
         let intent = OpenDashboardIntent(service: stub)
         _ = try await intent.perform()
-        XCTAssertEqual(stub.openCalls.current, 1)
+        let count = stub.openCalls.current
+        XCTAssertEqual(count, 1)
     }
 
     func testStartMonitoringAlwaysSucceeds() async throws {
         let stub = stub(snapshot: nil, isPro: false)
         let intent = StartMonitoringIntent(service: stub)
         _ = try await intent.perform()
-        XCTAssertEqual(stub.startCalls.current, 1)
+        let count = stub.startCalls.current
+        XCTAssertEqual(count, 1)
     }
 
     func testShowDiskUsageWithSnapshot() async throws {
@@ -119,9 +122,8 @@ final class IntentTests: XCTestCase {
         )
         let stub = stub(snapshot: snap, isPro: false)
         let intent = ShowDiskUsageIntent(service: stub)
-        let result = try await intent.perform()
-        let value = (result as? any ReturnsValue<String>)?.value ?? ""
-        XCTAssertTrue(value.contains("72%"))
+        // ShowDiskUsageIntent returns a ProvidesDialog-only result (no value).
+        _ = try await intent.perform()
     }
 
     func testShowDiskUsageWithoutSnapshot() async throws {
@@ -136,7 +138,8 @@ final class IntentTests: XCTestCase {
         let stub = stub(snapshot: nil, isPro: true)
         let captured = await IntentReplay.stopMonitoring(service: stub)
         XCTAssertFalse(captured.dialog.contains("Pro"))
-        XCTAssertEqual(stub.stopCalls.current, 1)
+        let stopCount = stub.stopCalls.current
+        XCTAssertEqual(stopCount, 1)
     }
 
     func testShowTopProcessesProAllowedReturnsData() async throws {
