@@ -1,0 +1,4106 @@
+{
+  "version": 2,
+  "generatedAt": "2026-08-01",
+  "source": "Lemon libcleaner cleaning-rule XML (item->action->path extraction, bilingual)",
+  "appCount": 150,
+  "apps": {
+    "com.apple.dt.Xcode": {
+      "bundleID": "com.apple.dt.Xcode",
+      "appstoreBundleID": null,
+      "nameCN": "Xcode开发垃圾",
+      "name": "Xcode Junks",
+      "actions": [
+        {
+          "nameCN": "Xcode app缓存",
+          "name": "Xcode app Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.apple.dt.Xcode/"
+          ]
+        },
+        {
+          "nameCN": "Xcode DerivedData",
+          "name": "Xcode DerivedData",
+          "type": "derivedapp",
+          "paths": [
+            "~/Library/Developer/Xcode/DerivedData/"
+          ]
+        },
+        {
+          "nameCN": "iOS Device Support",
+          "name": "iOS Device Support",
+          "type": "file",
+          "paths": [
+            "~/Library/Developer/Xcode/iOS DeviceSupport/"
+          ]
+        },
+        {
+          "nameCN": "Archives",
+          "name": "Archives",
+          "type": "archive",
+          "paths": [
+            "~/Library/Developer/Xcode/Archives/"
+          ]
+        },
+        {
+          "nameCN": "Module Caches",
+          "name": "Module Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/"
+          ]
+        },
+        {
+          "nameCN": "iOS Device Logs",
+          "name": "iOS Device Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Developer/Xcode/iOS Device Logs/"
+          ]
+        },
+        {
+          "nameCN": "DocumentationCache",
+          "name": "DocumentationCache",
+          "type": "file",
+          "paths": [
+            "~/Library/Developer/Xcode/DocumentationCache/"
+          ]
+        }
+      ],
+      "vendor": "Apple",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.bohemiancoding.sketch3": {
+      "bundleID": "com.bohemiancoding.sketch3",
+      "appstoreBundleID": null,
+      "nameCN": "Sketch开发垃圾",
+      "name": "Sketch开发垃圾",
+      "actions": [
+        {
+          "nameCN": "Sketch缓存",
+          "name": "Sketch缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.bohemiancoding.sketch3/"
+          ]
+        },
+        {
+          "nameCN": "Sketch日志",
+          "name": "Sketch日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/com.bohemiancoding.sketch3/crash.log/",
+            "~/Library/Logs/com.bohemiancoding.sketch3/"
+          ]
+        },
+        {
+          "nameCN": "Sketch缓存数据",
+          "name": "Sketch缓存数据",
+          "type": "soft",
+          "paths": [
+            "/.DocumentRevisions-V100/"
+          ]
+        }
+      ],
+      "vendor": "Bohemiancoding",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.qq": {
+      "bundleID": "com.tencent.qq",
+      "appstoreBundleID": null,
+      "nameCN": "QQ",
+      "name": "QQ",
+      "actions": [
+        {
+          "nameCN": "QQ缓存",
+          "name": "QQ Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/com.tencent.qq"
+          ]
+        },
+        {
+          "nameCN": "QQ日志文件",
+          "name": "QQ Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/QQINI"
+          ]
+        },
+        {
+          "nameCN": "QQ聊天记录中产生的图片",
+          "name": "Pictures in your QQ Chats",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Images"
+          ]
+        },
+        {
+          "nameCN": "QQ聊天记录中产生的图片[180天前]",
+          "name": "Pictures in your QQ Chats[180 days ago]",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Images"
+          ]
+        },
+        {
+          "nameCN": "QQ接收到的文件",
+          "name": "QQ Received Files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/File"
+          ]
+        },
+        {
+          "nameCN": "QQ聊天记录中表情",
+          "name": "Stickers in your QQ Chats",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Avatar"
+          ]
+        },
+        {
+          "nameCN": "QQ接收到的视频文件",
+          "name": "QQ Received Video Files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/Videos"
+          ]
+        },
+        {
+          "nameCN": "QQ接收到的语音文件",
+          "name": "QQ Received Audio Files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.qq/Data/Library/Caches/PTT"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.xinWeChat": {
+      "bundleID": "com.tencent.xinWeChat",
+      "appstoreBundleID": null,
+      "nameCN": "微信",
+      "name": "WeChat",
+      "actions": [
+        {
+          "nameCN": "微信缓存",
+          "name": "WeChat Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/fsCachedData",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/PinYinCache",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-shm",
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/Cache.db-wal"
+          ]
+        },
+        {
+          "nameCN": "微信日志文件",
+          "name": "WeChat Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/(.+)/log"
+          ]
+        },
+        {
+          "nameCN": "微信头像",
+          "name": "WeChat Avatar",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat/(.+)/"
+          ]
+        },
+        {
+          "nameCN": "微信聊天记录中产生的图片",
+          "name": "Pictures in your WeChat Chats",
+          "type": "wechatImage",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信聊天记录中产生的图片[90天前]",
+          "name": "Pictures in your WeChat Chats[90 days ago]",
+          "type": "wechatImage90",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信接收到的文件",
+          "name": "WeChat Received Files",
+          "type": "wechatFile",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信接收到的视频文件",
+          "name": "WeChat Received Video Files",
+          "type": "wechatVideo",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        },
+        {
+          "nameCN": "微信接收到的语音文件",
+          "name": "WeChat Received Audio Files",
+          "type": "wechatAudio",
+          "paths": [
+            "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.WeWorkMac": {
+      "bundleID": "com.tencent.WeWorkMac",
+      "appstoreBundleID": null,
+      "nameCN": "企业微信",
+      "name": "WeChatWork",
+      "actions": [
+        {
+          "nameCN": "企业微信缓存",
+          "name": "WeChatWork Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Caches/com.tencent.WeWorkMac/"
+          ]
+        },
+        {
+          "nameCN": "企业微信日志文件",
+          "name": "WeChatWork Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Log/"
+          ]
+        },
+        {
+          "nameCN": "企业微信头像",
+          "name": "WeChatWork Avatar",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Avator/"
+          ]
+        },
+        {
+          "nameCN": "企业微信聊天记录中产生的图片",
+          "name": "Pictures in your WeChatWork Chats",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Image/"
+          ]
+        },
+        {
+          "nameCN": "企业微信聊天记录中产生的图片[180天前]",
+          "name": "Pictures in your WeChatWork Chats[180 days ago]",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Image/"
+          ]
+        },
+        {
+          "nameCN": "企业微信接收到的文件",
+          "name": "WeChatWork Received Files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/File/",
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Zip/"
+          ]
+        },
+        {
+          "nameCN": "企业微信接收到的视频文件",
+          "name": "WeChat Received Video Files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Video/"
+          ]
+        },
+        {
+          "nameCN": "企业微信接收到的语音文件",
+          "name": "WeChat Received Audio Files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application Support/WXWork/Data/(.+)/Cache/Voice/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.alibaba.DingTalkMac": {
+      "bundleID": "com.alibaba.DingTalkMac",
+      "appstoreBundleID": "5ZSL2CJU2T.com.dingtalk.mac",
+      "nameCN": "钉钉",
+      "name": "DingTalk",
+      "actions": [
+        {
+          "nameCN": "钉钉缓存",
+          "name": "DingTalk Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/fsCachedData",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db-shm",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/Cache.db-wal",
+            "~/Library/Caches/com.alibaba.DingTalkMac/fsCachedData",
+            "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db",
+            "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db-shm",
+            "~/Library/Caches/com.alibaba.DingTalkMac/Cache.db-wal"
+          ]
+        },
+        {
+          "nameCN": "钉钉日志文件",
+          "name": "DingTalk Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/log/",
+            "~/Library/Application Support/DingTalkMac/log"
+          ]
+        },
+        {
+          "nameCN": "钉钉使用的动态表情",
+          "name": "Stickers in your DingTalk Chats",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/emotions/",
+            "~/Library/Application Support/DingTalkMac/emotions/"
+          ]
+        },
+        {
+          "nameCN": "钉钉聊天记录中产生的图片",
+          "name": "Pictures in your DingTalk Chats",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/(.+)/ImageFiles/",
+            "~/Library/Caches/com.alibaba.DingTalkMac/",
+            "~/Library/Application Support/DingTalkMac/(.+)/ImageFiles/"
+          ]
+        },
+        {
+          "nameCN": "钉钉聊天记录中产生的图片[180天前]",
+          "name": "Pictures in your DingTalk Chats[180 days ago]",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "~/Library/Caches/com.alibaba.DingTalkMac/"
+          ]
+        }
+      ],
+      "vendor": "Alibaba",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.hujiang.mac.cctalk": {
+      "bundleID": "com.hujiang.mac.cctalk",
+      "appstoreBundleID": "com.xianghu.cctalk.mac",
+      "nameCN": "CCtalk",
+      "name": "CCtalk",
+      "actions": [
+        {
+          "nameCN": "CCtalk缓存",
+          "name": "CCTalk Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Caches/",
+            "~/Library/Caches/com.hujiang.mac.cctalk/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk日志文件",
+          "name": "CCTalk Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Logs/",
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Log/",
+            "~/Library/Application Support/CCtalk/Log/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk Web缓存",
+          "name": "CCTalk Web Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cache/",
+            "~/Library/Application Support/CCtalk/WebEngine/Cache/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk Web Cookie",
+          "name": "CCtalk Web Cookie",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cookie/",
+            "~/Library/Application Support/CCtalk/WebEngine/Cookie/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk课程PPT图片",
+          "name": "PowerPoint pictures in CCtalk courses",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/PPT/Image/ppt/",
+            "~/Library/Application Support/CCtalk/PPT/Image/ppt/"
+          ]
+        },
+        {
+          "nameCN": "CCtalk聊天记录中产生的图片",
+          "name": "Pictures in your CCtalk chats",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Users/(.+)/DownloadPic/",
+            "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Users/(.+))/Header/",
+            "~/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "~/Library/Application Support/CCtalk/Users/(.+)/DownloadPic/",
+            "~/Library/Application Support/CCtalk/Users/(.+))/Header/"
+          ]
+        }
+      ],
+      "vendor": "Hujiang",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.sogou.inputmethod.sogou": {
+      "bundleID": "com.sogou.inputmethod.sogou",
+      "appstoreBundleID": "com.sogou.sogoupad",
+      "nameCN": "搜狗输入法",
+      "name": "SoGou Pinyin",
+      "actions": [
+        {
+          "nameCN": "搜狗输入法缓存",
+          "name": "SoGou Pinyin Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/SogouServices/",
+            "~/Library/Containers/com.sogou.sogoupad/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "搜狗输入法表情",
+          "name": "SoGou Pinyin stickers",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/Sogou/EmojiPanel/expressions/"
+          ]
+        }
+      ],
+      "vendor": "Sogou",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.iflytek.macinput": {
+      "bundleID": "com.iflytek.macinput",
+      "appstoreBundleID": null,
+      "nameCN": "讯飞输入法",
+      "name": "iFLYTEK Input",
+      "actions": [
+        {
+          "nameCN": "讯飞输入法缓存",
+          "name": "iFLYTEK Input Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.iflytek.macinput/Data/Library/Caches/com.iflytek.macinput/"
+          ]
+        },
+        {
+          "nameCN": "讯飞输入法日志",
+          "name": "iFLYTEK Input logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.iflytek.macinput/Data/Library/Logs/"
+          ]
+        }
+      ],
+      "vendor": "Iflytek",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.baidu.inputmethod.BaiduIM": {
+      "bundleID": "com.baidu.inputmethod.BaiduIM",
+      "appstoreBundleID": null,
+      "nameCN": "百度输入法",
+      "name": "Baidu Input",
+      "actions": [
+        {
+          "nameCN": "百度输入法缓存",
+          "name": "Baidu Input caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.baidu.inputmethod.BaiduIM/"
+          ]
+        },
+        {
+          "nameCN": "百度输入法默认皮肤",
+          "name": "Baidu Input default themes",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/BaiduInput/skin/"
+          ]
+        }
+      ],
+      "vendor": "Baidu",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.netease.163music": {
+      "bundleID": "com.netease.163music",
+      "appstoreBundleID": "com.netease.163music",
+      "nameCN": "网易云音乐",
+      "name": "NetEaseMusic",
+      "actions": [
+        {
+          "nameCN": "网易云音乐缓存",
+          "name": "NetEaseMusic Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.netease.163music/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐日志",
+          "name": "NetEaseMusic Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.netease.163music/Data/Documents/storage/Logs/",
+            "~/Library/Logs/com.netease.163music/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐歌曲图片",
+          "name": "NetEaseMusic pictures",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.netease.163music/Data/Caches/orpheus_path/",
+            "~/Library/Containers/com.netease.163music/Data/Library/Caches/orpheus_path/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐歌曲缓存",
+          "name": "NetEaseMusic Song Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.netease.163music/Data/Caches/online_play_cache/",
+            "~/Library/Containers/com.netease.163music/Data/Library/Caches/online_play_cache/"
+          ]
+        },
+        {
+          "nameCN": "网易云音乐下载歌曲",
+          "name": "NetEaseMusic downloaded songs",
+          "type": "file",
+          "paths": [
+            "~/Music/网易云音乐/"
+          ]
+        }
+      ],
+      "vendor": "Netease",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.QQMusicMac": {
+      "bundleID": "com.tencent.QQMusicMac",
+      "appstoreBundleID": null,
+      "nameCN": "QQ音乐",
+      "name": "QQ Music",
+      "actions": [
+        {
+          "nameCN": "QQ音乐缓存",
+          "name": "QQ Music Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐日志",
+          "name": "QQ Music Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌曲图片",
+          "name": "QQ Music Images",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iCache/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌曲缓存",
+          "name": "QQ Music Song Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iMusic/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌词缓存",
+          "name": "QQ Music Lysics Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLyric/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐专辑缓存",
+          "name": "QQ Music Album Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iAlbum/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐歌手缓存",
+          "name": "QQ Music Singer Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iArtist/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐临时文件",
+          "name": "QQ Music Temporary files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iTemp/"
+          ]
+        },
+        {
+          "nameCN": "QQ音乐下载歌曲",
+          "name": "QQ Music downloaded songs",
+          "type": "file",
+          "paths": [
+            "~/Music/QQ音乐/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.kugou.mac.Music": {
+      "bundleID": "com.kugou.mac.Music",
+      "appstoreBundleID": null,
+      "nameCN": "酷狗音乐",
+      "name": "KuGou Music",
+      "actions": [
+        {
+          "nameCN": "酷狗音乐缓存",
+          "name": "KuGou Music Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Caches/com.tencent.QQMusicMac/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐日志",
+          "name": "KuGou Music Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application Support/QQMusicMac/iLog/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐歌曲图片",
+          "name": "KuGou Music Images",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Portrait/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐歌曲缓存",
+          "name": "KuGou Music Song Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Songs/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐歌词缓存",
+          "name": "KuGou Music Lysics Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.kugou.mac.Music/Data/Library/Caches/Lyric/"
+          ]
+        },
+        {
+          "nameCN": "酷狗音乐下载歌曲",
+          "name": "KuGou Music downloaded songs",
+          "type": "file",
+          "paths": [
+            "~/Music/酷狗音乐/"
+          ]
+        }
+      ],
+      "vendor": "Kugou",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.wenyu.kwplayermac": {
+      "bundleID": "com.wenyu.kwplayermac",
+      "appstoreBundleID": null,
+      "nameCN": "酷我音乐",
+      "name": "Kuwo Music",
+      "actions": [
+        {
+          "nameCN": "酷我音乐缓存",
+          "name": "KuWo  Music Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Caches/com.wenyu.kwplayermac/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐日志",
+          "name": "KuWo  Music Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐歌曲图片",
+          "name": "KuWo  Music Images",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/ImageData/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/HDPicture/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐专辑图片",
+          "name": "KuWo  Music Album Images",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/BigArtistPic/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐歌曲缓存",
+          "name": "KuWo  Music Song Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/P2PCache/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/PreGetMusic/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/WifiMusic/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐视频缓存",
+          "name": "KuWo  Music Video Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MV/",
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/MVCache/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐音频缓存",
+          "name": "KuWo  Music Audio Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Download/OfflineRadio/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐歌词缓存",
+          "name": "KuWo  Music Lyrics Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.wenyu.kwplayermac/Data/Caches/DocumentData/Lyric/"
+          ]
+        },
+        {
+          "nameCN": "酷我音乐下载歌曲",
+          "name": "KuWo  Music Downloaded songs",
+          "type": "file",
+          "paths": [
+            "~/Music/酷我音乐/"
+          ]
+        }
+      ],
+      "vendor": "Wenyu",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.xiami.client": {
+      "bundleID": "com.xiami.client",
+      "appstoreBundleID": null,
+      "nameCN": "虾米音乐",
+      "name": "XIAMI Music",
+      "actions": [
+        {
+          "nameCN": "虾米音乐缓存",
+          "name": "XIAMI Music Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Caches/com.xiami.client/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐日志",
+          "name": "XIAMI Music Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐歌曲图片",
+          "name": "XIAMI Music Images",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/default/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐歌曲缓存",
+          "name": "XIAMI Music Song Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/playerCache/",
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Tmp/playerCache/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐歌词缓存",
+          "name": "XIAMI Music Lyrics Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.xiami.client/Data/Library/Application Support/com.xiami.client/Caches/lyrics/"
+          ]
+        },
+        {
+          "nameCN": "虾米音乐下载歌曲",
+          "name": "XIAMI Music Downloaded songs",
+          "type": "file",
+          "paths": [
+            "~/Music/虾米音乐/"
+          ]
+        }
+      ],
+      "vendor": "Xiami",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.tenvideo": {
+      "bundleID": "com.tencent.tenvideo",
+      "appstoreBundleID": null,
+      "nameCN": "腾讯视频",
+      "name": "WeTV",
+      "actions": [
+        {
+          "nameCN": "腾讯视频缓存",
+          "name": "WeTV Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/com.tencent.xinWeChat/com.tencent.tenvideo/",
+            "~/Library/Caches/com.tencent.tenvideo/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频日志",
+          "name": "WeTV Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Logs/",
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Caches/default/",
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/SSO/Logs/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频缓存图片",
+          "name": "WeTV Cached Images",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/offlinelogo/",
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/CoreData/Download/ImageDir/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频离线缓存",
+          "name": "WeTV Offline Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/documentCache/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频P2P缓存",
+          "name": "WeTV P2P Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/P2P/"
+          ]
+        },
+        {
+          "nameCN": "腾讯视频下载视频",
+          "name": "WeTV Downloaded songs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.tencent.tenvideo/Data/Library/Application Support/Download/video/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.iqiyi.player": {
+      "bundleID": "com.iqiyi.player",
+      "appstoreBundleID": null,
+      "nameCN": "爱奇艺",
+      "name": "iQIYI",
+      "actions": [
+        {
+          "nameCN": "爱奇艺缓存",
+          "name": "iQIYI Cache Files",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺日志",
+          "name": "iQIYI Log Files",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Logs/",
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Puma/Log/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺弹幕缓存",
+          "name": "iQIYI Live Commenting Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/Barrage_102/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺视频缓存",
+          "name": "iQIYI Video Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/PlayRecord/",
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/previewImages/",
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/WebPlayer/"
+          ]
+        },
+        {
+          "nameCN": "爱奇艺下载视频",
+          "name": "iQIYI Downloaded videos",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.iqiyi.player/Data/Library/Application Support/com.iqiyi.player/download/"
+          ]
+        }
+      ],
+      "vendor": "Iqiyi",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.youku.mac": {
+      "bundleID": "com.youku.mac",
+      "appstoreBundleID": null,
+      "nameCN": "优酷",
+      "name": "YOUKU",
+      "actions": [
+        {
+          "nameCN": "优酷缓存",
+          "name": "YOUKU Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "优酷日志",
+          "name": "YOUKU Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/Documents/Log/",
+            "~/Library/Containers/com.youku.mac/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "优酷视频缓存",
+          "name": "YOUKU Video Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/Library/Application Support/Youku/",
+            "~/Library/Containers/com.youku.mac/Data/Documents/Youku/"
+          ]
+        },
+        {
+          "nameCN": "优酷下载视频封面图片",
+          "name": "YOUKU Video Cover Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/thumb/"
+          ]
+        },
+        {
+          "nameCN": "优酷下载视频",
+          "name": "YOUKU Downloaded videos",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.youku.mac/Data/VideoCache/"
+          ]
+        }
+      ],
+      "vendor": "Youku",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "tv.sohu.SHPlayer": {
+      "bundleID": "tv.sohu.SHPlayer",
+      "appstoreBundleID": null,
+      "nameCN": "搜狐影音",
+      "name": "Sohu Video",
+      "actions": [
+        {
+          "nameCN": "搜狐影音缓存",
+          "name": "Sohu Video Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "搜狐影音日志",
+          "name": "Sohu Video Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Log/"
+          ]
+        },
+        {
+          "nameCN": "搜狐影音视频缓存",
+          "name": "Sohu Video Video Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/Movie/"
+          ]
+        },
+        {
+          "nameCN": "搜狐影音视频相关图片",
+          "name": "Sohu Video Images associated with Videos",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/PlayListCache/",
+            "~/Library/Containers/tv.sohu.SHPlayer/Data/Library/Caches/SHPlayer/VideoDetailCache/"
+          ]
+        }
+      ],
+      "vendor": "Tv",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.baofeng.player": {
+      "bundleID": "com.baofeng.player",
+      "appstoreBundleID": null,
+      "nameCN": "暴风影音",
+      "name": "Baofeng Player",
+      "actions": [
+        {
+          "nameCN": "暴风影音缓存",
+          "name": "Baofeng Player Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.baofeng.player/Data/Library/Caches/",
+            "~/Library/Caches/com.baofeng.player/"
+          ]
+        },
+        {
+          "nameCN": "暴风影音日志",
+          "name": "Baofeng Player Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.baofeng.player/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "暴风影音播放器数据",
+          "name": "Baofeng Player Data",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/Baofeng Inc./",
+            "~/Library/Containers/com.baofeng.player/Data/Library/Application Support/Baofeng Inc./"
+          ]
+        }
+      ],
+      "vendor": "Baofeng",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.pptv.pptvmac": {
+      "bundleID": "com.pptv.pptvmac",
+      "appstoreBundleID": null,
+      "nameCN": "PPTV",
+      "name": "PPTV",
+      "actions": [
+        {
+          "nameCN": "PPTV缓存",
+          "name": "PPTV Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.pptv.pptvmac/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "PPTV日志",
+          "name": "PPTV Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.pptv.pptvmac/Data/Library/Logs/"
+          ]
+        },
+        {
+          "nameCN": "PPTV播放器数据",
+          "name": "PPTV Data",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.pptv.pptvmac/Data/Library/Application Support/PPTV/"
+          ]
+        }
+      ],
+      "vendor": "Pptv",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.rockysandstudio.MKPlayer": {
+      "bundleID": "com.rockysandstudio.MKPlayer",
+      "appstoreBundleID": null,
+      "nameCN": "MKPlayer",
+      "name": "MKPlayer",
+      "actions": [
+        {
+          "nameCN": "MKPlayer缓存",
+          "name": "MKPlayer Caches",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Caches/"
+          ]
+        },
+        {
+          "nameCN": "MKPlayer日志",
+          "name": "MKPlayer Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.rockysandstudio.MKPlayer/Data/Library/Logs/"
+          ]
+        }
+      ],
+      "vendor": "Rockysandstudio",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.apple.Safari": {
+      "bundleID": "com.apple.Safari",
+      "appstoreBundleID": null,
+      "nameCN": "Safari",
+      "name": "Safari",
+      "actions": [
+        {
+          "nameCN": "Safari - Cache",
+          "name": "Safari - Cache",
+          "type": "file",
+          "paths": [
+            "~/Library/Caches/com.apple.Safari/",
+            "~/Library/Caches/Metadata/Safari/",
+            "~/Library/Containers/com.apple.Safari.CacheDeleteExtension/",
+            "~/Library/Caches/com.apple.Safari.SafeBrowsing/",
+            "~/Library/Caches/com.apple.safaridavclient/"
+          ]
+        },
+        {
+          "name": "Safari History & Local Data",
+          "nameCN": "Safari 历史记录与本地数据",
+          "type": "manual-preserved",
+          "paths": [
+            "~/Library/Caches/Metadata/Safari",
+            "~/Library/Caches/com.apple.Safari",
+            "~/Library/Caches/com.apple.Safari.SafeBrowsing",
+            "~/Library/Caches/com.apple.safaridavclient",
+            "~/Library/Containers/com.apple.Safari.CacheDeleteExtension",
+            "~/Library/Safari/Downloads.plist",
+            "~/Library/Safari/History.plist",
+            "~/Library/Safari/HistoryIndex.sk",
+            "~/Library/Safari/LocalStorage",
+            "~/Library/Safari/WebpageIcons.db"
+          ]
+        }
+      ],
+      "vendor": "Apple",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.google.Chrome": {
+      "bundleID": "com.google.Chrome",
+      "appstoreBundleID": null,
+      "nameCN": "Chrome",
+      "name": "Chrome",
+      "actions": [
+        {
+          "nameCN": "Chrome - Cache",
+          "name": "Chrome - Cache",
+          "type": "file",
+          "paths": [
+            "~/Library/Caches/Google/Chrome/Default/Cache/"
+          ]
+        },
+        {
+          "name": "Chrome History & Cache Data",
+          "nameCN": "Chrome 历史记录与缓存数据",
+          "type": "manual-preserved",
+          "paths": [
+            "~/Library/Caches/Google",
+            "~/Library/Caches/com.google.Chrome"
+          ]
+        }
+      ],
+      "vendor": "Google",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.tencent.QQBrowser": {
+      "bundleID": "com.tencent.QQBrowser",
+      "appstoreBundleID": null,
+      "nameCN": "QQ浏览器",
+      "name": "QQBrowser",
+      "actions": [
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Caches/QQBrowser2/Default/Cache/"
+          ]
+        }
+      ],
+      "vendor": "Tencent",
+      "type": "communication",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "com.operasoftware.Opera": {
+      "bundleID": "com.operasoftware.Opera",
+      "appstoreBundleID": null,
+      "nameCN": "Opera",
+      "name": "Opera",
+      "actions": [
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Caches/Opera/"
+          ]
+        },
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/com.operasoftware.Opera/GPUCache",
+            "~/Library/Caches/com.operasoftware.Opera"
+          ]
+        },
+        {
+          "nameCN": "应用程序缓存",
+          "name": "Applications Caches",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/Opera/application_cache"
+          ]
+        }
+      ],
+      "vendor": "Operasoftware",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "high"
+    },
+    "org.mozilla.firefox": {
+      "bundleID": "org.mozilla.firefox",
+      "appstoreBundleID": null,
+      "nameCN": "FireFox",
+      "name": "FireFox",
+      "actions": [
+        {
+          "nameCN": "浏览器缓存",
+          "name": "Browser Cache",
+          "type": "file",
+          "paths": [
+            "~/Library/Caches/Firefox/"
+          ]
+        },
+        {
+          "name": "Firefox History & Cache Data",
+          "nameCN": "Firefox 历史记录与缓存数据",
+          "type": "manual-preserved",
+          "paths": [
+            "~/Library/Caches/Mozilla/",
+            "~/Library/Caches/org.mozilla.firefox/"
+          ]
+        },
+        {
+          "name": "Firefox User Data",
+          "nameCN": "Firefox 用户数据",
+          "type": "manual-preserved",
+          "paths": [
+            "~/Library/Application Support/Firefox/"
+          ]
+        }
+      ],
+      "vendor": "Org",
+      "type": "general",
+      "riskLevel": "recommended",
+      "confidence": "medium"
+    },
+    "com.adobe.CreativeCloud": {
+      "name": "Creative Cloud",
+      "nameCN": "Creative Cloud",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.CreativeCloud"
+      ],
+      "bundleID": "com.adobe.CreativeCloud",
+      "confidence": "high"
+    },
+    "com.adobe.Illustrator": {
+      "name": "Illustrator",
+      "nameCN": "Illustrator",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.Illustrator"
+      ],
+      "bundleID": "com.adobe.Illustrator",
+      "confidence": "high"
+    },
+    "com.adobe.InDesign": {
+      "name": "InDesign",
+      "nameCN": "InDesign",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.InDesign"
+      ],
+      "bundleID": "com.adobe.InDesign",
+      "confidence": "high"
+    },
+    "com.adobe.Lightroom": {
+      "name": "Lightroom",
+      "nameCN": "Lightroom",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.adobe.Lightroom"
+      ],
+      "bundleID": "com.adobe.Lightroom",
+      "confidence": "high"
+    },
+    "com.adobe.Photoshop": {
+      "name": "Photoshop",
+      "nameCN": "Photoshop",
+      "vendor": "Adobe",
+      "type": "design",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/Adobe",
+        "~/Library/Caches/com.adobe.Photoshop"
+      ],
+      "bundleID": "com.adobe.Photoshop",
+      "confidence": "high"
+    },
+    "com.apple.ActivityMonitor": {
+      "name": "Activity Monitor",
+      "nameCN": "活动监视器",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.ActivityMonitor"
+      ],
+      "bundleID": "com.apple.ActivityMonitor",
+      "confidence": "high"
+    },
+    "com.apple.Console": {
+      "name": "Console",
+      "nameCN": "控制台",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Console"
+      ],
+      "bundleID": "com.apple.Console",
+      "confidence": "high"
+    },
+    "com.apple.FaceTime": {
+      "name": "FaceTime",
+      "nameCN": "FaceTime",
+      "vendor": "Apple",
+      "type": "chat",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.FaceTime"
+      ],
+      "bundleID": "com.apple.FaceTime",
+      "confidence": "high"
+    },
+    "com.apple.Finder": {
+      "name": "Finder",
+      "nameCN": "访达",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.finder"
+      ],
+      "bundleID": "com.apple.Finder",
+      "confidence": "high"
+    },
+    "com.apple.Maps": {
+      "name": "Maps",
+      "nameCN": "地图",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Maps"
+      ],
+      "bundleID": "com.apple.Maps",
+      "confidence": "high"
+    },
+    "com.apple.MobileSMS": {
+      "name": "Messages",
+      "nameCN": "信息",
+      "vendor": "Apple",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Messages"
+      ],
+      "bundleID": "com.apple.MobileSMS",
+      "confidence": "high"
+    },
+    "com.apple.Music": {
+      "name": "Music",
+      "nameCN": "音乐",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Music"
+      ],
+      "bundleID": "com.apple.Music",
+      "confidence": "high"
+    },
+    "com.apple.Notes": {
+      "name": "Notes",
+      "nameCN": "备忘录",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Notes"
+      ],
+      "bundleID": "com.apple.Notes",
+      "confidence": "high"
+    },
+    "com.apple.PhotoLibraryServices": {
+      "name": "Photos",
+      "nameCN": "照片",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.iCloudPhotoLibraryService",
+        "~/Library/Caches/com.apple.photoanalysisd"
+      ],
+      "bundleID": "com.apple.PhotoLibraryServices",
+      "confidence": "high"
+    },
+    "com.apple.Podcasts": {
+      "name": "Podcasts",
+      "nameCN": "播客",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.podcasts"
+      ],
+      "bundleID": "com.apple.Podcasts",
+      "confidence": "high"
+    },
+    "com.apple.QuickLook": {
+      "name": "Quick Look",
+      "nameCN": "快速查看",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.QuickLookThumbnailing",
+        "~/Library/Caches/com.apple.quicklook"
+      ],
+      "bundleID": "com.apple.QuickLook",
+      "confidence": "high"
+    },
+    "com.apple.QuickTimePlayerX": {
+      "name": "QuickTime",
+      "nameCN": "QuickTime",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.QuickTimePlayerX"
+      ],
+      "bundleID": "com.apple.QuickTimePlayerX",
+      "confidence": "high"
+    },
+    "com.apple.ScriptEditor2": {
+      "name": "Script Editor",
+      "nameCN": "脚本编辑器",
+      "vendor": "Apple",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.ScriptEditor2"
+      ],
+      "bundleID": "com.apple.ScriptEditor2",
+      "confidence": "high"
+    },
+    "com.apple.Siri": {
+      "name": "Siri",
+      "nameCN": "Siri",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Siri"
+      ],
+      "bundleID": "com.apple.Siri",
+      "confidence": "high"
+    },
+    "com.apple.Spotlight": {
+      "name": "Spotlight",
+      "nameCN": "聚焦搜索",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Spotlight",
+        "~/Library/Caches/com.apple.spotlightknowledged"
+      ],
+      "bundleID": "com.apple.Spotlight",
+      "confidence": "high"
+    },
+    "com.apple.SystemPreferences": {
+      "name": "System Preferences",
+      "nameCN": "系统偏好设置",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.SystemPreferences"
+      ],
+      "bundleID": "com.apple.SystemPreferences",
+      "confidence": "high"
+    },
+    "com.apple.TV": {
+      "name": "TV",
+      "nameCN": "电视",
+      "vendor": "Apple",
+      "type": "media",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.TV"
+      ],
+      "bundleID": "com.apple.TV",
+      "confidence": "high"
+    },
+    "com.apple.Terminal": {
+      "name": "Terminal",
+      "nameCN": "终端",
+      "vendor": "Apple",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.Terminal"
+      ],
+      "bundleID": "com.apple.Terminal",
+      "confidence": "high"
+    },
+    "com.apple.cloudkit": {
+      "name": "CloudKit",
+      "nameCN": "CloudKit",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.cloudkit"
+      ],
+      "bundleID": "com.apple.cloudkit",
+      "confidence": "high"
+    },
+    "com.apple.fileprovider.cs": {
+      "name": "FileProvider",
+      "nameCN": "文件提供器",
+      "vendor": "Apple",
+      "type": "system",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.fileprovider.cs"
+      ],
+      "bundleID": "com.apple.fileprovider.cs",
+      "confidence": "high"
+    },
+    "com.apple.iCal": {
+      "name": "Calendar",
+      "nameCN": "日历",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.iCal"
+      ],
+      "bundleID": "com.apple.iCal",
+      "confidence": "high"
+    },
+    "com.apple.iWork": {
+      "name": "iWork",
+      "nameCN": "iWork",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.iWork.Keynote",
+        "~/Library/Caches/com.apple.iWork.Numbers",
+        "~/Library/Caches/com.apple.iWork.Pages"
+      ],
+      "bundleID": "com.apple.iWork",
+      "confidence": "high"
+    },
+    "com.apple.mail": {
+      "bundleID": "com.apple.mail",
+      "name": "Mail Attachments",
+      "nameCN": "Mail缓存",
+      "vendor": "Apple",
+      "type": "mail",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.apple.mail/Data/Library/Mail Downloads",
+        "~/Library/Mail"
+      ],
+      "confidence": "high"
+    },
+    "com.apple.reminders": {
+      "name": "Reminders",
+      "nameCN": "提醒事项",
+      "vendor": "Apple",
+      "type": "productivity",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.apple.reminders"
+      ],
+      "bundleID": "com.apple.reminders",
+      "confidence": "high"
+    },
+    "com.brave.Browser": {
+      "bundleID": "com.brave.Browser",
+      "appstoreBundleID": null,
+      "name": "Brave",
+      "nameCN": "Brave",
+      "vendor": "Brave",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Brave Browser Cache",
+          "nameCN": "Brave 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.brave.Browser/"
+          ]
+        },
+        {
+          "name": "Brave Browser Data",
+          "nameCN": "Brave 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/BraveSoftware/Brave-Browser/"
+          ]
+        }
+      ]
+    },
+    "com.dingtalk.mac": {
+      "bundleID": "com.dingtalk.mac",
+      "appstoreBundleID": null,
+      "nameCN": "钉钉",
+      "name": "DingTalk",
+      "actions": [
+        {
+          "nameCN": "钉钉缓存",
+          "name": "DingTalk Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.alibaba.DingTalkMac/",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/"
+          ]
+        },
+        {
+          "nameCN": "钉钉日志",
+          "name": "DingTalk Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/DingTalkMac/log",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/log/"
+          ]
+        },
+        {
+          "nameCN": "钉钉动态表情",
+          "name": "DingTalk Stickers",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/DingTalkMac/emotions/",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/emotions/"
+          ]
+        }
+      ],
+      "vendor": "阿里巴巴",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.figma.Desktop": {
+      "name": "Figma",
+      "nameCN": "Figma",
+      "vendor": "Figma",
+      "type": "design",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.figma.Desktop"
+      ],
+      "bundleID": "com.figma.Desktop",
+      "confidence": "high"
+    },
+    "com.github.GitHubClient": {
+      "name": "GitHub Desktop",
+      "nameCN": "GitHub Desktop",
+      "vendor": "GitHub",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.github.GitHubClient"
+      ],
+      "bundleID": "com.github.GitHubClient",
+      "confidence": "high"
+    },
+    "com.google.Chrome.canary": {
+      "name": "Chrome Canary",
+      "nameCN": "Chrome Canary",
+      "vendor": "Google",
+      "type": "browser",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.google.Chrome.canary"
+      ],
+      "bundleID": "com.google.Chrome.canary",
+      "confidence": "high"
+    },
+    "com.jetbrains.intellij": {
+      "name": "IntelliJ IDEA",
+      "nameCN": "IntelliJ",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.jetbrains.intellij"
+      ],
+      "bundleID": "com.jetbrains.intellij",
+      "confidence": "high"
+    },
+    "com.microsoft.VSCode": {
+      "name": "VS Code",
+      "nameCN": "VS Code",
+      "vendor": "Microsoft",
+      "type": "developer",
+      "riskLevel": "optional",
+      "cleanPaths": [
+        "~/Library/Caches/com.microsoft.VSCode"
+      ],
+      "bundleID": "com.microsoft.VSCode",
+      "confidence": "high"
+    },
+    "com.microsoft.edgemac": {
+      "name": "Edge",
+      "nameCN": "Edge",
+      "vendor": "Microsoft",
+      "type": "browser",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.microsoft.edgemac"
+      ],
+      "bundleID": "com.microsoft.edgemac",
+      "confidence": "high"
+    },
+    "com.slack.Slack": {
+      "bundleID": "com.slack.Slack",
+      "appstoreBundleID": null,
+      "name": "Slack",
+      "nameCN": "Slack",
+      "vendor": "Slack",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Slack Cache",
+          "nameCN": "Slack 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.slack.Slack/",
+            "~/Library/Application Support/Slack/Cache/",
+            "~/Library/Application Support/Slack/CachedData/",
+            "~/Library/Application Support/Slack/Code Cache/",
+            "~/Library/Application Support/Slack/GPUCache/",
+            "~/Library/Application Support/Slack/Service Worker/CacheStorage/"
+          ]
+        },
+        {
+          "name": "Slack Cookies & Local Storage",
+          "nameCN": "Slack Cookie 与本地存储",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/Slack/Cookies",
+            "~/Library/Application Support/Slack/Local Storage/"
+          ]
+        }
+      ]
+    },
+    "com.sogou.sogoupad": {
+      "bundleID": "com.sogou.sogoupad",
+      "name": "SoGou Pinyin",
+      "nameCN": "搜狗输入法",
+      "vendor": "搜狗",
+      "type": "inputmethod",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Containers/com.sogou.sogoupad/Data/Library/Caches",
+        "~/Library/Application Support/Sogou/EmojiPanel/expressions",
+        "~/Library/Caches/SogouServices"
+      ],
+      "confidence": "high"
+    },
+    "com.spotify.client": {
+      "name": "Spotify",
+      "nameCN": "Spotify",
+      "vendor": "Spotify",
+      "type": "music",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.spotify.client"
+      ],
+      "bundleID": "com.spotify.client",
+      "confidence": "high"
+    },
+    "com.sublimetext.3": {
+      "name": "Sublime Text",
+      "nameCN": "Sublime Text",
+      "vendor": "Sublime HQ",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "cleanPaths": [
+        "~/Library/Caches/com.sublimetext.3"
+      ],
+      "bundleID": "com.sublimetext.3",
+      "confidence": "high"
+    },
+    "com.tinyspeck.chatlyio": {
+      "name": "Chatly",
+      "nameCN": "Chatly",
+      "vendor": "Slack",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Caches/com.tinyspeck.chatlyio"
+      ],
+      "bundleID": "com.tinyspeck.chatlyio",
+      "confidence": "high"
+    },
+    "com.vivaldi.Vivaldi": {
+      "bundleID": "com.vivaldi.Vivaldi",
+      "appstoreBundleID": null,
+      "name": "Vivaldi",
+      "nameCN": "Vivaldi",
+      "vendor": "Vivaldi",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Vivaldi Browser Cache",
+          "nameCN": "Vivaldi 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.vivaldi.Vivaldi/"
+          ]
+        },
+        {
+          "name": "Vivaldi Browser Data",
+          "nameCN": "Vivaldi 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Vivaldi/"
+          ]
+        }
+      ]
+    },
+    "com.xianghu.cctalk.mac": {
+      "bundleID": "com.xianghu.cctalk.mac",
+      "name": "CCtalk",
+      "nameCN": "CCtalk",
+      "vendor": "沪江",
+      "type": "chat",
+      "riskLevel": "caution",
+      "cleanPaths": [
+        "~/Library/Application Support/CCtalk/Log",
+        "~/Library/Application Support/CCtalk/PPT/Image/ppt",
+        "~/Library/Application Support/CCtalk/Users",
+        "~/Library/Application Support/CCtalk/WebEngine/Cache",
+        "~/Library/Application Support/CCtalk/WebEngine/Cookie",
+        "~/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac",
+        "~/Library/Caches/com.hujiang.mac.cctalk",
+        "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Log",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/PPT/Image/ppt",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/Users",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cache",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Application Support/CCtalk/WebEngine/Cookie",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Caches",
+        "~/Library/Containers/com.xianghu.cctalk.mac/Data/Library/Logs"
+      ],
+      "confidence": "medium"
+    },
+    "us.zoom.xos": {
+      "bundleID": "us.zoom.xos",
+      "appstoreBundleID": null,
+      "name": "Zoom",
+      "nameCN": "Zoom",
+      "vendor": "Zoom",
+      "type": "chat",
+      "riskLevel": "recommended",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Zoom Cache",
+          "nameCN": "Zoom 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/us.zoom.xos/"
+          ]
+        },
+        {
+          "name": "Zoom Temporary Data",
+          "nameCN": "Zoom 临时文件",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/zoom.us/data/tmp/"
+          ]
+        }
+      ]
+    },
+    "com.anthropic.claude": {
+      "bundleID": "com.anthropic.claude",
+      "appstoreBundleID": null,
+      "name": "Claude Code",
+      "nameCN": "Claude Code",
+      "vendor": "Anthropic",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "high",
+      "actions": [
+        {
+          "name": "Claude Cache",
+          "nameCN": "Claude 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.anthropic.claude/",
+            "~/Library/Application Support/Claude/Cache/",
+            "~/Library/Application Support/Claude/CachedData/",
+            "~/Library/Application Support/Claude/Code Cache/",
+            "~/Library/Application Support/Claude/GPUCache/",
+            "~/.claude/cache/",
+            "~/.claude/paste-cache/"
+          ]
+        },
+        {
+          "name": "Claude Logs",
+          "nameCN": "Claude 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Claude/"
+          ]
+        },
+        {
+          "name": "Claude Code Data",
+          "nameCN": "Claude Code 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Claude/",
+            "~/Library/Application Support/com.anthropic.claude/"
+          ]
+        }
+      ]
+    },
+    "com.anthropic.claudefordesktop": {
+      "bundleID": "com.anthropic.claudefordesktop",
+      "appstoreBundleID": null,
+      "name": "Claude Desktop",
+      "nameCN": "Claude 桌面版",
+      "vendor": "Anthropic",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Claude Cache",
+          "nameCN": "Claude 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.anthropic.claudefordesktop/",
+            "~/Library/Application Support/Claude/Cache/",
+            "~/Library/Application Support/Claude/CachedData/",
+            "~/Library/Application Support/Claude/Code Cache/",
+            "~/Library/Application Support/Claude/GPUCache/",
+            "~/Library/Application Support/Claude/Local Storage/"
+          ]
+        }
+      ]
+    },
+    "com.todesclient.unicorn": {
+      "bundleID": "com.todesclient.unicorn",
+      "appstoreBundleID": null,
+      "name": "Cursor",
+      "nameCN": "Cursor",
+      "vendor": "Cursor Inc",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Cursor Cache",
+          "nameCN": "Cursor 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.todesclient.unicorn/",
+            "~/Library/Application Support/Cursor/Cache/",
+            "~/Library/Application Support/Cursor/CachedData/",
+            "~/Library/Application Support/Cursor/Code Cache/",
+            "~/Library/Application Support/Cursor/GPUCache/",
+            "~/Library/Application Support/Cursor/Local Storage/",
+            "~/Library/Application Support/Cursor/Service Worker/CacheStorage/"
+          ]
+        },
+        {
+          "name": "Cursor Logs",
+          "nameCN": "Cursor 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Cursor/"
+          ]
+        },
+        {
+          "name": "Cursor Data",
+          "nameCN": "Cursor 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Cursor/"
+          ]
+        }
+      ]
+    },
+    "com.codeium.windsurf": {
+      "bundleID": "com.codeium.windsurf",
+      "appstoreBundleID": null,
+      "name": "Windsurf",
+      "nameCN": "Windsurf",
+      "vendor": "Codeium",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Windsurf Cache",
+          "nameCN": "Windsurf 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.codeium.windsurf/",
+            "~/Library/Application Support/Windsurf/Cache/",
+            "~/Library/Application Support/Windsurf/CachedData/",
+            "~/Library/Application Support/Windsurf/Code Cache/",
+            "~/Library/Application Support/Windsurf/GPUCache/",
+            "~/Library/Application Support/Windsurf/Local Storage/"
+          ]
+        },
+        {
+          "name": "Windsurf Logs",
+          "nameCN": "Windsurf 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Windsurf/"
+          ]
+        },
+        {
+          "name": "Windsurf Data",
+          "nameCN": "Windsurf 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Windsurf/"
+          ]
+        }
+      ]
+    },
+    "com.trae.app": {
+      "bundleID": "com.trae.app",
+      "appstoreBundleID": null,
+      "name": "Trae",
+      "nameCN": "Trae",
+      "vendor": "ByteDance",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Trae Cache",
+          "nameCN": "Trae 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.trae.app/",
+            "~/Library/Application Support/Trae/Cache/",
+            "~/Library/Application Support/Trae/CachedData/",
+            "~/Library/Application Support/Trae/Code Cache/",
+            "~/Library/Application Support/Trae/GPUCache/",
+            "~/Library/Application Support/Trae/Local Storage/"
+          ]
+        },
+        {
+          "name": "Trae Logs",
+          "nameCN": "Trae 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Trae/"
+          ]
+        },
+        {
+          "name": "Trae Data",
+          "nameCN": "Trae 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Trae/"
+          ]
+        }
+      ]
+    },
+    "com.openai.chat": {
+      "bundleID": "com.openai.chat",
+      "appstoreBundleID": null,
+      "name": "ChatGPT",
+      "nameCN": "ChatGPT",
+      "vendor": "OpenAI",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "ChatGPT Cache",
+          "nameCN": "ChatGPT 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.openai.chat/",
+            "~/Library/Application Support/com.openai.chat/Cache/",
+            "~/Library/Application Support/com.openai.chat/CachedData/",
+            "~/Library/Application Support/com.openai.chat/Code Cache/",
+            "~/Library/Application Support/com.openai.chat/GPUCache/",
+            "~/Library/Application Support/com.openai.chat/Local Storage/"
+          ]
+        },
+        {
+          "name": "ChatGPT Logs",
+          "nameCN": "ChatGPT 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.openai.chat/"
+          ]
+        },
+        {
+          "name": "ChatGPT Data",
+          "nameCN": "ChatGPT 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.openai.chat/"
+          ]
+        }
+      ]
+    },
+    "com.perplexity.perplexity": {
+      "bundleID": "com.perplexity.perplexity",
+      "appstoreBundleID": null,
+      "name": "Perplexity",
+      "nameCN": "Perplexity",
+      "vendor": "Perplexity",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Perplexity Cache",
+          "nameCN": "Perplexity 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.perplexity.perplexity/",
+            "~/Library/Application Support/Perplexity/Cache/",
+            "~/Library/Application Support/Perplexity/CachedData/",
+            "~/Library/Application Support/Perplexity/Code Cache/",
+            "~/Library/Application Support/Perplexity/GPUCache/",
+            "~/Library/Application Support/Perplexity/Local Storage/"
+          ]
+        },
+        {
+          "name": "Perplexity Logs",
+          "nameCN": "Perplexity 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Perplexity/"
+          ]
+        },
+        {
+          "name": "Perplexity Data",
+          "nameCN": "Perplexity 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Perplexity/"
+          ]
+        }
+      ]
+    },
+    "com.raycast.macos": {
+      "bundleID": "com.raycast.macos",
+      "appstoreBundleID": null,
+      "name": "Raycast",
+      "nameCN": "Raycast",
+      "vendor": "Raycast",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Raycast Cache",
+          "nameCN": "Raycast 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.raycast.macos/"
+          ]
+        },
+        {
+          "name": "Raycast Logs",
+          "nameCN": "Raycast 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Raycast/"
+          ]
+        },
+        {
+          "name": "Raycast Data",
+          "nameCN": "Raycast 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.raycast.macos/"
+          ]
+        }
+      ]
+    },
+    "com.macgpt.macgpt": {
+      "bundleID": "com.macgpt.macgpt",
+      "appstoreBundleID": null,
+      "name": "MacGPT",
+      "nameCN": "MacGPT",
+      "vendor": "MacGPT",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "MacGPT Cache",
+          "nameCN": "MacGPT 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.macgpt.macgpt/",
+            "~/Library/Application Support/MacGPT/Cache/",
+            "~/Library/Application Support/MacGPT/CachedData/",
+            "~/Library/Application Support/MacGPT/Code Cache/",
+            "~/Library/Application Support/MacGPT/GPUCache/"
+          ]
+        },
+        {
+          "name": "MacGPT Logs",
+          "nameCN": "MacGPT 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/MacGPT/"
+          ]
+        },
+        {
+          "name": "MacGPT Data",
+          "nameCN": "MacGPT 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/MacGPT/"
+          ]
+        }
+      ]
+    },
+    "com.electron.ollama": {
+      "bundleID": "com.electron.ollama",
+      "appstoreBundleID": null,
+      "name": "Ollama",
+      "nameCN": "Ollama",
+      "vendor": "Ollama",
+      "type": "developer",
+      "riskLevel": "recommended",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Ollama Cache",
+          "nameCN": "Ollama 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.electron.ollama/"
+          ]
+        },
+        {
+          "name": "Ollama App Data",
+          "nameCN": "Ollama 应用数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Ollama/"
+          ]
+        },
+        {
+          "name": "Ollama Logs",
+          "nameCN": "Ollama 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Ollama/"
+          ]
+        }
+      ]
+    },
+    "com.lmstudio.lmstudio": {
+      "bundleID": "com.lmstudio.lmstudio",
+      "appstoreBundleID": null,
+      "name": "LM Studio",
+      "nameCN": "LM Studio",
+      "vendor": "LM Studio",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "LM Studio Cache",
+          "nameCN": "LM Studio 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.lmstudio.lmstudio/"
+          ]
+        }
+      ]
+    },
+    "com.jan.jan": {
+      "bundleID": "com.jan.jan",
+      "appstoreBundleID": null,
+      "name": "Jan",
+      "nameCN": "Jan",
+      "vendor": "Jan",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Jan Cache",
+          "nameCN": "Jan 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.jan.jan/",
+            "~/Library/Application Support/Jan/Cache/",
+            "~/Library/Application Support/Jan/CachedData/",
+            "~/Library/Application Support/Jan/Code Cache/",
+            "~/Library/Application Support/Jan/GPUCache/"
+          ]
+        },
+        {
+          "name": "Jan Logs",
+          "nameCN": "Jan 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Jan/"
+          ]
+        }
+      ]
+    },
+    "com.nomic.gpt4all": {
+      "bundleID": "com.nomic.gpt4all",
+      "appstoreBundleID": null,
+      "name": "GPT4All",
+      "nameCN": "GPT4All",
+      "vendor": "Nomic",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "GPT4All Cache",
+          "nameCN": "GPT4All 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.nomic.gpt4all/"
+          ]
+        },
+        {
+          "name": "GPT4All Logs",
+          "nameCN": "GPT4All 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/nomic.ai/"
+          ]
+        }
+      ]
+    },
+    "com.jetbrains.toolbox": {
+      "bundleID": "com.jetbrains.toolbox",
+      "appstoreBundleID": null,
+      "name": "JetBrains Toolbox",
+      "nameCN": "JetBrains Toolbox",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Toolbox Cache",
+          "nameCN": "Toolbox 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.jetbrains.toolbox/"
+          ]
+        },
+        {
+          "name": "Toolbox Logs",
+          "nameCN": "Toolbox 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/JetBrains/Toolbox/"
+          ]
+        },
+        {
+          "name": "Toolbox Data",
+          "nameCN": "Toolbox 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/JetBrains/Toolbox/"
+          ]
+        }
+      ]
+    },
+    "com.jetbrains.pycharm": {
+      "bundleID": "com.jetbrains.pycharm",
+      "appstoreBundleID": null,
+      "name": "PyCharm",
+      "nameCN": "PyCharm",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "PyCharm Cache",
+          "nameCN": "PyCharm 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/JetBrains/PyCharm2024.2/",
+            "~/Library/Caches/JetBrains/PyCharm2024.3/",
+            "~/Library/Caches/JetBrains/PyCharm2025.1/",
+            "~/Library/Caches/JetBrains/PyCharm2025.2/",
+            "~/Library/Caches/JetBrains/PyCharmCE2024.2/",
+            "~/Library/Caches/JetBrains/PyCharmCE2024.3/",
+            "~/Library/Caches/JetBrains/PyCharmCE2025.1/",
+            "~/Library/Caches/JetBrains/PyCharmCE2025.2/"
+          ]
+        },
+        {
+          "name": "PyCharm Logs",
+          "nameCN": "PyCharm 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/JetBrains/PyCharm2024.2/",
+            "~/Library/Logs/JetBrains/PyCharm2024.3/",
+            "~/Library/Logs/JetBrains/PyCharm2025.1/",
+            "~/Library/Logs/JetBrains/PyCharm2025.2/"
+          ]
+        }
+      ]
+    },
+    "com.jetbrains.WebStorm": {
+      "bundleID": "com.jetbrains.WebStorm",
+      "appstoreBundleID": null,
+      "name": "WebStorm",
+      "nameCN": "WebStorm",
+      "vendor": "JetBrains",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "WebStorm Cache",
+          "nameCN": "WebStorm 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/JetBrains/WebStorm2024.2/",
+            "~/Library/Caches/JetBrains/WebStorm2024.3/",
+            "~/Library/Caches/JetBrains/WebStorm2025.1/",
+            "~/Library/Caches/JetBrains/WebStorm2025.2/"
+          ]
+        },
+        {
+          "name": "WebStorm Logs",
+          "nameCN": "WebStorm 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/JetBrains/WebStorm2024.2/",
+            "~/Library/Logs/JetBrains/WebStorm2024.3/",
+            "~/Library/Logs/JetBrains/WebStorm2025.1/",
+            "~/Library/Logs/JetBrains/WebStorm2025.2/"
+          ]
+        }
+      ]
+    },
+    "dev.zed.Zed": {
+      "bundleID": "dev.zed.Zed",
+      "appstoreBundleID": null,
+      "name": "Zed",
+      "nameCN": "Zed",
+      "vendor": "Zed",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Zed Cache",
+          "nameCN": "Zed 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/dev.zed.Zed/",
+            "~/Library/Application Support/Zed/Cache/"
+          ]
+        },
+        {
+          "name": "Zed Logs",
+          "nameCN": "Zed 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Zed/"
+          ]
+        },
+        {
+          "name": "Zed Data",
+          "nameCN": "Zed 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Zed/"
+          ]
+        }
+      ]
+    },
+    "com.google.antigravity": {
+      "bundleID": "com.google.antigravity",
+      "appstoreBundleID": null,
+      "name": "Antigravity",
+      "nameCN": "Antigravity",
+      "vendor": "Google",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "low",
+      "actions": [
+        {
+          "name": "Antigravity Cache",
+          "nameCN": "Antigravity 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.google.antigravity/",
+            "~/Library/Application Support/Antigravity/Cache/",
+            "~/Library/Application Support/Antigravity/CachedData/",
+            "~/Library/Application Support/Antigravity/Code Cache/",
+            "~/Library/Application Support/Antigravity/GPUCache/",
+            "~/Library/Application Support/Antigravity/Local Storage/"
+          ]
+        },
+        {
+          "name": "Antigravity Logs",
+          "nameCN": "Antigravity 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Antigravity/"
+          ]
+        },
+        {
+          "name": "Antigravity Data",
+          "nameCN": "Antigravity 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Antigravity/"
+          ]
+        }
+      ]
+    },
+    "company.thebrowser.daily": {
+      "bundleID": "company.thebrowser.daily",
+      "appstoreBundleID": null,
+      "name": "Arc",
+      "nameCN": "Arc",
+      "vendor": "The Browser Company",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Arc Browser Cache",
+          "nameCN": "Arc 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/company.thebrowser.daily/"
+          ]
+        },
+        {
+          "name": "Arc Browser Data",
+          "nameCN": "Arc 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Arc/"
+          ]
+        }
+      ]
+    },
+    "com.kagi.kagimacOS": {
+      "bundleID": "com.kagi.kagimacOS",
+      "appstoreBundleID": null,
+      "name": "Orion",
+      "nameCN": "Orion",
+      "vendor": "Kagi",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Orion Browser Cache",
+          "nameCN": "Orion 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.kagi.kagimacOS/"
+          ]
+        },
+        {
+          "name": "Orion Browser Data",
+          "nameCN": "Orion 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.kagi.kagimacOS/"
+          ]
+        }
+      ]
+    },
+    "com.sigmaos.macos": {
+      "bundleID": "com.sigmaos.macos",
+      "appstoreBundleID": null,
+      "name": "SigmaOS",
+      "nameCN": "SigmaOS",
+      "vendor": "SigmaOS",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "SigmaOS Browser Cache",
+          "nameCN": "SigmaOS 浏览器缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.sigmaos.macos/"
+          ]
+        },
+        {
+          "name": "SigmaOS Browser Data",
+          "nameCN": "SigmaOS 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.sigmaos.macos/"
+          ]
+        }
+      ]
+    },
+    "com.docker.docker": {
+      "bundleID": "com.docker.docker",
+      "appstoreBundleID": null,
+      "name": "Docker Desktop",
+      "nameCN": "Docker Desktop",
+      "vendor": "Docker",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Docker Desktop Cache",
+          "nameCN": "Docker 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.docker.docker/Data/Library/Caches/"
+          ]
+        },
+        {
+          "name": "Docker Desktop Logs",
+          "nameCN": "Docker 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/com.docker.docker/Data/Library/Logs/"
+          ]
+        },
+        {
+          "name": "Docker Desktop Data",
+          "nameCN": "Docker 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Group Containers/group.com.docker/"
+          ]
+        }
+      ]
+    },
+    "dev.orbstack.OrbStack": {
+      "bundleID": "dev.orbstack.OrbStack",
+      "appstoreBundleID": null,
+      "name": "OrbStack",
+      "nameCN": "OrbStack",
+      "vendor": "OrbStack",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "OrbStack Cache",
+          "nameCN": "OrbStack 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/dev.orbstack.OrbStack/"
+          ]
+        },
+        {
+          "name": "OrbStack Data",
+          "nameCN": "OrbStack 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/OrbStack/"
+          ]
+        }
+      ]
+    },
+    "abiosoft.colima": {
+      "bundleID": "abiosoft.colima",
+      "appstoreBundleID": null,
+      "name": "Colima",
+      "nameCN": "Colima",
+      "vendor": "Colima",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Colima Data",
+          "nameCN": "Colima 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/Colima/"
+          ]
+        }
+      ]
+    },
+    "io.podman_desktop.PodmanDesktop": {
+      "bundleID": "io.podman_desktop.PodmanDesktop",
+      "appstoreBundleID": null,
+      "name": "Podman Desktop",
+      "nameCN": "Podman Desktop",
+      "vendor": "Red Hat",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Podman Desktop Cache",
+          "nameCN": "Podman Desktop 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/io.podman_desktop.PodmanDesktop/"
+          ]
+        },
+        {
+          "name": "Podman Desktop Data",
+          "nameCN": "Podman Desktop 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/io.podman_desktop.PodmanDesktop/"
+          ]
+        }
+      ]
+    },
+    "dev.warp.Warp-Stable": {
+      "bundleID": "dev.warp.Warp-Stable",
+      "appstoreBundleID": null,
+      "name": "Warp",
+      "nameCN": "Warp",
+      "vendor": "Warp",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Warp Cache",
+          "nameCN": "Warp 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/dev.warp.Warp-Stable/"
+          ]
+        },
+        {
+          "name": "Warp Data",
+          "nameCN": "Warp 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/dev.warp.Warp-Stable/"
+          ]
+        }
+      ]
+    },
+    "com.mitchellh.ghostty": {
+      "bundleID": "com.mitchellh.ghostty",
+      "appstoreBundleID": null,
+      "name": "Ghostty",
+      "nameCN": "Ghostty",
+      "vendor": "Ghostty",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Ghostty Data",
+          "nameCN": "Ghostty 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.mitchellh.ghostty/"
+          ]
+        }
+      ]
+    },
+    "com.raphaelamorim.rio": {
+      "bundleID": "com.raphaelamorim.rio",
+      "appstoreBundleID": null,
+      "name": "Rio",
+      "nameCN": "Rio",
+      "vendor": "Rio",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Rio Data",
+          "nameCN": "Rio 数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/com.raphaelamorim.rio/"
+          ]
+        }
+      ]
+    },
+    "fig.tools.client": {
+      "bundleID": "fig.tools.client",
+      "appstoreBundleID": null,
+      "name": "Fig",
+      "nameCN": "Fig",
+      "vendor": "Fig",
+      "type": "developer",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Fig Cache",
+          "nameCN": "Fig 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/fig.tools.client/"
+          ]
+        },
+        {
+          "name": "Fig Data",
+          "nameCN": "Fig 用户数据",
+          "type": "soft",
+          "paths": [
+            "~/Library/Application Support/fig/"
+          ]
+        }
+      ]
+    },
+    "com.hnc.Discord": {
+      "bundleID": "com.hnc.Discord",
+      "appstoreBundleID": null,
+      "name": "Discord",
+      "nameCN": "Discord",
+      "vendor": "Discord",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Discord Cache",
+          "nameCN": "Discord 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.hnc.Discord/",
+            "~/Library/Application Support/discord/Cache/",
+            "~/Library/Application Support/discord/CachedData/",
+            "~/Library/Application Support/discord/Code Cache/",
+            "~/Library/Application Support/discord/GPUCache/",
+            "~/Library/Application Support/discord/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "com.microsoft.teams": {
+      "bundleID": "com.microsoft.teams",
+      "appstoreBundleID": null,
+      "name": "Microsoft Teams",
+      "nameCN": "Microsoft Teams",
+      "vendor": "Microsoft",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Teams Cache",
+          "nameCN": "Teams 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.microsoft.teams/",
+            "~/Library/Application Support/Microsoft/Teams/Cache/",
+            "~/Library/Application Support/Microsoft/Teams/CachedData/",
+            "~/Library/Application Support/Microsoft/Teams/Code Cache/",
+            "~/Library/Application Support/Microsoft/Teams/GPUCache/",
+            "~/Library/Application Support/Microsoft/Teams/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "org.telegram.desktop": {
+      "bundleID": "org.telegram.desktop",
+      "appstoreBundleID": null,
+      "name": "Telegram Desktop",
+      "nameCN": "Telegram",
+      "vendor": "Telegram",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Telegram Cache",
+          "nameCN": "Telegram 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/org.telegram.desktop/",
+            "~/Library/Application Support/Telegram Desktop/tdata/user_data/cache/"
+          ]
+        }
+      ]
+    },
+    "org.whispersystems.signal-desktop": {
+      "bundleID": "org.whispersystems.signal-desktop",
+      "appstoreBundleID": null,
+      "name": "Signal Desktop",
+      "nameCN": "Signal",
+      "vendor": "Signal",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Signal Cache",
+          "nameCN": "Signal 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/org.whispersystems.signal-desktop/",
+            "~/Library/Application Support/Signal/Cache/",
+            "~/Library/Application Support/Signal/CachedData/",
+            "~/Library/Application Support/Signal/Code Cache/",
+            "~/Library/Application Support/Signal/GPUCache/",
+            "~/Library/Application Support/Signal/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "com.bytedance.lark": {
+      "bundleID": "com.bytedance.lark",
+      "appstoreBundleID": null,
+      "name": "Lark",
+      "nameCN": "飞书",
+      "vendor": "ByteDance",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Lark Cache",
+          "nameCN": "飞书缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.bytedance.lark/",
+            "~/Library/Application Support/Lark/Cache/",
+            "~/Library/Application Support/Lark/CachedData/",
+            "~/Library/Application Support/Lark/Code Cache/",
+            "~/Library/Application Support/Lark/GPUCache/",
+            "~/Library/Application Support/Lark/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "com.bytedance.feishu": {
+      "bundleID": "com.bytedance.feishu",
+      "appstoreBundleID": null,
+      "name": "Feishu",
+      "nameCN": "飞书",
+      "vendor": "ByteDance",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "Feishu Cache",
+          "nameCN": "飞书缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.bytedance.feishu/",
+            "~/Library/Application Support/feishu/Cache/",
+            "~/Library/Application Support/feishu/CachedData/",
+            "~/Library/Application Support/feishu/Code Cache/",
+            "~/Library/Application Support/feishu/GPUCache/",
+            "~/Library/Application Support/feishu/Service Worker/CacheStorage/"
+          ]
+        }
+      ]
+    },
+    "net.whatsapp.WhatsApp": {
+      "bundleID": "net.whatsapp.WhatsApp",
+      "appstoreBundleID": null,
+      "name": "WhatsApp",
+      "nameCN": "WhatsApp",
+      "vendor": "WhatsApp",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium",
+      "actions": [
+        {
+          "name": "WhatsApp Cache",
+          "nameCN": "WhatsApp 缓存",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Caches/"
+          ]
+        },
+        {
+          "name": "WhatsApp Logs",
+          "nameCN": "WhatsApp 日志",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Logs/"
+          ]
+        }
+      ]
+    },
+    "org.115Browser.115Browser": {
+      "bundleID": "org.115Browser.115Browser",
+      "appstoreBundleID": null,
+      "nameCN": "115浏览器",
+      "name": "115Browser",
+      "actions": [
+        {
+          "nameCN": "115浏览器缓存",
+          "name": "115Browser Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/115Browser/Default/",
+            "~/Library/Application Support/115Browser/ShaderCache/"
+          ]
+        }
+      ],
+      "vendor": "115 科技",
+      "type": "browser",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.baidu.BaiduNetdisk-mac": {
+      "bundleID": "com.baidu.BaiduNetdisk-mac",
+      "appstoreBundleID": null,
+      "nameCN": "百度网盘",
+      "name": "Baidu Netdisk",
+      "actions": [
+        {
+          "nameCN": "百度网盘崩溃日志",
+          "name": "Baidu Netdisk Crash Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/com.baidu.BaiduNetdisk-mac/crash logs/"
+          ]
+        }
+      ],
+      "vendor": "百度",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.ScooterSoftware.BeyondCompare": {
+      "bundleID": "com.ScooterSoftware.BeyondCompare",
+      "appstoreBundleID": null,
+      "nameCN": "Beyond Compare",
+      "name": "Beyond Compare",
+      "actions": [
+        {
+          "nameCN": "Beyond Compare 日志",
+          "name": "Beyond Compare Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.ScooterSoftware.BeyondCompare/"
+          ]
+        }
+      ],
+      "vendor": "Scooter Software",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.ccswitch.desktop": {
+      "bundleID": "com.ccswitch.desktop",
+      "appstoreBundleID": null,
+      "nameCN": "CC Switch",
+      "name": "CC Switch",
+      "actions": [
+        {
+          "nameCN": "CC Switch 日志",
+          "name": "CC Switch Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.ccswitch.desktop/"
+          ]
+        }
+      ],
+      "vendor": "CC Switch",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "org.cmake.cmake": {
+      "bundleID": "org.cmake.cmake",
+      "appstoreBundleID": null,
+      "nameCN": "CMake",
+      "name": "CMake",
+      "actions": [
+        {
+          "nameCN": "CMake 日志",
+          "name": "CMake Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/org.cmake.cmake/"
+          ]
+        }
+      ],
+      "vendor": "Kitware",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.xk72.Charles": {
+      "bundleID": "com.xk72.Charles",
+      "appstoreBundleID": null,
+      "nameCN": "Charles",
+      "name": "Charles",
+      "actions": [
+        {
+          "nameCN": "Charles 日志",
+          "name": "Charles Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.xk72.Charles/"
+          ]
+        }
+      ],
+      "vendor": "XK72 Ltd",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.tencent.codebuddycn": {
+      "bundleID": "com.tencent.codebuddycn",
+      "appstoreBundleID": null,
+      "nameCN": "腾讯云代码助手",
+      "name": "CodeBuddy CN",
+      "actions": [
+        {
+          "nameCN": "CodeBuddy CN 缓存",
+          "name": "CodeBuddy CN Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/CodeBuddy CN/Cache/",
+            "~/Library/Application Support/CodeBuddy CN/CachedData/",
+            "~/Library/Application Support/CodeBuddy CN/CachedProfilesData/",
+            "~/Library/Application Support/CodeBuddy CN/Code Cache/",
+            "~/Library/Application Support/CodeBuddy CN/GPUCache/",
+            "~/Library/Application Support/CodeBuddy CN/DawnGraphiteCache/",
+            "~/Library/Application Support/CodeBuddy CN/DawnWebGPUCache/"
+          ]
+        }
+      ],
+      "vendor": "腾讯",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "net.sourceforge.sqlitebrowser": {
+      "bundleID": "net.sourceforge.sqlitebrowser",
+      "appstoreBundleID": null,
+      "nameCN": "DB Browser for SQLite",
+      "name": "DB Browser for SQLite",
+      "actions": [
+        {
+          "nameCN": "DB Browser for SQLite 日志",
+          "name": "DB Browser for SQLite Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/net.sourceforge.sqlitebrowser/"
+          ]
+        }
+      ],
+      "vendor": "DB4S Team",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.fiplab.appshredder": {
+      "bundleID": "com.fiplab.appshredder",
+      "appstoreBundleID": null,
+      "nameCN": "Delete Apps",
+      "name": "Delete Apps",
+      "actions": [
+        {
+          "nameCN": "Delete Apps 缓存",
+          "name": "Delete Apps Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.fiplab.appshredder/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Fiplab",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.bot.neotix.doubao": {
+      "bundleID": "com.bot.neotix.doubao",
+      "appstoreBundleID": null,
+      "nameCN": "豆包",
+      "name": "Doubao",
+      "actions": [
+        {
+          "nameCN": "豆包缓存",
+          "name": "Doubao Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.bot.neotix.doubao/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "字节跳动",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.trendmicro.DrUnzip": {
+      "bundleID": "com.trendmicro.DrUnzip",
+      "appstoreBundleID": null,
+      "nameCN": "Dr.Unarchiver",
+      "name": "Dr.Unarchiver",
+      "actions": [
+        {
+          "nameCN": "Dr.Unarchiver 缓存",
+          "name": "Dr.Unarchiver Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.trendmicro.DrUnzip/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Trend Micro",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.getdropbox.dropbox": {
+      "bundleID": "com.getdropbox.dropbox",
+      "appstoreBundleID": null,
+      "nameCN": "Dropbox",
+      "name": "Dropbox",
+      "actions": [
+        {
+          "nameCN": "Dropbox 更新缓存",
+          "name": "Dropbox Updater Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.dropbox.DropboxMacUpdate/"
+          ]
+        },
+        {
+          "nameCN": "Dropbox 更新日志",
+          "name": "Dropbox Updater Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/Dropbox/DropboxMacUpdate/logs/"
+          ]
+        }
+      ],
+      "vendor": "Dropbox",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.tencent.Foxmail": {
+      "bundleID": "com.tencent.Foxmail",
+      "appstoreBundleID": null,
+      "nameCN": "Foxmail 邮箱",
+      "name": "Foxmail",
+      "actions": [
+        {
+          "nameCN": "Foxmail 缓存",
+          "name": "Foxmail Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.Foxmail/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "腾讯",
+      "type": "mail",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.cryptic-apps.hopper-web-4": {
+      "bundleID": "com.cryptic-apps.hopper-web-4",
+      "appstoreBundleID": null,
+      "nameCN": "Hopper 反汇编器",
+      "name": "Hopper Disassembler",
+      "actions": [
+        {
+          "nameCN": "Hopper 日志",
+          "name": "Hopper Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.cryptic-apps.hopper-web-4/"
+          ]
+        }
+      ],
+      "vendor": "Cryptic Apps",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.microsoft.Powerpoint": {
+      "bundleID": "com.microsoft.Powerpoint",
+      "appstoreBundleID": null,
+      "nameCN": "微软演示文稿",
+      "name": "Microsoft PowerPoint",
+      "actions": [
+        {
+          "nameCN": "PowerPoint 缓存",
+          "name": "PowerPoint Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.microsoft.Powerpoint/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Microsoft",
+      "type": "office",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.microsoft.rdc.macos": {
+      "bundleID": "com.microsoft.rdc.macos",
+      "appstoreBundleID": null,
+      "nameCN": "微软远程桌面",
+      "name": "Microsoft Remote Desktop",
+      "actions": [
+        {
+          "nameCN": "远程桌面缓存",
+          "name": "Remote Desktop Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.microsoft.rdc.macos/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Microsoft",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.microsoft.Word": {
+      "bundleID": "com.microsoft.Word",
+      "appstoreBundleID": null,
+      "nameCN": "微软文字处理",
+      "name": "Microsoft Word",
+      "actions": [
+        {
+          "nameCN": "Word 缓存",
+          "name": "Word Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.microsoft.Word/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Microsoft",
+      "type": "office",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.MockingBot.MockingBotMAC": {
+      "bundleID": "com.MockingBot.MockingBotMAC",
+      "appstoreBundleID": null,
+      "nameCN": "MockingBot 蓝湖",
+      "name": "MockingBot",
+      "actions": [
+        {
+          "nameCN": "MockingBot 缓存",
+          "name": "MockingBot Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/MockingBot/Cache/",
+            "~/Library/Application Support/MockingBot/GPUCache/"
+          ]
+        },
+        {
+          "nameCN": "MockingBot 日志",
+          "name": "MockingBot Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/MockingBot/",
+            "~/Library/Application Support/MockingBot/webrtc_event_logs/"
+          ]
+        }
+      ],
+      "vendor": "蓝湖",
+      "type": "design",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "org.outline.macos.client": {
+      "bundleID": "org.outline.macos.client",
+      "appstoreBundleID": null,
+      "nameCN": "Outline",
+      "name": "Outline",
+      "actions": [
+        {
+          "nameCN": "Outline 缓存",
+          "name": "Outline Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/org.outline.macos.client/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Jigsaw",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.postmanlabs.mac": {
+      "bundleID": "com.postmanlabs.mac",
+      "appstoreBundleID": null,
+      "nameCN": "Postman",
+      "name": "Postman",
+      "actions": [
+        {
+          "nameCN": "Postman 缓存",
+          "name": "Postman Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/Postman/Cache/",
+            "~/Library/Application Support/Postman/GPUCache/"
+          ]
+        },
+        {
+          "nameCN": "Postman 日志",
+          "name": "Postman Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Postman/",
+            "~/Library/Application Support/Postman/logs/"
+          ]
+        }
+      ],
+      "vendor": "Postman",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.initex.proxifier.macosx": {
+      "bundleID": "com.initex.proxifier.macosx",
+      "appstoreBundleID": null,
+      "nameCN": "Proxifier",
+      "name": "Proxifier",
+      "actions": [
+        {
+          "nameCN": "Proxifier 日志",
+          "name": "Proxifier Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Proxifier/"
+          ]
+        }
+      ],
+      "vendor": "Initex",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.alibaba.tongyi": {
+      "bundleID": "com.alibaba.tongyi",
+      "appstoreBundleID": null,
+      "nameCN": "通义千问",
+      "name": "Qianwen",
+      "actions": [
+        {
+          "nameCN": "通义千问缓存",
+          "name": "Qianwen Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/Qianwen/",
+            "~/Library/Application Support/Qianwen/GrShaderCache/",
+            "~/Library/Application Support/Qianwen/ShaderCache/",
+            "~/Library/Application Support/Qianwen/component_crx_cache/"
+          ]
+        },
+        {
+          "nameCN": "通义千问日志",
+          "name": "Qianwen Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/Qianwen/ulog/"
+          ]
+        }
+      ],
+      "vendor": "阿里巴巴",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "clowwindy.ShadowsocksX": {
+      "bundleID": "clowwindy.ShadowsocksX",
+      "appstoreBundleID": null,
+      "nameCN": "ShadowsocksX",
+      "name": "ShadowsocksX",
+      "actions": [
+        {
+          "nameCN": "ShadowsocksX 缓存",
+          "name": "ShadowsocksX Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/clowwindy.ShadowsocksX/"
+          ]
+        }
+      ],
+      "vendor": "clowwindy",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.sogou.SogouInputSwitchHelper": {
+      "bundleID": "com.sogou.SogouInputSwitchHelper",
+      "appstoreBundleID": null,
+      "nameCN": "搜狗输入法",
+      "name": "Sogou Input Switch Helper",
+      "actions": [
+        {
+          "nameCN": "搜狗输入法缓存",
+          "name": "Sogou Input Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.sogou.SogouInputSwitchHelper/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "搜狗",
+      "type": "inputmethod",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.torusknot.SourceTreeNotMAS": {
+      "bundleID": "com.torusknot.SourceTreeNotMAS",
+      "appstoreBundleID": null,
+      "nameCN": "Sourcetree",
+      "name": "Sourcetree",
+      "actions": [
+        {
+          "nameCN": "Sourcetree 图片缓存",
+          "name": "Sourcetree Image Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/SourceTree/ImageCache/"
+          ]
+        }
+      ],
+      "vendor": "Atlassian",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "org.springframework.boot.ide.branding.sts4": {
+      "bundleID": "org.springframework.boot.ide.branding.sts4",
+      "appstoreBundleID": null,
+      "nameCN": "Spring Tool Suite 4",
+      "name": "Spring Tool Suite 4",
+      "actions": [
+        {
+          "nameCN": "STS4 日志",
+          "name": "STS4 Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/org.springframework.boot.ide.branding.sts4/"
+          ]
+        }
+      ],
+      "vendor": "VMware",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.surfshark.vpnclient.macos.direct": {
+      "bundleID": "com.surfshark.vpnclient.macos.direct",
+      "appstoreBundleID": null,
+      "nameCN": "Surfshark",
+      "name": "Surfshark",
+      "actions": [
+        {
+          "nameCN": "Surfshark 缓存",
+          "name": "Surfshark Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.surfshark.vpnclient.macos.direct/"
+          ]
+        }
+      ],
+      "vendor": "Surfshark",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.tencent.Lemon": {
+      "bundleID": "com.tencent.Lemon",
+      "appstoreBundleID": null,
+      "nameCN": "腾讯柠檬清理",
+      "name": "Tencent Lemon Cleaner",
+      "actions": [
+        {
+          "nameCN": "柠檬清理缓存",
+          "name": "Lemon Cleaner Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.tencent.Lemon/"
+          ]
+        },
+        {
+          "nameCN": "柠檬清理日志",
+          "name": "Lemon Cleaner Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/Lemon/",
+            "~/Library/Logs/Tencent Lemon.log"
+          ]
+        }
+      ],
+      "vendor": "腾讯",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.tencent.meeting": {
+      "bundleID": "com.tencent.meeting",
+      "appstoreBundleID": null,
+      "nameCN": "腾讯会议",
+      "name": "Tencent Meeting",
+      "actions": [
+        {
+          "nameCN": "腾讯会议缓存",
+          "name": "Tencent Meeting Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.tencent.meeting/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "腾讯",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.culturedcode.ThingsMac": {
+      "bundleID": "com.culturedcode.ThingsMac",
+      "appstoreBundleID": null,
+      "nameCN": "Things 3",
+      "name": "Things 3",
+      "actions": [
+        {
+          "nameCN": "Things 缓存",
+          "name": "Things Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.culturedcode.ThingsMac/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Cultured Code",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.vmware.fusion": {
+      "bundleID": "com.vmware.fusion",
+      "appstoreBundleID": null,
+      "nameCN": "VMware Fusion",
+      "name": "VMware Fusion",
+      "actions": [
+        {
+          "nameCN": "VMware Fusion 日志",
+          "name": "VMware Fusion Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/VMware/"
+          ]
+        }
+      ],
+      "vendor": "VMware",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.vscode.weterm": {
+      "bundleID": "com.vscode.weterm",
+      "appstoreBundleID": null,
+      "nameCN": "WeTERM",
+      "name": "WeTERM",
+      "actions": [
+        {
+          "nameCN": "WeTERM 缓存",
+          "name": "WeTERM Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/WeTERM/Cache/",
+            "~/Library/Application Support/WeTERM/CachedData/",
+            "~/Library/Application Support/WeTERM/CachedExtensions/",
+            "~/Library/Application Support/WeTERM/Code Cache/",
+            "~/Library/Application Support/WeTERM/GPUCache/"
+          ]
+        },
+        {
+          "nameCN": "WeTERM 日志",
+          "name": "WeTERM Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/WeTERM/logs/"
+          ]
+        }
+      ],
+      "vendor": "WeTERM",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.tencent.mac.weiyun": {
+      "bundleID": "com.tencent.mac.weiyun",
+      "appstoreBundleID": null,
+      "nameCN": "腾讯微云",
+      "name": "Tencent Weiyun",
+      "actions": [
+        {
+          "nameCN": "微云缓存",
+          "name": "Weiyun Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Application Support/WeiyunApp/Cache/",
+            "~/Library/Application Support/WeiyunApp/GPUCache/",
+            "~/Library/Application Support/WeiyunApp/Code Cache/",
+            "~/Library/Application Support/WeiyunApp/blob_storage/"
+          ]
+        },
+        {
+          "nameCN": "微云日志",
+          "name": "Weiyun Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/WeiyunApp/",
+            "~/Library/Application Support/Weiyun/login.log"
+          ]
+        }
+      ],
+      "vendor": "腾讯",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "org.wireshark.Wireshark": {
+      "bundleID": "org.wireshark.Wireshark",
+      "appstoreBundleID": null,
+      "nameCN": "Wireshark",
+      "name": "Wireshark",
+      "actions": [
+        {
+          "nameCN": "Wireshark 日志",
+          "name": "Wireshark Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/org.wireshark.Wireshark/"
+          ]
+        }
+      ],
+      "vendor": "Wireshark Foundation",
+      "type": "network",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.xiaomi.xmrouter": {
+      "bundleID": "com.xiaomi.xmrouter",
+      "appstoreBundleID": null,
+      "nameCN": "小米路由器",
+      "name": "XMRouter",
+      "actions": [
+        {
+          "nameCN": "小米路由器缓存",
+          "name": "XMRouter Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Caches/com.xiaomi.xmrouter/"
+          ]
+        }
+      ],
+      "vendor": "小米",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.youdao.note.YoudaoNoteMac": {
+      "bundleID": "com.youdao.note.YoudaoNoteMac",
+      "appstoreBundleID": null,
+      "nameCN": "有道云笔记",
+      "name": "Youdao Note",
+      "actions": [
+        {
+          "nameCN": "有道云笔记缓存",
+          "name": "Youdao Note Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/com.youdao.note.YoudaoNoteMac/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "网易",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "net.toolinbox.ihosts": {
+      "bundleID": "net.toolinbox.ihosts",
+      "appstoreBundleID": null,
+      "nameCN": "iHosts",
+      "name": "iHosts",
+      "actions": [
+        {
+          "nameCN": "iHosts 缓存",
+          "name": "iHosts Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/net.toolinbox.ihosts/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Toolinbox",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "cn.better365.ishot": {
+      "bundleID": "cn.better365.ishot",
+      "appstoreBundleID": null,
+      "nameCN": "iShot 截图",
+      "name": "iShot",
+      "actions": [
+        {
+          "nameCN": "iShot 缓存",
+          "name": "iShot Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/cn.better365.ishot/Data/Library/Caches/"
+          ]
+        }
+      ],
+      "vendor": "Better365",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "com.googlecode.iterm2": {
+      "bundleID": "com.googlecode.iterm2",
+      "appstoreBundleID": null,
+      "nameCN": "iTerm2",
+      "name": "iTerm2",
+      "actions": [
+        {
+          "nameCN": "iTerm2 日志",
+          "name": "iTerm2 Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.googlecode.iterm2/"
+          ]
+        }
+      ],
+      "vendor": "iTerm2",
+      "type": "devtools",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.krightmenu.app": {
+      "bundleID": "com.krightmenu.app",
+      "appstoreBundleID": null,
+      "nameCN": "kRightMenu",
+      "name": "kRightMenu",
+      "actions": [
+        {
+          "nameCN": "kRightMenu 日志",
+          "name": "kRightMenu Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Logs/com.krightmenu.app/"
+          ]
+        }
+      ],
+      "vendor": "kRightMenu",
+      "type": "utility",
+      "riskLevel": "caution",
+      "confidence": "low"
+    },
+    "com.yinxiang.Mac": {
+      "bundleID": "com.yinxiang.Mac",
+      "appstoreBundleID": null,
+      "nameCN": "印象笔记",
+      "name": "Evernote",
+      "actions": [
+        {
+          "nameCN": "印象笔记日志",
+          "name": "Evernote Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Application Support/com.yinxiang.Mac/logs/",
+            "~/Library/Logs/SparkleEvernoteUpdateLog.log"
+          ]
+        }
+      ],
+      "vendor": "印象笔记",
+      "type": "productivity",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    },
+    "5ZSL2CJU2T.com.dingtalk.mac": {
+      "bundleID": "5ZSL2CJU2T.com.dingtalk.mac",
+      "appstoreBundleID": null,
+      "nameCN": "钉钉",
+      "name": "DingTalk",
+      "actions": [
+        {
+          "nameCN": "钉钉缓存",
+          "name": "DingTalk Cache",
+          "type": "appcache",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/5ZSL2CJU2T.com.dingtalk.mac/",
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Caches/com.tencent.xinWeChat/5ZSL2CJU2T.com.dingtalk.mac/"
+          ]
+        },
+        {
+          "nameCN": "钉钉日志",
+          "name": "DingTalk Logs",
+          "type": "file",
+          "paths": [
+            "~/Library/Containers/5ZSL2CJU2T.com.dingtalk.mac/Data/Library/Application Support/DingTalkMac/log/"
+          ]
+        }
+      ],
+      "vendor": "阿里巴巴",
+      "type": "chat",
+      "riskLevel": "caution",
+      "confidence": "medium"
+    }
+  }
+}

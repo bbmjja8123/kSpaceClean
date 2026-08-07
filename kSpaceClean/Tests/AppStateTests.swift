@@ -5,7 +5,7 @@ import XCTest
 final class AppStateTests: XCTestCase {
     func test_initialState() {
         let state = AppState()
-        XCTAssertEqual(state.navigation, .galaxy)
+        XCTAssertEqual(state.navigation, .scan)
         XCTAssertEqual(state.scanState, .idle)
         XCTAssertTrue(state.rightPanelVisible)
         XCTAssertEqual(state.rightPanelTab, .overview)
@@ -53,7 +53,7 @@ final class AppStateTests: XCTestCase {
     }
 
     func test_NavigationItem_allCases() {
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 11)
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 4)
     }
 
     func test_NavigationItem_tooltip_notEmpty() {

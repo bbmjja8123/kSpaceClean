@@ -1,65 +1,33 @@
+// kSpaceClean/Features/Cleanup/CleanupHistory.swift
+//
+// Task C2 — migrated `CleanupHistory` to read the new `CleanupHistoryItem` table.
+//
+// Previously this file exposed a `@MainActor CleanupHistory` that wrote and read
+// the legacy `CleanupRecord` entity. C1 introduced `CleanupHistoryItem`; this
+// file now exposes a read-only `CleanupHistoryReader` that surfaces those rows
+// to the History tab and to the cleanup view-model. Writes happen inside the
+// engine (Task C2) via `PersistenceController.insertHistory`.
 import CoreData
+import Foundation
 
+/// Read-only view over the `CleanupHistoryItem` table for the History tab.
 @MainActor
 public final class CleanupHistory {
-    private let stack = CoreDataStack.shared
+    private let persistence: PersistenceController
 
-    public init() {}
-
-    public func recordCleanup(snapshot: TrashSnapshot) {
-        let ctx = stack.backgroundContext()
-        ctx.perform {
-            let record = CleanupRecord(context: ctx)
-            record.id = UUID()
-            record.cleanedAt = Date()
-            record.totalBytes = snapshot.fileSize
-            record.isRestored = false
-
-            let entry = FileEntry(context: ctx)
-            entry.id = UUID()
-            entry.path = snapshot.originalPath
-            entry.size = snapshot.fileSize
-            entry.category = ""
-            entry.confidence = 0
-            record.entries = NSSet(object: entry)
-
-            try? ctx.save()
-        }
+    public init(persistence: PersistenceController = .shared) {
+        self.persistence = persistence
     }
 
-    public func restore(record: CleanupRecord) async -> Bool {
-        guard let entries = record.entries?.allObjects as? [FileEntry] else { return false }
-        var allRestored = true
-        for entry in entries {
-            let trashDir = FileManager.default.trashDirectory
-            let originalURL = URL(fileURLWithPath: entry.path ?? "")
-            let trashURL = trashDir?.appendingPathComponent(originalURL.lastPathComponent) ?? originalURL
-            let fm = FileManager.default
-
-            if fm.fileExists(atPath: trashURL.path) {
-                try? fm.createDirectory(at: originalURL.deletingLastPathComponent(),
-                                        withIntermediateDirectories: true)
-                do {
-                    try fm.moveItem(at: trashURL, to: originalURL)
-                } catch {
-                    allRestored = false
-                }
-            }
-        }
-        if allRestored {
-            let ctx = stack.backgroundContext()
-            await ctx.perform {
-                record.isRestored = true
-                try? ctx.save()
-            }
-        }
-        return allRestored
+    /// Fetch recent history rows newest-first.
+    /// - Parameter limit: maximum rows to return; `0` means unlimited.
+    public func fetchRecent(limit: Int = 50) -> [CleanupHistoryItem] {
+        persistence.fetchHistory(limit: limit)
     }
 
-    public func fetchRecent(limit: Int = 50) -> [CleanupRecord] {
-        let fetch = CleanupRecord.fetchRequest()
-        fetch.sortDescriptors = [NSSortDescriptor(key: "cleanedAt", ascending: false)]
-        fetch.fetchLimit = limit
-        return (try? stack.viewContext.fetch(fetch)) ?? []
+    /// Sum of `size` across every history row — the total bytes the user has
+    /// cleaned since the app was installed (or since the 30-day window).
+    public func totalBytesFreed() -> Int64 {
+        fetchRecent(limit: 0).reduce(0) { $0 + $1.size }
     }
 }

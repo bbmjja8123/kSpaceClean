@@ -170,7 +170,7 @@ struct ScanContentView: View {
     // MARK: - Completed / Cancelled / Failed
 
     private var completedState: some View {
-        ScanResultsTreeView(viewModel: viewModel)
+        ScanResultsTwoColumnView(viewModel: viewModel)
             .frame(maxHeight: .infinity)
     }
 

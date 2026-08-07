@@ -20,6 +20,21 @@ struct OverviewTabView: View {
     @EnvironmentObject var appState: AppState
     @ObservedObject var scanViewModel: ScanViewModel
     @StateObject private var overviewVM = OverviewViewModel()
+    /// Memoized top-3 priority actions, lifted out of the view body so
+    /// the previous `flatMap → sort → prefix` chain does not run on
+    /// every body invalidation. Refreshed on appear and on
+    /// `scanDidComplete`.
+    @State private var topActions: [ActionGroup] = []
+
+    /// Rebuilds `topActions` from the current `scanViewModel.resultGroups`.
+    /// Cheap — at most `resultGroups.count * actionGroups.count` items.
+    private func refreshTopActions() {
+        topActions = scanViewModel.resultGroups
+            .flatMap { $0.actionGroups }
+            .sorted { $0.totalSize > $1.totalSize }
+            .prefix(3)
+            .map { $0 }
+    }
 
     var body: some View {
         ScrollView {
@@ -48,8 +63,14 @@ struct OverviewTabView: View {
             }
             .padding(AppSpacing.md)
         }
-        .onAppear { overviewVM.refresh() }
-        .onReceive(scanViewModel.$scanDidComplete) { _ in overviewVM.refresh() }
+        .onAppear {
+            overviewVM.refresh()
+            refreshTopActions()
+        }
+        .onReceive(scanViewModel.$scanDidComplete) { _ in
+            overviewVM.refresh()
+            refreshTopActions()
+        }
     }
 
     private var emptyState: some View {
@@ -99,12 +120,6 @@ struct OverviewTabView: View {
             Text("按影响力排序建议")
                 .font(.system(size: 13, weight: .bold))
                 .foregroundColor(.textPrimary)
-
-            // Flatten action groups and sort by size
-            let topActions = scanViewModel.resultGroups
-                .flatMap { $0.actionGroups }
-                .sorted { $0.totalSize > $1.totalSize }
-                .prefix(3)
 
             ForEach(topActions) { action in
                 PriorityCardView(actionGroup: action)

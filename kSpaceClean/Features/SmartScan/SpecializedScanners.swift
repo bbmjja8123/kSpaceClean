@@ -4,10 +4,10 @@ import FileScanner
 
 // MARK: - Specialized Scanner Protocol
 
-/// 专用扫描器协议 — 每种 ScanActionType 的具体扫描实现。
+/// 专用扫描器协议 — 每种 RuleScanActionType 的具体扫描实现。
 /// 通过 ScanEngine 注册表分发，避免在主循环中堆叠 if/else。
 public protocol SpecializedScanner: Sendable {
-    var actionType: ScanActionType { get }
+    var actionType: RuleScanActionType { get }
     func scan(url: URL, level: Int, speed: ScanSpeed,
               cancellationToken: CancellationToken,
               onFile: @Sendable (URL, Int64) -> Void) async throws
@@ -51,7 +51,7 @@ func isBundleInUse(_ url: URL) -> Bool {
 
 /// 微信聊天图片 — 仅保留超过 90 天的图片以避免误删近期聊天内容。
 public final class WeChatImageScanner: SpecializedScanner {
-    public let actionType: ScanActionType = .wechatImage
+    public let actionType: RuleScanActionType = .wechatImage
     private let imageExtensions: Set<String> = [
         "jpg", "jpeg", "png", "gif", "webp", "heic", "bmp", "tiff"
     ]
@@ -91,7 +91,7 @@ public final class WeChatImageScanner: SpecializedScanner {
 
 /// 微信聊天文档 — pdf/doc/xls/ppt/txt 等。无需 90 天过滤。
 public final class WeChatFileScanner: SpecializedScanner {
-    public let actionType: ScanActionType = .wechatFile
+    public let actionType: RuleScanActionType = .wechatFile
     private let docExtensions: Set<String> = [
         "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "rtf"
     ]
@@ -124,7 +124,7 @@ public final class WeChatFileScanner: SpecializedScanner {
 
 /// 微信聊天视频 — 默认仅保留 90 天之前的视频。
 public final class WeChatVideoScanner: SpecializedScanner {
-    public let actionType: ScanActionType = .wechatVideo
+    public let actionType: RuleScanActionType = .wechatVideo
     private let videoExtensions: Set<String> = [
         "mp4", "mov", "avi", "mkv", "wmv", "flv", "m4v"
     ]
@@ -164,7 +164,7 @@ public final class WeChatVideoScanner: SpecializedScanner {
 
 /// 微信语音消息 — silk/amr/mp3 等。
 public final class WeChatAudioScanner: SpecializedScanner {
-    public let actionType: ScanActionType = .wechatAudio
+    public let actionType: RuleScanActionType = .wechatAudio
     private let audioExtensions: Set<String> = [
         "mp3", "aac", "wav", "silk", "ogg", "m4a", "amr"
     ]
@@ -198,7 +198,7 @@ public final class WeChatAudioScanner: SpecializedScanner {
 /// Xcode DerivedData .app — 扫描 DerivedData/<project>/Build/Products/<config>/<name>.app，
 /// 报告整个 .app bundle 的总大小（一次枚举求和）。
 public final class DerivedAppScanner: SpecializedScanner {
-    public let actionType: ScanActionType = .derivedApp
+    public let actionType: RuleScanActionType = .derivedApp
 
     public init() {}
 
@@ -241,7 +241,7 @@ public final class DerivedAppScanner: SpecializedScanner {
 
 /// 损坏的 plist 配置文件 — 尝试 PropertyListSerialization 解析，失败的视为损坏。
 public final class BrokenPlistScanner: SpecializedScanner {
-    public let actionType: ScanActionType = .brokenPlist
+    public let actionType: RuleScanActionType = .brokenPlist
 
     public init() {}
 
@@ -278,7 +278,7 @@ public final class BrokenPlistScanner: SpecializedScanner {
 
 /// 损坏的 Launch Agent/Daemon plist 注册项 — ProgramArguments 中引用的可执行文件已不存在。
 public final class BrokenRegisterScanner: SpecializedScanner {
-    public let actionType: ScanActionType = .brokenRegister
+    public let actionType: RuleScanActionType = .brokenRegister
 
     public init() {}
 
@@ -326,9 +326,9 @@ public final class BrokenRegisterScanner: SpecializedScanner {
 
 // MARK: - Scanner Registry
 
-/// 内置专用扫描器注册表 — 在 ScanEngine 中按 ScanActionType 索引。
+/// 内置专用扫描器注册表 — 在 ScanEngine 中按 RuleScanActionType 索引。
 public enum SpecializedScannerRegistry {
-    public static let defaults: [ScanActionType: SpecializedScanner] = [
+    public static let defaults: [RuleScanActionType: SpecializedScanner] = [
         .wechatImage:    WeChatImageScanner(),
         .wechatFile:     WeChatFileScanner(),
         .wechatVideo:    WeChatVideoScanner(),

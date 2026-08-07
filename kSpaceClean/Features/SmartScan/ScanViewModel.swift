@@ -10,7 +10,7 @@ public final class ScanViewModel: ObservableObject {
     @Published public var resultGroups: [ScanResultGroup] = []
     /// Fires AFTER scanResults are populated — RootView observes this instead of progress.state to avoid timing races
     @Published public var scanDidComplete = false
-    private let engine = ScanEngine()
+    private let engine = LegacyScanEngine()
     private var cancellables = Set<AnyCancellable>()
     private let classifier = RuleClassifier()
 
@@ -311,8 +311,9 @@ public final class ScanViewModel: ObservableObject {
         let cleanupEngine = CleanupEngine()
 
         Task { @MainActor in
-            // Phase 1: 检测运行中应用
-            let warnItems = cleanupEngine.detectWarnItems(for: selectedPaths)
+            // Phase 1: detect running apps via the dedicated service.
+            let warnService = WarningDetectionService()
+            let warnItems = await warnService.detectWarnItems(for: selectedPaths)
             // (UI 层会在收到 warn 后弹出确认对话框 — 简化实现当前跳过)
 
             // Phase 2: 执行清理

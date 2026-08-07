@@ -116,3 +116,73 @@ public struct ScanStats: Sendable {
         self.filesPerSecond = filesPerSecond
     }
 }
+
+/// One incremental file-discovery event emitted by a category worker.
+/// Consumed by the orchestrator's live progress composer (Task A1) so the
+/// progress ring / stats move continuously instead of only at category
+/// boundaries.
+public struct ScanDelta: Sendable {
+    public let categoryID: String
+    public let filePath: String
+    public let bytesIncrement: Int64
+    public let filesIncrement: Int
+
+    public init(categoryID: String, filePath: String, bytesIncrement: Int64, filesIncrement: Int = 1) {
+        self.categoryID = categoryID
+        self.filePath = filePath
+        self.bytesIncrement = bytesIncrement
+        self.filesIncrement = filesIncrement
+    }
+}
+
+/// Pure math for the progress ring / ETA (Task A2). Kept as a static enum
+/// so the UI and tests share one implementation with no hidden state.
+public enum ScanProgressMath {
+    /// Above this many in-flight files the scan is "well into" a category and
+    /// the inflight ratio stops dominating the ring.
+    public static let inflightFileTarget = 3_000
+    /// Expected total file count used to scale the stats-based component.
+    public static let statsFileTarget = 20_000
+
+    /// 0...1 completion estimate. Combines three signals so the ring moves
+    /// continuously instead of freezing between category boundaries:
+    /// - 60%: fraction of categories completed
+    /// - 25%: files discovered so far vs `inflightFileTarget` (bounded)
+    /// - 15%: stats fileCount vs `statsFileTarget` (bounded)
+    public static func completionFraction(
+        categoryProgress: [CategoryProgress],
+        stats: ScanStats
+    ) -> Double {
+        let total = categoryProgress.count
+        guard total > 0 else { return 0 }
+        let done = categoryProgress.filter { $0.status == .completed }.count
+        if done == total { return 1.0 }
+        let categoryRatio = Double(done) / Double(total)
+        let inflightRatio = min(Double(stats.fileCount) / Double(inflightFileTarget), 1)
+        let statsRatio = min(Double(stats.fileCount) / Double(statsFileTarget), 1)
+        return min(categoryRatio * 0.6 + inflightRatio * 0.25 + statsRatio * 0.15, 1)
+    }
+
+    /// Estimated seconds remaining, or `nil` when there is not enough signal
+    /// (early scan, stalled speed, or already complete).
+    public static func estimatedRemainingSeconds(
+        categoryProgress: [CategoryProgress],
+        stats: ScanStats
+    ) -> TimeInterval? {
+        let fraction = completionFraction(categoryProgress: categoryProgress, stats: stats)
+        guard fraction >= 0.03, fraction <= 0.999 else { return nil }
+        guard stats.filesPerSecond > 0, stats.fileCount > 0 else { return nil }
+        let remainingFraction = 1.0 - fraction
+        let remainingFiles = Double(stats.fileCount) / fraction * remainingFraction
+        return remainingFiles / stats.filesPerSecond
+    }
+
+    /// Formats seconds as `m:ss` or `h:mm:ss`.
+    public static func formatClock(_ seconds: TimeInterval) -> String {
+        let s = Int(seconds.rounded())
+        if s >= 3600 {
+            return String(format: "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
+        }
+        return String(format: "%d:%02d", s / 60, s % 60)
+    }
+}

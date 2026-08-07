@@ -1,11 +1,78 @@
 #!/usr/bin/env python3
-"""Generate kSpaceClean.xcodeproj/project.pbxproj manually — proper OpenStep plist format."""
+"""Generate kSpaceClean.xcodeproj/project.pbxproj manually — proper OpenStep plist format.
 
-import os, hashlib
+# Path resolution
+#
+# The default ``BASE`` path points at the main repository's ``kSpaceClean``
+# directory. When the script is run from inside a worktree
+# (e.g. ``.claude/worktrees/feat-kspaceclean-v1/kSpaceClean/generate_project.py``),
+# that absolute path would write the regenerated ``project.pbxproj`` into the
+# *parent* repository rather than the worktree, leaving the worktree's
+# on-disk copy stale. The worktree workflow therefore relied on a manual
+# ``cp`` after every regeneration (see A6/A12/A13 reports).
+#
+# To fix that, the script now resolves ``BASE`` with the following
+# precedence:
+#
+# 1. ``--base <path>`` CLI argument (explicit override; highest priority).
+# 2. ``KSPACECLEAN_BASE`` environment variable (CI / Makefile use).
+# 3. The directory containing this script — i.e. the worktree-aware default
+#    that always regenerates the project file alongside the script.
+#
+# This means running ``python3 generate_project.py`` inside the worktree now
+# writes to the worktree's ``kSpaceClean.xcodeproj`` automatically, and
+# callers that really do want the main-repo path can opt in with
+# ``--base /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean``.
+"""
 
-BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean"
+import os
+import sys
+import argparse
+import hashlib
+
+DEFAULT_BASE = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def resolve_base():
+    """Resolve the BASE directory using CLI > env > script-dir precedence."""
+    parser = argparse.ArgumentParser(
+        description="Generate kSpaceClean.xcodeproj/project.pbxproj."
+    )
+    parser.add_argument(
+        "--base",
+        default=None,
+        help=(
+            "Output directory containing the kSpaceClean target sources. "
+            "Defaults to $KSPACECLEAN_BASE, then the directory containing "
+            "this script (so worktree workflows regenerate in place)."
+        ),
+    )
+    args = parser.parse_args()
+
+    if args.base:
+        base = os.path.abspath(args.base)
+    elif os.environ.get("KSPACECLEAN_BASE"):
+        base = os.path.abspath(os.environ["KSPACECLEAN_BASE"])
+    else:
+        # Default to the directory containing this script so the script
+        # always regenerates the project file alongside it (worktree-safe).
+        base = SCRIPT_DIR
+    return base
+
+
+BASE = resolve_base()
 PROJECT_FILE = f"{BASE}/kSpaceClean.xcodeproj/project.pbxproj"
-KFOUNTATION_PATH = "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation"
+# kFoundation lives alongside the parent directory of BASE (the kSpaceClean
+# sibling). Try a few candidates to stay portable across worktrees.
+_KFOUNDATION_CANDIDATES = [
+    os.path.join(os.path.dirname(BASE), "kFoundation"),
+    "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation",
+]
+KFOUNTATION_PATH = next(
+    (p for p in _KFOUNDATION_CANDIDATES if os.path.isdir(p)),
+    _KFOUNDATION_CANDIDATES[0],
+)
 
 def hash_id(seed, length=24):
     return hashlib.sha256(seed.encode()).hexdigest()[:length].upper()
@@ -97,7 +164,11 @@ def main():
         "Features": make_group("Features"),
         "AIClassifier": make_group("AIClassifier"),
         "Cleanup": make_group("Cleanup"),
-        "DiskGalaxy": make_group("DiskGalaxy"),
+        "Common": make_group("Common"),
+        "Components": make_group("Components"),
+        "DesignSystem": make_group("DesignSystem"),
+        "Models": make_group("Models"),
+        "MetricKit": make_group("MetricKit"),
         "LargeOldFile": make_group("LargeOldFile"),
         "DuplicateFile": make_group("DuplicateFile"),
         "AppUninstall": make_group("AppUninstall"),
@@ -144,6 +215,29 @@ def main():
         ("Features/Cleanup/TrashMover.swift", "Cleanup"),
         ("Features/Cleanup/CleanupEngine.swift", "Cleanup"),
         ("Features/Cleanup/CleanActionExecutors.swift", "Cleanup"),
+        ("Features/Cleanup/Models/CleanupTypes.swift", "Cleanup"),
+        ("Features/Cleanup/Views/CleanupConfirmSheet.swift", "Cleanup"),
+        ("Features/Cleanup/Views/DangerousConfirmDialog.swift", "Cleanup"),
+        ("Features/Cleanup/Views/WarningToast.swift", "Cleanup"),
+        ("Features/Cleanup/Views/RestoreHistoryItemView.swift", "Cleanup"),
+        ("Features/Cleanup/Engine/WarningDetectionService.swift", "Cleanup"),
+        ("Features/Common/DesignSystem/Colors.swift", "DesignSystem"),
+        ("Features/Common/DesignSystem/Typography.swift", "DesignSystem"),
+        ("Features/Common/DesignSystem/Spacing.swift", "DesignSystem"),
+        ("Features/Common/DesignSystem/Accessibility.swift", "DesignSystem"),
+        ("Features/Common/Components/RiskBadge.swift", "Components"),
+        ("Features/Common/Components/IndeterminateCheckbox.swift", "Components"),
+        ("Features/Common/Components/EmptyStateView.swift", "Components"),
+        ("Features/Common/Components/SkeletonRow.swift", "Components"),
+        ("Features/Common/Components/ToolbarView.swift", "Components"),
+        ("Features/Common/Components/DiskUsageBar.swift", "Components"),
+        ("Features/Common/MetricKit/MetricKitReceiver.swift", "MetricKit"),
+        ("Features/Common/KeyboardShortcuts.swift", "Common"),
+        ("Features/Common/PerfSignpost.swift", "Common"),
+        ("Features/Common/UserPathResolver.swift", "Common"),
+        ("Features/Common/Models/RiskLevel.swift", "Models"),
+        ("Features/Common/Models/CheckState.swift", "Models"),
+        ("Features/Common/Models/SelectionPolicy.swift", "Models"),
         ("Features/LargeOldFile/LargeOldScanner.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldViewModel.swift", "LargeOldFile"),
         ("Features/LargeOldFile/LargeOldView.swift", "LargeOldFile"),
@@ -162,11 +256,6 @@ def main():
         ("Features/Maintenance/MaintenanceScript.swift", "Maintenance"),
         ("Features/Maintenance/MaintenanceViewModel.swift", "Maintenance"),
         ("Features/Maintenance/MaintenanceView.swift", "Maintenance"),
-        ("Features/DiskGalaxy/GalaxyRenderer.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/GalaxyScene.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/GalaxyView.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/GalaxyViewModel.swift", "DiskGalaxy"),
-        ("Features/DiskGalaxy/DiskUsageBar.swift", "DiskGalaxy"),
         ("Features/Onboarding/OnboardingCoordinator.swift", "Onboarding"),
         ("Features/Onboarding/OnboardingPages.swift", "Onboarding"),
         ("Features/RightPanel/AllFilesTabView.swift", "RightPanel"),
@@ -184,16 +273,31 @@ def main():
         ("Features/SmartScan/ScanResultsTreeView.swift", "SmartScan"),
         ("Features/SmartScan/ScanViewModel.swift", "SmartScan"),
         ("Features/SmartScan/SpecializedScanners.swift", "SmartScan"),
+        ("Features/SmartScan/Models/ScanTreeNode.swift", "SmartScan"),
+        ("Features/SmartScan/Models/ScanCategory.swift", "SmartScan"),
+        ("Features/SmartScan/Models/ScanSubCategory.swift", "SmartScan"),
+        ("Features/SmartScan/Models/ScanAction.swift", "SmartScan"),
+        ("Features/SmartScan/Models/ScanResult.swift", "SmartScan"),
+        ("Features/SmartScan/Models/ScanThreshold.swift", "SmartScan"),
+        ("Features/SmartScan/Engine/ScanOrchestrator.swift", "SmartScan"),
+        ("Features/SmartScan/Engine/ScanEngineStream.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanResultsView.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanResultsViewModel.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanTreeRow.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanProgressRing.swift", "SmartScan"),
+        ("Features/SmartScan/Views/ScanProgressView.swift", "SmartScan"),
         ("FinderExtension/FinderSync.swift", "FinderExtension"),
         ("Intents/ScanIntent.swift", "Intents"),
         ("LaunchAgent/TrashMonitorService.swift", "LaunchAgent"),
         ("LiveActivity/CleanupActivityAttributes.swift", "LiveActivity"),
         ("MenuBar/DiskStatusView.swift", "MenuBar"),
         ("MenuBar/MenuBarManager.swift", "MenuBar"),
+        ("Persistence/CoreDataModels/CleanupHistoryItem.swift", "Persistence"),
         ("Persistence/CoreDataModels/CleanupRecord.swift", "Persistence"),
         ("Persistence/CoreDataModels/FileEntry.swift", "Persistence"),
         ("Persistence/CoreDataModels/ScanRecord.swift", "Persistence"),
         ("Persistence/CoreDataStack.swift", "Persistence"),
+        ("Persistence/PersistenceController.swift", "Persistence"),
         ("Persistence/UserPreferences.swift", "Persistence"),
         ("Spotlight/SpotlightIndexer.swift", "Spotlight"),
         ("Store/PaywallView.swift", "Store"),
@@ -216,12 +320,13 @@ def main():
     resource_files = [
         "Localizable.xcstrings",
         "com.kraftly.kspaceclean.trashmonitor.plist",
+        "bundleIDMapping.json",
+        "PrivacyInfo.xcprivacy",
     ]
 
     test_files = [
         "TestHelpers.swift",
         "RuleClassifierTests.swift",
-        "GalaxyViewModelTests.swift",
         "AppStateTests.swift",
         "AppCoordinatorTests.swift",
         "ScanProgressTests.swift",
@@ -230,12 +335,38 @@ def main():
         "UserPreferencesTests.swift",
         "FileSizeFormatterTests.swift",
         "CleanupConfirmationTests.swift",
+        "DangerousConfirmDialogTests.swift",
+        "WarningToastTests.swift",
         "DuplicateDetectorTests.swift",
         "StoreManagerTests.swift",
         "ScanSpeedTests.swift",
         "RiskLevelTests.swift",
         "SelectionCascadeTests.swift",
-    ]
+        "CascadeCheckboxTests.swift",
+        "DesignTokensTests.swift",
+        "AccessibilityTests.swift",
+        "RiskBadgeTests.swift",
+        "IndeterminateCheckboxTests.swift",
+        "RiskClassifierTests.swift",
+        "EmptyStateViewTests.swift",
+        "SnapshotTestCase.swift",
+        "PhaseAComponentSnapshotTests.swift",
+        "ScanResultsViewSnapshotTests.swift",
+        "CleanupHistoryPersistenceTests.swift",
+        "CleanupEngineTests.swift",
+        "WarningDetectionServiceTests.swift",
+        "ScanOrchestratorIntegrationTests.swift",
+        "AppRuleFixtures.swift",
+        "ScanEngineIntegrationTests.swift",
+        "ScanResultsViewModelSnapshotTests.swift",
+        "MetricKitReceiverTests.swift",
+        "BundleIDResolverTests.swift",
+        "ScanTreeFilterTests.swift",
+    ]  # EmptyStateViewTests covers both EmptyStateView and SkeletonRow (Task A11)
+    # CascadeCheckboxTests.swift — Task A5's 5 cascade-behaviour tests
+    # (recommended-only parent selection, parent-off propagation,
+    # mixed/on aggregation, manual dangerous selection). Re-registered in A14
+    # after it had been sitting on disk unregistered since A5.
 
     main_build_files = []
 
@@ -398,9 +529,12 @@ def main():
         "name": "Debug",
         "buildSettings": {
             "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
-            "CODE_SIGNING_ALLOWED": "NO",
+            "CODE_SIGN_ENTITLEMENTS": "kSpaceClean.entitlements",
+            "CODE_SIGN_IDENTITY": '"-"',
+            "CODE_SIGN_STYLE": "Manual",
             "COMBINE_HIDPI_IMAGES": "YES",
             "CURRENT_PROJECT_VERSION": "1",
+            "DEVELOPMENT_TEAM": '""',
             "GENERATE_INFOPLIST_FILE": "YES",
             "INFOPLIST_FILE": "Info.plist",
             "INFOPLIST_KEY_CFBundleDisplayName": "kSpaceClean",
@@ -566,7 +700,7 @@ def main():
 
     # Set Features group children
     features_children = []
-    for sub in ["AIClassifier", "Cleanup", "DiskGalaxy", "LargeOldFile", "DuplicateFile",
+    for sub in ["AIClassifier", "Cleanup", "Common", "Components", "DesignSystem", "Models", "MetricKit", "LargeOldFile", "DuplicateFile",
                  "AppUninstall", "PrivacyClean", "PhotoClean", "Maintenance",
                  "Onboarding", "RightPanel", "Settings", "SmartScan"]:
         features_children.append((group_ids[sub], sub))
@@ -710,6 +844,7 @@ def main():
     print(f"Total objects: {len(objects)}")
     print(f"Main build files: {len(main_build_files)}")
     print(f"Test build files: {len(test_build_files)}")
+    print(f"BASE resolved to: {BASE}")
 
 if __name__ == "__main__":
     main()

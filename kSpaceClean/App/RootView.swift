@@ -5,15 +5,18 @@ import DesignSystem
 /// Displays different content based on appState.navigation.
 struct RootView: View {
     @EnvironmentObject var appState: AppState
-    @StateObject private var galaxyViewModel = GalaxyViewModel()
-    @StateObject private var scanViewModel = ScanViewModel()
     @StateObject private var cleanupViewModel = CleanupViewModel()
-    @StateObject private var largeOldViewModel = LargeOldViewModel()
-    @StateObject private var duplicateViewModel = DuplicateViewModel()
-    @StateObject private var appUninstallViewModel = AppUninstallViewModel()
-    @StateObject private var privacyViewModel = PrivacyViewModel()
-    @StateObject private var photoCleanViewModel = PhotoCleanViewModel()
-    @StateObject private var maintenanceViewModel = MaintenanceViewModel()
+
+    // C1: production scan pipeline. Owned at the root so the scan state
+    // survives navigation switches (e.g. user starts a scan, navigates
+    // away, comes back — the categories tree is still there).
+    //
+    // C3: this is now the *only* scan model the root owns. The legacy
+    // `ScanViewModel` used to be wired to the toolbar button and the
+    // ⌘N / ⌘R shortcuts while the rendered `ScanResultsView` observed this
+    // model, so every user-initiated scan ran a pipeline nothing on screen
+    // was watching. All three triggers now route here.
+    @StateObject private var scanResultsViewModel = ScanResultsViewModel(engine: ScanEngine())
 
     var body: some View {
         GeometryReader { geo in
@@ -21,106 +24,94 @@ struct RootView: View {
                 // Layer 1: Background
                 backgroundLayer
 
-                // Layer 2: Main content + icon rail side by side
-                HStack(spacing: 0) {
-                    // Icon Rail (left sidebar)
-                    iconRail
-                        .frame(width: 48)
-                        .padding(.leading, 8)
-
-                    // Main content area (switches based on navigation)
-                    mainContent
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                    // Right panel (only in galaxy/scan views)
-                    if appState.rightPanelVisible,
-                       appState.navigation == .galaxy || appState.navigation == .scan {
-                        RightPanelView(galaxyViewModel: galaxyViewModel, scanViewModel: scanViewModel)
-                            .frame(width: min(260, geo.size.width * 0.3))
-                            .padding(.trailing, 12)
-                            .padding(.top, 48)
-                            .padding(.bottom, 68)
-                    }
-                }
-
-                // Layer 3: Bottom panel (galaxy view only)
-                if appState.navigation == .galaxy {
-                    VStack {
-                        Spacer()
-                        bottomPanel
-                            .padding(.horizontal, 68)
-                            .padding(.bottom, 10)
-                    }
-                }
-
-                // Layer 4: Category legend (galaxy view only)
-                if appState.navigation == .galaxy {
-                    VStack {
-                        Spacer()
-                        HStack {
-                            categoryLegend
-                                .padding(.leading, 68)
-                            Spacer()
+                // Layer 2: Top toolbar (Scan / Clean / Warning / Account) — brand
+                // mark on the leading edge, four icon-and-label buttons on the
+                // trailing edge. Wired in A14 after sitting as dead code since
+                // A12 (see A14 report).
+                VStack(spacing: 0) {
+                    ToolbarView(
+                        onScan: {
+                            appState.navigation = .scan
+                            scanResultsViewModel.startScan()
+                        },
+                        onClean: {
+                            appState.navigation = .cleanup
+                        },
+                        onWarning: {
+                            // Phase C will surface a real warning sheet here
+                            // (Task C6 WarningToast). For now, switching to
+                            // the cleanup route gives the user the closest
+                            // existing surface that surfaces the warnings.
+                            appState.navigation = .cleanup
+                        },
+                        onProfile: {
+                            appState.navigation = .settings
                         }
-                        .padding(.bottom, 72)
+                    )
+                    .zIndex(10)
+
+                    // Layer 3: Main content + icon rail side by side
+                    HStack(spacing: 0) {
+                        // Icon Rail (left sidebar)
+                        iconRail
+                            .frame(width: 48)
+                            .padding(.leading, 8)
+
+                        // Main content area (switches based on navigation)
+                        mainContent
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                        // Right panel (driven solely by rightPanelVisible
+                        // since the 3D galaxy visualization was removed in
+                        // v1.0 per CLAUDE.md §8.1)
+                        if appState.rightPanelVisible {
+                            RightPanelView()
+                                .frame(width: min(260, geo.size.width * 0.3))
+                                .padding(.trailing, 12)
+                                .padding(.top, 48)
+                                .padding(.bottom, 68)
+                        }
                     }
                 }
             }
         }
-        .onChange(of: scanViewModel.scanDidComplete) { completed in
-            if completed {
-                galaxyViewModel.update(with: scanViewModel.scanResults)
-                appState.navigation = .galaxy
+        .scanKeyboardShortcuts(
+            onNewScan: {
+                // ⌘N — switch to the scan surface and start a fresh scan
+                appState.navigation = .scan
+                scanResultsViewModel.startScan()
+            },
+            onRescan: {
+                // ⌘R — re-run the scan using the same root paths and filters
+                // (ScanResultsViewModel does not differentiate "new" from
+                // "rescan"; both delegate to startScan(), which cancels any
+                // in-flight orchestrator run before starting a new one.)
+                appState.navigation = .scan
+                scanResultsViewModel.startScan()
             }
-        }
+        )
         .modifier(RootKeyboardShortcuts(appState: appState))
     }
 
     // MARK: - Background
     @ViewBuilder
     private var backgroundLayer: some View {
-        switch appState.navigation {
-        case .galaxy:
-            GalaxyView(viewModel: galaxyViewModel)
-                .ignoresSafeArea()
-        default:
-            Color.bgPrimary.ignoresSafeArea()
-        }
+        Color.bgPrimary.ignoresSafeArea()
     }
 
     // MARK: - Main Content
     @ViewBuilder
     private var mainContent: some View {
         switch appState.navigation {
-        case .galaxy:
-            galaxyContent
         case .scan:
-            ScanContentView(viewModel: scanViewModel)
+            ScanResultsView(viewModel: scanResultsViewModel)
         case .cleanup:
             CleanupContentView(viewModel: cleanupViewModel)
         case .history:
             HistoryContentView()
         case .settings:
             SettingsView()
-        case .largeFiles:
-            LargeOldView()
-        case .duplicateFiles:
-            DuplicateView(viewModel: duplicateViewModel)
-        case .uninstall:
-            AppUninstallView()
-        case .privacy:
-            PrivacyView()
-        case .photoClean:
-            PhotoCleanView()
-        case .maintenance:
-            MaintenanceView()
         }
-    }
-
-    /// In Galaxy mode, the area behind the right panel is transparent
-    /// so the 3D scene shows through. We just place a clear filler.
-    private var galaxyContent: some View {
-        Color.clear
     }
 
     // MARK: - Icon Rail
@@ -128,17 +119,11 @@ struct RootView: View {
         GlassPanel {
             VStack(spacing: 4) {
                 ForEach(AppState.NavigationItem.allCases, id: \.self) { item in
-                    Button {
-                        appState.navigation = item
-                    } label: {
-                        Image(systemName: item.iconName)
-                            .font(.system(size: 16))
-                            .frame(width: 36, height: 36)
-                            .background(appState.navigation == item ? Color.brandPrimary.opacity(0.3) : .clear)
-                            .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
-                    }
-                    .buttonStyle(.plain)
-                    .help(item.tooltip)
+                    IconRailButton(
+                        item: item,
+                        isSelected: appState.navigation == item,
+                        action: { appState.navigation = item }
+                    )
                 }
                 Spacer()
             }
@@ -146,68 +131,32 @@ struct RootView: View {
         }
         .frame(width: 42)
     }
+}
 
-    // MARK: - Bottom Panel
-    private var bottomPanel: some View {
-        GlassPanel {
-            HStack {
-                DiskUsageBar(scanViewModel: scanViewModel)
-                Spacer()
-                HStack(spacing: AppSpacing.sm) {
-                    Button(action: {
-                        appState.navigation = .scan
-                        scanViewModel.startScan()
-                    }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "arrow.down.circle")
-                                .font(.system(size: 12))
-                            Text("\u{5FEB}\u{901F}\u{626B}\u{63CF}")
-                                .font(AppFont.caption)
-                        }
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(.textSecondary)
+/// F9 perf sweep: small Equatable helper view that wraps each icon
+/// rail button. `.equatable()` on it means a `navigation` change
+/// only re-evaluates the two affected buttons (selected and
+/// deselected) instead of every button in the rail. Equality is
+/// `(item, isSelected)` because the row body depends only on those.
+private struct IconRailButton: View, Equatable {
+    let item: AppState.NavigationItem
+    let isSelected: Bool
+    let action: () -> Void
 
-                    Button(action: {
-                        appState.navigation = .scan
-                        scanViewModel.startScan()
-                    }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "sparkles")
-                                .font(.system(size: 12))
-                            Text("\u{5F00}\u{59CB}\u{626B}\u{63CF}")
-                                .font(AppFont.caption)
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.brandPrimary)
-                }
-            }
-            .padding(.horizontal, AppSpacing.lg)
-            .frame(height: 48)
-        }
+    static func == (lhs: IconRailButton, rhs: IconRailButton) -> Bool {
+        lhs.item == rhs.item && lhs.isSelected == rhs.isSelected
     }
 
-    // MARK: - Category Legend
-    private var categoryLegend: some View {
-        HStack(spacing: 10) {
-            ForEach(FileCategory.allCases, id: \.self) { cat in
-                HStack(spacing: 4) {
-                    Circle()
-                        .fill(cat.color)
-                        .frame(width: 8, height: 8)
-                    Text(verbatim: "\(cat)")
-                        .font(AppFont.caption)
-                        .foregroundColor(.textSecondary)
-                }
-                .onTapGesture { appState.selectedCategory = cat }
-                .help(cat.rawValue)
-            }
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: item.iconName)
+                .font(.system(size: 16))
+                .frame(width: 36, height: 36)
+                .background(isSelected ? Color.brandPrimary.opacity(0.3) : .clear)
+                .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+        .buttonStyle(.plain)
+        .help(item.tooltip)
     }
 }
 

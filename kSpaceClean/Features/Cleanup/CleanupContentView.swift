@@ -100,9 +100,7 @@ struct CleanupContentView: View {
         ScrollView {
             LazyVStack(spacing: AppSpacing.sm) {
                 ForEach(viewModel.cleanupHistory, id: \.id) { record in
-                    CleanupRecordRow(record: record) {
-                        Task { await viewModel.restore(record: record) }
-                    }
+                    CleanupRecordRow(record: record)
                 }
             }
             .padding(.horizontal, AppSpacing.lg)
@@ -115,18 +113,17 @@ struct CleanupContentView: View {
 }
 
 struct CleanupRecordRow: View {
-    let record: CleanupRecord
-    let onRestore: () -> Void
+    let record: CleanupHistoryItem
 
     var body: some View {
         GlassPanel {
             HStack {
-                Image(systemName: record.isRestored ? "arrow.uturn.backward" : "trash")
-                    .foregroundColor(record.isRestored ? .textSecondary : .danger)
+                Image(systemName: "trash")
+                    .foregroundColor(.danger)
                     .font(.system(size: 16))
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(FileSizeFormatter.abbreviated(from: record.totalBytes))
+                    Text(FileSizeFormatter.abbreviated(from: record.size))
                         .font(AppFont.monoDigit)
                         .foregroundColor(.textPrimary)
 
@@ -137,18 +134,9 @@ struct CleanupRecordRow: View {
 
                 Spacer()
 
-                if !record.isRestored {
-                    Button("\u{56DE}\u{6EDA}") {
-                        onRestore()
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                    .tint(.brandPrimary)
-                } else {
-                    Text("\u{5DF2}\u{56DE}\u{6EDA}")
-                        .font(AppFont.caption)
-                        .foregroundColor(.textSecondary)
-                }
+                Text(record.riskLevel ?? "recommended")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
             }
             .padding(AppSpacing.md)
         }
