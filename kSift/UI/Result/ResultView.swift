@@ -329,11 +329,15 @@ struct ResultView: View {
             viewModel.loadGroups(appState.latestGroups)
         } else {
             // Deep-link (.results) or navigation without a fresh scan: fall back
-            // to the most recent persisted record.
-            Task {
+            // to the most recent persisted record. Repository uses
+            // PersistenceController.shared by default; run the load detached so
+            // it doesn't pay MainActor hop cost before crossing the actor.
+            Task.detached(priority: .userInitiated) {
                 let record = try? await DuplicateRepositoryCoreData().loadScanRecords().first
                 if let record, !record.groups.isEmpty {
-                    viewModel.loadGroups(record.groups)
+                    await MainActor.run {
+                        viewModel.loadGroups(record.groups)
+                    }
                 }
             }
         }
