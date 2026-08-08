@@ -1,7 +1,7 @@
-# kUninstall 产品交互设计 — 完整对话记录
+# kFresh 产品交互设计 — 完整对话记录
 
 **项目**: Kraftly Mac App Suite
-**App**: kUninstall（应用卸载）
+**App**: kFresh（应用卸载）
 **日期**: 2026-07-26
 **参与**: 独立开发者（用户） + Claude（AI 设计助手）
 **状态**: v1 设计已定稿，待 writing-plans 拆解实施计划
