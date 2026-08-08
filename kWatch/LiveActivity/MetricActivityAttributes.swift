@@ -1,9 +1,25 @@
-#if canImport(ActivityKit)
+// ActivityKit is iOS-only — in the Xcode 26 SDK (MacOSX26.2.sdk) the framework
+// exists but is annotated `@available(macOS, unavailable)`, so on macOS every
+// type in `ActivityKit` is rejected by the compiler. The kWatch project is a
+// macOS-only app, so we gate this entire file (and its `ActivityAttributes`
+// conformance) to iOS until Apple ships a macOS-native Live Activity API.
+//
+// When/if Apple introduces macOS Live Activity support, drop the `os(iOS)`
+// gate and the type will compile again on macOS without further changes.
+#if canImport(ActivityKit) && os(iOS)
 import ActivityKit
 import Foundation
 
 /// The attributes and compact state shared by the kWatch Live Activity.
-public struct MetricActivityAttributes: ActivityAttributes, Codable, Hashable, Sendable {
+///
+/// Gated by `@available(macOS 14.0, *)` because `ActivityAttributes` is a macOS 14+ protocol.
+/// The `ActivityAttributes` conformance is declared in a separate extension so the compiler
+/// accepts the cross-availability conformance even on targets that don't yet know about
+/// ActivityKit (this file is also compiled into the main kWatch app target at deployment
+/// target 14.0, but the explicit split keeps the conformance gate clear and avoids future
+/// availability-context surprises if a third target ever compiles this file).
+@available(macOS 14.0, *)
+public struct MetricActivityAttributes: Codable, Hashable, Sendable {
     /// The metric represented by the activity, encoded using `MetricKind.rawValue`.
     public let kindRaw: String
     /// The time at which monitoring for this activity began.
@@ -95,6 +111,7 @@ public struct MetricActivityAttributes: ActivityAttributes, Codable, Hashable, S
     }
 }
 
+@available(macOS 14.0, *)
 extension MetricActivityAttributes {
     /// Uses the same epoch-based date representation as `SharedSnapshot`.
     public enum CodingKeys: String, CodingKey {
@@ -118,6 +135,13 @@ extension MetricActivityAttributes {
     }
 }
 
+/// The `ActivityAttributes` conformance is gated explicitly by `@available(macOS 14.0, *)`
+/// in its own extension so the compiler can resolve the cross-availability protocol lookup
+/// independent of the struct declaration's context.
+@available(macOS 14.0, *)
+extension MetricActivityAttributes: ActivityAttributes {}
+
+@available(macOS 14.0, *)
 extension MetricActivityAttributes.ContentState {
     /// Uses the same epoch-based date representation as `SharedSnapshot`.
     private enum CodingKeys: String, CodingKey {

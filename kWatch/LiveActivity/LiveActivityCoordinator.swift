@@ -1,7 +1,12 @@
 import Foundation
 import MetricsKit
 
-#if canImport(ActivityKit)
+// ActivityKit is iOS-only in Xcode 26 SDK — see MetricActivityAttributes.swift
+// for the full rationale. The macOS build skips this entire file's body so
+// callers (AppCoordinator / AlertEvaluator) compile cleanly. Live Activity
+// start/end hooks on macOS are no-ops; future macOS-native LA support can be
+// added without changing call sites.
+#if canImport(ActivityKit) && os(iOS)
 import ActivityKit
 #endif
 
@@ -34,7 +39,7 @@ public actor LiveActivityCoordinator {
 
     public static let shared = LiveActivityCoordinator()
 
-    #if canImport(ActivityKit)
+    #if canImport(ActivityKit) && os(iOS)
     private var activeActivity: Activity<MetricActivityAttributes>?
     #endif
 
@@ -42,7 +47,7 @@ public actor LiveActivityCoordinator {
 
     /// Whether the system will allow us to start a Live Activity right now.
     public var isAvailable: Bool {
-        #if canImport(ActivityKit)
+        #if canImport(ActivityKit) && os(iOS)
         return ActivityAuthorizationInfo().areActivitiesEnabled
         #else
         return false
@@ -58,7 +63,7 @@ public actor LiveActivityCoordinator {
         trend: Trend = .up,
         timestamp: Date = Date()
     ) async {
-        #if canImport(ActivityKit)
+        #if canImport(ActivityKit) && os(iOS)
         guard isAvailable else { return }
         let activityTrend: MetricActivityAttributes.ContentState.Trend
         switch trend {
@@ -102,7 +107,7 @@ public actor LiveActivityCoordinator {
     /// End the active Live Activity, if any. Safe to call when none is
     /// running.
     public func endAlert() async {
-        #if canImport(ActivityKit)
+        #if canImport(ActivityKit) && os(iOS)
         guard let active = activeActivity else { return }
         await active.end(active.content, dismissalPolicy: .immediate)
         activeActivity = nil

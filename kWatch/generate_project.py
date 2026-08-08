@@ -362,7 +362,7 @@ def main():
     # Matches kSpaceClean's proven-working wiring (Xcode 14.3.1 / macOS 13.3 SDK):
     # absolute relativePath, empty Frameworks phases, `/* kFoundation */` comment.
     package_ref_id = add(("XCLocalSwiftPackageReference", {
-        "relativePath": "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation",
+        "relativePath": "../kFoundation",
     }), "pkg_kFoundation")
 
     def make_pkg_product(product_name, seed):
@@ -380,8 +380,8 @@ def main():
     pkg_folder_ref_id = add(("PBXFileReference", {
         "lastKnownFileType": "folder",
         "name": "kFoundation",
-        "path": "/Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation",
-        "sourceTree": '"<absolute>"',
+        "path": "../kFoundation",
+        "sourceTree": '"<group>"',
     }), "ref_pkg_kFoundation")
     frameworks_group_id = add(make_group("Frameworks", [(pkg_folder_ref_id, "kFoundation")]),
                               "grp_Frameworks")
@@ -429,6 +429,28 @@ def main():
         "buildActionMask": 2147483647, "files": [(fid, "") for fid in resource_refs],
         "runOnlyForDeploymentPostprocessing": 0
     }), "phase_main_resources")
+
+    # Embed App Extensions phase — copies each .appex into kWatch.app/Contents/PlugIns/
+    # so the system loads them at runtime. Without this, the appex targets build but
+    # never reach the bundle, and Widgets / App Intents / Live Activities / Control
+    # Widget all silently fail to register with macOS.
+    embed_appex_bf_id = add(make_buildfile(appex_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_appex")
+    embed_widget_bf_id = add(make_buildfile(widget_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_widget")
+    embed_la_bf_id = add(make_buildfile(la_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_la")
+    embed_ctrl_bf_id = add(make_buildfile(ctrl_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_ctrl")
+    main_embed_phase_id = add(("PBXCopyFilesBuildPhase", {
+        "buildActionMask": 2147483647,
+        "dstPath": "",
+        "dstSubfolderSpec": 13,  # 13 = PlugIns folder inside the bundle
+        "files": [
+            (embed_appex_bf_id, ""),
+            (embed_widget_bf_id, ""),
+            (embed_la_bf_id, ""),
+            (embed_ctrl_bf_id, ""),
+        ],
+        "name": "Embed App Extensions",
+        "runOnlyForDeploymentPostprocessing": 0,
+    }), "phase_main_embed")
 
     appex_sources_phase_id = add(("PBXSourcesBuildPhase", {
         "buildActionMask": 2147483647, "files": [(fid, "") for fid in appex_build_files],
@@ -572,10 +594,10 @@ def main():
         "INFOPLIST_KEY_CFBundlePackageType": '"APPL"',
         "INFOPLIST_KEY_CFBundleShortVersionString": '"1.0"',
         "INFOPLIST_KEY_CFBundleVersion": "1",
-        "INFOPLIST_KEY_LSMinimumSystemVersion": "13.0",
+        "INFOPLIST_KEY_LSMinimumSystemVersion": "14.0",
         "INFOPLIST_KEY_NSHumanReadableCopyright": '""',
         "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/../Frameworks"],
-        "MACOSX_DEPLOYMENT_TARGET": "13.0",
+        "MACOSX_DEPLOYMENT_TARGET": "14.0",
         "MARKETING_VERSION": "1.0",
         "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kwatch",
         "PRODUCT_NAME": "$(TARGET_NAME)",
@@ -598,10 +620,10 @@ def main():
         "INFOPLIST_KEY_CFBundlePackageType": '"APPL"',
         "INFOPLIST_KEY_CFBundleShortVersionString": '"1.0"',
         "INFOPLIST_KEY_CFBundleVersion": "1",
-        "INFOPLIST_KEY_LSMinimumSystemVersion": "13.0",
+        "INFOPLIST_KEY_LSMinimumSystemVersion": "14.0",
         "INFOPLIST_KEY_NSHumanReadableCopyright": '""',
         "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/../Frameworks"],
-        "MACOSX_DEPLOYMENT_TARGET": "13.0",
+        "MACOSX_DEPLOYMENT_TARGET": "14.0",
         "MARKETING_VERSION": "1.0",
         "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kwatch",
         "PRODUCT_NAME": "$(TARGET_NAME)",
@@ -738,7 +760,7 @@ def main():
         "INFOPLIST_KEY_NSExtensionPointIdentifier": "com.apple.activitykit-extension",
         "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/../Frameworks",
                                     "@executable_path/../../../../Frameworks"],
-        "MACOSX_DEPLOYMENT_TARGET": "13.0",
+        "MACOSX_DEPLOYMENT_TARGET": "14.0",
         "MARKETING_VERSION": "1.0",
         "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kwatch.activity",
         "PRODUCT_NAME": "$(TARGET_NAME)",
@@ -763,7 +785,7 @@ def main():
         "INFOPLIST_KEY_NSExtensionPointIdentifier": "com.apple.activitykit-extension",
         "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/../Frameworks",
                                     "@executable_path/../../../../Frameworks"],
-        "MACOSX_DEPLOYMENT_TARGET": "13.0",
+        "MACOSX_DEPLOYMENT_TARGET": "14.0",
         "MARKETING_VERSION": "1.0",
         "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kwatch.activity",
         "PRODUCT_NAME": "$(TARGET_NAME)",
@@ -902,7 +924,8 @@ def main():
         "buildConfigurationList": main_config_list_id,
         "buildPhases": [(main_sources_phase_id, "Sources"),
                         (main_frameworks_phase_id, "Frameworks"),
-                        (main_resources_phase_id, "Resources")],
+                        (main_resources_phase_id, "Resources"),
+                        (main_embed_phase_id, "Embed App Extensions")],
         "buildRules": [],
         "dependencies": ([(dep_app_intents, "kWatchIntents"),
                           (dep_app_widget, "kWatchWidget"),
@@ -1045,7 +1068,8 @@ def main():
     os.makedirs(os.path.dirname(PROJECT_FILE), exist_ok=True)
 
     section_order = [
-        "PBXBuildFile", "PBXContainerItemProxy", "PBXFileReference",
+        "PBXBuildFile", "PBXContainerItemProxy", "PBXCopyFilesBuildPhase",
+        "PBXFileReference",
         "PBXFrameworksBuildPhase", "PBXGroup", "PBXNativeTarget",
         "PBXProject", "PBXResourcesBuildPhase", "PBXSourcesBuildPhase",
         "PBXTargetDependency", "XCBuildConfiguration", "XCConfigurationList",

@@ -14,7 +14,12 @@
 //     macOS 14+ and only after the user opts in through Preferences.
 //  -------------------------------------------------------------------------
 
-#if canImport(ActivityKit)
+// ActivityKit is iOS-only in Xcode 26 SDK — see MetricActivityAttributes.swift
+// for the full rationale. The entire Live Activity widget body is gated to iOS;
+// the kWatchLiveActivity appex target compiles to an effectively empty bundle
+// on macOS. When/if Apple introduces macOS-native Live Activities, drop the
+// `os(iOS)` gate and the widget body will compile again.
+#if canImport(ActivityKit) && os(iOS)
 import ActivityKit
 import SwiftUI
 import WidgetKit

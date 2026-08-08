@@ -55,6 +55,15 @@
 		isa = PBXBuildFile;
 		fileRef = EC7AC2A12DE9FDACAF5C7302;
 	};
+	153C543E0B1E0A405F363A75 /* 153C543E0B1E0A405F363A75 */ = {
+		isa = PBXBuildFile;
+		fileRef = 226991BF3D28520B833DC3C6;
+		settings = {
+			ATTRIBUTES = (
+				RemoveHeadersOnCopy,
+			);
+		};
+	};
 	1578E2645DDE9FF630F86870 /* 1578E2645DDE9FF630F86870 */ = {
 		isa = PBXBuildFile;
 		fileRef = E4D32DAFD639987B4156B38E;
@@ -151,6 +160,15 @@
 		isa = PBXBuildFile;
 		fileRef = 76E4C471C0F679BCC35C5BE2;
 	};
+	49F9A6E099B3972867C17FD4 /* 49F9A6E099B3972867C17FD4 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4E08A802CAF3AAC9CE0905B4;
+		settings = {
+			ATTRIBUTES = (
+				RemoveHeadersOnCopy,
+			);
+		};
+	};
 	4A9F6111ADFF4A8610BC095C /* 4A9F6111ADFF4A8610BC095C */ = {
 		isa = PBXBuildFile;
 		fileRef = 42A8FD07BDDC626DBA3184A4;
@@ -230,6 +248,15 @@
 	688BA67F404AA9A6367F06BD /* 688BA67F404AA9A6367F06BD */ = {
 		isa = PBXBuildFile;
 		fileRef = D69C4DDC1546D9CE51A13A24;
+	};
+	6A53B82381A1806E2C2168BA /* 6A53B82381A1806E2C2168BA */ = {
+		isa = PBXBuildFile;
+		fileRef = C8620777E51DC1E62B029214;
+		settings = {
+			ATTRIBUTES = (
+				RemoveHeadersOnCopy,
+			);
+		};
 	};
 	6B52D19EE1A24A6E56289CD2 /* 6B52D19EE1A24A6E56289CD2 */ = {
 		isa = PBXBuildFile;
@@ -366,6 +393,15 @@
 	8F2107E120FFE5D47C3098D2 /* 8F2107E120FFE5D47C3098D2 */ = {
 		isa = PBXBuildFile;
 		fileRef = 85467F0AE21D25713C3894F5;
+	};
+	919150E190FBA820C9721F69 /* 919150E190FBA820C9721F69 */ = {
+		isa = PBXBuildFile;
+		fileRef = 916F7B47C22D469EEFCF0C37;
+		settings = {
+			ATTRIBUTES = (
+				RemoveHeadersOnCopy,
+			);
+		};
 	};
 	924D895492CCEFFDF819E8EF /* 924D895492CCEFFDF819E8EF */ = {
 		isa = PBXBuildFile;
@@ -686,6 +722,23 @@
 		remoteInfo = kWatchWidget;
 	};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+	96A6F6DA128E21F233C118E2 /* Embed App Extensions */ = {
+		isa = PBXCopyFilesBuildPhase;
+		buildActionMask = 2147483647;
+		dstPath = "";
+		dstSubfolderSpec = 13;
+		files = (
+			49F9A6E099B3972867C17FD4 /* 49F9A6E099B3972867C17FD4 */,
+			153C543E0B1E0A405F363A75 /* 153C543E0B1E0A405F363A75 */,
+			919150E190FBA820C9721F69 /* 919150E190FBA820C9721F69 */,
+			6A53B82381A1806E2C2168BA /* 6A53B82381A1806E2C2168BA */,
+		);
+		name = "Embed App Extensions";
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 	024F1C2F979C5749ECEFCCDC /* StoreKitClient.swift */ = {
@@ -1608,8 +1661,8 @@
 		isa = PBXFileReference;
 		lastKnownFileType = folder;
 		name = kFoundation;
-		path = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
-		sourceTree = "<absolute>";
+		path = ../kFoundation;
+		sourceTree = "<group>";
 	};
 	FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */ = {
 		isa = PBXFileReference;
@@ -2069,6 +2122,7 @@
 			D7ADA1B3F2BD4A23138F5A71 /* Sources */,
 			639838777480095AEC9EAF3D /* Frameworks */,
 			0F96DF12DE3D14BDBD2DCA50 /* Resources */,
+			96A6F6DA128E21F233C118E2 /* Embed App Extensions */,
 		);
 		buildRules = (
 		);
@@ -2548,13 +2602,13 @@
 		INFOPLIST_KEY_CFBundlePackageType = "APPL";
 		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
 		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
+		INFOPLIST_KEY_LSMinimumSystemVersion = 14.0;
 		INFOPLIST_KEY_NSHumanReadableCopyright = "";
 		LD_RUNPATH_SEARCH_PATHS = (
 			"$(inherited)",
 			"@executable_path/../Frameworks",
 		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MACOSX_DEPLOYMENT_TARGET = 14.0;
 		MARKETING_VERSION = 1.0;
 		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch;
 		PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2604,13 +2658,13 @@
 		INFOPLIST_KEY_CFBundlePackageType = "APPL";
 		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
 		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
+		INFOPLIST_KEY_LSMinimumSystemVersion = 14.0;
 		INFOPLIST_KEY_NSHumanReadableCopyright = "";
 		LD_RUNPATH_SEARCH_PATHS = (
 			"$(inherited)",
 			"@executable_path/../Frameworks",
 		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MACOSX_DEPLOYMENT_TARGET = 14.0;
 		MARKETING_VERSION = 1.0;
 		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch;
 		PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2640,7 +2694,7 @@
 			"@executable_path/../Frameworks",
 			"@executable_path/../../../../Frameworks",
 		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MACOSX_DEPLOYMENT_TARGET = 14.0;
 		MARKETING_VERSION = 1.0;
 		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.activity;
 		PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2701,7 +2755,7 @@
 			"@executable_path/../Frameworks",
 			"@executable_path/../../../../Frameworks",
 		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
+		MACOSX_DEPLOYMENT_TARGET = 14.0;
 		MARKETING_VERSION = 1.0;
 		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.activity;
 		PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2981,7 +3035,7 @@
 /* Begin XCLocalSwiftPackageReference section */
 	0FF3C456B3FB47CBB23203A7 /* 0FF3C456B3FB47CBB23203A7 */ = {
 		isa = XCLocalSwiftPackageReference;
-		relativePath = /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation;
+		relativePath = ../kFoundation;
 	};
 /* End XCLocalSwiftPackageReference section */
 

@@ -108,4 +108,4 @@ targets:
 
 packages:
   kFoundation:
-    path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation
+    path: ../kFoundation

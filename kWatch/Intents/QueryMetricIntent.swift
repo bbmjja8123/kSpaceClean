@@ -43,8 +43,22 @@ public struct QueryMetricIntent: AppIntent {
 
 /// Strongly-typed `AppEnum` wrapper around `MetricKind` so we can use it as
 /// an `@Parameter` on the AppIntents runtime.
+///
+/// Declared as a real `enum` with `String` raw value (the `MetricKind.rawValue`)
+/// rather than a struct wrapper so the AppIntents metadata processor can
+/// introspect its cases for `caseDisplayRepresentations` / `allCases`.
+/// Each case exposes the underlying `MetricKind` via a computed property.
 @available(macOS 13.0, *)
-public struct MetricKindParameter: AppEnum, Sendable {
+public enum MetricKindParameter: String, AppEnum, Sendable {
+    case cpu
+    case memory
+    case disk
+    case network
+    case temperature
+    case fan
+    case battery
+    case gpu
+
     public static var typeDisplayRepresentation: TypeDisplayRepresentation = "Metric"
     public static var caseDisplayRepresentations: [MetricKindParameter: DisplayRepresentation] = [
         .cpu: DisplayRepresentation(title: "CPU"),
@@ -57,30 +71,13 @@ public struct MetricKindParameter: AppEnum, Sendable {
         .gpu: DisplayRepresentation(title: "GPU")
     ]
 
-    public let kind: MetricKind
+    /// The underlying `MetricKind` value for this parameter.
+    public var kind: MetricKind {
+        MetricKind(rawValue: rawValue) ?? .cpu
+    }
 
     public init(kind: MetricKind) {
-        self.kind = kind
-    }
-
-    public init?(rawValue: String) {
-        guard let k = MetricKind(rawValue: rawValue) else { return nil }
-        self.kind = k
-    }
-
-    public var rawValue: String { kind.rawValue }
-
-    public static let cpu = MetricKindParameter(kind: .cpu)
-    public static let memory = MetricKindParameter(kind: .memory)
-    public static let disk = MetricKindParameter(kind: .disk)
-    public static let network = MetricKindParameter(kind: .network)
-    public static let temperature = MetricKindParameter(kind: .temperature)
-    public static let fan = MetricKindParameter(kind: .fan)
-    public static let battery = MetricKindParameter(kind: .battery)
-    public static let gpu = MetricKindParameter(kind: .gpu)
-
-    public static var allCases: [MetricKindParameter] {
-        MetricKind.allCases.map { MetricKindParameter(kind: $0) }
+        self = MetricKindParameter(rawValue: kind.rawValue) ?? .cpu
     }
 }
 
