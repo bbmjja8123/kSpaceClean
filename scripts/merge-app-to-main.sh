@@ -28,13 +28,8 @@ case "$APP" in
     *) echo "error: app must be one of: kWise | kWatch | kSift | kFresh" >&2; exit 65 ;;
 esac
 
-BRANCH="worktree-${APP,,}-v1"
-
-# Detect bash 3.2 (macOS default) vs 4+: ${VAR,,} lowercase expansion needs bash 4+.
-# On macOS bash 3.2, fall back to tr.
-if ((BASH_VERSINFO[0] < 4)); then
-    BRANCH="worktree-$(echo "$APP" | tr '[:upper:]' '[:lower:]')-v1"
-fi
+# bash 3.2 (macOS default) lacks ${VAR,,} lowercase expansion; use tr.
+BRANCH="worktree-$(echo "$APP" | tr '[:upper:]' '[:lower:]')-v1"
 
 STRATEGY="--no-ff"
 ABORT=0
