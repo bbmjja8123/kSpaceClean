@@ -1,5 +1,4 @@
 import Foundation
-import UniformTypeIdentifiers
 
 /// Detects developer build artifacts and collapses files under the same artifact root.
 public actor BuildArtifactDetector {
@@ -12,7 +11,7 @@ public actor BuildArtifactDetector {
 
     /// Loads file metadata before applying build-artifact rules.
     public func detect(_ urls: [URL], controller: ScanController) -> [DuplicateGroup] {
-        detect(files: urls.compactMap(makeFileItem), controller: controller)
+        detect(files: urls.compactMap(FileItem.fromMetadata), controller: controller)
     }
 
     /// Groups matched files by artifact root so directories such as node_modules appear once.
@@ -127,24 +126,4 @@ public actor BuildArtifactDetector {
         ).standardizedFileURL
     }
 
-    private func makeFileItem(_ url: URL) -> FileItem? {
-        guard let values = try? url.resourceValues(forKeys: [
-            .fileSizeKey,
-            .contentModificationDateKey,
-            .creationDateKey,
-            .totalFileAllocatedSizeKey,
-            .isRegularFileKey,
-        ]), values.isRegularFile == true else {
-            return nil
-        }
-        return FileItem(
-            id: UUID(),
-            url: url,
-            size: Int64(values.fileSize ?? 0),
-            modificationDate: values.contentModificationDate ?? .distantPast,
-            creationDate: values.creationDate,
-            physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-            fileType: UTType(filenameExtension: url.pathExtension)
-        )
-    }
 }

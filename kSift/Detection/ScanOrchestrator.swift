@@ -1,6 +1,5 @@
 import FileScanner
 import Foundation
-import UniformTypeIdentifiers
 
 /// Thread-safe counter used inside `@Sendable` enumeration callbacks.
 private final class EnumerationCounter: @unchecked Sendable {
@@ -13,29 +12,6 @@ private final class EnumerationCounter: @unchecked Sendable {
         count += 1
         return count
     }
-}
-
-/// Loads light file metadata once so detectors that only need size/type/date can
-/// share a single stat pass instead of re-reading the filesystem.
-private func metadataFileItem(_ url: URL) -> FileItem? {
-    guard let values = try? url.resourceValues(forKeys: [
-        .fileSizeKey,
-        .contentModificationDateKey,
-        .creationDateKey,
-        .totalFileAllocatedSizeKey,
-        .isRegularFileKey,
-    ]), values.isRegularFile == true else {
-        return nil
-    }
-    return FileItem(
-        id: UUID(),
-        url: url,
-        size: Int64(values.fileSize ?? 0),
-        modificationDate: values.contentModificationDate ?? .distantPast,
-        creationDate: values.creationDate,
-        physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-        fileType: UTType(filenameExtension: url.pathExtension)
-    )
 }
 
 /// Returns true for cancellation errors, which end the scan quietly rather than
@@ -126,7 +102,7 @@ public actor ScanOrchestrator {
                 // Single metadata pass shared by the detectors that only need
                 // size/type/date. Byte-identical and directory-dedup run their own
                 // 4-stage verification on raw URLs.
-                let fileItems = allURLs.compactMap(metadataFileItem)
+                let fileItems = allURLs.compactMap(FileItem.fromMetadata)
                 let bytesScanned = fileItems.reduce(Int64(0)) { partial, item in
                     let sum = partial.addingReportingOverflow(item.size)
                     return sum.overflow ? Int64.max : sum.partialValue

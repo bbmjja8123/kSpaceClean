@@ -139,4 +139,32 @@ public struct FileItem: Sendable, Identifiable, Codable {
         self.physicalSize = physicalSize
         self.fileType = fileType
     }
+
+    /// Loads light metadata (size, dates, physicalSize, fileType) for a URL
+    /// via a single `URL.resourceValues` call and wraps it in a `FileItem`.
+    /// Returns nil if the URL is not a regular file (directories, symlinks
+    /// to nothing, broken aliases).
+    ///
+    /// Used by every metadata-only detector so they share one stat-style
+    /// pass instead of each calling `resourceValues` independently.
+    public static func fromMetadata(_ url: URL) -> FileItem? {
+        guard let values = try? url.resourceValues(forKeys: [
+            .fileSizeKey,
+            .contentModificationDateKey,
+            .creationDateKey,
+            .totalFileAllocatedSizeKey,
+            .isRegularFileKey,
+        ]), values.isRegularFile == true else {
+            return nil
+        }
+        return FileItem(
+            id: UUID(),
+            url: url,
+            size: Int64(values.fileSize ?? 0),
+            modificationDate: values.contentModificationDate ?? .distantPast,
+            creationDate: values.creationDate,
+            physicalSize: values.totalFileAllocatedSize.map(Int64.init),
+            fileType: UTType(filenameExtension: url.pathExtension)
+        )
+    }
 }

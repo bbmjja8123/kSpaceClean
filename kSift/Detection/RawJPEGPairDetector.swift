@@ -1,6 +1,5 @@
 import Foundation
 import ImageIO
-import UniformTypeIdentifiers
 
 /// Pairs RAW and JPEG neighbors by directory, filename stem, and EXIF capture time.
 public actor RawJPEGPairDetector {
@@ -29,7 +28,7 @@ public actor RawJPEGPairDetector {
 
     /// Loads file metadata and detects RAW/JPEG pairs.
     public func detect(_ urls: [URL], controller: ScanController) -> [DuplicateGroup] {
-        detect(files: urls.compactMap(makeFileItem), controller: controller)
+        detect(files: urls.compactMap(FileItem.fromMetadata), controller: controller)
     }
 
     /// Returns one group per pair and leaves the keep/delete choice to the UI.
@@ -120,24 +119,4 @@ public actor RawJPEGPairDetector {
         }.map { ($0.index, $0.file, $0.exifMatch) }
     }
 
-    private func makeFileItem(_ url: URL) -> FileItem? {
-        guard let values = try? url.resourceValues(forKeys: [
-            .fileSizeKey,
-            .contentModificationDateKey,
-            .creationDateKey,
-            .totalFileAllocatedSizeKey,
-            .isRegularFileKey,
-        ]), values.isRegularFile == true else {
-            return nil
-        }
-        return FileItem(
-            id: UUID(),
-            url: url,
-            size: Int64(values.fileSize ?? 0),
-            modificationDate: values.contentModificationDate ?? .distantPast,
-            creationDate: values.creationDate,
-            physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-            fileType: UTType(filenameExtension: url.pathExtension)
-        )
-    }
 }

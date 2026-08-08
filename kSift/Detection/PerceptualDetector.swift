@@ -1,7 +1,6 @@
 import CoreGraphics
 import Foundation
 import ImageIO
-import UniformTypeIdentifiers
 import Vision
 
 /// Finds visually similar images with a dHash coarse pass and Vision feature-print verification.
@@ -66,7 +65,7 @@ public actor PerceptualDetector {
 
     /// Loads lightweight metadata and detects perceptual groups from file URLs.
     public func detect(_ urls: [URL], controller: ScanController) async -> [DuplicateGroup] {
-        let items = urls.compactMap(makeFileItem)
+        let items = urls.compactMap(FileItem.fromMetadata)
         return await detect(files: items, controller: controller)
     }
 
@@ -274,26 +273,6 @@ public actor PerceptualDetector {
         .sorted { ($0.similarity ?? 0) > ($1.similarity ?? 0) }
     }
 
-    private func makeFileItem(_ url: URL) -> FileItem? {
-        guard let values = try? url.resourceValues(forKeys: [
-            .fileSizeKey,
-            .contentModificationDateKey,
-            .creationDateKey,
-            .totalFileAllocatedSizeKey,
-            .isRegularFileKey,
-        ]), values.isRegularFile == true else {
-            return nil
-        }
-        return FileItem(
-            id: UUID(),
-            url: url,
-            size: Int64(values.fileSize ?? 0),
-            modificationDate: values.contentModificationDate ?? .distantPast,
-            creationDate: values.creationDate,
-            physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-            fileType: UTType(filenameExtension: url.pathExtension)
-        )
-    }
 
     private func isCancelled(_ controller: ScanController) -> Bool {
         controller.isCancelled || Task.isCancelled

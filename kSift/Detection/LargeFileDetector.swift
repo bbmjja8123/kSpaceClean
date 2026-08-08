@@ -1,5 +1,4 @@
 import Foundation
-import UniformTypeIdentifiers
 
 /// Produces a flat, size-sorted list of files above a configurable threshold.
 public actor LargeFileDetector {
@@ -11,7 +10,7 @@ public actor LargeFileDetector {
 
     /// Loads metadata and returns large files without wrapping each file in a duplicate group.
     public func detect(_ urls: [URL], controller: ScanController) -> [FileItem] {
-        detect(files: urls.compactMap(makeFileItem), controller: controller)
+        detect(files: urls.compactMap(FileItem.fromMetadata), controller: controller)
     }
 
     /// Filters previously enumerated file metadata without additional disk I/O.
@@ -31,24 +30,4 @@ public actor LargeFileDetector {
         }
     }
 
-    private func makeFileItem(_ url: URL) -> FileItem? {
-        guard let values = try? url.resourceValues(forKeys: [
-            .fileSizeKey,
-            .contentModificationDateKey,
-            .creationDateKey,
-            .totalFileAllocatedSizeKey,
-            .isRegularFileKey,
-        ]), values.isRegularFile == true else {
-            return nil
-        }
-        return FileItem(
-            id: UUID(),
-            url: url,
-            size: Int64(values.fileSize ?? 0),
-            modificationDate: values.contentModificationDate ?? .distantPast,
-            creationDate: values.creationDate,
-            physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-            fileType: UTType(filenameExtension: url.pathExtension)
-        )
-    }
 }
