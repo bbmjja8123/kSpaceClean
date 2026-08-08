@@ -247,9 +247,15 @@ kWise/
 - 提交前必须跑 `swift test` + 单元测试覆盖率 > 70%
 
 ### 5.2 Git 规范
-- 主分支：`main`（保护，仅 PR 合并）
-- 开发分支：`feature/<app>-<feature>`、`fix/<app>-<bug>`
+- 主分支：`main`（保护，仅 PR / 显式 merge 合并）
+- **4 个永久 worktree**：`kWise` / `kWatch` / `kSift` / `kFresh`，每个独占一个 App 目录
+  - 路径：`/Users/torsys/Documents/aicoding/<app>`（与主 worktree 同级）
+  - 分支：`worktree-<app>-v1`（例如 `worktree-kwise-v1`）
+  - 永久保留，禁止 `git worktree remove`
+  - 边界严格：用 `scripts/commit-app.sh <app>` stage，跨 App 路径会被拒绝
+- 开发分支：`feature/<app>-<feature>`、`fix/<app>-<bug>`（短期 feature 分支在对应 worktree 内使用）
 - 提交信息：`feat(kWise): add 3D galaxy renderer`
+- Merge 节奏：见 `docs/workflow/4-worktree-merge-cadence.md`（默认每周五 16:00 merge window）
 
 ### 5.3 安全与隐私
 - 任何网络请求必须经过用户明确同意
