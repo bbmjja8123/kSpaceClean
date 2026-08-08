@@ -861,7 +861,7 @@ def main():
             "CURRENT_PROJECT_VERSION": "1",
             "DEVELOPMENT_TEAM": '""',
             "GENERATE_INFOPLIST_FILE": "YES",
-            "MACOSX_DEPLOYMENT_TARGET": "13.0",
+            "MACOSX_DEPLOYMENT_TARGET": "14.0",
             "MARKETING_VERSION": "1.0",
             "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kwatch.tests",
             "PRODUCT_NAME": "$(TARGET_NAME)",
