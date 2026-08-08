@@ -469,10 +469,13 @@ struct GroupRowView: View {
                                 .background(Color.accentColor.opacity(0.15))
                                 .foregroundColor(.accentColor)
                                 .clipShape(Capsule())
-                                .help(NSLocalizedString(
-                                    "This group shares the same name with %d other groups",
-                                    comment: "Same-name cluster tooltip"
-                                ).replacingOccurrences(of: "%d", with: "\(sameNameSiblingCount)"))
+                                .help(String.localizedStringWithFormat(
+                                    NSLocalizedString(
+                                        "This group shares the same name with %d other groups",
+                                        comment: "Same-name cluster tooltip"
+                                    ),
+                                    sameNameSiblingCount
+                                ))
                         }
                         // APFS-clone badge: lets the user know these files
                         // share physical blocks; cleaning them only frees
