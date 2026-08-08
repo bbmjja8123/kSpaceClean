@@ -27,7 +27,7 @@
 
 - **kSpaceClean v1** 已完成（19 个 Task、39 个文件，2026-07-25 提交）
 - **kWatch** 在 Backlog 中等待设计
-- **kDupe / kUninstall** 仍在 Backlog
+- **kSift / kFresh** 仍在 Backlog
 
 ### 1.2 用户初始需求
 

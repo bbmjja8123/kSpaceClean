@@ -143,7 +143,7 @@
   - Spacing tokens：xxs/xs/sm/md/lg/xl/xxl
   - Type tokens：titleHero / titleLarge / bodyLarge / bodyRegular / bodySmall / pathDefault / numberSize
   - Radius tokens：sm/md/lg/xl
-  - 集成到 4 个 App（kSpaceClean / kDupe / kUninstall / kWatch）
+  - 集成到 4 个 App（kWise / kSift / kFresh / kWatch）
 
 - [ ] **V2** Color tokens 用系统色基调
   - 文件：`kFoundation/Sources/DesignSystem/Colors.swift`

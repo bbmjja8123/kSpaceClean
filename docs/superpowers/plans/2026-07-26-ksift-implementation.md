@@ -27,7 +27,7 @@
 ## File Structure
 
 ```
-kDupe/
+kSift/
 ├── project.yml
 ├── kDupe.entitlements
 ├── Info.plist
@@ -138,9 +138,9 @@ kDupe/
 ### Task 1: Project Scaffolding
 
 **Files:**
-- Create: `kDupe/project.yml`
-- Create: `kDupe/kDupe.entitlements`
-- Create: `kDupe/Info.plist`
+- Create: `kSift/project.yml`
+- Create: `kSift/kDupe.entitlements`
+- Create: `kSift/Info.plist`
 
 **Interfaces:**
 - Consumes: kFoundation SPM package (DesignSystem, FileScanner, CommonUtils, Capabilities)
@@ -289,7 +289,7 @@ Expected: kDupe.xcodeproj exists
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kDupe/project.yml kDupe/kDupe.entitlements kDupe/Info.plist
+git add kSift/project.yml kSift/kDupe.entitlements kSift/Info.plist
 git commit -m "feat(kDupe): add project scaffolding with XcodeGen"
 ```
 
@@ -298,10 +298,10 @@ git commit -m "feat(kDupe): add project scaffolding with XcodeGen"
 ### Task 2: App Entry Point
 
 **Files:**
-- Create: `kDupe/App/kDupeApp.swift`
-- Create: `kDupe/App/AppCoordinator.swift`
-- Create: `kDupe/App/AppState.swift`
-- Create: `kDupe/App/RootView.swift`
+- Create: `kSift/App/kDupeApp.swift`
+- Create: `kSift/App/AppCoordinator.swift`
+- Create: `kSift/App/AppState.swift`
+- Create: `kSift/App/RootView.swift`
 
 **Interfaces:**
 - Consumes: DesignSystem components (GlassPanel, EmptyStateView), FileScanner types
@@ -478,19 +478,19 @@ struct RootView: View {
 
 ```bash
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp
-mkdir -p kDupe/App kDupe/Models kDupe/Persistence kDupe/Repository kDupe/Detection
-mkdir -p kDupe/UI/Onboarding kDupe/UI/Scan kDupe/UI/Results kDupe/UI/History kDupe/UI/Settings
-mkdir -p kDupe/Store kDupe/CLI/kdupe-cli kDupe/CLI/kdupe-xpc kDupe/CLI/XPCServer
-mkdir -p kDupe/WebDashboard/DashboardAssets kDupe/FinderSync
-mkdir -p kDupe/MenuBar kDupe/Intents kDupe/Widgets kDupe/Spotlight
-mkdir -p kDupe/Resources/Assets.xcassets kDupe/Resources/Models
-mkdir -p kDupe/Tests/DetectionTests kDupe/Tests/RepositoryTests kDupe/Tests/CLITests
+mkdir -p kSift/App kSift/Models kSift/Persistence kSift/Repository kSift/Detection
+mkdir -p kSift/UI/Onboarding kSift/UI/Scan kSift/UI/Results kSift/UI/History kSift/UI/Settings
+mkdir -p kSift/Store kSift/CLI/kdupe-cli kSift/CLI/kdupe-xpc kSift/CLI/XPCServer
+mkdir -p kSift/WebDashboard/DashboardAssets kSift/FinderSync
+mkdir -p kSift/MenuBar kSift/Intents kSift/Widgets kSift/Spotlight
+mkdir -p kSift/Resources/Assets.xcassets kSift/Resources/Models
+mkdir -p kSift/Tests/DetectionTests kSift/Tests/RepositoryTests kSift/Tests/CLITests
 ```
 
 ```bash
-git add kDupe/App/ kDupe/Models/ kDupe/Persistence/ kDupe/Repository/ kDupe/Detection/ \
-       kDupe/UI/ kDupe/Store/ kDupe/CLI/ kDupe/WebDashboard/ kDupe/FinderSync/ \
-       kDupe/MenuBar/ kDupe/Intents/ kDupe/Widgets/ kDupe/Spotlight/ kDupe/Resources/ kDupe/Tests/
+git add kSift/App/ kSift/Models/ kSift/Persistence/ kSift/Repository/ kSift/Detection/ \
+       kSift/UI/ kSift/Store/ kSift/CLI/ kSift/WebDashboard/ kSift/FinderSync/ \
+       kSift/MenuBar/ kSift/Intents/ kSift/Widgets/ kSift/Spotlight/ kSift/Resources/ kSift/Tests/
 git commit -m "feat(kDupe): add app entry point with navigation shell"
 ```
 
@@ -499,10 +499,10 @@ git commit -m "feat(kDupe): add app entry point with navigation shell"
 ### Task 3: Core Domain Models
 
 **Files:**
-- Create: `kDupe/Models/ProfileConfig.swift`
-- Create: `kDupe/Models/ScanTypes.swift`
-- Create: `kDupe/Models/DuplicateTypes.swift`
-- Create: `kDupe/Models/CleanupTypes.swift`
+- Create: `kSift/Models/ProfileConfig.swift`
+- Create: `kSift/Models/ScanTypes.swift`
+- Create: `kSift/Models/DuplicateTypes.swift`
+- Create: `kSift/Models/CleanupTypes.swift`
 
 **Interfaces:**
 - Consumes: Foundation
@@ -709,7 +709,7 @@ public struct CleanupRecord: Sendable, Identifiable {
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kDupe/Models/
+git add kSift/Models/
 git commit -m "feat(kDupe): add core domain models"
 ```
 
@@ -718,11 +718,11 @@ git commit -m "feat(kDupe): add core domain models"
 ### Task 4: Core Data Stack + Entities
 
 **Files:**
-- Create: `kDupe/Persistence/PersistenceController.swift`
-- Create: `kDupe/Persistence/ScanRecordEntity.swift`
-- Create: `kDupe/Persistence/DuplicateGroupEntity.swift`
-- Create: `kDupe/Persistence/FileItemEntity.swift`
-- Create: `kDupe/Persistence/CleanupActionEntity.swift`
+- Create: `kSift/Persistence/PersistenceController.swift`
+- Create: `kSift/Persistence/ScanRecordEntity.swift`
+- Create: `kSift/Persistence/DuplicateGroupEntity.swift`
+- Create: `kSift/Persistence/FileItemEntity.swift`
+- Create: `kSift/Persistence/CleanupActionEntity.swift`
 
 **Interfaces:**
 - Consumes: Foundation, CoreData, domain models from Task 3
@@ -868,8 +868,8 @@ public final class PersistenceController: Sendable {
 - [ ] **Step 6: Create Core Data model file**
 
 ```bash
-mkdir -p kDupe/Persistence/kDupe.xcdatamodeld
-cat > kDupe/Persistence/kDupe.xcdatamodeld/.xcdatamodel << 'CONTENT'
+mkdir -p kSift/Persistence/kDupe.xcdatamodeld
+cat > kSift/Persistence/kDupe.xcdatamodeld/.xcdatamodel << 'CONTENT'
 <?xml version="1.0" encoding="UTF-8"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0">
     <entity name="ScanRecordEntity" representedClassName="ScanRecordEntity" syncable="YES">
@@ -917,7 +917,7 @@ CONTENT
 - [ ] **Step 7: Commit**
 
 ```bash
-git add kDupe/Persistence/
+git add kSift/Persistence/
 git commit -m "feat(kDupe): add Core Data stack with 4 entities"
 ```
 
@@ -926,9 +926,9 @@ git commit -m "feat(kDupe): add Core Data stack with 4 entities"
 ### Task 5: Repository Layer
 
 **Files:**
-- Create: `kDupe/Repository/DuplicateRepositoryProtocol.swift`
-- Create: `kDupe/Repository/DuplicateRepositoryCoreData.swift`
-- Create: `kDupe/Repository/DuplicateRepositoryJSON.swift`
+- Create: `kSift/Repository/DuplicateRepositoryProtocol.swift`
+- Create: `kSift/Repository/DuplicateRepositoryCoreData.swift`
+- Create: `kSift/Repository/DuplicateRepositoryJSON.swift`
 
 **Interfaces:**
 - Consumes: PersistenceController (Task 4), domain models (Task 3)
@@ -1178,7 +1178,7 @@ public actor DuplicateRepositoryJSON: DuplicateRepositoryProtocol {
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kDupe/Repository/
+git add kSift/Repository/
 git commit -m "feat(kDupe): add repository layer with Core Data and JSON backends"
 ```
 
@@ -1187,10 +1187,10 @@ git commit -m "feat(kDupe): add repository layer with Core Data and JSON backend
 ### Task 6: FileWalker + ByteIdenticalDetector
 
 **Files:**
-- Create: `kDupe/Detection/DetectionModels.swift`
-- Create: `kDupe/Detection/FileWalker.swift`
-- Create: `kDupe/Detection/ByteIdenticalDetector.swift`
-- Test: `kDupe/Tests/DetectionTests/ByteIdenticalDetectorTests.swift`
+- Create: `kSift/Detection/DetectionModels.swift`
+- Create: `kSift/Detection/FileWalker.swift`
+- Create: `kSift/Detection/ByteIdenticalDetector.swift`
+- Test: `kSift/Tests/DetectionTests/ByteIdenticalDetectorTests.swift`
 
 **Interfaces:**
 - Consumes: `ScanTarget` (Task 3), `FileEnumerator`, `CancellationToken` (kFoundation)
@@ -1361,8 +1361,8 @@ final class ByteIdenticalDetectorTests: XCTestCase {
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kDupe/Detection/DetectionModels.swift kDupe/Detection/FileWalker.swift \
-       kDupe/Detection/ByteIdenticalDetector.swift kDupe/Tests/DetectionTests/ByteIdenticalDetectorTests.swift
+git add kSift/Detection/DetectionModels.swift kSift/Detection/FileWalker.swift \
+       kSift/Detection/ByteIdenticalDetector.swift kSift/Tests/DetectionTests/ByteIdenticalDetectorTests.swift
 git commit -m "feat(kDupe): add FileWalker and SHA-256 byte-identical detector"
 ```
 
@@ -1371,11 +1371,11 @@ git commit -m "feat(kDupe): add FileWalker and SHA-256 byte-identical detector"
 ### Task 7: Remaining Detectors
 
 **Files:**
-- Create: `kDupe/Detection/DirectoryDedupDetector.swift`
-- Create: `kDupe/Detection/PerceptualDetector.swift`
-- Create: `kDupe/Detection/LargeFileDetector.swift`
-- Create: `kDupe/Detection/BuildArtifactDetector.swift`
-- Create: `kDupe/Detection/RawJPEGPairDetector.swift`
+- Create: `kSift/Detection/DirectoryDedupDetector.swift`
+- Create: `kSift/Detection/PerceptualDetector.swift`
+- Create: `kSift/Detection/LargeFileDetector.swift`
+- Create: `kSift/Detection/BuildArtifactDetector.swift`
+- Create: `kSift/Detection/RawJPEGPairDetector.swift`
 
 **Interfaces:**
 - All consume `[URL]` + `ScanController`, produce `[DuplicateGroup]`
@@ -1578,9 +1578,9 @@ public actor RawJPEGPairDetector {
 - [ ] **Step 6: Commit**
 
 ```bash
-git add kDupe/Detection/DirectoryDedupDetector.swift kDupe/Detection/PerceptualDetector.swift \
-       kDupe/Detection/LargeFileDetector.swift kDupe/Detection/BuildArtifactDetector.swift \
-       kDupe/Detection/RawJPEGPairDetector.swift
+git add kSift/Detection/DirectoryDedupDetector.swift kSift/Detection/PerceptualDetector.swift \
+       kSift/Detection/LargeFileDetector.swift kSift/Detection/BuildArtifactDetector.swift \
+       kSift/Detection/RawJPEGPairDetector.swift
 git commit -m "feat(kDupe): add 5 detectors (directory dedup, perceptual, large file, build artifact, RAW+JPEG)"
 ```
 
@@ -1589,8 +1589,8 @@ git commit -m "feat(kDupe): add 5 detectors (directory dedup, perceptual, large 
 ### Task 8: ScanOrchestrator + CleanupManager
 
 **Files:**
-- Create: `kDupe/Detection/ScanOrchestrator.swift`
-- Create: `kDupe/Detection/CleanupManager.swift`
+- Create: `kSift/Detection/ScanOrchestrator.swift`
+- Create: `kSift/Detection/CleanupManager.swift`
 
 **Interfaces:**
 - Consumes: `FileWalker`, all 6 detectors, `DuplicateRepositoryProtocol`, `ScanController`
@@ -1759,7 +1759,7 @@ public actor CleanupManager {
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kDupe/Detection/ScanOrchestrator.swift kDupe/Detection/CleanupManager.swift
+git add kSift/Detection/ScanOrchestrator.swift kSift/Detection/CleanupManager.swift
 git commit -m "feat(kDupe): add ScanOrchestrator and CleanupManager"
 ```
 
@@ -1768,9 +1768,9 @@ git commit -m "feat(kDupe): add ScanOrchestrator and CleanupManager"
 ### Task 9: Onboarding UI
 
 **Files:**
-- Create: `kDupe/UI/Onboarding/OnboardingView.swift`
-- Create: `kDupe/UI/Onboarding/OnboardingViewModel.swift`
-- Create: `kDupe/UI/Onboarding/ProfileSetupView.swift`
+- Create: `kSift/UI/Onboarding/OnboardingView.swift`
+- Create: `kSift/UI/Onboarding/OnboardingViewModel.swift`
+- Create: `kSift/UI/Onboarding/ProfileSetupView.swift`
 
 **Interfaces:**
 - Consumes: `AppState`, `ProfileType`, `ProfileConfig`
@@ -1918,7 +1918,7 @@ struct OnboardingView: View {
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kDupe/UI/Onboarding/
+git add kSift/UI/Onboarding/
 git commit -m "feat(kDupe): add onboarding UI with profile selection"
 ```
 
@@ -1927,10 +1927,10 @@ git commit -m "feat(kDupe): add onboarding UI with profile selection"
 ### Task 10: Scan UI
 
 **Files:**
-- Create: `kDupe/UI/Scan/MainView.swift`
-- Create: `kDupe/UI/Scan/ScanProgressView.swift`
-- Create: `kDupe/UI/Scan/ScanViewModel.swift`
-- Create: `kDupe/UI/Scan/ScanResultView.swift`
+- Create: `kSift/UI/Scan/MainView.swift`
+- Create: `kSift/UI/Scan/ScanProgressView.swift`
+- Create: `kSift/UI/Scan/ScanViewModel.swift`
+- Create: `kSift/UI/Scan/ScanResultView.swift`
 
 **Interfaces:**
 - Consumes: `ScanOrchestrator`, `ProfileConfig`, `AppState`
@@ -2142,7 +2142,7 @@ struct MainView: View {
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kDupe/UI/Scan/
+git add kSift/UI/Scan/
 git commit -m "feat(kDupe): add scan UI with progress and results summary"
 
 ---
@@ -2150,11 +2150,11 @@ git commit -m "feat(kDupe): add scan UI with progress and results summary"
 ### Task 11: Result UI — Group List, Drill-Down, Filtering
 
 **Files:**
-- Create: `kDupe/UI/Result/ResultViewModel.swift`
-- Create: `kDupe/UI/Result/ResultView.swift`
-- Create: `kDupe/UI/Result/GroupDetailView.swift`
-- Create: `kDupe/UI/Result/FileRowView.swift`
-- Create: `kDupe/UI/Result/FilterBarView.swift`
+- Create: `kSift/UI/Result/ResultViewModel.swift`
+- Create: `kSift/UI/Result/ResultView.swift`
+- Create: `kSift/UI/Result/GroupDetailView.swift`
+- Create: `kSift/UI/Result/FileRowView.swift`
+- Create: `kSift/UI/Result/FilterBarView.swift`
 
 **Interfaces:**
 - Consumes: `DuplicateGroup`, `FileItem`, `DuplicateCategory` (from Task 3), `ScanResult` (from Task 8 ScanOrchestrator run method return)
@@ -2543,7 +2543,7 @@ struct FilterBarView: View {
 
 - [ ] **Step 6: Add DuplicateCategory display extensions**
 
-In `kDupe/Models/ScanTypes.swift`, append:
+In `kSift/Models/ScanTypes.swift`, append:
 ```swift
 extension DuplicateCategory {
     var displayName: String {
@@ -2650,17 +2650,17 @@ Expected: 3 passed.
 - [ ] **Step 9: Commit**
 
 ```bash
-git add kDupe/UI/Result/ kDupe/Models/ScanTypes.swift kDupeTests/UITests/ResultViewModelTests.swift
+git add kSift/UI/Result/ kSift/Models/ScanTypes.swift kDupeTests/UITests/ResultViewModelTests.swift
 git commit -m "feat(kDupe): add result UI with filtering, sorting, and group drill-down"
 ```
 
 ### Task 12: History + Settings UI
 
 **Files:**
-- Create: `kDupe/UI/History/HistoryView.swift`
-- Create: `kDupe/UI/History/HistoryViewModel.swift`
-- Create: `kDupe/UI/Settings/SettingsView.swift`
-- Create: `kDupe/UI/Settings/SettingsViewModel.swift`
+- Create: `kSift/UI/History/HistoryView.swift`
+- Create: `kSift/UI/History/HistoryViewModel.swift`
+- Create: `kSift/UI/Settings/SettingsView.swift`
+- Create: `kSift/UI/Settings/SettingsViewModel.swift`
 
 **Interfaces:**
 - Consumes: `ScanRecord` (from Task 5), `DuplicateRepositoryProtocol` (from Task 5), `ProfileConfig` (from Task 3)
@@ -2891,7 +2891,7 @@ extension ProfileType {
 
 - [ ] **Step 5: Wire into RootView navigation**
 
-In `kDupe/App/RootView.swift`, add `.history` and `.settings` cases to the `@ViewBuilder mainContent` switch:
+In `kSift/App/RootView.swift`, add `.history` and `.settings` cases to the `@ViewBuilder mainContent` switch:
 
 ```swift
 case .history:
@@ -2903,18 +2903,18 @@ case .settings:
 - [ ] **Step 6: Commit**
 
 ```bash
-git add kDupe/UI/History/ kDupe/UI/Settings/ kDupe/App/RootView.swift
+git add kSift/UI/History/ kSift/UI/Settings/ kSift/App/RootView.swift
 git commit -m "feat(kDupe): add history and settings UI"
 ```
 
 ### Task 13: StoreKit 2 + Paywall
 
 **Files:**
-- Create: `kDupe/Store/StoreManager.swift`
-- Create: `kDupe/Store/PaywallView.swift`
-- Create: `kDupe/Store/StoreConfig.storekit`
-- Create: `kDupe/Store/ProductIdentifiers.swift`
-- Modify: `kDupe/project.yml` (add StoreKit config)
+- Create: `kSift/Store/StoreManager.swift`
+- Create: `kSift/Store/PaywallView.swift`
+- Create: `kSift/Store/StoreConfig.storekit`
+- Create: `kSift/Store/ProductIdentifiers.swift`
+- Modify: `kSift/project.yml` (add StoreKit config)
 
 **Interfaces:**
 - Consumes: None
@@ -3101,7 +3101,7 @@ struct PaywallView: View {
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kDupe/Store/
+git add kSift/Store/
 git commit -m "feat(kDupe): add StoreKit 2 paywall with weekly/yearly/lifetime products"
 ```
 
@@ -3119,7 +3119,7 @@ git commit -m "feat(kDupe): add StoreKit 2 paywall with weekly/yearly/lifetime p
 - Create: `kDupeXPC/XPCDuplicateServiceProtocol.swift`
 - Create: `kDupeXPC/XPCDuplicateService.swift`
 - Create: `kDupeXPC/main.swift`
-- Modify: `kDupe/project.yml` (add kDupeCLI + kDupeXPC targets)
+- Modify: `kSift/project.yml` (add kDupeCLI + kDupeXPC targets)
 
 **Interfaces:**
 - Consumes: All detector actors (from Tasks 6-7), CleanupManager (from Task 8)
@@ -3142,7 +3142,7 @@ targets:
       - target: kFoundation/CommonUtils
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.xpc
-      CODE_SIGN_ENTITLEMENTS: kDupe/kDupe.entitlements
+      CODE_SIGN_ENTITLEMENTS: kSift/kDupe.entitlements
 
   kDupeCLI:
     type: tool
@@ -3153,7 +3153,7 @@ targets:
       - target: kDupeXPC
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.cli
-      CODE_SIGN_ENTITLEMENTS: kDupe/kDupe.entitlements
+      CODE_SIGN_ENTITLEMENTS: kSift/kDupe.entitlements
 ```
 
 - [ ] **Step 2: Create XPC Protocol**
@@ -3308,19 +3308,19 @@ struct ScanCommand {
 - [ ] **Step 7: Commit**
 
 ```bash
-git add kDupeCLI/ kDupeXPC/ kDupe/project.yml
+git add kDupeCLI/ kDupeXPC/ kSift/project.yml
 git commit -m "feat(kDupe): add CLI tool with 8 subcommands and XPC service"
 ```
 
 ### Task 15: Web Dashboard (Swifter)
 
 **Files:**
-- Create: `kDupe/WebDashboard/DashboardServer.swift`
-- Create: `kDupe/WebDashboard/DashboardRoutes.swift`
-- Create: `kDupe/WebDashboard/dashboard.html`
-- Create: `kDupe/WebDashboard/dashboard.js`
-- Create: `kDupe/WebDashboard/dashboard.css`
-- Modify: `kDupe/project.yml` (add Swifter SPM dependency)
+- Create: `kSift/WebDashboard/DashboardServer.swift`
+- Create: `kSift/WebDashboard/DashboardRoutes.swift`
+- Create: `kSift/WebDashboard/dashboard.html`
+- Create: `kSift/WebDashboard/dashboard.js`
+- Create: `kSift/WebDashboard/dashboard.css`
+- Modify: `kSift/project.yml` (add Swifter SPM dependency)
 
 - [ ] **Step 1: Add Swifter dependency to project.yml**
 
@@ -3336,7 +3336,7 @@ Add to kDupe target dependencies: `- package: Swifter`
 - [ ] **Step 2: Create DashboardServer**
 
 ```swift
-// kDupe/WebDashboard/DashboardServer.swift
+// kSift/WebDashboard/DashboardServer.swift
 import Swifter
 import Foundation
 
@@ -3413,7 +3413,7 @@ actor DashboardServer {
 - [ ] **Step 3: Create DashboardRoutes with full API**
 
 ```swift
-// kDupe/WebDashboard/DashboardRoutes.swift
+// kSift/WebDashboard/DashboardRoutes.swift
 import Swifter
 import Foundation
 
@@ -3438,7 +3438,7 @@ The dashboard shows: status card, scan results table (group name, size, count), 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kDupe/WebDashboard/ kDupe/project.yml
+git add kSift/WebDashboard/ kSift/project.yml
 git commit -m "feat(kDupe): add Swifter web dashboard on localhost:7711"
 ```
 
@@ -3447,7 +3447,7 @@ git commit -m "feat(kDupe): add Swifter web dashboard on localhost:7711"
 **Files:**
 - Create: `kDupeFinderSync/Info.plist`
 - Create: `kDupeFinderSync/FinderSyncHandler.swift`
-- Modify: `kDupe/project.yml` (add Finder Sync Extension target)
+- Modify: `kSift/project.yml` (add Finder Sync Extension target)
 
 - [ ] **Step 1: Add Finder Sync target to project.yml**
 
@@ -3459,7 +3459,7 @@ kDupeFinderSync:
   sources: [kDupeFinderSync]
   settings:
     PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.finder-sync
-    CODE_SIGN_ENTITLEMENTS: kDupe/kDupe.entitlements
+    CODE_SIGN_ENTITLEMENTS: kSift/kDupe.entitlements
     APPLICATION_EXTENSION_API_ONLY: true
   dependencies:
     - target: kFoundation/CommonUtils
@@ -3513,23 +3513,23 @@ class FinderSyncHandler: FIFinderSync {
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kDupeFinderSync/ kDupe/project.yml
+git add kDupeFinderSync/ kSift/project.yml
 git commit -m "feat(kDupe): add Finder Sync extension with scan context menu"
 ```
 
 ### Task 17: MenuBar + Intents + Widgets + Spotlight
 
 **Files:**
-- Create: `kDupe/MenuBar/MenuBarManager.swift`
-- Create: `kDupe/Intents/DuplicateIntents.swift`
-- Create: `kDupe/Widgets/kDupeWidget.swift`
-- Create: `kDupe/Spotlight/SpotlightIndexer.swift`
-- Modify: `kDupe/project.yml` (add Widget Extension target)
+- Create: `kSift/MenuBar/MenuBarManager.swift`
+- Create: `kSift/Intents/DuplicateIntents.swift`
+- Create: `kSift/Widgets/kDupeWidget.swift`
+- Create: `kSift/Spotlight/SpotlightIndexer.swift`
+- Modify: `kSift/project.yml` (add Widget Extension target)
 
 - [ ] **Step 1: Create MenuBarManager**
 
 ```swift
-// kDupe/MenuBar/MenuBarManager.swift
+// kSift/MenuBar/MenuBarManager.swift
 import SwiftUI
 
 @MainActor
@@ -3563,7 +3563,7 @@ final class MenuBarManager: ObservableObject {
 - [ ] **Step 2: Create App Intents**
 
 ```swift
-// kDupe/Intents/DuplicateIntents.swift
+// kSift/Intents/DuplicateIntents.swift
 import AppIntents
 
 struct ScanDirectoryIntent: AppIntent {
@@ -3601,7 +3601,7 @@ struct ShowLargeFilesIntent: AppIntent {
 - [ ] **Step 3: Create Widget**
 
 ```swift
-// kDupe/Widgets/kDupeWidget.swift
+// kSift/Widgets/kDupeWidget.swift
 import SwiftUI
 import WidgetKit
 
@@ -3651,7 +3651,7 @@ struct WidgetView: View {
 - [ ] **Step 4: Create SpotlightIndexer**
 
 ```swift
-// kDupe/Spotlight/SpotlightIndexer.swift
+// kSift/Spotlight/SpotlightIndexer.swift
 import CoreSpotlight
 import Foundation
 
@@ -3686,7 +3686,7 @@ kDupeWidgets:
   type: app-extension
   platform: macOS
   deploymentTarget: "14.0"
-  sources: [kDupe/Widgets]
+  sources: [kSift/Widgets]
   settings:
     PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kdupe.widgets
   dependencies: []
@@ -3695,7 +3695,7 @@ kDupeWidgets:
 - [ ] **Step 6: Commit**
 
 ```bash
-git add kDupe/MenuBar/ kDupe/Intents/ kDupe/Widgets/ kDupe/Spotlight/ kDupe/project.yml
+git add kSift/MenuBar/ kSift/Intents/ kSift/Widgets/ kSift/Spotlight/ kSift/project.yml
 git commit -m "feat(kDupe): add menu bar, intents, widgets, and spotlight indexing"
 ```
 
@@ -3974,13 +3974,13 @@ git commit -m "test(kDupe): add detection, repository, and CLI tests"
 ### Task 19: Final Polish — Localization, Assets, Linter, Self-Review
 
 **Files:**
-- Create: `kDupe/Resources/en.lproj/Localizable.xcstrings`
-- Create: `kDupe/Resources/zh-Hans.lproj/Localizable.xcstrings`
-- Create: `kDupe/Resources/ja.lproj/Localizable.xcstrings`
-- Create: `kDupe/Resources/Assets.xcassets/Contents.json`
-- Create: `kDupe/Resources/Assets.xcassets/AppIcon.icns/Contents.json`
-- Modify: `kDupe/project.yml` (add localization references)
-- Create: `kDupe/.swiftlint.yml`
+- Create: `kSift/Resources/en.lproj/Localizable.xcstrings`
+- Create: `kSift/Resources/zh-Hans.lproj/Localizable.xcstrings`
+- Create: `kSift/Resources/ja.lproj/Localizable.xcstrings`
+- Create: `kSift/Resources/Assets.xcassets/Contents.json`
+- Create: `kSift/Resources/Assets.xcassets/AppIcon.icns/Contents.json`
+- Modify: `kSift/project.yml` (add localization references)
+- Create: `kSift/.swiftlint.yml`
 
 - [ ] **Step 1: Verify project.yml is complete**
 
@@ -3993,7 +3993,7 @@ Expected: All targets, dependencies, and source paths resolve without warnings.
 - [ ] **Step 2: Create .swiftlint.yml**
 
 ```yaml
-# kDupe/.swiftlint.yml
+# kSift/.swiftlint.yml
 parent_config: ../kFoundation/.swiftlint.yml
 disabled_rules:
   - force_cast
@@ -4038,7 +4038,7 @@ Go through each of these items and verify:
 - [ ] **Step 6: Final commit**
 
 ```bash
-git add kDupe/Resources/ kDupe/.swiftlint.yml kDupe/project.yml
+git add kSift/Resources/ kSift/.swiftlint.yml kSift/project.yml
 git commit -m "chore(kDupe): add localization, assets, linter config"
 ```
 

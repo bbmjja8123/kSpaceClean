@@ -35,7 +35,7 @@ xcodebuild -project kSift.xcodeproj -scheme kSiftTests -configuration Debug test
 ## File Structure（新增 / 修改）
 
 ```
-kDupe/
+kSift/
 ├── App/
 │   ├── AppState.swift                  # [修改] P1-3 清理汇总、P1-5 ⌘N 新扫描
 │   └── MenuBarController.swift         # [新增] P1-8 NSStatusItem + 菜单
@@ -66,10 +66,10 @@ kDupe/
 > 在 P0 已有的「按类别过滤 + 排序菜单」基础上加「大小范围 + 日期范围」两维度过滤；同样遵守竞品标配（Gemini 2、DFFP 均有）。
 
 **Files:**
-- Create: `kDupe/UI/Result/FilterChipsView.swift`
-- Modify: `kDupe/UI/Result/ResultViewModel.swift`
-- Modify: `kDupe/UI/Result/ResultView.swift`
-- Modify: `kDupe/Resources/{en,zh-Hans}.lproj/Localizable.strings`
+- Create: `kSift/UI/Result/FilterChipsView.swift`
+- Modify: `kSift/UI/Result/ResultViewModel.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`
+- Modify: `kSift/Resources/{en,zh-Hans}.lproj/Localizable.strings`
 
 **Interfaces:**
 - `ResultViewModel`：
@@ -95,9 +95,9 @@ kDupe/
 > `ProfileConfig.exclusions` 已存在但 SettingsView 只有添加扫描目录，无排除入口。补齐后用户能直接控制不扫的目录。
 
 **Files:**
-- Modify: `kDupe/UI/Settings/SettingsView.swift`
-- Modify: `kDupe/UI/Settings/SettingsViewModel.swift`
-- Modify: `kDupe/Resources/{en,zh-Hans}.lproj/Localizable.strings`
+- Modify: `kSift/UI/Settings/SettingsView.swift`
+- Modify: `kSift/UI/Settings/SettingsViewModel.swift`
+- Modify: `kSift/Resources/{en,zh-Hans}.lproj/Localizable.strings`
 
 **Interfaces:**
 - `SettingsViewModel`：`@Published var exclusionPaths: [String]`、`func addExclusion(_ path: String)`、`func removeExclusion(_ path: String)`
@@ -119,10 +119,10 @@ kDupe/
 > 现状是 alert（modal），改为 toast + 数字汇总（竞品 Gemini 2 标配），让用户对"清理效果"有即时量化感知。
 
 **Files:**
-- Modify: `kDupe/UI/Result/ResultView.swift`
-- Modify: `kDupe/UI/Scan/ScanResultView.swift`
-- Create（可选）：`kDupe/UI/Common/ToastView.swift`
-- Modify: `kDupe/Resources/{en,zh-Hans}.lproj/Localizable.strings`
+- Modify: `kSift/UI/Result/ResultView.swift`
+- Modify: `kSift/UI/Scan/ScanResultView.swift`
+- Create（可选）：`kSift/UI/Common/ToastView.swift`
+- Modify: `kSift/Resources/{en,zh-Hans}.lproj/Localizable.strings`
 
 **Interfaces:**
 - 自实现轻量 toast：`.overlay(alignment: .top)` 显示一个 RoundedRectangle Card（设计 tokens 圆角/间距），3 秒自动消失，可手动 dismiss
@@ -145,9 +145,9 @@ kDupe/
 > 在 ResultView 顶部 stats bar 下方加一条按类别着色的占比横条，让用户一眼看出"哪种重复最多"。
 
 **Files:**
-- Create: `kDupe/UI/Result/CategoryBreakdownBar.swift`
-- Modify: `kDupe/UI/Result/ResultView.swift`
-- Modify: `kDupe/Resources/{en,zh-Hans}.lproj/Localizable.strings`
+- Create: `kSift/UI/Result/CategoryBreakdownBar.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`
+- Modify: `kSift/Resources/{en,zh-Hans}.lproj/Localizable.strings`
 
 **Interfaces:**
 - `CategoryBreakdownBar: View` — `let groups: [DuplicateGroup]`
@@ -170,10 +170,10 @@ kDupe/
 > 竞品标配：⌘F（已有）、⌘A 全选、⌘N 新扫描、空格 QuickLook、Esc 取消、Tab 在组间移动。
 
 **Files:**
-- Modify: `kDupe/UI/Result/ResultView.swift`
-- Modify: `kDupe/UI/Result/GroupDetailView.swift`
-- Modify: `kDupe/App/AppState.swift`（如需暴露新扫描 closure）
-- Modify: `kDupe/Resources/{en,zh-Hans}.lproj/Localizable.strings`
+- Modify: `kSift/UI/Result/ResultView.swift`
+- Modify: `kSift/UI/Result/GroupDetailView.swift`
+- Modify: `kSift/App/AppState.swift`（如需暴露新扫描 closure）
+- Modify: `kSift/Resources/{en,zh-Hans}.lproj/Localizable.strings`
 
 **Interfaces:**
 - ResultView：
@@ -201,10 +201,10 @@ kDupe/
 > 文件行：加类型图标（图片/视频/文档/代码）替代纯 doc icon；同名组聚合（多组文件名相同时显示 "×N" 徽标）；坏文件标记（无法读取、已删除）。
 
 **Files:**
-- Modify: `kDupe/UI/Result/FileRowView.swift`
-- Modify: `kDupe/UI/Result/GroupRowView.swift`
-- Modify: `kDupe/UI/Result/FileIconCache.swift`（扩展支持 UTType → icon 映射）
-- Modify: `kDupe/Resources/{en,zh-Hans}.lproj/Localizable.strings`
+- Modify: `kSift/UI/Result/FileRowView.swift`
+- Modify: `kSift/UI/Result/GroupRowView.swift`
+- Modify: `kSift/UI/Result/FileIconCache.swift`（扩展支持 UTType → icon 映射）
+- Modify: `kSift/Resources/{en,zh-Hans}.lproj/Localizable.strings`
 
 **Interfaces:**
 - `FileIconCache` 加 `func icon(for utType: UTType?) async -> NSImage`：根据 UTType 返回 SF Symbol（`photo`, `video`, `doc.richtext`, `doc.plaintext`, `terminal`, `archivebox`, `doc`）
@@ -227,9 +227,9 @@ kDupe/
 > 验证 10k+ 组结果页滚动 ≥ 50fps。
 
 **Files:**
-- Create: `kDupe/Tests/PerformanceTests/LargeResultBenchmark.swift`
-- Modify: `kDupe/UI/Result/ResultView.swift`（如发现瓶颈）
-- Modify: `kDupe/UI/Result/ResultViewModel.swift`（如发现瓶颈）
+- Create: `kSift/Tests/PerformanceTests/LargeResultBenchmark.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`（如发现瓶颈）
+- Modify: `kSift/UI/Result/ResultViewModel.swift`（如发现瓶颈）
 
 **Benchmark Approach:**
 - 生成 10k 个 `DuplicateGroup`（每组 2 个 FileItem，file 类型/大小随机）→ 喂入 ResultViewModel
@@ -257,12 +257,12 @@ kDupe/
 > 菜单栏常驻 + 一键扫描 / 打开结果 / 清理状态。竞品 Gemini 2 / BuhoCleaner 标配。
 
 **Files:**
-- Create: `kDupe/App/MenuBarController.swift`
-- Modify: `kDupe/App/kSiftApp.swift`（启动 MenuBarController）
-- Modify: `kDupe/App/AppCoordinator.swift`（深链打开 App 主窗口）
-- Modify: `kDupe/project.yml`（设置 LSUIElement + 文件 glob）
-- Modify: `kDupe/Info.plist`（如需 `LSUIElement = true`，或在 project.yml）
-- Modify: `kDupe/Resources/{en,zh-Hans}.lproj/Localizable.strings`
+- Create: `kSift/App/MenuBarController.swift`
+- Modify: `kSift/App/kSiftApp.swift`（启动 MenuBarController）
+- Modify: `kSift/App/AppCoordinator.swift`（深链打开 App 主窗口）
+- Modify: `kSift/project.yml`（设置 LSUIElement + 文件 glob）
+- Modify: `kSift/Info.plist`（如需 `LSUIElement = true`，或在 project.yml）
+- Modify: `kSift/Resources/{en,zh-Hans}.lproj/Localizable.strings`
 
 **Architecture:**
 - `MenuBarController: NSObject, NSMenuDelegate`：单一 NSStatusItem（system image `trash` 或 `doc.on.doc`，`length = .variableLength`）

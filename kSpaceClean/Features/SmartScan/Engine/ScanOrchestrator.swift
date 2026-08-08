@@ -661,7 +661,7 @@ public actor ScanOrchestrator {
             // silently point inside the app's container and the walk find
             // nothing. Resolve against the real home (libc passwd lookup)
             // before enumerating. `FileEnumerator` itself is shared with
-            // kDupe, so this stays here — orchestrator-level responsibility.
+            // kSift, so this stays here — orchestrator-level responsibility.
             let resolvedPath = UserPathResolver.expandTilde(rootPath)
 
             // F8: signpost marker around the FD-walk loop so an

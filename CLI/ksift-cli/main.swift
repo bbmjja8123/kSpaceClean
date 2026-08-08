@@ -18,7 +18,7 @@ struct CLI {
     }
 
     private func printUsage() {
-        print("Usage: kdupe <command> [options]")
+        print("Usage: ksift <command> [options]")
         print("Commands: scan, results, cleanup, watch, history, web, version")
     }
 }

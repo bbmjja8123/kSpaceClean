@@ -7,7 +7,7 @@ import Foundation
 /// Caller is responsible for cleaning up with `FileManager.default.removeItem(at:)`.
 func createTempDirectory() throws -> URL {
     let dir = FileManager.default.temporaryDirectory
-        .appendingPathComponent("kdupe_test_\(UUID().uuidString)")
+        .appendingPathComponent("ksift_test_\(UUID().uuidString)")
     try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
     return dir
 }
@@ -35,7 +35,7 @@ func createTextFile(named name: String, in directory: URL, content: String) thro
 func createIdenticalFilePair(in directory: URL) throws -> (URL, URL) {
     let file1 = directory.appendingPathComponent("pair_a.txt")
     let file2 = directory.appendingPathComponent("pair_b.txt")
-    let content = "identical content for testing kDupe detectors"
+    let content = "identical content for testing kSift detectors"
     try content.write(to: file1, atomically: true, encoding: .utf8)
     try content.write(to: file2, atomically: true, encoding: .utf8)
     return (file1, file2)

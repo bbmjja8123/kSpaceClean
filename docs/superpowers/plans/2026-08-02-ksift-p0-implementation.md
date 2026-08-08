@@ -17,7 +17,7 @@
 - Swift 5.9+ strict concurrency（`SWIFT_STRICT_CONCURRENCY = complete`），编译在 Xcode 14.3.1 / Swift 5.8.1 toolchain 下也要过
 - macOS 13.0+ deployment target；macOS 14+ API 用 `#available` 包裹
 - Bundle ID：`app.kraftly.ksift`；App Sandbox 强制；无 Privileged Helper
-- **本地化（强制）**：SwiftUI 组件 prop 用 `LocalizedStringKey`；String 类型参数用 `NSLocalizedString`；新增文案必须同时写入 `kDupe/Resources/en.lproj/Localizable.strings` 和 `kDupe/Resources/zh-Hans.lproj/Localizable.strings`。Int 用 `%lld`、String 用 `%@`
+- **本地化（强制）**：SwiftUI 组件 prop 用 `LocalizedStringKey`；String 类型参数用 `NSLocalizedString`；新增文案必须同时写入 `kSift/Resources/en.lproj/Localizable.strings` 和 `kSift/Resources/zh-Hans.lproj/Localizable.strings`。Int 用 `%lld`、String 用 `%@`
 - **DesignSystem（强制）**：颜色/间距/圆角用 `kFoundation` DesignSystem tokens；Empty/Loading/Error 状态用 `kFoundation` 组件，禁止 App 内重写
 - **新增文件后必须重新生成工程**：`cd /Users/mengjianjun/Documents/ai/aicoding/macapp/kDupe && xcodegen generate`（project.yml sources 按目录 glob，新文件自动纳入）
 - 禁止复用 Lemon 代码（Objective-C/C++ 一律不抄）
@@ -39,7 +39,7 @@ xcodebuild -project kSift.xcodeproj -scheme kSift -configuration Debug test
 ## File Structure（新增 / 修改）
 
 ```
-kDupe/
+kSift/
 ├── Detection/
 │   ├── FDAChecker.swift                # [新增] P0-1 FDA 探测 + 打开系统设置
 ├── UI/
@@ -76,11 +76,11 @@ kDupe/
 > 对应 Gap U1。目标：新用户首启明确知道需要 Full Disk Access，未授权时扫描受限却不自知的盲区消除。
 
 **Files:**
-- Create: `kDupe/Detection/FDAChecker.swift`
-- Create: `kDupe/UI/Onboarding/PermissionView.swift`
-- Modify: `kDupe/UI/Onboarding/OnboardingView.swift`
-- Modify: `kDupe/UI/Scan/MainView.swift`
-- Modify: `kDupe/Info.plist`（加 `NSDesktopFolderUsageDescription`）
+- Create: `kSift/Detection/FDAChecker.swift`
+- Create: `kSift/UI/Onboarding/PermissionView.swift`
+- Modify: `kSift/UI/Onboarding/OnboardingView.swift`
+- Modify: `kSift/UI/Scan/MainView.swift`
+- Modify: `kSift/Info.plist`（加 `NSDesktopFolderUsageDescription`）
 - Modify: 两个 Localizable.strings
 
 **Interfaces:**
@@ -108,11 +108,11 @@ kDupe/
 > 对应 Gap F1/U8。目标：付费卖点落地 — 清理进 Vault 的东西用户能看、能恢复、能过期清理。
 
 **Files:**
-- Create: `kDupe/UI/Vault/VaultViewModel.swift`
-- Create: `kDupe/UI/Vault/VaultView.swift`
-- Modify: `kDupe/App/AppState.swift`
-- Modify: `kDupe/App/RootView.swift`
-- Modify: `kDupe/UI/Result/ResultView.swift`（清理成功后提供"打开保险库"入口）
+- Create: `kSift/UI/Vault/VaultViewModel.swift`
+- Create: `kSift/UI/Vault/VaultView.swift`
+- Modify: `kSift/App/AppState.swift`
+- Modify: `kSift/App/RootView.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`（清理成功后提供"打开保险库"入口）
 - Modify: 两个 Localizable.strings
 
 **Interfaces:**
@@ -145,8 +145,8 @@ kDupe/
 > 对应 Gap U6。目标：点扫描前就知道"扫哪、多大"，消除盲目扫描。
 
 **Files:**
-- Create: `kDupe/UI/Scan/ScanRangePreview.swift`
-- Modify: `kDupe/UI/Scan/MainView.swift`
+- Create: `kSift/UI/Scan/ScanRangePreview.swift`
+- Modify: `kSift/UI/Scan/MainView.swift`
 
 **Interfaces:**
 - `struct ScanRangePreview: View` — `let directories: [String]`，异步估算并展示：
@@ -170,7 +170,7 @@ kDupe/
 > 对应 Gap F2。目标：竞品标配的零门槛扫描入口。
 
 **Files:**
-- Modify: `kDupe/UI/Scan/MainView.swift`
+- Modify: `kSift/UI/Scan/MainView.swift`
 
 **Steps:**
 - [ ] idleState 外包一层支持 `.dropDestination(for: URL.self)`（或 `.onDrop(of: [.fileURL])`），拖入时调用现有 `startScan(at: path)`（文件夹被拖入时 `hasDirectoryPath == true`）
@@ -187,10 +187,10 @@ kDupe/
 > 对应 Gap F9/U2。目标：长扫描可感知、可中断；取消后干净回到 idle。
 
 **Files:**
-- Modify: `kDupe/UI/Scan/ScanProgressView.swift`
-- Modify: `kDupe/UI/Scan/MainView.swift`
-- Modify: `kDupe/UI/Scan/ScanViewModel.swift`
-- Modify: `kDupe/Detection/ScanOrchestrator.swift`（如有低成本相位路径可带）
+- Modify: `kSift/UI/Scan/ScanProgressView.swift`
+- Modify: `kSift/UI/Scan/MainView.swift`
+- Modify: `kSift/UI/Scan/ScanViewModel.swift`
+- Modify: `kSift/Detection/ScanOrchestrator.swift`（如有低成本相位路径可带）
 
 **Interfaces:**
 - `ScanProgressView` 增加参数：`onCancel: () -> Void`，新增展示：
@@ -216,10 +216,10 @@ kDupe/
 > 对应 Gap F3/V1。目标：perceptual 组直接看到缩略图对比，感知价值对齐 Gemini 2。依赖感知检测结果质量，本任务只做呈现。
 
 **Files:**
-- Create: `kDupe/UI/Result/ThumbnailCache.swift`
-- Create: `kDupe/UI/Result/ThumbnailView.swift`
-- Modify: `kDupe/UI/Result/GroupDetailView.swift`
-- Modify: `kDupe/UI/Result/ResultView.swift`
+- Create: `kSift/UI/Result/ThumbnailCache.swift`
+- Create: `kSift/UI/Result/ThumbnailView.swift`
+- Modify: `kSift/UI/Result/GroupDetailView.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`
 
 **Interfaces:**
 - `ThumbnailCache`: `final class`（`@unchecked Sendable` 包 `NSCache<NSURL, NSImage>`）+ `actor ThumbnailGenerator`（async 生成，`QuickLookThumbnailGenerator.shared.generateBestRepresentation(for: URL, at: NSSize(128), representing: .file) async throws`，macOS 13 可用；失败降级 `NSImage(contentsOf:)`）
@@ -243,9 +243,9 @@ kDupe/
 > 对应 Gap F5。ResultViewModel 已有 `sortOrder`，缺 UI 暴露与组内排序。
 
 **Files:**
-- Modify: `kDupe/UI/Result/ResultView.swift`
-- Modify: `kDupe/UI/Result/ResultViewModel.swift`
-- Modify: `kDupe/UI/Result/GroupDetailView.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`
+- Modify: `kSift/UI/Result/ResultViewModel.swift`
+- Modify: `kSift/UI/Result/GroupDetailView.swift`
 
 **Interfaces:**
 - ResultView：FilterBar 行右侧加排序 `Picker`（Menu 样式），选项 = `ResultViewModel.SortOrder` 全部 case（`sizeDesc/sizeAsc/countDesc/type`）+ 新增 `wasteDesc`（可回收空间 = `totalSize - max(files.size)`，高→低）
@@ -268,8 +268,8 @@ kDupe/
 > 对应 Gap F4。目标：结果页按文件名即时过滤，⌘F 聚焦。
 
 **Files:**
-- Modify: `kDupe/UI/Result/ResultView.swift`
-- Modify: `kDupe/UI/Result/ResultViewModel.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`
+- Modify: `kSift/UI/Result/ResultViewModel.swift`
 
 **Interfaces:**
 - ResultViewModel：`@Published var searchText = ""`；`filteredGroups` 先按 category 再按 searchText 过滤（任一组内任一文件 `lastPathComponent.localizedCaseInsensitiveContains(searchText)` 即保留）
@@ -291,8 +291,8 @@ kDupe/
 > 对应 Gap P1。现状 `FileRowView` 每行主线程 `NSWorkspace.shared.icon(forFile:)`，大列表卡 UI。
 
 **Files:**
-- Create: `kDupe/UI/Result/FileIconCache.swift`
-- Modify: `kDupe/UI/Result/FileRowView.swift`
+- Create: `kSift/UI/Result/FileIconCache.swift`
+- Modify: `kSift/UI/Result/FileRowView.swift`
 
 **Interfaces:**
 - `FileIconCache`（`@unchecked Sendable` 包 `NSCache<NSString, NSImage>`）：`static func icon(for url: URL) -> NSImage?`（缓存命中同步返回）+ `static func loadAsync(for url: URL, into onImage: @escaping @Sendable (NSImage) -> Void)`（主线程回调）
@@ -312,8 +312,8 @@ kDupe/
 > 对应 Gap U4。目标：扫出 0 组时给正向反馈 + 行动建议，而不是干瘪的 EmptyState。
 
 **Files:**
-- Modify: `kDupe/UI/Scan/ScanResultView.swift`
-- Modify: `kDupe/UI/Result/ResultView.swift`（兜底）
+- Modify: `kSift/UI/Scan/ScanResultView.swift`
+- Modify: `kSift/UI/Result/ResultView.swift`（兜底）
 
 **Interfaces:**
 - 扫描完成且 `groups.isEmpty` 且 `largeFiles.isEmpty` 时，显示品牌化空态：大图标（`checkmark.seal`/`sparkles`）+ "没有发现重复文件" + "试试扫描其他目录" 按钮（回 idle）+ "扫描历史" 入口
@@ -334,7 +334,7 @@ kDupe/
 > 基线 94 通过 + 1 失败：`ResultViewModelTests.testRemoveSelectedSurfacesFailuresAndKeepsGroup`。VaultManager 语义是"逐文件 trash 失败=部分成功、失败组保留并上报"（spec §5），测试期望与之一致才对。
 
 **Files:**
-- Modify: `kDupe/Tests/ResultViewModelTests.swift`
+- Modify: `kSift/Tests/ResultViewModelTests.swift`
 
 **Steps:**
 - [ ] 运行 `xcodebuild ... test` 复现失败
@@ -348,8 +348,8 @@ kDupe/
 ## Task 12: 本地化同步 + 双语验收（收尾）
 
 **Files:**
-- Modify: `kDupe/Resources/en.lproj/Localizable.strings`
-- Modify: `kDupe/Resources/zh-Hans.lproj/Localizable.strings`
+- Modify: `kSift/Resources/en.lproj/Localizable.strings`
+- Modify: `kSift/Resources/zh-Hans.lproj/Localizable.strings`
 
 **Steps:**
 - [ ] 全仓 grep 新增视图里的硬编码字符串，逐一补入两个 strings 文件
