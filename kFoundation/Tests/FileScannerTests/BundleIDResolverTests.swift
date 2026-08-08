@@ -147,7 +147,7 @@ final class BundleIDResolverTests: XCTestCase {
             throw XCTSkip("Set KSPACECLEAN_PROJECT_ROOT to run the production smoke test.")
         }
         let url = URL(fileURLWithPath: projectRoot)
-            .appendingPathComponent("kSpaceClean/Resources/bundleIDMapping.json")
+            .appendingPathComponent("kWise/Resources/bundleIDMapping.json")
         guard FileManager.default.fileExists(atPath: url.path) else {
             throw XCTSkip("bundleIDMapping.json not present at \(url.path)")
         }

@@ -237,14 +237,14 @@
 ```
 KraftlyWorkspace.xcworkspace
 ├── kFoundation/         # 本地 Swift Package（共享层）
-├── kSpaceClean/         # App target
+├── kWise/         # App target
 └── Tools/               # 共享脚本
 ```
 
 ### 7.2 kSpaceClean 模块（v2 微调）
 
 ```
-kSpaceClean/
+kWise/
 ├── App/
 │   ├── kSpaceCleanApp.swift
 │   ├── RootView.swift              # 主视觉改 2D sunburst

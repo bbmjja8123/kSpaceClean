@@ -11,7 +11,7 @@
       location = "group:kFresh/kFresh.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:kSpaceClean/kSpaceClean.xcodeproj">
+      location = "group:kWise/kWise.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:kWatch/kWatch.xcodeproj">

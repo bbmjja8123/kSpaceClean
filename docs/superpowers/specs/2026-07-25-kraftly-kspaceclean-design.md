@@ -37,7 +37,7 @@
 
 ### 2.2 kSpaceClean target 结构
 ```
-kSpaceClean/
+kWise/
 ├── App/
 │   ├── kSpaceCleanApp.swift              # @main
 │   ├── RootView.swift                    # NavigationSplitView

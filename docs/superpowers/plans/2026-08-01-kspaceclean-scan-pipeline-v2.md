@@ -13,7 +13,7 @@
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -destination 'platform=macOS' \
   -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" \
   CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES test 2>&1 | tail -40
@@ -24,7 +24,7 @@ DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -20
 ```
 
@@ -38,7 +38,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspace
 - macOS 13.0 minimum deployment target; macOS 14 SDK compile target (`#available` wraps higher-version APIs).
 - Swift 5.9 with `SWIFT_STRICT_CONCURRENCY = complete`; no `@unchecked Sendable` for new types — use actor isolation or proper value types.
 - Xcode 14.3.1 at `/Applications/Xcode 2.app`; no `MainActor.assumeIsolated` (Xcode 14.3 lacks it).
-- Project uses `kSpaceClean/generate_project.py` for pbxproj generation — every new `.swift` file **must** be registered in `swift_files` list before build.
+- Project uses `kWise/generate_project.py` for pbxproj generation — every new `.swift` file **must** be registered in `swift_files` list before build.
 - App Sandbox ON; TCC Full Disk Access required for non-`~/Library` paths (System cache, `/Library/Logs`, `/private/var/log`, `/Library/Caches`).
 - **Never** copy Lemon Objective-C / C++ code; reference logic only.
 - All public APIs must have DocC comments; SwiftLint enforced via `kFoundation/.swiftlint.yml`.
@@ -46,28 +46,28 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspace
 - Models: `ScanCategory` (L1) → `ScanSubCategory` (L2, app-scoped) → `ScanAction` (L3, semantic name) → `ScanResult` (L4, file). The four-level tree is the canonical structure for v1.
 - Filtering: **fold, do not delete** (Q6). The default size floor is **100 KB** (Q5). The user's PreScanPanel slider may range 0–100 MB; `showAllHidden` toggle reveals hidden-by-filter nodes.
 - Empty categories: **always render 6 skeletons** with `占位 / 未发现相关项` placeholder (Q7).
-- Bundle rule storage: single `kSpaceClean/Resources/bundleIDMapping.json` with `apps[id].actions: [{name, nameCN, paths, type}]` (Q2, Q9). Both languages are required for every action title.
+- Bundle rule storage: single `kWise/Resources/bundleIDMapping.json` with `apps[id].actions: [{name, nameCN, paths, type}]` (Q2, Q9). Both languages are required for every action title.
 - `/Applications` probing is **out of scope for v1.0** (Q10). Implement as a stub `InstalledAppProbe` returning empty list with a TODO comment for v2.
 
 ## File Structure
 
 | # | File | Action | Purpose |
 |---|---|---|---|
-| 1 | `kSpaceClean/scripts/extract_lemon_rules.py` | **Create** | Re-extract Lemon XML into `bundleIDMapping.json` preserving `item → action(title) → path` triples, bilingual |
-| 2 | `kSpaceClean/Resources/bundleIDMapping.json` | **Modify** | Adopt `apps[id].actions` schema; add ~50 new apps (D range) |
+| 1 | `kWise/scripts/extract_lemon_rules.py` | **Create** | Re-extract Lemon XML into `bundleIDMapping.json` preserving `item → action(title) → path` triples, bilingual |
+| 2 | `kWise/Resources/bundleIDMapping.json` | **Modify** | Adopt `apps[id].actions` schema; add ~50 new apps (D range) |
 | 3 | `kFoundation/Sources/FileScanner/BundleIDResolver.swift` | **Modify** | Fix L1 path-prefix expansion to use real `$HOME`, not sandbox container |
 | 4 | `kFoundation/Sources/FileScanner/BundleIDResolverTests.swift` | **Create** | Sandbox-vs-real-home regression test |
-| 5 | `kSpaceClean/Features/SmartScan/Models/ScanTreeNode.swift` | **Modify** | Add `isHiddenByFilter: Bool` to protocol |
-| 6 | `kSpaceClean/Features/SmartScan/Models/ScanCategory.swift` | **Modify** | Add `isHiddenByFilter` field, ensure skeleton init exposes empty placeholder |
-| 7 | `kSpaceClean/Features/SmartScan/Models/ScanSubCategory.swift` | **Modify** | Add `isHiddenByFilter` field |
-| 8 | `kSpaceClean/Features/SmartScan/Models/ScanAction.swift` | **Modify** | Add `isHiddenByFilter` field, switch `showAction` to `var` |
-| 9 | `kSpaceClean/Features/SmartScan/Models/ScanResult.swift` | **Modify** | Add `isHiddenByFilter` field |
-| 10 | `kSpaceClean/Features/SmartScan/Models/ScanCategory.swift` | **Modify** | Switch `showAction` to `var` for runtime decision |
-| 11 | `kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift` | **Modify** | Bucket shared across rootPaths (Q8); build action level per app (Q2); emit `isHiddenByFilter=false` default |
-| 12 | `kSpaceClean/Features/SmartScan/Views/ScanResultsViewModel.swift` | **Modify** | `applyFilters` becomes `annotateHidden` (returns tree unchanged, marks `isHiddenByFilter=true`); default `minimumSizeBytes = 102_400`; `showAllHidden: Bool` toggle; preserve 6 skeleton categories |
-| 13 | `kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift` | **Modify** | RecursiveTreeNode skips `isHiddenByFilter` unless `showAllHidden`; PreScanPanel adds "显示全部" toggle |
-| 14 | `kSpaceClean/Tests/ScanTreeFilterTests.swift` | **Create** | Hidden-flag + skeleton preservation + showAllHidden tests |
-| 15 | `kSpaceClean/Tests/AppRuleFixtures.swift` | **Create** | Per-app integration fixtures (one per new app class) |
+| 5 | `kWise/Features/SmartScan/Models/ScanTreeNode.swift` | **Modify** | Add `isHiddenByFilter: Bool` to protocol |
+| 6 | `kWise/Features/SmartScan/Models/ScanCategory.swift` | **Modify** | Add `isHiddenByFilter` field, ensure skeleton init exposes empty placeholder |
+| 7 | `kWise/Features/SmartScan/Models/ScanSubCategory.swift` | **Modify** | Add `isHiddenByFilter` field |
+| 8 | `kWise/Features/SmartScan/Models/ScanAction.swift` | **Modify** | Add `isHiddenByFilter` field, switch `showAction` to `var` |
+| 9 | `kWise/Features/SmartScan/Models/ScanResult.swift` | **Modify** | Add `isHiddenByFilter` field |
+| 10 | `kWise/Features/SmartScan/Models/ScanCategory.swift` | **Modify** | Switch `showAction` to `var` for runtime decision |
+| 11 | `kWise/Features/SmartScan/Engine/ScanOrchestrator.swift` | **Modify** | Bucket shared across rootPaths (Q8); build action level per app (Q2); emit `isHiddenByFilter=false` default |
+| 12 | `kWise/Features/SmartScan/Views/ScanResultsViewModel.swift` | **Modify** | `applyFilters` becomes `annotateHidden` (returns tree unchanged, marks `isHiddenByFilter=true`); default `minimumSizeBytes = 102_400`; `showAllHidden: Bool` toggle; preserve 6 skeleton categories |
+| 13 | `kWise/Features/SmartScan/Views/ScanResultsView.swift` | **Modify** | RecursiveTreeNode skips `isHiddenByFilter` unless `showAllHidden`; PreScanPanel adds "显示全部" toggle |
+| 14 | `kWise/Tests/ScanTreeFilterTests.swift` | **Create** | Hidden-flag + skeleton preservation + showAllHidden tests |
+| 15 | `kWise/Tests/AppRuleFixtures.swift` | **Create** | Per-app integration fixtures (one per new app class) |
 
 ---
 
@@ -135,7 +135,7 @@ Run from worktree root:
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean \
+  -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean \
   -destination 'platform=macOS' -configuration Debug \
   CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=YES \
   test -only-testing:BundleIDResolverTests 2>&1 | tail -25
@@ -188,13 +188,13 @@ git commit -m "fix(BundleIDResolver): expand tilde against real \$HOME, not sand
 ## Task 2: Rewrite Lemon XML extractor preserving item → action → path + bilingual
 
 **Files:**
-- Create: `kSpaceClean/scripts/extract_lemon_rules.py`
+- Create: `kWise/scripts/extract_lemon_rules.py`
 
 **Why second:** Without preserving action titles, the third level of the 4-level tree stays missing (current symptom).
 
 **Step 1: Write the extractor**
 
-Create `kSpaceClean/scripts/extract_lemon_rules.py`:
+Create `kWise/scripts/extract_lemon_rules.py`:
 
 ```python
 #!/usr/bin/env python3
@@ -206,7 +206,7 @@ Source XML files:
   .../zh-Hans.lproj/garbage1.xml            (app + system, zh-Hans titles)
   .../en.lproj/garbage_appstore.xml         (app + system, en titles)
 
-Output: kSpaceClean/Resources/bundleIDMapping.json (overwrites, preserves manual apps if --preserve-manual).
+Output: kWise/Resources/bundleIDMapping.json (overwrites, preserves manual apps if --preserve-manual).
 
 Usage:
   python3 extract_lemon_rules.py
@@ -362,7 +362,7 @@ if __name__ == "__main__":
 **Step 2: Run extractor**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1/kSpaceClean/scripts && \
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1/kWise/scripts && \
 python3 extract_lemon_rules.py --preserve-manual
 ```
 
@@ -373,7 +373,7 @@ Expected: prints count (≈25-35 apps preserved), writes `Resources/bundleIDMapp
 ```bash
 python3 -c "
 import json
-d = json.load(open('/Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1/kSpaceClean/Resources/bundleIDMapping.json'))
+d = json.load(open('/Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1/kWise/Resources/bundleIDMapping.json'))
 assert d['version'] == 2, f'expected version 2, got {d[\"version\"]}'
 qq = d['apps']['com.tencent.qq']
 assert 'actions' in qq, 'QQ missing actions'
@@ -388,7 +388,7 @@ Expected: `OK: <N> apps, QQ has 8 actions` (or similar).
 
 ```bash
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
-git add kSpaceClean/scripts/extract_lemon_rules.py kSpaceClean/Resources/bundleIDMapping.json && \
+git add kWise/scripts/extract_lemon_rules.py kWise/Resources/bundleIDMapping.json && \
 git commit -m "feat(scripts): rewrite Lemon extractor to preserve item→action→path with bilingual titles"
 ```
 
@@ -554,15 +554,15 @@ git commit -m "feat(BundleIDResolver): consume v2 actions[] schema with bilingua
 ## Task 4: Add `isHiddenByFilter` to ScanTreeNode protocol and four models
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/Models/ScanTreeNode.swift`
-- Modify: `kSpaceClean/Features/SmartScan/Models/ScanCategory.swift`
-- Modify: `kSpaceClean/Features/SmartScan/Models/ScanSubCategory.swift`
-- Modify: `kSpaceClean/Features/SmartScan/Models/ScanAction.swift`
-- Modify: `kSpaceClean/Features/SmartScan/Models/ScanResult.swift`
+- Modify: `kWise/Features/SmartScan/Models/ScanTreeNode.swift`
+- Modify: `kWise/Features/SmartScan/Models/ScanCategory.swift`
+- Modify: `kWise/Features/SmartScan/Models/ScanSubCategory.swift`
+- Modify: `kWise/Features/SmartScan/Models/ScanAction.swift`
+- Modify: `kWise/Features/SmartScan/Models/ScanResult.swift`
 
 **Step 1: Write failing test**
 
-Create `kSpaceClean/Tests/ScanTreeFilterTests.swift`:
+Create `kWise/Tests/ScanTreeFilterTests.swift`:
 
 ```swift
 import XCTest
@@ -625,7 +625,7 @@ Run test command. Expected: PASS.
 
 ```bash
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
-git add kSpaceClean/Features/SmartScan/Models/ kSpaceClean/Tests/ScanTreeFilterTests.swift && \
+git add kWise/Features/SmartScan/Models/ kWise/Tests/ScanTreeFilterTests.swift && \
 git commit -m "feat(ScanTree): add isHiddenByFilter flag; switch showAction to var"
 ```
 
@@ -634,12 +634,12 @@ git commit -m "feat(ScanTree): add isHiddenByFilter flag; switch showAction to v
 ## Task 5: ScanOrchestrator — bucket shared across rootPaths + action-level grouping
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift` (around lines 549-645, the `scanCategory` worker)
-- Test: `kSpaceClean/Tests/AppRuleFixtures.swift` (new — see Step 1)
+- Modify: `kWise/Features/SmartScan/Engine/ScanOrchestrator.swift` (around lines 549-645, the `scanCategory` worker)
+- Test: `kWise/Tests/AppRuleFixtures.swift` (new — see Step 1)
 
 **Step 1: Write failing test for action-level grouping**
 
-Create `kSpaceClean/Tests/AppRuleFixtures.swift`:
+Create `kWise/Tests/AppRuleFixtures.swift`:
 
 ```swift
 import XCTest
@@ -774,8 +774,8 @@ Run full test command. Expect 250/250.
 
 ```bash
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
-git add kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift \
-        kSpaceClean/Tests/AppRuleFixtures.swift && \
+git add kWise/Features/SmartScan/Engine/ScanOrchestrator.swift \
+        kWise/Tests/AppRuleFixtures.swift && \
 git commit -m "feat(ScanOrchestrator): bucket shared across rootPaths + build action level from rule actions"
 ```
 
@@ -784,7 +784,7 @@ git commit -m "feat(ScanOrchestrator): bucket shared across rootPaths + build ac
 ## Task 6: applyFilters → annotateHidden (fold-not-delete) + default 100 KB + skeleton preservation
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/Views/ScanResultsViewModel.swift`
+- Modify: `kWise/Features/SmartScan/Views/ScanResultsViewModel.swift`
 
 **Step 1: Write failing test for fold-not-delete**
 
@@ -895,8 +895,8 @@ Run test command, expect PASS.
 
 ```bash
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
-git add kSpaceClean/Features/SmartScan/Views/ScanResultsViewModel.swift \
-        kSpaceClean/Tests/ScanTreeFilterTests.swift && \
+git add kWise/Features/SmartScan/Views/ScanResultsViewModel.swift \
+        kWise/Tests/ScanTreeFilterTests.swift && \
 git commit -m "feat(ScanResultsViewModel): annotateHidden folds nodes; default 100 KB; preserve 6 skeletons"
 ```
 
@@ -905,7 +905,7 @@ git commit -m "feat(ScanResultsViewModel): annotateHidden folds nodes; default 1
 ## Task 7: ScanResultsView — skip hidden unless `showAllHidden`
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift`
+- Modify: `kWise/Features/SmartScan/Views/ScanResultsView.swift`
 
 **Step 1: Write failing test**
 
@@ -992,8 +992,8 @@ Run test command, expect PASS.
 
 ```bash
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && \
-git add kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift \
-        kSpaceClean/Tests/ScanTreeFilterTests.swift && \
+git add kWise/Features/SmartScan/Views/ScanResultsView.swift \
+        kWise/Tests/ScanTreeFilterTests.swift && \
 git commit -m "feat(ScanResultsView): gate tree on showAllHidden; add 显示全部 toggle"
 ```
 
@@ -1002,7 +1002,7 @@ git commit -m "feat(ScanResultsView): gate tree on showAllHidden; add 显示全�
 ## Task 8: Add ~50 new app rules (D range) — AI Coding & Agent Tools (Batch 1)
 
 **Files:**
-- Modify: `kSpaceClean/Resources/bundleIDMapping.json`
+- Modify: `kWise/Resources/bundleIDMapping.json`
 
 **Subagents must execute the per-app research loop below.** This task covers the first batch (AI tools + IDEs) of the ~50 new apps.
 
@@ -1098,7 +1098,7 @@ Expect 250/250 + N new tests pass.
 **Step 5: Commit per app class**
 
 ```bash
-git add kSpaceClean/Resources/bundleIDMapping.json kSpaceClean/Tests/AppRuleFixtures.swift && \
+git add kWise/Resources/bundleIDMapping.json kWise/Tests/AppRuleFixtures.swift && \
 git commit -m "feat(rules): add AI coding & agent tools batch (Claude Code, Cursor, Windsurf, ...)"
 ```
 

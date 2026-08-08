@@ -5,7 +5,7 @@
 // Two public surfaces coexist:
 //
 // - The original callback-based API (preserved for downstream callers in
-//   kSpaceClean that already compile against `enumerate(root:progressHandler:
+//   kWise that already compile against `enumerate(root:progressHandler:
 //   cancellationToken:)` — `ScanResult`, `ScanError`, `CancellationToken`,
 //   and `ThrottleConfig`).
 //
@@ -180,7 +180,7 @@ public actor FileEnumerator {
         }
     }
 
-    /// Callback-based overload (preserved for kSpaceClean's scan pipeline).
+    /// Callback-based overload (preserved for kWise's scan pipeline).
     ///
     /// Reports only non-directory entries through ``progressHandler``; the
     /// caller receives one `ScanResult` per file. The walk honours
@@ -227,7 +227,7 @@ public final class CancellationToken: @unchecked Sendable {
 /// the scanner does not starve the foreground UI.
 ///
 /// A `ThrottleConfig` is derived from ``Features/SmartScan/ScanSpeed.ScanSpeed``
-/// in kSpaceClean. The two fields are intentionally trivial (a batch size
+/// in kWise. The two fields are intentionally trivial (a batch size
 /// and a sleep duration) so the value type stays cheap to copy across
 /// actor hops; the consumer — `FileEnumerator` — is responsible for
 /// actually honouring the throttle.

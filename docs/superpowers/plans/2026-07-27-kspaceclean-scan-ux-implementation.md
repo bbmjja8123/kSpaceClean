@@ -13,7 +13,7 @@
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | tail -30
 ```
 
@@ -22,7 +22,7 @@ DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -30
 ```
 
@@ -69,8 +69,8 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean && python3 genera
 ## Task 1: Foundation Data Models — RiskLevel + CheckState + RecommendPolicy
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanRule.swift` (add after line 97, before `CleanAttributes`)
-- Create: `kSpaceClean/Tests/RiskLevelTests.swift`
+- Modify: `kWise/Features/SmartScan/ScanRule.swift` (add after line 97, before `CleanAttributes`)
+- Create: `kWise/Tests/RiskLevelTests.swift`
 
 **Interfaces:**
 - Consumes: existing `ScanAction.recommended`, `ScanAction.cautionID`
@@ -78,7 +78,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean && python3 genera
 
 - [ ] **Step 1: Write failing tests for RiskLevel**
 
-Create `kSpaceClean/Tests/RiskLevelTests.swift`:
+Create `kWise/Tests/RiskLevelTests.swift`:
 
 ```swift
 import XCTest
@@ -120,14 +120,14 @@ final class RiskLevelTests: XCTestCase {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "error:|FAIL|RiskLevel"
 ```
 Expected: Build errors — `RiskLevel`, `CheckState`, `RecommendPolicy` not found.
 
 - [ ] **Step 3: Add RiskLevel, CheckState, RecommendPolicy to ScanRule.swift**
 
-In `kSpaceClean/Features/SmartScan/ScanRule.swift`, insert after line 97 (after `ScanActionType` enum, before `CleanAttributes`):
+In `kWise/Features/SmartScan/ScanRule.swift`, insert after line 97 (after `ScanActionType` enum, before `CleanAttributes`):
 
 ```swift
 // MARK: - Risk Levels (v3 UX spec §1.2)
@@ -234,7 +234,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean && python3 genera
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "TEST.*RiskLevel|FAIL|error:|Test Suite"
 ```
 Expected: `RiskLevelTests` passes.
@@ -242,7 +242,7 @@ Expected: `RiskLevelTests` passes.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/ScanRule.swift kSpaceClean/Tests/RiskLevelTests.swift kSpaceClean/generate_project.py
+git add kWise/Features/SmartScan/ScanRule.swift kWise/Tests/RiskLevelTests.swift kWise/generate_project.py
 git commit -m "feat(kSpaceClean): add RiskLevel, CheckState, RecommendPolicy, DefaultSelectionPolicy models
 
 4-level risk classification + 3-state checkbox + selection policy for scan UX v3.
@@ -254,8 +254,8 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 2: Upgrade ScanProgress with ScanStage + ScanStats
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanProgress.swift`
-- Create: `kSpaceClean/Tests/ScanProgressModelTests.swift`
+- Modify: `kWise/Features/SmartScan/ScanProgress.swift`
+- Create: `kWise/Tests/ScanProgressModelTests.swift`
 
 **Interfaces:**
 - Consumes: existing `ScanProgress.State`, `CategoryProgress`
@@ -263,7 +263,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 - [ ] **Step 1: Write failing tests**
 
-Create `kSpaceClean/Tests/ScanProgressModelTests.swift`:
+Create `kWise/Tests/ScanProgressModelTests.swift`:
 
 ```swift
 import XCTest
@@ -315,14 +315,14 @@ final class ScanProgressModelTests: XCTestCase {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "error:|FAIL|ScanProgressModel"
 ```
 Expected: Build errors — `ScanStage`, `ScanStats`, `currentNodePath` not found.
 
 - [ ] **Step 3: Add ScanStage and ScanStats to ScanProgress.swift**
 
-In `kSpaceClean/Features/SmartScan/ScanProgress.swift`, add after the existing `ScanItemStatus` enum (after line 50):
+In `kWise/Features/SmartScan/ScanProgress.swift`, add after the existing `ScanItemStatus` enum (after line 50):
 
 ```swift
 /// 8 scan stages matching the 8 built-in categories
@@ -422,7 +422,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean && python3 genera
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "TEST.*ScanProgressModel|FAIL|error:"
 ```
 Expected: `ScanProgressModelTests` passes.
@@ -430,7 +430,7 @@ Expected: `ScanProgressModelTests` passes.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/ScanProgress.swift kSpaceClean/Tests/ScanProgressModelTests.swift kSpaceClean/generate_project.py
+git add kWise/Features/SmartScan/ScanProgress.swift kWise/Tests/ScanProgressModelTests.swift kWise/generate_project.py
 git commit -m "feat(kSpaceClean): add ScanStage, ScanStats, currentNodePath to scan progress
 
 8-stage progress tracking + real-time file path + stats for scan UX v3.
@@ -442,8 +442,8 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 3: Upgrade ScanResultNode + ActionGroup with RiskLevel
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanResultsTreeView.swift` (lines 1-63, data models)
-- Create: `kSpaceClean/Tests/SelectionCascadeTests.swift`
+- Modify: `kWise/Features/SmartScan/ScanResultsTreeView.swift` (lines 1-63, data models)
+- Create: `kWise/Tests/SelectionCascadeTests.swift`
 
 **Interfaces:**
 - Consumes: `RiskLevel.from(recommended:cautionID:)` (from Task 1)
@@ -451,7 +451,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 - [ ] **Step 1: Write failing tests**
 
-Create `kSpaceClean/Tests/SelectionCascadeTests.swift`:
+Create `kWise/Tests/SelectionCascadeTests.swift`:
 
 ```swift
 import XCTest
@@ -518,14 +518,14 @@ final class SelectionCascadeTests: XCTestCase {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "error:|FAIL|SelectionCascade"
 ```
 Expected: Build errors — `riskLevel`, `checkState`, `highestRisk` not found.
 
 - [ ] **Step 3: Add riskLevel to ScanResultNode**
 
-In `kSpaceClean/Features/SmartScan/ScanResultsTreeView.swift`, modify `ScanResultNode` (around line 8-36):
+In `kWise/Features/SmartScan/ScanResultsTreeView.swift`, modify `ScanResultNode` (around line 8-36):
 
 Add a `riskLevel` computed property:
 
@@ -573,7 +573,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean && python3 genera
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "TEST.*SelectionCascade|FAIL|error:"
 ```
 Expected: `SelectionCascadeTests` passes.
@@ -581,7 +581,7 @@ Expected: `SelectionCascadeTests` passes.
 - [ ] **Step 7: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/ScanResultsTreeView.swift kSpaceClean/Tests/SelectionCascadeTests.swift kSpaceClean/generate_project.py
+git add kWise/Features/SmartScan/ScanResultsTreeView.swift kWise/Tests/SelectionCascadeTests.swift kWise/generate_project.py
 git commit -m "feat(kSpaceClean): add RiskLevel to ScanResultNode, ActionGroup, ScanResultGroup
 
 4-level risk classification + 3-state checkState on tree nodes.
@@ -593,7 +593,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 4: Upgrade ScanViewModel with Default Selection + RiskGrouped Stats
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanViewModel.swift`
+- Modify: `kWise/Features/SmartScan/ScanViewModel.swift`
 
 **Interfaces:**
 - Consumes: `RiskLevel`, `DefaultSelectionPolicy` (Task 1), `ScanResultNode.riskLevel` (Task 3)
@@ -601,7 +601,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 - [ ] **Step 1: Add riskGroupedStats computed property**
 
-In `kSpaceClean/Features/SmartScan/ScanViewModel.swift`, add after `selectedSize` (around line 226):
+In `kWise/Features/SmartScan/ScanViewModel.swift`, add after `selectedSize` (around line 226):
 
 ```swift
 /// Statistics grouped by risk level
@@ -681,7 +681,7 @@ applyDefaultSelection()
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -689,7 +689,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/ScanViewModel.swift
+git add kWise/Features/SmartScan/ScanViewModel.swift
 git commit -m "feat(kSpaceClean): add riskGroupedStats and applyDefaultSelection to ScanViewModel
 
 Risk-level grouped statistics + automatic selection by policy after scan.
@@ -701,7 +701,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 5: Upgrade ScanContentView with 8-Stage Pills + Current File Path
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanContentView.swift`
+- Modify: `kWise/Features/SmartScan/ScanContentView.swift`
 
 **Interfaces:**
 - Consumes: `ScanStage`, `ScanStats`, `currentNodePath` (Task 2)
@@ -887,7 +887,7 @@ private struct StagePill: View {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -895,7 +895,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/ScanContentView.swift
+git add kWise/Features/SmartScan/ScanContentView.swift
 git commit -m "feat(kSpaceClean): add 8-stage progress pills + current file path bar to scan view
 
 Real-time scan progress with stage indicators and file path display.
@@ -907,7 +907,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 6: Upgrade ScanResultsTreeView with 4-Level Risk Filter Tabs
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanResultsTreeView.swift` (views section)
+- Modify: `kWise/Features/SmartScan/ScanResultsTreeView.swift` (views section)
 
 **Interfaces:**
 - Consumes: `RiskLevel`, `ActionGroup.riskLevel`, `ScanResultGroup.highestRisk` (Task 3)
@@ -1181,7 +1181,7 @@ if node.riskLevel == .caution {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -1189,7 +1189,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 7: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/ScanResultsTreeView.swift
+git add kWise/Features/SmartScan/ScanResultsTreeView.swift
 git commit -m "feat(kSpaceClean): add 4-level risk filter tabs + search to scan results tree
 
 RiskFilterBar with count badges, text search, 4-level risk badge display.
@@ -1201,7 +1201,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 7: Hybrid Overview with Twin Rings
 
 **Files:**
-- Modify: `kSpaceClean/Features/RightPanel/OverviewTabView.swift`
+- Modify: `kWise/Features/RightPanel/OverviewTabView.swift`
 
 **Interfaces:**
 - Consumes: `DiskUsage`, `ScanViewModel.riskGroupedStats` (Task 4)
@@ -1482,7 +1482,7 @@ struct PriorityCardView: View {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -1490,7 +1490,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/RightPanel/OverviewTabView.swift
+git add kWise/Features/RightPanel/OverviewTabView.swift
 git commit -m "feat(kSpaceClean): replace overview tab with hybrid twin-ring design
 
 Apple Watch–style twin ring comparison + priority cards + summary.
@@ -1502,7 +1502,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 8: Restructure RightPanelView Tabs
 
 **Files:**
-- Modify: `kSpaceClean/Features/RightPanel/RightPanelView.swift`
+- Modify: `kWise/Features/RightPanel/RightPanelView.swift`
 
 **Interfaces:**
 - Consumes: `RiskFilter` (Task 6), `OverviewViewModel` (Task 7)
@@ -1510,7 +1510,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 - [ ] **Step 1: Update RightPanelTab enum in AppState**
 
-In `kSpaceClean/App/AppState.swift`, replace `RightPanelTab` (lines 57-61):
+In `kWise/App/AppState.swift`, replace `RightPanelTab` (lines 57-61):
 
 ```swift
 public enum RightPanelTab: String, CaseIterable {
@@ -1577,7 +1577,7 @@ struct RightPanelView: View {
 
 - [ ] **Step 3: Update AppStateTests to reflect new tab count**
 
-In `kSpaceClean/Tests/AppStateTests.swift`, fix the test:
+In `kWise/Tests/AppStateTests.swift`, fix the test:
 
 ```swift
 func test_NavigationItem_allCases() {
@@ -1592,7 +1592,7 @@ func test_NavigationItem_allCases() {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -1600,7 +1600,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kSpaceClean/Features/RightPanel/RightPanelView.swift kSpaceClean/App/AppState.swift kSpaceClean/Tests/AppStateTests.swift
+git add kWise/Features/RightPanel/RightPanelView.swift kWise/App/AppState.swift kWise/Tests/AppStateTests.swift
 git commit -m "feat(kSpaceClean): restructure right panel tabs to 概览/结果树/建议
 
 Aligned with scan UX v3 screen structure.
@@ -1612,7 +1612,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 9: Upgrade SuggestionsTabView with HIGH/MED/LOW Grouping
 
 **Files:**
-- Modify: `kSpaceClean/Features/RightPanel/SuggestionsTabView.swift`
+- Modify: `kWise/Features/RightPanel/SuggestionsTabView.swift`
 
 **Interfaces:**
 - Consumes: `ScanViewModel.resultGroups`, `ActionGroup.riskLevel`, `DiskUsage`
@@ -1772,7 +1772,7 @@ private struct SuggestionRow: View {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -1780,7 +1780,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/RightPanel/SuggestionsTabView.swift
+git add kWise/Features/RightPanel/SuggestionsTabView.swift
 git commit -m "feat(kSpaceClean): upgrade suggestions tab with HIGH/MED/LOW impact grouping
 
 Other suggestions view with impact-level color coding and selection.
@@ -1792,9 +1792,9 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 10: Cleanup Confirmation Flow with 4-Level Risk
 
 **Files:**
-- Modify: `kSpaceClean/Features/Cleanup/CleanupEngine.swift`
-- Modify: `kSpaceClean/Features/Cleanup/CleanupContentView.swift`
-- Create: `kSpaceClean/Tests/CleanupConfirmationTests.swift`
+- Modify: `kWise/Features/Cleanup/CleanupEngine.swift`
+- Modify: `kWise/Features/Cleanup/CleanupContentView.swift`
+- Create: `kWise/Tests/CleanupConfirmationTests.swift`
 
 **Interfaces:**
 - Consumes: `RiskLevel`, `WarnItem`, `CleanupEngine.detectWarnItems`
@@ -1802,7 +1802,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 - [ ] **Step 1: Write failing tests**
 
-Create `kSpaceClean/Tests/CleanupConfirmationTests.swift`:
+Create `kWise/Tests/CleanupConfirmationTests.swift`:
 
 ```swift
 import XCTest
@@ -1841,14 +1841,14 @@ final class CleanupConfirmationTests: XCTestCase {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "error:|FAIL|CleanupConfirmation"
 ```
 Expected: Build errors — `CleanupConfirmationLevel` not found.
 
 - [ ] **Step 3: Add CleanupConfirmationLevel to CleanupEngine.swift**
 
-In `kSpaceClean/Features/Cleanup/CleanupEngine.swift`, add after `CleanupProgress` (after line 41):
+In `kWise/Features/Cleanup/CleanupEngine.swift`, add after `CleanupProgress` (after line 41):
 
 ```swift
 /// 4-level cleanup confirmation routing (v3 spec §2.6)
@@ -1868,7 +1868,7 @@ public enum CleanupConfirmationLevel: Sendable, Equatable {
 
 - [ ] **Step 4: Add confirmationLevel computed to ScanViewModel**
 
-In `kSpaceClean/Features/SmartScan/ScanViewModel.swift`, add after `selectedSize`:
+In `kWise/Features/SmartScan/ScanViewModel.swift`, add after `selectedSize`:
 
 ```swift
 /// Compute the confirmation level needed for current selection
@@ -1887,7 +1887,7 @@ public var confirmationLevel: CleanupConfirmationLevel {
 
 - [ ] **Step 5: Upgrade CleanupContentView with confirmation flow**
 
-Replace `kSpaceClean/Features/Cleanup/CleanupContentView.swift`:
+Replace `kWise/Features/Cleanup/CleanupContentView.swift`:
 
 ```swift
 import SwiftUI
@@ -2051,7 +2051,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean && python3 genera
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | grep -E "TEST.*CleanupConfirmation|FAIL|error:"
 ```
 Expected: `CleanupConfirmationTests` passes.
@@ -2062,7 +2062,7 @@ Expected: `CleanupConfirmationTests` passes.
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -2070,7 +2070,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 8: Commit**
 
 ```bash
-git add kSpaceClean/Features/Cleanup/CleanupEngine.swift kSpaceClean/Features/Cleanup/CleanupContentView.swift kSpaceClean/Features/SmartScan/ScanViewModel.swift kSpaceClean/Tests/CleanupConfirmationTests.swift kSpaceClean/generate_project.py
+git add kWise/Features/Cleanup/CleanupEngine.swift kWise/Features/Cleanup/CleanupContentView.swift kWise/Features/SmartScan/ScanViewModel.swift kWise/Tests/CleanupConfirmationTests.swift kWise/generate_project.py
 git commit -m "feat(kSpaceClean): add 4-level cleanup confirmation flow
 
 CleanupConfirmationLevel routes to low/medium/high/irreversible prompts.
@@ -2082,7 +2082,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 11: DiskUsageBar with Important Capacity + Real Data
 
 **Files:**
-- Modify: `kSpaceClean/Features/DiskGalaxy/DiskUsageBar.swift`
+- Modify: `kWise/Features/DiskGalaxy/DiskUsageBar.swift`
 
 **Interfaces:**
 - Consumes: existing `DiskUsage.current()`
@@ -2090,7 +2090,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 - [ ] **Step 1: Fix DiskUsage.current() to use important capacity**
 
-In `kSpaceClean/Features/DiskGalaxy/DiskUsageBar.swift`, replace `DiskUsage.current()`:
+In `kWise/Features/DiskGalaxy/DiskUsageBar.swift`, replace `DiskUsage.current()`:
 
 ```swift
 public static func current() -> DiskUsage {
@@ -2123,7 +2123,7 @@ public static func current() -> DiskUsage {
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -2131,7 +2131,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/DiskGalaxy/DiskUsageBar.swift
+git add kWise/Features/DiskGalaxy/DiskUsageBar.swift
 git commit -m "fix(kSpaceClean): use volumeAvailableCapacityForImportantUsageKey for accurate disk stats
 
 More accurate free space reporting matching macOS system behavior.
@@ -2143,8 +2143,8 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ## Task 12: Keyboard Shortcuts Integration
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanResultsTreeView.swift`
-- Modify: `kSpaceClean/App/RootView.swift`
+- Modify: `kWise/Features/SmartScan/ScanResultsTreeView.swift`
+- Modify: `kWise/App/RootView.swift`
 
 **Interfaces:**
 - Consumes: `RiskFilter` (Task 6), `ScanViewModel.startCleanup()`
@@ -2204,7 +2204,7 @@ In `RootView.swift`, add a `.onKeyPress` for ⌘F:
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -10
 ```
 Expected: `BUILD SUCCEEDED`
@@ -2212,7 +2212,7 @@ Expected: `BUILD SUCCEEDED`
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/ScanResultsTreeView.swift kSpaceClean/App/RootView.swift
+git add kWise/Features/SmartScan/ScanResultsTreeView.swift kWise/App/RootView.swift
 git commit -m "feat(kSpaceClean): add keyboard shortcuts ⌘⏎ ⌘0-4 ⌘F for scan results
 
 macOS-native keyboard navigation for risk filter, cleanup, search.
@@ -2229,7 +2229,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceClean -sdk macosx build 2>&1 | tail -30
 ```
 Expected: `BUILD SUCCEEDED`
@@ -2240,7 +2240,7 @@ Expected: `BUILD SUCCEEDED`
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp && \
 DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" \
 /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild \
-  -project kSpaceClean/kSpaceClean.xcodeproj \
+  -project kWise/kSpaceClean.xcodeproj \
   -scheme kSpaceCleanTests -sdk macosx test 2>&1 | tail -30
 ```
 Expected: All tests pass, 0 failures.

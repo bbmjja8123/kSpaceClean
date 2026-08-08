@@ -836,7 +836,7 @@ public final class MaintenanceTaskEngine {
 ### 7.2 我们的项目结构（待变更）
 
 ```
-/Users/mengjianjun/Documents/ai/aicoding/macapp/kSpaceClean/
+/Users/mengjianjun/Documents/ai/aicoding/macapp/kWise/
 ├── Features/
 │   ├── SmartScan/         # 扫描引擎 + 4 级树 UI（核心重写）
 │   │   ├── Models/

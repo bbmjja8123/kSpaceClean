@@ -25,14 +25,14 @@
   - `makeCategoryProgress(_ def: CategoryDefinition)` takes a **CategoryDefinition** (not a ScanCategory). Live composer updates use seeded-dict lookup (`liveCategoryProgress[def.id]`), never `makeCategoryProgress(outcome.category)`.
 - **Cascade risk gate — DO NOT CHANGE:** `ScanSubCategory.setState` already gates per-child auto-select on `child.riskLevel.defaultChecked` (ScanSubCategory.swift:99/112). No edit to `setState` in this plan. `RiskLevel.defaultChecked` is `self == .recommended`.
 - **Do not restructure existing behavior:** `buildActions` boundary-safe match (ScanOrchestrator.swift:712-721) already strips trailing slashes — leave it. Legacy scan pipeline untouched.
-- **Test additions are append-only** to these existing files (do NOT create new test files, do NOT modify existing tests): `kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift`, `kSpaceClean/Tests/ScanProgressTests.swift`, `kSpaceClean/Tests/ScanTreeFilterTests.swift`, `kSpaceClean/Tests/AppRuleFixtures.swift`.
+- **Test additions are append-only** to these existing files (do NOT create new test files, do NOT modify existing tests): `kWise/Tests/ScanOrchestratorIntegrationTests.swift`, `kWise/Tests/ScanProgressTests.swift`, `kWise/Tests/ScanTreeFilterTests.swift`, `kWise/Tests/AppRuleFixtures.swift`.
 - **Baseline:** 268 tests passing. After this plan: **284 passing** (A1: 2, A2: 8, B1: 2, B2: 2, B3: 2). Zero build warnings.
 - **Test command (verbatim):**
   ```bash
-  cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES test
+  cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES test
   ```
-- **Rule library (`kSpaceClean/Resources/bundleIDMapping.json`) invariants:** header keys `version` (2), `generatedAt`, `source`, `appCount`, `apps`. `appCount` MUST equal the real `apps` dict count. Entry schema: dict key == `bundleID`; entry fields `bundleID`, `appstoreBundleID` (**must be JSON `null`**), `nameCN`, `name`, `actions[]` (each with `nameCN`, `name`, `type`, `paths[]`), `vendor`, `type`, `riskLevel`, `confidence`. New entries: `"riskLevel": "caution"`, `"confidence": "medium"`, action type `"appcache"` (or `"file"` for Logs). **NEVER** declare a cleanable action at a bare user-data root: `~/Library/Application Support/<Leaf>/` (model/chat/db store) or `~/Library/Containers/<Bundle>/Data` (container home). Cache/log subdirs only.
-- **JSON validity** must be verified after every edit: `python3 -c "import json; json.load(open('kSpaceClean/Resources/bundleIDMapping.json'))"`.
+- **Rule library (`kWise/Resources/bundleIDMapping.json`) invariants:** header keys `version` (2), `generatedAt`, `source`, `appCount`, `apps`. `appCount` MUST equal the real `apps` dict count. Entry schema: dict key == `bundleID`; entry fields `bundleID`, `appstoreBundleID` (**must be JSON `null`**), `nameCN`, `name`, `actions[]` (each with `nameCN`, `name`, `type`, `paths[]`), `vendor`, `type`, `riskLevel`, `confidence`. New entries: `"riskLevel": "caution"`, `"confidence": "medium"`, action type `"appcache"` (or `"file"` for Logs). **NEVER** declare a cleanable action at a bare user-data root: `~/Library/Application Support/<Leaf>/` (model/chat/db store) or `~/Library/Containers/<Bundle>/Data` (container home). Cache/log subdirs only.
+- **JSON validity** must be verified after every edit: `python3 -c "import json; json.load(open('kWise/Resources/bundleIDMapping.json'))"`.
 - **Commit style:** `feat(kSpaceClean): <imperative summary>`.
 - **SDD artifact filenames:** task briefs/reports for THIS plan go to `.superpowers/sdd/` with names `2026-08-02-scan-ux-v2-task-N-{brief,report}.md` — the stale kDupe `task-A1-brief.md` etc. already exist and must not be reused.
 
@@ -42,23 +42,23 @@
 
 | File | Responsibility | Touched by |
 |---|---|---|
-| `kSpaceClean/Features/SmartScan/ScanProgress.swift` | `ScanDelta` (append after `ScanStats`), `ScanProgressMath` (append at end) | A1, A2 |
-| `kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift` | Live progress composer (state, seeding, wiring, `composeSnapshot`, `recordProgress`, `markCategoryCompleted`, `yieldSnapshot`); pseudo-app bucket key + 3-way emit branch; `pseudoAppKey` helper | A1, B1 |
-| `kSpaceClean/Features/SmartScan/Views/ScanProgressView.swift` | Ring fraction via `ScanProgressMath`, 预计剩余 stat column, `etaText` | A2 |
-| `kSpaceClean/Features/SmartScan/Models/ScanSubCategory.swift` | `isPseudoApp` property + init param | B1 |
-| `kSpaceClean/Features/SmartScan/Views/ScanResultsViewModel.swift` | `annotateSubHidden` pseudo-app fold exemption | B2 |
-| `kSpaceClean/Resources/bundleIDMapping.json` | `appCount` 108 → 151 + 43 new entries | B3 |
-| `kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift` | Append `ScanProgressComposerTests` (A1), `ScanPseudoAppSplittingTests` (B1) | A1, B1 |
-| `kSpaceClean/Tests/ScanProgressTests.swift` | Append `ScanProgressMathTests` (A2) | A2 |
-| `kSpaceClean/Tests/ScanTreeFilterTests.swift` | Append `PseudoAppFilterExemptionTests` (B2) | B2 |
-| `kSpaceClean/Tests/AppRuleFixtures.swift` | `task12BundleIDs` + presence/guard tests in `AppRuleLibraryAudit` (B3) | B3 |
+| `kWise/Features/SmartScan/ScanProgress.swift` | `ScanDelta` (append after `ScanStats`), `ScanProgressMath` (append at end) | A1, A2 |
+| `kWise/Features/SmartScan/Engine/ScanOrchestrator.swift` | Live progress composer (state, seeding, wiring, `composeSnapshot`, `recordProgress`, `markCategoryCompleted`, `yieldSnapshot`); pseudo-app bucket key + 3-way emit branch; `pseudoAppKey` helper | A1, B1 |
+| `kWise/Features/SmartScan/Views/ScanProgressView.swift` | Ring fraction via `ScanProgressMath`, 预计剩余 stat column, `etaText` | A2 |
+| `kWise/Features/SmartScan/Models/ScanSubCategory.swift` | `isPseudoApp` property + init param | B1 |
+| `kWise/Features/SmartScan/Views/ScanResultsViewModel.swift` | `annotateSubHidden` pseudo-app fold exemption | B2 |
+| `kWise/Resources/bundleIDMapping.json` | `appCount` 108 → 151 + 43 new entries | B3 |
+| `kWise/Tests/ScanOrchestratorIntegrationTests.swift` | Append `ScanProgressComposerTests` (A1), `ScanPseudoAppSplittingTests` (B1) | A1, B1 |
+| `kWise/Tests/ScanProgressTests.swift` | Append `ScanProgressMathTests` (A2) | A2 |
+| `kWise/Tests/ScanTreeFilterTests.swift` | Append `PseudoAppFilterExemptionTests` (B2) | B2 |
+| `kWise/Tests/AppRuleFixtures.swift` | `task12BundleIDs` + presence/guard tests in `AppRuleLibraryAudit` (B3) | B3 |
 
 ### Task A1: Live progress composer
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanProgress.swift` (append `ScanDelta` after line 118)
-- Modify: `kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift`
-- Test: `kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift` (append `ScanProgressComposerTests`)
+- Modify: `kWise/Features/SmartScan/ScanProgress.swift` (append `ScanDelta` after line 118)
+- Modify: `kWise/Features/SmartScan/Engine/ScanOrchestrator.swift`
+- Test: `kWise/Tests/ScanOrchestratorIntegrationTests.swift` (append `ScanProgressComposerTests`)
 
 **Interfaces:**
 - Consumes: existing `ScanProgress`, `CategoryProgress`, `ScanStats`, `ScanItemStatus`, `ScanOutcome`, `CategoryDefinition`.
@@ -66,7 +66,7 @@
 
 - [ ] **Step 1: Write the failing tests**
 
-Append this class to the END of `kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift` (it already has `import XCTest`, `import FileScanner`, `@testable import kSpaceClean`):
+Append this class to the END of `kWise/Tests/ScanOrchestratorIntegrationTests.swift` (it already has `import XCTest`, `import FileScanner`, `@testable import kSpaceClean`):
 
 ```swift
 /// Task A1 — live progress composer. Drives a scan over a 5000-file fixture
@@ -177,7 +177,7 @@ final class ScanProgressComposerTests: XCTestCase {
 
 Run (filtered):
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/ScanProgressComposerTests test
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/ScanProgressComposerTests test
 ```
 Expected: FAIL — `interim scanning snapshot with real-time stats required` (current interim yields carry `stats` defaulted to zero; `currentNodePath` never set), and `final.stats.fileCount == 0`.
 
@@ -424,15 +424,15 @@ Run the full test command (Global Constraints). Expected: 270 passing (268 basel
 - [ ] **Step 11: Commit**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kSpaceClean/Features/SmartScan/ScanProgress.swift kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift && git commit -m "feat(kSpaceClean): add live scan-progress composer with per-file deltas"
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kWise/Features/SmartScan/ScanProgress.swift kWise/Features/SmartScan/Engine/ScanOrchestrator.swift kWise/Tests/ScanOrchestratorIntegrationTests.swift && git commit -m "feat(kSpaceClean): add live scan-progress composer with per-file deltas"
 ```
 
 ### Task A2: Progress math + ring/ETA UI
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/ScanProgress.swift` (append `ScanProgressMath` at end)
-- Modify: `kSpaceClean/Features/SmartScan/Views/ScanProgressView.swift`
-- Test: `kSpaceClean/Tests/ScanProgressTests.swift` (append `ScanProgressMathTests`)
+- Modify: `kWise/Features/SmartScan/ScanProgress.swift` (append `ScanProgressMath` at end)
+- Modify: `kWise/Features/SmartScan/Views/ScanProgressView.swift`
+- Test: `kWise/Tests/ScanProgressTests.swift` (append `ScanProgressMathTests`)
 
 **Interfaces:**
 - Consumes: `ScanProgressMath` (A2 defines it), `progress.stats.filesPerSecond` / `categoryProgress` / `state` from A1 snapshots.
@@ -440,7 +440,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspace
 
 - [ ] **Step 1: Write the failing tests**
 
-Append to the END of `kSpaceClean/Tests/ScanProgressTests.swift`:
+Append to the END of `kWise/Tests/ScanProgressTests.swift`:
 
 ```swift
 final class ScanProgressMathTests: XCTestCase {
@@ -519,7 +519,7 @@ final class ScanProgressMathTests: XCTestCase {
 - [ ] **Step 2: Run the tests to verify they fail**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/ScanProgressMathTests test
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/ScanProgressMathTests test
 ```
 Expected: FAIL — `ScanProgressMath` is not defined.
 
@@ -634,15 +634,15 @@ Full test command. Expected: 278 passing (270 + 8 A2).
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kSpaceClean/Features/SmartScan/ScanProgress.swift kSpaceClean/Features/SmartScan/Views/ScanProgressView.swift kSpaceClean/Tests/ScanProgressTests.swift && git commit -m "feat(kSpaceClean): add progress ring math and live ETA column"
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kWise/Features/SmartScan/ScanProgress.swift kWise/Features/SmartScan/Views/ScanProgressView.swift kWise/Tests/ScanProgressTests.swift && git commit -m "feat(kSpaceClean): add progress ring math and live ETA column"
 ```
 
 ### Task B1: Pseudo-app splitting for unmatched folders
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/Models/ScanSubCategory.swift`
-- Modify: `kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift`
-- Test: `kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift` (append `ScanPseudoAppSplittingTests`)
+- Modify: `kWise/Features/SmartScan/Models/ScanSubCategory.swift`
+- Modify: `kWise/Features/SmartScan/Engine/ScanOrchestrator.swift`
+- Test: `kWise/Tests/ScanOrchestratorIntegrationTests.swift` (append `ScanPseudoAppSplittingTests`)
 
 **Interfaces:**
 - Consumes: `bucketByApp`/`bucketSize` aggregation, `pseudoAppKey` (B1 defines), `ScanSubCategory` init.
@@ -650,7 +650,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspace
 
 - [ ] **Step 1: Write the failing tests**
 
-Append to the END of `kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift`:
+Append to the END of `kWise/Tests/ScanOrchestratorIntegrationTests.swift`:
 
 ```swift
 /// Task B1 — pseudo-app splitting. Unmatched top-level folders become their
@@ -727,7 +727,7 @@ final class ScanPseudoAppSplittingTests: XCTestCase {
 - [ ] **Step 2: Run the tests to verify they fail**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/ScanPseudoAppSplittingTests test
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/ScanPseudoAppSplittingTests test
 ```
 Expected: FAIL — `isPseudoApp` does not exist; unmatched files collapse into one generic bucket titled "App Cache" instead of "SomeRandomApp".
 
@@ -877,14 +877,14 @@ Full test command. Expected: 280 passing (278 + 2 B1).
 - [ ] **Step 9: Commit**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kSpaceClean/Features/SmartScan/Models/ScanSubCategory.swift kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift kSpaceClean/Tests/ScanOrchestratorIntegrationTests.swift && git commit -m "feat(kSpaceClean): split unmatched scan folders into pseudo-app rows"
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kWise/Features/SmartScan/Models/ScanSubCategory.swift kWise/Features/SmartScan/Engine/ScanOrchestrator.swift kWise/Tests/ScanOrchestratorIntegrationTests.swift && git commit -m "feat(kSpaceClean): split unmatched scan folders into pseudo-app rows"
 ```
 
 ### Task B2: Pseudo-app rows exempt from small-file fold
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/Views/ScanResultsViewModel.swift` (`annotateSubHidden`, lines 597-613)
-- Test: `kSpaceClean/Tests/ScanTreeFilterTests.swift` (append `PseudoAppFilterExemptionTests`)
+- Modify: `kWise/Features/SmartScan/Views/ScanResultsViewModel.swift` (`annotateSubHidden`, lines 597-613)
+- Test: `kWise/Tests/ScanTreeFilterTests.swift` (append `PseudoAppFilterExemptionTests`)
 
 **Interfaces:**
 - Consumes: `ScanSubCategory.isPseudoApp` + `totalSize` (from B1).
@@ -892,7 +892,7 @@ cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspace
 
 - [ ] **Step 1: Write the failing tests**
 
-Append to the END of `kSpaceClean/Tests/ScanTreeFilterTests.swift`:
+Append to the END of `kWise/Tests/ScanTreeFilterTests.swift`:
 
 ```swift
 @MainActor
@@ -961,7 +961,7 @@ final class PseudoAppFilterExemptionTests: XCTestCase {
 - [ ] **Step 2: Run the tests to verify they fail**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/PseudoAppFilterExemptionTests test
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/PseudoAppFilterExemptionTests test
 ```
 Expected: FAIL — the pseudo-app row computes `allHidden == true` and folds up.
 
@@ -1000,14 +1000,14 @@ Full test command. Expected: 282 passing (280 + 2 B2).
 - [ ] **Step 6: Commit**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kSpaceClean/Features/SmartScan/Views/ScanResultsViewModel.swift kSpaceClean/Tests/ScanTreeFilterTests.swift && git commit -m "feat(kSpaceClean): exempt pseudo-app rows from small-file fold"
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kWise/Features/SmartScan/Views/ScanResultsViewModel.swift kWise/Tests/ScanTreeFilterTests.swift && git commit -m "feat(kSpaceClean): exempt pseudo-app rows from small-file fold"
 ```
 
 ### Task B3: Rule library 108 → 151 (43 user-installed apps)
 
 **Files:**
-- Modify: `kSpaceClean/Resources/bundleIDMapping.json` (`appCount` → 151, insert 43 entries)
-- Modify: `kSpaceClean/Tests/AppRuleFixtures.swift` (add `task12BundleIDs` + 2 tests in `AppRuleLibraryAudit`)
+- Modify: `kWise/Resources/bundleIDMapping.json` (`appCount` → 151, insert 43 entries)
+- Modify: `kWise/Tests/AppRuleFixtures.swift` (add `task12BundleIDs` + 2 tests in `AppRuleLibraryAudit`)
 
 **Interfaces:**
 - Consumes: existing JSON v2 schema, `AppRuleLibraryAudit.mappingURL` / `root` helpers, `newBundleIDs`/`task9BundleIDs`/`task10BundleIDs` pattern.
@@ -1129,7 +1129,7 @@ Add these two test methods (mirror `testTask8NewAppsPresentWithV2Actions`, lines
 - [ ] **Step 2: Run the tests to verify they fail**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/AppRuleLibraryAudit/testTask12NewAppsPresentWithV2Actions -only-testing:kSpaceCleanTests/AppRuleLibraryAudit/testTask12AppsNeverCoverBareUserDataRoots test
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES -only-testing:kSpaceCleanTests/AppRuleLibraryAudit/testTask12NewAppsPresentWithV2Actions -only-testing:kSpaceCleanTests/AppRuleLibraryAudit/testTask12AppsNeverCoverBareUserDataRoots test
 ```
 Expected: FAIL — every `task12BundleIDs` entry is missing from the JSON.
 
@@ -1191,7 +1191,7 @@ Remember: dict key MUST equal `bundleID`; every action path MUST be `~/`-rooted 
 - [ ] **Step 5: Run the B3 tests + JSON validation**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && python3 -c "import json; json.load(open('kSpaceClean/Resources/bundleIDMapping.json'))"
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && python3 -c "import json; json.load(open('kWise/Resources/bundleIDMapping.json'))"
 ```
 Expected: no output, exit 0.
 
@@ -1204,7 +1204,7 @@ Full test command. Expected: 284 passing (282 + 2 B3).
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kSpaceClean/Resources/bundleIDMapping.json kSpaceClean/Tests/AppRuleFixtures.swift && git commit -m "feat(kSpaceClean): grow rule library 108→151 with user-installed apps"
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && git add kWise/Resources/bundleIDMapping.json kWise/Tests/AppRuleFixtures.swift && git commit -m "feat(kSpaceClean): grow rule library 108→151 with user-installed apps"
 ```
 
 ### Task B4: Full suite + build + visual smoke + commit
@@ -1220,20 +1220,20 @@ Run the full test command (Global Constraints). Expected: **284 passing, 0 faili
 - [ ] **Step 2: Validate the JSON**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && python3 -c "import json; json.load(open('kSpaceClean/Resources/bundleIDMapping.json'))"
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && python3 -c "import json; json.load(open('kWise/Resources/bundleIDMapping.json'))"
 ```
 Expected: no output, exit 0.
 
 - [ ] **Step 3: Build the app**
 
 ```bash
-cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kSpaceClean/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES build
+cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1 && DEVELOPER_DIR="/Applications/Xcode 2.app/Contents/Developer" /Applications/Xcode\ 2.app/Contents/Developer/usr/bin/xcodebuild -project kWise/kSpaceClean.xcodeproj -scheme kSpaceClean -destination 'platform=macOS' -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES build
 ```
 Expected: BUILD SUCCEEDED, zero warnings.
 
 - [ ] **Step 4: Visual smoke test**
 
-Launch the built `kSpaceClean.app` (in `kSpaceClean/build/Debug/` or the `-derivedDataPath` build products). Run a scan. Verify:
+Launch the built `kSpaceClean.app` (in `kWise/build/Debug/` or the `-derivedDataPath` build products). Run a scan. Verify:
 - Progress screen shows a live ring moving continuously (not frozen near 0), a moving current-file path, a real 速度 (files/秒) number, and a 预计剩余 (ETA) column that counts down.
 - Scan results show real app rows under each category — e.g. under 应用缓存 you see actual app names (Claude Code / Cursor / Postman / Dropbox / etc.), NOT a single duplicated "应用缓存 → 应用缓存".
 - Unmatched top-level folders appear as pseudo-app rows titled with the folder name; they are UNCHECKED by default and do not disappear when the "显示过滤掉的项" toggle is off.

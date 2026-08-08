@@ -39,7 +39,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 │   ├── Capabilities/                # OS 版本能力探测
 │   ├── DesignSystem/                # SwiftUI Tokens / 组件
 │   └── CommonUtils/
-├── kSpaceClean/                     # App target
+├── kWise/                     # App target
 ├── kWatch/                          # App target
 ├── kDupe/                           # App target
 ├── kUninstall/                      # App target
@@ -75,7 +75,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 
 | App | Sandbox | 需要的 TCC 权限 |
 |---|---|---|
-| kSpaceClean | ✅ | Full Disk Access + Automation |
+| kWise | ✅ | Full Disk Access + Automation |
 | kWatch | ✅ | 无（只读系统 API） |
 | kDupe | ✅ | Full Disk Access + 用户授权目录 |
 | kUninstall | ✅ | Full Disk Access + Automation |
@@ -109,7 +109,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 - **不服务**：开发者（→kDupe）、极客玩家（→kDupe）、系统监控需求者（→kWatch）
 
 ### 3.3 核心差异化
-| 维度 | CleanMyMac X | DaisyDisk | kSpaceClean 差异点 |
+| 维度 | CleanMyMac X | DaisyDisk | kWise 差异点 |
 |---|---|---|---|
 | 主界面 | 模块拼盘 | 磁盘可视化 | **3D 磁盘星系图（Metal 渲染）** |
 | 智能分类 | 规则匹配 | 无 | **CoreML 本地 AI 自动分类** |
@@ -143,11 +143,11 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 | Spotlight 集成 | 搜"Mac 空间"出现操作 | ✅ 继承 v1 |
 | 本地化 | 英文 + 简体中文 + 日文 | ✅ 继承 v1 |
 
-### 3.5 kSpaceClean 内部模块
+### 3.5 kWise 内部模块
 ```
-kSpaceClean/
+kWise/
 ├── App/
-│   ├── kSpaceCleanApp.swift          # @main
+│   ├── kWiseApp.swift                # @main
 │   ├── RootView.swift                # NavigationSplitView
 │   └── AppCoordinator.swift
 ├── Features/
@@ -227,13 +227,13 @@ kSpaceClean/
 ### 4.2 kDupe（重复/大文件）
 - **主轴**：极客 + AI（开发者场景）
 - **目标用户**：开发者 / 设计师 / 摄影师
-- **待定**：是否独立还是合并到 kSpaceClean V2
-- **预期时间**：kSpaceClean 稳定后再启动
+- **待定**：是否独立还是合并到 kWise V2
+- **预期时间**：kWise 稳定后再启动
 
 ### 4.3 kUninstall（应用卸载）
 - **主轴**：平台集成 + 自动化（Shortcuts / Finder 扩展 / Control Widget）
 - **目标用户**：全人群，特别是试装党
-- **待定**：是否独立还是合并到 kSpaceClean V2
+- **待定**：是否独立还是合并到 kWise V2
 - **预期时间**：Backlog
 
 ---
@@ -249,7 +249,7 @@ kSpaceClean/
 ### 5.2 Git 规范
 - 主分支：`main`（保护，仅 PR 合并）
 - 开发分支：`feature/<app>-<feature>`、`fix/<app>-<bug>`
-- 提交信息：`feat(kSpaceClean): add 3D galaxy renderer`
+- 提交信息：`feat(kWise): add 3D galaxy renderer`
 
 ### 5.3 安全与隐私
 - 任何网络请求必须经过用户明确同意

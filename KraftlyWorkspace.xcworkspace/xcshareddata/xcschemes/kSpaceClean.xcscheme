@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A8BBDDB28D96159B625ABACE"
-               BuildableName = "kSpaceClean.app"
-               BlueprintName = "kSpaceClean"
-               ReferencedContainer = "container:kSpaceClean.xcodeproj">
+               BuildableName = "kWise.app"
+               BlueprintName = "kWise"
+               ReferencedContainer = "container:kWise.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A8BBDDB28D96159B625ABACE"
-            BuildableName = "kSpaceClean.app"
-            BlueprintName = "kSpaceClean"
-            ReferencedContainer = "container:kSpaceClean.xcodeproj">
+            BuildableName = "kWise.app"
+            BlueprintName = "kWise"
+            ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A8BBDDB28D96159B625ABACE"
-            BuildableName = "kSpaceClean.app"
-            BlueprintName = "kSpaceClean"
-            ReferencedContainer = "container:kSpaceClean.xcodeproj">
+            BuildableName = "kWise.app"
+            BlueprintName = "kWise"
+            ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

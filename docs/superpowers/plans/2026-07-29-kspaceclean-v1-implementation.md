@@ -35,7 +35,7 @@ From CLAUDE.md §8 + Design Spec:
 ## File Structure
 
 ```
-kSpaceClean/
+kWise/
 ├── App/
 │   ├── kSpaceCleanApp.swift                  # @main
 │   ├── RootView.swift                        # NavigationSplitView
@@ -123,9 +123,9 @@ kFoundation/
 ### Task A1: Design Tokens Foundation
 
 **Files:**
-- Create: `kSpaceClean/Features/Common/DesignSystem/Colors.swift`
-- Create: `kSpaceClean/Features/Common/DesignSystem/Typography.swift`
-- Create: `kSpaceClean/Features/Common/DesignSystem/Spacing.swift`
+- Create: `kWise/Features/Common/DesignSystem/Colors.swift`
+- Create: `kWise/Features/Common/DesignSystem/Typography.swift`
+- Create: `kWise/Features/Common/DesignSystem/Spacing.swift`
 
 **Interfaces:**
 - Produces: `Color` extensions (`bg.canvas`, `text.primary`, `risk.recommended.bg`, etc.)
@@ -135,7 +135,7 @@ kFoundation/
 - [ ] **Step 1: Create Colors.swift**
 
 ```swift
-// kSpaceClean/Features/Common/DesignSystem/Colors.swift
+// kWise/Features/Common/DesignSystem/Colors.swift
 import SwiftUI
 
 extension Color {
@@ -189,7 +189,7 @@ extension RiskLevel {
 - [ ] **Step 2: Create Typography.swift**
 
 ```swift
-// kSpaceClean/Features/Common/DesignSystem/Typography.swift
+// kWise/Features/Common/DesignSystem/Typography.swift
 import SwiftUI
 
 enum Typography {
@@ -223,7 +223,7 @@ enum Typography {
 - [ ] **Step 3: Create Spacing.swift**
 
 ```swift
-// kSpaceClean/Features/Common/DesignSystem/Spacing.swift
+// kWise/Features/Common/DesignSystem/Spacing.swift
 import Foundation
 
 enum Spacing {
@@ -259,7 +259,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kSpaceClean/Features/Common/DesignSystem/
+git add kWise/Features/Common/DesignSystem/
 git commit -m "feat(kSpaceClean): add design tokens (Colors, Typography, Spacing)"
 ```
 
@@ -268,7 +268,7 @@ git commit -m "feat(kSpaceClean): add design tokens (Colors, Typography, Spacing
 ### Task A2: Accessibility Foundation
 
 **Files:**
-- Create: `kSpaceClean/Features/Common/DesignSystem/Accessibility.swift`
+- Create: `kWise/Features/Common/DesignSystem/Accessibility.swift`
 
 **Interfaces:**
 - Produces: `AccessibilitySettings` enum with `voiceOverEnabled`, `reduceMotionEnabled`, `increaseContrastEnabled`, `dynamicTypeSize`
@@ -276,7 +276,7 @@ git commit -m "feat(kSpaceClean): add design tokens (Colors, Typography, Spacing
 - [ ] **Step 1: Create Accessibility.swift**
 
 ```swift
-// kSpaceClean/Features/Common/DesignSystem/Accessibility.swift
+// kWise/Features/Common/DesignSystem/Accessibility.swift
 import SwiftUI
 
 enum AccessibilitySettings {
@@ -307,7 +307,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/Common/DesignSystem/Accessibility.swift
+git add kWise/Features/Common/DesignSystem/Accessibility.swift
 git commit -m "feat(kSpaceClean): add accessibility settings detection"
 ```
 
@@ -316,14 +316,14 @@ git commit -m "feat(kSpaceClean): add accessibility settings detection"
 ### Task A3: RiskLevel + CheckState Enums
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Models/RiskLevel.swift`
-- Create: `kSpaceClean/Features/SmartScan/Models/CheckState.swift`
-- Test: `kSpaceClean/Features/SmartScan/Tests/RiskLevelTests.swift`
+- Create: `kWise/Features/SmartScan/Models/RiskLevel.swift`
+- Create: `kWise/Features/SmartScan/Models/CheckState.swift`
+- Test: `kWise/Features/SmartScan/Tests/RiskLevelTests.swift`
 
 - [ ] **Step 1: Write failing test for RiskLevel**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Tests/RiskLevelTests.swift
+// kWise/Features/SmartScan/Tests/RiskLevelTests.swift
 import XCTest
 @testable import kSpaceClean
 
@@ -357,7 +357,7 @@ Expected: FAIL with "cannot find 'RiskLevel' in scope"
 - [ ] **Step 3: Create RiskLevel.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/RiskLevel.swift
+// kWise/Features/SmartScan/Models/RiskLevel.swift
 import SwiftUI
 
 enum RiskLevel: Int, CaseIterable, Comparable, Sendable {
@@ -401,7 +401,7 @@ enum RiskLevel: Int, CaseIterable, Comparable, Sendable {
 - [ ] **Step 4: Create CheckState.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/CheckState.swift
+// kWise/Features/SmartScan/Models/CheckState.swift
 import Foundation
 
 enum CheckState: Sendable {
@@ -419,7 +419,7 @@ Expected: PASS (3 tests)
 - [ ] **Step 6: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Models/
+git add kWise/Features/SmartScan/Models/
 git commit -m "feat(kSpaceClean): add RiskLevel (4 levels) and CheckState (3 states) enums"
 ```
 
@@ -428,11 +428,11 @@ git commit -m "feat(kSpaceClean): add RiskLevel (4 levels) and CheckState (3 sta
 ### Task A4: ScanTreeNode Protocol + 4 Node Types
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Models/ScanTreeNode.swift`
-- Create: `kSpaceClean/Features/SmartScan/Models/ScanCategory.swift`
-- Create: `kSpaceClean/Features/SmartScan/Models/ScanSubCategory.swift`
-- Create: `kSpaceClean/Features/SmartScan/Models/ScanAction.swift`
-- Create: `kSpaceClean/Features/SmartScan/Models/ScanResult.swift`
+- Create: `kWise/Features/SmartScan/Models/ScanTreeNode.swift`
+- Create: `kWise/Features/SmartScan/Models/ScanCategory.swift`
+- Create: `kWise/Features/SmartScan/Models/ScanSubCategory.swift`
+- Create: `kWise/Features/SmartScan/Models/ScanAction.swift`
+- Create: `kWise/Features/SmartScan/Models/ScanResult.swift`
 
 **Interfaces:**
 - Produces: `ScanTreeNode` protocol with `id`, `title`, `totalSize`, `state`, `children`, `riskLevel`, `showAction`, `setState()`, `refreshState()`, `collectSelected()`
@@ -440,7 +440,7 @@ git commit -m "feat(kSpaceClean): add RiskLevel (4 levels) and CheckState (3 sta
 - [ ] **Step 1: Create ScanTreeNode.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/ScanTreeNode.swift
+// kWise/Features/SmartScan/Models/ScanTreeNode.swift
 import Foundation
 
 protocol ScanTreeNode: Identifiable, Hashable, Sendable {
@@ -474,7 +474,7 @@ extension ScanTreeNode {
 - [ ] **Step 2: Create ScanCategory.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/ScanCategory.swift
+// kWise/Features/SmartScan/Models/ScanCategory.swift
 import Foundation
 
 final class ScanCategory: ScanTreeNode, @unchecked Sendable {
@@ -544,7 +544,7 @@ final class ScanCategory: ScanTreeNode, @unchecked Sendable {
 - [ ] **Step 3: Create ScanSubCategory.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/ScanSubCategory.swift
+// kWise/Features/SmartScan/Models/ScanSubCategory.swift
 import Foundation
 
 final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
@@ -641,7 +641,7 @@ final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
 - [ ] **Step 4: Create ScanAction.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/ScanAction.swift
+// kWise/Features/SmartScan/Models/ScanAction.swift
 import Foundation
 
 enum ScanActionType: String, Sendable {
@@ -727,7 +727,7 @@ final class ScanAction: ScanTreeNode, @unchecked Sendable {
 - [ ] **Step 5: Create ScanResult.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/ScanResult.swift
+// kWise/Features/SmartScan/Models/ScanResult.swift
 import Foundation
 
 enum CleanType: String, Sendable {
@@ -832,7 +832,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 7: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Models/
+git add kWise/Features/SmartScan/Models/
 git commit -m "feat(kSpaceClean): add 4-level ScanTreeNode protocol + node classes"
 ```
 
@@ -841,7 +841,7 @@ git commit -m "feat(kSpaceClean): add 4-level ScanTreeNode protocol + node class
 ### Task A5: Cascade Checkbox Tests
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Tests/CascadeCheckboxTests.swift`
+- Create: `kWise/Features/SmartScan/Tests/CascadeCheckboxTests.swift`
 
 **Interfaces:**
 - Tests: cascade propagation (parent ON → Recommended auto-select, others default off)
@@ -851,7 +851,7 @@ git commit -m "feat(kSpaceClean): add 4-level ScanTreeNode protocol + node class
 - [ ] **Step 1: Write failing tests**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Tests/CascadeCheckboxTests.swift
+// kWise/Features/SmartScan/Tests/CascadeCheckboxTests.swift
 import XCTest
 @testable import kSpaceClean
 
@@ -935,7 +935,7 @@ Expected: PASS (5 tests)
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Tests/CascadeCheckboxTests.swift
+git add kWise/Features/SmartScan/Tests/CascadeCheckboxTests.swift
 git commit -m "test(kSpaceClean): add cascade checkbox algorithm tests"
 ```
 
@@ -944,13 +944,13 @@ git commit -m "test(kSpaceClean): add cascade checkbox algorithm tests"
 ### Task A6: RiskBadge Component
 
 **Files:**
-- Create: `kSpaceClean/Features/Common/Components/RiskBadge.swift`
-- Test: `kSpaceClean/Features/Common/Components/Tests/RiskBadgeSnapshotTests.swift`
+- Create: `kWise/Features/Common/Components/RiskBadge.swift`
+- Test: `kWise/Features/Common/Components/Tests/RiskBadgeSnapshotTests.swift`
 
 - [ ] **Step 1: Create RiskBadge.swift**
 
 ```swift
-// kSpaceClean/Features/Common/Components/RiskBadge.swift
+// kWise/Features/Common/Components/RiskBadge.swift
 import SwiftUI
 
 struct RiskBadge: View {
@@ -1000,7 +1000,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/Common/Components/RiskBadge.swift
+git add kWise/Features/Common/Components/RiskBadge.swift
 git commit -m "feat(kSpaceClean): add RiskBadge component (4 levels)"
 ```
 
@@ -1009,12 +1009,12 @@ git commit -m "feat(kSpaceClean): add RiskBadge component (4 levels)"
 ### Task A7: IndeterminateCheckbox Component
 
 **Files:**
-- Create: `kSpaceClean/Features/Common/Components/IndeterminateCheckbox.swift`
+- Create: `kWise/Features/Common/Components/IndeterminateCheckbox.swift`
 
 - [ ] **Step 1: Create IndeterminateCheckbox.swift**
 
 ```swift
-// kSpaceClean/Features/Common/Components/IndeterminateCheckbox.swift
+// kWise/Features/Common/Components/IndeterminateCheckbox.swift
 import SwiftUI
 
 struct IndeterminateCheckbox: View {
@@ -1072,7 +1072,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/Common/Components/IndeterminateCheckbox.swift
+git add kWise/Features/Common/Components/IndeterminateCheckbox.swift
 git commit -m "feat(kSpaceClean): add IndeterminateCheckbox component (3 states)"
 ```
 
@@ -1081,12 +1081,12 @@ git commit -m "feat(kSpaceClean): add IndeterminateCheckbox component (3 states)
 ### Task A8: ScanTreeRow Component
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Views/ScanTreeRow.swift`
+- Create: `kWise/Features/SmartScan/Views/ScanTreeRow.swift`
 
 - [ ] **Step 1: Create ScanTreeRow.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Views/ScanTreeRow.swift
+// kWise/Features/SmartScan/Views/ScanTreeRow.swift
 import SwiftUI
 
 struct ScanTreeRow: View {
@@ -1216,7 +1216,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Views/ScanTreeRow.swift
+git add kWise/Features/SmartScan/Views/ScanTreeRow.swift
 git commit -m "feat(kSpaceClean): add ScanTreeRow component (4-level generic)"
 ```
 
@@ -1225,7 +1225,7 @@ git commit -m "feat(kSpaceClean): add ScanTreeRow component (4-level generic)"
 ### Task A9: 4-Level Risk Threshold Table
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Models/ScanThreshold.swift`
+- Create: `kWise/Features/SmartScan/Models/ScanThreshold.swift`
 
 **Interfaces:**
 - Produces: `RiskClassifier` with `classify(path: String) -> RiskLevel` based on Lemon XML + CleanMyMac X 5-level downgrade
@@ -1233,7 +1233,7 @@ git commit -m "feat(kSpaceClean): add ScanTreeRow component (4-level generic)"
 - [ ] **Step 1: Create ScanThreshold.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Models/ScanThreshold.swift
+// kWise/Features/SmartScan/Models/ScanThreshold.swift
 import Foundation
 
 struct RiskClassifier: Sendable {
@@ -1284,7 +1284,7 @@ struct RiskClassifier: Sendable {
 - [ ] **Step 2: Write test for classifier**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Tests/RiskClassifierTests.swift
+// kWise/Features/SmartScan/Tests/RiskClassifierTests.swift
 import XCTest
 @testable import kSpaceClean
 
@@ -1325,7 +1325,7 @@ Expected: PASS (6 tests)
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Models/ScanThreshold.swift kSpaceClean/Features/SmartScan/Tests/RiskClassifierTests.swift
+git add kWise/Features/SmartScan/Models/ScanThreshold.swift kWise/Features/SmartScan/Tests/RiskClassifierTests.swift
 git commit -m "feat(kSpaceClean): add 4-level risk classifier (Lemon + CleanMyMac downgrade)"
 ```
 
@@ -1334,13 +1334,13 @@ git commit -m "feat(kSpaceClean): add 4-level risk classifier (Lemon + CleanMyMa
 ### Task A10: ScanResultsView (4-Level Tree Main View)
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift`
-- Create: `kSpaceClean/Features/SmartScan/Views/ScanViewModel.swift`
+- Create: `kWise/Features/SmartScan/Views/ScanResultsView.swift`
+- Create: `kWise/Features/SmartScan/Views/ScanViewModel.swift`
 
 - [ ] **Step 1: Create ScanViewModel.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Views/ScanViewModel.swift
+// kWise/Features/SmartScan/Views/ScanViewModel.swift
 import Foundation
 import SwiftUI
 
@@ -1437,7 +1437,7 @@ final class ScanViewModel: ObservableObject {
 - [ ] **Step 2: Create ScanResultsView.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift
+// kWise/Features/SmartScan/Views/ScanResultsView.swift
 import SwiftUI
 
 struct ScanResultsView: View {
@@ -1571,7 +1571,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Views/ScanResultsView.swift kSpaceClean/Features/SmartScan/Views/ScanViewModel.swift
+git add kWise/Features/SmartScan/Views/ScanResultsView.swift kWise/Features/SmartScan/Views/ScanViewModel.swift
 git commit -m "feat(kSpaceClean): add ScanResultsView with mock data + 4-level tree"
 ```
 
@@ -1580,13 +1580,13 @@ git commit -m "feat(kSpaceClean): add ScanResultsView with mock data + 4-level t
 ### Task A11: Empty State + Error State Views
 
 **Files:**
-- Create: `kSpaceClean/Features/Common/Components/EmptyStateView.swift`
-- Create: `kSpaceClean/Features/Common/Components/SkeletonRow.swift`
+- Create: `kWise/Features/Common/Components/EmptyStateView.swift`
+- Create: `kWise/Features/Common/Components/SkeletonRow.swift`
 
 - [ ] **Step 1: Create EmptyStateView.swift**
 
 ```swift
-// kSpaceClean/Features/Common/Components/EmptyStateView.swift
+// kWise/Features/Common/Components/EmptyStateView.swift
 import SwiftUI
 
 enum EmptyStateScenario {
@@ -1699,7 +1699,7 @@ struct EmptyStateView: View {
 - [ ] **Step 2: Create SkeletonRow.swift**
 
 ```swift
-// kSpaceClean/Features/Common/Components/SkeletonRow.swift
+// kWise/Features/Common/Components/SkeletonRow.swift
 import SwiftUI
 
 struct SkeletonRow: View {
@@ -1749,7 +1749,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/Common/Components/EmptyStateView.swift kSpaceClean/Features/Common/Components/SkeletonRow.swift
+git add kWise/Features/Common/Components/EmptyStateView.swift kWise/Features/Common/Components/SkeletonRow.swift
 git commit -m "feat(kSpaceClean): add EmptyStateView (8 scenarios) + SkeletonRow"
 ```
 
@@ -1758,13 +1758,13 @@ git commit -m "feat(kSpaceClean): add EmptyStateView (8 scenarios) + SkeletonRow
 ### Task A12: Toolbar + Keyboard Shortcuts
 
 **Files:**
-- Create: `kSpaceClean/Features/Common/Components/ToolbarView.swift`
-- Create: `kSpaceClean/Features/Common/KeyboardShortcuts.swift`
+- Create: `kWise/Features/Common/Components/ToolbarView.swift`
+- Create: `kWise/Features/Common/KeyboardShortcuts.swift`
 
 - [ ] **Step 1: Create KeyboardShortcuts.swift**
 
 ```swift
-// kSpaceClean/Features/Common/KeyboardShortcuts.swift
+// kWise/Features/Common/KeyboardShortcuts.swift
 import SwiftUI
 
 extension View {
@@ -1784,7 +1784,7 @@ extension View {
 - [ ] **Step 2: Create ToolbarView.swift**
 
 ```swift
-// kSpaceClean/Features/Common/Components/ToolbarView.swift
+// kWise/Features/Common/Components/ToolbarView.swift
 import SwiftUI
 
 struct ToolbarView: View {
@@ -1853,7 +1853,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/Common/Components/ToolbarView.swift kSpaceClean/Features/Common/KeyboardShortcuts.swift
+git add kWise/Features/Common/Components/ToolbarView.swift kWise/Features/Common/KeyboardShortcuts.swift
 git commit -m "feat(kSpaceClean): add Toolbar + KeyboardShortcuts"
 ```
 
@@ -1862,13 +1862,13 @@ git commit -m "feat(kSpaceClean): add Toolbar + KeyboardShortcuts"
 ### Task A13: Phase A Snapshot Tests
 
 **Files:**
-- Create: `kSpaceClean/Features/Common/Components/Tests/RiskBadgeSnapshotTests.swift`
-- Create: `kSpaceClean/Features/SmartScan/Tests/ScanResultsViewSnapshotTests.swift`
+- Create: `kWise/Features/Common/Components/Tests/RiskBadgeSnapshotTests.swift`
+- Create: `kWise/Features/SmartScan/Tests/ScanResultsViewSnapshotTests.swift`
 
 - [ ] **Step 1: Add snapshot test infrastructure**
 
 ```swift
-// kSpaceClean/Tests/SnapshotTestCase.swift
+// kWise/Tests/SnapshotTestCase.swift
 import XCTest
 import SwiftUI
 @testable import kSpaceClean
@@ -1886,7 +1886,7 @@ class SnapshotTestCase: XCTestCase {
 - [ ] **Step 2: Create RiskBadgeSnapshotTests.swift**
 
 ```swift
-// kSpaceClean/Features/Common/Components/Tests/RiskBadgeSnapshotTests.swift
+// kWise/Features/Common/Components/Tests/RiskBadgeSnapshotTests.swift
 import XCTest
 import SwiftUI
 @testable import kSpaceClean
@@ -1915,7 +1915,7 @@ Expected: PASS
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/Common/Components/Tests/ kSpaceClean/Tests/
+git add kWise/Features/Common/Components/Tests/ kWise/Tests/
 git commit -m "test(kSpaceClean): add snapshot test infrastructure + RiskBadge tests"
 ```
 
@@ -1963,7 +1963,7 @@ git commit -m "polish(kSpaceClean): Phase A complete - 4-level tree UI with 4 ri
 
 **Files:**
 - Create: `kFoundation/Sources/FileScanner/BundleIDResolver.swift`
-- Create: `kSpaceClean/Resources/bundleIDMapping.json`
+- Create: `kWise/Resources/bundleIDMapping.json`
 
 **Interfaces:**
 - Produces: `BundleIDResolver` with `resolve(path: String) -> ResolvedApp?`
@@ -2017,7 +2017,7 @@ if __name__ == "__main__":
 ```bash
 python3 scripts/lemon_xml_to_json.py \
   /Users/mengjianjun/Documents/ai/aicoding/macapp/Lemon/LemonClener/LemonClener/libcleaner/BundleIDMap.xml \
-  kSpaceClean/Resources/bundleIDMapping.json
+  kWise/Resources/bundleIDMapping.json
 ```
 
 Expected: 2000+ entries in JSON
@@ -2132,7 +2132,7 @@ Expected: PASS
 - [ ] **Step 7: Commit**
 
 ```bash
-git add kFoundation/Sources/FileScanner/BundleIDResolver.swift kSpaceClean/Resources/bundleIDMapping.json scripts/
+git add kFoundation/Sources/FileScanner/BundleIDResolver.swift kWise/Resources/bundleIDMapping.json scripts/
 git commit -m "feat(kFoundation): add BundleIDResolver with 3-level matcher"
 ```
 
@@ -2253,12 +2253,12 @@ git commit -m "feat(kFoundation): add FileEnumerator with AsyncStream"
 ### Task B3: ScanOrchestrator (TaskGroup Fan-out)
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift`
+- Create: `kWise/Features/SmartScan/Engine/ScanOrchestrator.swift`
 
 - [ ] **Step 1: Create ScanOrchestrator.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift
+// kWise/Features/SmartScan/Engine/ScanOrchestrator.swift
 import Foundation
 import SwiftUI
 
@@ -2426,7 +2426,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift
+git add kWise/Features/SmartScan/Engine/ScanOrchestrator.swift
 git commit -m "feat(kSpaceClean): add ScanOrchestrator with TaskGroup fan-out"
 ```
 
@@ -2435,12 +2435,12 @@ git commit -m "feat(kSpaceClean): add ScanOrchestrator with TaskGroup fan-out"
 ### Task B4: ScanEngine (AsyncStream Wrapper)
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Engine/ScanEngine.swift`
+- Create: `kWise/Features/SmartScan/Engine/ScanEngine.swift`
 
 - [ ] **Step 1: Create ScanEngine.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Engine/ScanEngine.swift
+// kWise/Features/SmartScan/Engine/ScanEngine.swift
 import Foundation
 
 @MainActor
@@ -2505,7 +2505,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Engine/ScanEngine.swift
+git add kWise/Features/SmartScan/Engine/ScanEngine.swift
 git commit -m "feat(kSpaceClean): add ScanEngine with throttled UI updates (16ms)"
 ```
 
@@ -2514,13 +2514,13 @@ git commit -m "feat(kSpaceClean): add ScanEngine with throttled UI updates (16ms
 ### Task B5: ScanProgressView (Ring + Stages + Current Path)
 
 **Files:**
-- Create: `kSpaceClean/Features/SmartScan/Views/ScanProgressView.swift`
-- Create: `kSpaceClean/Features/SmartScan/Views/ScanProgressRing.swift`
+- Create: `kWise/Features/SmartScan/Views/ScanProgressView.swift`
+- Create: `kWise/Features/SmartScan/Views/ScanProgressRing.swift`
 
 - [ ] **Step 1: Create ScanProgressRing.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Views/ScanProgressRing.swift
+// kWise/Features/SmartScan/Views/ScanProgressRing.swift
 import SwiftUI
 
 struct ScanProgressRing: View {
@@ -2564,7 +2564,7 @@ struct ScanProgressRing: View {
 - [ ] **Step 2: Create ScanProgressView.swift**
 
 ```swift
-// kSpaceClean/Features/SmartScan/Views/ScanProgressView.swift
+// kWise/Features/SmartScan/Views/ScanProgressView.swift
 import SwiftUI
 
 struct ScanProgressView: View {
@@ -2608,7 +2608,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/SmartScan/Views/ScanProgressView.swift kSpaceClean/Features/SmartScan/Views/ScanProgressRing.swift
+git add kWise/Features/SmartScan/Views/ScanProgressView.swift kWise/Features/SmartScan/Views/ScanProgressRing.swift
 git commit -m "feat(kSpaceClean): add ScanProgressView (ring + stages + current path)"
 ```
 
@@ -2633,9 +2633,9 @@ Each task follows same pattern as Phase A tasks. Detailed steps omitted for brev
 ### Task C1: Core Data CleanupHistoryItem
 
 **Files:**
-- Create: `kSpaceClean/Persistence/PersistenceController.swift`
-- Create: `kSpaceClean/Persistence/kSpaceClean.xcdatamodeld/CleanupHistoryItem`
-- Create: `kSpaceClean/Features/Cleanup/Models/CleanupTypes.swift`
+- Create: `kWise/Persistence/PersistenceController.swift`
+- Create: `kWise/Persistence/kSpaceClean.xcdatamodeld/CleanupHistoryItem`
+- Create: `kWise/Features/Cleanup/Models/CleanupTypes.swift`
 
 - [ ] **Step 1: Create Core Data model (visual editor)**
 
@@ -2653,7 +2653,7 @@ In Xcode, create new file → Core Data → Data Model:
 - [ ] **Step 2: Create PersistenceController.swift**
 
 ```swift
-// kSpaceClean/Persistence/PersistenceController.swift
+// kWise/Persistence/PersistenceController.swift
 import CoreData
 
 final class PersistenceController {
@@ -2688,7 +2688,7 @@ final class PersistenceController {
 - [ ] **Step 3: Create CleanupHistoryItem NSManagedObject subclass**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Models/CleanupHistoryItem.swift
+// kWise/Features/Cleanup/Models/CleanupHistoryItem.swift
 import CoreData
 
 @objc(CleanupHistoryItem)
@@ -2716,7 +2716,7 @@ Expected: BUILD SUCCEEDED
 - [ ] **Step 5: Commit**
 
 ```bash
-git add kSpaceClean/Persistence/ kSpaceClean/Features/Cleanup/Models/
+git add kWise/Persistence/ kWise/Features/Cleanup/Models/
 git commit -m "feat(kSpaceClean): add Core Data CleanupHistoryItem + PersistenceController"
 ```
 
@@ -2725,12 +2725,12 @@ git commit -m "feat(kSpaceClean): add Core Data CleanupHistoryItem + Persistence
 ### Task C2: CleanupEngine
 
 **Files:**
-- Create: `kSpaceClean/Features/Cleanup/Engine/CleanupEngine.swift`
+- Create: `kWise/Features/Cleanup/Engine/CleanupEngine.swift`
 
 - [ ] **Step 1: Create CleanupEngine.swift**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Engine/CleanupEngine.swift
+// kWise/Features/Cleanup/Engine/CleanupEngine.swift
 import Foundation
 import AppKit
 
@@ -2848,7 +2848,7 @@ actor CleanupEngine {
 - [ ] **Step 2: Write test**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Tests/CleanupEngineTests.swift
+// kWise/Features/Cleanup/Tests/CleanupEngineTests.swift
 import XCTest
 @testable import kSpaceClean
 
@@ -2894,7 +2894,7 @@ Expected: PASS
 - [ ] **Step 4: Commit**
 
 ```bash
-git add kSpaceClean/Features/Cleanup/Engine/CleanupEngine.swift kSpaceClean/Features/Cleanup/Tests/
+git add kWise/Features/Cleanup/Engine/CleanupEngine.swift kWise/Features/Cleanup/Tests/
 git commit -m "feat(kSpaceClean): add CleanupEngine with lazy history cleanup"
 ```
 
@@ -2903,12 +2903,12 @@ git commit -m "feat(kSpaceClean): add CleanupEngine with lazy history cleanup"
 ### Task C3: WarningDetectionService (Layer 1)
 
 **Files:**
-- Create: `kSpaceClean/Features/Cleanup/Engine/WarningDetectionService.swift`
+- Create: `kWise/Features/Cleanup/Engine/WarningDetectionService.swift`
 
 - [ ] **Step 1: Create WarningDetectionService.swift**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Engine/WarningDetectionService.swift
+// kWise/Features/Cleanup/Engine/WarningDetectionService.swift
 import Foundation
 import Darwin
 
@@ -2957,7 +2957,7 @@ actor WarningDetectionService {
 - [ ] **Step 2: Write test**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Tests/WarningDetectionServiceTests.swift
+// kWise/Features/Cleanup/Tests/WarningDetectionServiceTests.swift
 import XCTest
 @testable import kSpaceClean
 
@@ -2973,7 +2973,7 @@ final class WarningDetectionServiceTests: XCTestCase {
 - [ ] **Step 3: Commit**
 
 ```bash
-git add kSpaceClean/Features/Cleanup/Engine/WarningDetectionService.swift kSpaceClean/Features/Cleanup/Tests/
+git add kWise/Features/Cleanup/Engine/WarningDetectionService.swift kWise/Features/Cleanup/Tests/
 git commit -m "feat(kSpaceClean): add WarningDetectionService Layer 1 stub"
 ```
 
@@ -2982,12 +2982,12 @@ git commit -m "feat(kSpaceClean): add WarningDetectionService Layer 1 stub"
 ### Task C4: CleanupConfirmSheet (Risk-Graded)
 
 **Files:**
-- Create: `kSpaceClean/Features/Cleanup/Views/CleanupConfirmSheet.swift`
+- Create: `kWise/Features/Cleanup/Views/CleanupConfirmSheet.swift`
 
 - [ ] **Step 1: Create CleanupConfirmSheet.swift**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Views/CleanupConfirmSheet.swift
+// kWise/Features/Cleanup/Views/CleanupConfirmSheet.swift
 import SwiftUI
 
 struct CleanupConfirmSheet: View {
@@ -3069,7 +3069,7 @@ struct CleanupConfirmSheet: View {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add kSpaceClean/Features/Cleanup/Views/CleanupConfirmSheet.swift
+git add kWise/Features/Cleanup/Views/CleanupConfirmSheet.swift
 git commit -m "feat(kSpaceClean): add CleanupConfirmSheet with risk-graded confirmation"
 ```
 
@@ -3078,12 +3078,12 @@ git commit -m "feat(kSpaceClean): add CleanupConfirmSheet with risk-graded confi
 ### Task C5: DangerousConfirmDialog (DELETE Input)
 
 **Files:**
-- Create: `kSpaceClean/Features/Cleanup/Views/DangerousConfirmDialog.swift`
+- Create: `kWise/Features/Cleanup/Views/DangerousConfirmDialog.swift`
 
 - [ ] **Step 1: Create DangerousConfirmDialog.swift**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Views/DangerousConfirmDialog.swift
+// kWise/Features/Cleanup/Views/DangerousConfirmDialog.swift
 import SwiftUI
 
 struct DangerousConfirmDialog: View {
@@ -3138,7 +3138,7 @@ struct DangerousConfirmDialog: View {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add kSpaceClean/Features/Cleanup/Views/DangerousConfirmDialog.swift
+git add kWise/Features/Cleanup/Views/DangerousConfirmDialog.swift
 git commit -m "feat(kSpaceClean): add DangerousConfirmDialog with DELETE input"
 ```
 
@@ -3147,12 +3147,12 @@ git commit -m "feat(kSpaceClean): add DangerousConfirmDialog with DELETE input"
 ### Task C6: WarningToast (Running App Detection)
 
 **Files:**
-- Create: `kSpaceClean/Features/Cleanup/Views/WarningToast.swift`
+- Create: `kWise/Features/Cleanup/Views/WarningToast.swift`
 
 - [ ] **Step 1: Create WarningToast.swift**
 
 ```swift
-// kSpaceClean/Features/Cleanup/Views/WarningToast.swift
+// kWise/Features/Cleanup/Views/WarningToast.swift
 import SwiftUI
 
 struct WarningToast: View {
@@ -3215,7 +3215,7 @@ struct WarningToast: View {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add kSpaceClean/Features/Cleanup/Views/WarningToast.swift
+git add kWise/Features/Cleanup/Views/WarningToast.swift
 git commit -m "feat(kSpaceClean): add WarningToast for running app detection"
 ```
 
@@ -3344,7 +3344,7 @@ RiskClassifier is defined in A9 but not actually used by ScanOrchestrator (B3). 
 ### Task B0: Wire RiskClassifier into ScanOrchestrator (insert before B3)
 
 **Files:**
-- Modify: `kSpaceClean/Features/SmartScan/Engine/ScanOrchestrator.swift`
+- Modify: `kWise/Features/SmartScan/Engine/ScanOrchestrator.swift`
 
 - [ ] **Step 1: Add classifier to ScanOrchestrator**
 

@@ -45,7 +45,7 @@
 | Paywall 入口 | ❌ PaywallView 仅自引用 | ❌ 无 gating | ❌ showPaywall 只 print | ⚠️ Pro 徽标有、入口死 |
 | 精品 UI 差距 | 中（有真实主界面） | 大（结果页未通） | 小（引擎最全，UI 缺入口） | **最大（旗舰屏仅 100 行）** |
 
-> **重要更正**：早前我误判"kSpaceClean Features 目录全空"。已核实 `kSpaceClean/Features/` 下实有 **49 个 Swift 文件**（SmartScan 10 个、Cleanup、DiskGalaxy 等），ScanEngine/ScanRule/CleanupEngine 都是真引擎。问题不是没有代码，而是**这些引擎的 UI 入口 / 商业化闭环没接上**。
+> **重要更正**：早前我误判"kSpaceClean Features 目录全空"。已核实 `kWise/Features/` 下实有 **49 个 Swift 文件**（SmartScan 10 个、Cleanup、DiskGalaxy 等），ScanEngine/ScanRule/CleanupEngine 都是真引擎。问题不是没有代码，而是**这些引擎的 UI 入口 / 商业化闭环没接上**。
 
 ---
 
