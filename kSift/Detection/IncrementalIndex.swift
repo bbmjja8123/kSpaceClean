@@ -102,7 +102,7 @@ public actor IncrementalIndex: IncrementalIndexProtocol {
     /// Uses a single `lstat` per URL (size + sub-second mtime + inode), which
     /// keeps matching fast even for very large trees.
     public func cachedVerifications(for urls: [URL]) async -> [URL: CachedVerification] {
-        guard loaded, isPaidUser() else { return [:] }
+        guard loaded, isPaidUser(), !records.isEmpty else { return [:] }
         var result: [URL: CachedVerification] = [:]
         result.reserveCapacity(urls.count)
         for url in urls {
