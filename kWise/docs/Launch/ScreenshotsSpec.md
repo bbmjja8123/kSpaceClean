@@ -1,4 +1,4 @@
-# Screenshots Spec — kSpaceClean v1.0
+# Screenshots Spec — kWise v1.0
 
 ## Required Dimensions
 Mac App Store requires screenshots in these dimensions (5 minimum, 10 maximum):
@@ -36,7 +36,7 @@ We recommend producing **5 screenshots at 2560×1600** (universal) + **1 hero sh
 - **File name:** `sclean-confirm-2560x1600.png`
 
 ### Screenshot 5 — Menu Bar Widget (2560×1600)
-- **Scene:** System menu bar showing kSpaceClean icon with live disk usage popover
+- **Scene:** System menu bar showing kWise icon with live disk usage popover
 - **Copy overlay:** "One click from anywhere."
 - **File name:** `sclean-menubar-2560x1600.png`
 

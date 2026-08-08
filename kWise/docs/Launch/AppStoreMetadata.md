@@ -1,10 +1,10 @@
-# kSpaceClean — App Store Connect Metadata
+# kWise — App Store Connect Metadata
 
 > All fields below are pre-filled; copy each block verbatim into App Store Connect.
 > Re-verify character counts (App Store Connect validates live).
 
 ## App Name
-kSpaceClean
+kWise
 
 ## Subtitle (30 chars max, EN)
 The Smarter Mac Disk Cleaner
@@ -38,9 +38,9 @@ Free up space in one click. 4-level risk scoring protects your important files. 
 ワンクリックで空き容量を確保。4段階のリスクスコアリングが大切なファイルを守ります。Apple Silicon 専用設計。データは外部送信しません。
 
 ## Description (4000 chars max, EN)
-kSpaceClean is the smartest way to reclaim disk space on your Mac — without the risk of nuking something you'll need tomorrow.
+kWise is the smartest way to reclaim disk space on your Mac — without the risk of nuking something you'll need tomorrow.
 
-We built kSpaceClean because every other cleaner treats your files as disposable. Ours doesn't.
+We built kWise because every other cleaner treats your files as disposable. Ours doesn't.
 
 FOUR-LEVEL RISK SCORING
 Every file we surface is graded:
@@ -85,13 +85,13 @@ PRO SUBSCRIPTION ($19.99/year, 7-day free trial)
 • Priority support
 
 PRIVACY FIRST
-kSpaceClean collects nothing. The App Privacy nutrition label on this listing is empty. Read our privacy policy at kraftly.app/privacy.
+kWise collects nothing. The App Privacy nutrition label on this listing is empty. Read our privacy policy at kraftly.app/privacy.
 
 REQUIREMENTS
 macOS 13.0 or later. Full Disk Access required for system cache cleanup (Apple-mandated, not optional). Apple Silicon or Intel.
 
 ## Description (4000 chars max, zh-CN)
-[kSpaceClean is the smartest way to reclaim disk space on your Mac — without the risk of nuking something you'll need tomorrow. Use the same English description translated. Keep within 4000 chars.]
+[kWise is the smartest way to reclaim disk space on your Mac — without the risk of nuking something you'll need tomorrow. Use the same English description translated. Keep within 4000 chars.]
 
 ## Description (4000 chars max, ja)
 [Same English description translated to Japanese. Keep within 4000 chars.]

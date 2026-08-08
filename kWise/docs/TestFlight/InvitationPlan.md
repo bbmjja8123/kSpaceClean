@@ -1,4 +1,4 @@
-# TestFlight Internal Invitation Plan — kSpaceClean v1.0
+# TestFlight Internal Invitation Plan — kWise v1.0
 
 ## Goal
 Invite 5 internal testers across 3 channels (朋友圈, ProductHunt Coming Soon, Reddit r/macapps).

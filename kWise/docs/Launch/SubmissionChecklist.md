@@ -1,16 +1,16 @@
-# Submission Checklist — kSpaceClean v1.0
+# Submission Checklist — kWise v1.0
 
 Tick each box before clicking "Submit for Review."
 
 ## Code & Build
-- [ ] `kSpaceClean.xcarchive` exists in `kWise/build/`, signed with Team ID
+- [ ] `kWise.xcarchive` exists in `kWise/build/`, signed with Team ID
 - [ ] `xcodebuild ... archive` reports `BUILD SUCCEEDED` with no warnings
 - [ ] `xcrun altool --upload-app` reports "Upload succeeded"
 - [ ] Build appears in App Store Connect → TestFlight with status "Ready to Submit"
 - [ ] No "Missing compliance" warnings
 
 ## Metadata
-- [ ] App name: `kSpaceClean` (matches Bundle ID)
+- [ ] App name: `kWise` (matches Bundle ID)
 - [ ] Subtitle ≤ 30 chars in all 3 locales
 - [ ] Description ≤ 4000 chars in all 3 locales
 - [ ] Keywords ≤ 100 chars total
@@ -44,7 +44,7 @@ Tick each box before clicking "Submit for Review."
 ## App Review Information
 - [ ] Demo account: not required (no login)
 - [ ] Contact info for reviewer: filled
-- [ ] Notes to reviewer: "kSpaceClean requires Full Disk Access for system cache cleanup. The FDA onboarding flow at first launch explains this. No data is collected or transmitted."
+- [ ] Notes to reviewer: "kWise requires Full Disk Access for system cache cleanup. The FDA onboarding flow at first launch explains this. No data is collected or transmitted."
 
 ## Final
 - [ ] Reviewed the entire submission page in App Store Connect

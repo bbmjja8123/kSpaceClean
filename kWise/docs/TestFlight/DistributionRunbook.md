@@ -1,10 +1,10 @@
-# TestFlight Distribution Runbook — kSpaceClean v1.0
+# TestFlight Distribution Runbook — kWise v1.0
 
 ## Prerequisites
 - Apple Developer Program enrollment active ($99/year, paid)
 - Distribution certificate installed in Keychain (`Developer ID Application: <Team Name>` OR `Apple Distribution: <Team Name>`)
 - Team ID known (10-char alphanumeric, e.g. `A1B2C3D4E5`)
-- `kSpaceClean.xcarchive` produced by Task D1 (path: `kWise/build/kSpaceClean.xcarchive`)
+- `kWise.xcarchive` produced by Task D1 (path: `kWise/build/kWise.xcarchive`)
 - Verify `Info.plist` has `ITSAppUsesNonExemptEncryption: false` (avoids the "Missing compliance" prompt on upload)
 
 ## Steps
@@ -26,10 +26,10 @@ python3 kWise/generate_project.py
 
 ### 2. Re-archive with signing
 ```bash
-xcodebuild -project kWise/kSpaceClean.xcodeproj \
-  -scheme kSpaceClean \
+xcodebuild -project kWise/kWise.xcodeproj \
+  -scheme kWise \
   -configuration Release \
-  -archivePath kWise/build/kSpaceClean.xcarchive \
+  -archivePath kWise/build/kWise.xcarchive \
   archive
 ```
 Expected: `BUILD SUCCEEDED` and `.xcarchive/Info.plist` shows a non-empty `SigningIdentity`.
@@ -39,27 +39,27 @@ Use the existing `kWise/build/ExportOptions.plist` template (already produced by
 
 ```bash
 xcodebuild -exportArchive \
-  -archivePath kWise/build/kSpaceClean.xcarchive \
+  -archivePath kWise/build/kWise.xcarchive \
   -exportPath kWise/build/ \
   -exportOptionsPlist kWise/build/ExportOptions.plist
 ```
-Expected: `kWise/build/kSpaceClean.ipa` created.
+Expected: `kWise/build/kWise.ipa` created.
 
 ### 4. Upload to App Store Connect
 Either via Transporter (GUI) or CLI:
 ```bash
 xcrun altool --upload-app \
   --type osx \
-  --file kWise/build/kSpaceClean.ipa \
+  --file kWise/build/kWise.ipa \
   --username "$APPLE_ID" \
   --password "$APP_SPECIFIC_PASSWORD"
 ```
 After upload, App Store Connect automatically processes the build (5-15 min) and emails the team.
 
 ### 5. Activate internal testing group
-In App Store Connect → My Apps → kSpaceClean → TestFlight → Internal Testing:
+In App Store Connect → My Apps → kWise → TestFlight → Internal Testing:
 - Click the build to add it to the group
-- (If not yet created) Create an internal group: "kSpaceClean Internal"
+- (If not yet created) Create an internal group: "kWise Internal"
 - Add testers by email — they receive a redemption link
 
 ### 6. First-day smoke test

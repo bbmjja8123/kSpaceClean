@@ -1,7 +1,7 @@
-# App Privacy Details — kSpaceClean
+# App Privacy Details — kWise
 
 > Apple requires every App Store listing to declare what data the app collects.
-> kSpaceClean collects NOTHING. Every question on Apple's privacy nutrition label is answered "Data Not Collected."
+> kWise collects NOTHING. Every question on Apple's privacy nutrition label is answered "Data Not Collected."
 
 ## App Privacy Nutrition Label Answers
 
@@ -26,13 +26,13 @@ App Store Connect → App Privacy → for each category, answer "Data Not Collec
 https://kraftly.app/privacy
 
 The policy must:
-1. State explicitly: "kSpaceClean does not collect any data."
+1. State explicitly: "kWise does not collect any data."
 2. Explain why Full Disk Access is required (Apple-mandated for system cache cleanup).
 3. Explain MetricKit crash diagnostics are processed locally and reported only to App Store Connect's automatic crash aggregation (user-consented at install).
 4. Be no longer than 1 printed page.
 
 ## Privacy Manifest (`PrivacyInfo.xcprivacy`)
-The privacy manifest file lives at `kWise/Resources/PrivacyInfo.xcprivacy` and is registered in `kWise/generate_project.py` (`resource_files` list) so the regenerated `kSpaceClean.xcodeproj/project.pbxproj` includes it in the Resources copy phase.
+The privacy manifest file lives at `kWise/Resources/PrivacyInfo.xcprivacy` and is registered in `kWise/generate_project.py` (`resource_files` list) so the regenerated `kWise.xcodeproj/project.pbxproj` includes it in the Resources copy phase.
 
 The manifest declares:
 

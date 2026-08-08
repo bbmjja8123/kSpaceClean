@@ -1369,11 +1369,11 @@
 		path = Features/Cleanup/Views/RestoreHistoryItemView.swift;
 		sourceTree = "<group>";
 	};
-	B2296761732A6D8AABCEDABB /* KSpaceClean.xcdatamodeld */ = {
+	B2296761732A6D8AABCEDABB /* kWise.xcdatamodeld */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = wrapper.coredata;
-		name = KSpaceClean.xcdatamodeld;
-		path = Resources/KSpaceClean.xcdatamodeld;
+		name = kWise.xcdatamodeld;
+		path = Resources/kWise.xcdatamodeld;
 		sourceTree = "<group>";
 	};
 	B244E7E5DF378F3CAD6B1D24 /* RiskBadge.swift */ = {
@@ -1467,11 +1467,11 @@
 		path = Features/Common/UserPathResolver.swift;
 		sourceTree = "<group>";
 	};
-	CCDE2FF048C7D15F5A9C4034 /* KSpaceCleanWidget.swift */ = {
+	CCDE2FF048C7D15F5A9C4034 /* kWiseWidget.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
-		name = KSpaceCleanWidget.swift;
-		path = Widgets/KSpaceCleanWidget.swift;
+		name = kWiseWidget.swift;
+		path = Widgets/kWiseWidget.swift;
 		sourceTree = "<group>";
 	};
 	CEA31B54F654EFEF4B876BC9 /* ScanIntent.swift */ = {
@@ -1711,7 +1711,7 @@
 	1119F24AE4A205A534838F74 /* Resources */ = {
 		isa = PBXGroup;
 		children = (
-			B2296761732A6D8AABCEDABB /* KSpaceClean.xcdatamodeld */,
+			B2296761732A6D8AABCEDABB /* kWise.xcdatamodeld */,
 			05B9799A26FB3FDC78B071F1 /* Assets.xcassets */,
 			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
 			505366A05A93C5E2F212971A /* com.kraftly.kspaceclean.trashmonitor.plist */,
@@ -2087,7 +2087,7 @@
 	F4D2E522CF9449BF1C2F0894 /* Widgets */ = {
 		isa = PBXGroup;
 		children = (
-			CCDE2FF048C7D15F5A9C4034 /* KSpaceCleanWidget.swift */,
+			CCDE2FF048C7D15F5A9C4034 /* kWiseWidget.swift */,
 		);
 		name = Widgets;
 		sourceTree = "<group>";

@@ -1,11 +1,11 @@
-# App Store Submission Runbook — kSpaceClean v1.0
+# App Store Submission Runbook — kWise v1.0
 
 ## Prerequisites
 - [ ] Apple Developer Program active, distribution cert + Team ID configured (see `kWise/docs/TestFlight/DistributionRunbook.md` Steps 1–4)
 - [ ] Screenshots captured per `kWise/docs/Launch/ScreenshotsSpec.md`
 - [ ] Privacy Policy live at https://kraftly.app/privacy
 - [ ] Support URL live at https://kraftly.app/support/sclean
-- [ ] Subscription product created in App Store Connect (kSpaceClean Pro Annual: $19.99)
+- [ ] Subscription product created in App Store Connect (kWise Pro Annual: $19.99)
 - [ ] Free trial configured (7 days, non-renewing)
 
 ## Steps
@@ -13,35 +13,35 @@
 ### 1. Re-archive with final signing
 ```bash
 cd /Users/mengjianjun/Documents/ai/aicoding/macapp/.claude/worktrees/feat-kspaceclean-v1
-xcodebuild -project kWise/kSpaceClean.xcodeproj \
-  -scheme kSpaceClean \
+xcodebuild -project kWise/kWise.xcodeproj \
+  -scheme kWise \
   -configuration Release \
-  -archivePath kWise/build/kSpaceClean.xcarchive \
+  -archivePath kWise/build/kWise.xcarchive \
   archive
 ```
 
 ### 2. Export to App Store
 ```bash
 xcodebuild -exportArchive \
-  -archivePath kWise/build/kSpaceClean.xcarchive \
+  -archivePath kWise/build/kWise.xcarchive \
   -exportPath kWise/build/ \
   -exportOptionsPlist kWise/build/ExportOptions.plist
 ```
-Expected: `kWise/build/kSpaceClean.ipa` + prompt for "Export Compliance" (answer: "No, this app does not use non-exempt encryption").
+Expected: `kWise/build/kWise.ipa` + prompt for "Export Compliance" (answer: "No, this app does not use non-exempt encryption").
 
 ### 3. Upload build to App Store Connect
 Either via Transporter (GUI) or:
 ```bash
 xcrun altool --upload-app \
   --type osx \
-  --file kWise/build/kSpaceClean.ipa \
+  --file kWise/build/kWise.ipa \
   --username "$APPLE_ID" \
   --password "$APP_SPECIFIC_PASSWORD"
 ```
 App Store Connect processes the build in 5–15 minutes. Email confirmation arrives.
 
 ### 4. Fill the new version page
-In App Store Connect → kSpaceClean → + Version → 1.0.0:
+In App Store Connect → kWise → + Version → 1.0.0:
 - Copy each field block from `AppStoreMetadata.md` into the matching field
 - Attach screenshots (in display order) from `ScreenshotsSpec.md`
 - Fill App Privacy from `PrivacyDetails.md`
@@ -65,7 +65,7 @@ Expected rating: 4+.
 - Availability: all territories except where App Store forbids (none)
 
 ### 7. In-App Purchases
-- kSpaceClean Pro Annual: $19.99/yr, 7-day free trial
+- kWise Pro Annual: $19.99/yr, 7-day free trial
 - Verify the IAP product ID matches `ProAnnual` in code
 
 ### 8. Submit for Review

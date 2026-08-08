@@ -1,8 +1,8 @@
-# TestFlight Feedback Tracker — kSpaceClean v1.0 (Week 15)
+# TestFlight Feedback Tracker — kWise v1.0 (Week 15)
 
 ## Daily Review (5 minutes)
 - [ ] TestFlight feedback tab: any new comments?
-- [ ] App Store Connect → kSpaceClean → TestFlight → Crashes: any new crashes?
+- [ ] App Store Connect → kWise → TestFlight → Crashes: any new crashes?
 - [ ] `~/Library/Application Support/kWise/metric-kit/` (on test machines you have access to): any new `.json` files?
 
 ## Crash Triage
