@@ -30,6 +30,12 @@ esac
 
 BRANCH="worktree-${APP,,}-v1"
 
+# Detect bash 3.2 (macOS default) vs 4+: ${VAR,,} lowercase expansion needs bash 4+.
+# On macOS bash 3.2, fall back to tr.
+if ((BASH_VERSINFO[0] < 4)); then
+    BRANCH="worktree-$(echo "$APP" | tr '[:upper:]' '[:lower:]')-v1"
+fi
+
 STRATEGY="--no-ff"
 ABORT=0
 for arg in "$@"; do

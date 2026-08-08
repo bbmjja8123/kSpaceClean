@@ -51,7 +51,13 @@ esac
 if [[ ${#EXPLICIT_PATHS[@]} -gt 0 ]]; then
     CANDIDATES=("${EXPLICIT_PATHS[@]}")
 else
-    mapfile -t CANDIDATES < <(git status --porcelain | awk '{print $2}')
+    # bash 3.2 (macOS default) lacks mapfile; use while-read loop.
+    CANDIDATES=()
+    while IFS= read -r line; do
+        # Strip leading porcelain marker (e.g. " M", "??", "R ").
+        path="${line#?? }"
+        CANDIDATES+=("$path")
+    done < <(git status --porcelain)
 fi
 
 if [[ ${#CANDIDATES[@]} -eq 0 ]]; then
