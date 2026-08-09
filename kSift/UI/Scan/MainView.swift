@@ -44,7 +44,7 @@ struct MainView: View {
                     )
                 }
             case .completed:
-                ScanResultView(
+                ScanResultsView(
                     groups: viewModel.scanResult,
                     onReview: { appState.navigation = .results },
                     onRescan: { viewModel.startScan(config: ProfileConfigStore.load()) }
