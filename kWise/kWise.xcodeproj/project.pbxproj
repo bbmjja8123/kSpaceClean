@@ -51,6 +51,14 @@
 		isa = PBXBuildFile;
 		fileRef = 362341017602FD8FE3C4DCD8;
 	};
+	7E6F5D4C3B2A1F0E9D8C7B6E /* 7E6F5D4C3B2A1F0E9D8C7B6E */ = {
+		isa = PBXBuildFile;
+		fileRef = 5C4B3A2D1E0F9B8A7C6D5E4A;
+	};
+	8F7E6D5C4B3A291819283746 /* 8F7E6D5C4B3A291819283746 */ = {
+		isa = PBXBuildFile;
+		fileRef = 6D5E4F3C2B1A0F9E8D7C6B5F;
+	};
 	246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */ = {
 		isa = PBXBuildFile;
 		fileRef = 0843E97F195214F62BD29C3F;
@@ -804,6 +812,20 @@
 		lastKnownFileType = sourcecode.swift;
 		name = TestHelpers.swift;
 		path = Tests/TestHelpers.swift;
+		sourceTree = "<group>";
+	};
+	5C4B3A2D1E0F9B8A7C6D5E4A /* SmartCareOrchestratorTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareOrchestratorTests.swift;
+		path = Tests/SmartCareOrchestratorTests.swift;
+		sourceTree = "<group>";
+	};
+	6D5E4F3C2B1A0F9E8D7C6B5F /* SmartCareViewModelTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareViewModelTests.swift;
+		path = Tests/SmartCareViewModelTests.swift;
 		sourceTree = "<group>";
 	};
 	27E8208E9A99978867A43090 /* kFoundation */ = {
@@ -2007,6 +2029,8 @@
 		isa = PBXGroup;
 		children = (
 			27BDC56BA0773FA9060A0F8F /* TestHelpers.swift */,
+			5C4B3A2D1E0F9B8A7C6D5E4A /* SmartCareOrchestratorTests.swift */,
+			6D5E4F3C2B1A0F9E8D7C6B5F /* SmartCareViewModelTests.swift */,
 			E4C62FD7FB4A1EAC51EC2224 /* RuleClassifierTests.swift */,
 			362341017602FD8FE3C4DCD8 /* AppStateTests.swift */,
 			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
@@ -2256,6 +2280,8 @@
 			9DB2E0CB10DB5ED0FC9BD7DA /* 9DB2E0CB10DB5ED0FC9BD7DA */,
 			F7EF2CF90A9EA92120D93DCC /* F7EF2CF90A9EA92120D93DCC */,
 			23F7A4319341215A83BC3ABF /* 23F7A4319341215A83BC3ABF */,
+			7E6F5D4C3B2A1F0E9D8C7B6E /* 7E6F5D4C3B2A1F0E9D8C7B6E */,
+			8F7E6D5C4B3A291819283746 /* 8F7E6D5C4B3A291819283746 */,
 			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,
 			201A00B31EEF8EC428CADA3F /* 201A00B31EEF8EC428CADA3F */,
 			2FFA604239D04066410170DC /* 2FFA604239D04066410170DC */,
