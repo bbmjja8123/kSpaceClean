@@ -74,6 +74,30 @@ struct AppListView: View {
                     } label: {
                         Label("设置", systemImage: "gearshape")
                     }
+
+                    // Pro entry — non-Pro users see the button but tapping
+                    // raises the paywall sheet so they get an upgrade prompt
+                    // instead of a silently-no-op tap (mirrors the
+                    // `AppDetailView.proEntries` row pattern).
+                    Button {
+                        if services.store.state == .pro {
+                            coordinator.showDeepClean = true
+                        } else {
+                            coordinator.showPaywall = true
+                        }
+                    } label: {
+                        Label("深度清理", systemImage: "trash.square")
+                    }
+
+                    Button {
+                        if services.store.state == .pro {
+                            coordinator.showStartupItems = true
+                        } else {
+                            coordinator.showPaywall = true
+                        }
+                    } label: {
+                        Label("启动项", systemImage: "power")
+                    }
                 }
             }
         }
