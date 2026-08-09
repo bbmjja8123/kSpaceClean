@@ -92,14 +92,26 @@ public struct HistoryView: View {
     private var content: some View {
         if viewModel.isLocked {
             proGateView
-        } else if viewModel.isLoading {
-            loadingView
-        } else if let errorMessage = viewModel.errorMessage {
-            errorView(message: errorMessage)
-        } else if viewModel.isEmpty {
-            emptyView
         } else {
             dataView
+                .loadingOverlay(
+                    isLoading: viewModel.isLoading,
+                    title: String(localized: "Loading history…")
+                )
+                .errorState(message: viewModel.errorMessage) {
+                    Button(String(localized: "Retry")) {
+                        Task { await viewModel.load() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .emptyState(
+                    isEmpty: viewModel.isEmpty,
+                    iconName: "chart.xyaxis.line",
+                    title: String(localized: "No History Yet"),
+                    subtitle: String(localized: "History snapshots are written every few minutes. Check back soon."),
+                    actionLabel: String(localized: "Retry"),
+                    action: { Task { await viewModel.load() } }
+                )
         }
     }
 
