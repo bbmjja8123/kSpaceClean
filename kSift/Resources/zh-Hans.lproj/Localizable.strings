@@ -157,8 +157,16 @@
 "Files you clean will be kept here for 30 days so you can restore them." = "清理后的文件将在此保留 30 天，可随时恢复。";
 "Files are kept for 30 days after cleanup. Restore or purge them at any time." = "清理后的文件会保留 30 天，可随时恢复或清除。";
 "Purge expired" = "清理过期";
+"Purge now" = "立即清理";
 "Items" = "条目";
 "Total size" = "总占用";
+"Next auto-purge" = "下次自动清理";
+"Vault no upcoming purge" = "—";
+"%lld item(s) are past their 30-day retention and ready to purge." = "%lld 个条目已超过 30 天保留期，可清理。";
+"Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now." = "保险库中的文件将在 30 天后自动删除。现在点击清理即可立即释放空间。";
+"%dd %dh" = "%d 天 %d 小时";
+"%dh" = "%d 小时";
+"<1h" = "不到 1 小时";
 "Vaulted" = "保险中";
 "Restored" = "已恢复";
 "Restore" = "恢复";
