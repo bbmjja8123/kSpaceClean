@@ -93,7 +93,7 @@ final class ScanOrchestratorTests: XCTestCase {
     /// A config that scans only the caller's temp dir via the stub walker.
     private func config(for dir: URL) -> ProfileConfig {
         ProfileConfig(
-            type: .simple,
+            type: .designer,
             customDirectories: [dir.path],
             exclusions: [],
             minFileSize: 1,

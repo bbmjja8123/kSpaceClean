@@ -25,7 +25,7 @@
 /* Profile names */
 "Developer" = "开发者";
 "Photographer" = "摄影师";
-"Simple" = "极简";
+"Designer" = "设计师";
 
 /* Profile descriptions */
 "Scans projects, build artifacts, and development directories" = "扫描项目、构建产物和开发目录";

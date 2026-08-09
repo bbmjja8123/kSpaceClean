@@ -49,7 +49,7 @@ final class DuplicateRepositoryTests: XCTestCase {
             totalWasteSize: 512, duration: 1.0, groups: []
         )
         let record2 = ScanRecord(
-            id: UUID(), timestamp: Date(), profileType: .simple,
+            id: UUID(), timestamp: Date(), profileType: .designer,
             totalFilesScanned: 30, totalDuplicatesFound: 1,
             totalWasteSize: 256, duration: 0.5, groups: []
         )

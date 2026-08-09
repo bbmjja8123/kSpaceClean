@@ -25,7 +25,7 @@
 /* Profile names */
 "Developer" = "Developer";
 "Photographer" = "Photographer";
-"Simple" = "Simple";
+"Designer" = "Designer";
 
 /* Profile descriptions */
 "Scans projects, build artifacts, and development directories" = "Scans projects, build artifacts, and development directories";

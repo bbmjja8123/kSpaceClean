@@ -45,7 +45,7 @@ struct ProfileSetupView: View {
         switch profile {
         case .developer: return "terminal"
         case .photographer: return "camera"
-        case .simple: return "person"
+        case .designer: return "person"
         }
     }
 
@@ -53,7 +53,7 @@ struct ProfileSetupView: View {
         switch profile {
         case .developer: return NSLocalizedString("Scans projects, build artifacts, and development directories", comment: "Developer profile description")
         case .photographer: return NSLocalizedString("Scans photos, RAW files, and creative assets", comment: "Photographer profile description")
-        case .simple: return NSLocalizedString("Scans desktop, downloads, and documents", comment: "Simple profile description")
+        case .designer: return NSLocalizedString("Scans desktop, downloads, and documents", comment: "Designer profile description")
         }
     }
 }

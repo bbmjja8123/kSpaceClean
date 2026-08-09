@@ -113,7 +113,7 @@ struct SettingsView: View {
         switch profile {
         case .developer: return "hammer.fill"
         case .photographer: return "camera.fill"
-        case .simple: return "person.fill"
+        case .designer: return "person.fill"
         }
     }
 

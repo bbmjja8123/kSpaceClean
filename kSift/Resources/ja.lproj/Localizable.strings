@@ -31,7 +31,7 @@
 /* Profile names */
 "Developer" = "開発者";
 "Photographer" = "フォトグラファー";
-"Simple" = "シンプル";
+"Designer" = "デザイナー";
 
 /* Profile descriptions */
 "Scans projects, build artifacts, and development directories" = "プロジェクト、ビルド成果物、開発ディレクトリをスキャン";

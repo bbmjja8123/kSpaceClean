@@ -3,13 +3,13 @@ import Foundation
 public enum ProfileType: String, Sendable, CaseIterable, Codable {
     case developer
     case photographer
-    case simple
+    case designer
 
     public var title: String {
         switch self {
         case .developer: return NSLocalizedString("Developer", comment: "Profile name")
         case .photographer: return NSLocalizedString("Photographer", comment: "Profile name")
-        case .simple: return NSLocalizedString("Simple", comment: "Profile name")
+        case .designer: return NSLocalizedString("Designer", comment: "Profile name")
         }
     }
 
@@ -19,7 +19,7 @@ public enum ProfileType: String, Sendable, CaseIterable, Codable {
             return ["~/Projects", "~/Desktop", "~/Downloads", "~/Documents", "~/.gradle", "~/.m2"]
         case .photographer:
             return ["~/Pictures", "~/Desktop", "~/Downloads", "~/Documents"]
-        case .simple:
+        case .designer:
             return ["~/Desktop", "~/Downloads", "~/Documents"]
         }
     }
@@ -30,7 +30,7 @@ public enum ProfileType: String, Sendable, CaseIterable, Codable {
             return ["**/node_modules/**", "**/Pods/**", "**/.build/**", "**/DerivedData/**"]
         case .photographer:
             return []
-        case .simple:
+        case .designer:
             return []
         }
     }
