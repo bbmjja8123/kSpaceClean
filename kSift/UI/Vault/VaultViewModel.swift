@@ -15,6 +15,41 @@ final class VaultViewModel: ObservableObject {
         self.manager = manager
     }
 
+    /// Count of items that have already passed their 30-day expiry window.
+    /// Drives the "X items ready to purge" banner; clicking Purge expired
+    /// clears these specifically.
+    var expiredCount: Int {
+        let now = Date()
+        return items.filter { $0.expiresAt <= now }.count
+    }
+
+    /// Earliest upcoming expiry (i.e. the item that will be purged next if
+    /// the user does nothing). `nil` when no items are vaulted.
+    var nextExpiry: Date? {
+        let future = items
+            .filter { $0.expiresAt > Date() }
+            .map(\.expiresAt)
+            .min()
+        return future
+    }
+
+    /// Human-readable "X days, Y hours until next auto-purge" countdown.
+    /// `nil` when no items are pending purge.
+    var nextExpiryFormatted: String? {
+        guard let nextExpiry else { return nil }
+        let interval = nextExpiry.timeIntervalSinceNow
+        guard interval > 0 else { return nil }
+        let days = Int(interval) / 86_400
+        let hours = (Int(interval) % 86_400) / 3_600
+        if days > 0 {
+            return String(format: NSLocalizedString("%dd %dh", comment: "Days+hours countdown"), days, hours)
+        } else if hours > 0 {
+            return String(format: NSLocalizedString("%dh", comment: "Hours countdown"), hours)
+        } else {
+            return NSLocalizedString("<1h", comment: "Less-than-1h countdown")
+        }
+    }
+
     func load() async {
         isLoading = true
         defer { isLoading = false }

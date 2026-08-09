@@ -157,8 +157,16 @@
 "Files you clean will be kept here for 30 days so you can restore them." = "Files you clean will be kept here for 30 days so you can restore them.";
 "Files are kept for 30 days after cleanup. Restore or purge them at any time." = "Files are kept for 30 days after cleanup. Restore or purge them at any time.";
 "Purge expired" = "Purge expired";
+"Purge now" = "Purge now";
 "Items" = "Items";
 "Total size" = "Total size";
+"Next auto-purge" = "Next auto-purge";
+"Vault no upcoming purge" = "—";
+"%lld item(s) are past their 30-day retention and ready to purge." = "%lld item(s) are past their 30-day retention and ready to purge.";
+"Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now." = "Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now.";
+"%dd %dh" = "%dd %dh";
+"%dh" = "%dh";
+"<1h" = "<1h";
 "Vaulted" = "Vaulted";
 "Restored" = "Restored";
 "Restore" = "Restore";

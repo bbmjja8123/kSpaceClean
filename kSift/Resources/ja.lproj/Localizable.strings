@@ -163,8 +163,16 @@
 "Files you clean will be kept here for 30 days so you can restore them." = "削除したファイルは復元できるよう 30 日間ここに保管されます。";
 "Files are kept for 30 days after cleanup. Restore or purge them at any time." = "クリーンアップ後 30 日間ファイルが保管されます。いつでも復元または削除できます。";
 "Purge expired" = "期限切れを削除";
+"Purge now" = "今すぐ削除";
 "Items" = "アイテム数";
 "Total size" = "合計サイズ";
+"Next auto-purge" = "次回自動削除";
+"Vault no upcoming purge" = "—";
+"%lld item(s) are past their 30-day retention and ready to purge." = "%lld 件のアイテムが 30 日の保管期間を超えているため削除できます。";
+"Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now." = "ボールト内のファイルは 30 日後に自動的に削除されます。今すぐ削除してスペースを確保できます。";
+"%dd %dh" = "%d日 %d時間";
+"%dh" = "%d時間";
+"<1h" = "1時間未満";
 "Vaulted" = "ボールト済み";
 "Restored" = "復元済み";
 "Restore" = "復元";
