@@ -176,8 +176,16 @@ final class ResultViewModel: ObservableObject {
                 failures.append(contentsOf: result.failures)
                 if !result.failures.isEmpty { keepGroupIds.insert(group.id) }
             } catch {
+                // Defensive: VaultManager.moveToTrash is expected to catch
+                // its own phase-2 errors and return them in `result.failures`.
+                // This catch is the last-line fallback if the manager itself
+                // throws (e.g. repository save failure on a successful batch).
+                // Surface the error under the first file we tried to delete
+                // so the UI can attribute it correctly.
+                let attributedURL = toDelete.first?.url ?? group.files.first?.url
+                    ?? URL(fileURLWithPath: "/")
                 failures.append(VaultMoveFailure(
-                    url: group.files.first?.url ?? URL(fileURLWithPath: "/"),
+                    url: attributedURL,
                     reason: error.localizedDescription
                 ))
                 keepGroupIds.insert(group.id)

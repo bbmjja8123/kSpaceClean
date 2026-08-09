@@ -132,6 +132,15 @@ final class ResultViewModelTests: XCTestCase {
         trash.failTrashPaths = [oldest.url.path]
         let failures = await vm.removeSelected(using: manager)
 
+        // Asserted invariants:
+        //   1. Exactly one failure surfaces, attributed to the URL that
+        //      failTrashPaths refused (oldest).
+        //   2. vm.groups keeps the failed group so the user can retry.
+        //   3. selectedGroupIds clears so the user re-selects consciously.
+        //   4. Original files stay in place: oldest because trash threw,
+        //      newest because it's the kept copy.
+        //   5. The redirector's trashedPaths is empty — phase-2 throw
+        //      happened before _trashedPaths.append.
         XCTAssertEqual(failures.count, 1, "The failed trash is surfaced, not swallowed")
         XCTAssertEqual(failures[0].url, oldest.url)
         XCTAssertEqual(vm.groups.count, 1, "Group with a failed file stays for retry")
