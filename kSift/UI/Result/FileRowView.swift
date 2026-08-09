@@ -6,13 +6,18 @@ struct FileRowView: View {
     var isSelected: Bool = false
 
     @State private var icon: NSImage?
+    @State private var isMissing = false
 
     /// True when the file no longer exists on disk (trashed, moved, or
     /// unmounted between scan and view). Used to surface a warning badge
     /// so the user doesn't double-select a path that can no longer be cleaned.
-    private var isMissing: Bool {
-        !FileManager.default.fileExists(atPath: file.url.path)
-    }
+    ///
+    /// Populated asynchronously via `.task(id: file.url)` so the stat(2)
+    /// syscall runs off the main thread. While the task is in flight the
+    /// row renders with `isMissing = false` — a brief window where a
+    /// just-deleted file may still look "present" until the next body pass.
+    /// The trade-off is intentional: a 10 000-row list with sync stat per
+    /// row was blocking the main thread for hundreds of ms per scroll.
 
     var body: some View {
         HStack(spacing: 8) {
@@ -89,6 +94,12 @@ struct FileRowView: View {
             FileIconCache.shared.loadIcon(for: file.url) { image in
                 icon = image
             }
+            // stat(2) off the main thread. The view briefly renders
+            // isMissing=false until the next body pass after the await.
+            let missing = await Task.detached(priority: .utility) {
+                !FileManager.default.fileExists(atPath: file.url.path)
+            }.value
+            isMissing = missing
         }
     }
 }
