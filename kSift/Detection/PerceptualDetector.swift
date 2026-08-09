@@ -72,10 +72,16 @@ public actor PerceptualDetector {
     /// Detects perceptual groups without decoding full-resolution source images.
     public func detect(files: [FileItem], controller: ScanController) async -> [DuplicateGroup] {
         var candidates: [Candidate] = []
+        // Thumbnail cache shared between dHash (coarse filter) and featurePrint
+        // (verification). ImageIO's CGImageSourceCreateThumbnailAtIndex decodes
+        // a JPEG/PNG/HEIC preview — the most expensive per-file step in the
+        // perceptual pass — so avoiding a second decode for any URL that
+        // survives the dHash filter halves the ImageIO work.
+        var thumbnails: [URL: CGImage] = [:]
         for item in files {
             guard !isCancelled(controller) else { return [] }
             guard supportedExtensions.contains(item.url.pathExtension.lowercased()),
-                  let hash = dHash(of: item.url) else {
+                  let hash = dHash(of: item.url, thumbnailCache: &thumbnails) else {
                 continue
             }
             candidates.append(Candidate(item: item, dHash: hash))
@@ -109,10 +115,16 @@ public actor PerceptualDetector {
             guard !isCancelled(controller) else { return makeGroups(candidates, parents, acceptedPairs) }
 
             if observations[pair.first] == nil {
-                observations[pair.first] = featurePrint(of: candidates[pair.first].item.url)
+                observations[pair.first] = featurePrint(
+                    of: candidates[pair.first].item.url,
+                    thumbnailCache: &thumbnails
+                )
             }
             if observations[pair.second] == nil {
-                observations[pair.second] = featurePrint(of: candidates[pair.second].item.url)
+                observations[pair.second] = featurePrint(
+                    of: candidates[pair.second].item.url,
+                    thumbnailCache: &thumbnails
+                )
             }
             guard let first = observations[pair.first],
                   let second = observations[pair.second],
@@ -128,8 +140,8 @@ public actor PerceptualDetector {
         return makeGroups(candidates, parents, acceptedPairs)
     }
 
-    func dHash(of url: URL) -> UInt64? {
-        guard let image = thumbnail(of: url, maximumPixelSize: 256) else { return nil }
+    func dHash(of url: URL, thumbnailCache: inout [URL: CGImage]) -> UInt64? {
+        guard let image = thumbnail(of: url, maximumPixelSize: 256, thumbnailCache: &thumbnailCache) else { return nil }
         return dHash(of: image)
     }
 
@@ -188,8 +200,8 @@ public actor PerceptualDetector {
         return pairs
     }
 
-    private func featurePrint(of url: URL) -> VNFeaturePrintObservation? {
-        guard let image = thumbnail(of: url, maximumPixelSize: 256) else { return nil }
+    private func featurePrint(of url: URL, thumbnailCache: inout [URL: CGImage]) -> VNFeaturePrintObservation? {
+        guard let image = thumbnail(of: url, maximumPixelSize: 256, thumbnailCache: &thumbnailCache) else { return nil }
         let request = VNGenerateImageFeaturePrintRequest()
         do {
             try VNImageRequestHandler(cgImage: image, options: [:]).perform([request])
@@ -212,7 +224,8 @@ public actor PerceptualDetector {
         }
     }
 
-    private func thumbnail(of url: URL, maximumPixelSize: Int) -> CGImage? {
+    private func thumbnail(of url: URL, maximumPixelSize: Int, thumbnailCache: inout [URL: CGImage]) -> CGImage? {
+        if let cached = thumbnailCache[url] { return cached }
         guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else { return nil }
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
@@ -220,7 +233,11 @@ public actor PerceptualDetector {
             kCGImageSourceThumbnailMaxPixelSize: maximumPixelSize,
             kCGImageSourceShouldCacheImmediately: true,
         ]
-        return CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
+        guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
+            return nil
+        }
+        thumbnailCache[url] = image
+        return image
     }
 
     private func makeGroups(
