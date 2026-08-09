@@ -1,0 +1,376 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-09T00:00:00Z",
+  "source": "manual + cask-cn",
+  "apps": [
+    {
+      "displayName": "QQ",
+      "bundleID": "com.tencent.QQ",
+      "appName": "QQ",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "微信",
+      "bundleID": "com.tencent.xinWeChat",
+      "appName": "WeChat",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "企业微信",
+      "bundleID": "com.tencent.WeWorkMac",
+      "appName": "WeCom",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯会议",
+      "bundleID": "com.tencent.meeting",
+      "appName": "Tencent Meeting",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "QQ 音乐",
+      "bundleID": "com.tencent.QQMusic",
+      "appName": "QQ Music",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "钉钉",
+      "bundleID": "com.alibaba.DingTalk",
+      "appName": "DingTalk",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "飞书",
+      "bundleID": "com.bytedance.feishu",
+      "appName": "Feishu",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "Lark",
+      "bundleID": "com.larksuite.lark",
+      "appName": "Lark",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易云音乐",
+      "bundleID": "com.netease.cloudmusic",
+      "appName": "NetEase Cloud Music",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易邮箱大师",
+      "bundleID": "com.netease.mailmaster",
+      "appName": "NetEase Mail Master",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "百度网盘",
+      "bundleID": "com.baidu.netdisk",
+      "appName": "Baidu Netdisk",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "WPS Office",
+      "bundleID": "com.kingsoft.wps",
+      "appName": "WPS Office",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "搜狗输入法",
+      "bundleID": "com.sogou.input.sogouinput",
+      "appName": "Sogou Input",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "讯飞输入法",
+      "bundleID": "com.iflytek.inputmethod",
+      "appName": "iFlytek Input",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "百度输入法",
+      "bundleID": "com.baidu.input",
+      "appName": "Baidu Input",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "迅雷",
+      "bundleID": "com.xunlei.Thunder",
+      "appName": "Thunder",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual", "cask-cn"],
+      "deprecated": false
+    },
+    {
+      "displayName": "优酷",
+      "bundleID": "com.youku.mac",
+      "appName": "Youku",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "爱奇艺",
+      "bundleID": "com.iqiyi.mac",
+      "appName": "iQIYI",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "酷我音乐",
+      "bundleID": "com.kuwo.KWMusic",
+      "appName": "Kuwo Music",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "酷狗音乐",
+      "bundleID": "com.kugou.mac",
+      "appName": "KuGou Music",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "Foxit Reader",
+      "bundleID": "com.foxitsoftware.Foxit.Reader",
+      "appName": "Foxit Reader",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "微博",
+      "bundleID": "com.sina.weibo",
+      "appName": "Weibo",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "有道词典",
+      "bundleID": "com.youdao.YoaoDict",
+      "appName": "Youdao Dictionary",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "有道云笔记",
+      "bundleID": "com.youdao.NoteMac",
+      "appName": "Youdao Note",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "向日葵远程控制",
+      "bundleID": "com.oray.sunlogin.client",
+      "appName": "Sunlogin",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "ToDesk",
+      "bundleID": "com.todesk.desktop",
+      "appName": "ToDesk",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "阿里云盘",
+      "bundleID": "com.alicloud.smartdrive",
+      "appName": "Alibaba Cloud Drive",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯视频",
+      "bundleID": "com.tencent.tenvideo",
+      "appName": "Tencent Video",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "哔哩哔哩",
+      "bundleID": "tv.bilibili.biliMac",
+      "appName": "bilibili",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "剪映专业版",
+      "bundleID": "com.lemon.LemonVideo",
+      "appName": "CapCut / Jianying Pro",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "微信开发者工具",
+      "bundleID": "com.tencent.devtools",
+      "appName": "WeChat DevTools",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "钉钉开发者工具",
+      "bundleID": "com.alibaba.DingTalkDeveloper",
+      "appName": "DingTalk DevTools",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "QQ 浏览器",
+      "bundleID": "com.tencent.qbrowser",
+      "appName": "QQ Browser",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "360 安全浏览器",
+      "bundleID": "com.qihoo.browser",
+      "appName": "360 Safe Browser",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "百度翻译",
+      "bundleID": "com.baidu.fanyi",
+      "appName": "Baidu Translate",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "百度网盘同步版",
+      "bundleID": "com.baidu.netdiskSync",
+      "appName": "Baidu Netdisk Sync",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易 MuMu",
+      "bundleID": "com.netease.mumuplayer",
+      "appName": "NetEase MuMu",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "坚果云",
+      "bundleID": "com.jianguoyun.JianGuoYun",
+      "appName": "Nutstore",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "钉钉教育版",
+      "bundleID": "com.alibaba.DingTalkEducation",
+      "appName": "DingTalk Education",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯企点",
+      "bundleID": "com.tencent.qidian",
+      "appName": "Tencent Qidian",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易有道翻译",
+      "bundleID": "com.youdao.Translate",
+      "appName": "Youdao Translate",
+      "verifiedAt": "2026-08-09T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": ["manual"],
+      "deprecated": false
+    }
+  ]
+}

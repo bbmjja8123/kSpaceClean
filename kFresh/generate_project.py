@@ -310,6 +310,7 @@ def main():
         ("Localizable.xcstrings", "Resources", "text.json.xcstrings"),
         ("PrivacyInfo.xcprivacy", "Resources", "text.plist.xml"),
         ("cask_rules.json", "Resources", "text.json"),
+        ("zh_app_mappings.json", "Resources", "text.json"),
     ]
 
     main_build_files = []

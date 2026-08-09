@@ -415,6 +415,10 @@
 		isa = PBXBuildFile;
 		fileRef = EAA3EA03FFEDFA0DBA5545C7;
 	};
+	E79F4A74BD94F28A66EA2897 /* E79F4A74BD94F28A66EA2897 */ = {
+		isa = PBXBuildFile;
+		fileRef = 3083827746DC2D013BF3D86C;
+	};
 	E94CD270DF464AAC0E5D44FA /* E94CD270DF464AAC0E5D44FA */ = {
 		isa = PBXBuildFile;
 		fileRef = 4B4EBB8963FE59BC0A93699E;
@@ -665,6 +669,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppCatalogService.swift;
 		path = Core/Detect/AppCatalogService.swift;
+		sourceTree = "<group>";
+	};
+	3083827746DC2D013BF3D86C /* zh_app_mappings.json */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text.json;
+		name = zh_app_mappings.json;
+		path = Resources/zh_app_mappings.json;
 		sourceTree = "<group>";
 	};
 	363961515C7A7149F8FA81E5 /* HistoryRowView.swift */ = {
@@ -1429,6 +1440,7 @@
 			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
 			FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */,
 			66DCDD3E8D4249951CFA3C37 /* cask_rules.json */,
+			3083827746DC2D013BF3D86C /* zh_app_mappings.json */,
 		);
 		name = Resources;
 		sourceTree = "<group>";
@@ -1920,6 +1932,7 @@
 			8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */,
 			75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */,
 			D3AAF3B1FCAF554EA1011E70 /* D3AAF3B1FCAF554EA1011E70 */,
+			E79F4A74BD94F28A66EA2897 /* E79F4A74BD94F28A66EA2897 */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
