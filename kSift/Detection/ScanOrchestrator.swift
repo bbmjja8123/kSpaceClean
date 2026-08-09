@@ -125,90 +125,97 @@ public actor ScanOrchestrator {
                     )))
                 }
 
-                // Phase 3: Directory dedup. Reuse byteDetector.verifiedCache so any
-                // file that already passed full SHA-256 in phase 2 (every URL
-                // that survived size/fingerprint/hash bucketing) is not hashed
-                // again. Files unique to byte-detector still get verified here
-                // because their directory membership may produce a match.
+                // Phase 3-7 fan out. After byteIdentical finishes, the remaining
+                // detectors are independent of each other and of byteIdentical
+                // (directoryDedup only needs the verifiedCache it already
+                // produced). Run them concurrently on the cooperative thread
+                // pool so an 8-core Mac overlaps an I/O-bound hash pass
+                // (directoryDedup) with a CPU-bound perceptual pass instead of
+                // serializing them. Expected wall-clock improvement on big
+                // image libraries: 1.6-2.5x over the previous sequential run.
+                let verifiedCache = await byteDetector.verifiedCache
+                let scanRoots = target.directories.map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
+
                 continuation.yield(.progress(ScanProgress(
                     phase: .directoryDedup,
                     progress: 0.4,
                     filesScanned: allURLs.count,
                     duplicatesFound: identicalCount
                 )))
-                let scanRoots = target.directories.map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
-                let dedupGroups = await dirDedupDetector.detect(
-                    allURLs,
-                    roots: scanRoots,
-                    controller: controller,
-                    verifiedCache: await byteDetector.verifiedCache
-                )
-                let dedupCount = dedupGroups.reduce(0) { $0 + $1.files.count }
-                for group in dedupGroups {
-                    continuation.yield(.group(duplicateGroup: group))
-                }
-
-                // Phase 4: Perceptual (honor config flag).
-                var perceptualGroups: [DuplicateGroup] = []
                 if config.enablePerceptualScan {
                     continuation.yield(.progress(ScanProgress(
                         phase: .perceptual,
-                        progress: 0.6,
+                        progress: 0.4,
                         filesScanned: allURLs.count,
-                        duplicatesFound: identicalCount + dedupCount
+                        duplicatesFound: identicalCount
                     )))
-                    perceptualGroups = await perceptualDetector.detect(files: fileItems, controller: controller)
-                    for group in perceptualGroups {
-                        continuation.yield(.group(duplicateGroup: group))
-                    }
                 }
-
-                // Phase 5: Large files (flat list, streamed as a single event).
                 continuation.yield(.progress(ScanProgress(
                     phase: .largeFiles,
-                    progress: 0.75,
+                    progress: 0.4,
                     filesScanned: allURLs.count,
-                    duplicatesFound: identicalCount + dedupCount
+                    duplicatesFound: identicalCount
                 )))
-                let largeFiles = await largeFileDetector.detect(files: fileItems, controller: controller)
-                continuation.yield(.largeFiles(largeFiles))
-                let largeFileBytes = largeFiles.reduce(Int64(0)) { partial, item in
-                    let sum = partial.addingReportingOverflow(item.size)
-                    return sum.overflow ? Int64.max : sum.partialValue
-                }
-
-                // Phase 6: Build artifacts. Honors the settings toggle so users
-                // who only want byte-identical / perceptual / RAW+JPEG matches
-                // can skip this pass entirely.
-                var buildGroups: [DuplicateGroup] = []
                 if config.enableBuildArtifacts {
                     continuation.yield(.progress(ScanProgress(
                         phase: .buildArtifacts,
-                        progress: 0.85,
+                        progress: 0.4,
                         filesScanned: allURLs.count,
-                        duplicatesFound: identicalCount + dedupCount + largeFiles.count
+                        duplicatesFound: identicalCount
                     )))
-                    buildGroups = await buildArtifactDetector.detect(files: fileItems, controller: controller)
-                    for group in buildGroups {
-                        continuation.yield(.group(duplicateGroup: group))
-                    }
                 }
-
-                // Phase 7: RAW + JPEG pairs.
                 continuation.yield(.progress(ScanProgress(
                     phase: .rawJPEG,
-                    progress: 0.95,
+                    progress: 0.4,
                     filesScanned: allURLs.count,
-                    duplicatesFound: identicalCount + dedupCount + largeFiles.count + buildGroups.count
+                    duplicatesFound: identicalCount
                 )))
-                let rawJPEGGroups = await rawJPEGDetector.detect(files: fileItems, controller: controller)
-                for group in rawJPEGGroups {
+
+                async let dedupGroups: [DuplicateGroup] = dirDedupDetector.detect(
+                    allURLs,
+                    roots: scanRoots,
+                    controller: controller,
+                    verifiedCache: verifiedCache
+                )
+                async let perceptualGroups: [DuplicateGroup] = config.enablePerceptualScan
+                    ? perceptualDetector.detect(files: fileItems, controller: controller)
+                    : []
+                async let largeFiles: [FileItem] = largeFileDetector.detect(files: fileItems, controller: controller)
+                async let buildGroups: [DuplicateGroup] = config.enableBuildArtifacts
+                    ? buildArtifactDetector.detect(files: fileItems, controller: controller)
+                    : []
+                async let rawJPEGGroups: [DuplicateGroup] = rawJPEGDetector.detect(files: fileItems, controller: controller)
+
+                // Await in dependency-friendly order; each `await` resolves
+                // immediately if the underlying task already finished.
+                let dedupResults = await dedupGroups
+                let perceptualResults = await perceptualGroups
+                let largeFileResults = await largeFiles
+                let buildResults = await buildGroups
+                let rawJPEGResults = await rawJPEGGroups
+
+                let dedupCount = dedupResults.reduce(0) { $0 + $1.files.count }
+                for group in dedupResults {
+                    continuation.yield(.group(duplicateGroup: group))
+                }
+                for group in perceptualResults {
+                    continuation.yield(.group(duplicateGroup: group))
+                }
+                continuation.yield(.largeFiles(largeFileResults))
+                let largeFileBytes = largeFileResults.reduce(Int64(0)) { partial, item in
+                    let sum = partial.addingReportingOverflow(item.size)
+                    return sum.overflow ? Int64.max : sum.partialValue
+                }
+                for group in buildResults {
+                    continuation.yield(.group(duplicateGroup: group))
+                }
+                for group in rawJPEGResults {
                     continuation.yield(.group(duplicateGroup: group))
                 }
 
-                let allGroups = identicalGroups + dedupGroups + perceptualGroups + buildGroups + rawJPEGGroups
+                let allGroups = identicalGroups + dedupResults + perceptualResults + buildResults + rawJPEGResults
                 let groupCounts = Dictionary(grouping: allGroups, by: \.category).mapValues(\.count)
-                let totalDuplicates = allGroups.reduce(largeFiles.count) { $0 + $1.files.count }
+                let totalDuplicates = allGroups.reduce(largeFileResults.count) { $0 + $1.files.count }
                 let totalReclaimable = allGroups.reduce(largeFileBytes) { partial, group in
                     let sum = partial.addingReportingOverflow(group.totalSize)
                     return sum.overflow ? Int64.max : sum.partialValue
