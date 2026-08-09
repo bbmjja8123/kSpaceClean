@@ -142,6 +142,7 @@ def main():
         ("Core/Detect/AppCatalogService.swift", "Detect"),
         ("Core/Detect/AppSizeCalculator.swift", "Detect"),
         ("Core/Detect/ResidueDetector.swift", "Detect"),
+        ("Core/Detect/ResidueSmartSelector.swift", "Detect"),
         ("Core/Detect/BundleRuleStore.swift", "Detect"),
         ("Core/Detect/DirectorySizeCalculator.swift", "Detect"),
         ("Core/Rules/KFreshBundleRule.swift", "Rules"),
