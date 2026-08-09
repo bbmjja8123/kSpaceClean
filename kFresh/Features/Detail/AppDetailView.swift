@@ -68,8 +68,8 @@ struct AppDetailView: View {
             UninstallConfirmSheet(
                 app: viewModel.app,
                 residues: viewModel.residues,
-                onConfirm: { includeResidues in
-                    handleUninstall(includeResidues: includeResidues)
+                onConfirm: { selectedResidues in
+                    handleUninstall(selectedResidues: selectedResidues)
                 },
                 onCancel: { showConfirmSheet = false }
             )
@@ -185,13 +185,13 @@ struct AppDetailView: View {
 
     // MARK: - Actions
 
-    /// Dismisses the confirm sheet and drives the shared mover, honouring the
-    /// sheet's residue toggle (I1): when the user unchecks "残留文件", the
-    /// trash operation only touches the app bundle.
-    private func handleUninstall(includeResidues: Bool) {
+    /// Dismisses the confirm sheet and drives the shared mover with the exact
+    /// residue subset the user approved in the 4-level sheet. An empty array
+    /// means "uninstall the app body only" (every residue bucket unchecked).
+    private func handleUninstall(selectedResidues: [ResidueFile]) {
         showConfirmSheet = false
         Task {
-            let outcome = await viewModel.confirmUninstall(includeResidues: includeResidues)
+            let outcome = await viewModel.confirmUninstall(selectedResidues: selectedResidues)
             if case .success(let record) = outcome {
                 withAnimation(.easeInOut(duration: KFAnimation.durationNormal)) {
                     undoToast = UninstallToast.State(

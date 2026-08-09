@@ -278,7 +278,7 @@ public actor TrashMover {
         // the audit event. The record and success audit only report the
         // residues we actually deleted — failed residues must not be
         // counted as freed space or persisted in `record.residues`.
-        let filteredResidues = previewFilteredResidues(residues)
+        let filteredResidues = Self.previewFilteredResidues(residues)
         var deletedResidues: [ResidueFile] = []
         var residueFailures: [(url: URL, error: Error)] = []
         for residue in filteredResidues {
@@ -335,8 +335,13 @@ public actor TrashMover {
     /// Used by the App Intent shortcut (`UninstallAppIntent(dryRun: true)`)
     /// and by the "模拟卸载" button on ``AppDetailView`` to let users
     /// preview the impact of an uninstall before committing.
-    func dryRun(app: InstalledApp, residues: [ResidueFile]) -> DryRunReport {
-        let filtered = previewFilteredResidues(residues)
+    ///
+    /// `nonisolated` because the method is pure: it reads no actor state
+    /// (no backup, no history, no audit) so callers — including the App
+    /// Intent Shortcut runtime which has no actor affinity — can invoke it
+    /// synchronously without an `await`.
+    nonisolated func dryRun(app: InstalledApp, residues: [ResidueFile]) -> DryRunReport {
+        let filtered = Self.previewFilteredResidues(residues)
         return DryRunReport(
             appDisplayName: app.displayName,
             appBundleID: app.bundleID,
@@ -355,7 +360,11 @@ public actor TrashMover {
     /// hard-coded filter at the top of `moveToTrash` step 4. Promoted to a
     /// helper here so any future policy change has exactly one site to
     /// touch.
-    private func previewFilteredResidues(_ residues: [ResidueFile]) -> [ResidueFile] {
+    ///
+    /// `nonisolated static` because the function is pure (no actor state,
+    /// no I/O) — letting the `nonisolated` ``dryRun(app:residues:)`` call
+    /// it without an actor hop.
+    nonisolated private static func previewFilteredResidues(_ residues: [ResidueFile]) -> [ResidueFile] {
         residues.filter { $0.confidence > 0.5 }
     }
 
