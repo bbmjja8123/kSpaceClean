@@ -146,6 +146,8 @@ def main():
         ("Core/Detect/DirectorySizeCalculator.swift", "Detect"),
         ("Core/Rules/KFreshBundleRule.swift", "Rules"),
         ("Core/Rules/CaskParser.swift", "Rules"),
+        ("Core/Rules/ZhAppMapping.swift", "Rules"),
+        ("Core/Rules/MappingStore.swift", "Rules"),
         ("Core/Clean/TrashMover.swift", "Clean"),
         ("Core/Clean/ResidueScanner.swift", "Clean"),
         ("Core/Clean/AuditLogger.swift", "Clean"),
