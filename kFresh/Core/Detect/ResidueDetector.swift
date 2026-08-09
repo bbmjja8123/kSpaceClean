@@ -60,7 +60,8 @@ public actor ResidueDetector {
                     confidence: effectiveConfidence,
                     description: rule.appName,
                     isSystemLevel: false,
-                    isProtected: false
+                    isProtected: false,
+                    riskLevel: ResidueRiskLevel.classify(type: classify(path: expanded), isSystemLevel: false)
                 )
             }
             let systemResidues = rule.systemLevelPaths.map { template -> ResidueFile in
@@ -69,14 +70,16 @@ public actor ResidueDetector {
                 // I-2 fix: same convention as the user-level branch —
                 // halve on miss rather than multiplying by 0.7 always.
                 let baseConfidence = pathExists ? rule.confidence : rule.confidence * 0.5
+                let type = classify(path: template)
                 return ResidueFile(
                     url: url,
-                    type: classify(path: template),
+                    type: type,
                     sizeBytes: pathExists ? directorySize(url) : 0,
                     confidence: baseConfidence,
                     description: rule.appName,
                     isSystemLevel: true,
-                    isProtected: true
+                    isProtected: true,
+                    riskLevel: ResidueRiskLevel.classify(type: type, isSystemLevel: true)
                 )
             }
             return (ruleResidues + systemResidues).sorted { $0.confidence > $1.confidence }
@@ -126,7 +129,8 @@ public actor ResidueDetector {
                 confidence: exists(url) ? t.confidence : t.confidence * 0.5,
                 description: descriptionForType(t.type),
                 isSystemLevel: t.isSystemLevel,
-                isProtected: t.isSystemLevel
+                isProtected: t.isSystemLevel,
+                riskLevel: ResidueRiskLevel.classify(type: t.type, isSystemLevel: t.isSystemLevel)
             )
         }.sorted { $0.confidence > $1.confidence }
     }
