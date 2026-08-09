@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """Generate kWatch.xcodeproj/project.pbxproj manually — proper OpenStep plist format.
 
-6 targets: kWatch (app), kWatchIntents (appex), kWatchWidget (appex),
-kWatchControlWidget (appex), kWatchLiveActivity (appex), kWatchTests (unit test bundle).
+5 targets: kWatch (app), kWatchIntents (appex), kWatchWidget (appex),
+kWatchControlWidget (appex), kWatchTests (unit test bundle).
 SPM wiring for kFoundation (local package, relativePath ../kFoundation):
   MetricsKit -> app + intents + widget + controlwidget + tests; DesignSystem -> app + widget.
+
+Note: the previous kWatchLiveActivity appex target and its ActivityKit sources
+were removed in the D2 refactor (Live Activity replaced by WidgetKit
+TimelineProvider-based 'Live Widgets'). The macOS deployment target stays at
+13.0; Interactive Widget features are gated with @available(macOS 14.0, *) in
+the widget code.
 """
 
 import os, hashlib
@@ -97,14 +103,14 @@ def main():
         "Alerts", "App", "DI", "Dashboard", "Data", "Diagnostics", "History",
         "Integrations", "Intents", "LiveActivity", "MenuBar", "Onboarding", "Processes",
         "Resources", "Settings", "Shared", "State", "Store", "Tests", "Products",
-        "kWatchWidget", "kWatchLiveActivity", "kWatchControlWidget",
+        "kWatchWidget", "kWatchControlWidget",
     ]
     group_ids = {}
     for gname in group_names:
         gid = add(make_group(gname), f"grp_{gname}")
         group_ids[gname] = gid
 
-    # ========== App target sources (all kWatch sources except widget/liveactivity/test dirs) ==========
+    # ========== App target sources (all kWatch sources except widget/test dirs) ==========
     app_files = [
         ("Alerts/AlertEditorView.swift", "Alerts"),
         ("Alerts/AlertsView.swift", "Alerts"),
@@ -135,8 +141,6 @@ def main():
         ("History/HistoryViewModel.swift", "History"),
         ("History/TrendChart.swift", "History"),
         ("Integrations/KWatchSpotlightIndexer.swift", "Integrations"),
-        ("LiveActivity/LiveActivityCoordinator.swift", "LiveActivity"),
-        ("LiveActivity/MetricActivityAttributes.swift", "LiveActivity"),
         ("Intents/ExportDiagnosticsIntent.swift", "Intents"),
         ("Intents/IntentService.swift", "Intents"),
         ("Intents/KWatchAppShortcuts.swift", "Intents"),
@@ -215,13 +219,6 @@ def main():
     widget_shared = ["Shared/AppGroupConfiguration.swift", "Shared/MenuBarMode.swift", "Shared/SharedSnapshot.swift",
                      "Shared/SnapshotWriter.swift"]
 
-    # ========== Live Activity appex sources ==========
-    liveactivity_files = [
-        "kWatchLiveActivity/MetricLiveActivity.swift",
-    ]
-    liveactivity_shared = ["Shared/AppGroupConfiguration.swift", "Shared/MenuBarMode.swift", "Shared/SharedSnapshot.swift",
-                           "LiveActivity/MetricActivityAttributes.swift"]
-
     # ========== Control Widget appex sources ==========
     controlwidget_files = [
         "kWatchControlWidget/ControlWidget.swift",
@@ -281,26 +278,6 @@ def main():
         bf_id = add(make_buildfile(ref_id), f"bf_widget_{sf_path}")
         widget_build_files.append(bf_id)
 
-    # Live Activity appex build files
-    liveactivity_build_files = []
-    for sf_path in liveactivity_files:
-        fname = os.path.basename(sf_path)
-        gid = group_ids["kWatchLiveActivity"]
-        ref_id = add(make_fileref(fname, sf_path, last="sourcecode.swift"), f"ref_{sf_path}")
-        bf_id = add(make_buildfile(ref_id), f"bf_{sf_path}")
-        objects[gid][1]["children"].append((ref_id, fname))
-        liveactivity_build_files.append(bf_id)
-        file_ref_of_path[sf_path] = ref_id
-    for sf_path in liveactivity_shared:
-        if sf_path not in file_ref_of_path:
-            # MetricActivityAttributes.swift is in LiveActivity/ of main app
-            fname = os.path.basename(sf_path)
-            ref_id = add(make_fileref(fname, sf_path, last="sourcecode.swift"), f"ref_{sf_path}")
-            file_ref_of_path[sf_path] = ref_id
-        ref_id = file_ref_of_path[sf_path]
-        bf_id = add(make_buildfile(ref_id), f"bf_la_{sf_path}")
-        liveactivity_build_files.append(bf_id)
-
     # Control Widget appex build files
     controlwidget_build_files = []
     for sf_path in controlwidget_files:
@@ -338,13 +315,10 @@ def main():
         ref_id = add(make_fileref(fname, fpath, last=lkft), f"ref_{fpath}")
         objects[root_group_id][1]["children"].append((ref_id, fname))
 
-    # Widget & LiveActivity Info.plist references (in their respective groups)
+    # Widget Info.plist references (in their respective groups)
     widget_plist_ref = add(make_fileref("Info.plist", "kWatchWidget/Info.plist",
                                          last="text.plist.xml"), "ref_widget_info_plist")
     objects[group_ids["kWatchWidget"]][1]["children"].append((widget_plist_ref, "Info.plist"))
-    la_plist_ref = add(make_fileref("Info.plist", "kWatchLiveActivity/Info.plist",
-                                     last="text.plist.xml"), "ref_la_info_plist")
-    objects[group_ids["kWatchLiveActivity"]][1]["children"].append((la_plist_ref, "Info.plist"))
     ctrl_plist_ref = add(make_fileref("Info.plist", "kWatchControlWidget/Info.plist",
                                        last="text.plist.xml"), "ref_ctrl_info_plist")
     objects[group_ids["kWatchControlWidget"]][1]["children"].append((ctrl_plist_ref, "Info.plist"))
@@ -396,9 +370,6 @@ def main():
     widget_product_id = add(make_fileref("kWatchWidget.appex", "kWatchWidget.appex",
                                            explicit='"wrapper.app-extension"', includeInIndex=0,
                                            sourceTree="BUILT_PRODUCTS_DIR"), "prod_widget")
-    la_product_id = add(make_fileref("kWatchLiveActivity.appex", "kWatchLiveActivity.appex",
-                                      explicit='"wrapper.app-extension"', includeInIndex=0,
-                                      sourceTree="BUILT_PRODUCTS_DIR"), "prod_la")
     ctrl_product_id = add(make_fileref("kWatchControlWidget.appex", "kWatchControlWidget.appex",
                                         explicit='"wrapper.app-extension"', includeInIndex=0,
                                         sourceTree="BUILT_PRODUCTS_DIR"), "prod_ctrl")
@@ -410,7 +381,6 @@ def main():
         (app_product_id, "kWatch.app"),
         (appex_product_id, "kWatchIntents.appex"),
         (widget_product_id, "kWatchWidget.appex"),
-        (la_product_id, "kWatchLiveActivity.appex"),
         (ctrl_product_id, "kWatchControlWidget.appex"),
         (test_product_id, "kWatchTests.xctest"),
     ]
@@ -432,11 +402,10 @@ def main():
 
     # Embed App Extensions phase — copies each .appex into kWatch.app/Contents/PlugIns/
     # so the system loads them at runtime. Without this, the appex targets build but
-    # never reach the bundle, and Widgets / App Intents / Live Activities / Control
-    # Widget all silently fail to register with macOS.
+    # never reach the bundle, and Widgets / App Intents / Control Widget all silently
+    # fail to register with macOS.
     embed_appex_bf_id = add(make_buildfile(appex_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_appex")
     embed_widget_bf_id = add(make_buildfile(widget_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_widget")
-    embed_la_bf_id = add(make_buildfile(la_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_la")
     embed_ctrl_bf_id = add(make_buildfile(ctrl_product_id, settings={"ATTRIBUTES": ["RemoveHeadersOnCopy"]}), "bf_embed_ctrl")
     main_embed_phase_id = add(("PBXCopyFilesBuildPhase", {
         "buildActionMask": 2147483647,
@@ -445,7 +414,6 @@ def main():
         "files": [
             (embed_appex_bf_id, ""),
             (embed_widget_bf_id, ""),
-            (embed_la_bf_id, ""),
             (embed_ctrl_bf_id, ""),
         ],
         "name": "Embed App Extensions",
@@ -488,20 +456,6 @@ def main():
     widget_resources_phase_id = add(("PBXResourcesBuildPhase", {
         "buildActionMask": 2147483647, "files": [], "runOnlyForDeploymentPostprocessing": 0
     }), "phase_widget_resources")
-
-    # Live Activity appex build phases
-    la_sources_phase_id = add(("PBXSourcesBuildPhase", {
-        "buildActionMask": 2147483647, "files": [(fid, "") for fid in liveactivity_build_files],
-        "runOnlyForDeploymentPostprocessing": 0
-    }), "phase_la_sources")
-    la_frameworks_phase_id = add(("PBXFrameworksBuildPhase", {
-        "buildActionMask": 2147483647,
-        "files": [],
-        "runOnlyForDeploymentPostprocessing": 0
-    }), "phase_la_frameworks")
-    la_resources_phase_id = add(("PBXResourcesBuildPhase", {
-        "buildActionMask": 2147483647, "files": [], "runOnlyForDeploymentPostprocessing": 0
-    }), "phase_la_resources")
 
     # Control Widget appex build phases
     ctrl_sources_phase_id = add(("PBXSourcesBuildPhase", {
@@ -744,61 +698,6 @@ def main():
         "defaultConfigurationIsVisible": 0, "defaultConfigurationName": "Release"
     }), "configlist_widget")
 
-    # Live Activity appex configurations (macOS 14+ for ActivityKit)
-    la_debug_id = make_target_config("Debug", {
-        "APPLICATION_EXTENSION_API_ONLY": "YES",
-        "CODE_SIGN_STYLE": "Automatic",
-        "CURRENT_PROJECT_VERSION": "1",
-        "DEVELOPMENT_TEAM": '""',
-        "GENERATE_INFOPLIST_FILE": "YES",
-        "INFOPLIST_FILE": "kWatchLiveActivity/Info.plist",
-        "INFOPLIST_KEY_CFBundleDisplayName": "kWatchLiveActivity",
-        "INFOPLIST_KEY_CFBundleIdentifier": "app.kraftly.kwatch.activity",
-        "INFOPLIST_KEY_CFBundlePackageType": '"XPC!"',
-        "INFOPLIST_KEY_CFBundleShortVersionString": '"1.0"',
-        "INFOPLIST_KEY_CFBundleVersion": "1",
-        "INFOPLIST_KEY_NSExtensionPointIdentifier": "com.apple.activitykit-extension",
-        "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/../Frameworks",
-                                    "@executable_path/../../../../Frameworks"],
-        "MACOSX_DEPLOYMENT_TARGET": "14.0",
-        "MARKETING_VERSION": "1.0",
-        "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kwatch.activity",
-        "PRODUCT_NAME": "$(TARGET_NAME)",
-        "SDKROOT": "macosx",
-        "SWIFT_EMIT_LOC_STRINGS": "YES",
-        "SWIFT_VERSION": "5.0",
-    }, "config_la_debug")
-
-    la_release_id = make_target_config("Release", {
-        "APPLICATION_EXTENSION_API_ONLY": "YES",
-        "CODE_SIGN_IDENTITY": '"-"',
-        "CODE_SIGN_STYLE": "Automatic",
-        "CURRENT_PROJECT_VERSION": "1",
-        "DEVELOPMENT_TEAM": '""',
-        "GENERATE_INFOPLIST_FILE": "YES",
-        "INFOPLIST_FILE": "kWatchLiveActivity/Info.plist",
-        "INFOPLIST_KEY_CFBundleDisplayName": "kWatchLiveActivity",
-        "INFOPLIST_KEY_CFBundleIdentifier": "app.kraftly.kwatch.activity",
-        "INFOPLIST_KEY_CFBundlePackageType": '"XPC!"',
-        "INFOPLIST_KEY_CFBundleShortVersionString": '"1.0"',
-        "INFOPLIST_KEY_CFBundleVersion": "1",
-        "INFOPLIST_KEY_NSExtensionPointIdentifier": "com.apple.activitykit-extension",
-        "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/../Frameworks",
-                                    "@executable_path/../../../../Frameworks"],
-        "MACOSX_DEPLOYMENT_TARGET": "14.0",
-        "MARKETING_VERSION": "1.0",
-        "PRODUCT_BUNDLE_IDENTIFIER": "app.kraftly.kwatch.activity",
-        "PRODUCT_NAME": "$(TARGET_NAME)",
-        "SDKROOT": "macosx",
-        "SWIFT_EMIT_LOC_STRINGS": "YES",
-        "SWIFT_VERSION": "5.0",
-    }, "config_la_release")
-
-    la_config_list_id = add(("XCConfigurationList", {
-        "buildConfigurations": [(la_debug_id, "Debug"), (la_release_id, "Release")],
-        "defaultConfigurationIsVisible": 0, "defaultConfigurationName": "Release"
-    }), "configlist_la")
-
     # Control Widget appex configurations
     ctrl_debug_id = make_target_config("Debug", {
         "APPLICATION_EXTENSION_API_ONLY": "YES",
@@ -907,12 +806,10 @@ def main():
 
     dep_app_intents = make_dep("kWatchIntents", "target_kWatchIntents", "cip_app_intents", "dep_app_intents")
     dep_app_widget = make_dep("kWatchWidget", "target_kWatchWidget", "cip_app_widget", "dep_app_widget")
-    dep_app_la = make_dep("kWatchLiveActivity", "target_kWatchLiveActivity", "cip_app_la", "dep_app_la")
     dep_app_ctrl = make_dep("kWatchControlWidget", "target_kWatchControlWidget", "cip_app_ctrl", "dep_app_ctrl")
     dep_test_app = make_dep("kWatch", "target_kWatch", "cip_test_app", "dep_test_app")
     dep_test_intents = make_dep("kWatchIntents", "target_kWatchIntents", "cip_test_intents", "dep_test_intents")
     dep_test_widget = make_dep("kWatchWidget", "target_kWatchWidget", "cip_test_widget", "dep_test_widget")
-    dep_test_la = make_dep("kWatchLiveActivity", "target_kWatchLiveActivity", "cip_test_la", "dep_test_la")
     dep_test_ctrl = make_dep("kWatchControlWidget", "target_kWatchControlWidget", "cip_test_ctrl", "dep_test_ctrl")
 
     # ========== Targets ==========
@@ -929,7 +826,6 @@ def main():
         "buildRules": [],
         "dependencies": ([(dep_app_intents, "kWatchIntents"),
                           (dep_app_widget, "kWatchWidget"),
-                          (dep_app_la, "kWatchLiveActivity"),
                           (dep_app_ctrl, "kWatchControlWidget")] if INCLUDE_APPEX else []),
         "packageProductDependencies": [(prod_metrics_id, "MetricsKit"), (prod_ds_id, "DesignSystem")],
     }), "target_kWatch")
@@ -963,20 +859,6 @@ def main():
             "packageProductDependencies": [(prod_metrics_id, "MetricsKit"), (prod_ds_id, "DesignSystem")],
         }), "target_kWatchWidget")
 
-        la_target_id = add(("PBXNativeTarget", {
-            "name": "kWatchLiveActivity",
-            "productName": "kWatchLiveActivity",
-            "productReference": la_product_id,
-            "productType": '"com.apple.product-type.app-extension"',
-            "buildConfigurationList": la_config_list_id,
-            "buildPhases": [(la_sources_phase_id, "Sources"),
-                            (la_frameworks_phase_id, "Frameworks"),
-                            (la_resources_phase_id, "Resources")],
-            "buildRules": [],
-            "dependencies": [],
-            "packageProductDependencies": [(prod_metrics_id, "MetricsKit")],
-        }), "target_kWatchLiveActivity")
-
         ctrl_target_id = add(("PBXNativeTarget", {
             "name": "kWatchControlWidget",
             "productName": "kWatchControlWidget",
@@ -996,7 +878,6 @@ def main():
         if INCLUDE_APPEX:
             test_deps.append((dep_test_intents, "kWatchIntents"))
             test_deps.append((dep_test_widget, "kWatchWidget"))
-            test_deps.append((dep_test_la, "kWatchLiveActivity"))
             test_deps.append((dep_test_ctrl, "kWatchControlWidget"))
         test_target_id = add(("PBXNativeTarget", {
             "name": "kWatchTests",
@@ -1016,7 +897,6 @@ def main():
     if INCLUDE_APPEX:
         project_targets.append((appex_target_id, "kWatchIntents"))
         project_targets.append((widget_target_id, "kWatchWidget"))
-        project_targets.append((la_target_id, "kWatchLiveActivity"))
         project_targets.append((ctrl_target_id, "kWatchControlWidget"))
     if INCLUDE_TESTS:
         project_targets.append((test_target_id, "kWatchTests"))
@@ -1025,7 +905,6 @@ def main():
     if INCLUDE_APPEX:
         target_attrs[appex_target_id] = {"CreatedOnToolsVersion": "14.3"}
         target_attrs[widget_target_id] = {"CreatedOnToolsVersion": "14.3"}
-        target_attrs[la_target_id] = {"CreatedOnToolsVersion": "14.3"}
         target_attrs[ctrl_target_id] = {"CreatedOnToolsVersion": "14.3"}
     if INCLUDE_TESTS:
         target_attrs[test_target_id] = {"CreatedOnToolsVersion": "14.3", "TestTargetID": main_target_id}
@@ -1187,9 +1066,8 @@ def main():
     print(f"Appex build files: {len(appex_build_files)}")
     print(f"Widget build files: {len(widget_build_files)}")
     print(f"ControlWidget build files: {len(controlwidget_build_files)}")
-    print(f"LiveActivity build files: {len(liveactivity_build_files)}")
     print(f"Test build files: {len(test_build_files)}")
-    print(f"Target IDs: kWatch={oid('target_kWatch')} kWatchIntents={oid('target_kWatchIntents')} kWatchWidget={oid('target_kWatchWidget')} kWatchLiveActivity={oid('target_kWatchLiveActivity')} kWatchControlWidget={oid('target_kWatchControlWidget')} kWatchTests={oid('target_kWatchTests')}")
+    print(f"Target IDs: kWatch={oid('target_kWatch')} kWatchIntents={oid('target_kWatchIntents')} kWatchWidget={oid('target_kWatchWidget')} kWatchControlWidget={oid('target_kWatchControlWidget')} kWatchTests={oid('target_kWatchTests')}")
 
 if __name__ == "__main__":
     main()

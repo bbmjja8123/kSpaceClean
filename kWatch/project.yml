@@ -23,8 +23,6 @@ targets:
           - "UITests/**"
           - "kWatchWidget/**"
           - "kWatchWidgetTests/**"
-          - "kWatchLiveActivity/**"
-          - "kWatchLiveActivityTests/**"
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch
       INFOPLIST_FILE: Info.plist
@@ -48,19 +46,6 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch.widget
       MACOSX_DEPLOYMENT_TARGET: "13.0"
-      SWIFT_VERSION: "5.9"
-    dependencies:
-      - package: kFoundation
-        product: MetricsKit
-
-  kWatchLiveActivity:
-    type: app-extension
-    platform: macOS
-    sources:
-      - kWatchLiveActivity
-    settings:
-      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch.liveactivity
-      MACOSX_DEPLOYMENT_TARGET: "14.0"
       SWIFT_VERSION: "5.9"
     dependencies:
       - package: kFoundation

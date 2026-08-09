@@ -1,6 +1,9 @@
 import Foundation
 import MetricsKit
 import Combine
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
 
 /// Owns the long-lived sampling and persistence work for one app launch.
 @MainActor
@@ -114,16 +117,26 @@ public final class AppCoordinator: ObservableObject {
             case let .bytesPerSecond(v): numeric = Double(v)
             default: return
             }
-            let trend: LiveActivityCoordinator.Trend =
+            let trend: AlertTrend =
                 alert.op == .above ? .up : .down
-            Task {
-                await LiveActivityCoordinator.shared.startAlert(
-                    kind: alert.kind,
-                    value: numeric,
-                    trend: trend,
-                    timestamp: timestamp
-                )
+            Task { @MainActor in
+                // Refresh all configured widgets so the new metric value shows up
+                // in the Notification Center / Lock Screen widget without waiting
+                // for the next TimelineProvider tick. Available on macOS 13+; the
+                // `#if canImport(WidgetKit)` guard keeps the type-checker happy
+                // on any future SDK that might strip WidgetKit.
+                #if canImport(WidgetKit)
+                WidgetCenter.shared.reloadAllTimelines()
+                #endif
+                _ = trend
             }
         }
     }
+
+    /// Direction of change for an alert, surfaced from the alert-evaluator
+    /// hot path. Currently unused after the Live Activity coordinator was
+    /// removed (D3 refactor: Live Activity replaced by WidgetKit reload),
+    /// but kept so the surrounding call site stays compilable if we ever
+    /// surface the trend inside the widget TimelineEntry.
+    private enum AlertTrend { case up, down }
 }
