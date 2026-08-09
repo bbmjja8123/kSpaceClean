@@ -387,6 +387,10 @@
 		isa = PBXBuildFile;
 		fileRef = C695965927B7B5AB8969DD07;
 	};
+	D3DE92DA1BB077F979CD55B0 /* D3DE92DA1BB077F979CD55B0 */ = {
+		isa = PBXBuildFile;
+		fileRef = E95DBFFA04C5C810AAB440CA;
+	};
 	D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */ = {
 		isa = PBXBuildFile;
 		fileRef = 92285B8C36BFE1BC01B56B40;
@@ -1269,6 +1273,13 @@
 		path = ../kFoundation/Sources/DesignSystem/Animation.swift;
 		sourceTree = "<group>";
 	};
+	E95DBFFA04C5C810AAB440CA /* ResidueSmartSelectorTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueSmartSelectorTests.swift;
+		path = Tests/DetectTests/ResidueSmartSelectorTests.swift;
+		sourceTree = "<group>";
+	};
 	EA66E191F044FFC4D9668848 /* LoadingStateView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1497,6 +1508,7 @@
 			90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */,
 			BD8372016B507E6E4A7A99AC /* AppSourceClassifierTests.swift */,
 			10F292C7B928DAA8929F337E /* DirectorySizeCalculatorTests.swift */,
+			E95DBFFA04C5C810AAB440CA /* ResidueSmartSelectorTests.swift */,
 		);
 		name = DetectTests;
 		sourceTree = "<group>";
@@ -1981,6 +1993,7 @@
 			2020927CA05A06C999931B56 /* 2020927CA05A06C999931B56 */,
 			F7BFFF484BD25D346DC5325E /* F7BFFF484BD25D346DC5325E */,
 			3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */,
+			D3DE92DA1BB077F979CD55B0 /* D3DE92DA1BB077F979CD55B0 */,
 			ABAE0D7916C85CCAB7B3C1B6 /* ABAE0D7916C85CCAB7B3C1B6 */,
 			1F2330F83330CD811E7D7A29 /* 1F2330F83330CD811E7D7A29 */,
 			2D09261674AC9876BACDA17F /* 2D09261674AC9876BACDA17F */,

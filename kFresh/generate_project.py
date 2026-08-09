@@ -221,6 +221,7 @@ def main():
             "ResidueDetectorTests.swift",
             "AppSourceClassifierTests.swift",
             "DirectorySizeCalculatorTests.swift",
+            "ResidueSmartSelectorTests.swift",
         ],
         "RulesTests": [
             "CaskParserTests.swift",
