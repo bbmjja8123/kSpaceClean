@@ -32,6 +32,7 @@ public actor ScanOrchestrator {
     private let largeFileDetector: LargeFileDetector
     private let buildArtifactDetector: BuildArtifactDetector
     private let rawJPEGDetector: RawJPEGPairDetector
+    private let nameHeuristicDetector: NameHeuristicDetector
     private let repository: DuplicateRepositoryProtocol
     private let incrementalIndex: (any IncrementalIndexProtocol)?
 
@@ -47,6 +48,7 @@ public actor ScanOrchestrator {
         largeFileDetector: LargeFileDetector = LargeFileDetector(),
         buildArtifactDetector: BuildArtifactDetector = BuildArtifactDetector(),
         rawJPEGDetector: RawJPEGPairDetector = RawJPEGPairDetector(),
+        nameHeuristicDetector: NameHeuristicDetector = NameHeuristicDetector(),
         repository: DuplicateRepositoryProtocol = DuplicateRepositoryCoreData(),
         incrementalIndex: (any IncrementalIndexProtocol)? = nil
     ) {
@@ -58,6 +60,9 @@ public actor ScanOrchestrator {
         self.largeFileDetector = largeFileDetector
         self.buildArtifactDetector = buildArtifactDetector
         self.rawJPEGDetector = rawJPEGDetector
+        self.buildArtifactDetector = buildArtifactDetector
+        self.rawJPEGDetector = rawJPEGDetector
+        self.nameHeuristicDetector = nameHeuristicDetector
         self.repository = repository
         self.incrementalIndex = incrementalIndex
     }
@@ -170,6 +175,12 @@ public actor ScanOrchestrator {
                     filesScanned: allURLs.count,
                     duplicatesFound: identicalCount
                 )))
+                continuation.yield(.progress(ScanProgress(
+                    phase: .nameHeuristic,
+                    progress: 0.4,
+                    filesScanned: allURLs.count,
+                    duplicatesFound: identicalCount
+                )))
 
                 async let dedupGroups: [DuplicateGroup] = dirDedupDetector.detect(
                     allURLs,
@@ -185,6 +196,7 @@ public actor ScanOrchestrator {
                     ? buildArtifactDetector.detect(files: fileItems, controller: controller)
                     : []
                 async let rawJPEGGroups: [DuplicateGroup] = rawJPEGDetector.detect(files: fileItems, controller: controller)
+                async let nameHeuristicGroups: [DuplicateGroup] = nameHeuristicDetector.detect(files: fileItems, controller: controller)
 
                 // Await in dependency-friendly order; each `await` resolves
                 // immediately if the underlying task already finished.
@@ -193,6 +205,7 @@ public actor ScanOrchestrator {
                 let largeFileResults = await largeFiles
                 let buildResults = await buildGroups
                 let rawJPEGResults = await rawJPEGGroups
+                let nameHeuristicResults = await nameHeuristicGroups
 
                 let dedupCount = dedupResults.reduce(0) { $0 + $1.files.count }
                 for group in dedupResults {
@@ -212,8 +225,11 @@ public actor ScanOrchestrator {
                 for group in rawJPEGResults {
                     continuation.yield(.group(duplicateGroup: group))
                 }
+                for group in nameHeuristicResults {
+                    continuation.yield(.group(duplicateGroup: group))
+                }
 
-                let allGroups = identicalGroups + dedupResults + perceptualResults + buildResults + rawJPEGResults
+                let allGroups = identicalGroups + dedupResults + perceptualResults + buildResults + rawJPEGResults + nameHeuristicResults
                 let groupCounts = Dictionary(grouping: allGroups, by: \.category).mapValues(\.count)
                 let totalDuplicates = allGroups.reduce(largeFileResults.count) { $0 + $1.files.count }
                 let totalReclaimable = allGroups.reduce(largeFileBytes) { partial, group in

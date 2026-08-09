@@ -20,6 +20,7 @@ public enum ScanPhase: String, Sendable {
     case largeFiles
     case buildArtifacts
     case rawJPEG
+    case nameHeuristic
     case completed
 }
 

@@ -8,6 +8,7 @@ public enum DuplicateCategory: String, Sendable, Codable, CaseIterable {
     case largeFile
     case buildArtifact
     case rawJPEG
+    case nameHeuristic
 }
 
 #if canImport(AppIntents)
@@ -68,6 +69,10 @@ public enum CategoryEvidence: Sendable, Codable {
     case rawJPEGPair(rawFile: FileItem, jpegFile: FileItem, exifMatch: Bool)
     case buildArtifact(pattern: BuildPattern)
     case largeFile
+    /// Multiple files share the same basename stem (e.g. "IMG_1234.jpg"
+    /// and "IMG_1234 (1).jpg") across distinct folders — likely
+    /// re-downloads / re-exports the user wants to consolidate.
+    case nameHeuristic(stem: String, variantCount: Int)
 }
 
 public struct DuplicateGroup: Sendable, Identifiable, Codable {

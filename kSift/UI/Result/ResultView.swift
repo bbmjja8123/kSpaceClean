@@ -504,7 +504,7 @@ struct GroupRowView: View {
     /// in-place for the perceptual category.
     private var showsThumbnailStrip: Bool {
         switch group.category {
-        case .perceptual, .directoryDedup, .identical:
+        case .perceptual, .directoryDedup, .identical, .nameHeuristic:
             return true
         case .largeFile, .buildArtifact, .rawJPEG:
             return false
