@@ -26,6 +26,12 @@ public final class ScanViewModel: ObservableObject {
     /// `ResultView` (recreated per navigation) can pick them up.
     public var onScanCompleted: (([DuplicateGroup]) -> Void)?
 
+    /// True when the user has paused the current scan. Read by the
+    /// progress view to swap the Pause button for Resume. Bridges the
+    /// non-Sendable `ScanController` to SwiftUI safely via a fresh read
+    /// each access.
+    public var controllerIsPaused: Bool { controller.isPaused }
+
     public init(orchestrator: ScanOrchestrator? = nil, paidFlag: PaidUserFlag? = nil) {
         self.paidFlag = paidFlag
         // Build a paid-aware orchestrator when a flag is provided, otherwise
@@ -118,5 +124,20 @@ public final class ScanViewModel: ObservableObject {
         elapsedTask = nil
         // Return to idle immediately; the cancelled stream must not publish a result.
         scanState = .idle
+    }
+
+    /// Pauses an in-flight scan. Detectors suspend at the next safe
+    /// checkpoint via `ScanController.awaitResumed()`. No-op when not
+    /// scanning.
+    public func pauseScan() {
+        guard case .scanning = scanState else { return }
+        controller.pause()
+    }
+
+    /// Resumes a previously-paused scan. Wakes every detector suspended
+    /// on the pause gate. No-op when not paused.
+    public func resumeScan() {
+        guard controller.isPaused else { return }
+        controller.resume()
     }
 }

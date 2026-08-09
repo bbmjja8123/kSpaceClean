@@ -53,6 +53,11 @@
 "Review Results" = "Review Results";
 "Rescan" = "Rescan";
 "Cancel scan" = "Cancel scan";
+"Paused" = "Paused";
+"Pause" = "Pause";
+"Resume" = "Resume";
+"Resume scan" = "Resume scan";
+"Detecting renamed copies..." = "Detecting renamed copies...";
 "Elapsed" = "Elapsed";
 "Groups found" = "Groups found";
 "Current folder" = "Current folder";

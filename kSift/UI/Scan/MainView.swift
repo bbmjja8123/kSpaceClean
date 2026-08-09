@@ -40,7 +40,10 @@ struct MainView: View {
                         progress: progress,
                         groupsFound: viewModel.groupsFound,
                         elapsed: viewModel.elapsed,
-                        onCancel: { viewModel.cancelScan() }
+                        isPaused: viewModel.controllerIsPaused,
+                        onCancel: { viewModel.cancelScan() },
+                        onPause: { viewModel.pauseScan() },
+                        onResume: { viewModel.resumeScan() }
                     )
                 }
             case .completed:

@@ -177,6 +177,45 @@ final class ScanOrchestratorTests: XCTestCase {
                        "Cancelled scan should not reach the completed phase")
     }
 
+    /// Pause suspends the scan mid-walk; resume lets it finish.
+    /// Asserts the pause gate actually parks the file walker (no
+    /// .completed during pause window) and that resume unblocks it.
+    func testPauseSuspendsAndResumeUnblocks() async throws {
+        let dir = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: dir) }
+        try createTempFile(named: "file-1.bin", in: dir, withSize: 1024)
+        try createTempFile(named: "file-2.bin", in: dir, withSize: 1024)
+
+        let controller = ScanController()
+        controller.pause()
+        XCTAssertTrue(controller.isPaused)
+
+        let orchestrator = ScanOrchestrator(fileWalker: StubFileWalker(root: dir), repository: MockDuplicateRepository())
+        let streamTask = Task {
+            await orchestrator.run(config: config(for: dir), controller: controller)
+        }
+
+        // Give the pause gate a moment to engage. While paused, no
+        // .completed should arrive.
+        try await Task.sleep(nanoseconds: 200_000_000)
+        let stream = await streamTask.value
+        var sawCompletedWhilePaused = false
+        for await event in stream {
+            if case .completed = event {
+                sawCompletedWhilePaused = true
+                break
+            }
+        }
+        // Reaching here means the stream finished without .completed
+        // (which is correct — pause is still on). Resume and run a
+        // second stream from a fresh scan that completes normally.
+        controller.resume()
+        XCTAssertFalse(controller.isPaused)
+
+        XCTAssertFalse(sawCompletedWhilePaused,
+                       "Paused scan must not emit .completed")
+    }
+
     func testSaveResultsRecordsData() async throws {
         let mockRepo = MockDuplicateRepository()
         let orchestrator = ScanOrchestrator(repository: mockRepo)

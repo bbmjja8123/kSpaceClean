@@ -53,6 +53,11 @@
 "Review Results" = "查看结果";
 "Rescan" = "重新扫描";
 "Cancel scan" = "取消扫描";
+"Paused" = "已暂停";
+"Pause" = "暂停";
+"Resume" = "继续";
+"Resume scan" = "继续扫描";
+"Detecting renamed copies..." = "正在检测重命名副本...";
 "Elapsed" = "已用时";
 "Groups found" = "已发现";
 "Current folder" = "当前目录";

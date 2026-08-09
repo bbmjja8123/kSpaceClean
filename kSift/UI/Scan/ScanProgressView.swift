@@ -5,15 +5,26 @@ struct ScanProgressView: View {
     let progress: ScanProgress
     let groupsFound: Int
     let elapsed: TimeInterval
+    let isPaused: Bool
     let onCancel: () -> Void
+    let onPause: () -> Void
+    let onResume: () -> Void
 
     var body: some View {
         VStack(spacing: 24) {
             ProgressRing(progress: progress.progress)
                 .frame(width: 120, height: 120)
+                .overlay {
+                    if isPaused {
+                        Image(systemName: "pause.fill")
+                            .font(.system(size: 40))
+                            .foregroundColor(.orange)
+                    }
+                }
 
-            Text(phaseTitle)
+            Text(isPaused ? NSLocalizedString("Paused", comment: "Scan paused title") : phaseTitle)
                 .font(.headline)
+                .foregroundColor(isPaused ? .orange : .primary)
             Text(String(format: NSLocalizedString("%lld files scanned", comment: "Scanned file count"), progress.filesScanned))
                 .foregroundColor(.secondary)
 
@@ -50,8 +61,27 @@ struct ScanProgressView: View {
                 .progressViewStyle(.linear)
                 .frame(width: 200)
 
-            Button(NSLocalizedString("Cancel scan", comment: "Cancel scan button"), role: .destructive, action: onCancel)
-                .tint(.red)
+            HStack(spacing: 12) {
+                if isPaused {
+                    Button {
+                        onResume()
+                    } label: {
+                        Label(NSLocalizedString("Resume", comment: "Resume scan button"),
+                              systemImage: "play.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                } else {
+                    Button {
+                        onPause()
+                    } label: {
+                        Label(NSLocalizedString("Pause", comment: "Pause scan button"),
+                              systemImage: "pause.fill")
+                    }
+                    .buttonStyle(.bordered)
+                }
+                Button(NSLocalizedString("Cancel scan", comment: "Cancel scan button"), role: .destructive, action: onCancel)
+                    .tint(.red)
+            }
         }
         .padding()
     }
@@ -87,6 +117,7 @@ struct ScanProgressView: View {
         case .largeFiles: return NSLocalizedString("Finding large files...", comment: "Scan phase title")
         case .buildArtifacts: return NSLocalizedString("Identifying build artifacts...", comment: "Scan phase title")
         case .rawJPEG: return NSLocalizedString("Matching RAW + JPEG pairs...", comment: "Scan phase title")
+        case .nameHeuristic: return NSLocalizedString("Detecting renamed copies...", comment: "Scan phase title")
         case .completed: return NSLocalizedString("Scan complete!", comment: "Scan phase title")
         }
     }

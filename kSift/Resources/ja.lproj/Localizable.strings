@@ -59,6 +59,11 @@
 "Review Results" = "結果を確認";
 "Rescan" = "再スキャン";
 "Cancel scan" = "スキャンをキャンセル";
+"Paused" = "一時停止中";
+"Pause" = "一時停止";
+"Resume" = "再開";
+"Resume scan" = "スキャンを再開";
+"Detecting renamed copies..." = "リネームされた複製を検出中...";
 "Elapsed" = "経過時間";
 "Groups found" = "見つかったグループ";
 "Current folder" = "現在のフォルダ";

@@ -19,6 +19,11 @@ public actor FileWalker: FileWalkerProtocol {
         let directories = target.directories.map { ($0 as NSString).expandingTildeInPath }
 
         for dir in directories {
+            // Honor pause at the top of each root directory. Enumeration
+            // itself doesn't have a safe checkpoint mid-directory, so we
+            // suspend before opening it; the user can resume and we'll
+            // pick up at this same loop iteration.
+            await controller.awaitResumed()
             guard !controller.isCancelled else { return collector.files }
             let url = URL(fileURLWithPath: dir)
             try await fileEnumerator.enumerate(
