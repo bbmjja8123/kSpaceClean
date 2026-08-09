@@ -17,6 +17,10 @@ struct RootView: View {
     // model, so every user-initiated scan ran a pipeline nothing on screen
     // was watching. All three triggers now route here.
     @StateObject private var scanResultsViewModel = ScanResultsViewModel(engine: ScanEngine())
+    // v1.5: Smart Care (Phase B) — orchestrator + SwiftUI VM owns the
+    // 3-step state machine. Attach lazily once `scanResultsViewModel`
+    // is reachable (see `.onAppear` below).
+    @StateObject private var smartCareViewModel = SmartCareViewModel()
 
     var body: some View {
         GeometryReader { geo in
@@ -91,6 +95,12 @@ struct RootView: View {
             }
         )
         .modifier(RootKeyboardShortcuts(appState: appState))
+        .onAppear {
+            // Late-bind the Smart Care VM to the scan VM. Two @StateObject
+            // can't reference each other at init time; `.attach` resolves the
+            // dependency once both views have been created.
+            smartCareViewModel.attach(scanResultsViewModel: scanResultsViewModel)
+        }
     }
 
     // MARK: - Background
@@ -104,7 +114,10 @@ struct RootView: View {
     private var mainContent: some View {
         switch appState.navigation {
         case .scan:
-            ScanResultsView(viewModel: scanResultsViewModel)
+            ScanResultsView(
+                viewModel: scanResultsViewModel,
+                smartCareViewModel: smartCareViewModel
+            )
         case .cleanup:
             CleanupContentView(viewModel: cleanupViewModel)
         case .history:
