@@ -46,7 +46,7 @@ struct ResultView: View {
 
             // Filter bar
             FilterBarView(activeCategory: $viewModel.activeCategory,
-                         counts: categoryCounts)
+                         counts: viewModel.categoryCounts)
 
             // P1-1: collapsible advanced filter chips (size range + date
             // range). Toggled via a small "More filters" / "Less filters"
@@ -151,7 +151,7 @@ struct ResultView: View {
                             NavigationLink(destination: GroupDetailView(group: group)) {
                                 GroupRowView(
                                     group: group,
-                                    sameNameSiblingCount: sameNameCounts[group.files.first?.url.lastPathComponent ?? ""] ?? 0
+                                    sameNameSiblingCount: viewModel.sameNameCounts[group.files.first?.url.lastPathComponent ?? ""] ?? 0
                                 )
                             }
                             .buttonStyle(.plain)
@@ -343,26 +343,10 @@ struct ResultView: View {
         }
     }
 
-    private var categoryCounts: [DuplicateCategory: Int] {
-        Dictionary(grouping: viewModel.groups, by: \.category)
-            .mapValues { $0.count }
-    }
-
     private var selectedSize: Int64 {
         viewModel.groups
             .filter { viewModel.selectedGroupIds.contains($0.id) }
             .reduce(0) { $0 + $1.totalSize }
-    }
-
-    /// Counts of how many groups share each first-file basename. Pre-computed
-    /// once per render pass so GroupRowView can show "×N" without recomputing
-    /// the dictionary on every list cell. Empty-string keys are skipped
-    /// (groups with no files shouldn't happen, but guard anyway).
-    private var sameNameCounts: [String: Int] {
-        Dictionary(
-            grouping: viewModel.filteredGroups.compactMap { $0.files.first?.url.lastPathComponent },
-            by: { $0 }
-        ).mapValues { $0.count }
     }
 
     private func formatBytes(_ bytes: Int64) -> String {

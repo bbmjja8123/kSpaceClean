@@ -17,6 +17,27 @@ final class ResultViewModel: ObservableObject {
     @Published var isProcessing = false
     @Published var showCleanupConfirmation = false
 
+    /// Memoized derivation of `groups` after applying activeCategory,
+    /// searchText, minSize/maxSize, dateFrom/dateTo, and sortOrder.
+    ///
+    /// Computed property `filteredGroups` was O(n log n) per SwiftUI body
+    /// invocation, so a single search-keystroke re-sorted + re-filtered the
+    /// entire result list multiple times per render pass (one per body call,
+    /// plus one per GroupRowView's body). Now it's a `@Published` value
+    /// rebuilt exactly once per filter-input change via CombineLatest below.
+    @Published private(set) var filteredGroups: [DuplicateGroup] = []
+
+    /// Counts of duplicate groups per category, memoized off `filteredGroups`.
+    /// Drives the category chip badges and the breakdown bar.
+    @Published private(set) var categoryCounts: [DuplicateCategory: Int] = [:]
+
+    /// Counts of how many groups share each first-file basename (drives the
+    /// "×N" badge in GroupRowView). Memoized off `filteredGroups` so a List
+    /// with 10 000 rows doesn't rebuild this dictionary on every cell render.
+    @Published private(set) var sameNameCounts: [String: Int] = [:]
+
+    private var cancellables = Set<AnyCancellable>()
+
     enum SortOrder: String, CaseIterable {
         case sizeDesc = "Size (High→Low)"
         case sizeAsc = "Size (Low→High)"
@@ -25,7 +46,32 @@ final class ResultViewModel: ObservableObject {
         case type = "Category"
     }
 
-    var filteredGroups: [DuplicateGroup] {
+    init() {
+        // Rebuild filteredGroups exactly once whenever any input that feeds
+        // the filter pipeline changes. Drop the intermediate Pipeline tuple
+        // and call the pure compute function. `removeDuplicates` on the key
+        // streams is unnecessary because the inputs themselves don't repeat
+        // values without a real change.
+        Publishers.CombineLatest4(
+            $groups, $activeCategory, $searchText, $sortOrder
+        )
+        .combineLatest(
+            Publishers.CombineLatest4($minSize, $maxSize, $dateFrom, $dateTo)
+        )
+        .sink { [weak self] _ in
+            guard let self else { return }
+            self.filteredGroups = self.computeFilteredGroups()
+            self.categoryCounts = Dictionary(grouping: self.filteredGroups, by: \.category)
+                .mapValues(\.count)
+            self.sameNameCounts = Dictionary(
+                grouping: self.filteredGroups.compactMap { $0.files.first?.url.lastPathComponent },
+                by: { $0 }
+            ).mapValues(\.count)
+        }
+        .store(in: &cancellables)
+    }
+
+    private func computeFilteredGroups() -> [DuplicateGroup] {
         var result = groups
         if let cat = activeCategory {
             result = result.filter { $0.category == cat }
