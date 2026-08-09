@@ -103,6 +103,10 @@
 "Scan Directories" = "Scan Directories";
 "Remove" = "Remove";
 "Add Directory" = "Add Directory";
+"Excluded Patterns" = "Excluded Patterns";
+"Add pattern" = "Add pattern";
+"Add" = "Add";
+"Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan." = "Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan.";
 "kSift Pro" = "kSift Pro";
 "Free Tier" = "Free Tier";
 "Unlimited cleanup, incremental index, and Finder Sync." = "Unlimited cleanup, incremental index, and Finder Sync.";

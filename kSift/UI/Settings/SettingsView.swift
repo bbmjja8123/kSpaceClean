@@ -5,6 +5,18 @@ struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
+    @State private var newExclusionPattern = ""
+
+    /// Append the pending exclusion pattern (if non-empty after trim) and
+    /// clear the input. No-ops on empty input; doesn't deduplicate to
+    /// let users keep overlapping patterns if they want (e.g. one
+    /// case-sensitive + one case-insensitive via different shapes).
+    private func commitExclusionPattern() {
+        let trimmed = newExclusionPattern.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        viewModel.additionalExclusions.append(trimmed)
+        newExclusionPattern = ""
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -58,6 +70,40 @@ struct SettingsView: View {
                         guard panel.runModal() == .OK, let url = panel.url else { return }
                         viewModel.customDirectories.append(url.path)
                     }
+                }
+
+                Section {
+                    ForEach(viewModel.additionalExclusions, id: \.self) { pattern in
+                        HStack {
+                            Text(pattern)
+                                .font(.system(.body, design: .monospaced))
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            Spacer()
+                            Button("Remove") {
+                                viewModel.additionalExclusions.removeAll { $0 == pattern }
+                            }
+                        }
+                    }
+                    HStack {
+                        TextField(
+                            NSLocalizedString("Add pattern", comment: "Excluded pattern placeholder"),
+                            text: $newExclusionPattern
+                        )
+                        .textFieldStyle(.roundedBorder)
+                        .onSubmit { commitExclusionPattern() }
+                        Button("Add") { commitExclusionPattern() }
+                            .disabled(newExclusionPattern.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    }
+                } header: {
+                    Text("Excluded Patterns")
+                } footer: {
+                    Text(NSLocalizedString(
+                        "Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan.",
+                        comment: "Excluded patterns help footer"
+                    ))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 }
             }
         }

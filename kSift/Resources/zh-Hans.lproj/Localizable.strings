@@ -103,6 +103,10 @@
 "Scan Directories" = "扫描目录";
 "Remove" = "移除";
 "Add Directory" = "添加目录";
+"Excluded Patterns" = "排除规则";
+"Add pattern" = "添加规则";
+"Add" = "添加";
+"Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan." = "Glob 风格的规则（如 **/node_modules/**、*.log）。匹配任一规则的文件会在扫描时被跳过。";
 "kSift Pro" = "kSift Pro";
 "Free Tier" = "免费版";
 "Unlimited cleanup, incremental index, and Finder Sync." = "无限清理、增量索引和 Finder 同步。";

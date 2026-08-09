@@ -109,6 +109,10 @@
 "Scan Directories" = "スキャン対象ディレクトリ";
 "Remove" = "削除";
 "Add Directory" = "ディレクトリを追加";
+"Excluded Patterns" = "除外パターン";
+"Add pattern" = "パターンを追加";
+"Add" = "追加";
+"Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan." = "Glob 形式のパターン (例: **/node_modules/**、*.log)。いずれかのパターンに一致するファイルはスキャン時にスキップされます。";
 "kSift Pro" = "kSift Pro";
 "Free Tier" = "無料プラン";
 "Unlimited cleanup, incremental index, and Finder Sync." = "無制限のクリーンアップ、増分インデックス、Finder 連携。";
