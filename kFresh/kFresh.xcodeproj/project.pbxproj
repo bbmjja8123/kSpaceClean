@@ -175,6 +175,10 @@
 		isa = PBXBuildFile;
 		fileRef = 41AE15279A2A10C596DFAB23;
 	};
+	6021E1062825D55074887E87 /* 6021E1062825D55074887E87 */ = {
+		isa = PBXBuildFile;
+		fileRef = 634CE99A2942B3B182B804AC;
+	};
 	6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */ = {
 		isa = PBXBuildFile;
 		fileRef = 53EF96BE26DB6B2A6C185799;
@@ -816,6 +820,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppRowView.swift;
 		path = Features/AppList/AppRowView.swift;
+		sourceTree = "<group>";
+	};
+	634CE99A2942B3B182B804AC /* ResidueRiskLevelTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ResidueRiskLevelTests.swift;
+		path = Tests/CleanTests/ResidueRiskLevelTests.swift;
 		sourceTree = "<group>";
 	};
 	66DCDD3E8D4249951CFA3C37 /* cask_rules.json */ = {
@@ -1625,6 +1636,7 @@
 			D7B438A54B3D98707F22F4C7 /* BackupManagerTests.swift */,
 			F64EB626B1651356DF05FAE6 /* ResidueScannerTests.swift */,
 			AA60B030305633EC645DBDE8 /* AuditLoggerTests.swift */,
+			634CE99A2942B3B182B804AC /* ResidueRiskLevelTests.swift */,
 		);
 		name = CleanTests;
 		sourceTree = "<group>";
@@ -1914,6 +1926,7 @@
 			717B5017E8BA6330A45302F9 /* 717B5017E8BA6330A45302F9 */,
 			6DEA26C5ACF70B72832A1F3D /* 6DEA26C5ACF70B72832A1F3D */,
 			0704BB649CB8695E93175CE8 /* 0704BB649CB8695E93175CE8 */,
+			6021E1062825D55074887E87 /* 6021E1062825D55074887E87 */,
 			33D3B9276A837515275FF9DC /* 33D3B9276A837515275FF9DC */,
 			E4CBB2D4144A020738312A5F /* E4CBB2D4144A020738312A5F */,
 			DCECDEE27A83C4E5AE9BE6C4 /* DCECDEE27A83C4E5AE9BE6C4 */,
