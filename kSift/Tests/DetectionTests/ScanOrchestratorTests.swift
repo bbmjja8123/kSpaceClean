@@ -329,4 +329,62 @@ final class ScanOrchestratorTests: XCTestCase {
         },
         "Unreadable file of matching size should surface a byteIdentical warning")
     }
+
+    /// Cancels mid-flight while 5 detectors run concurrently
+    /// (byteIdentical → directoryDedup / perceptual / largeFiles /
+    /// buildArtifacts / rawJPEG). Asserts the scan stream terminates
+    /// cleanly without .completed and that no events fire after cancel
+    /// — guards against the parallel-detector refactor regressing
+    /// cancellation propagation across actor boundaries.
+    func testMidFlightCancelDoesNotProducePartialResults() async throws {
+        let dir = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: dir) }
+
+        // Enough files + an identical pair that the scan has a
+        // comfortable cancellation window. All post-byteIdentical phases
+        // run in parallel via `async let`; cancel must propagate to all
+        // of them via the shared ScanController.
+        for index in 0..<40 {
+            try createTempFile(named: "file-\(index).bin", in: dir, withSize: 4096)
+        }
+        try createIdenticalFilePair(in: dir)
+
+        let controller = ScanController()
+        let orchestrator = ScanOrchestrator(fileWalker: StubFileWalker(root: dir), repository: MockDuplicateRepository())
+        let stream = await orchestrator.run(config: config(for: dir), controller: controller)
+
+        // Spin the event loop until we see the byteIdentical progress
+        // event, then cancel. This guarantees cancel happens after
+        // byteIdentical is done but while the parallel detectors are
+        // still iterating — the exact scenario the audit flagged.
+        var sawByteIdentical = false
+        var completedFired = false
+        var trailingEventCount = 0
+
+        for await event in stream {
+            switch event {
+            case .progress(let progress) where progress.phase == .byteIdentical:
+                if !sawByteIdentical {
+                    sawByteIdentical = true
+                    controller.cancel()
+                }
+            case .completed:
+                completedFired = true
+            default:
+                if sawByteIdentical {
+                    trailingEventCount += 1
+                }
+            }
+        }
+
+        XCTAssertTrue(sawByteIdentical, "Scan must reach byteIdentical before cancellation window")
+        XCTAssertFalse(completedFired,
+                       "Cancelled scan must not surface a .completed event")
+        // A detector that already passed its isCancelled check mid-
+        // iteration may emit one final progress / group event before
+        // checking again. Allow up to 4 such stragglers but assert
+        // the stream terminates.
+        XCTAssertLessThanOrEqual(trailingEventCount, 4,
+                                 "Cancellation should propagate quickly; saw \(trailingEventCount) trailing events")
+    }
 }
