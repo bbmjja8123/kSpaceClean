@@ -87,6 +87,10 @@
 		isa = PBXBuildFile;
 		fileRef = 381D3A35ABE82AE0AE3F42B3;
 	};
+	2D09261674AC9876BACDA17F /* 2D09261674AC9876BACDA17F */ = {
+		isa = PBXBuildFile;
+		fileRef = F7452ED26A75FCE304422584;
+	};
 	30777437B37859FB155C273A /* 30777437B37859FB155C273A */ = {
 		isa = PBXBuildFile;
 		fileRef = 06E33A55C4FF7FD14C728811;
@@ -1303,6 +1307,13 @@
 		path = Features/Detail/ResidueSectionView.swift;
 		sourceTree = "<group>";
 	};
+	F7452ED26A75FCE304422584 /* MappingStoreTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = MappingStoreTests.swift;
+		path = Tests/RulesTests/MappingStoreTests.swift;
+		sourceTree = "<group>";
+	};
 	F75307E42A8914CFBC4E8183 /* FinderSync.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1586,6 +1597,7 @@
 		children = (
 			4D863FD91ECB3118002568D4 /* CaskParserTests.swift */,
 			98CD6945367BA393779F79A0 /* BundleRuleStoreTests.swift */,
+			F7452ED26A75FCE304422584 /* MappingStoreTests.swift */,
 		);
 		name = RulesTests;
 		sourceTree = "<group>";
@@ -1959,6 +1971,7 @@
 			3C3E207F3354C6283431D9EB /* 3C3E207F3354C6283431D9EB */,
 			ABAE0D7916C85CCAB7B3C1B6 /* ABAE0D7916C85CCAB7B3C1B6 */,
 			1F2330F83330CD811E7D7A29 /* 1F2330F83330CD811E7D7A29 */,
+			2D09261674AC9876BACDA17F /* 2D09261674AC9876BACDA17F */,
 			1AF07C1E096B63D68139A2B5 /* 1AF07C1E096B63D68139A2B5 */,
 			717B5017E8BA6330A45302F9 /* 717B5017E8BA6330A45302F9 */,
 			6DEA26C5ACF70B72832A1F3D /* 6DEA26C5ACF70B72832A1F3D */,

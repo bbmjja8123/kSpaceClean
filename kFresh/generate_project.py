@@ -224,6 +224,7 @@ def main():
         "RulesTests": [
             "CaskParserTests.swift",
             "BundleRuleStoreTests.swift",
+            "MappingStoreTests.swift",
         ],
         "CleanTests": [
             "TrashMoverTests.swift",
