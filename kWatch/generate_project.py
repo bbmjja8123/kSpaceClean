@@ -199,7 +199,7 @@ def main():
         "AlertEditorViewModelTests.swift", "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
         "AppShortcutsIntegrationTests.swift", "AppShortcutsVerificationTests.swift", "ControlWidgetTests.swift", "CoreDataStackTests.swift", "DashboardViewModelTests.swift",
         "DiagnosticsExporterTests.swift", "HistoryViewModelTests.swift", "IntentParameterTests.swift",
-        "IntentTests.swift", "InteractiveWidgetIntentTests.swift", "LiveActivityCoordinatorTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift", "MetricDetailViewModelTests.swift",
+        "IntentTests.swift", "InteractiveWidgetIntentTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift", "MetricDetailViewModelTests.swift", "WidgetReloadTriggerTests.swift",
         "NotificationSchedulerTests.swift",
         "OnboardingViewModelTests.swift", "PaywallViewModelTermsTests.swift",
         "PreferencesRepositoryTests.swift", "ProcessNetworkSortTests.swift", "ProcessesViewModelTests.swift", "QuickToggleBarTests.swift", "RepositoryTests.swift",

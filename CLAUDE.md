@@ -302,14 +302,14 @@ kWise/
 - [x] 产品定位 + 定价（Freemium + $7.99 Pro 买断）
 - [x] 功能规格（4 Free + 3 Pro 指标 + 平台集成）
 - [x] 技术架构（Clean Architecture + actor + AsyncStream）
-- [x] 完整 UX 交互设计（菜单栏 + Dashboard + Widget + Live Activity + Shortcuts + Spotlight）
+- [x] 完整 UX 交互设计（菜单栏 + Dashboard + Widget + Live Widgets (WidgetKit TimelineProvider) + Shortcuts + Spotlight）
 - [x] 数据层设计（Core Data + App Group JSON snapshot）
 - [x] 7 大指标检测实现细节（host_processor_info / SMC / libproc 等）
 - [x] 隐私与合规策略（GDPR / CCPA / App Privacy Details）
 - [x] 崩溃监控与诊断方案（MetricKit）
 - [x] 测试策略（单元/集成/UI/性能 + 兼容性矩阵）
 - [x] 营销与发布节奏（4 周预热 + 上线日动作清单）
-- [x] 5 大风险 Plan B（审核被拒 / SMC 不可用 / Live Activity 拒绝等）
+- [x] 5 大风险 Plan B（审核被拒 / SMC 不可用 / Live Widgets 性能等）
 
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
