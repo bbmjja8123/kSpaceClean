@@ -9,6 +9,17 @@
 /* Onboarding */
 "Welcome to kSift" = "欢迎使用 kSift";
 "Find and remove duplicate files, reclaim disk space" = "查找并删除重复文件，回收磁盘空间";
+"Find duplicates across your Mac" = "查找 Mac 上的重复文件";
+"Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders." = "字节级完全相同、近似图片、RAW+JPEG 配对、复制粘贴的整目录都能识别。";
+"Everything stays on your Mac" = "全部计算在本地完成";
+"No uploads, no telemetry, no network calls during scanning." = "不上传、无埋点、扫描过程零网络请求。";
+"Trash + 30-day vault undo" = "废纸篓 + 30 天保险库可恢复";
+"Cleaned files move to a private vault you can restore for 30 days." = "清理后的文件会进入私人保险库，30 天内可随时还原。";
+"Grant Full Disk Access" = "授予完整磁盘访问权限";
+"Required to scan protected folders like Desktop, Documents, and Downloads." = "扫描桌面、文稿、下载等受保护目录需要此权限。";
+"You can skip this and grant later in Settings." = "可跳过，后续在设置中授予。";
+"Back" = "上一步";
+"Next" = "下一步";
 "Get Started" = "开始使用";
 "Choose Your Profile" = "选择使用场景";
 "kSift optimizes scanning based on your workflow" = "kSift 会根据你的使用习惯优化扫描";

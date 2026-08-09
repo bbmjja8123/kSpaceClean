@@ -15,6 +15,17 @@
 /* Onboarding */
 "Welcome to kSift" = "kSift へようこそ";
 "Find and remove duplicate files, reclaim disk space" = "重複ファイルを見つけて削除し、ディスク容量を確保します";
+"Find duplicates across your Mac" = "Mac 全体で重複ファイルを検出";
+"Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders." = "バイト一致、類似画像、RAW+JPEG ペア、コピー＆ペーストフォルダを検出。";
+"Everything stays on your Mac" = "すべて Mac 内で完結";
+"No uploads, no telemetry, no network calls during scanning." = "アップロードなし、テレメトリなし、スキャン中の通信なし。";
+"Trash + 30-day vault undo" = "ゴミ箱 + 30 日ボールトで復元可能";
+"Cleaned files move to a private vault you can restore for 30 days." = "削除したファイルは 30 日間復元可能なボールトへ移動。";
+"Grant Full Disk Access" = "フルディスクアクセスを許可";
+"Required to scan protected folders like Desktop, Documents, and Downloads." = "デスクトップ、ドキュメント、ダウンロードなどの保護フォルダのスキャンに必要。";
+"You can skip this and grant later in Settings." = "スキップ可能。あとで設定から許可できます。";
+"Back" = "戻る";
+"Next" = "次へ";
 "Get Started" = "はじめる";
 "Choose Your Profile" = "プロファイルを選択";
 "kSift optimizes scanning based on your workflow" = "作業内容に応じてスキャンを最適化します";

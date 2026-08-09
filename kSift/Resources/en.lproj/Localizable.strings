@@ -9,6 +9,17 @@
 /* Onboarding */
 "Welcome to kSift" = "Welcome to kSift";
 "Find and remove duplicate files, reclaim disk space" = "Find and remove duplicate files, reclaim disk space";
+"Find duplicates across your Mac" = "Find duplicates across your Mac";
+"Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders." = "Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders.";
+"Everything stays on your Mac" = "Everything stays on your Mac";
+"No uploads, no telemetry, no network calls during scanning." = "No uploads, no telemetry, no network calls during scanning.";
+"Trash + 30-day vault undo" = "Trash + 30-day vault undo";
+"Cleaned files move to a private vault you can restore for 30 days." = "Cleaned files move to a private vault you can restore for 30 days.";
+"Grant Full Disk Access" = "Grant Full Disk Access";
+"Required to scan protected folders like Desktop, Documents, and Downloads." = "Required to scan protected folders like Desktop, Documents, and Downloads.";
+"You can skip this and grant later in Settings." = "You can skip this and grant later in Settings.";
+"Back" = "Back";
+"Next" = "Next";
 "Get Started" = "Get Started";
 "Choose Your Profile" = "Choose Your Profile";
 "kSift optimizes scanning based on your workflow" = "kSift optimizes scanning based on your workflow";
