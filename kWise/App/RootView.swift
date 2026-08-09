@@ -129,7 +129,7 @@ struct RootView: View {
         case .smartCare:
             SmartCareHeroView()
         case .privacy:
-            PlaceholderModuleView(title: "隐私清理", subtitle: "Phase C 上线")
+            PrivacyView()  // Phase C Task 7 — wire PrivacyView into nav
         case .diskHealth:
             PlaceholderModuleView(title: "磁盘健康", subtitle: "Phase D 上线")
         }
