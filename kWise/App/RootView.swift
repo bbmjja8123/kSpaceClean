@@ -111,6 +111,14 @@ struct RootView: View {
             HistoryContentView()
         case .settings:
             SettingsView()
+        // v1.5 stage B placeholders — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
+        // Real module views land in Phase B Task 3+ / Phase C Task 7+ / Phase D Task 11+.
+        case .smartCare:
+            PlaceholderModuleView(title: "Smart Care", subtitle: "Phase B 上线")
+        case .privacy:
+            PlaceholderModuleView(title: "隐私清理", subtitle: "Phase C 上线")
+        case .diskHealth:
+            PlaceholderModuleView(title: "磁盘健康", subtitle: "Phase D 上线")
         }
     }
 
@@ -157,6 +165,34 @@ private struct IconRailButton: View, Equatable {
         }
         .buttonStyle(.plain)
         .help(item.tooltip)
+    }
+}
+
+// MARK: - v1.5 Placeholder Module View
+
+/// Placeholder view for v1.5 modules pending real implementation.
+///
+/// Renders title + subtitle in the main content area for Smart Care /
+/// Privacy / Disk Health until their Phase B/C/D real module views land
+/// (see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md` Tasks 2 / 7 / 11).
+///
+/// Inlined in this file (not its own Swift file) to avoid touching
+/// `kWise.xcodeproj/project.pbxproj` until Phase B wires the real views.
+private struct PlaceholderModuleView: View {
+    let title: String
+    let subtitle: String
+
+    var body: some View {
+        VStack(spacing: AppSpacing.md) {
+            Text(title)
+                .font(AppFont.title)
+                .foregroundStyle(Color.textPrimary)
+            Text(subtitle)
+                .font(AppFont.body)
+                .foregroundStyle(Color.textSecondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.bgPrimary)
     }
 }
 
