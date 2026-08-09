@@ -23,16 +23,19 @@ import Foundation
 /// ``ResidueRiskLevel/defaultSelected`` are preserved for callers that
 /// don't want the staleness heuristic (e.g. tests, share / extension
 /// surfaces that don't have an app context).
-public enum ResidueSmartSelector {
+///
+/// Internal (not public) because ``InstalledApp`` is internal — exposing
+/// the selector would force the model to go public too.
+enum ResidueSmartSelector {
 
     /// An optional residue is flipped to ON when the app has not been
     /// used in this many days (or has never been used — `nil`).
     /// 180 days ≈ 6 months, matching Nektony's "stale" cutoff.
-    public static let staleThresholdDays: Int = 180
+    static let staleThresholdDays: Int = 180
 
     /// Returns the default selection state for `residue` in the context of
     /// `app`. Pure function — no I/O, no actor state.
-    public static func defaultSelection(
+    static func defaultSelection(
         residue: ResidueFile,
         app: InstalledApp
     ) -> Bool {
@@ -50,7 +53,7 @@ public enum ResidueSmartSelector {
 
     /// Convenience overload that operates on a homogeneous bucket — used
     /// by ``UninstallConfirmSheet`` to seed the selection set in one pass.
-    public static func defaultSelection(
+    static func defaultSelection(
         residues: [ResidueFile],
         app: InstalledApp
     ) -> Set<String> {

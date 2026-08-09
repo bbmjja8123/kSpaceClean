@@ -46,9 +46,14 @@ struct UninstallConfirmSheet: View {
         self.residues = residues
         self.onConfirm = onConfirm
         self.onCancel = onCancel
-        // Spec §2.1: only 🟢 Recommended defaults ON; the rest default OFF.
-        let defaults = Set(residues.filter { $0.riskLevel == .recommended }.map(\.id))
-        _selectedIDs = State(initialValue: defaults)
+        // v1.x-D: route the initial selection through ResidueSmartSelector
+        // rather than the hard-coded `riskLevel == .recommended` filter.
+        // The smart selector adds the Nektony-style "stale optional" rule
+        // (180 days since last use → Optional bucket also defaults ON).
+        _selectedIDs = State(initialValue: ResidueSmartSelector.defaultSelection(
+            residues: residues,
+            app: app
+        ))
     }
 
     var body: some View {
