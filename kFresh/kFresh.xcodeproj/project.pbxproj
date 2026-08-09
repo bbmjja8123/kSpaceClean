@@ -11,6 +11,10 @@
 		isa = PBXBuildFile;
 		fileRef = 86EBDC7A6B2FFF21B7FFBA9A;
 	};
+	0644555EFD49B434638D02C6 /* 0644555EFD49B434638D02C6 */ = {
+		isa = PBXBuildFile;
+		fileRef = 8EFB6A42B9EE42875693B6EF;
+	};
 	0704BB649CB8695E93175CE8 /* 0704BB649CB8695E93175CE8 */ = {
 		isa = PBXBuildFile;
 		fileRef = AA60B030305633EC645DBDE8;
@@ -905,6 +909,13 @@
 		path = Features/Common/BrandButtonStyle.swift;
 		sourceTree = "<group>";
 	};
+	8EFB6A42B9EE42875693B6EF /* AppCoordinatorNavigationTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AppCoordinatorNavigationTests.swift;
+		path = Tests/OnboardingTests/AppCoordinatorNavigationTests.swift;
+		sourceTree = "<group>";
+	};
 	90B6343DFAE6C2A9AECF231C /* ResidueDetectorTests.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1746,6 +1757,7 @@
 			B05401260A8D3F3FF758E59D /* FDAPermissionProbeTests.swift */,
 			EAA3EA03FFEDFA0DBA5545C7 /* FDAGuideControllerTests.swift */,
 			9A914D29E3FBE232544870A3 /* OnboardingRoutingTests.swift */,
+			8EFB6A42B9EE42875693B6EF /* AppCoordinatorNavigationTests.swift */,
 		);
 		name = OnboardingTests;
 		sourceTree = "<group>";
@@ -1905,6 +1917,7 @@
 			33D3B9276A837515275FF9DC /* 33D3B9276A837515275FF9DC */,
 			E4CBB2D4144A020738312A5F /* E4CBB2D4144A020738312A5F */,
 			DCECDEE27A83C4E5AE9BE6C4 /* DCECDEE27A83C4E5AE9BE6C4 */,
+			0644555EFD49B434638D02C6 /* 0644555EFD49B434638D02C6 */,
 			9DFB3583F240A44BFBD52A8F /* 9DFB3583F240A44BFBD52A8F */,
 			EA95CA1BB79A58AE6B564B6B /* EA95CA1BB79A58AE6B564B6B */,
 			74FBAD73C878553C9BBBA878 /* 74FBAD73C878553C9BBBA878 */,

@@ -233,6 +233,7 @@ def main():
             "FDAPermissionProbeTests.swift",
             "FDAGuideControllerTests.swift",
             "OnboardingRoutingTests.swift",
+            "AppCoordinatorNavigationTests.swift",
         ],
         "AppListTests": [
             "AppListViewModelTests.swift",
