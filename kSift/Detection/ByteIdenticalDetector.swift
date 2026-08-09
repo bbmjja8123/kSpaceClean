@@ -23,6 +23,13 @@ public actor ByteIdenticalDetector {
 
     public private(set) var failures: [Failure] = []
 
+    /// Fingerprint + full-hash pairs for every URL the detector actually verified
+    /// this scan, including cache hits. Populated incrementally as Candidates are
+    /// built; cleared on each `detect` invocation. Callers (notably
+    /// DirectoryDedupDetector) consume this to avoid re-hashing files whose
+    /// content proof is already established.
+    public private(set) var verifiedCache: [URL: CachedVerification] = [:]
+
     public init(verifier: HashVerifier = HashVerifier(), minimumSize: Int64 = 1) {
         self.verifier = verifier
         self.minimumSize = minimumSize
@@ -40,6 +47,7 @@ public actor ByteIdenticalDetector {
         cache: [URL: CachedVerification] = [:]
     ) async -> [DuplicateGroup] {
         failures = []
+        verifiedCache = [:]
         var sizeBuckets: [Int64: [URL]] = [:]
 
         for url in urls {
@@ -89,6 +97,10 @@ public actor ByteIdenticalDetector {
                         } else {
                             fullHash = try await verifier.fullHash(of: url)
                         }
+                        verifiedCache[url] = CachedVerification(
+                            fingerprint: fingerprint,
+                            hash: fullHash
+                        )
                         let keys: Set<URLResourceKey> = [
                             .fileSizeKey,
                             .contentModificationDateKey,

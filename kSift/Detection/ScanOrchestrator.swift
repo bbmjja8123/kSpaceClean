@@ -125,7 +125,11 @@ public actor ScanOrchestrator {
                     )))
                 }
 
-                // Phase 3: Directory dedup.
+                // Phase 3: Directory dedup. Reuse byteDetector.verifiedCache so any
+                // file that already passed full SHA-256 in phase 2 (every URL
+                // that survived size/fingerprint/hash bucketing) is not hashed
+                // again. Files unique to byte-detector still get verified here
+                // because their directory membership may produce a match.
                 continuation.yield(.progress(ScanProgress(
                     phase: .directoryDedup,
                     progress: 0.4,
@@ -136,7 +140,8 @@ public actor ScanOrchestrator {
                 let dedupGroups = await dirDedupDetector.detect(
                     allURLs,
                     roots: scanRoots,
-                    controller: controller
+                    controller: controller,
+                    verifiedCache: await byteDetector.verifiedCache
                 )
                 let dedupCount = dedupGroups.reduce(0) { $0 + $1.files.count }
                 for group in dedupGroups {

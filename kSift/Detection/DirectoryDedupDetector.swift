@@ -19,35 +19,59 @@ public actor DirectoryDedupDetector {
     }
 
     /// Convenience entry point for callers that have not yet produced verified file metadata.
-    public func detect(
+///
+/// - Parameter verifiedCache: Map of URL → CachedVerification for files whose
+///   fingerprint + SHA-256 have already been computed by an earlier stage
+///   (typically ByteIdenticalDetector). URLs present here skip the
+///   `verifier.verify(...)` call entirely, saving a streaming SHA-256 read
+///   per cached file. URLs not in the map are verified on demand.
+public func detect(
         _ urls: [URL],
         roots: [URL] = [],
-        controller: ScanController
+        controller: ScanController,
+        verifiedCache: [URL: CachedVerification] = [:]
     ) async -> [DuplicateGroup] {
         var files: [FileItem] = []
         for url in urls {
             guard !isCancelled(controller) else { return [] }
-            do {
-                let result = try await verifier.verify(url)
-                let values = try url.resourceValues(forKeys: [
-                    .contentModificationDateKey,
-                    .creationDateKey,
-                    .totalFileAllocatedSizeKey,
-                ])
-                files.append(FileItem(
-                    id: UUID(),
+            let result: HashVerifier.VerifyResult
+            if let cached = verifiedCache[url] {
+                let size: Int64
+                do {
+                    size = Int64(try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0)
+                } catch {
+                    continue
+                }
+                result = HashVerifier.VerifyResult(
                     url: url,
-                    size: result.size,
-                    modificationDate: values.contentModificationDate ?? .distantPast,
-                    creationDate: values.creationDate,
-                    hash: result.fullHash,
-                    fingerprint: result.fingerprint,
-                    physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-                    fileType: UTType(filenameExtension: url.pathExtension)
-                ))
-            } catch {
-                continue
+                    size: size,
+                    fingerprint: cached.fingerprint,
+                    fullHash: cached.hash,
+                    duration: 0
+                )
+            } else {
+                do {
+                    result = try await verifier.verify(url)
+                } catch {
+                    continue
+                }
             }
+            guard let values = try? url.resourceValues(forKeys: [
+                .contentModificationDateKey,
+                .creationDateKey,
+                .totalFileAllocatedSizeKey,
+            ]) else { continue }
+            files.append(FileItem(
+                id: UUID(),
+                url: url,
+                size: result.size,
+                modificationDate: values.contentModificationDate ?? .distantPast,
+                creationDate: values.creationDate,
+                hash: result.fullHash,
+                fingerprint: result.fingerprint,
+                physicalSize: values.totalFileAllocatedSize.map(Int64.init),
+                fileType: UTType(filenameExtension: url.pathExtension)
+            ))
         }
         return await detect(files: files, roots: roots, controller: controller)
     }
