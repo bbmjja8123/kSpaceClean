@@ -407,6 +407,10 @@
 		isa = PBXBuildFile;
 		fileRef = 14679243FC833D0C8D16C74A;
 	};
+	6D5E4F3C2B1A0F9E8D7C6B5A /* 6D5E4F3C2B1A0F9E8D7C6B5A */ = {
+		isa = PBXBuildFile;
+		fileRef = 5C4B3A2D1E0F9B8A7C6D5E4F;
+	};
 	AFC2605720E874C24B299225 /* AFC2605720E874C24B299225 */ = {
 		isa = PBXBuildFile;
 		fileRef = A20ECB2F3DE6C3F90D2FE80C;
@@ -687,6 +691,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = AppState.swift;
 		path = App/AppState.swift;
+		sourceTree = "<group>";
+	};
+	5C4B3A2D1E0F9B8A7C6D5E4F /* SmartCareHeroView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareHeroView.swift;
+		path = Features/SmartCare/SmartCareHeroView.swift;
 		sourceTree = "<group>";
 	};
 	14F2021C3C9AF375232376CF /* ScanResultsView.swift */ = {
@@ -1791,6 +1802,14 @@
 		name = PrivacyClean;
 		sourceTree = "<group>";
 	};
+	7E6F5D4C3B2A1F0E9D8C7B6A /* SmartCare */ = {
+		isa = PBXGroup;
+		children = (
+			5C4B3A2D1E0F9B8A7C6D5E4F /* SmartCareHeroView.swift */,
+		);
+		name = SmartCare;
+		sourceTree = "<group>";
+	};
 	601CA57E814BC3922B39403A /* AppUninstall */ = {
 		isa = PBXGroup;
 		children = (
@@ -1953,6 +1972,7 @@
 			46FA7A37B445F54D224DD065 /* Maintenance */,
 			948A46E6570A8D25B50581C8 /* Onboarding */,
 			27A4B436B24D38B2C0DF5464 /* RightPanel */,
+			7E6F5D4C3B2A1F0E9D8C7B6A /* SmartCare */,
 			969679DE865F3E68DEC65C79 /* Settings */,
 			EC6E9877FED1FB64998F26E6 /* SmartScan */,
 		);
@@ -2255,6 +2275,7 @@
 		files = (
 			0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */,
 			AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */,
+			6D5E4F3C2B1A0F9E8D7C6B5A /* 6D5E4F3C2B1A0F9E8D7C6B5A */,
 			7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */,
 			C79D934B75D0AFFC56F19CF3 /* C79D934B75D0AFFC56F19CF3 */,
 			54CBDE3E6F1E616B5058AAED /* 54CBDE3E6F1E616B5058AAED */,

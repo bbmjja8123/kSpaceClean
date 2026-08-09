@@ -111,10 +111,10 @@ struct RootView: View {
             HistoryContentView()
         case .settings:
             SettingsView()
-        // v1.5 stage B placeholders — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
+        // v1.5 stage B — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
         // Real module views land in Phase B Task 3+ / Phase C Task 7+ / Phase D Task 11+.
         case .smartCare:
-            PlaceholderModuleView(title: "Smart Care", subtitle: "Phase B 上线")
+            SmartCareHeroView()
         case .privacy:
             PlaceholderModuleView(title: "隐私清理", subtitle: "Phase C 上线")
         case .diskHealth:

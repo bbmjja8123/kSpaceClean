@@ -3,7 +3,7 @@ import DesignSystem
 
 @MainActor
 public final class AppState: ObservableObject {
-    @Published public var navigation: NavigationItem = .scan
+    @Published public var navigation: NavigationItem = .smartCare  // v1.5: home is the Smart Care surface (Q1 Hybrid UI)
     @Published public var rightPanelTab: RightPanelTab = .overview
     @Published public var rightPanelVisible = true
     @Published public var selectedCategory: FileCategory?
