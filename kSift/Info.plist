@@ -9,6 +9,7 @@
     <array>
         <string>en</string>
         <string>zh-Hans</string>
+        <string>ja</string>
     </array>
     <key>CFBundleIdentifier</key><string>app.kraftly.ksift</string>
     <key>CFBundleVersion</key><string>1</string>
