@@ -411,6 +411,14 @@
 		isa = PBXBuildFile;
 		fileRef = 5C4B3A2D1E0F9B8A7C6D5E4F;
 	};
+	2B3C4D5E6F708192A3B4D5E6 /* 2B3C4D5E6F708192A3B4D5E6 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1A2B3C4D5E6F708192A3B4D5;
+	};
+	4D5E6F708192A3B4D5E6F7A8 /* 4D5E6F708192A3B4D5E6F7A8 */ = {
+		isa = PBXBuildFile;
+		fileRef = 3C4D5E6F708192A3B4D5E6F7;
+	};
 	AFC2605720E874C24B299225 /* AFC2605720E874C24B299225 */ = {
 		isa = PBXBuildFile;
 		fileRef = A20ECB2F3DE6C3F90D2FE80C;
@@ -698,6 +706,20 @@
 		lastKnownFileType = sourcecode.swift;
 		name = SmartCareHeroView.swift;
 		path = Features/SmartCare/SmartCareHeroView.swift;
+		sourceTree = "<group>";
+	};
+	1A2B3C4D5E6F708192A3B4D5 /* SmartCareOrchestrator.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareOrchestrator.swift;
+		path = Features/SmartCare/SmartCareOrchestrator.swift;
+		sourceTree = "<group>";
+	};
+	3C4D5E6F708192A3B4D5E6F7 /* SmartCareViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareViewModel.swift;
+		path = Features/SmartCare/SmartCareViewModel.swift;
 		sourceTree = "<group>";
 	};
 	14F2021C3C9AF375232376CF /* ScanResultsView.swift */ = {
@@ -1806,6 +1828,8 @@
 		isa = PBXGroup;
 		children = (
 			5C4B3A2D1E0F9B8A7C6D5E4F /* SmartCareHeroView.swift */,
+			1A2B3C4D5E6F708192A3B4D5 /* SmartCareOrchestrator.swift */,
+			3C4D5E6F708192A3B4D5E6F7 /* SmartCareViewModel.swift */,
 		);
 		name = SmartCare;
 		sourceTree = "<group>";
@@ -2276,6 +2300,8 @@
 			0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */,
 			AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */,
 			6D5E4F3C2B1A0F9E8D7C6B5A /* 6D5E4F3C2B1A0F9E8D7C6B5A */,
+			2B3C4D5E6F708192A3B4D5E6 /* 2B3C4D5E6F708192A3B4D5E6 */,
+			4D5E6F708192A3B4D5E6F7A8 /* 4D5E6F708192A3B4D5E6F7A8 */,
 			7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */,
 			C79D934B75D0AFFC56F19CF3 /* C79D934B75D0AFFC56F19CF3 */,
 			54CBDE3E6F1E616B5058AAED /* 54CBDE3E6F1E616B5058AAED */,
