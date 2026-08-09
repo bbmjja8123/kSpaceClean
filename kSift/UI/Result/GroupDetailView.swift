@@ -55,7 +55,7 @@ struct GroupDetailView: View {
             // Perceptual groups get an inline thumbnail strip so the user can
             // see which photos are similar at a glance without opening each one.
             if group.category == .perceptual {
-                ThumbnailStrip(files: group.files)
+                ThumbnailStrip(files: group.files, size: 80, maxVisible: 12)
                     .padding(.horizontal, 16)
                     .padding(.bottom, 4)
             }
@@ -220,34 +220,5 @@ struct GroupDetailView: View {
     /// users the standard QuickLook experience for any file type.
     private func openQuickLook(for url: URL) {
         NSWorkspace.shared.open(url)
-    }
-}
-
-/// Horizontal scrolling thumbnail strip for perceptual groups. Caps at 12
-/// thumbnails to keep the strip readable; overflow is rendered as a "+N" tile.
-private struct ThumbnailStrip: View {
-    let files: [FileItem]
-    private static let maxVisible = 12
-
-    var body: some View {
-        let visible = Array(files.prefix(Self.maxVisible))
-        let overflow = files.count - visible.count
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(visible) { file in
-                    ThumbnailView(url: file.url, size: 80)
-                }
-                if overflow > 0 {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: AppRadius.sm)
-                            .fill(Color.secondary.opacity(0.15))
-                        Text(String(format: NSLocalizedString("+%lld", comment: "More thumbnails overflow"), overflow))
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(width: 80, height: 80)
-                }
-            }
-        }
     }
 }

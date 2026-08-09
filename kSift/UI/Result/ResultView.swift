@@ -483,15 +483,31 @@ struct GroupRowView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
-                // Perceptual groups preview the first image inline; other
-                // categories stay text-only to keep the row visually calm.
-                if group.category == .perceptual, let first = group.files.first {
-                    ThumbnailView(url: first.url, size: 36)
+                // Visual categories get an inline thumbnail strip so users
+                // can confirm "yes, these are duplicates" without opening
+                // the detail view. Non-visual categories stay text-only.
+                if showsThumbnailStrip {
+                    ThumbnailStrip(files: group.files)
+                        .frame(maxWidth: 200, alignment: .trailing)
                 }
                 Image(systemName: "chevron.right")
                     .foregroundColor(.secondary)
             }
             .padding(12)
+        }
+    }
+
+    /// True for categories whose duplicates benefit from a quick visual
+    /// confirmation in the row. Identical byte matches are also shown —
+    /// filenames + sizes usually disambiguate, but a thumbnail strip
+    /// makes the "are these really the same image?" question answerable
+    /// in-place for the perceptual category.
+    private var showsThumbnailStrip: Bool {
+        switch group.category {
+        case .perceptual, .directoryDedup, .identical:
+            return true
+        case .largeFile, .buildArtifact, .rawJPEG:
+            return false
         }
     }
 }
