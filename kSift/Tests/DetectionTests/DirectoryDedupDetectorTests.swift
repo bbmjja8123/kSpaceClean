@@ -146,6 +146,90 @@ final class DirectoryDedupDetectorTests: XCTestCase {
         XCTAssertTrue(groups.isEmpty)
     }
 
+    /// Verifies the new (commit a558cf3) `verifiedCache` plumbing: a file
+    /// present in the cache must skip `verifier.verify(...)` and the detector
+    /// must still recognize it as a directory-duplicate match.
+    func testVerifiedCacheHitSkipsRehash() async throws {
+        let fixture = try makeDirectoryPair()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let first = try createTextFile(named: "a.txt", in: fixture.first, content: "same")
+        let second = try createTextFile(named: "a.txt", in: fixture.second, content: "same")
+
+        // Pre-compute the cache the way ByteIdenticalDetector would.
+        let cachedFingerprint = "cached-fingerprint-a"
+        let cachedHash = "cached-sha256-a"
+        let cache: [URL: CachedVerification] = [
+            first: CachedVerification(fingerprint: cachedFingerprint, hash: cachedHash),
+            second: CachedVerification(fingerprint: cachedFingerprint, hash: cachedHash),
+        ]
+
+        let groups = await DirectoryDedupDetector().detect(
+            [first, second],
+            roots: [fixture.root],
+            controller: ScanController(),
+            verifiedCache: cache
+        )
+
+        XCTAssertEqual(groups.count, 1)
+        let allFiles = groups[0].files
+        XCTAssertEqual(allFiles.count, 2)
+        for file in allFiles {
+            XCTAssertEqual(file.hash, cachedHash,
+                          "Cached hash should propagate to FileItem without re-reading")
+            XCTAssertEqual(file.fingerprint, cachedFingerprint)
+        }
+    }
+
+    /// A cache that only covers one side of the pair must NOT produce a
+    /// match: the detector should hash the missing side fresh and still
+    /// return empty (different content) or a real match (same content).
+    func testPartialCacheStillProducesCorrectResult() async throws {
+        let fixture = try makeDirectoryPair()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let first = try createTextFile(named: "a.txt", in: fixture.first, content: "same")
+        let second = try createTextFile(named: "a.txt", in: fixture.second, content: "same")
+
+        // Only `first` is in the cache; `second` must be re-verified.
+        let partialCache: [URL: CachedVerification] = [
+            first: CachedVerification(fingerprint: "f", hash: "h"),
+        ]
+
+        let groups = await DirectoryDedupDetector().detect(
+            [first, second],
+            roots: [fixture.root],
+            controller: ScanController(),
+            verifiedCache: partialCache
+        )
+
+        XCTAssertEqual(groups.count, 1)
+        XCTAssertEqual(groups[0].files.count, 2)
+    }
+
+    /// Two URLs that are in the cache but whose hashes don't match must
+    /// NOT be reported as duplicates — the cache short-circuits verification
+    /// but the content-hash compare in `detect(files:...)` still runs.
+    func testCacheWithMismatchedHashesDoesNotProduceDuplicate() async throws {
+        let fixture = try makeDirectoryPair()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let first = try createTextFile(named: "a.txt", in: fixture.first, content: "anything")
+        let second = try createTextFile(named: "a.txt", in: fixture.second, content: "anything")
+
+        let divergentCache: [URL: CachedVerification] = [
+            first: CachedVerification(fingerprint: "ff", hash: "hash-1"),
+            second: CachedVerification(fingerprint: "ff", hash: "hash-2"),
+        ]
+
+        let groups = await DirectoryDedupDetector().detect(
+            [first, second],
+            roots: [fixture.root],
+            controller: ScanController(),
+            verifiedCache: divergentCache
+        )
+
+        XCTAssertTrue(groups.isEmpty,
+                     "Different cached hashes must not collapse into one group")
+    }
+
     private func makeDirectoryPair() throws -> (root: URL, first: URL, second: URL) {
         let root = try createTempDirectory()
         let first = root.appendingPathComponent("first")
