@@ -84,6 +84,62 @@ extension TrashError: LocalizedError {
 ///
 /// `TrashMover` is an `actor`; all state mutations (`BackupManager`,
 /// `UninstallHistoryRepository`, optional `AuditLogger`) are isolated.
+/// Read-only summary of what an uninstall *would* do, produced by
+/// ``TrashMover/dryRun(app:residues:)``. Drives the "模拟卸载" alert on
+/// ``AppDetailView`` and the `dryRun: true` branch of
+/// ``UninstallAppIntent``.
+///
+/// The report never holds a live file-system handle — callers can pass it
+/// across actor boundaries safely.
+public struct DryRunReport: Sendable {
+    /// Display name of the app that would be uninstalled (e.g. "Sketch").
+    public let appDisplayName: String
+    /// Bundle identifier of the app (e.g. `com.bohemiancoding.sketch3`).
+    public let appBundleID: String
+    /// Size of the app bundle itself, in bytes.
+    public let appSizeBytes: Int64
+    /// Residues the real flow would actually delete (after the shared
+    /// confidence / risk filter). Empty when the detector found nothing
+    /// or all candidates were filtered out.
+    public let residueSelection: [ResidueFile]
+    /// Path where ``BackupManager`` would write the residue backup.
+    public let backupRoot: URL
+
+    public init(appDisplayName: String,
+                appBundleID: String,
+                appSizeBytes: Int64,
+                residueSelection: [ResidueFile],
+                backupRoot: URL) {
+        self.appDisplayName = appDisplayName
+        self.appBundleID = appBundleID
+        self.appSizeBytes = appSizeBytes
+        self.residueSelection = residueSelection
+        self.backupRoot = backupRoot
+    }
+
+    /// Sum of the app size plus every residue that would actually be
+    /// deleted, in bytes. Ready for `ByteCountFormatter`.
+    public var totalFreedBytes: Int64 {
+        appSizeBytes + residueSelection.reduce(0) { $0 + $1.sizeBytes }
+    }
+
+    /// The residue selection grouped by ``ResidueRiskLevel``, in the spec's
+    /// 4-bucket display order (recommended → dangerous). Buckets with zero
+    /// residues are still present so the UI can render an empty-state row.
+    public var residuesByRisk: [(level: ResidueRiskLevel, items: [ResidueFile])] {
+        ResidueRiskLevel.allCases.map { level in
+            (level, residueSelection.filter { $0.riskLevel == level })
+        }
+    }
+
+    /// Whether any selected residue is in the 🔴 Dangerous bucket. The
+    /// uninstall confirm sheet uses this to decide whether to require a
+    /// literal "DELETE" confirmation before the user can tap "确认卸载".
+    public var hasDangerousResidue: Bool {
+        residueSelection.contains { $0.riskLevel == .dangerous }
+    }
+}
+
 public actor TrashMover {
     private let backupManager: BackupManager
     private let historyRepo: UninstallHistoryRepository
@@ -222,7 +278,7 @@ public actor TrashMover {
         // the audit event. The record and success audit only report the
         // residues we actually deleted — failed residues must not be
         // counted as freed space or persisted in `record.residues`.
-        let filteredResidues = residues.filter { $0.confidence > 0.5 }
+        let filteredResidues = previewFilteredResidues(residues)
         var deletedResidues: [ResidueFile] = []
         var residueFailures: [(url: URL, error: Error)] = []
         for residue in filteredResidues {
@@ -267,6 +323,40 @@ public actor TrashMover {
         await logEvent(action: "trash", bundleID: app.bundleID, paths: auditPaths, status: "success", error: residueErrorMessage)
 
         return .success(record)
+    }
+
+    // MARK: - Dry-run
+
+    /// Computes what ``moveToTrash(app:residues:)`` *would* do without
+    /// touching the file system. Shares the residue-selection policy with
+    /// the real flow (see ``previewFilteredResidues(_:)``) so the report and
+    /// the real delete never disagree on which files are in scope.
+    ///
+    /// Used by the App Intent shortcut (`UninstallAppIntent(dryRun: true)`)
+    /// and by the "模拟卸载" button on ``AppDetailView`` to let users
+    /// preview the impact of an uninstall before committing.
+    func dryRun(app: InstalledApp, residues: [ResidueFile]) -> DryRunReport {
+        let filtered = previewFilteredResidues(residues)
+        return DryRunReport(
+            appDisplayName: app.displayName,
+            appBundleID: app.bundleID,
+            appSizeBytes: app.sizeBytes,
+            residueSelection: filtered,
+            backupRoot: BackupManager.defaultRoot
+        )
+    }
+
+    /// The residue subset that would actually be deleted by
+    /// ``moveToTrash(app:residues:)``. Real flow and dry-run share this
+    /// helper so the report can never claim "would delete X" while the
+    /// real flow silently keeps X (spec §2.2 forbids divergent logic).
+    ///
+    /// Current policy: keep residues whose `confidence > 0.5`, matching the
+    /// hard-coded filter at the top of `moveToTrash` step 4. Promoted to a
+    /// helper here so any future policy change has exactly one site to
+    /// touch.
+    private func previewFilteredResidues(_ residues: [ResidueFile]) -> [ResidueFile] {
+        residues.filter { $0.confidence > 0.5 }
     }
 
     /// Restores an app from Trash to its original install path.
