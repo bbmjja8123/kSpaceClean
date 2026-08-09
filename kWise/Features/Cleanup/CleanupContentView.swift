@@ -108,7 +108,12 @@ struct CleanupContentView: View {
     }
 
     private func performCleanup() {
-        // Actual cleanup would be triggered here
+        // v1.5 Phase B Task 5 wiring — dispatch the confirmation dialog's
+        // accept action to the view-model's structured `cleanupNow()`, which
+        // builds `CleanupTarget`s from `urlsToCleanup`, invokes the real
+        // `CleanupEngine.cleanup(targets:)`, and records history through the
+        // existing 30-day retention pipeline.
+        Task { await viewModel.cleanupNow() }
     }
 }
 

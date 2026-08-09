@@ -3,6 +3,10 @@ import AppKit
 @MainActor
 public final class MenuBarManager: NSObject, ObservableObject {
     private var statusItem: NSStatusItem?
+    /// Background timer that refreshes the menu-bar status item every
+    /// ≤10s — drives C-8 (menu bar live number). Invalidated on `setup()`
+    /// re-entry or when the manager deallocates.
+    private var refreshTimer: Timer?
 
     public func setup() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -10,6 +14,19 @@ public final class MenuBarManager: NSObject, ObservableObject {
         statusItem?.button?.target = self
         statusItem?.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
         updateMenu()
+        // C-8: kick off the live refresh. Capture-and-replace any prior
+        // timer so duplicate setup() calls don't accumulate observers.
+        refreshTimer?.invalidate()
+        refreshTimer = Timer.scheduledTimer(
+            withTimeInterval: 10.0,
+            repeats: true
+        ) { [weak self] _ in
+            Task { @MainActor in
+                self?.refreshDiskUsage()
+            }
+        }
+        // First paint happens immediately rather than waiting 10 s.
+        refreshDiskUsage()
     }
 
     public func updateDiskUsage(used: Int64, total: Int64) {
@@ -21,6 +38,22 @@ public final class MenuBarManager: NSObject, ObservableObject {
             string: "\(formatted)",
             attributes: [.foregroundColor: color]
         )
+    }
+
+    /// Re-read the boot volume's used/total bytes from the system and pipe
+    /// them into ``updateDiskUsage(used:total:)``. Runs on the main actor
+    /// because the menu-bar item's button touches AppKit.
+    private func refreshDiskUsage() {
+        let homeURL = URL(fileURLWithPath: NSHomeDirectory())
+        guard let values = try? homeURL.resourceValues(
+            forKeys: [.volumeAvailableCapacityForImportantUsageKey, .volumeTotalCapacityKey]
+        ) else {
+            return
+        }
+        let total = Int64(values.volumeTotalCapacity ?? 0)
+        let available = Int64(values.volumeAvailableCapacityForImportantUsage ?? 0)
+        let used = max(0, total - available)
+        updateDiskUsage(used: used, total: total)
     }
 
     private func buildMenu() -> NSMenu {
