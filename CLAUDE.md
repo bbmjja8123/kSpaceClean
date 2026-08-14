@@ -311,12 +311,24 @@ kWise/
 - [x] 营销与发布节奏（4 周预热 + 上线日动作清单）
 - [x] 5 大风险 Plan B（审核被拒 / SMC 不可用 / Live Activity 拒绝等）
 
+### kWise v1.5 stage B — Ship-Ready ✅ (2026-08-08 → 2026-08-15)
+- [x] **grill-me convergence** — 11 decisions locked (UI=Hybrid, Quality=MUST C-1/C-3/C-4/C-5/C-6/C-8, Scope=M1+M3+M4)
+- [x] **Phase A (UI Shell)** — NavigationItem cases + Hybrid first-screen hero CTA + module grid
+- [x] **Phase B (M1 Smart Care)** — 3-step orchestrator + recommended-pick + 全选/反选/清理 wiring + performCleanup+terminate+C-3 freed-bytes+C-4 rollback+C-8 menu bar + tests (11 cases)
+- [x] **Phase C (M3 隐私清理)** — PrivacyView nav + inline minimal TCC.db reader (FDA-aware) + TCC overview view (12 services) + tests (7 cases)
+- [x] **Phase D (M4 磁盘健康)** — SMART reader (diskutil subprocess + Apple Silicon graceful fallback) + VolumeDiagnostics + 首屏小卡 + detail view + tests (14 cases)
+- [x] **Phase E (精品 audit + 本地化)** — C-1 audit (ScanTreeRow friendlyPath + 8-case test) + C-5/C-6 audit (PaywallView 3D → Smart Care + ScarewareCopyAuditTests) + Localizable.xcstrings v1.0 → v1.1 (16 new strings) + CLAUDE.md sync
+- [x] **5 commits per phase / 18 commits total** — worktree-kwise-v1 ahead of origin/main
+- [x] **精品 MUST 6/6** — C-1 ✅ C-3 ✅ C-4 ✅ C-5 ✅ C-6 ✅ C-8 ✅
+
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
 - [ ] kUninstall 设计 — 应用卸载
+- [ ] kWise v1.6 — Interactive Widget / Live Activities 完整接线 / Shortcuts 全套 / CoreML 模型训练 / 定时自动清理
+- [ ] kWise v2 — 3D 磁盘星系图（Paywall 文案已撤回，未来重启前需 Product 拍板）
 
 > ⚠️ **现阶段不要写实现代码**。所有设计待汇总到 spec 文档并通过后，再通过 writing-plans 技能拆解为可执行任务。
 
 ---
 
-最后更新：2026-07-25（kSpaceClean 设计定稿）
+最后更新：2026-08-15（kWise v1.5 stage B ship-ready，5 phases / 18 commits / 6/6 精品 MUST）
