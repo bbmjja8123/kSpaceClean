@@ -175,6 +175,7 @@ def main():
         ("Settings/AppearanceSettingsView.swift", "Settings"),
         ("Settings/MenuBarSettingsView.swift", "Settings"),
         ("Settings/MetricSettingsView.swift", "Settings"),
+        ("Settings/PerMetricTabView.swift", "Settings"),
         ("Settings/SettingsView.swift", "Settings"),
         ("Settings/SettingsViewModel.swift", "Settings"),
         ("Shared/AppGroupConfiguration.swift", "Shared"),

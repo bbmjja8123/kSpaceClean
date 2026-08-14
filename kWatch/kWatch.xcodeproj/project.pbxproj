@@ -306,10 +306,6 @@
 		isa = PBXBuildFile;
 		fileRef = 6B9A8FCE2833D10C66B21B94;
 	};
-	791C8C98B431CE06AF768D71 /* 791C8C98B431CE06AF768D71 */ = {
-		isa = PBXBuildFile;
-		fileRef = 3586BA91F60A8FC3A241B34C;
-	};
 	7BD05F30F005B9FC84B735E8 /* 7BD05F30F005B9FC84B735E8 */ = {
 		isa = PBXBuildFile;
 		fileRef = BD56D4A7FC8C8A288F6D2929;
@@ -413,6 +409,10 @@
 	A23A4B553335D12B0C078995 /* A23A4B553335D12B0C078995 */ = {
 		isa = PBXBuildFile;
 		fileRef = 8ECCE3506745FB1153CB8267;
+	};
+	A24FD4DA453ED7F871E3B548 /* A24FD4DA453ED7F871E3B548 */ = {
+		isa = PBXBuildFile;
+		fileRef = 4222344899ADE78AE2154CBD;
 	};
 	A2A2B2D52E52A0038A70163C /* A2A2B2D52E52A0038A70163C */ = {
 		isa = PBXBuildFile;
@@ -570,6 +570,10 @@
 		isa = PBXBuildFile;
 		fileRef = DACD1765745408BDE51CB982;
 	};
+	EE2B5959CBE35813A255AFC1 /* EE2B5959CBE35813A255AFC1 */ = {
+		isa = PBXBuildFile;
+		fileRef = 01D2F70ABD54918F287BC071;
+	};
 	EE70942A2C65E584BF0830B6 /* EE70942A2C65E584BF0830B6 */ = {
 		isa = PBXBuildFile;
 		fileRef = 592D1EDFC0B4EA95EC8659EE;
@@ -689,6 +693,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+	01D2F70ABD54918F287BC071 /* PerMetricTabView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = PerMetricTabView.swift;
+		path = Settings/PerMetricTabView.swift;
+		sourceTree = "<group>";
+	};
 	024F1C2F979C5749ECEFCCDC /* StoreKitClient.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -880,13 +891,6 @@
 		path = MenuBar/AppWindowRouter.swift;
 		sourceTree = "<group>";
 	};
-	3586BA91F60A8FC3A241B34C /* LiveActivityCoordinatorTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = LiveActivityCoordinatorTests.swift;
-		path = Tests/LiveActivityCoordinatorTests.swift;
-		sourceTree = "<group>";
-	};
 	360159E7F6FB1F6FCD8DF23A /* SettingsView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -948,6 +952,13 @@
 		lastKnownFileType = text.plist.xml;
 		name = Info.plist;
 		path = kWatchControlWidget/Info.plist;
+		sourceTree = "<group>";
+	};
+	4222344899ADE78AE2154CBD /* WidgetReloadTriggerTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = WidgetReloadTriggerTests.swift;
+		path = Tests/WidgetReloadTriggerTests.swift;
 		sourceTree = "<group>";
 	};
 	42A8FD07BDDC626DBA3184A4 /* SharedSnapshot.swift */ = {
@@ -1876,6 +1887,7 @@
 			9938DF78C5FA02BEE2726CC4 /* AppearanceSettingsView.swift */,
 			EDFEA602AB2A5352BBD64650 /* MenuBarSettingsView.swift */,
 			64C76C3AF6D7C1D08AE81C00 /* MetricSettingsView.swift */,
+			01D2F70ABD54918F287BC071 /* PerMetricTabView.swift */,
 			360159E7F6FB1F6FCD8DF23A /* SettingsView.swift */,
 			7176DCD3604F7D24DDE333F3 /* SettingsViewModel.swift */,
 		);
@@ -1911,11 +1923,11 @@
 			443B69E3590BADE5F657F64E /* IntentParameterTests.swift */,
 			03B411213CED55739D9FB3DE /* IntentTests.swift */,
 			653A10396E298C1B05E94EC6 /* InteractiveWidgetIntentTests.swift */,
-			3586BA91F60A8FC3A241B34C /* LiveActivityCoordinatorTests.swift */,
 			EDA8E236CF307FFD01EAB981 /* MenuBarIconThemeTests.swift */,
 			77BF1B73572625F9518ED83C /* MenuBarViewModelTests.swift */,
 			48CBBF63493E2A8BC8F68341 /* MetricCardViewModelTests.swift */,
 			A93D454F0C41DB76BBED1DB9 /* MetricDetailViewModelTests.swift */,
+			4222344899ADE78AE2154CBD /* WidgetReloadTriggerTests.swift */,
 			2906D24E92EE5AE02B27EE3D /* NotificationSchedulerTests.swift */,
 			519386D7F436003927EAABCB /* OnboardingViewModelTests.swift */,
 			97D8C41CF6C4CF8C7C52E96E /* PaywallViewModelTermsTests.swift */,
@@ -2232,11 +2244,11 @@
 			F635ABC2DE1E32C726E6861A /* F635ABC2DE1E32C726E6861A */,
 			5098DD3CB6A57977716F8E78 /* 5098DD3CB6A57977716F8E78 */,
 			B87EF9F2FBB14C7B4B6FD14A /* B87EF9F2FBB14C7B4B6FD14A */,
-			791C8C98B431CE06AF768D71 /* 791C8C98B431CE06AF768D71 */,
 			62DD2B2A146B30FC1666A265 /* 62DD2B2A146B30FC1666A265 */,
 			92BEC11FC8DD9F77F04CEF4F /* 92BEC11FC8DD9F77F04CEF4F */,
 			2B65BC3402FD3269056DFF7F /* 2B65BC3402FD3269056DFF7F */,
 			AD4B131A673D15859CC25D38 /* AD4B131A673D15859CC25D38 */,
+			A24FD4DA453ED7F871E3B548 /* A24FD4DA453ED7F871E3B548 */,
 			50462B0A78871C43A4E77B9B /* 50462B0A78871C43A4E77B9B */,
 			D231F2291A20553B6F352E9F /* D231F2291A20553B6F352E9F */,
 			931E0DDB1639A5531174CF32 /* 931E0DDB1639A5531174CF32 */,
@@ -2338,6 +2350,7 @@
 			F8020BF51162D654C015B5C1 /* F8020BF51162D654C015B5C1 */,
 			F34814A681F8DF89DABE34ED /* F34814A681F8DF89DABE34ED */,
 			BC7C77518AE68CBA406DDDEE /* BC7C77518AE68CBA406DDDEE */,
+			EE2B5959CBE35813A255AFC1 /* EE2B5959CBE35813A255AFC1 */,
 			C0435261C99720AB8B4075FD /* C0435261C99720AB8B4075FD */,
 			E5D84FBAEC4E2364C7F69DA0 /* E5D84FBAEC4E2364C7F69DA0 */,
 			F799F1C8FD709366D6824FC0 /* F799F1C8FD709366D6824FC0 */,
