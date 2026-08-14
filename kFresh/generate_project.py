@@ -269,6 +269,7 @@ def main():
         "IntegrationTests": [
             "UninstallFlowTests.swift",
             "SandboxDegradationTests.swift",
+            "ScanPerformanceTests.swift",
         ],
         "UITests": [
             "OnboardingUITests.swift",

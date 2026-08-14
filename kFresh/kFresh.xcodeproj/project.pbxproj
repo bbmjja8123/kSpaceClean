@@ -355,6 +355,10 @@
 		isa = PBXBuildFile;
 		fileRef = 4F2A7F92EFF2EA40B6D561A3;
 	};
+	B867E6AEDEB84E71E5162B78 /* B867E6AEDEB84E71E5162B78 */ = {
+		isa = PBXBuildFile;
+		fileRef = 050B0A9956A6A2F97F7E206E;
+	};
 	BACFDA22270C59C70A9E512A /* BACFDA22270C59C70A9E512A */ = {
 		isa = PBXBuildFile;
 		fileRef = 48DFB6C6C2EEA832BFACA155;
@@ -526,6 +530,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = DeepCleanViewModel.swift;
 		path = Features/DeepClean/DeepCleanViewModel.swift;
+		sourceTree = "<group>";
+	};
+	050B0A9956A6A2F97F7E206E /* ScanPerformanceTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanPerformanceTests.swift;
+		path = Tests/IntegrationTests/ScanPerformanceTests.swift;
 		sourceTree = "<group>";
 	};
 	05B9799A26FB3FDC78B071F1 /* Assets.xcassets */ = {
@@ -1831,6 +1842,7 @@
 		children = (
 			53EF96BE26DB6B2A6C185799 /* UninstallFlowTests.swift */,
 			92285B8C36BFE1BC01B56B40 /* SandboxDegradationTests.swift */,
+			050B0A9956A6A2F97F7E206E /* ScanPerformanceTests.swift */,
 		);
 		name = IntegrationTests;
 		sourceTree = "<group>";
@@ -2021,6 +2033,7 @@
 			44EBCC7245FD1131BAEE6B17 /* 44EBCC7245FD1131BAEE6B17 */,
 			6231AF927607A08F46940350 /* 6231AF927607A08F46940350 */,
 			D3FAFA57DEAF62F89DDA747D /* D3FAFA57DEAF62F89DDA747D */,
+			B867E6AEDEB84E71E5162B78 /* B867E6AEDEB84E71E5162B78 */,
 			84B9CA37ECCA960390896B82 /* 84B9CA37ECCA960390896B82 */,
 			AE2390F2F0CF6ADDADF8C5B0 /* AE2390F2F0CF6ADDADF8C5B0 */,
 			558CE0CC156B25691F44B9E3 /* 558CE0CC156B25691F44B9E3 */,
