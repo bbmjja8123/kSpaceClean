@@ -2,19 +2,52 @@ import Foundation
 
 public final class GPUMonitor: MetricMonitor, @unchecked Sendable {
     public let kind: MetricKind = .gpu
-    private let provider: any SMCReadingProvider
-    public init(provider: any SMCReadingProvider) { self.provider = provider }
+
+    private let smcProvider: any SMCReadingProvider
+    private let usageProvider: any GPUUsageProvider
+
+    /// Designated init. `usageProvider` defaults to `MetalGPUUsageProvider`
+    /// on macOS (Apple Silicon only — Intel reports `.unsupported`).
+    /// Tests inject `StubGPUUsageProvider` so the contract is verifiable
+    /// without a real Metal device.
+    public init(
+        smcProvider: any SMCReadingProvider,
+        usageProvider: any GPUUsageProvider = MetalGPUUsageProvider()
+    ) {
+        self.smcProvider = smcProvider
+        self.usageProvider = usageProvider
+    }
+
     public func sample() async throws -> MetricSample {
-        guard provider.isSupported else {
-            return MetricSample(kind: .gpu, value: .unavailable(.unsupported("SMC is unavailable on this Mac")), availability: .unsupported(reason: "SMC is unavailable on this Mac"), timestamp: Date())
+        // Prefer the usage reading — that's what the dashboard wants to
+        // plot. Fall back to SMC temperature if the usage provider says
+        // this Mac has no Metal-driven GPU telemetry (e.g. Intel iGPU).
+        if usageProvider.isSupported, let fraction = try? usageProvider.sampleUsageFraction() {
+            return MetricSample(
+                kind: .gpu,
+                value: .percentage(fraction),
+                availability: .available,
+                timestamp: Date()
+            )
         }
-        do {
-            let gpuTemp = try provider.read(key: .gpuTemperature)
-            return MetricSample(kind: .gpu, value: .degreesCelsius(gpuTemp), availability: .available, timestamp: Date())
-        } catch let error as MetricError {
-            return MetricSample(kind: .gpu, value: .unavailable(error), availability: .unsupported(reason: String(describing: error)), timestamp: Date())
-        } catch {
-            return MetricSample(kind: .gpu, value: .unavailable(.systemCall("SMC", -1)), availability: .unsupported(reason: String(describing: error)), timestamp: Date())
+
+        // Fallback: surface the SMC temperature if available. Most Intel
+        // Macs still expose a `TG0P` SMC key even when Metal can't give us
+        // a working-set fraction.
+        if smcProvider.isSupported, let gpuTemp = try? smcProvider.read(key: .gpuTemperature) {
+            return MetricSample(
+                kind: .gpu,
+                value: .degreesCelsius(gpuTemp),
+                availability: .available,
+                timestamp: Date()
+            )
         }
+
+        return MetricSample(
+            kind: .gpu,
+            value: .unavailable(.unsupported("GPU telemetry is unavailable on this Mac")),
+            availability: .unsupported(reason: "GPU telemetry is unavailable on this Mac"),
+            timestamp: Date()
+        )
     }
 }

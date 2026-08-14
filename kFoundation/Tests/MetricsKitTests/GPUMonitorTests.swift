@@ -1,55 +1,82 @@
 import XCTest
 @testable import MetricsKit
 
-final class MockSMCProvider: SMCReadingProvider, @unchecked Sendable {
-    let temperature: Double
+/// SMC stub used by the GPU monitor tests. Placed here rather than in
+/// production code because the production adapter
+/// (`IOKitSMCReadingProvider`) explicitly does not support real SMC
+/// reads — see its TODO comment.
+private final class StubSMC: SMCReadingProvider, @unchecked Sendable {
     let supported: Bool
+    let temperature: Double?
 
-    init(temperature: Double, supported: Bool = true) {
-        self.temperature = temperature
+    init(supported: Bool, temperature: Double? = nil) {
         self.supported = supported
+        self.temperature = temperature
     }
 
     var isSupported: Bool { supported }
 
     func read(key: SMCKey) throws -> Double {
-        if key == .gpuTemperature { return temperature }
-        throw MetricError.unsupported("key not implemented in mock: \(key.rawValue)")
+        switch key {
+        case .gpuTemperature:
+            if let temperature { return temperature }
+            throw MetricError.unsupported("gpu temp")
+        default:
+            throw MetricError.unsupported("not implemented in stub")
+        }
     }
 }
 
 final class GPUMonitorTests: XCTestCase {
-    func testGPUOnUnsupportedSystemIsNotFabricated() async throws {
-        let sample = try await GPUMonitor(provider: UnsupportedSMCProvider()).sample()
-        XCTAssertEqual(sample.kind, .gpu)
-        XCTAssertEqual(sample.availability, .unsupported(reason: "SMC is unavailable on this Mac"))
-        if case .unavailable = sample.value {} else { XCTFail("expected unavailable value") }
-    }
 
-    func testGPUSampleWithValidProviderReturnsDegreesCelsius() async throws {
-        let provider = MockSMCProvider(temperature: 65.0)
-        let sample = try await GPUMonitor(provider: provider).sample()
+    /// On Apple Silicon the usage provider returns a `[0, 1]` fraction
+    /// and the monitor surfaces it as a `.percentage` value (the
+    /// dashboard's "GPU Usage" card plots this number).
+    func testSampleReturnsPercentageWhenUsageProviderSupported() async throws {
+        let smc = StubSMC(supported: false)
+        let usage = StubGPUUsageProvider(fraction: 0.42)
+        let monitor = GPUMonitor(smcProvider: smc, usageProvider: usage)
+
+        let sample = try await monitor.sample()
+
         XCTAssertEqual(sample.kind, .gpu)
         XCTAssertEqual(sample.availability, .available)
-        if case .degreesCelsius(let value) = sample.value {
-            XCTAssertEqual(value, 65.0, accuracy: 0.01)
-        } else {
-            XCTFail("Expected .degreesCelsius value")
-        }
+        XCTAssertEqual(sample.value.percentage, 0.42, accuracy: 0.0001)
+        XCTAssertNil(sample.value.degreesCelsius)
     }
 
-    func testGPUSampleWhenProviderReadFailsReportsError() async throws {
-        struct FailingSMC: SMCReadingProvider, @unchecked Sendable {
-            var isSupported: Bool { true }
-            func read(key: SMCKey) throws -> Double { throw MetricError.malformedData("bad SMC frame") }
-        }
-        let sample = try await GPUMonitor(provider: FailingSMC()).sample()
-        XCTAssertEqual(sample.kind, .gpu)
-        if case .available = sample.availability { XCTFail("expected non-available") }
-        if case .unavailable(let error) = sample.value {
-            if case .malformedData = error {} else { XCTFail("expected .malformedData error") }
+    /// When the usage provider is unsupported (e.g. Intel iGPU) but SMC
+    /// still exposes `TG0P`, the monitor falls back to a
+    /// `.degreesCelsius` sample so Intel users still see something
+    /// useful on the dashboard.
+    func testSampleFallsBackToTemperatureWhenUsageUnsupported() async throws {
+        let smc = StubSMC(supported: true, temperature: 72.0)
+        let usage = StubGPUUsageProvider(fraction: nil, supported: false)
+        let monitor = GPUMonitor(smcProvider: smc, usageProvider: usage)
+
+        let sample = try await monitor.sample()
+
+        XCTAssertEqual(sample.availability, .available)
+        XCTAssertEqual(sample.value.degreesCelsius, 72.0, accuracy: 0.0001)
+        XCTAssertNil(sample.value.percentage)
+    }
+
+    /// When neither source has data, the monitor returns a `.unsupported`
+    /// sample so the dashboard can render an explicit "unavailable"
+    /// badge rather than fabricating numbers.
+    func testSampleReturnsUnsupportedWhenBothProvidersFail() async throws {
+        let smc = StubSMC(supported: false)
+        let usage = StubGPUUsageProvider(fraction: nil, supported: false)
+        let monitor = GPUMonitor(smcProvider: smc, usageProvider: usage)
+
+        let sample = try await monitor.sample()
+
+        if case .unsupported = sample.availability {
+            // ok
         } else {
-            XCTFail("expected .unavailable value")
+            XCTFail("Expected unsupported availability, got \(sample.availability)")
         }
+        XCTAssertNil(sample.value.percentage)
+        XCTAssertNil(sample.value.degreesCelsius)
     }
 }
