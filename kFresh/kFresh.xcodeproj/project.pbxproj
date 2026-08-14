@@ -107,6 +107,10 @@
 		isa = PBXBuildFile;
 		fileRef = 93E7385164CAC43BEEBF65ED;
 	};
+	3A7818440839EF8014EDD76E /* 3A7818440839EF8014EDD76E */ = {
+		isa = PBXBuildFile;
+		fileRef = DFA857E2BBBDBA6BFCC61362;
+	};
 	3B2FCA3EF8D0F909AD81E7A3 /* 3B2FCA3EF8D0F909AD81E7A3 */ = {
 		isa = PBXBuildFile;
 		fileRef = 596A35B436635B564A7D09B5;
@@ -1256,6 +1260,13 @@
 		path = Core/Clean/TrashMover.swift;
 		sourceTree = "<group>";
 	};
+	DFA857E2BBBDBA6BFCC61362 /* TrashMoverMemoryTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TrashMoverMemoryTests.swift;
+		path = Tests/CleanTests/TrashMoverMemoryTests.swift;
+		sourceTree = "<group>";
+	};
 	DFFB3A04DCFE11AA8A75C917 /* HistoryView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1720,6 +1731,7 @@
 			F64EB626B1651356DF05FAE6 /* ResidueScannerTests.swift */,
 			AA60B030305633EC645DBDE8 /* AuditLoggerTests.swift */,
 			634CE99A2942B3B182B804AC /* ResidueRiskLevelTests.swift */,
+			DFA857E2BBBDBA6BFCC61362 /* TrashMoverMemoryTests.swift */,
 		);
 		name = CleanTests;
 		sourceTree = "<group>";
@@ -2014,6 +2026,7 @@
 			6DEA26C5ACF70B72832A1F3D /* 6DEA26C5ACF70B72832A1F3D */,
 			0704BB649CB8695E93175CE8 /* 0704BB649CB8695E93175CE8 */,
 			6021E1062825D55074887E87 /* 6021E1062825D55074887E87 */,
+			3A7818440839EF8014EDD76E /* 3A7818440839EF8014EDD76E */,
 			33D3B9276A837515275FF9DC /* 33D3B9276A837515275FF9DC */,
 			E4CBB2D4144A020738312A5F /* E4CBB2D4144A020738312A5F */,
 			DCECDEE27A83C4E5AE9BE6C4 /* DCECDEE27A83C4E5AE9BE6C4 */,

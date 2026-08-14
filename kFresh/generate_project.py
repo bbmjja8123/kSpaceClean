@@ -234,6 +234,7 @@ def main():
             "ResidueScannerTests.swift",
             "AuditLoggerTests.swift",
             "ResidueRiskLevelTests.swift",
+            "TrashMoverMemoryTests.swift",
         ],
         "OnboardingTests": [
             "FDAPermissionProbeTests.swift",
