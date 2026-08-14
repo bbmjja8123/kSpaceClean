@@ -131,7 +131,7 @@ struct RootView: View {
         case .privacy:
             PrivacyView()  // Phase C Task 7 — wire PrivacyView into nav
         case .diskHealth:
-            PlaceholderModuleView(title: "磁盘健康", subtitle: "Phase D 上线")
+            DiskHealthDetailView()  // Phase D Task 12 — wire disk health detail view
         }
     }
 
