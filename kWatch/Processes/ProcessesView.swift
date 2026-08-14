@@ -264,9 +264,11 @@ public struct ProcessesView: View {
 
     private func sortLabel(_ sort: ProcessSort) -> String {
         switch sort {
-        case .cpu:     return String(localized: "CPU")
-        case .memory:  return String(localized: "Memory")
-        case .network: return String(localized: "Network")
+        case .cpu:             return String(localized: "CPU")
+        case .memory:          return String(localized: "Memory")
+        case .network:         return String(localized: "Total Net")
+        case .networkDownload: return String(localized: "Download")
+        case .networkUpload:   return String(localized: "Upload")
         }
     }
 }
