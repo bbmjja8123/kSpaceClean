@@ -67,6 +67,10 @@
 		isa = PBXBuildFile;
 		fileRef = 1B2C3D4E5F6A7B8C9D0E1F2A;
 	};
+	4E5F6A7B8C9D0E1F2A3B4C5D /* 4E5F6A7B8C9D0E1F2A3B4C5D */ = {
+		isa = PBXBuildFile;
+		fileRef = 3D4E5F6A7B8C9D0E1F2A3B4C;
+	};
 	246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */ = {
 		isa = PBXBuildFile;
 		fileRef = 0843E97F195214F62BD29C3F;
@@ -919,6 +923,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = DiskHealthTests.swift;
 		path = Tests/DiskHealthTests.swift;
+		sourceTree = "<group>";
+	};
+	3D4E5F6A7B8C9D0E1F2A3B4C /* ScanTreeRowC1AuditTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanTreeRowC1AuditTests.swift;
+		path = Tests/ScanTreeRowC1AuditTests.swift;
 		sourceTree = "<group>";
 	};
 	27E8208E9A99978867A43090 /* kFoundation */ = {
@@ -2179,6 +2190,7 @@
 			6D5E4F3C2B1A0F9E8D7C6B5F /* SmartCareViewModelTests.swift */,
 			A3B4C5D6E7F8192A3B4C5D6E /* TCCReaderTests.swift */,
 			1B2C3D4E5F6A7B8C9D0E1F2A /* DiskHealthTests.swift */,
+			3D4E5F6A7B8C9D0E1F2A3B4C /* ScanTreeRowC1AuditTests.swift */,
 			E4C62FD7FB4A1EAC51EC2224 /* RuleClassifierTests.swift */,
 			362341017602FD8FE3C4DCD8 /* AppStateTests.swift */,
 			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
@@ -2432,6 +2444,7 @@
 			8F7E6D5C4B3A291819283746 /* 8F7E6D5C4B3A291819283746 */,
 			B4C5D6E7F8192A3B4C5D6E7F /* B4C5D6E7F8192A3B4C5D6E7F */,
 			2C3D4E5F6A7B8C9D0E1F2A3B /* 2C3D4E5F6A7B8C9D0E1F2A3B */,
+			4E5F6A7B8C9D0E1F2A3B4C5D /* 4E5F6A7B8C9D0E1F2A3B4C5D */,
 			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,
 			201A00B31EEF8EC428CADA3F /* 201A00B31EEF8EC428CADA3F */,
 			2FFA604239D04066410170DC /* 2FFA604239D04066410170DC */,
