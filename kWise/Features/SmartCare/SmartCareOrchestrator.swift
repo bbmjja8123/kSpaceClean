@@ -49,12 +49,17 @@ public final class SmartCareOrchestrator: ObservableObject {
     @Published public private(set) var recommendedItems: [ScanResultEntry] = []
 
     private weak var scanResultsViewModel: ScanResultsViewModel?
+    /// Injected cleanup engine. Defaults to a fresh instance backed by the
+    /// shared `PersistenceController`; tests can substitute a stub.
+    private let cleanupEngine: CleanupEngine
 
     /// Designated initializer. The view model can also be attached later
     /// via ``attach(scanResultsViewModel:)`` when SwiftUI environment
     /// resolution is preferred.
-    public init(scanResultsViewModel: ScanResultsViewModel? = nil) {
+    public init(scanResultsViewModel: ScanResultsViewModel? = nil,
+                cleanupEngine: CleanupEngine = CleanupEngine()) {
         self.scanResultsViewModel = scanResultsViewModel
+        self.cleanupEngine = cleanupEngine
     }
 
     /// Late-binds a scan view model after construction.
@@ -75,18 +80,27 @@ public final class SmartCareOrchestrator: ObservableObject {
         Task { @MainActor in await self.runPipeline(scanVM: scanVM) }
     }
 
-    /// User confirms the recommended picks. Phase B Task 5 wires the
-    /// actual `CleanupEngine.cleanup(targets:)` invocation; for now the
-    /// transition to `.cleaning` → `.done` is a no-op stub that mimics
-    /// a successful run.
+    /// User confirms the recommended picks. Phase C-3 polish (post-Phase D):
+    /// real `CleanupEngine.cleanup(targets:)` invocation. Returns the actual
+    /// `CleanupOutcome.freedBytes` so the user sees a truthful
+    /// "X.XX GB freed" within ~1.5s.
     public func confirm() {
         state = .cleaning(progress: 0)
         Task { @MainActor in
-            // TODO(Task 5): invoke `CleanupEngine.cleanup(targets:)` with
-            // `recommendedItems` mapped to `CleanupTarget`.
-            try? await Task.sleep(nanoseconds: 1_500_000_000)
-            let freed = recommendedItems.reduce(Int64(0)) { $0 + $1.size }
-            state = .done(freedBytes: freed, durationSeconds: 1.5)
+            let started = Date()
+            let targets = recommendedItems.map { entry -> CleanupTarget in
+                let url = URL(fileURLWithPath: entry.path)
+                return CleanupTarget(url: url, size: entry.size, risk: .recommended)
+            }
+            do {
+                let outcome = try await cleanupEngine.cleanup(targets: targets)
+                state = .done(
+                    freedBytes: outcome.freedBytes,
+                    durationSeconds: Date().timeIntervalSince(started)
+                )
+            } catch {
+                state = .failed(message: "清理失败：\(error.localizedDescription)")
+            }
         }
     }
 
