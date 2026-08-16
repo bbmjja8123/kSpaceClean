@@ -18,7 +18,7 @@ struct PaywallView: View {
                 FeatureList(items: [
                     ("无限清理", "免费版仅 1GB"),
                     ("AI 智能分类", "本地 CoreML"),
-                    ("3D 磁盘星系图", "Metal 渲染"),
+                    ("Smart Care", "一键扫描 · 智能清理"),
                     ("桌面 Widget + Shortcuts", "macOS 深度集成"),
                 ])
 

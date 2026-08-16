@@ -1,106 +1,684 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "开始扫描" : {
-      "comment" : "Button: start scanning",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Start Scan" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "开始扫描" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スキャン開始" } }
+  "sourceLanguage": "en",
+  "strings": {
+    "开始扫描": {
+      "comment": "Button: start scanning",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Scan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始扫描"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン開始"
+          }
+        }
       }
     },
-    "快速扫描" : {
-      "comment" : "Button: quick scan",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Quick Scan" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "快速扫描" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "クイックスキャン" } }
+    "快速扫描": {
+      "comment": "Button: quick scan",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick Scan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速扫描"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クイックスキャン"
+          }
+        }
       }
     },
-    "一键清理" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clean Up" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "一键清理" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ワンクリック清掃" } }
+    "一键清理": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean Up"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一键清理"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ワンクリック清掃"
+          }
+        }
       }
     },
-    "磁盘空间" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Disk Space" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "磁盘空间" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ディスク容量" } }
+    "磁盘空间": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk Space"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘空间"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスク容量"
+          }
+        }
       }
     },
-    "已用 %@ / %@" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ used / %@" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已用 %@ / %@" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%@ 使用中 / %@" } }
+    "已用 %@ / %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ used / %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已用 %@ / %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 使用中 / %@"
+          }
+        }
       }
     },
-    "释放了 %@" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ freed" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "释放了 %@" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "%@ 解放済み" } }
+    "释放了 %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ freed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "释放了 %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 解放済み"
+          }
+        }
       }
     },
-    "需要你的授权" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Authorization Required" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "需要你的授权" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "認証が必要です" } }
+    "需要你的授权": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorization Required"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要你的授权"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "認証が必要です"
+          }
+        }
       }
     },
-    "扫描结果" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Scan Results" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "扫描结果" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スキャン結果" } }
+    "扫描结果": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Results"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描结果"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン結果"
+          }
+        }
       }
     },
-    "清理历史" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cleanup History" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "清理历史" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "清掃履歴" } }
+    "清理历史": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup History"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理历史"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清掃履歴"
+          }
+        }
       }
     },
-    "设置" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "设置" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "設定" } }
+    "设置": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
+        }
       }
     },
-    "无限清理" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlimited Cleaning" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无限清理" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "無制限清掃" } }
+    "无限清理": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited Cleaning"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无限清理"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無制限清掃"
+          }
+        }
       }
     },
-    "AI 智能分类" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "AI Classification" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "AI 智能分类" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "AI分類" } }
+    "AI 智能分类": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Classification"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI 智能分类"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI分類"
+          }
+        }
       }
     },
-    "桌面 Widget + Shortcuts" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Desktop Widget + Shortcuts" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "桌面 Widget + Shortcuts" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "デスクトップWidget + Shortcuts" } }
+    "桌面 Widget + Shortcuts": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desktop Widget + Shortcuts"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "桌面 Widget + Shortcuts"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デスクトップWidget + Shortcuts"
+          }
+        }
       }
     },
-    "7 天免费试用 · 之后 ¥98/年" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "7-Day Free Trial · ¥98/year" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "7 天免费试用 · 之后 ¥98/年" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "7日間無料トライアル · その後 ¥2,400/年" } }
+    "7 天免费试用 · 之后 ¥98/年": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7-Day Free Trial · ¥98/year"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 天免费试用 · 之后 ¥98/年"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7日間無料トライアル · その後 ¥2,400/年"
+          }
+        }
+      }
+    },
+    "智能清理": {
+      "comment": "M1 Smart Care hero title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Care"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "智能清理"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Care"
+          }
+        }
+      }
+    },
+    "一键扫描 · 智能清理 · 焕然如新": {
+      "comment": "M1 Smart Care hero subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan · Pick · Clean in one tap"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一键扫描 · 智能清理 · 焕然如新"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン · 選定 · 清理をワンタップで"
+          }
+        }
+      }
+    },
+    "扫描中…": {
+      "comment": "M1 Smart Care scanning state",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描中…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン中…"
+          }
+        }
+      }
+    },
+    "正在选择可清理项…": {
+      "comment": "M1 Smart Care recommending state",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Picking what to clean…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在选择可清理项…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーン対象を選定中…"
+          }
+        }
+      }
+    },
+    "清理中…": {
+      "comment": "M1 Smart Care cleaning state",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleaning…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理中…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーン中…"
+          }
+        }
+      }
+    },
+    "全选": {
+      "comment": "M1 全选 button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全选"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて選択"
+          }
+        }
+      }
+    },
+    "反选": {
+      "comment": "M1 反选 button",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invert"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "反选"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "反転"
+          }
+        }
+      }
+    },
+    "隐私": {
+      "comment": "M3 隐私 module title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシー"
+          }
+        }
+      }
+    },
+    "权限概览": {
+      "comment": "M3 TCC overview title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Permissions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "权限概览"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリの権限"
+          }
+        }
+      }
+    },
+    "需要完整磁盘访问": {
+      "comment": "C-5 FDA prompt title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Disk Access required"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要完整磁盘访问"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フルディスクアクセスが必要"
+          }
+        }
+      }
+    },
+    "打开系统设置": {
+      "comment": "C-5 FDA prompt CTA",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open System Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开系统设置"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム設定を開く"
+          }
+        }
+      }
+    },
+    "磁盘健康": {
+      "comment": "M4 Disk Health module title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk Health"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘健康"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスクヘルス"
+          }
+        }
+      }
+    },
+    "正常": {
+      "comment": "M4 healthy grade (matches existing 健康 grade where used)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Healthy"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正常"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正常"
+          }
+        }
+      }
+    },
+    "注意": {
+      "comment": "M4 caution grade",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attention"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注意"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注意"
+          }
+        }
+      }
+    },
+    "异常": {
+      "comment": "M4 danger grade",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warning"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "异常"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "異常"
+          }
+        }
+      }
+    },
+    "S.M.A.R.T. %@ · %@": {
+      "comment": "M4 card summary format",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. %@ · %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. %@ · %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. %@ · %@"
+          }
+        }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.1"
 }

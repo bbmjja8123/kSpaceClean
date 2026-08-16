@@ -17,6 +17,10 @@ struct RootView: View {
     // model, so every user-initiated scan ran a pipeline nothing on screen
     // was watching. All three triggers now route here.
     @StateObject private var scanResultsViewModel = ScanResultsViewModel(engine: ScanEngine())
+    // v1.5: Smart Care (Phase B) — orchestrator + SwiftUI VM owns the
+    // 3-step state machine. Attach lazily once `scanResultsViewModel`
+    // is reachable (see `.onAppear` below).
+    @StateObject private var smartCareViewModel = SmartCareViewModel()
 
     var body: some View {
         GeometryReader { geo in
@@ -91,6 +95,12 @@ struct RootView: View {
             }
         )
         .modifier(RootKeyboardShortcuts(appState: appState))
+        .onAppear {
+            // Late-bind the Smart Care VM to the scan VM. Two @StateObject
+            // can't reference each other at init time; `.attach` resolves the
+            // dependency once both views have been created.
+            smartCareViewModel.attach(scanResultsViewModel: scanResultsViewModel)
+        }
     }
 
     // MARK: - Background
@@ -104,13 +114,24 @@ struct RootView: View {
     private var mainContent: some View {
         switch appState.navigation {
         case .scan:
-            ScanResultsView(viewModel: scanResultsViewModel)
+            ScanResultsView(
+                viewModel: scanResultsViewModel,
+                smartCareViewModel: smartCareViewModel
+            )
         case .cleanup:
             CleanupContentView(viewModel: cleanupViewModel)
         case .history:
             HistoryContentView()
         case .settings:
             SettingsView()
+        // v1.5 stage B — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
+        // Real module views land in Phase B Task 3+ / Phase C Task 7+ / Phase D Task 11+.
+        case .smartCare:
+            SmartCareHeroView()
+        case .privacy:
+            PrivacyView()  // Phase C Task 7 — wire PrivacyView into nav
+        case .diskHealth:
+            DiskHealthDetailView()  // Phase D Task 12 — wire disk health detail view
         }
     }
 
@@ -157,6 +178,34 @@ private struct IconRailButton: View, Equatable {
         }
         .buttonStyle(.plain)
         .help(item.tooltip)
+    }
+}
+
+// MARK: - v1.5 Placeholder Module View
+
+/// Placeholder view for v1.5 modules pending real implementation.
+///
+/// Renders title + subtitle in the main content area for Smart Care /
+/// Privacy / Disk Health until their Phase B/C/D real module views land
+/// (see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md` Tasks 2 / 7 / 11).
+///
+/// Inlined in this file (not its own Swift file) to avoid touching
+/// `kWise.xcodeproj/project.pbxproj` until Phase B wires the real views.
+private struct PlaceholderModuleView: View {
+    let title: String
+    let subtitle: String
+
+    var body: some View {
+        VStack(spacing: AppSpacing.md) {
+            Text(title)
+                .font(AppFont.title)
+                .foregroundStyle(Color.textPrimary)
+            Text(subtitle)
+                .font(AppFont.body)
+                .foregroundStyle(Color.textSecondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.bgPrimary)
     }
 }
 

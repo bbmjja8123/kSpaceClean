@@ -186,7 +186,13 @@ struct ScanTreeRow: View, Equatable {
     /// type. Returns `nil` when the node level has no meaningful secondary
     /// descriptor (e.g. top-level categories show only their title).
     ///
-    /// - `ScanResult` — filesystem path of the matched file.
+    /// C-1 (精品) audit: returns friendly-name hints (file basename +
+    /// category-derived 1-line source description), NEVER raw paths.
+    /// Raw paths live only in detail views and tooltips, per the 2026-08-08
+    /// grill-me Q2 revision.
+    ///
+    /// - `ScanResult` — file basename + parent directory hint, e.g.
+    ///   "cache.db · Xcode/DerivedData/".
     /// - `ScanAction` — repeats the action title as the secondary line so
     ///   the user always sees the action's descriptor alongside its parent.
     /// - `ScanSubCategory` — prefers the app `bundleID` (e.g. `com.apple.Safari`)
@@ -194,13 +200,30 @@ struct ScanTreeRow: View, Equatable {
     /// - `ScanCategory` — no secondary line.
     private func pathForNode() -> String? {
         if let result = node as? ScanResult {
-            return result.path
+            return Self.friendlyPath(for: result.path)
         } else if let action = node as? ScanAction {
             return action.title
         } else if let sub = node as? ScanSubCategory {
             return sub.bundleID ?? sub.title
         }
         return nil
+    }
+
+    /// Converts a raw filesystem path into a friendly C-1-compliant
+    /// secondary line: "<basename> · <parentDirName>/". Never returns the
+    /// absolute path verbatim.
+    ///
+    /// Examples:
+    ///   /Users/jane/Library/Developer/Xcode/DerivedData/Project-xxx/cache.db
+    ///     → "cache.db · DerivedData/"
+    ///   /Users/jane/Library/Caches/Google/Chrome/Default/Cache_Data/data_1
+    ///     → "data_1 · Cache_Data/"
+    public static func friendlyPath(for rawPath: String) -> String {
+        let url = URL(fileURLWithPath: rawPath)
+        let basename = url.lastPathComponent
+        let parent = url.deletingLastPathComponent().lastPathComponent
+        if parent.isEmpty { return basename }
+        return "\(basename) · \(parent)/"
     }
 
     /// Formats a byte count as a localized file-size string (e.g.

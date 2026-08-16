@@ -247,6 +247,44 @@ final class ScanResultsViewModel: ObservableObject {
         updateSummary()
     }
 
+    // MARK: - Bulk selection (v1.5 Task 4)
+
+    /// Select every visible node — wired to the 全选 button in the results
+    /// `SummaryBar`. Cascades downward via each node's `setState(_:)`
+    /// implementation; parents recompute their state automatically.
+    func selectAll() {
+        for category in snapshot.categories {
+            category.setState(.on)
+        }
+        updateSummary()
+    }
+
+    /// Invert selection across every leaf — wired to the 反选 button.
+    /// Internal nodes (categories, sub-categories, actions) are recomputed
+    /// via `refreshState()` so tri-state checkboxes accurately reflect the
+    /// new children states.
+    func invertSelection() {
+        for category in snapshot.categories {
+            invertLeaves(in: category)
+            category.refreshState()
+        }
+        updateSummary()
+    }
+
+    /// Recursive helper for ``invertSelection()`` — flips `state` only on
+    /// leaf rows (rows with no children); internal rows get a later
+    /// `refreshState()` pass.
+    private func invertLeaves(in node: any ScanTreeNode) {
+        if node.children.isEmpty {
+            let flipped: CheckState = (node.state == .on) ? .off : .on
+            node.setState(flipped)
+        } else {
+            for child in node.children {
+                invertLeaves(in: child)
+            }
+        }
+    }
+
     /// Recomputes ``totalSelectedSize`` and ``totalSelectedCount`` from
     /// the current selection state of every category in ``categories``.
     ///

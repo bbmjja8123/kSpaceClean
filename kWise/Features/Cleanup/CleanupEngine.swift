@@ -328,8 +328,13 @@ public actor CleanupEngine {
             toClean = filtered
             skipped = targets.filter { conflictingPaths.contains($0.url.path) }.map(\.url)
         } else {
-            // .terminate — TODO: C3 owns the actual terminate() call. For now we
-            // still proceed; the warning flow resolves terminate before invoking us.
+            // .terminate — send NSRunningApplication.terminate() to every running
+            // app whose bundleID matches one of the targets, then proceed to trash.
+            // Graceful terminate first (Apple Event .shouldTerminate gives apps
+            // a chance to save state); fall back to forceTerminate() for any
+            // app that hasn't exited within ~0.5s.
+            terminateOwningApps(for: targets)
+            try? await Task.sleep(nanoseconds: 500_000_000)
             toClean = targets
             skipped = []
         }

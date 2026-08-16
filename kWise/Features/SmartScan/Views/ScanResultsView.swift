@@ -41,6 +41,12 @@ struct ScanResultsView: View {
     /// it in; previews use the no-arg init.
     @ObservedObject var viewModel: ScanResultsViewModel
 
+    /// Smart Care view model. Same ownership pattern as `viewModel` — owned
+    /// by `RootView`'s `@StateObject` and shared across the home and scan
+    /// surfaces so the 清 理 button on the results bar can trigger the
+    /// same 3-step pipeline that the home surface does.
+    @ObservedObject var smartCareViewModel: SmartCareViewModel
+
     /// Builds the full screen as a vertical stack of header / divider /
     /// scrollable tree / divider / summary bar.
     var body: some View {
@@ -110,7 +116,7 @@ struct ScanResultsView: View {
             Divider().background(Color.divider)
 
             // Summary bar
-            SummaryBar(viewModel: viewModel)
+            SummaryBar(viewModel: viewModel, smartCareViewModel: smartCareViewModel)
         }
         .background(Color.bgCanvas)
     }
@@ -385,6 +391,10 @@ struct SummaryBar: View {
     /// model's lifetime via `@StateObject`.
     @ObservedObject var viewModel: ScanResultsViewModel
 
+    /// Smart Care VM — same lifetime contract. Used by the 清 理 CTA
+    /// (Phase B Task 4 wiring) to start the 3-step Smart Care pipeline.
+    @ObservedObject var smartCareViewModel: SmartCareViewModel
+
     /// Renders the summary bar content: stack of two text lines on the
     /// left, two bordered bulk-select buttons, and the primary cleanup
     /// CTA. The cleanup CTA is disabled and dimmed when the selection
@@ -403,14 +413,14 @@ struct SummaryBar: View {
             Spacer()
 
             HStack(spacing: Spacing.sm) {
-                Button("全选") { /* TODO */ }
+                Button("全选") { viewModel.selectAll() }
                     .buttonStyle(.bordered)
-                Button("反选") { /* TODO */ }
+                Button("反选") { viewModel.invertSelection() }
                     .buttonStyle(.bordered)
             }
 
             Button {
-                // TODO: Phase C - cleanup
+                smartCareViewModel.runSmartCare()
             } label: {
                 Text("清 理")
                     .font(Typography.largeBody())
@@ -444,7 +454,10 @@ struct SummaryBar: View {
 /// 960×720 design-system canvas size.
 struct ScanResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        ScanResultsView(viewModel: ScanResultsViewModel(engine: nil))
+        ScanResultsView(
+            viewModel: ScanResultsViewModel(engine: nil),
+            smartCareViewModel: SmartCareViewModel()
+        )
             .frame(width: 960, height: 720)
     }
 }

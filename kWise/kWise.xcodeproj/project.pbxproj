@@ -51,6 +51,30 @@
 		isa = PBXBuildFile;
 		fileRef = 362341017602FD8FE3C4DCD8;
 	};
+	7E6F5D4C3B2A1F0E9D8C7B6E /* 7E6F5D4C3B2A1F0E9D8C7B6E */ = {
+		isa = PBXBuildFile;
+		fileRef = 5C4B3A2D1E0F9B8A7C6D5E4A;
+	};
+	8F7E6D5C4B3A291819283746 /* 8F7E6D5C4B3A291819283746 */ = {
+		isa = PBXBuildFile;
+		fileRef = 6D5E4F3C2B1A0F9E8D7C6B5F;
+	};
+	B4C5D6E7F8192A3B4C5D6E7F /* B4C5D6E7F8192A3B4C5D6E7F */ = {
+		isa = PBXBuildFile;
+		fileRef = A3B4C5D6E7F8192A3B4C5D6E;
+	};
+	2C3D4E5F6A7B8C9D0E1F2A3B /* 2C3D4E5F6A7B8C9D0E1F2A3B */ = {
+		isa = PBXBuildFile;
+		fileRef = 1B2C3D4E5F6A7B8C9D0E1F2A;
+	};
+	4E5F6A7B8C9D0E1F2A3B4C5D /* 4E5F6A7B8C9D0E1F2A3B4C5D */ = {
+		isa = PBXBuildFile;
+		fileRef = 3D4E5F6A7B8C9D0E1F2A3B4C;
+	};
+	6A7B8C9D0E1F2A3B4C5D6E7F /* 6A7B8C9D0E1F2A3B4C5D6E7F */ = {
+		isa = PBXBuildFile;
+		fileRef = 5F6A7B8C9D0E1F2A3B4C5D6E;
+	};
 	246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */ = {
 		isa = PBXBuildFile;
 		fileRef = 0843E97F195214F62BD29C3F;
@@ -407,6 +431,54 @@
 		isa = PBXBuildFile;
 		fileRef = 14679243FC833D0C8D16C74A;
 	};
+	6D5E4F3C2B1A0F9E8D7C6B5A /* 6D5E4F3C2B1A0F9E8D7C6B5A */ = {
+		isa = PBXBuildFile;
+		fileRef = 5C4B3A2D1E0F9B8A7C6D5E4F;
+	};
+	2B3C4D5E6F708192A3B4D5E6 /* 2B3C4D5E6F708192A3B4D5E6 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1A2B3C4D5E6F708192A3B4D5;
+	};
+	4D5E6F708192A3B4D5E6F7A8 /* 4D5E6F708192A3B4D5E6F7A8 */ = {
+		isa = PBXBuildFile;
+		fileRef = 3C4D5E6F708192A3B4D5E6F7;
+	};
+	3A4B5C6D7E8F9A0B1C2D3E4F /* 3A4B5C6D7E8F9A0B1C2D3E4F */ = {
+		isa = PBXBuildFile;
+		fileRef = 9A8B7C6D5E4F3A2B1C0D9E8A;
+	};
+	2A3B4C5D6E7F8A9B0C1D2E3F /* 2A3B4C5D6E7F8A9B0C1D2E3F */ = {
+		isa = PBXBuildFile;
+		fileRef = 8A9B0C1D2E3F4A5B6C7D8E9A;
+	};
+	1A2B3C4D5E6F7A8B9C0D1E2F /* 1A2B3C4D5E6F7A8B9C0D1E2F */ = {
+		isa = PBXBuildFile;
+		fileRef = 7A8B9C0D1E2F3A4B5C6D7E8F;
+	};
+	0A1B2C3D4E5F6A7B8C9D0E1F /* 0A1B2C3D4E5F6A7B8C9D0E1F */ = {
+		isa = PBXBuildFile;
+		fileRef = 6A7B8C9D0E1F2A3B4C5D6E7F;
+	};
+	F0A1B2C3D4E5F6A7B8C9D0EA /* F0A1B2C3D4E5F6A7B8C9D0EA */ = {
+		isa = PBXBuildFile;
+		fileRef = 5A6B7C8D9E0F1A2B3C4D5E6A;
+	};
+	3C4D5E6F7081A2B3C4D5E6F7 /* 3C4D5E6F7081A2B3C4D5E6F7 */ = {
+		isa = PBXBuildFile;
+		fileRef = 1A2B3C4D5E6F7081A2B3C4D5;
+	};
+	4D5E6F7081A2B3C4D5E6F708 /* 4D5E6F7081A2B3C4D5E6F708 */ = {
+		isa = PBXBuildFile;
+		fileRef = 2B3C4D5E6F7081A2B3C4D5E6;
+	};
+	8192A3B4C5D6E7F8192A3B4C /* 8192A3B4C5D6E7F8192A3B4C */ = {
+		isa = PBXBuildFile;
+		fileRef = 6F7081A2B3C4D5E6F708192A;
+	};
+	92A3B4C5D6E7F8192A3B4C5D /* 92A3B4C5D6E7F8192A3B4C5D */ = {
+		isa = PBXBuildFile;
+		fileRef = 7081A2B3C4D5E6F708192A3B;
+	};
 	AFC2605720E874C24B299225 /* AFC2605720E874C24B299225 */ = {
 		isa = PBXBuildFile;
 		fileRef = A20ECB2F3DE6C3F90D2FE80C;
@@ -689,6 +761,62 @@
 		path = App/AppState.swift;
 		sourceTree = "<group>";
 	};
+	5C4B3A2D1E0F9B8A7C6D5E4F /* SmartCareHeroView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareHeroView.swift;
+		path = Features/SmartCare/SmartCareHeroView.swift;
+		sourceTree = "<group>";
+	};
+	1A2B3C4D5E6F708192A3B4D5 /* SmartCareOrchestrator.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareOrchestrator.swift;
+		path = Features/SmartCare/SmartCareOrchestrator.swift;
+		sourceTree = "<group>";
+	};
+	3C4D5E6F708192A3B4D5E6F7 /* SmartCareViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareViewModel.swift;
+		path = Features/SmartCare/SmartCareViewModel.swift;
+		sourceTree = "<group>";
+	};
+	9A8B7C6D5E4F3A2B1C0D9E8A /* SMARTReader.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SMARTReader.swift;
+		path = Features/DiskHealth/SMARTReader.swift;
+		sourceTree = "<group>";
+	};
+	8A9B0C1D2E3F4A5B6C7D8E9A /* VolumeDiagnostics.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = VolumeDiagnostics.swift;
+		path = Features/DiskHealth/VolumeDiagnostics.swift;
+		sourceTree = "<group>";
+	};
+	7A8B9C0D1E2F3A4B5C6D7E8F /* DiskHealthViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DiskHealthViewModel.swift;
+		path = Features/DiskHealth/DiskHealthViewModel.swift;
+		sourceTree = "<group>";
+	};
+	6A7B8C9D0E1F2A3B4C5D6E7F /* DiskHealthCard.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DiskHealthCard.swift;
+		path = Features/DiskHealth/DiskHealthCard.swift;
+		sourceTree = "<group>";
+	};
+	5A6B7C8D9E0F1A2B3C4D5E6A /* DiskHealthDetailView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DiskHealthDetailView.swift;
+		path = Features/DiskHealth/DiskHealthDetailView.swift;
+		sourceTree = "<group>";
+	};
 	14F2021C3C9AF375232376CF /* ScanResultsView.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -771,6 +899,48 @@
 		lastKnownFileType = sourcecode.swift;
 		name = TestHelpers.swift;
 		path = Tests/TestHelpers.swift;
+		sourceTree = "<group>";
+	};
+	5C4B3A2D1E0F9B8A7C6D5E4A /* SmartCareOrchestratorTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareOrchestratorTests.swift;
+		path = Tests/SmartCareOrchestratorTests.swift;
+		sourceTree = "<group>";
+	};
+	6D5E4F3C2B1A0F9E8D7C6B5F /* SmartCareViewModelTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SmartCareViewModelTests.swift;
+		path = Tests/SmartCareViewModelTests.swift;
+		sourceTree = "<group>";
+	};
+	A3B4C5D6E7F8192A3B4C5D6E /* TCCReaderTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TCCReaderTests.swift;
+		path = Tests/TCCReaderTests.swift;
+		sourceTree = "<group>";
+	};
+	1B2C3D4E5F6A7B8C9D0E1F2A /* DiskHealthTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = DiskHealthTests.swift;
+		path = Tests/DiskHealthTests.swift;
+		sourceTree = "<group>";
+	};
+	3D4E5F6A7B8C9D0E1F2A3B4C /* ScanTreeRowC1AuditTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScanTreeRowC1AuditTests.swift;
+		path = Tests/ScanTreeRowC1AuditTests.swift;
+		sourceTree = "<group>";
+	};
+	5F6A7B8C9D0E1F2A3B4C5D6E /* ScarewareCopyAuditTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = ScarewareCopyAuditTests.swift;
+		path = Tests/ScarewareCopyAuditTests.swift;
 		sourceTree = "<group>";
 	};
 	27E8208E9A99978867A43090 /* kFoundation */ = {
@@ -1544,6 +1714,34 @@
 		path = Features/PrivacyClean/PrivacyView.swift;
 		sourceTree = "<group>";
 	};
+	1A2B3C4D5E6F7081A2B3C4D5 /* PermissionCategory.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = PermissionCategory.swift;
+		path = Features/PrivacyClean/TCCOverview/PermissionCategory.swift;
+		sourceTree = "<group>";
+	};
+	2B3C4D5E6F7081A2B3C4D5E6 /* TCCReader.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TCCReader.swift;
+		path = Features/PrivacyClean/TCCOverview/TCCReader.swift;
+		sourceTree = "<group>";
+	};
+	6F7081A2B3C4D5E6F708192A /* TCCOverviewViewModel.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TCCOverviewViewModel.swift;
+		path = Features/PrivacyClean/TCCOverview/TCCOverviewViewModel.swift;
+		sourceTree = "<group>";
+	};
+	7081A2B3C4D5E6F708192A3B /* TCCOverviewView.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = TCCOverviewView.swift;
+		path = Features/PrivacyClean/TCCOverview/TCCOverviewView.swift;
+		sourceTree = "<group>";
+	};
 	E44EA51F3032272567E1D950 /* AppRuleFixtures.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1787,8 +1985,42 @@
 			214D9CEAE4A3964A86890B8F /* PrivacyScanner.swift */,
 			4280091CBB936F092C7D0B4D /* PrivacyViewModel.swift */,
 			E3EED811D3EC913342F176EF /* PrivacyView.swift */,
+			5E6F7081A2B3C4D5E6F70819 /* TCCOverview */,
 		);
 		name = PrivacyClean;
+		sourceTree = "<group>";
+	};
+	5E6F7081A2B3C4D5E6F70819 /* TCCOverview */ = {
+		isa = PBXGroup;
+		children = (
+			1A2B3C4D5E6F7081A2B3C4D5 /* PermissionCategory.swift */,
+			2B3C4D5E6F7081A2B3C4D5E6 /* TCCReader.swift */,
+			6F7081A2B3C4D5E6F708192A /* TCCOverviewViewModel.swift */,
+			7081A2B3C4D5E6F708192A3B /* TCCOverviewView.swift */,
+		);
+		name = TCCOverview;
+		sourceTree = "<group>";
+	};
+	7E6F5D4C3B2A1F0E9D8C7B6A /* SmartCare */ = {
+		isa = PBXGroup;
+		children = (
+			5C4B3A2D1E0F9B8A7C6D5E4F /* SmartCareHeroView.swift */,
+			1A2B3C4D5E6F708192A3B4D5 /* SmartCareOrchestrator.swift */,
+			3C4D5E6F708192A3B4D5E6F7 /* SmartCareViewModel.swift */,
+		);
+		name = SmartCare;
+		sourceTree = "<group>";
+	};
+	4A5B6C7D8E9F0A1B2C3D4E5A /* DiskHealth */ = {
+		isa = PBXGroup;
+		children = (
+			9A8B7C6D5E4F3A2B1C0D9E8A /* SMARTReader.swift */,
+			8A9B0C1D2E3F4A5B6C7D8E9A /* VolumeDiagnostics.swift */,
+			7A8B9C0D1E2F3A4B5C6D7E8F /* DiskHealthViewModel.swift */,
+			6A7B8C9D0E1F2A3B4C5D6E7F /* DiskHealthCard.swift */,
+			5A6B7C8D9E0F1A2B3C4D5E6A /* DiskHealthDetailView.swift */,
+		);
+		name = DiskHealth;
 		sourceTree = "<group>";
 	};
 	601CA57E814BC3922B39403A /* AppUninstall */ = {
@@ -1953,6 +2185,8 @@
 			46FA7A37B445F54D224DD065 /* Maintenance */,
 			948A46E6570A8D25B50581C8 /* Onboarding */,
 			27A4B436B24D38B2C0DF5464 /* RightPanel */,
+			7E6F5D4C3B2A1F0E9D8C7B6A /* SmartCare */,
+			4A5B6C7D8E9F0A1B2C3D4E5A /* DiskHealth */,
 			969679DE865F3E68DEC65C79 /* Settings */,
 			EC6E9877FED1FB64998F26E6 /* SmartScan */,
 		);
@@ -1963,6 +2197,12 @@
 		isa = PBXGroup;
 		children = (
 			27BDC56BA0773FA9060A0F8F /* TestHelpers.swift */,
+			5C4B3A2D1E0F9B8A7C6D5E4A /* SmartCareOrchestratorTests.swift */,
+			6D5E4F3C2B1A0F9E8D7C6B5F /* SmartCareViewModelTests.swift */,
+			A3B4C5D6E7F8192A3B4C5D6E /* TCCReaderTests.swift */,
+			1B2C3D4E5F6A7B8C9D0E1F2A /* DiskHealthTests.swift */,
+			3D4E5F6A7B8C9D0E1F2A3B4C /* ScanTreeRowC1AuditTests.swift */,
+			5F6A7B8C9D0E1F2A3B4C5D6E /* ScarewareCopyAuditTests.swift */,
 			E4C62FD7FB4A1EAC51EC2224 /* RuleClassifierTests.swift */,
 			362341017602FD8FE3C4DCD8 /* AppStateTests.swift */,
 			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
@@ -2212,6 +2452,12 @@
 			9DB2E0CB10DB5ED0FC9BD7DA /* 9DB2E0CB10DB5ED0FC9BD7DA */,
 			F7EF2CF90A9EA92120D93DCC /* F7EF2CF90A9EA92120D93DCC */,
 			23F7A4319341215A83BC3ABF /* 23F7A4319341215A83BC3ABF */,
+			7E6F5D4C3B2A1F0E9D8C7B6E /* 7E6F5D4C3B2A1F0E9D8C7B6E */,
+			8F7E6D5C4B3A291819283746 /* 8F7E6D5C4B3A291819283746 */,
+			B4C5D6E7F8192A3B4C5D6E7F /* B4C5D6E7F8192A3B4C5D6E7F */,
+			2C3D4E5F6A7B8C9D0E1F2A3B /* 2C3D4E5F6A7B8C9D0E1F2A3B */,
+			4E5F6A7B8C9D0E1F2A3B4C5D /* 4E5F6A7B8C9D0E1F2A3B4C5D */,
+			6A7B8C9D0E1F2A3B4C5D6E7F /* 6A7B8C9D0E1F2A3B4C5D6E7F */,
 			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,
 			201A00B31EEF8EC428CADA3F /* 201A00B31EEF8EC428CADA3F */,
 			2FFA604239D04066410170DC /* 2FFA604239D04066410170DC */,
@@ -2255,6 +2501,18 @@
 		files = (
 			0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */,
 			AD7516B98030139FB99D8579 /* AD7516B98030139FB99D8579 */,
+			6D5E4F3C2B1A0F9E8D7C6B5A /* 6D5E4F3C2B1A0F9E8D7C6B5A */,
+			2B3C4D5E6F708192A3B4D5E6 /* 2B3C4D5E6F708192A3B4D5E6 */,
+			4D5E6F708192A3B4D5E6F7A8 /* 4D5E6F708192A3B4D5E6F7A8 */,
+			3C4D5E6F7081A2B3C4D5E6F7 /* 3C4D5E6F7081A2B3C4D5E6F7 */,
+			4D5E6F7081A2B3C4D5E6F708 /* 4D5E6F7081A2B3C4D5E6F708 */,
+			8192A3B4C5D6E7F8192A3B4C /* 8192A3B4C5D6E7F8192A3B4C */,
+			92A3B4C5D6E7F8192A3B4C5D /* 92A3B4C5D6E7F8192A3B4C5D */,
+			3A4B5C6D7E8F9A0B1C2D3E4F /* 3A4B5C6D7E8F9A0B1C2D3E4F */,
+			2A3B4C5D6E7F8A9B0C1D2E3F /* 2A3B4C5D6E7F8A9B0C1D2E3F */,
+			1A2B3C4D5E6F7A8B9C0D1E2F /* 1A2B3C4D5E6F7A8B9C0D1E2F */,
+			0A1B2C3D4E5F6A7B8C9D0E1F /* 0A1B2C3D4E5F6A7B8C9D0E1F */,
+			F0A1B2C3D4E5F6A7B8C9D0EA /* F0A1B2C3D4E5F6A7B8C9D0EA */,
 			7FD529998E1DB52FD5D7646F /* 7FD529998E1DB52FD5D7646F */,
 			C79D934B75D0AFFC56F19CF3 /* C79D934B75D0AFFC56F19CF3 */,
 			54CBDE3E6F1E616B5058AAED /* 54CBDE3E6F1E616B5058AAED */,
