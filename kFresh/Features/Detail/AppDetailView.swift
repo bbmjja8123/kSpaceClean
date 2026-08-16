@@ -215,14 +215,25 @@ struct AppDetailView: View {
     /// means "uninstall the app body only" (every residue bucket unchecked).
     private func handleUninstall(selectedResidues: [ResidueFile]) {
         showConfirmSheet = false
+        // Compute the headline "已释放 X" total up front — the toast needs
+        // it for the Wave 2 P1 (G-KF-04) payoff readout. App body + sum of
+        // approved residue sizes, matching the v1.x-B UninstallConfirmSheet
+        // totalFreedSize math. We snapshot here rather than re-deriving
+        // inside the Task because view state must be set synchronously
+        // for the bounce animation to start cleanly on the main actor.
+        let residueTotal = selectedResidues.reduce(Int64(0)) { $0 + $1.sizeBytes }
+        let totalFreedBytes = sizeBytes + residueTotal
+        let snapshotAppName = viewModel.app.displayName
+        let snapshotSizeBytes = sizeBytes
         Task {
             let outcome = await viewModel.confirmUninstall(selectedResidues: selectedResidues)
             if case .success(let record) = outcome {
                 withAnimation(.easeInOut(duration: KFAnimation.durationNormal)) {
                     undoToast = UninstallToast.State(
                         recordID: record.id,
-                        appName: viewModel.app.displayName,
-                        appSize: sizeBytes
+                        appName: snapshotAppName,
+                        appSize: snapshotSizeBytes,
+                        totalFreedBytes: totalFreedBytes
                     )
                 }
             }
