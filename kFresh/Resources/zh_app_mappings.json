@@ -1,7 +1,7 @@
 {
-  "version": 1,
-  "generatedAt": "2026-08-09T00:00:00Z",
-  "source": "manual + cask-cn",
+  "version": 2,
+  "generatedAt": "2026-08-16T00:00:00Z",
+  "source": "manual + cask-cn (v1.1 expansion)",
   "apps": [
     {
       "displayName": "QQ",
@@ -9,7 +9,10 @@
       "appName": "QQ",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -18,7 +21,10 @@
       "appName": "WeChat",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -27,7 +33,9 @@
       "appName": "WeCom",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -36,7 +44,10 @@
       "appName": "Tencent Meeting",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -45,7 +56,9 @@
       "appName": "QQ Music",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -54,7 +67,10 @@
       "appName": "DingTalk",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -63,7 +79,9 @@
       "appName": "Feishu",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -72,7 +90,9 @@
       "appName": "Lark",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -81,7 +101,10 @@
       "appName": "NetEase Cloud Music",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -90,7 +113,9 @@
       "appName": "NetEase Mail Master",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -99,7 +124,10 @@
       "appName": "Baidu Netdisk",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -108,7 +136,10 @@
       "appName": "WPS Office",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -117,7 +148,10 @@
       "appName": "Sogou Input",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -126,7 +160,9 @@
       "appName": "iFlytek Input",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -135,7 +171,9 @@
       "appName": "Baidu Input",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -144,7 +182,10 @@
       "appName": "Thunder",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual", "cask-cn"],
+      "sources": [
+        "manual",
+        "cask-cn"
+      ],
       "deprecated": false
     },
     {
@@ -153,7 +194,9 @@
       "appName": "Youku",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -162,7 +205,9 @@
       "appName": "iQIYI",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -171,7 +216,9 @@
       "appName": "Kuwo Music",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -180,7 +227,9 @@
       "appName": "KuGou Music",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -189,7 +238,9 @@
       "appName": "Foxit Reader",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -198,7 +249,9 @@
       "appName": "Weibo",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -207,7 +260,9 @@
       "appName": "Youdao Dictionary",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -216,7 +271,9 @@
       "appName": "Youdao Note",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -225,7 +282,9 @@
       "appName": "Sunlogin",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -234,7 +293,9 @@
       "appName": "ToDesk",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -243,7 +304,9 @@
       "appName": "Alibaba Cloud Drive",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -252,7 +315,9 @@
       "appName": "Tencent Video",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -261,7 +326,9 @@
       "appName": "bilibili",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -270,7 +337,9 @@
       "appName": "CapCut / Jianying Pro",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -279,7 +348,9 @@
       "appName": "WeChat DevTools",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -288,7 +359,9 @@
       "appName": "DingTalk DevTools",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -297,7 +370,9 @@
       "appName": "QQ Browser",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -306,7 +381,9 @@
       "appName": "360 Safe Browser",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -315,7 +392,9 @@
       "appName": "Baidu Translate",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -324,7 +403,9 @@
       "appName": "Baidu Netdisk Sync",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -333,7 +414,9 @@
       "appName": "NetEase MuMu",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -342,7 +425,9 @@
       "appName": "Nutstore",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -351,7 +436,9 @@
       "appName": "DingTalk Education",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -360,7 +447,9 @@
       "appName": "Tencent Qidian",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     },
     {
@@ -369,7 +458,1967 @@
       "appName": "Youdao Translate",
       "verifiedAt": "2026-08-09T00:00:00Z",
       "verifiedBy": "manual",
-      "sources": ["manual"],
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "TIM",
+      "bundleID": "com.tencent.tim",
+      "appName": "TIM",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "千千音乐",
+      "bundleID": "com.qianqian.mac",
+      "appName": "QianQian Music",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "虾米音乐",
+      "bundleID": "com.xiami.mac",
+      "appName": "Xiami Music",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "芒果 TV",
+      "bundleID": "com.hunantv.macosx",
+      "appName": "Mango TV",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "搜狐视频",
+      "bundleID": "com.sohu.mac",
+      "appName": "Sohu Video",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "PP 视频",
+      "bundleID": "com.pptv.mac",
+      "appName": "PPTV",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "咪咕视频",
+      "bundleID": "com.migu.mac",
+      "appName": "Migu Video",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "AcFun",
+      "bundleID": "tv.acfun.mac",
+      "appName": "AcFun",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "抖音",
+      "bundleID": "com.ss.iphone.ugc.Aweme",
+      "appName": "Douyin",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "剪映",
+      "bundleID": "com.lemon.LemonVideoLite",
+      "appName": "Jianying",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯微云",
+      "bundleID": "com.tencent.weiyun",
+      "appName": "Tencent Weiyun",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "OneDrive 中国版",
+      "bundleID": "com.microsoft.OneDrive",
+      "appName": "OneDrive",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "Dropbox 中国版",
+      "bundleID": "com.dropbox.dbbox.kfr",
+      "appName": "Dropbox",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "QQ 拼音",
+      "bundleID": "com.tencent.pinyin",
+      "appName": "QQ Pinyin",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "万能五笔",
+      "bundleID": "com.wanneng.wubi",
+      "appName": "Wanneng Wubi",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "金山词霸",
+      "bundleID": "com.kingsoft.powerword",
+      "appName": "PowerWord",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "福昕高级编辑器",
+      "bundleID": "com.foxitsoftware.Foxit.Phantom",
+      "appName": "Foxit PhantomPDF",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯翻译君",
+      "bundleID": "com.tencent.translate",
+      "appName": "Tencent Translator",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易邮箱",
+      "bundleID": "com.netease.mail",
+      "appName": "NetEase Mail",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "Foxmail",
+      "bundleID": "com.tencent.foxmail",
+      "appName": "Foxmail",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "钉钉文档",
+      "bundleID": "com.alibaba.dingtalk.doc",
+      "appName": "DingTalk Doc",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯文档",
+      "bundleID": "com.tencent.docs",
+      "appName": "Tencent Docs",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "石墨文档",
+      "bundleID": "com.shimo.shimodesktop",
+      "appName": "Shimo Docs",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "语雀",
+      "bundleID": "com.yuque.mac",
+      "appName": "Yuque",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "360 极速浏览器",
+      "bundleID": "com.qihoo.360chrome",
+      "appName": "360 Chrome",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "搜狗浏览器",
+      "bundleID": "com.sogou.browser",
+      "appName": "Sogou Browser",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "UC 浏览器",
+      "bundleID": "com.uc.browser",
+      "appName": "UC Browser",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "傲游浏览器",
+      "bundleID": "com.maxthon.mac",
+      "appName": "Maxthon Browser",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "陌陌",
+      "bundleID": "com.immomo.mac",
+      "appName": "Momo",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "探探",
+      "bundleID": "com.tantan.mac",
+      "appName": "Tantan",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "Soul",
+      "bundleID": "com.soul.mac",
+      "appName": "Soul",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "微信读书",
+      "bundleID": "com.tencent.weread",
+      "appName": "WeChat Read",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "掌阅",
+      "bundleID": "com.zhangyue.mac",
+      "appName": "iReader",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "书旗小说",
+      "bundleID": "com.shuqicn.mac",
+      "appName": "Shuqi",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "美图秀秀",
+      "bundleID": "com.meitu.mac",
+      "appName": "Meitu",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "美图秀秀国际版",
+      "bundleID": "com.meitu.meituapp",
+      "appName": "BeautyCam",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "稿定设计",
+      "bundleID": "com.gaoding.mac",
+      "appName": "Gaoding Design",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "创客贴",
+      "bundleID": "com.chuangkit.mac",
+      "appName": "Chuangkit",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "图怪兽",
+      "bundleID": "com.tuguaishou.mac",
+      "appName": "Tuguaishou",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "可画",
+      "bundleID": "com.canva.mac",
+      "appName": "Canva",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "钉钉开发者工具",
+      "bundleID": "com.alibaba.DingTalk.OpenPlatform",
+      "appName": "DingTalk OpenPlatform",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "阿里云",
+      "bundleID": "com.aliyun.aliyunide",
+      "appName": "Alibaba Cloud IDE",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯云 Studio",
+      "bundleID": "com.tencent.cloudstudio",
+      "appName": "Tencent Cloud Studio",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "JetBrains Toolbox",
+      "bundleID": "com.jetbrains.toolbox",
+      "appName": "JetBrains Toolbox",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "迅雷极速版",
+      "bundleID": "com.xunlei.ThunderSpeed",
+      "appName": "Thunder Speed",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "Motrix",
+      "bundleID": "net.motrix.app",
+      "appName": "Motrix",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "比特彗星",
+      "bundleID": "com.bitcomet.mac",
+      "appName": "BitComet",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "IDM",
+      "bundleID": "com.internetdownloadmanager.IDM",
+      "appName": "IDM",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "TeamViewer",
+      "bundleID": "com.teamviewer.TeamViewer",
+      "appName": "TeamViewer",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "AnyDesk",
+      "bundleID": "com.philandro.anydesk",
+      "appName": "AnyDesk",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯加速器",
+      "bundleID": "com.tencent.acc",
+      "appName": "Tencent Accelerator",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易 UU 加速器",
+      "bundleID": "com.netease.uu",
+      "appName": "NetEase UU",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "钉钉教育版",
+      "bundleID": "com.alibaba.DingTalkSchool",
+      "appName": "DingTalk School",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "有道云协作",
+      "bundleID": "com.youdao.note.cooperate",
+      "appName": "Youdao Note Cooperate",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "360 安全卫士",
+      "bundleID": "com.qihoo.360safeguard.mac",
+      "appName": "360 Safeguard Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯电脑管家",
+      "bundleID": "com.tencent.pcmgr",
+      "appName": "Tencent PCMgr",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "火绒",
+      "bundleID": "com.huorong.mac",
+      "appName": "Huorong",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "鲁大师",
+      "bundleID": "com.ludashi.mac",
+      "appName": "LUDASHI",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "支付宝",
+      "bundleID": "com.alipay.mac",
+      "appName": "Alipay",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "微信支付商户版",
+      "bundleID": "com.tencent.pay.merchant",
+      "appName": "WeChat Pay Merchant",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "京东金融",
+      "bundleID": "com.jr.mac",
+      "appName": "JD Finance",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "同花顺",
+      "bundleID": "com.hexin.mac",
+      "appName": "10jqka",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "小米云服务",
+      "bundleID": "com.xiaomi.micloud",
+      "appName": "Xiaomi Cloud",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "华为云空间",
+      "bundleID": "com.huawei.cloud",
+      "appName": "Huawei Cloud",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "联想电脑管家",
+      "bundleID": "com.lenovo.lva",
+      "appName": "Lenovo Vantage",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "丁丁打卡",
+      "bundleID": "com.dingdingkq.mac",
+      "appName": "DingDingKA",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "维基百科中文桌面版",
+      "bundleID": "org.wikipedia.desktop",
+      "appName": "Wikipedia",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "汉典",
+      "bundleID": "com.zdic.mac",
+      "appName": "Zdic",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "谷歌输入法 Mac",
+      "bundleID": "com.google.inputmethod.Japanese",
+      "appName": "Google Japanese Input",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "金山 PDF",
+      "bundleID": "com.kingsoft.PDF",
+      "appName": "Kingsoft PDF",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯手游加速器",
+      "bundleID": "com.tencent.mobilegameacc",
+      "appName": "Tencent MobileGame Acc",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "WPS 轻办公",
+      "bundleID": "com.kingsoft.wpslight",
+      "appName": "WPS Light Office",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "WPS 演示",
+      "bundleID": "com.kingsoft.wps.ppt",
+      "appName": "WPS Presentation",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "WPS 表格",
+      "bundleID": "com.kingsoft.wps.sheet",
+      "appName": "WPS Spreadsheet",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易 UU",
+      "bundleID": "com.netease.uu.mac",
+      "appName": "NetEase UU Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "QQ 旋风",
+      "bundleID": "com.tencent.xf",
+      "appName": "QQ Xuanfeng",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "酷狗音乐盒",
+      "bundleID": "com.kugou.box",
+      "appName": "KuGou Box",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "快手",
+      "bundleID": "com.kuaishou.mac",
+      "appName": "Kuaishou",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "小红书",
+      "bundleID": "com.xiaohongshu.mac",
+      "appName": "Xiaohongshu",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "抖音 Mac",
+      "bundleID": "com.bytedance.douyin.mac",
+      "appName": "Douyin Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯文档 Mac",
+      "bundleID": "com.tencent.docs.mac",
+      "appName": "Tencent Docs Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "语雀 Mac",
+      "bundleID": "com.yuque.yuquemac",
+      "appName": "Yuque Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "CSDN 客户端",
+      "bundleID": "com.csdn.mac",
+      "appName": "CSDN",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "掘金客户端",
+      "bundleID": "com.juejin.mac",
+      "appName": "Juejin",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "SegmentFault 客户端",
+      "bundleID": "com.segmentfault.mac",
+      "appName": "SegmentFault",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "钉钉招聘版",
+      "bundleID": "com.alibaba.DingTalkRecruit",
+      "appName": "DingTalk Recruit",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯会议 Rooms",
+      "bundleID": "com.tencent.meetingrooms",
+      "appName": "Tencent Meeting Rooms",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯会议",
+      "bundleID": "com.tencent.wemeet",
+      "appName": "Tencent WeMeet",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "飞书招聘版",
+      "bundleID": "com.bytedance.feishu.recruit",
+      "appName": "Feishu Recruit",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "飞书 People",
+      "bundleID": "com.bytedance.feishu.people",
+      "appName": "Feishu People",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "飞书项目",
+      "bundleID": "com.bytedance.feishu.pm",
+      "appName": "Feishu PM",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "石墨文档协作版",
+      "bundleID": "com.shimo.shimocollab",
+      "appName": "Shimo Collab",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯 QQ 邮箱",
+      "bundleID": "com.tencent.mail",
+      "appName": "QQ Mail",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯会议投屏",
+      "bundleID": "com.tencent.meeting.cast",
+      "appName": "Tencent Meeting Cast",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "拼多多商家版",
+      "bundleID": "com.pinduoduo.mac",
+      "appName": "Pinduoduo Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "淘宝 Mac",
+      "bundleID": "com.taobao.mac",
+      "appName": "Taobao Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "天猫精灵",
+      "bundleID": "com.tmall.genie",
+      "appName": "Tmall Genie",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "美团外卖商家",
+      "bundleID": "com.meituan.mac",
+      "appName": "Meituan Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "口碑商家",
+      "bundleID": "com.koubei.mac",
+      "appName": "Koubei Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "饿了么商家版",
+      "bundleID": "com.ele.me",
+      "appName": "Eleme",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易严选",
+      "bundleID": "com.youxuan.mac",
+      "appName": "Yanxuan",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "考拉海购",
+      "bundleID": "com.kaola.mac",
+      "appName": "Kaola",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "寺库奢侈品",
+      "bundleID": "com.secoo.mac",
+      "appName": "Secoo",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "Keep",
+      "bundleID": "com.gotokeep.keep",
+      "appName": "Keep",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "咕咚",
+      "bundleID": "com.codoon.gps",
+      "appName": "Codoon",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "悦跑圈",
+      "bundleID": "com.yuepaoquan.mac",
+      "appName": "Yuepaoquan",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "每日瑜伽",
+      "bundleID": "com.yoga.mac",
+      "appName": "Daily Yoga",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "薄荷健康",
+      "bundleID": "com.bohe.health",
+      "appName": "Bohe Health",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "喜马拉雅 FM",
+      "bundleID": "com.ximalaya.mac",
+      "appName": "Ximalaya FM",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "蜻蜓 FM",
+      "bundleID": "com.qingtingfm.mac",
+      "appName": "Qingting FM",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "得到",
+      "bundleID": "com.luojilab.mac",
+      "appName": "Luojilab",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "樊登读书",
+      "bundleID": "com.fandeng.mac",
+      "appName": "Fandeng",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "起点读书",
+      "bundleID": "com.qidian.mac",
+      "appName": "Qidian",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "掌上英雄联盟",
+      "bundleID": "com.riotgames.mac",
+      "appName": "LoL Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "WeGame",
+      "bundleID": "com.tencent.WeGame",
+      "appName": "WeGame",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "虎牙直播",
+      "bundleID": "com.huya.mac",
+      "appName": "Huya",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "斗鱼直播",
+      "bundleID": "com.douyu.mac",
+      "appName": "Douyu",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "CC 直播",
+      "bundleID": "com.netease.cc.mac",
+      "appName": "NetEase CC",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易大神",
+      "bundleID": "com.netease.dashen",
+      "appName": "NetEase Dashen",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "百度输入法 Mac",
+      "bundleID": "com.baidu.input.mac",
+      "appName": "Baidu Input Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "讯飞听见",
+      "bundleID": "com.iflytek.listentoworld",
+      "appName": "iFlytek Listen",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "WPS Office 教育版",
+      "bundleID": "com.kingsoft.wps.education",
+      "appName": "WPS Education",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易邮箱企业版",
+      "bundleID": "com.netease.mail.enterprise",
+      "appName": "NetEase Mail Enterprise",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "金山文档",
+      "bundleID": "com.kingsoft.docs",
+      "appName": "Kingsoft Docs",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯会议企业版",
+      "bundleID": "com.tencent.meeting.enterprise",
+      "appName": "Tencent Meeting Enterprise",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "阿里云盘 Mac",
+      "bundleID": "com.alicloud.smartdrive.mac",
+      "appName": "Alibaba Cloud Drive Mac",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "12306",
+      "bundleID": "com.Microsoft.MCRRailwayMac",
+      "appName": "12306 Rail",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "掌上高铁",
+      "bundleID": "com.gaotie.mac",
+      "appName": "Gaotie",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "航旅纵横",
+      "bundleID": "com.umetrip.mac",
+      "appName": "Umetrip",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "滴滴出行",
+      "bundleID": "com.didichuxing.mac",
+      "appName": "DiDi",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "曹操出行",
+      "bundleID": "com.caocao.mac",
+      "appName": "Caocao Mobility",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "嘀嗒出行",
+      "bundleID": "com.dida.mac",
+      "appName": "Dida Mobility",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "神州租车",
+      "bundleID": "com.shenzhou.mac",
+      "appName": "Shenzhou Car Rental",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "携程旅行",
+      "bundleID": "com.ctrip.mac",
+      "appName": "Ctrip Travel",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "去哪儿旅行",
+      "bundleID": "com.qunar.mac",
+      "appName": "Qunar Travel",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "飞猪旅行",
+      "bundleID": "com.fliggy.mac",
+      "appName": "Fliggy Travel",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "马蜂窝",
+      "bundleID": "com.mafengwo.mac",
+      "appName": "Mafengwo",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "小红书旅行版",
+      "bundleID": "com.xiaohongshu.travel",
+      "appName": "Xiaohongshu Travel",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "美团",
+      "bundleID": "com.meituan.mac.merchant",
+      "appName": "Meituan Merchant",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "大众点评",
+      "bundleID": "com.dianping.mac",
+      "appName": "Dianping",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "美团骑手",
+      "bundleID": "com.meituan.rider.mac",
+      "appName": "Meituan Rider",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "蜂鸟众包",
+      "bundleID": "com.fengniao.mac",
+      "appName": "Fengniao Crowdsource",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "叮咚买菜",
+      "bundleID": "com.dingdongmaicai.mac",
+      "appName": "Dingdong Maicai",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "盒马",
+      "bundleID": "com.hema.mac",
+      "appName": "Hema",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "多点 DMALL",
+      "bundleID": "com.dmall.mac",
+      "appName": "DMALL",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "永辉生活",
+      "bundleID": "com.yonghui.mac",
+      "appName": "Yonghui Life",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "贝壳找房",
+      "bundleID": "com.beike.mac",
+      "appName": "Beike",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "链家",
+      "bundleID": "com.lianjia.mac",
+      "appName": "Lianjia",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "自如",
+      "bundleID": "com.ziroom.mac",
+      "appName": "Ziroom",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "蛋壳公寓",
+      "bundleID": "com.danke.mac",
+      "appName": "Danke Apartment",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "我爱我家",
+      "bundleID": "com.5i5j.mac",
+      "appName": "5i5j",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "学而思网校",
+      "bundleID": "com.xueersi.mac",
+      "appName": "Xueersi",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "猿辅导",
+      "bundleID": "com.yuanfudao.mac",
+      "appName": "Yuanfudao",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "作业帮",
+      "bundleID": "com.zuoyebang.mac",
+      "appName": "Zuoyebang",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "新东方在线",
+      "bundleID": "com.koolearn.mac",
+      "appName": "Koolearn",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "有道精品课",
+      "bundleID": "com.youdao.class",
+      "appName": "Youdao Class",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "腾讯课堂",
+      "bundleID": "com.tencent.ke.qq",
+      "appName": "Tencent Classroom",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "网易云课堂",
+      "bundleID": "com.netease.study",
+      "appName": "NetEase Study",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "中国大学 MOOC",
+      "bundleID": "com.icourse.mac",
+      "appName": "iCourse",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "学堂在线",
+      "bundleID": "com.xuetangx.mac",
+      "appName": "XuetangX",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "沪江网校",
+      "bundleID": "com.hujiang.mac",
+      "appName": "Hujiang",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "个人所得税",
+      "bundleID": "com.chinatax.mac",
+      "appName": "China Tax",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "记账 App",
+      "bundleID": "com.dianzhong.mac",
+      "appName": "Dianzhong Accounting",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "企查查",
+      "bundleID": "com.qichacha.mac",
+      "appName": "Qichacha",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "天眼查",
+      "bundleID": "com.tianyancha.mac",
+      "appName": "Tianyancha",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "西瓜视频",
+      "bundleID": "com.xiguashipin.mac",
+      "appName": "Xigua Video",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "央视频",
+      "bundleID": "com.yangshipin.mac",
+      "appName": "Yangshipin",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "华数 TV",
+      "bundleID": "com.wasu.mac",
+      "appName": "Wasu TV",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "咪咕音乐",
+      "bundleID": "com.migu.music",
+      "appName": "Migu Music",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "汽水音乐",
+      "bundleID": "com.qishui.music",
+      "appName": "Qishui Music",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "酷狗唱唱",
+      "bundleID": "com.kugou.changchang",
+      "appName": "KuGou Changchang",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "酷狗直播",
+      "bundleID": "com.kugou.live",
+      "appName": "KuGou Live",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "天行 VPN",
+      "bundleID": "com.tianxing.mac",
+      "appName": "Tianxing VPN",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "PotatoChat",
+      "bundleID": "io.potatochat.mac",
+      "appName": "PotatoChat",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "V2rayU",
+      "bundleID": "io.github.v2rayu",
+      "appName": "V2rayU",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "ClashX",
+      "bundleID": "com.clashx.mac",
+      "appName": "ClashX",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "Surge",
+      "bundleID": "com.nssurge.mac",
+      "appName": "Surge",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
+      "deprecated": false
+    },
+    {
+      "displayName": "QuantumultX",
+      "bundleID": "com.lancetmd.quanx",
+      "appName": "QuantumultX",
+      "verifiedAt": "2026-08-16T00:00:00Z",
+      "verifiedBy": "manual",
+      "sources": [
+        "manual"
+      ],
       "deprecated": false
     }
   ]
