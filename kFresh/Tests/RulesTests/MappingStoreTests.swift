@@ -259,4 +259,52 @@ final class MappingStoreTests: XCTestCase {
         XCTAssertNotNil(mapping,
                         "Bundled JSON must contain the well-known anchor entry")
     }
+
+    // MARK: - v1.1 coverage gate (spec §4.6.1)
+
+    /// Spec §4.6.1 calls out "≥ 200 真 bundle ID 条目" as the v1.1
+    /// coverage gate. We assert ≥ 200 here so a future regression that
+    /// strips manual entries trips the gate before shipping.
+    ///
+    /// Skipped if the resource isn't bundled — same caveat as the
+    /// smoke test above.
+    func testBundledMappingCountMeetsV1Gate() async throws {
+        guard let store = MappingStore.loadFromBundledJSON() else {
+            throw XCTSkip("zh_app_mappings.json not bundled in this test target")
+        }
+        let count = await store.count
+        XCTAssertGreaterThanOrEqual(count, 200,
+            "v1.1 coverage gate: zh_app_mappings.json must have ≥ 200 entries (got \(count))")
+    }
+
+    /// Every bundled mapping must have a reverse-DNS-style bundle ID
+    /// (≥ 2 dot-separated segments) — otherwise the residue scanner's
+    /// lookup will silently skip it. Catches the easy mistake of
+    /// pasting a non-conforming token into the JSON.
+    func testBundledMappingsAllHaveReverseDNSBundleIDs() async throws {
+        guard let store = MappingStore.loadFromBundledJSON() else {
+            throw XCTSkip("zh_app_mappings.json not bundled in this test target")
+        }
+        let all = await store.allMappings()
+        let nonConforming = all.filter { mapping in
+            let segments = mapping.bundleID.split(separator: ".")
+            return segments.count < 2 || mapping.bundleID.isEmpty
+        }
+        XCTAssertTrue(nonConforming.isEmpty,
+                      "Every bundled mapping must be reverse-DNS; offenders: \(nonConforming.map(\.bundleID))")
+    }
+
+    /// The bundled JSON must not contain duplicate bundle IDs — the
+    /// upstream generator deduplicates by bundle ID with "first wins",
+    /// so a duplicate at this layer means a generation regression.
+    func testBundledMappingsHaveUniqueBundleIDs() async throws {
+        guard let store = MappingStore.loadFromBundledJSON() else {
+            throw XCTSkip("zh_app_mappings.json not bundled in this test target")
+        }
+        let all = await store.allMappings()
+        let grouped = Dictionary(grouping: all, by: \.bundleID)
+        let dupes = grouped.filter { $0.value.count > 1 }
+        XCTAssertTrue(dupes.isEmpty,
+                      "Duplicate bundle IDs in shipped JSON: \(dupes.keys)")
+    }
 }
