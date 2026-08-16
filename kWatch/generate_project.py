@@ -197,7 +197,7 @@ def main():
 
     # ========== Test sources ==========
     test_files = [
-        "AlertEditorViewModelTests.swift", "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
+        "AlertEditorViewModelTests.swift", "AlertRepositoryTests.swift", "AlertsViewModelTests.swift", "AppContainerTests.swift", "AppCoordinatorTests.swift",
         "AppShortcutsIntegrationTests.swift", "AppShortcutsVerificationTests.swift", "ControlWidgetTests.swift", "CoreDataStackTests.swift", "DashboardViewModelTests.swift",
         "DiagnosticsExporterTests.swift", "HistoryViewModelTests.swift", "IntentParameterTests.swift",
         "IntentTests.swift", "InteractiveWidgetIntentTests.swift", "MenuBarIconThemeTests.swift", "MenuBarViewModelTests.swift", "MetricCardViewModelTests.swift", "MetricDetailViewModelTests.swift", "WidgetReloadTriggerTests.swift",
@@ -206,7 +206,7 @@ def main():
         "PreferencesRepositoryTests.swift", "ProcessNetworkSortTests.swift", "ProcessesViewModelTests.swift", "QuickToggleBarTests.swift", "RepositoryTests.swift",
         "RestorePurchaseStubs.swift", "SendableBox.swift", "SettingsViewModelRestoreTests.swift",
         "SettingsViewModelTests.swift", "SnapshotRoundTripTests.swift",
-        "SnapshotWriterTests.swift", "StoreManagerTests.swift",
+        "SnapshotWriterTests.swift", "StoreManagerTests.swift", "SubscriptionTermsTests.swift",
     ]
 
     # ========== Widget appex sources ==========

@@ -486,6 +486,10 @@
 		isa = PBXBuildFile;
 		fileRef = F4AFB5925141C7DADE945D68;
 	};
+	CFA3A56CE1389DF9289443E8 /* CFA3A56CE1389DF9289443E8 */ = {
+		isa = PBXBuildFile;
+		fileRef = DE30952806BAD3D158E74464;
+	};
 	D170A7B277F4C85C902FD749 /* D170A7B277F4C85C902FD749 */ = {
 		isa = PBXBuildFile;
 		fileRef = 42A8FD07BDDC626DBA3184A4;
@@ -557,6 +561,10 @@
 	E5D84FBAEC4E2364C7F69DA0 /* E5D84FBAEC4E2364C7F69DA0 */ = {
 		isa = PBXBuildFile;
 		fileRef = 7176DCD3604F7D24DDE333F3;
+	};
+	E85924BCE4D46E7424EC284B /* E85924BCE4D46E7424EC284B */ = {
+		isa = PBXBuildFile;
+		fileRef = 177414483EBA673E7A0C4143;
 	};
 	E9E2596369EBFE703821D9D6 /* E9E2596369EBFE703821D9D6 */ = {
 		isa = PBXBuildFile;
@@ -797,6 +805,13 @@
 		lastKnownFileType = sourcecode.swift;
 		name = WidgetSnapshotProvider.swift;
 		path = kWatchWidget/WidgetSnapshotProvider.swift;
+		sourceTree = "<group>";
+	};
+	177414483EBA673E7A0C4143 /* SubscriptionTermsTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = SubscriptionTermsTests.swift;
+		path = Tests/SubscriptionTermsTests.swift;
 		sourceTree = "<group>";
 	};
 	1A0A0A15E64EB867EFF75DCC /* MiniTrendChart.swift */ = {
@@ -1454,6 +1469,13 @@
 		path = Store/PaywallViewModel.swift;
 		sourceTree = "<group>";
 	};
+	DE30952806BAD3D158E74464 /* AlertRepositoryTests.swift */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.swift;
+		name = AlertRepositoryTests.swift;
+		path = Tests/AlertRepositoryTests.swift;
+		sourceTree = "<group>";
+	};
 	DEEE9528EA5DE4ED7AC00281 /* PurchaseState.swift */ = {
 		isa = PBXFileReference;
 		lastKnownFileType = sourcecode.swift;
@@ -1910,6 +1932,7 @@
 		isa = PBXGroup;
 		children = (
 			F1A34B16C0E46D22F48F6148 /* AlertEditorViewModelTests.swift */,
+			DE30952806BAD3D158E74464 /* AlertRepositoryTests.swift */,
 			950B093D752E8DD14ADDCB38 /* AlertsViewModelTests.swift */,
 			8EFDA98B20F0167B99720C0B /* AppContainerTests.swift */,
 			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
@@ -1943,6 +1966,7 @@
 			77150D054169C6226C7EB412 /* SnapshotRoundTripTests.swift */,
 			933426BE7C99ACFAC34C4F90 /* SnapshotWriterTests.swift */,
 			97D5754210E7D3F69530AAB5 /* StoreManagerTests.swift */,
+			177414483EBA673E7A0C4143 /* SubscriptionTermsTests.swift */,
 		);
 		name = Tests;
 		sourceTree = "<group>";
@@ -2231,6 +2255,7 @@
 		buildActionMask = 2147483647;
 		files = (
 			E07E6E132E02DA40D44308CA /* E07E6E132E02DA40D44308CA */,
+			CFA3A56CE1389DF9289443E8 /* CFA3A56CE1389DF9289443E8 */,
 			6F9B450F2A998EADF70F625F /* 6F9B450F2A998EADF70F625F */,
 			84BD3D0C65879977E026D9A9 /* 84BD3D0C65879977E026D9A9 */,
 			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,
@@ -2264,6 +2289,7 @@
 			A870777C0955E4956EAFCA52 /* A870777C0955E4956EAFCA52 */,
 			D9C83DAA5CA58B44EC554129 /* D9C83DAA5CA58B44EC554129 */,
 			DBF041637F69E6FAF31C49F7 /* DBF041637F69E6FAF31C49F7 */,
+			E85924BCE4D46E7424EC284B /* E85924BCE4D46E7424EC284B */,
 		);
 		runOnlyForDeploymentPostprocessing = 0;
 	};
