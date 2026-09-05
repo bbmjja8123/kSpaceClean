@@ -276,7 +276,17 @@ public final class ArchiveExtractExecutor: @unchecked Sendable, CleanActionExecu
 
         do {
             try process.run()
-            process.waitUntilExit()
+            // Safety: never block indefinitely on an external binary —
+            // poll with a 10 s ceiling, then terminate the stray process.
+            let deadline = Date().addingTimeInterval(10)
+            while process.isRunning && Date() < deadline {
+                Thread.sleep(forTimeInterval: 0.05)
+            }
+            if process.isRunning {
+                process.terminate()
+                Log.cleanup.error("process timed out after 10s: \(executable)")
+                return false
+            }
             return process.terminationStatus == 0
         } catch {
             return false
@@ -552,16 +562,20 @@ public final class LeftLogExecutor: @unchecked Sendable, CleanActionExecutor {
 
 // MARK: - 8. SoftDeleteExecutor
 
-/// Handles "software leftover" cleanup: moves files to Trash and performs
-/// broader temporary / swap cleanup where accessible.
+/// Handles "software leftover" cleanup: moves files to Trash and cleans
+/// temp files nested under the target's own directory tree.
 ///
 /// Actions performed:
 /// 1. Moves the given URL item to Trash if it represents a regular file/dir.
-/// 2. Attempts to clean `NSTemporaryDirectory()` files.
-/// 3. Attempts to purge swap files accessible under the current sandbox.
+/// 2. Attempts to clean `NSTemporaryDirectory()` files under the target.
 ///
-/// Note: Emptying the system Trash requires Automation permission for Finder
-/// and may fail in sandboxed contexts.
+/// Phase 2 safety audit:
+/// * `purgeSwapFiles()` was removed — the kernel owns `/private/var/vm`;
+///   deleting live swap can hang the machine. Nothing may touch it.
+/// * The raw `emptySystemTrash()` path was removed — every deletion must
+///   go through `CleanupEngine` so a restore-history record exists first.
+///   ("Empty trash" re-lands in Phase 3 via the shredder's explicit,
+///   consented per-item flow.)
 public final class SoftDeleteExecutor: @unchecked Sendable, CleanActionExecutor {
     public let actionType: RuleScanActionType = .soft
 
@@ -581,7 +595,10 @@ public final class SoftDeleteExecutor: @unchecked Sendable, CleanActionExecutor 
         }()
 
         if isTrashDir {
-            return await emptySystemTrash()
+            // Refuse: emptying the Trash bypasses restore history. It
+            // re-lands as the shredder's explicit consented flow (Phase 3).
+            Log.cleanup.notice("refused raw Trash emptying for \(url.path)")
+            return false
         }
 
         // Move item to trash.
@@ -597,9 +614,6 @@ public final class SoftDeleteExecutor: @unchecked Sendable, CleanActionExecutor 
 
         // Clean known temp locations if the URL resides there.
         cleanTemporaryFiles(under: url)
-
-        // Attempt to purge accessible swap-like files.
-        try? purgeSwapFiles()
 
         return trashedURL != nil
     }
@@ -621,73 +635,16 @@ public final class SoftDeleteExecutor: @unchecked Sendable, CleanActionExecutor 
         ) else { return }
 
         for item in contents {
-            try? fm.removeItem(at: item)
-        }
-    }
-
-    /// Attempt to remove swap files from `/private/var/vm/`.
-    /// This will only succeed with Full Disk Access.
-    private func purgeSwapFiles() throws {
-        let swapDir = URL(fileURLWithPath: "/private/var/vm")
-        let fm = FileManager.default
-        guard fm.fileExists(atPath: swapDir.path) else { return }
-
-        let contents = try fm.contentsOfDirectory(
-            at: swapDir,
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles]
-        )
-
-        for url in contents {
-            let name = url.lastPathComponent
-            // Only target swapfile / sleepimage / vm-related files.
-            guard name.hasPrefix("swapfile") || name == "sleepimage" || name.hasPrefix("vm_") else {
-                continue
-            }
-            try? fm.removeItem(at: url)
-        }
-    }
-
-    /// Attempt to empty the system Trash via `osascript` (requires Automation
-    /// permission for Finder).  Falls back to deleting items inside the Trash
-    /// directory directly if the AppleScript route fails.
-    private func emptySystemTrash() async -> Bool {
-        // Try AppleScript first.
-        let scriptProcess = Process()
-        scriptProcess.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
-        scriptProcess.arguments = ["-e", "tell application \"Finder\" to empty trash"]
-
-        let pipe = Pipe()
-        scriptProcess.standardError = pipe
-
-        do {
-            try scriptProcess.run()
-            scriptProcess.waitUntilExit()
-            if scriptProcess.terminationStatus == 0 { return true }
-        } catch {
-            // Fall through to manual deletion.
-        }
-
-        // Fallback: manually delete Trash contents.
-        guard let trashDir = FileManager.default.trashDirectory else { return false }
-        let fm = FileManager.default
-        guard let contents = try? fm.contentsOfDirectory(
-            at: trashDir,
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles]
-        ) else { return false }
-
-        var success = true
-        for url in contents {
             do {
-                try fm.removeItem(at: url)
+                try fm.removeItem(at: item)
             } catch {
-                success = false
+                Log.cleanup.debug("temp cleanup skipped \(item.lastPathComponent): \(error.localizedDescription)")
             }
         }
-        return success
     }
 }
+
+
 
 // MARK: - Executor Registry
 

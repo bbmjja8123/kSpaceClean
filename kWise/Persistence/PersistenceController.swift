@@ -97,7 +97,7 @@ public final class PersistenceController: @unchecked Sendable {
         do {
             try context.save()
         } catch {
-            print("[Persistence] Save failed: \(error)")
+            Log.cleanup.error("[Persistence] Save failed: \(error)")
         }
     }
 
@@ -141,7 +141,7 @@ public final class PersistenceController: @unchecked Sendable {
         do {
             return try context.fetch(request)
         } catch {
-            print("[Persistence] History fetch failed: \(error)")
+            Log.cleanup.error("[Persistence] History fetch failed: \(error)")
             return []
         }
     }
@@ -172,7 +172,7 @@ public final class PersistenceController: @unchecked Sendable {
         do {
             expired = try context.fetch(request)
         } catch {
-            print("[Persistence] Purge fetch failed: \(error)")
+            Log.cleanup.error("[Persistence] Purge fetch failed: \(error)")
             return 0
         }
 

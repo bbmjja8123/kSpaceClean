@@ -319,12 +319,12 @@ public final class ScanViewModel: ObservableObject {
             // Phase 2: 执行清理
             for await progress in cleanupEngine.cleanup(urls: urls) {
                 if case .completed = progress.state {
-                    print("[Cleanup] 完成: \(progress.completedItems)/\(progress.totalItems), "
+                    Log.cleanup.info("[Cleanup] 完成: \(progress.completedItems)/\(progress.totalItems), "
                           + "\(progress.processedBytes) bytes. "
                           + "失败 \(progress.failedPaths.count) 个")
                 }
                 if case .failed = progress.state {
-                    print("[Cleanup] 部分失败: \(progress.failedPaths.count) 个失败路径")
+                    Log.cleanup.error("[Cleanup] 部分失败: \(progress.failedPaths.count) 个失败路径")
                 }
             }
 
