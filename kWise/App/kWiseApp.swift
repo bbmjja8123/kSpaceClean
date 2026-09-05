@@ -21,6 +21,9 @@ struct kWiseApp: App {
                     coordinator.appState = appState
                     menuBarManager.setup()
                     installMetricKitReceiver()
+                    // Phase 1: resolve any persisted home-folder bookmark
+                    // and probe sandbox-readable dirs once per session.
+                    Task { await AppScope.shared.refresh() }
                 }
         }
         .windowStyle(.hiddenTitleBar)

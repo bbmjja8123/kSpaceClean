@@ -1,8 +1,10 @@
 import SwiftUI
 import DesignSystem
+import PowerScope
 
 struct SettingsView: View {
     @State private var prefs = UserPreferences.load()
+    @ObservedObject private var appScope = AppScope.shared
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.lg) {
@@ -11,6 +13,10 @@ struct SettingsView: View {
                 .foregroundColor(.textPrimary)
 
             Form {
+                Section("文件访问") {
+                    scopeRow
+                }
+
                 Section("\u{901A}\u{7528}") {
                     Toggle("\u{542F}\u{52A8}\u{65F6}\u{81EA}\u{52A8}\u{626B}\u{63CF}", isOn: $prefs.launchAtLogin)
                     Toggle("\u{83DC}\u{5355}\u{680F}\u{663E}\u{793A}\u{78C1}\u{76D8}\u{5360}\u{7528}", isOn: $prefs.showMenuBarDiskUsage)
@@ -51,5 +57,37 @@ struct SettingsView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - File Access (PowerScope)
+
+    /// Honest scope row: what kWise can read right now, plus grant/revoke.
+    @ViewBuilder
+    private var scopeRow: some View {
+        switch appScope.capability.level {
+        case .homeGranted:
+            LabeledContent {
+                Button("撤销授权", role: .destructive) {
+                    Task { await appScope.revoke() }
+                }
+            } label: {
+                Text("已授权主目录")
+                Text("kWise 可以扫描家目录下的缓存、日志与应用残留。")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
+        case .containerOnly:
+            LabeledContent {
+                Button("授权主目录") {
+                    Task { await appScope.grant() }
+                }
+                .buttonStyle(.borderedProminent)
+            } label: {
+                Text("仅容器访问")
+                Text("授权主目录后，kWise 才能发现并清理大部分垃圾文件。")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
+        }
     }
 }

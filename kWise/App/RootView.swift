@@ -16,7 +16,9 @@ struct RootView: View {
     // ⌘N / ⌘R shortcuts while the rendered `ScanResultsView` observed this
     // model, so every user-initiated scan ran a pipeline nothing on screen
     // was watching. All three triggers now route here.
-    @StateObject private var scanResultsViewModel = ScanResultsViewModel(engine: ScanEngine())
+    @StateObject private var scanResultsViewModel = ScanResultsViewModel(
+        engine: ScanEngine(orchestrator: ScanOrchestrator(scope: AppScope.shared.scope))
+    )
     // v1.5: Smart Care (Phase B) — orchestrator + SwiftUI VM owns the
     // 3-step state machine. Attach lazily once `scanResultsViewModel`
     // is reachable (see `.onAppear` below).
