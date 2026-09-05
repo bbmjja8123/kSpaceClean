@@ -379,3 +379,11 @@
 "Skip in-use files" = "使用中のファイルをスキップ";
 "Move anyway" = "それでも移動";
 "…and %lld more" = "…他 %lld 件";
+
+/* Phase E: 履歴トレンド */
+"reclaimed across scans" = "累計解放容量";
+"scans" = "回のスキャン";
+"Scan history for the last 8 weeks will appear here." = "過去8週間のスキャン履歴がここに表示されます。";
+"Delete this scan record?" = "このスキャン記録を削除しますか？";
+"Delete record" = "記録を削除";
+"Only the history entry is removed — no files are affected." = "履歴エントリのみを削除します — ファイルには影響しません。";

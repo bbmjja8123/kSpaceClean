@@ -374,3 +374,11 @@
 "Skip in-use files" = "跳过使用中的文件";
 "Move anyway" = "仍然移动";
 "…and %lld more" = "…以及另外 %lld 个";
+
+/* Phase E: 历史趋势 */
+"reclaimed across scans" = "累计释放空间";
+"scans" = "次扫描";
+"Scan history for the last 8 weeks will appear here." = "最近 8 周的扫描历史将显示在这里。";
+"Delete this scan record?" = "删除这条扫描记录？";
+"Delete record" = "删除记录";
+"Only the history entry is removed — no files are affected." = "仅删除历史记录——不会影响任何文件。";

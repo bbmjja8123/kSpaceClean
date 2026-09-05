@@ -374,3 +374,11 @@
 "Skip in-use files" = "Skip in-use files";
 "Move anyway" = "Move anyway";
 "…and %lld more" = "…and %lld more";
+
+/* Phase E: history trend */
+"reclaimed across scans" = "reclaimed across scans";
+"scans" = "scans";
+"Scan history for the last 8 weeks will appear here." = "Scan history for the last 8 weeks will appear here.";
+"Delete this scan record?" = "Delete this scan record?";
+"Delete record" = "Delete record";
+"Only the history entry is removed — no files are affected." = "Only the history entry is removed — no files are affected.";
