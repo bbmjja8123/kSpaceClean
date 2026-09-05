@@ -34,6 +34,12 @@ public final class GPUMonitor: MetricMonitor, @unchecked Sendable {
         // Fallback: surface the SMC temperature if available. Most Intel
         // Macs still expose a `TG0P` SMC key even when Metal can't give us
         // a working-set fraction.
+        //
+        // Known consumer mismatch (Intel-only, pre-existing, kept
+        // intentionally): this branch emits `.degreesCelsius` under the
+        // `.gpu` kind, while menu-bar/widget consumers expect `.gpu` to be
+        // `.percentage`. Apple Silicon never reaches this branch (Metal
+        // telemetry is supported), so the mismatch is cosmetic on Intel only.
         if smcProvider.isSupported, let gpuTemp = try? smcProvider.read(key: .gpuTemperature) {
             return MetricSample(
                 kind: .gpu,

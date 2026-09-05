@@ -489,3 +489,30 @@
 4. **第 5-7 天**：C6 + C7 + C8（隐私标签 + 图标 + 截图）
 
 阶段 0 完成后，启动阶段 1 的 writing-plans 拆解。
+---
+
+## Spike 结论：SMC 温度/风扇在 App Sandbox 下不可用（2026-09-06）
+
+> 来源：Task 5（SMC 温度/风扇真实现）真机 spike。机器：MacBookPro15,1（Intel i9-9880H, T2），macOS 15.7.8 (24G824)。
+
+**结论：App Sandbox 下 `IOServiceOpen("AppleSMC")` 被拒绝，错误码 `kIOReturnNotPermitted (0xE00002E2)`。温度/风扇在 App Store（沙箱）版本将维持 Unavailable 文案，禁止伪造。**
+
+Spike 证据（同一二进制代码，唯一变量是沙箱）：
+
+| 运行方式 | 沙箱 | IOServiceOpen | 读数 |
+|---|---|---|---|
+| 裸 CLI（无 entitlements） | 否 | 成功 (kr=0) | TC0P=60.938°C（与 osx-cpu-temp 60.9°C 完全一致）；TG0P=56.25°C；F0Ac=2715.9 RPM (`flt `)；VBAT 键不存在于本机（诚实报错） |
+| Spike.app（`com.apple.security.app-sandbox=true`，LaunchServices 启动，容器 HOME 确认生效） | 是 | **失败 kr=0xE00002E2 not permitted**（service lookup 本身成功） | 无 |
+
+实现状态：`AppleSMCConnector` / `SMCValueDecoder` / `IOKitSMCReadingProvider` 真实现已完成并有 13 个单测覆盖（解码器 + mock 注入 provider），在非沙箱进程（未来 possible 的 helper/非 MAS 渠道）即可出真实数值；沙箱内自动、诚实地降级为 `.unsupported`。
+
+附带的协议勘误（对后续重试有用）：
+- AppleSMC user client 只有一个外部方法（index 2），命令放在结构体 `data8`（9=读 key info，5=读 bytes）；直接调 selector 5/9 会得到 `kIOReturnUnsupported (0xE00002C7)`。不存在单独的 user-client "open" 方法。
+- 短期内可复验的替代路线（均需产品/审核评估）：XPC 特权 helper（非 MAS 渠道）、`IOReport`/`SMC` 经由私有框架（拒绝）、或利用 `powermetrics` 需要 root（不可行）。
+
+复验命令（真机）：
+```bash
+# 非沙箱对照（参考读数）
+osx-cpu-temp -c && osx-cpu-temp -f
+# 沙箱验证：用 kWatch.entitlements 签名的 .app 经 `open` 启动，读 $HOME 容器内 spike-result.txt
+```

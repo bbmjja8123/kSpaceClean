@@ -14,6 +14,9 @@ public struct SharedSnapshot: Codable, Equatable, Sendable {
     public let temperatureCelsius: Double?
     public let fanRPM: Double?
     public let batteryPercent: Double?
+    /// Misnomer (historical): carries the GPU **percentage** (0–1 fraction of
+    /// `.gpu`), not a temperature, despite the field name. Do NOT rename the
+    /// persisted JSON key — renaming breaks already-persisted widget snapshots.
     public let gpuTemperature: Double?
     public let cpuAvailable: Bool
     public let memoryAvailable: Bool
