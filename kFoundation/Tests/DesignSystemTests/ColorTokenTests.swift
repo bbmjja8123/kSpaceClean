@@ -82,7 +82,9 @@ final class ColorTokenTests: XCTestCase {
     func testHexInitializerProducesExpectedComponents() {
         // #7C3AED = R 124 G 58 B 237 — verifies the hex parser end-to-end.
         let color = Color(hex: "#7C3AED")
-        let resolved = color.resolve(in: EnvironmentValues())
+        // `Color.Resolve` (concrete) vs `ShapeStyle.resolve(in:)` (existential)
+        // are both visible on newer SDKs — pin the concrete overload.
+        let resolved: Color.Resolved = color.resolve(in: EnvironmentValues())
         _ = resolved // ensures resolution path doesn't crash
         XCTAssertNotNil(color)
     }
