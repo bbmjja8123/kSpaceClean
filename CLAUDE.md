@@ -311,6 +311,18 @@ kWise/
 - [x] 营销与发布节奏（4 周预热 + 上线日动作清单）
 - [x] 5 大风险 Plan B（审核被拒 / SMC 不可用 / Live Activity 拒绝等）
 
+### kSift v1.2 → 精品包 — Ship-Ready ✅ (2026-09-06)
+- [x] **Phase 0 构建修复** — kFoundation 路径 → `../kFoundation` + XcodeGen scheme；修复 8 处未编译提交的语法/逻辑错误；测试宿主 Core Data 改用临时目录（App Group 容器楔死规避）；测试基线 136/136 绿（`chore(kSift)` 62fec92）
+- [x] **Phase A 结果页重构** — SelectionPlanner 5 种保留策略 + 每副本可解释 reason（竞品无的差异化）；分组 checkbox 选择模型 + VM 同步（修 stale bug）；ToastView 复活为 Undo 入口（restoreSession + ⌘Z）；FileRowView 修改日期；真 QuickLook（_QuickLook_SwiftUI）；rail 标签/⌘1-6/菜单 Commands（a3ab780）
+- [x] **Phase B 首屏与扫描** — IdleDashboardView（Quick Start 预设卡 + 最近扫描 reassurance）；ScanThroughputEstimator EWMA ETA/吞吐/已扫字节；动效体系（Reduce Motion 门控）（e9f6136）
+- [x] **Phase C 引擎可配置** — SimilarityPreset strict/normal/loose 持久化并 per-run 生效（回应"误报"Top 抱怨）；大文件 UI（结果页 segmented + LargeFilesListView + 阈值设置 + ShowLargeFilesIntent 数据链）；macOS 13 兼容性提示；新增 ProfileType.custom（dfd21d2）
+- [x] **Phase D 信任与付费** — Paywall 重写（6 feature/买断 vs 订阅对比/3 FAQ，不点名竞品）；InUseChecker（lsof 批量 + 2s 硬超时 + 启发式降级）接入全部 3 个清理入口（6fa075a）
+- [x] **Phase E 历史洞察** — Swift Charts 周趋势（8 周桶跨月/弃 >8 周）+ 类别分布 + profile badge + 删除确认（96a2f38）
+- [x] **Phase F1 相似视频** — PerceptualHashing 共享原语抽取；SimilarVideoDetector（AVAsset 关键帧采样 dHash + size/duration 容差预过滤 + union-find）；类型全链路 + AVAssetWriter 真视频集成测试（ece83ef）
+- [x] **Phase F2 Photos 库去重** — PhotoLibraryProviding 协议隔离（测试零 PHPhotoLibrary）；PHAssetResourceManager 禁网 SHA-256 精确 pass（iCloud-only 快速失败并计数）；dHash perceptual pass；删除走系统"最近删除"（原生 30 天 undo，绕过 Vault）；entitlements + 权限流 + Photos 导航项（e24f60b）
+- [x] **本地化** — 336 keys ×3（en/zh-Hans/ja）全程同步校验
+- [x] **测试** — xcodebuild test 全绿（每 phase 一个 commit，`scripts/commit-app.sh kSift` 边界提交）
+
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
 - [ ] kUninstall 设计 — 应用卸载
@@ -319,4 +331,4 @@ kWise/
 
 ---
 
-最后更新：2026-07-25（kSpaceClean 设计定稿）
+最后更新：2026-09-06（kSift v1.2 精品包 ship-ready，Phase 0-A/B/C/D/E/F1/F2 共 8 commits）
