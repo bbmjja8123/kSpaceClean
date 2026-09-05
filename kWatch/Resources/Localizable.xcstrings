@@ -2570,31 +2570,31 @@
       }
     },
     "subscription.terms.body": {
-      "comment": "Auto-renewal disclosure body required by App Store Review Guidelines §3.1.2(a).",
+      "comment": "One-time purchase disclosure body. kWatch Pro is a Non-Consumable; no subscription or auto-renew language may appear here (App Review §3.1.2(a)). The support/privacy links render as a separate element in PaywallView, so the body must not embed a link placeholder.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions in your App Store account settings."
+            "value": "kWatch Pro is a one-time purchase of $7.99 (local pricing applies at checkout). Payment is charged once to your Apple ID. There is no subscription and no automatic renewal. Restore anytime on this Mac with \"Restore Purchases\"."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "购买确认时将从您的 Apple ID 账户扣款。除非在当前订阅期结束前至少 24 小时关闭自动续订,否则订阅将自动续订。在当前订阅期结束前 24 小时内,系统会从您的账户扣款续订。您可以在 App Store 账户设置中管理和取消订阅。"
+            "value": "kWatch Pro 为一次性买断（结算时按当地定价显示，约 ¥68）。费用通过您的 Apple ID 一次性支付，无订阅、无自动续费。可随时在本机通过「恢复购买」找回。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "購入確定時に Apple ID アカウントに課金されます。現在の期間が終了する少なくとも 24 時間前に自動更新をオフにしない限り、サブスクリプションは自動的に更新されます。現在の期間が終了する 24 時間前までにアカウントに更新料金が課金されます。サブスクリプションの管理とキャンセルは App Store のアカウント設定で行えます。"
+            "value": "kWatch Pro は買い切り（¥1,200・購入時に現地価格で表示）。Apple ID に一度だけ請求されます。サブスクリプションではなく自動更新もありません。「購入を復元」からいつでも復元できます。"
           }
         }
       }
     },
     "subscription.terms.supportLink": {
-      "comment": "Hyperlink copy pointing to Terms of Use and Privacy Policy.",
+      "comment": "Hyperlink copy pointing to Terms of Use and Privacy Policy (rendered as a separate link element below the disclosure body).",
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -2618,25 +2618,25 @@
       }
     },
     "subscription.terms.title": {
-      "comment": "Title shown above the auto-renewal disclosure block in the Paywall.",
+      "comment": "Title shown above the one-time purchase disclosure block in the Paywall.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Subscription Terms"
+            "value": "kWatch Pro — One-Time Purchase"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "订阅条款"
+            "value": "kWatch Pro — 一次买断"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "サブスクリプション規約"
+            "value": "kWatch Pro — 買い切り"
           }
         }
       }
