@@ -317,3 +317,25 @@
 "%lld files/s" = "%lld files/s";
 "Time remaining" = "Time remaining";
 "Data scanned" = "Data scanned";
+
+/* Phase C: similarity presets + large files + compatibility */
+"Strict" = "Strict";
+"Normal" = "Normal";
+"Loose" = "Loose";
+"Groups only near-identical images — fewest false positives." = "Groups only near-identical images — fewest false positives.";
+"Balanced matching — the recommended default." = "Balanced matching — the recommended default.";
+"Groups same-scene shots too — more results, more noise." = "Groups same-scene shots too — more results, more noise.";
+"Similar Image Sensitivity" = "Similar Image Sensitivity";
+"Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots." = "Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots.";
+"Large file threshold" = "Large file threshold";
+"Large Files" = "Large Files";
+"Files at or above this size are listed in the Large Files results tab." = "Files at or above this size are listed in the Large Files results tab.";
+"Duplicates" = "Duplicates";
+"Compatibility" = "Compatibility";
+"Reduced on macOS 13" = "Reduced on macOS 13";
+"Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same." = "Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same.";
+"%lld files · %@ total" = "%lld files · %@ total";
+"%lld selected · %@" = "%lld selected · %@";
+"No large files in this scan" = "No large files in this scan";
+"Files at or above the threshold in Settings appear here after a scan." = "Files at or above the threshold in Settings appear here after a scan.";
+"%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "%lld file(s) will be moved to Trash and kept in the vault for 30 days.";

@@ -10,6 +10,24 @@ public final class AppState: ObservableObject {
     /// Most recent completed scan's duplicate groups, published so ResultView
     /// can survive RootView's per-navigation view recreation.
     @Published public var latestGroups: [DuplicateGroup] = []
+    /// Most recent completed scan's large files (≥ configured threshold).
+    /// Feeds the Large Files section of the results screen and the
+    /// Show Large Files intent.
+    @Published public var latestLargeFiles: [FileItem] = []
+    /// Which section of the results screen is showing.
+    @Published public var resultsSection: ResultsSection = .duplicates
+
+    public enum ResultsSection: String, CaseIterable {
+        case duplicates
+        case largeFiles
+
+        public var title: String {
+            switch self {
+            case .duplicates: return NSLocalizedString("Duplicates", comment: "Results section title")
+            case .largeFiles: return NSLocalizedString("Large Files", comment: "Results section title")
+            }
+        }
+    }
     /// Set by AppCoordinator when the Finder Sync extension (or a deep link)
     /// asks us to scan a specific folder. MainView consumes and clears it.
     @Published public var pendingScanPath: String?

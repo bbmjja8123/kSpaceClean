@@ -97,6 +97,12 @@ struct MainView: View {
             viewModel.onScanCompleted = { groups in
                 appState.latestGroups = groups
             }
+            // Large files flow on their own event; mirror them so the
+            // results screen (and the Show Large Files intent) can read
+            // them without re-scanning.
+            viewModel.onLargeFilesScanned = { largeFiles in
+                appState.latestLargeFiles = largeFiles
+            }
             // Drain a pending Finder Sync scan request: when the user picks
             // "Scan with kSift" in Finder while the app is running, the
             // AppCoordinator lands us here with a folder path waiting.

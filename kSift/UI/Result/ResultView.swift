@@ -16,6 +16,33 @@ struct ResultView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // Section switch: duplicate groups vs. large files. One results
+            // hub, shared filter bar position / undo / paywall gating.
+            if !appState.latestLargeFiles.isEmpty || appState.resultsSection == .largeFiles {
+                Picker("Results section", selection: $appState.resultsSection) {
+                    ForEach(AppState.ResultsSection.allCases, id: \.self) { section in
+                        Text(section.title).tag(section)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .frame(maxWidth: 280)
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+            }
+
+            if appState.resultsSection == .largeFiles {
+                LargeFilesListView(files: appState.latestLargeFiles)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                duplicatesContent
+            }
+        }
+    }
+
+    /// The duplicate-groups experience (stats bar → filters → group list).
+    private var duplicatesContent: some View {
+        VStack(spacing: 0) {
             // Stats bar
             GlassPanel {
                 HStack {
@@ -383,6 +410,7 @@ struct ResultView: View {
     }
 
     private func loadGroups() {
+        appState.resultsSection = .duplicates
         if !appState.latestGroups.isEmpty {
             viewModel.loadGroups(appState.latestGroups)
         } else {

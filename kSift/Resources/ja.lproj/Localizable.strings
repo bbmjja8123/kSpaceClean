@@ -322,3 +322,25 @@
 "%lld files/s" = "%lld ファイル/秒";
 "Time remaining" = "残り時間";
 "Data scanned" = "スキャン済みデータ";
+
+/* Phase C: 類似度プリセット + 大きいファイル + 互換性 */
+"Strict" = "厳密";
+"Normal" = "標準";
+"Loose" = "緩い";
+"Groups only near-identical images — fewest false positives." = "ほぼ同一の画像のみをグループ化 — 誤検出が最も少ない。";
+"Balanced matching — the recommended default." = "バランスの取れたマッチング — 推奨のデフォルト。";
+"Groups same-scene shots too — more results, more noise." = "同じシーンの写真もグループ化 — 結果は増えますがノイズも増えます。";
+"Similar Image Sensitivity" = "類似画像の感度";
+"Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots." = "感度を下げるとほぼ同一の画像のみ、上げると同じシーンの写真もグループ化されます。";
+"Large file threshold" = "大きいファイルのしきい値";
+"Large Files" = "大きいファイル";
+"Files at or above this size are listed in the Large Files results tab." = "このサイズ以上のファイルは、結果の「大きいファイル」タブに表示されます。";
+"Duplicates" = "重複項目";
+"Compatibility" = "互換性";
+"Reduced on macOS 13" = "macOS 13 では一部機能を簡素化";
+"Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same." = "macOS 13 では一部の視覚効果と自動化が簡素化されます。その他の機能は同じです。";
+"%lld files · %@ total" = "%lld ファイル · 合計 %@";
+"%lld selected · %@" = "%lld 件選択 · %@";
+"No large files in this scan" = "このスキャンで大きいファイルは見つかりませんでした";
+"Files at or above the threshold in Settings appear here after a scan." = "スキャン後、設定のしきい値以上のファイルがここに表示されます。";
+"%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "%lld 個のファイルをゴミ箱に移動し、ボールトに30日間保管します。";

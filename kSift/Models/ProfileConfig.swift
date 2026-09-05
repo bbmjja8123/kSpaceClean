@@ -53,6 +53,11 @@ public struct ProfileConfig: Sendable, Codable, Equatable {
     /// Strategy the "Auto Keep" affordances apply when picking the copy to
     /// keep. Added after v1.2; older payloads decode to `.keepNewest`.
     public var selectionStrategy: SelectionStrategy
+    /// How aggressively similar images are grouped. Added after v1.2;
+    /// older payloads decode to `.normal` (the historical engine default).
+    public var similarityPreset: SimilarityPreset
+    /// Files at or above this size surface in the Large Files section.
+    public var largeFileSizeThreshold: Int64
 
     public static let `default` = ProfileConfig(
         type: .developer,
@@ -61,13 +66,17 @@ public struct ProfileConfig: Sendable, Codable, Equatable {
         minFileSize: 1024,
         enablePerceptualScan: true,
         enableBuildArtifacts: true,
-        selectionStrategy: .keepNewest
+        selectionStrategy: .keepNewest,
+        similarityPreset: .normal,
+        largeFileSizeThreshold: 100 * 1024 * 1024
     )
 
     public init(type: ProfileType, customDirectories: [String], exclusions: [String],
                 minFileSize: Int64, enablePerceptualScan: Bool,
                 enableBuildArtifacts: Bool = true,
-                selectionStrategy: SelectionStrategy = .keepNewest) {
+                selectionStrategy: SelectionStrategy = .keepNewest,
+                similarityPreset: SimilarityPreset = .normal,
+                largeFileSizeThreshold: Int64 = 100 * 1024 * 1024) {
         self.type = type
         self.customDirectories = customDirectories
         self.exclusions = exclusions
@@ -75,6 +84,8 @@ public struct ProfileConfig: Sendable, Codable, Equatable {
         self.enablePerceptualScan = enablePerceptualScan
         self.enableBuildArtifacts = enableBuildArtifacts
         self.selectionStrategy = selectionStrategy
+        self.similarityPreset = similarityPreset
+        self.largeFileSizeThreshold = largeFileSizeThreshold
     }
 
     // Forward/backward compat: tolerate older serialized JSON missing newer
@@ -91,5 +102,7 @@ public struct ProfileConfig: Sendable, Codable, Equatable {
         self.enablePerceptualScan = try c.decodeIfPresent(Bool.self, forKey: .enablePerceptualScan) ?? true
         self.enableBuildArtifacts = try c.decodeIfPresent(Bool.self, forKey: .enableBuildArtifacts) ?? true
         self.selectionStrategy = try c.decodeIfPresent(SelectionStrategy.self, forKey: .selectionStrategy) ?? .keepNewest
+        self.similarityPreset = try c.decodeIfPresent(SimilarityPreset.self, forKey: .similarityPreset) ?? .normal
+        self.largeFileSizeThreshold = try c.decodeIfPresent(Int64.self, forKey: .largeFileSizeThreshold) ?? 100 * 1024 * 1024
     }
 }

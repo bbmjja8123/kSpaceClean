@@ -31,17 +31,22 @@ final class ProfileConfigStoreTests: XCTestCase {
         XCTAssertTrue(loaded.enablePerceptualScan)
         XCTAssertTrue(loaded.enableBuildArtifacts)
         XCTAssertEqual(loaded.selectionStrategy, .keepNewest)
+        XCTAssertEqual(loaded.similarityPreset, .normal)
+        XCTAssertEqual(loaded.largeFileSizeThreshold, 100 * 1024 * 1024)
     }
 
     func testRoundTripPreservesEveryField() {
-        let config = ProfileConfig(
+        var config = ProfileConfig(
             type: .photographer,
             customDirectories: ["~/Pictures/2024", "~/Pictures/Raw"],
             exclusions: ["**/.thumbnails/**", "**/*.tmp"],
             minFileSize: 4096,
             enablePerceptualScan: false,
-            enableBuildArtifacts: true
+            enableBuildArtifacts: true,
+            selectionStrategy: .keepShortestPath
         )
+        config.similarityPreset = .strict
+        config.largeFileSizeThreshold = 50 * 1024 * 1024
 
         ProfileConfigStore.save(config, defaults: defaults)
         let loaded = ProfileConfigStore.load(defaults: defaults)

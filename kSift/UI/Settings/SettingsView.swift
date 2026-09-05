@@ -1,4 +1,5 @@
 import SwiftUI
+import Capabilities
 import DesignSystem
 
 struct SettingsView: View {
@@ -51,6 +52,63 @@ struct SettingsView: View {
                           isOn: $viewModel.enablePerceptual)
                     Toggle("Scan build artifacts",
                           isOn: $viewModel.enableBuildArtifacts)
+                }
+
+                Section {
+                    Picker("Similarity", selection: $viewModel.similarityPreset) {
+                        ForEach(SimilarityPreset.allCases, id: \.self) { preset in
+                            Text(preset.title).tag(preset)
+                        }
+                    }
+                    .pickerStyle(.radioGroup)
+                    .disabled(!viewModel.enablePerceptual)
+                    Text(viewModel.similarityPreset.help)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                } header: {
+                    Text("Similar Image Sensitivity")
+                } footer: {
+                    Text(NSLocalizedString(
+                        "Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots.",
+                        comment: "Similarity preset help footer"
+                    ))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+
+                Section {
+                    Picker("Large file threshold", selection: $viewModel.largeFileSizeThreshold) {
+                        ForEach(largeFileThresholdOptions, id: \.self) { threshold in
+                            Text(formatBytes(threshold)).tag(threshold)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                } header: {
+                    Text("Large Files")
+                } footer: {
+                    Text(NSLocalizedString(
+                        "Files at or above this size are listed in the Large Files results tab.",
+                        comment: "Large-file threshold help footer"
+                    ))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+
+                if !CapabilityGate.isMacOS14 {
+                    Section {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Label("Reduced on macOS 13", systemImage: "info.circle")
+                                .font(.callout).bold()
+                            Text(NSLocalizedString(
+                                "Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same.",
+                                comment: "macOS 13 capability degradation footer"
+                            ))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        }
+                    } header: {
+                        Text("Compatibility")
+                    }
                 }
 
                 Section("Scan Directories") {
@@ -153,6 +211,16 @@ struct SettingsView: View {
             }
             .padding(12)
         }
+    }
+
+    private var largeFileThresholdOptions: [Int64] {
+        [
+            10 * 1024 * 1024,
+            50 * 1024 * 1024,
+            100 * 1024 * 1024,
+            500 * 1024 * 1024,
+            1024 * 1024 * 1024,
+        ]
     }
 
     private func profileIcon(_ profile: ProfileType) -> String {

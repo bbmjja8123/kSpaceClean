@@ -33,6 +33,8 @@ public final class ScanViewModel: ObservableObject {
     /// persisted. Lets the owning view publish results into `AppState` so
     /// `ResultView` (recreated per navigation) can pick them up.
     public var onScanCompleted: (([DuplicateGroup]) -> Void)?
+    /// Invoked when the large-files event arrives during a scan.
+    public var onLargeFilesScanned: (([FileItem]) -> Void)?
 
     /// True when the user has paused the current scan. Read by the
     /// progress view to swap the Pause button for Resume. Bridges the
@@ -104,6 +106,7 @@ public final class ScanViewModel: ObservableObject {
                     groupsFound += 1
                 case .largeFiles(let items):
                     largeFiles = items
+                    onLargeFilesScanned?(items)
                 case .warning(let warning):
                     warnings.append(warning)
                 case .failed(let message):

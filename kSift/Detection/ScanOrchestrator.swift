@@ -28,8 +28,11 @@ public actor ScanOrchestrator {
     private let byteDetector: ByteIdenticalDetector
     private let cloneDetector: APFSCloneDetector
     private let dirDedupDetector: DirectoryDedupDetector
-    private let perceptualDetector: PerceptualDetector
-    private let largeFileDetector: LargeFileDetector
+    /// Nil (the default) → built per run from the persisted similarity
+    /// preset. Tests may inject a fixed instance.
+    private let perceptualDetector: PerceptualDetector?
+    /// Nil (the default) → built per run from the configured threshold.
+    private let largeFileDetector: LargeFileDetector?
     private let buildArtifactDetector: BuildArtifactDetector
     private let rawJPEGDetector: RawJPEGPairDetector
     private let nameHeuristicDetector: NameHeuristicDetector
@@ -44,8 +47,8 @@ public actor ScanOrchestrator {
         byteDetector: ByteIdenticalDetector = ByteIdenticalDetector(),
         cloneDetector: APFSCloneDetector = APFSCloneDetector(),
         dirDedupDetector: DirectoryDedupDetector = DirectoryDedupDetector(),
-        perceptualDetector: PerceptualDetector = PerceptualDetector(),
-        largeFileDetector: LargeFileDetector = LargeFileDetector(),
+        perceptualDetector: PerceptualDetector? = nil,
+        largeFileDetector: LargeFileDetector? = nil,
         buildArtifactDetector: BuildArtifactDetector = BuildArtifactDetector(),
         rawJPEGDetector: RawJPEGPairDetector = RawJPEGPairDetector(),
         nameHeuristicDetector: NameHeuristicDetector = NameHeuristicDetector(),
@@ -138,6 +141,16 @@ public actor ScanOrchestrator {
                 // image libraries: 1.6-2.5x over the previous sequential run.
                 let verifiedCache = await byteDetector.verifiedCache
                 let scanRoots = target.directories.map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
+
+                // Per-run detectors driven by the persisted config: the
+                // similarity preset (Settings-tunable) and the large-file
+                // threshold. An init-injected instance (tests) wins.
+                let perceptualDetector = self.perceptualDetector ?? PerceptualDetector(
+                    maximumHammingDistance: config.similarityPreset.maximumHammingDistance,
+                    visionDistanceThreshold: config.similarityPreset.visionDistanceThreshold
+                )
+                let largeFileDetector = self.largeFileDetector
+                    ?? LargeFileDetector(threshold: config.largeFileSizeThreshold)
 
                 // A cancel that lands between phases must not fan out a
                 // barrage of phase-start events; bail before the fan-out.

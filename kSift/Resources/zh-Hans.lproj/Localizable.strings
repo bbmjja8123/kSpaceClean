@@ -317,3 +317,25 @@
 "%lld files/s" = "%lld 个文件/秒";
 "Time remaining" = "剩余时间";
 "Data scanned" = "已扫描数据";
+
+/* Phase C: 相似度预设 + 大文件 + 兼容性 */
+"Strict" = "严格";
+"Normal" = "标准";
+"Loose" = "宽松";
+"Groups only near-identical images — fewest false positives." = "仅分组几乎完全相同的图片——误报最少。";
+"Balanced matching — the recommended default." = "均衡匹配——推荐默认。";
+"Groups same-scene shots too — more results, more noise." = "同场景照片也会分组——结果更多，噪声也更多。";
+"Similar Image Sensitivity" = "相似图片灵敏度";
+"Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots." = "低灵敏度只聚合几乎相同的图片；高灵敏度会把同场景照片也归为一组。";
+"Large file threshold" = "大文件阈值";
+"Large Files" = "大文件";
+"Files at or above this size are listed in the Large Files results tab." = "达到或超过该大小的文件将显示在结果页的大文件标签中。";
+"Duplicates" = "重复项";
+"Compatibility" = "兼容性";
+"Reduced on macOS 13" = "macOS 13 下功能受限";
+"Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same." = "在 macOS 13 上，部分视觉动效与自动化交互会有所简化，其余功能完全一致。";
+"%lld files · %@ total" = "%lld 个文件 · 共 %@";
+"%lld selected · %@" = "已选 %lld 个 · %@";
+"No large files in this scan" = "本次扫描未发现大文件";
+"Files at or above the threshold in Settings appear here after a scan." = "扫描后，达到设置中阈值的文件会显示在这里。";
+"%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "将有 %lld 个文件移到废纸篓，并在保险库中保留 30 天。";
