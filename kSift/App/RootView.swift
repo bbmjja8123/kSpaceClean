@@ -55,6 +55,8 @@ struct RootView: View {
             MainView(paidFlag: paidFlag)
         case .results:
             ResultView()
+        case .photos:
+            PhotosScanView()
         case .history:
             HistoryView()
         case .vault:

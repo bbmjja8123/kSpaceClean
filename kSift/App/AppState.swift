@@ -39,13 +39,14 @@ public final class AppState: ObservableObject {
     @Published public var lastUndoFailures: [VaultMoveFailure] = []
 
     public enum NavigationItem: String, CaseIterable {
-        case onboarding, scan, results, history, vault, settings
+        case onboarding, scan, results, photos, history, vault, settings
 
         public var iconName: String {
             switch self {
             case .onboarding: return "wand.and.stars"
             case .scan: return "magnifyingglass"
             case .results: return "doc.on.doc"
+            case .photos: return "photo.on.rectangle.angled"
             case .history: return "clock"
             case .vault: return "shippingbox"
             case .settings: return "gear"
@@ -60,6 +61,8 @@ public final class AppState: ObservableObject {
                 return NSLocalizedString("Scan", comment: "Navigation title")
             case .results:
                 return NSLocalizedString("Results", comment: "Navigation title")
+            case .photos:
+                return NSLocalizedString("Photos", comment: "Navigation title")
             case .history:
                 return NSLocalizedString("History", comment: "Navigation title")
             case .vault:
@@ -76,9 +79,10 @@ public final class AppState: ObservableObject {
             case .onboarding: return nil
             case .scan: return "1"
             case .results: return "2"
-            case .history: return "3"
-            case .vault: return "4"
-            case .settings: return "5"
+            case .photos: return "3"
+            case .history: return "4"
+            case .vault: return "5"
+            case .settings: return "6"
             }
         }
     }

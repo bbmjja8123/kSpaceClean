@@ -386,3 +386,20 @@
 /* Phase F1: 相似视频 */
 "Similar Video" = "相似视频";
 "Comparing videos..." = "正在比较视频...";
+
+/* Phase F2: 照片库 */
+"Photos" = "照片";
+"Find duplicates in your photo library" = "查找照片库中的重复照片";
+"kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded." = "kSift 完全在本机扫描你的照片库。仅存于 iCloud 的照片会被跳过——不下载、不上传任何内容。";
+"Access was denied. Grant it in System Settings → Privacy & Security → Photos." = "访问被拒绝。请在系统设置 → 隐私与安全性 → 照片中授权。";
+"Grant Access & Scan" = "授权并扫描";
+"Scanning your photo library locally…" = "正在本机扫描照片库…";
+"Assets scanned" = "已扫描照片";
+"iCloud-only skipped" = "跳过 iCloud 照片";
+"Re-scan" = "重新扫描";
+"%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them." = "已跳过 %lld 张仅存于 iCloud 的照片——开启“下载原始图片到这台 Mac”即可包含它们。";
+"No duplicate photos found" = "未发现重复照片";
+"Your photo library has no duplicate or near-duplicate images." = "你的照片库中没有重复或相似图片。";
+"Remove from Library" = "从图库中移除";
+"Some photos could not be deleted" = "部分照片无法删除";
+"%lld photo(s) could not be deleted. They may already be removed." = "%lld 张照片无法删除，可能已被移除。";

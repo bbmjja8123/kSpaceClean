@@ -124,6 +124,11 @@ public struct FileItem: Sendable, Identifiable, Codable {
     public let isAPFSClone: Bool
     public let physicalSize: Int64?
     public let fileType: UTType?
+    /// PHAsset localIdentifier when this item represents a photo-library
+    /// asset. Cleanup routes through the Photos "Recently Deleted" album
+    /// instead of the Trash/Vault. Not persisted to Core Data — after a
+    /// restore it degrades gracefully to Finder semantics.
+    public let photosLocalIdentifier: String?
 
     public init(
         id: UUID,
@@ -136,7 +141,8 @@ public struct FileItem: Sendable, Identifiable, Codable {
         inode: UInt64? = nil,
         isAPFSClone: Bool = false,
         physicalSize: Int64? = nil,
-        fileType: UTType? = nil
+        fileType: UTType? = nil,
+        photosLocalIdentifier: String? = nil
     ) {
         self.id = id
         self.url = url
@@ -149,6 +155,7 @@ public struct FileItem: Sendable, Identifiable, Codable {
         self.isAPFSClone = isAPFSClone
         self.physicalSize = physicalSize
         self.fileType = fileType
+        self.photosLocalIdentifier = photosLocalIdentifier
     }
 
     /// Loads light metadata (size, dates, physicalSize, fileType) for a URL

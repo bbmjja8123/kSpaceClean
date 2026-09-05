@@ -391,3 +391,20 @@
 /* Phase F1: 類似動画 */
 "Similar Video" = "類似動画";
 "Comparing videos..." = "動画を比較中...";
+
+/* Phase F2: 写真ライブラリ */
+"Photos" = "写真";
+"Find duplicates in your photo library" = "写真ライブラリの重複を見つける";
+"kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded." = "kSift は写真ライブラリをこの Mac 上で完全にスキャンします。クラウドのみの写真はスキップされ、ダウンロードもアップロードも行われません。";
+"Access was denied. Grant it in System Settings → Privacy & Security → Photos." = "アクセスが拒否されました。システム設定 → プライバシーとセキュリティ → 写真で許可してください。";
+"Grant Access & Scan" = "アクセスを許可してスキャン";
+"Scanning your photo library locally…" = "写真ライブラリをローカルでスキャン中…";
+"Assets scanned" = "スキャン済みアセット";
+"iCloud-only skipped" = "iCloud のみをスキップ";
+"Re-scan" = "再スキャン";
+"%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them." = "iCloud のみの写真 %lld 枚をスキップしました — 「オリジナルをこの Mac にダウンロード」を有効にすると含まれます。";
+"No duplicate photos found" = "重複する写真は見つかりませんでした";
+"Your photo library has no duplicate or near-duplicate images." = "写真ライブラリに重複や類似の画像はありません。";
+"Remove from Library" = "ライブラリから削除";
+"Some photos could not be deleted" = "一部の写真を削除できませんでした";
+"%lld photo(s) could not be deleted. They may already be removed." = "%lld 枚の写真を削除できませんでした。すでに削除されている可能性があります。";

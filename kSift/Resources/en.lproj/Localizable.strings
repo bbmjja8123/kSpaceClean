@@ -386,3 +386,20 @@
 /* Phase F1: similar video */
 "Similar Video" = "Similar Video";
 "Comparing videos..." = "Comparing videos...";
+
+/* Phase F2: Photos library */
+"Photos" = "Photos";
+"Find duplicates in your photo library" = "Find duplicates in your photo library";
+"kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded." = "kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded.";
+"Access was denied. Grant it in System Settings → Privacy & Security → Photos." = "Access was denied. Grant it in System Settings → Privacy & Security → Photos.";
+"Grant Access & Scan" = "Grant Access & Scan";
+"Scanning your photo library locally…" = "Scanning your photo library locally…";
+"Assets scanned" = "Assets scanned";
+"iCloud-only skipped" = "iCloud-only skipped";
+"Re-scan" = "Re-scan";
+"%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them." = "%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them.";
+"No duplicate photos found" = "No duplicate photos found";
+"Your photo library has no duplicate or near-duplicate images." = "Your photo library has no duplicate or near-duplicate images.";
+"Remove from Library" = "Remove from Library";
+"Some photos could not be deleted" = "Some photos could not be deleted";
+"%lld photo(s) could not be deleted. They may already be removed." = "%lld photo(s) could not be deleted. They may already be removed.";

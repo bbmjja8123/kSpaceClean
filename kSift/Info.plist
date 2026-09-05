@@ -24,5 +24,7 @@
     <string>kSift needs access to find duplicate and large files.</string>
     <key>NSDesktopFolderUsageDescription</key>
     <string>kSift needs access to find duplicate and large files.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>kSift scans your photo library locally to find duplicate and similar photos. Nothing is uploaded.</string>
 </dict>
 </plist>
