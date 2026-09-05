@@ -307,3 +307,18 @@
 /* カスタムプロファイル */
 "Custom" = "カスタム";
 "Scans only the folders you choose" = "選択したフォルダのみをスキャンします";
+
+/* Phase B: ホームダッシュボード + スキャン速度 */
+"Quick Start" = "クイックスタート";
+"Find duplicate, similar, and oversized files — then reclaim the space in one tap." = "重複・類似・巨大ファイルを探し、ワンタップで空き容量を取り戻します。";
+"Scan with the %@ profile" = "「%@」プロファイルでスキャン";
+"Last scan" = "前回のスキャン";
+"Found %lld duplicates · %@ reclaimable" = "%lld 件の重複を発見 · %@ 解放可能";
+"Projects, build artifacts, dev directories" = "プロジェクト、ビルド成果物、開発ディレクトリ";
+"Photos, RAW files, creative assets" = "写真、RAW ファイル、制作素材";
+"Desktop, downloads, documents" = "デスクトップ、ダウンロード、書類";
+"Only the folders you choose" = "選択したフォルダのみ";
+"Throughput" = "スキャン速度";
+"%lld files/s" = "%lld ファイル/秒";
+"Time remaining" = "残り時間";
+"Data scanned" = "スキャン済みデータ";

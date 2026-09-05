@@ -5,10 +5,16 @@ struct ScanProgressView: View {
     let progress: ScanProgress
     let groupsFound: Int
     let elapsed: TimeInterval
+    /// Smoothed throughput (files/s). Nil until two progress samples land.
+    var filesPerSecond: Double? = nil
+    /// EWMA ETA in seconds. Nil when no forward progress is measurable.
+    var estimatedRemaining: TimeInterval? = nil
     let isPaused: Bool
     let onCancel: () -> Void
     let onPause: () -> Void
     let onResume: () -> Void
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 24) {
@@ -37,6 +43,30 @@ struct ScanProgressView: View {
                     title: NSLocalizedString("Elapsed", comment: "Scan elapsed time label"),
                     value: formatElapsed(elapsed)
                 )
+                if let filesPerSecond, filesPerSecond > 0 {
+                    metricRow(
+                        title: NSLocalizedString("Throughput", comment: "Scan throughput label"),
+                        value: String(
+                            format: NSLocalizedString("%lld files/s", comment: "Files-per-second rate"),
+                            Int(filesPerSecond.rounded())
+                        )
+                    )
+                }
+                if let estimatedRemaining {
+                    metricRow(
+                        title: NSLocalizedString("Time remaining", comment: "Scan ETA label"),
+                        value: "~" + formatElapsed(estimatedRemaining)
+                    )
+                }
+                if progress.bytesProcessed > 0 {
+                    metricRow(
+                        title: NSLocalizedString("Data scanned", comment: "Bytes processed label"),
+                        value: ByteCountFormatter.string(
+                            fromByteCount: progress.bytesProcessed,
+                            countStyle: .file
+                        )
+                    )
+                }
                 if let currentPath = progress.currentPath {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(NSLocalizedString("Current folder", comment: "Current scan folder label"))
@@ -55,6 +85,7 @@ struct ScanProgressView: View {
             if progress.duplicatesFound > 0 {
                 Text(String(format: NSLocalizedString("%lld duplicates found", comment: "Duplicate count"), progress.duplicatesFound))
                     .foregroundColor(.brandPrimary)
+                    .modifier(BounceOnChange(value: progress.duplicatesFound, reduceMotion: reduceMotion))
             }
 
             ProgressView(value: progress.progress)

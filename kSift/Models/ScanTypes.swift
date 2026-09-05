@@ -30,13 +30,24 @@ public struct ScanProgress: Sendable {
     public let filesScanned: Int
     public let duplicatesFound: Int
     public let currentPath: String?
+    /// Bytes already enumerated (sum of regular-file sizes). Added after
+    /// v1.2; older encoded payloads decode to 0.
+    public let bytesProcessed: Int64
 
-    public init(phase: ScanPhase, progress: Double, filesScanned: Int, duplicatesFound: Int, currentPath: String? = nil) {
+    public init(
+        phase: ScanPhase,
+        progress: Double,
+        filesScanned: Int,
+        duplicatesFound: Int,
+        currentPath: String? = nil,
+        bytesProcessed: Int64 = 0
+    ) {
         self.phase = phase
         self.progress = progress
         self.filesScanned = filesScanned
         self.duplicatesFound = duplicatesFound
         self.currentPath = currentPath
+        self.bytesProcessed = bytesProcessed
     }
 }
 

@@ -11,6 +11,14 @@ public final class ScanViewModel: ObservableObject {
     @Published public var summary: ScanSummary?
     @Published public var groupsFound = 0
     @Published public var elapsed: TimeInterval = 0
+    /// Smoothed throughput from `ScanThroughputEstimator` (files/s). Nil
+    /// until two progress samples arrive.
+    @Published public private(set) var filesPerSecond: Double?
+    /// EWMA-based ETA. Nil when the scan has no measurable forward
+    /// progress yet (e.g. paused or between phases).
+    @Published public private(set) var estimatedRemaining: TimeInterval?
+
+    private var throughput = ScanThroughputEstimator()
 
     private let orchestrator: ScanOrchestrator
     private var controller = ScanController()
@@ -60,6 +68,9 @@ public final class ScanViewModel: ObservableObject {
         progress = nil
         groupsFound = 0
         elapsed = 0
+        filesPerSecond = nil
+        estimatedRemaining = nil
+        throughput.reset()
         elapsedTask?.cancel()
         let startDate = Date()
         elapsedTask = Task { [weak self] in
@@ -81,6 +92,13 @@ public final class ScanViewModel: ObservableObject {
                 case .progress(let p):
                     progress = p
                     scanState = .scanning(p.progress)
+                    throughput.record(
+                        filesScanned: p.filesScanned,
+                        progress: p.progress,
+                        at: elapsed
+                    )
+                    filesPerSecond = throughput.filesPerSecond
+                    estimatedRemaining = throughput.estimatedRemaining(progress: p.progress)
                 case .group(let group):
                     scanResult.append(group)
                     groupsFound += 1

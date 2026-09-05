@@ -302,3 +302,18 @@
 /* 自定义档案 */
 "Custom" = "自定义";
 "Scans only the folders you choose" = "仅扫描你选择的文件夹";
+
+/* Phase B: 首屏仪表盘 + 扫描吞吐 */
+"Quick Start" = "快速开始";
+"Find duplicate, similar, and oversized files — then reclaim the space in one tap." = "查找重复、相似和超大文件——一键腾出空间。";
+"Scan with the %@ profile" = "用“%@”档案扫描";
+"Last scan" = "上次扫描";
+"Found %lld duplicates · %@ reclaimable" = "发现 %lld 个重复项 · 可释放 %@";
+"Projects, build artifacts, dev directories" = "项目、构建产物、开发目录";
+"Photos, RAW files, creative assets" = "照片、RAW 文件、创意素材";
+"Desktop, downloads, documents" = "桌面、下载、文稿";
+"Only the folders you choose" = "仅你选择的文件夹";
+"Throughput" = "扫描速度";
+"%lld files/s" = "%lld 个文件/秒";
+"Time remaining" = "剩余时间";
+"Data scanned" = "已扫描数据";

@@ -12,6 +12,7 @@ struct ResultView: View {
     @State private var paywallReason: String = ""
     @State private var showAdvancedFilters: Bool = false
     @FocusState private var searchFocused: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 0) {
@@ -157,8 +158,13 @@ struct ResultView: View {
                                 )
                             }
                             .buttonStyle(.plain)
+                            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
                         }
                     }
+                    .animation(
+                        reduceMotion ? nil : .easeInOut(duration: 0.25),
+                        value: viewModel.groups.count
+                    )
                     .padding(16)
                 }
             }

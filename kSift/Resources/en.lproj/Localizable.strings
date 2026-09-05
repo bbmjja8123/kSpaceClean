@@ -302,3 +302,18 @@
 /* Custom profile */
 "Custom" = "Custom";
 "Scans only the folders you choose" = "Scans only the folders you choose";
+
+/* Phase B: idle dashboard + scan throughput */
+"Quick Start" = "Quick Start";
+"Find duplicate, similar, and oversized files — then reclaim the space in one tap." = "Find duplicate, similar, and oversized files — then reclaim the space in one tap.";
+"Scan with the %@ profile" = "Scan with the %@ profile";
+"Last scan" = "Last scan";
+"Found %lld duplicates · %@ reclaimable" = "Found %lld duplicates · %@ reclaimable";
+"Projects, build artifacts, dev directories" = "Projects, build artifacts, dev directories";
+"Photos, RAW files, creative assets" = "Photos, RAW files, creative assets";
+"Desktop, downloads, documents" = "Desktop, downloads, documents";
+"Only the folders you choose" = "Only the folders you choose";
+"Throughput" = "Throughput";
+"%lld files/s" = "%lld files/s";
+"Time remaining" = "Time remaining";
+"Data scanned" = "Data scanned";

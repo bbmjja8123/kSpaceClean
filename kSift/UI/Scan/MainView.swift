@@ -34,17 +34,21 @@ struct MainView: View {
             switch viewModel.scanState {
             case .idle:
                 idleState
+                    .transition(.opacity)
             case .scanning:
                 if let progress = viewModel.progress {
                     ScanProgressView(
                         progress: progress,
                         groupsFound: viewModel.groupsFound,
                         elapsed: viewModel.elapsed,
+                        filesPerSecond: viewModel.filesPerSecond,
+                        estimatedRemaining: viewModel.estimatedRemaining,
                         isPaused: viewModel.controllerIsPaused,
                         onCancel: { viewModel.cancelScan() },
                         onPause: { viewModel.pauseScan() },
                         onResume: { viewModel.resumeScan() }
                     )
+                    .transition(.opacity)
                 }
             case .completed:
                 ScanResultsView(
@@ -52,14 +56,17 @@ struct MainView: View {
                     onReview: { appState.navigation = .results },
                     onRescan: { viewModel.startScan(config: ProfileConfigStore.load()) }
                 )
+                .transition(.opacity)
             case .failed(let msg):
                 ErrorStateView(
                     title: NSLocalizedString("Scan Failed", comment: "Error state title"),
                     message: msg,
                     retryAction: { viewModel.startScan(config: ProfileConfigStore.load()) }
                 )
+                .transition(.opacity)
             }
         }
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: viewModel.scanState)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         // Drag-and-drop scan entry point. Only fires while idle; while a scan
         // is in flight or showing results we ignore the drop so the user
@@ -137,28 +144,22 @@ struct MainView: View {
         viewModel.startScan(config: config)
     }
 
-    private var idleState: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 64))
-                .foregroundColor(.brandPrimary)
-            Text("Ready to Scan")
-                .font(.title).bold()
-            Text("Choose a profile in Settings or start with Developer mode")
-                .foregroundColor(.secondary)
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    private var idleState: some View {
+        VStack(spacing: 0) {
             if showsFdaBanner {
                 fdaBanner
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.top, AppSpacing.lg)
             }
-
-            ScanRangePreview(directories: previewDirectories)
-
-            Button(action: { startIdleScan() }) {
-                Label("Start Scan", systemImage: "play.fill")
-                    .frame(width: 200)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.brandPrimary)
+            IdleDashboardView(
+                previewDirectories: previewDirectories,
+                onStartWithProfile: { profile in
+                    startScan(with: profile)
+                },
+                onStartScan: { startIdleScan() }
+            )
         }
         // The outer `onAppear` does not re-fire when the state machine returns
         // to idle, so re-read the profile here as well to catch directory
@@ -168,6 +169,17 @@ struct MainView: View {
         // Layered via overlay so the existing idle layout stays intact; only
         // the framing and an instructional label appear when targeted.
         .overlay(dropOverlay)
+    }
+
+    /// Persists the tapped preset profile and immediately starts a scan
+    /// scoped to it — the one-click path from idle to results.
+    private func startScan(with profile: ProfileType) {
+        refreshFdaStatus()
+        var config = ProfileConfigStore.load()
+        config.type = profile
+        ProfileConfigStore.save(config)
+        refreshPreviewDirectories()
+        viewModel.startScan(config: config)
     }
 
     /// Visible only while a Finder drag is hovering over the idle surface.
