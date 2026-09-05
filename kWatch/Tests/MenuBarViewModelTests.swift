@@ -16,7 +16,7 @@ final class MenuBarViewModelTests: XCTestCase {
             temperature: .degreesCelsius(65),
             fan: .revolutionsPerMinute(2200),
             battery: .percentage(90),
-            gpu: .degreesCelsius(58)
+            gpu: .percentage(58)
         )
         container.purchaseState.update(isPro: true)
         let vm = MenuBarViewModel(container: container)
@@ -35,7 +35,7 @@ final class MenuBarViewModelTests: XCTestCase {
         XCTAssertEqual(vm.temperatureCelsius ?? -1, 65, accuracy: 0.5)
         XCTAssertEqual(vm.fanRPM, 2200)
         XCTAssertEqual(vm.batteryPercent ?? -1, 90, accuracy: 0.5)
-        XCTAssertEqual(vm.gpuTemperature ?? -1, 58, accuracy: 0.5)
+        XCTAssertEqual(vm.gpuUsagePercent ?? -1, 58, accuracy: 0.5)
 
         vm.stop()
         await container.aggregator.stop()
@@ -57,5 +57,40 @@ final class MenuBarViewModelTests: XCTestCase {
 
         vm.stop()
         await container.aggregator.stop()
+    }
+
+    /// `GPUMonitor` emits `.percentage` (usage) on Apple Silicon, so the
+    /// menu bar must consume it and format it as a percent unit — not the
+    /// historical `.degreesCelsius` temperature.
+    func testGPUPercentageIsConsumedForMenuBar() async {
+        let container = TestAppContainer()
+        container.purchaseState.update(isPro: true)
+        let vm = MenuBarViewModel(container: container)
+        let snapshot = MetricSnapshot(
+            timestamp: Date(),
+            values: [.gpu: .percentage(42.5)],
+            availability: [.gpu: .available]
+        )
+        vm.consumeForTesting(snapshot)
+
+        XCTAssertEqual(vm.gpuUsagePercent ?? -1, 42.5, accuracy: 0.01)
+        let data = vm.displayData(for: .gpu)
+        XCTAssertEqual(data.unit, "%")
+    }
+
+    /// Free users must not see the Pro-only GPU usage value (the UI
+    /// renders the lock instead).
+    func testGPUPercentageNilForFreeUsers() async {
+        let container = TestAppContainer()
+        container.purchaseState.update(isPro: false)
+        let vm = MenuBarViewModel(container: container)
+        let snapshot = MetricSnapshot(
+            timestamp: Date(),
+            values: [.gpu: .percentage(42.5)],
+            availability: [.gpu: .available]
+        )
+        vm.consumeForTesting(snapshot)
+
+        XCTAssertNil(vm.gpuUsagePercent)
     }
 }

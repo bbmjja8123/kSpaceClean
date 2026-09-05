@@ -106,8 +106,8 @@ public struct MenuBarView: View {
             return (String(localized: "Battery"), v.map { "\(Int($0))%" } ?? "—",
                     "battery.100", !purchaseState.isPro)
         case .gpu:
-            let v = viewModel.gpuTemperature
-            return (String(localized: "GPU"), v.map { String(format: "%.0f°C", $0) } ?? "—",
+            let v = viewModel.gpuUsagePercent
+            return (String(localized: "GPU"), v.map { "\(Int($0))%" } ?? "—",
                     "display", !purchaseState.isPro)
         }
     }

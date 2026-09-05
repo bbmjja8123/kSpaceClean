@@ -46,7 +46,7 @@ struct kWatchApp: App {
             onOpenHistory: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .history) },
             onOpenProcesses: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .processes) },
             onOpenAlerts: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .alerts) },
-            onOpenPaywall: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .history) }
+            onOpenPaywall: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .dashboard) }
         )
     }
 

@@ -22,7 +22,7 @@ public final class MenuBarViewModel: ObservableObject {
     @Published public private(set) var temperatureCelsius: Double? = nil
     @Published public private(set) var fanRPM: Int? = nil
     @Published public private(set) var batteryPercent: Double? = nil
-    @Published public private(set) var gpuTemperature: Double? = nil
+    @Published public private(set) var gpuUsagePercent: Double? = nil
     @Published public private(set) var cpuHistory: [Double] = []
     @Published public var mode: MenuBarMode = .trend {
         didSet {
@@ -100,7 +100,7 @@ public final class MenuBarViewModel: ObservableObject {
         case .temperature: return ([], temperatureCelsius ?? 0, "°C")
         case .fan: return ([], Double(fanRPM ?? 0), "RPM")
         case .battery: return ([], batteryPercent ?? 0, "%")
-        case .gpu: return ([], Double(gpuTemperature ?? 0), "°C")
+        case .gpu: return ([], gpuUsagePercent ?? 0, "%")
         }
     }
 
@@ -133,7 +133,9 @@ public final class MenuBarViewModel: ObservableObject {
         temperatureCelsius = pro ? snapshot.values[.temperature]?.degreesCelsius : nil
         fanRPM = pro ? snapshot.values[.fan]?.revolutionsPerMinute.map(Int.init) : nil
         batteryPercent = pro ? snapshot.values[.battery]?.percentage : nil
-        gpuTemperature = pro ? snapshot.values[.gpu]?.degreesCelsius : nil
+        // `GPUMonitor` reports GPU *usage* as `.percentage` (VRAM/occupancy
+        // on Apple Silicon); there is no temperature reading to consume.
+        gpuUsagePercent = pro ? snapshot.values[.gpu]?.percentage : nil
 
         // Append to history, normalized to 0...1 (MiniTrendChart auto-scales).
         cpuHistory.append(cpuPercent / 100)
@@ -142,4 +144,12 @@ public final class MenuBarViewModel: ObservableObject {
         }
         isPro = pro
     }
+
+    #if DEBUG
+    /// Test-only entry point that bypasses the aggregator stream so unit
+    /// tests can feed a fixed `MetricSnapshot` directly.
+    func consumeForTesting(_ snapshot: MetricSnapshot) {
+        consume(snapshot: snapshot)
+    }
+    #endif
 }
