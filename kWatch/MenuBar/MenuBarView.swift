@@ -48,7 +48,7 @@ public struct MenuBarView: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             header
-            QuickToggleBar()
+            QuickToggleBar(viewModel: viewModel)
                 .padding(.horizontal, 4)
             Divider()
             metricList

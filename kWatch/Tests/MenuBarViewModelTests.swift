@@ -93,4 +93,37 @@ final class MenuBarViewModelTests: XCTestCase {
 
         XCTAssertNil(vm.gpuUsagePercent)
     }
+
+    /// `togglePause()` must flip the published `isPaused` flag and forward
+    /// the new state to the container's `MetricsAggregator` sampling loop.
+    func testTogglePauseFlipsStateAndAggregator() async throws {
+        let container = TestAppContainer(cpu: .percentage(10))
+        let vm = MenuBarViewModel(container: container)
+        XCTAssertFalse(vm.isPaused)
+
+        vm.togglePause()
+        XCTAssertTrue(vm.isPaused)
+        let paused = await Self.awaitAggregatorPause(container, expected: true)
+        XCTAssertTrue(paused, "aggregator did not observe the pause within timeout")
+
+        vm.togglePause()
+        XCTAssertFalse(vm.isPaused)
+        let resumed = await Self.awaitAggregatorPause(container, expected: false)
+        XCTAssertFalse(resumed, "aggregator did not observe the resume within timeout")
+    }
+
+    /// The VM forwards pause state via an unstructured Task, so poll the
+    /// actor with a bounded timeout instead of assuming immediate ordering.
+    private static func awaitAggregatorPause(
+        _ container: TestAppContainer,
+        expected: Bool,
+        timeout: TimeInterval = 2
+    ) async -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if await container.aggregator.isPaused == expected { return true }
+            try? await Task.sleep(for: .milliseconds(10))
+        }
+        return await container.aggregator.isPaused == expected
+    }
 }

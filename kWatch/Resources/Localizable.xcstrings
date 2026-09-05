@@ -1,6 +1,42 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Pause monitoring": {
+      "comment": "Tooltip for the pause toggle in the quick-toggle bar; stops the metrics sampling loop.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause monitoring"
+          }
+        }
+      }
+    },
+    "Resume monitoring": {
+      "comment": "Tooltip shown when monitoring is paused; resumes the metrics sampling loop.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume monitoring"
+          }
+        }
+      }
+    },
+    "Wi-Fi status — click to open Network settings": {
+      "comment": "Tooltip for the read-only Wi-Fi status hint in the quick-toggle bar.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi status — click to open Network settings"
+          }
+        }
+      }
+    },
     "$7.99 one-time purchase": {
       "comment": "Paywall price line for the lifetime unlock.",
       "extractionState": "manual",
@@ -289,18 +325,6 @@
         }
       }
     },
-    "Bluetooth": {
-      "comment": "Tooltip for the Bluetooth quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth"
-          }
-        }
-      }
-    },
     "CPU": {
       "comment": "CPU metric label.",
       "extractionState": "manual",
@@ -561,18 +585,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dismiss"
-          }
-        }
-      }
-    },
-    "Do Not Disturb": {
-      "comment": "Tooltip for the Do Not Disturb quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do Not Disturb"
           }
         }
       }
@@ -1317,18 +1329,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Next"
-          }
-        }
-      }
-    },
-    "Night Shift": {
-      "comment": "Tooltip for the Night Shift quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Night Shift"
           }
         }
       }
@@ -2517,18 +2517,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Welcome to kWatch"
-          }
-        }
-      }
-    },
-    "Wi-Fi": {
-      "comment": "Tooltip for the Wi-Fi quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wi-Fi"
           }
         }
       }

@@ -51,5 +51,4 @@ final class ProcessMonitorTests: XCTestCase {
         )
         XCTAssertEqual(snap.networkBytesPerSecond, 1000)
     }
-    }
 }

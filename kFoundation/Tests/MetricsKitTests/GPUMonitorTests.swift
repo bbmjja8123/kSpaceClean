@@ -41,7 +41,7 @@ final class GPUMonitorTests: XCTestCase {
 
         XCTAssertEqual(sample.kind, .gpu)
         XCTAssertEqual(sample.availability, .available)
-        XCTAssertEqual(sample.value.percentage, 0.42, accuracy: 0.0001)
+        XCTAssertEqual(sample.value.percentage ?? -1, 0.42, accuracy: 0.0001)
         XCTAssertNil(sample.value.degreesCelsius)
     }
 
@@ -57,7 +57,7 @@ final class GPUMonitorTests: XCTestCase {
         let sample = try await monitor.sample()
 
         XCTAssertEqual(sample.availability, .available)
-        XCTAssertEqual(sample.value.degreesCelsius, 72.0, accuracy: 0.0001)
+        XCTAssertEqual(sample.value.degreesCelsius ?? -1, 72.0, accuracy: 0.0001)
         XCTAssertNil(sample.value.percentage)
     }
 

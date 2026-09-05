@@ -35,6 +35,9 @@ public final class MenuBarViewModel: ObservableObject {
         }
     }
     @Published public private(set) var isPro: Bool = false
+    /// `true` while the user has paused monitoring from the quick-toggle
+    /// bar. Mirrors the aggregator's `isPaused` flag.
+    @Published public private(set) var isPaused: Bool = false
 
     private let container: any AppContainerProtocol
     private var preferences: any PreferencesRepositoryProtocol
@@ -73,6 +76,16 @@ public final class MenuBarViewModel: ObservableObject {
     /// Update the current display mode (also persisted via the `mode` setter).
     public func setMode(_ mode: MenuBarMode) {
         self.mode = mode
+    }
+
+    /// Toggle monitoring on/off from the quick-toggle bar. Pausing stops the
+    /// aggregator from sampling (zero extra CPU/battery cost) without tearing
+    /// down consumer streams.
+    public func togglePause() {
+        isPaused.toggle()
+        let aggregator = container.aggregator
+        let paused = isPaused
+        Task { await aggregator.setPaused(paused) }
     }
 
     /// The compact status-item title for the current mode.
