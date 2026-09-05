@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "2600"
+   wasCreatedForAppExtension = "YES"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,9 +16,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-               BuildableName = "kWise.app"
-               BlueprintName = "kWise"
+               BlueprintIdentifier = "A7890B7F6CF993F81D7956F0"
+               BuildableName = "kWiseFinder.appex"
+               BlueprintName = "kWiseFinder"
                ReferencedContainer = "container:kWise.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,50 +33,36 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-            BuildableName = "kWise.app"
-            BlueprintName = "kWise"
+            BlueprintIdentifier = "A7890B7F6CF993F81D7956F0"
+            BuildableName = "kWiseFinder.appex"
+            BlueprintName = "kWiseFinder"
             ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "05B011E1839A8E993210C658"
-               BuildableName = "kWiseTests.xctest"
-               BlueprintName = "kWiseTests"
-               ReferencedContainer = "container:kWise.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <CommandLineArguments>
-      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      launchAutomaticallySubstyle = "2">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-            BuildableName = "kWise.app"
-            BlueprintName = "kWise"
+            BlueprintIdentifier = "A7890B7F6CF993F81D7956F0"
+            BuildableName = "kWiseFinder.appex"
+            BlueprintName = "kWiseFinder"
             ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -87,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-            BuildableName = "kWise.app"
-            BlueprintName = "kWise"
+            BlueprintIdentifier = "A7890B7F6CF993F81D7956F0"
+            BuildableName = "kWiseFinder.appex"
+            BlueprintName = "kWiseFinder"
             ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
