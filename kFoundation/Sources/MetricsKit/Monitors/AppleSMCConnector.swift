@@ -24,9 +24,10 @@ enum SMCUserClient {
 /// Layout risk note: an earlier draft of this struct used Swift tuples, whose
 /// padding does not match the kernel's C layout. This implementation instead
 /// stores an explicit 80-byte buffer with hard-coded offsets taken from the
-/// canonical C definition, verified two ways on the target machine: (1) by
-/// compiling the C struct and printing `offsetof`, and (2) by reading real
-/// keys (TC0P → 60.0°C matching osx-cpu-temp):
+/// canonical C definition, verified two ways on the target machine (Intel/T2
+/// MacBookPro15,1, macOS 15.7.8): (1) by compiling the C struct and printing
+/// `offsetof`, and (2) by reading real keys (TC0P → 60.938°C, exactly
+/// matching the osx-cpu-temp reference in the same minute):
 ///
 /// | offset | field                  | size | type            |
 /// |-------:|------------------------|-----:|-----------------|
@@ -151,7 +152,12 @@ public struct SMCParamStruct: Sendable, Equatable {
 public protocol SMCConnecting: Sendable {
     func open() -> Bool
     func close()
-    func call(selector: UInt32, input: SMCParamStruct) -> SMCParamStruct?
+    /// Performs one user-client call. Returns the reply struct (nil when the
+    /// kernel call failed or the SMC reported a non-zero `result`) together
+    /// with the raw `kern_return_t` (or the SMC `result` code widened when the
+    /// kernel call itself succeeded but the SMC errored) so callers can put a
+    /// precise diagnostic code into `MetricError.systemCall`.
+    func call(selector: UInt32, input: SMCParamStruct) -> (reply: SMCParamStruct?, kernelResult: Int32)
 }
 
 /// Real IOKit AppleSMC user-client connector.
@@ -174,7 +180,7 @@ public final class AppleSMCConnector: SMCConnecting, @unchecked Sendable {
         queue.sync { self.closeLocked() }
     }
 
-    public func call(selector: UInt32, input: SMCParamStruct) -> SMCParamStruct? {
+    public func call(selector: UInt32, input: SMCParamStruct) -> (reply: SMCParamStruct?, kernelResult: Int32) {
         queue.sync { self.callLocked(selector: selector, input: input) }
     }
 
@@ -182,7 +188,7 @@ public final class AppleSMCConnector: SMCConnecting, @unchecked Sendable {
     /// user-client open method (see `SMCUserClient.methodIndex`).
     private func openLocked() -> Bool {
         guard connect == 0 else { return true }
-        var service = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("AppleSMC"))
+        var service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMC"))
         guard service != 0 else { return false }
         defer { IOObjectRelease(service) }
         var handle: io_connect_t = 0
@@ -198,8 +204,8 @@ public final class AppleSMCConnector: SMCConnecting, @unchecked Sendable {
         connect = 0
     }
 
-    private func callLocked(selector: UInt32, input: SMCParamStruct) -> SMCParamStruct? {
-        guard connect != 0 else { return nil }
+    private func callLocked(selector: UInt32, input: SMCParamStruct) -> (reply: SMCParamStruct?, kernelResult: Int32) {
+        guard connect != 0 else { return (nil, kIOReturnNotOpen) }
         var inputCopy = input
         var output = SMCParamStruct()
         var outputSize = SMCParamStruct.size
@@ -221,8 +227,13 @@ public final class AppleSMCConnector: SMCConnecting, @unchecked Sendable {
                 )
             }
         }
-        guard kr == KERN_SUCCESS, output.result == SMCUserClient.success else { return nil }
-        return output
+        guard kr == KERN_SUCCESS else { return (nil, kr) }
+        guard output.result == SMCUserClient.success else {
+            // Kernel call fine; the SMC itself reported an error (e.g.
+            // 0x84 key not found). Widen it so diagnostics stay precise.
+            return (nil, Int32(output.result))
+        }
+        return (output, KERN_SUCCESS)
     }
 }
 #endif

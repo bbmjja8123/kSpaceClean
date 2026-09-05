@@ -15,6 +15,8 @@ final class MockSMCConnector: SMCConnecting, @unchecked Sendable {
     var payload: [UInt8]
     var keyInfoResult: UInt8
     var readResult: UInt8
+    /// Injected kern_return_t for the key-info call (0 = kernel success).
+    var keyInfoKernelResult: Int32 = 0
     private(set) var openedCount = 0
     private(set) var closedCount = 0
     private(set) var selectors: [UInt32] = []
@@ -42,32 +44,38 @@ final class MockSMCConnector: SMCConnecting, @unchecked Sendable {
         closedCount += 1
     }
 
-    func call(selector: UInt32, input: SMCParamStruct) -> SMCParamStruct? {
+    func call(selector: UInt32, input: SMCParamStruct) -> (reply: SMCParamStruct?, kernelResult: Int32) {
         selectors.append(selector)
         var output = SMCParamStruct()
         // The real user client exposes a single method index; the command
         // travels in `data8` (9 = read key info, 5 = read bytes).
-        guard selector == SMCUserClient.methodIndex else { return nil }
+        guard selector == SMCUserClient.methodIndex else { return (nil, kIOReturnError) }
         switch input.data8 {
         case SMCUserClient.readKeyInfo:
-            guard let info = keyInfo else { return nil }
+            // Simulated kernel-level failure (e.g. sandbox denial) → verbatim kr.
+            if keyInfoKernelResult != 0 { return (nil, keyInfoKernelResult) }
+            guard let info = keyInfo else { return (nil, kIOReturnError) }
             output.key = input.key
             output.keyInfoType = info.type
             output.keyInfoDataSize = UInt32(info.size)
             output.keyInfoDataAttributes = 0
             output.result = keyInfoResult
-            return output
+            // Mirror the real connector: non-zero SMC result → nil reply with
+            // the SMC result code widened.
+            return keyInfoResult == SMCUserClient.success
+                ? (output, KERN_SUCCESS)
+                : (nil, Int32(keyInfoResult))
         case SMCUserClient.readBytes:
-            guard !payload.isEmpty else { return nil }
+            guard !payload.isEmpty else { return (nil, kIOReturnError) }
             // Mirror the real connector: non-zero SMC result → nil reply.
-            guard readResult == SMCUserClient.success else { return nil }
+            guard readResult == SMCUserClient.success else { return (nil, Int32(readResult)) }
             output.key = input.key
             output.keyInfoDataSize = UInt32(payload.count)
             output.data = payload
             output.result = readResult
-            return output
+            return (output, KERN_SUCCESS)
         default:
-            return nil
+            return (nil, kIOReturnError)
         }
     }
 }
@@ -75,7 +83,9 @@ final class MockSMCConnector: SMCConnecting, @unchecked Sendable {
 final class FailingConnector: SMCConnecting, @unchecked Sendable {
     func open() -> Bool { false }
     func close() {}
-    func call(selector: UInt32, input: SMCParamStruct) -> SMCParamStruct? { nil }
+    func call(selector: UInt32, input: SMCParamStruct) -> (reply: SMCParamStruct?, kernelResult: Int32) {
+        (nil, kIOReturnError)
+    }
 }
 
 final class IOKitSMCReadingProviderTests: XCTestCase {
@@ -105,24 +115,33 @@ final class IOKitSMCReadingProviderTests: XCTestCase {
     }
 
     func testKeyNotFoundSurfacesUnsupported() {
-        // kSMCKeyNotFound from the SMC is a miss on this host — surfaced as an
-        // error, never fabricated.
+        // kSMCKeyNotFound (0x84) from the SMC is a miss on this host —
+        // surfaced as unsupported, never fabricated.
         let connector = MockSMCConnector(
             keyInfo: MockKeyInfo(type: 0x73703738, size: 2),
             payload: [0x30, 0x00],
             readResult: SMCUserClient.keyNotFound
         )
         let provider = IOKitSMCReadingProvider(connector: connector)
-        XCTAssertThrowsError(try provider.read(key: .gpuTemperature))
+        XCTAssertThrowsError(try provider.read(key: .gpuTemperature)) { error in
+            guard case MetricError.unsupported = error else {
+                return XCTFail("expected unsupported, got \(error)")
+            }
+        }
     }
 
     func testKeyInfoFailureSurfacesSystemCallError() {
-        let connector = MockSMCConnector(keyInfoResult: SMCUserClient.keyNotFound)
+        // Kernel-level failure: the injected kern_return_t must surface
+        // verbatim in MetricError.systemCall.
+        let connector = MockSMCConnector()
+        connector.keyInfo = MockKeyInfo(type: 0x73703738, size: 2)
+        connector.keyInfoKernelResult = Int32(bitPattern: 0xE000_02E2) // kIOReturnNotPermitted (sandbox)
         let provider = IOKitSMCReadingProvider(connector: connector)
         XCTAssertThrowsError(try provider.read(key: .cpuTemperature)) { error in
-            guard case MetricError.systemCall = error else {
+            guard case MetricError.systemCall(_, let kr) = error else {
                 return XCTFail("expected systemCall, got \(error)")
             }
+            XCTAssertEqual(UInt32(bitPattern: kr), 0xE000_02E2)
         }
     }
 

@@ -16,6 +16,10 @@ import Foundation
 ///
 /// `@unchecked Sendable`: all state is immutable after init (`connector` is
 /// itself Sendable and serialises its own IOKit calls; `opened` is a `let`).
+///
+/// Ownership: this provider **owns** its connector — `deinit` closes it, so
+/// each `SMCConnecting` instance must be given to exactly one provider
+/// (share nothing; create one connector per provider).
 public final class IOKitSMCReadingProvider: SMCReadingProvider, @unchecked Sendable {
     private let connector: any SMCConnecting
     private let opened: Bool
@@ -45,8 +49,9 @@ public final class IOKitSMCReadingProvider: SMCReadingProvider, @unchecked Senda
         var info = SMCParamStruct()
         info.key = keyInt
         info.data8 = SMCUserClient.readKeyInfo
-        guard let infoReply = connector.call(selector: SMCUserClient.methodIndex, input: info) else {
-            throw MetricError.systemCall("SMC getKeyInfo \(key.rawValue)", kIOReturnError)
+        let infoCall = connector.call(selector: SMCUserClient.methodIndex, input: info)
+        guard let infoReply = infoCall.reply else {
+            throw Self.failure("SMC getKeyInfo \(key.rawValue)", infoCall.kernelResult)
         }
         let typeName = infoReply.keyInfoTypeString
         let size = Int(infoReply.keyInfoDataSize)
@@ -59,14 +64,27 @@ public final class IOKitSMCReadingProvider: SMCReadingProvider, @unchecked Senda
         query.key = keyInt
         query.keyInfoDataSize = UInt32(size)
         query.data8 = SMCUserClient.readBytes
-        guard let reply = connector.call(selector: SMCUserClient.methodIndex, input: query) else {
-            throw MetricError.systemCall("SMC readKey \(key.rawValue)", kIOReturnError)
+        let readCall = connector.call(selector: SMCUserClient.methodIndex, input: query)
+        guard let reply = readCall.reply else {
+            throw Self.failure("SMC readKey \(key.rawValue)", readCall.kernelResult)
         }
         let payload = Array(reply.data.prefix(size))
         guard let value = SMCValueDecoder.decode(type: typeName, data: payload) else {
             throw MetricError.malformedData("SMC type \(typeName) undecodable for key \(key.rawValue)")
         }
         return value
+    }
+
+    /// Maps a failed call onto `MetricError`. A non-`KERN_SUCCESS`
+    /// `kern_return_t` (e.g. `0xE00002E2 kIOReturnNotPermitted` under App
+    /// Sandbox; negative in `Int32` representation) surfaces verbatim; a
+    /// kernel-success/SMC-error (a positive byte such as 0x84 key not found)
+    /// surfaces as a host-lacks-key unsupported error.
+    private static func failure(_ operation: String, _ kernelResult: Int32) -> MetricError {
+        if kernelResult < 0 || kernelResult > 0xFF {
+            return MetricError.systemCall(operation, kernelResult)
+        }
+        return MetricError.unsupported("\(operation): SMC result 0x\(String(kernelResult, radix: 16)) — key not present on this host")
     }
 }
 #endif

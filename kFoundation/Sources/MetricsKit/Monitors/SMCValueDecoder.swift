@@ -2,9 +2,13 @@ import Foundation
 
 /// Decodes SMC sensor payloads into `Double`s.
 ///
-/// SMC keys carry a 4-character type tag. The supported tags cover every type
-/// observed on Intel and Apple Silicon Macs for temperature, fan, and voltage
-/// keys (per the public osx-cpu-temp / Stats implementations).
+/// SMC keys carry a 4-character type tag. For fixed-point tags the **trailing
+/// hex digit of the tag is the fractional-bit count** (e.g. `"sp78"` → 8
+/// fractional bits → divisor 256; `"fpe2"` → 2 → divisor 4; `"fp1f"` → 15 →
+/// divisor 32768). `sp78` / `fpe2` / `flt ` / `ui8` / `ui16` are the tags
+/// observed by the public osx-cpu-temp implementation; the remaining tags
+/// follow the same documented convention but have not been observed by kWatch
+/// on-device.
 public enum SMCValueDecoder {
     /// - Parameters:
     ///   - type: the SMC type fourCC (e.g. `"sp78"`, `"fpe2"`, `"flt "`).
@@ -13,25 +17,15 @@ public enum SMCValueDecoder {
     ///   payload is too short for that type. Never fabricates a value.
     public static func decode(type: String, data: [UInt8]) -> Double? {
         switch type {
-        case "sp78", "sp87", "fp78", "fp87":
-            // Signed fixed-point, big-endian: 1 sign + 7 integer bits with
-            // 8 (or 7) fractional bits.
+        case "sp78", "sp87", "fp78", "fp87", "fpe2", "fp1f", "fp4c", "fp5a":
+            // Signed fixed-point, big-endian. Divisor = 2^(fractional bits),
+            // where the fractional-bit count is the trailing hex digit of the
+            // type tag ("78" → 8, "87" → 7, "e2" → 2, "1f" → 15, "4c" → 12,
+            // "5a" → 10).
             guard data.count >= 2 else { return nil }
+            guard let lastHexDigit = type.last?.hexDigitValue, lastHexDigit <= 15 else { return nil }
             let raw = Int16(truncatingIfNeeded: UInt16(data[0]) << 8 | UInt16(data[1]))
-            let fracBits: Double = type.hasSuffix("78") ? 256 : 128
-            return Double(raw) / fracBits
-        case "fpe2", "fp1f", "fp4c", "fp5a":
-            // Signed fixed-point with varying fractional-bit widths.
-            guard data.count >= 2 else { return nil }
-            let raw = Int16(truncatingIfNeeded: UInt16(data[0]) << 8 | UInt16(data[1]))
-            let divisor: Double
-            switch type {
-            case "fpe2": divisor = 4
-            case "fp1f": divisor = 2
-            case "fp4c": divisor = 16
-            default: divisor = 32 // fp5a
-            }
-            return Double(raw) / divisor
+            return Double(raw) / Double(1 << lastHexDigit)
         case "flt ":
             // 32-bit IEEE754, little-endian byte order.
             guard data.count >= 4 else { return nil }
