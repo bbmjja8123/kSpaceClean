@@ -137,7 +137,7 @@ public final class MenuBarViewModel: ObservableObject {
         // on Apple Silicon); there is no temperature reading to consume.
         gpuUsagePercent = pro ? snapshot.values[.gpu]?.percentage : nil
 
-        // Append to history, normalized to 0...1 (MiniTrendChart auto-scales).
+        // Append to history, normalized to 0...1.
         cpuHistory.append(cpuPercent / 100)
         if cpuHistory.count > historyCapacity {
             cpuHistory.removeFirst(cpuHistory.count - historyCapacity)

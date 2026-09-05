@@ -161,7 +161,6 @@ def main():
         ("MenuBar/AppWindowRouter.swift", "MenuBar"),
         ("MenuBar/QuickToggleBar.swift", "MenuBar"),
         ("MenuBar/MetricMenuRow.swift", "MenuBar"),
-        ("MenuBar/MiniTrendChart.swift", "MenuBar"),
         ("Onboarding/CompletePage.swift", "Onboarding"),
         ("Onboarding/MenuBarCustomizePage.swift", "Onboarding"),
         ("Onboarding/OnboardingView.swift", "Onboarding"),

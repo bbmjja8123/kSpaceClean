@@ -502,10 +502,6 @@
 		isa = PBXBuildFile;
 		fileRef = 7FDF6912055D4600AC1D886C;
 	};
-	D51E25C332D9477453D0AF63 /* D51E25C332D9477453D0AF63 */ = {
-		isa = PBXBuildFile;
-		fileRef = 1A0A0A15E64EB867EFF75DCC;
-	};
 	D553641DE1EC897E61632421 /* D553641DE1EC897E61632421 */ = {
 		isa = PBXBuildFile;
 		fileRef = C800D4DC1D31F795B415E42C;
@@ -812,13 +808,6 @@
 		lastKnownFileType = sourcecode.swift;
 		name = SubscriptionTermsTests.swift;
 		path = Tests/SubscriptionTermsTests.swift;
-		sourceTree = "<group>";
-	};
-	1A0A0A15E64EB867EFF75DCC /* MiniTrendChart.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MiniTrendChart.swift;
-		path = MenuBar/MiniTrendChart.swift;
 		sourceTree = "<group>";
 	};
 	1B71C81D108972C624F49028 /* AppShortcutsVerificationTests.swift */ = {
@@ -1991,7 +1980,6 @@
 			340B6EC4BCEB13C7C0CA9C0E /* AppWindowRouter.swift */,
 			50983C2E12673DF28C54327B /* QuickToggleBar.swift */,
 			3F5A280592344A01BF293381 /* MetricMenuRow.swift */,
-			1A0A0A15E64EB867EFF75DCC /* MiniTrendChart.swift */,
 		);
 		name = MenuBar;
 		sourceTree = "<group>";
@@ -2362,7 +2350,6 @@
 			AC146A5743413D01DA1ED2CB /* AC146A5743413D01DA1ED2CB */,
 			DE329FEA4CF5EFB872CD11D0 /* DE329FEA4CF5EFB872CD11D0 */,
 			D96937041669DA5D4CFD772D /* D96937041669DA5D4CFD772D */,
-			D51E25C332D9477453D0AF63 /* D51E25C332D9477453D0AF63 */,
 			B2F05911BF4FB1259E1783A2 /* B2F05911BF4FB1259E1783A2 */,
 			12808F75D4C835148295B24A /* 12808F75D4C835148295B24A */,
 			9D21360D80FEA5C4B9833ED1 /* 9D21360D80FEA5C4B9833ED1 */,

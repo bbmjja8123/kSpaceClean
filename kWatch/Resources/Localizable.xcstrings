@@ -2329,14 +2329,14 @@
         }
       }
     },
-    "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Activity, and 8 Shortcuts.": {
+    "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Widgets, and 8 Shortcuts.": {
       "comment": "Pro feature list description in onboarding.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Activity, and 8 Shortcuts."
+            "value": "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Widgets, and 8 Shortcuts."
           }
         }
       }
