@@ -11,8 +11,11 @@ struct ResultView: View {
     @State private var showPaywall = false
     @State private var paywallReason: String = ""
     @State private var showAdvancedFilters: Bool = false
+    @State private var inUseReport: InUseReport?
     @FocusState private var searchFocused: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let inUseChecker = InUseChecker()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -228,6 +231,35 @@ struct ResultView: View {
             Text("\(viewModel.selectedGroupIds.count) groups will be moved to Trash. The newest copy of each group is kept.")
         }
         .alert(
+            InUsePrompt.title(inUseReport ?? InUseReport()),
+            isPresented: Binding(
+                get: { inUseReport != nil },
+                set: { if !$0 { inUseReport = nil } }
+            )
+        ) {
+            Button(NSLocalizedString("Skip in-use files", comment: "In-use prompt — clean everything else")) {
+                if let report = inUseReport {
+                    let skip = Set(InUsePrompt.filesToSkip(report))
+                    for groupId in viewModel.selectedGroupIds {
+                        let staged = viewModel.groups
+                            .first { $0.id == groupId }
+                            .map { viewModel.stagedFiles(for: $0) } ?? []
+                        let remaining = Set(staged.filter { !skip.contains($0.url) }.map(\.id))
+                        viewModel.setFileSelection(groupId: groupId, fileIds: remaining)
+                    }
+                }
+                inUseReport = nil
+                viewModel.showCleanupConfirmation = true
+            }
+            Button(NSLocalizedString("Move anyway", comment: "In-use prompt — clean everything including open files"), role: .destructive) {
+                inUseReport = nil
+                runCleanup()
+            }
+            Button("Cancel", role: .cancel) { inUseReport = nil }
+        } message: {
+            Text(InUsePrompt.message(inUseReport ?? InUseReport()))
+        }
+        .alert(
             "Some files could not be moved",
             isPresented: Binding(
                 get: { !cleanupFailures.isEmpty },
@@ -354,7 +386,19 @@ struct ResultView: View {
     private func attemptCleanup() {
         let bytes = viewModel.selectedBytes
         if store.canCleanup(additionalBytes: bytes) {
-            viewModel.showCleanupConfirmation = true
+            Task {
+                // In-use gate: real descriptor holders block the batch
+                // behind an explicit skip/override prompt.
+                let staged = viewModel.groups
+                    .filter { viewModel.selectedGroupIds.contains($0.id) }
+                    .flatMap { viewModel.stagedFiles(for: $0) }
+                let report = await inUseChecker.assess(staged)
+                if report.isEmpty {
+                    viewModel.showCleanupConfirmation = true
+                } else {
+                    inUseReport = report
+                }
+            }
         } else {
             let remaining = max(StoreManager.freeCleanupQuotaBytes - store.freeTierBytesCleaned, 0)
             paywallReason = String(

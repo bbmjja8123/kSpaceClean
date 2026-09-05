@@ -13,8 +13,10 @@ struct LargeFilesListView: View {
     @State private var showConfirmation = false
     @State private var showPaywall = false
     @State private var cleanupFailures: [VaultMoveFailure] = []
+    @State private var inUseReport: InUseReport?
     @State private var showUndoToast = false
     @State private var cleanedCount = 0
+    private let inUseChecker = InUseChecker()
 
     enum LargeFileSort: String, CaseIterable {
         case sizeDesc, dateDesc, nameAsc
@@ -115,6 +117,31 @@ struct LargeFilesListView: View {
             ))
         }
         .alert(
+            InUsePrompt.title(inUseReport ?? InUseReport()),
+            isPresented: Binding(
+                get: { inUseReport != nil },
+                set: { if !$0 { inUseReport = nil } }
+            )
+        ) {
+            Button(NSLocalizedString("Skip in-use files", comment: "In-use prompt — clean everything else")) {
+                if let report = inUseReport {
+                    let skip = Set(InUsePrompt.filesToSkip(report))
+                    selectedIds = Set(files.filter { selectedIds.contains($0.id) && !skip.contains($0.url) }.map(\.id))
+                }
+                inUseReport = nil
+                if !selectedIds.isEmpty {
+                    showConfirmation = true
+                }
+            }
+            Button(NSLocalizedString("Move anyway", comment: "In-use prompt — clean everything including open files"), role: .destructive) {
+                inUseReport = nil
+                Task { await deleteSelected() }
+            }
+            Button("Cancel", role: .cancel) { inUseReport = nil }
+        } message: {
+            Text(InUsePrompt.message(inUseReport ?? InUseReport()))
+        }
+        .alert(
             NSLocalizedString("Some files could not be moved", comment: "Cleanup failure alert title"),
             isPresented: Binding(
                 get: { !cleanupFailures.isEmpty },
@@ -173,7 +200,15 @@ struct LargeFilesListView: View {
 
     private func attemptCleanup() {
         if store.canCleanup(additionalBytes: selectedBytes) {
-            showConfirmation = true
+            Task {
+                let staged = files.filter { selectedIds.contains($0.id) }
+                let report = await inUseChecker.assess(staged)
+                if report.isEmpty {
+                    showConfirmation = true
+                } else {
+                    inUseReport = report
+                }
+            }
         } else {
             showPaywall = true
         }

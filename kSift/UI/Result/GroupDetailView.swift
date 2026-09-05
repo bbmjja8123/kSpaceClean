@@ -17,8 +17,10 @@ struct GroupDetailView: View {
     @State private var showPaywall = false
     @State private var showConfirmation = false
     @State private var cleanupFailures: [VaultMoveFailure] = []
+    @State private var inUseReport: InUseReport?
     @State private var fileSort: FileSortOrder = .dateDesc
     @State private var quickLookURL: URL?
+    private let inUseChecker = InUseChecker()
 
     enum FileSortOrder {
         case dateDesc, dateAsc, sizeDesc, sizeAsc, pathAsc
@@ -156,6 +158,33 @@ struct GroupDetailView: View {
             Text("\(selectedFileIds.wrappedValue.count) file(s) will be moved to Trash and kept in the vault for 30 days.")
         }
         .alert(
+            InUsePrompt.title(inUseReport ?? InUseReport()),
+            isPresented: Binding(
+                get: { inUseReport != nil },
+                set: { if !$0 { inUseReport = nil } }
+            )
+        ) {
+            Button(NSLocalizedString("Skip in-use files", comment: "In-use prompt — clean everything else")) {
+                if let report = inUseReport {
+                    let skip = Set(InUsePrompt.filesToSkip(report))
+                    let staged = group.files.filter { selectedFileIds.wrappedValue.contains($0.id) }
+                    let remaining = Set(staged.filter { !skip.contains($0.url) }.map(\.id))
+                    selectedFileIds.wrappedValue = remaining
+                }
+                inUseReport = nil
+                if !selectedFileIds.wrappedValue.isEmpty {
+                    showConfirmation = true
+                }
+            }
+            Button(NSLocalizedString("Move anyway", comment: "In-use prompt — clean everything including open files"), role: .destructive) {
+                inUseReport = nil
+                Task { await deleteSelected() }
+            }
+            Button("Cancel", role: .cancel) { inUseReport = nil }
+        } message: {
+            Text(InUsePrompt.message(inUseReport ?? InUseReport()))
+        }
+        .alert(
             NSLocalizedString("Some files could not be moved", comment: "Cleanup failure alert title"),
             isPresented: Binding(
                 get: { !cleanupFailures.isEmpty },
@@ -259,7 +288,15 @@ struct GroupDetailView: View {
     private func attemptCleanup() {
         let bytes = selectedSize
         if store.canCleanup(additionalBytes: bytes) {
-            showConfirmation = true
+            Task {
+                let staged = group.files.filter { selectedFileIds.wrappedValue.contains($0.id) }
+                let report = await inUseChecker.assess(staged)
+                if report.isEmpty {
+                    showConfirmation = true
+                } else {
+                    inUseReport = report
+                }
+            }
         } else {
             showPaywall = true
         }

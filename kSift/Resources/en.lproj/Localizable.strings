@@ -339,3 +339,38 @@
 "No large files in this scan" = "No large files in this scan";
 "Files at or above the threshold in Settings appear here after a scan." = "Files at or above the threshold in Settings appear here after a scan.";
 "%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "%lld file(s) will be moved to Trash and kept in the vault for 30 days.";
+
+/* Phase D: paywall rewrite */
+"Menu bar quick scan" = "Menu bar quick scan";
+"Scan folders and check reclaimed space from the menu bar." = "Scan folders and check reclaimed space from the menu bar.";
+"Shortcuts automation" = "Shortcuts automation";
+"Build scans and cleanups into your own Shortcuts workflows." = "Build scans and cleanups into your own Shortcuts workflows.";
+"Explainable Smart Select" = "Explainable Smart Select";
+"Five keep strategies with a visible reason for every copy." = "Five keep strategies with a visible reason for every copy.";
+"Price" = "Price";
+"After 1 year" = "After 1 year";
+"Stop paying" = "Stop paying";
+"Free" = "Free";
+"Pay once" = "Pay once";
+"Pay every month" = "Pay every month";
+"2 GB cleaned" = "2 GB cleaned";
+"Still yours" = "Still yours";
+"Billed 12×" = "Billed 12×";
+"Keep everything" = "Keep everything";
+"Lose Pro features" = "Lose Pro features";
+"Is this a subscription?" = "Is this a subscription?";
+"No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind." = "No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind.";
+"How many Macs can I use it on?" = "How many Macs can I use it on?";
+"Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost." = "Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost.";
+"What happens to files I already cleaned?" = "What happens to files I already cleaned?";
+"Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean." = "Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean.";
+
+/* Phase D: in-use check */
+"Some files are in use" = "Some files are in use";
+"Check for open files" = "Check for open files";
+"These files are currently open in other apps:" = "These files are currently open in other apps:";
+"These files were modified moments ago and may be in use:" = "These files were modified moments ago and may be in use:";
+"The open-file check could not run in this environment, so the list above is heuristic only." = "The open-file check could not run in this environment, so the list above is heuristic only.";
+"Skip in-use files" = "Skip in-use files";
+"Move anyway" = "Move anyway";
+"…and %lld more" = "…and %lld more";

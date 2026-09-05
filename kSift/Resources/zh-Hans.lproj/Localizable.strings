@@ -339,3 +339,38 @@
 "No large files in this scan" = "本次扫描未发现大文件";
 "Files at or above the threshold in Settings appear here after a scan." = "扫描后，达到设置中阈值的文件会显示在这里。";
 "%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "将有 %lld 个文件移到废纸篓，并在保险库中保留 30 天。";
+
+/* Phase D: 付费页重写 */
+"Menu bar quick scan" = "菜单栏快速扫描";
+"Scan folders and check reclaimed space from the menu bar." = "从菜单栏扫描文件夹、查看已释放空间。";
+"Shortcuts automation" = "快捷指令自动化";
+"Build scans and cleanups into your own Shortcuts workflows." = "把扫描和清理接入你自己的快捷指令流程。";
+"Explainable Smart Select" = "可解释的智能选择";
+"Five keep strategies with a visible reason for every copy." = "五种保留策略，每个副本都显示选择原因。";
+"Price" = "价格";
+"After 1 year" = "一年后";
+"Stop paying" = "停止付费";
+"Free" = "免费";
+"Pay once" = "一次付费";
+"Pay every month" = "每月付费";
+"2 GB cleaned" = "已清理 2 GB";
+"Still yours" = "永久属于你";
+"Billed 12×" = "扣费 12 次";
+"Keep everything" = "保留全部功能";
+"Lose Pro features" = "失去 Pro 功能";
+"Is this a subscription?" = "这是订阅吗？";
+"No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind." = "不是。一次付费，kSift Pro 永久属于你，包括今后所有 Pro 新功能，没有任何形式的持续扣费。";
+"How many Macs can I use it on?" = "可以在几台 Mac 上使用？";
+"Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost." = "购买覆盖同一 Apple ID 登录的所有 Mac——台式机和笔记本都可安装，无需额外付费。";
+"What happens to files I already cleaned?" = "已清理的文件怎么办？";
+"Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean." = "无论哪个版本，已清理的文件都会在保险库中保留 30 天且可恢复；删除文件本身从不需要 Pro——Pro 解除的是 2 GB 清理额度限制。";
+
+/* Phase D: 在用检测 */
+"Some files are in use" = "部分文件正在使用中";
+"Check for open files" = "检查打开的文件";
+"These files are currently open in other apps:" = "这些文件正在其他 App 中打开：";
+"These files were modified moments ago and may be in use:" = "这些文件刚被修改过，可能正在使用：";
+"The open-file check could not run in this environment, so the list above is heuristic only." = "当前环境无法运行打开文件检测，以上列表仅为启发式判断。";
+"Skip in-use files" = "跳过使用中的文件";
+"Move anyway" = "仍然移动";
+"…and %lld more" = "…以及另外 %lld 个";

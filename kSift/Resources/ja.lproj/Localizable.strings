@@ -344,3 +344,38 @@
 "No large files in this scan" = "このスキャンで大きいファイルは見つかりませんでした";
 "Files at or above the threshold in Settings appear here after a scan." = "スキャン後、設定のしきい値以上のファイルがここに表示されます。";
 "%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "%lld 個のファイルをゴミ箱に移動し、ボールトに30日間保管します。";
+
+/* Phase D: ペイウォール書き直し */
+"Menu bar quick scan" = "メニューバークイックスキャン";
+"Scan folders and check reclaimed space from the menu bar." = "メニューバーからフォルダをスキャンし、解放した容量を確認できます。";
+"Shortcuts automation" = "ショートカット自動化";
+"Build scans and cleanups into your own Shortcuts workflows." = "スキャンとクリーンアップを自分のショートカットに組み込めます。";
+"Explainable Smart Select" = "理由が見えるスマート選択";
+"Five keep strategies with a visible reason for every copy." = "5つの保持ストラテジーで、各コピーに理由を表示します。";
+"Price" = "価格";
+"After 1 year" = "1年後";
+"Stop paying" = "支払いを止める";
+"Free" = "無料";
+"Pay once" = "一度だけ支払い";
+"Pay every month" = "毎月支払い";
+"2 GB cleaned" = "2 GB クリーンアップ済み";
+"Still yours" = "ずっと使える";
+"Billed 12×" = "12回請求";
+"Keep everything" = "全機能を維持";
+"Lose Pro features" = "Pro 機能を失う";
+"Is this a subscription?" = "これはサブスクリプションですか？";
+"No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind." = "いいえ。一度の支払いで kSift Pro は将来の Pro 機能も含めて永久に使えます。継続課金は一切ありません。";
+"How many Macs can I use it on?" = "何台の Mac で使えますか？";
+"Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost." = "同じ Apple ID でサインインしているすべての Mac で利用できます — デスクトップとノートブックの両方に追加料金なしでインストール可能です。";
+"What happens to files I already cleaned?" = "クリーンアップ済みのファイルはどうなりますか？";
+"Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean." = "クリーンアップしたファイルは、プランに関係なくボールトに30日間保管され復元できます。ファイル削除に Pro は不要です — Pro は 2 GB のクリーンアップ上限を解除します。";
+
+/* Phase D: 使用中チェック */
+"Some files are in use" = "一部のファイルが使用中です";
+"Check for open files" = "開いているファイルを確認";
+"These files are currently open in other apps:" = "これらのファイルは他のアプリで開いています：";
+"These files were modified moments ago and may be in use:" = "これらのファイルは直前に変更されたため使用中の可能性があります：";
+"The open-file check could not run in this environment, so the list above is heuristic only." = "この環境では開いているファイルのチェックを実行できなかったため、上記はヒューリスティックな判断です。";
+"Skip in-use files" = "使用中のファイルをスキップ";
+"Move anyway" = "それでも移動";
+"…and %lld more" = "…他 %lld 件";
