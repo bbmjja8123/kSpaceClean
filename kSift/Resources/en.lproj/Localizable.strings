@@ -243,3 +243,62 @@
 "This group shares the same name with %d other groups" = "This group shares the same name with %d other groups";
 "APFS clones share physical blocks — cleaning frees logical size only" = "APFS clones share physical blocks — cleaning frees logical size only";
 "%d clones" = "%d clones";
+
+// MARK: - Phase A: Smart Select / selection / undo / rail
+
+/* Selection strategies */
+"Keep Newest" = "Keep Newest";
+"Keep Oldest" = "Keep Oldest";
+"Keep Shortest Path" = "Keep Shortest Path";
+"Keep Inside Scan Folder" = "Keep Inside Scan Folder";
+"Keep Canonical Folder" = "Keep Canonical Folder";
+
+/* Selection strategy help */
+"Keeps the most recently modified copy and marks the rest for removal." = "Keeps the most recently modified copy and marks the rest for removal.";
+"Keeps the oldest copy — useful when later files are re-downloads or re-encodes." = "Keeps the oldest copy — useful when later files are re-downloads or re-encodes.";
+"Keeps the copy closest to the volume root, typically the canonical location." = "Keeps the copy closest to the volume root, typically the canonical location.";
+"Prefers the copy inside the scanned folder, removing stray copies elsewhere." = "Prefers the copy inside the scanned folder, removing stray copies elsewhere.";
+"Keeps copies in the alphabetically first folder so the canonical directory survives." = "Keeps copies in the alphabetically first folder so the canonical directory survives.";
+
+/* Selection reasons */
+"Kept — most recently modified copy" = "Kept — most recently modified copy";
+"Kept — oldest copy (original)" = "Kept — oldest copy (original)";
+"Kept — shortest path (canonical location)" = "Kept — shortest path (canonical location)";
+"Kept — inside the scanned folder" = "Kept — inside the scanned folder";
+"Kept — canonical folder copy" = "Kept — canonical folder copy";
+"Kept — the only copy in this group" = "Kept — the only copy in this group";
+"Marked for removal — duplicate of the kept copy" = "Marked for removal — duplicate of the kept copy";
+
+/* Navigation & menus */
+"Welcome" = "Welcome";
+"Scan" = "Scan";
+"Results" = "Results";
+"History" = "History";
+"New Scan" = "New Scan";
+"Undo Cleanup" = "Undo Cleanup";
+"Undo" = "Undo";
+"Go" = "Go";
+
+/* Undo */
+"Some files could not be restored" = "Some files could not be restored";
+"%lld file(s) could not be restored:\n\n%@" = "%lld file(s) could not be restored:\n\n%@";
+"A file already exists at the original location" = "A file already exists at the original location";
+
+/* Group selection */
+"Stage this group for cleanup" = "Stage this group for cleanup";
+"Select group %@" = "Select group %@";
+
+/* Smart Select */
+"%lld groups · %lld files staged (%@)" = "%lld groups · %lld files staged (%@)";
+"Smart Select" = "Smart Select";
+"Select None" = "Select None";
+"Automatically pick which copy to keep in every group, with a visible reason" = "Automatically pick which copy to keep in every group, with a visible reason";
+"Auto Keep" = "Auto Keep";
+"Automatically keep one copy — the reason is shown next to each file" = "Automatically keep one copy — the reason is shown next to each file";
+
+/* Cleanup toast */
+"%lld file(s) moved to Trash. Kept 30 days in the vault." = "%lld file(s) moved to Trash. Kept 30 days in the vault.";
+
+/* Custom profile */
+"Custom" = "Custom";
+"Scans only the folders you choose" = "Scans only the folders you choose";

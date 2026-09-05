@@ -249,3 +249,61 @@
 "This group shares the same name with %d other groups" = "このグループは他に %d 件のグループと同じ名前を共有しています";
 "APFS clones share physical blocks — cleaning frees logical size only" = "APFS クローンは物理ブロックを共有しています — 削除しても論理サイズのみ解放されます";
 "%d clones" = "%d 件のクローン";
+// MARK: - Phase A: スマート選択 / 選択モデル / 取り消し / ナビゲーション
+
+/* 選択ストラテジー */
+"Keep Newest" = "最新を残す";
+"Keep Oldest" = "最古を残す";
+"Keep Shortest Path" = "最短パスを残す";
+"Keep Inside Scan Folder" = "スキャンフォルダ内を残す";
+"Keep Canonical Folder" = "基準フォルダを残す";
+
+/* ストラテジー説明 */
+"Keeps the most recently modified copy and marks the rest for removal." = "最も最近に変更されたコピーを残し、残りを削除対象にします。";
+"Keeps the oldest copy — useful when later files are re-downloads or re-encodes." = "最も古いコピーを残します。後のファイルが再ダウンロードや再エンコードの場合に便利です。";
+"Keeps the copy closest to the volume root, typically the canonical location." = "ボリュームのルートに最も近いコピーを残します。通常は正規の場所です。";
+"Prefers the copy inside the scanned folder, removing stray copies elsewhere." = "スキャンしたフォルダ内のコピーを優先的に残し、他の場所のコピーを削除します。";
+"Keeps copies in the alphabetically first folder so the canonical directory survives." = "アルファベット順で最初のフォルダ内のコピーを残し、基準ディレクトリを維持します。";
+
+/* 選択理由 */
+"Kept — most recently modified copy" = "残す — 最近変更されたコピー";
+"Kept — oldest copy (original)" = "残す — 最古のコピー（原本）";
+"Kept — shortest path (canonical location)" = "残す — 最短パス（正規の場所）";
+"Kept — inside the scanned folder" = "残す — スキャンフォルダ内";
+"Kept — canonical folder copy" = "残す — 基準フォルダのコピー";
+"Kept — the only copy in this group" = "残す — このグループの唯一のコピー";
+"Marked for removal — duplicate of the kept copy" = "削除対象 — 残すコピーの重複";
+
+/* ナビゲーションとメニュー */
+"Welcome" = "ようこそ";
+"Scan" = "スキャン";
+"Results" = "結果";
+"History" = "履歴";
+"New Scan" = "新規スキャン";
+"Undo Cleanup" = "クリーンアップを取り消す";
+"Undo" = "取り消す";
+"Go" = "移動";
+
+/* 取り消し */
+"Some files could not be restored" = "一部のファイルを復元できませんでした";
+"%lld file(s) could not be restored:\n\n%@" = "%lld 個のファイルを復元できませんでした：\n\n%@";
+"A file already exists at the original location" = "元の場所にすでにファイルが存在します";
+
+/* グループ選択 */
+"Stage this group for cleanup" = "このグループをクリーンアップ対象にする";
+"Select group %@" = "グループ %@ を選択";
+
+/* スマート選択 */
+"%lld groups · %lld files staged (%@)" = "%lld グループ · %lld ファイルが削除対象（%@）";
+"Smart Select" = "スマート選択";
+"Select None" = "すべて選択解除";
+"Automatically pick which copy to keep in every group, with a visible reason" = "各グループで残すコピーを自動的に選び、その理由を表示します";
+"Auto Keep" = "自動で残す";
+"Automatically keep one copy — the reason is shown next to each file" = "1つのコピーを自動的に残します — 各ファイルの横に理由が表示されます";
+
+/* クリーンアップトースト */
+"%lld file(s) moved to Trash. Kept 30 days in the vault." = "%lld 個のファイルをゴミ箱に移動しました。ボールトに30日間保管されます。";
+
+/* カスタムプロファイル */
+"Custom" = "カスタム";
+"Scans only the folders you choose" = "選択したフォルダのみをスキャンします";

@@ -68,7 +68,27 @@ struct kSiftApp: App {
         .windowResizability(.contentMinSize)
         .defaultSize(width: 960, height: 660)
         .commands {
-            CommandGroup(replacing: .newItem) {}
+            CommandGroup(replacing: .newItem) {
+                Button(NSLocalizedString("New Scan", comment: "File menu — start a new scan")) {
+                    appState.navigation = .scan
+                }
+                .keyboardShortcut("n", modifiers: .command)
+            }
+            CommandGroup(replacing: .undoRedo) {
+                Button(NSLocalizedString("Undo Cleanup", comment: "Edit menu — restore last cleanup batch")) {
+                    appState.undoLastCleanup()
+                }
+                .keyboardShortcut("z", modifiers: .command)
+                .disabled(appState.lastCleanupSession == nil)
+            }
+            CommandMenu(NSLocalizedString("Go", comment: "Go menu title")) {
+                ForEach(AppState.NavigationItem.allCases.filter { $0.commandDigit != nil }, id: \.self) { item in
+                    Button(item.title) {
+                        appState.navigation = item
+                    }
+                    .keyboardShortcut(KeyEquivalent(Character(item.commandDigit!)), modifiers: .command)
+                }
+            }
         }
     }
 }

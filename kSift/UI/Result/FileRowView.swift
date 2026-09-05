@@ -4,6 +4,9 @@ import DesignSystem
 struct FileRowView: View {
     let file: FileItem
     var isSelected: Bool = false
+    /// Explainable-selection reason for this row ("Kept — most recently
+    /// modified copy"). Nil when no plan applies.
+    var reason: SelectionReason? = nil
 
     @State private var icon: NSImage?
     @State private var isMissing = false
@@ -18,6 +21,15 @@ struct FileRowView: View {
     /// just-deleted file may still look "present" until the next body pass.
     /// The trade-off is intentional: a 10 000-row list with sync stat per
     /// row was blocking the main thread for hundreds of ms per scroll.
+
+    /// Shared short-date formatter — Date.formatted() per row allocates a
+    /// new formatter each render, which shows up in scrolling benchmarks.
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        return formatter
+    }()
 
     var body: some View {
         HStack(spacing: 8) {
@@ -66,9 +78,25 @@ struct FileRowView: View {
                     .foregroundColor(.secondary)
                     .lineLimit(1)
                     .truncationMode(.middle)
+                if let reason {
+                    // Explainable Smart Select: why this copy is kept (or
+                    // marked for removal). Green reads as "the survivor".
+                    Text(reason.explanation)
+                        .font(.caption2)
+                        .foregroundColor(reason == .duplicateOfKept ? .secondary : .green)
+                        .lineLimit(1)
+                }
             }
 
             Spacer()
+
+            // Modification date is what Auto Keep sorts by — showing it
+            // makes the automatic choice auditable at a glance.
+            Text(Self.dateFormatter.string(from: file.modificationDate))
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .monospacedDigit()
+                .help(file.modificationDate.formatted(date: .long, time: .shortened))
 
             Text(ByteCountFormatter.string(fromByteCount: file.size, countStyle: .file))
                 .font(.caption)

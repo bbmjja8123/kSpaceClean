@@ -243,3 +243,62 @@
 "This group shares the same name with %d other groups" = "此分组与另外 %d 个分组共享相同文件名";
 "APFS clones share physical blocks — cleaning frees logical size only" = "APFS 克隆文件共享物理块，清理仅释放逻辑大小";
 "%d clones" = "%d 个克隆";
+
+// MARK: - Phase A: 智能选择 / 选择模型 / 撤销 / 导航
+
+/* 选择策略 */
+"Keep Newest" = "保留最新";
+"Keep Oldest" = "保留最旧";
+"Keep Shortest Path" = "保留最短路径";
+"Keep Inside Scan Folder" = "保留扫描文件夹内";
+"Keep Canonical Folder" = "保留规范文件夹";
+
+/* 选择策略说明 */
+"Keeps the most recently modified copy and marks the rest for removal." = "保留最近修改的副本，其余标记为待删除。";
+"Keeps the oldest copy — useful when later files are re-downloads or re-encodes." = "保留最旧的副本——适合后来的是重新下载或转码文件的情况。";
+"Keeps the copy closest to the volume root, typically the canonical location." = "保留最接近卷根目录的副本，通常即规范位置。";
+"Prefers the copy inside the scanned folder, removing stray copies elsewhere." = "优先保留扫描文件夹内的副本，移除其他位置的散落副本。";
+"Keeps copies in the alphabetically first folder so the canonical directory survives." = "保留按字母顺序排在最前的文件夹中的副本，以保留规范目录。";
+
+/* 选择原因 */
+"Kept — most recently modified copy" = "保留——最近修改的副本";
+"Kept — oldest copy (original)" = "保留——最旧副本（原件）";
+"Kept — shortest path (canonical location)" = "保留——最短路径（规范位置）";
+"Kept — inside the scanned folder" = "保留——位于扫描文件夹内";
+"Kept — canonical folder copy" = "保留——规范文件夹中的副本";
+"Kept — the only copy in this group" = "保留——此组中的唯一副本";
+"Marked for removal — duplicate of the kept copy" = "标记待删除——保留副本的重复项";
+
+/* 导航与菜单 */
+"Welcome" = "欢迎";
+"Scan" = "扫描";
+"Results" = "结果";
+"History" = "历史记录";
+"New Scan" = "新建扫描";
+"Undo Cleanup" = "撤销清理";
+"Undo" = "撤销";
+"Go" = "前往";
+
+/* 撤销 */
+"Some files could not be restored" = "部分文件无法恢复";
+"%lld file(s) could not be restored:\n\n%@" = "%lld 个文件无法恢复：\n\n%@";
+"A file already exists at the original location" = "原始位置已存在同名文件";
+
+/* 分组选择 */
+"Stage this group for cleanup" = "将此组标记为待清理";
+"Select group %@" = "选择组 %@";
+
+/* 智能选择 */
+"%lld groups · %lld files staged (%@)" = "%lld 组 · %lld 个文件待删除（%@）";
+"Smart Select" = "智能选择";
+"Select None" = "全不选";
+"Automatically pick which copy to keep in every group, with a visible reason" = "自动为每组选择保留的副本，并显示选择原因";
+"Auto Keep" = "自动保留";
+"Automatically keep one copy — the reason is shown next to each file" = "自动保留一份副本——每个文件旁会显示原因";
+
+/* 清理提示 */
+"%lld file(s) moved to Trash. Kept 30 days in the vault." = "%lld 个文件已移到废纸篓，并在保险库中保留 30 天。";
+
+/* 自定义档案 */
+"Custom" = "自定义";
+"Scans only the folders you choose" = "仅扫描你选择的文件夹";

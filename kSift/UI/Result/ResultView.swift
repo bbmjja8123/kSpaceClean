@@ -148,9 +148,11 @@ struct ResultView: View {
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(viewModel.filteredGroups) { group in
-                            NavigationLink(destination: GroupDetailView(group: group)) {
+                            NavigationLink(destination: GroupDetailView(group: group, viewModel: viewModel)) {
                                 GroupRowView(
                                     group: group,
+                                    isSelected: viewModel.selectedGroupIds.contains(group.id),
+                                    onToggle: { viewModel.toggleGroup(group.id) },
                                     sameNameSiblingCount: viewModel.sameNameCounts[group.files.first?.url.lastPathComponent ?? ""] ?? 0
                                 )
                             }
@@ -163,14 +165,18 @@ struct ResultView: View {
 
             // Bottom action bar
             HStack {
-                Text("\(viewModel.selectedGroupIds.count) groups selected")
-                    .foregroundColor(.secondary)
+                if viewModel.selectedGroupIds.isEmpty {
+                    Text("\(viewModel.totalGroupCount) groups found")
+                        .foregroundColor(.secondary)
+                } else {
+                    Text(String(format: NSLocalizedString("%lld groups · %lld files staged (%@)", comment: "Bottom bar selection summary"),
+                                viewModel.selectedGroupIds.count,
+                                viewModel.stagedFileCount,
+                                formatBytes(viewModel.selectedBytes)))
+                        .foregroundColor(.secondary)
+                }
                 Spacer()
-                Button("Auto Select", action: viewModel.autoSelectGroups)
-                    .help(NSLocalizedString(
-                        "Select all groups (⌘A)",
-                        comment: "Tooltip for Command-A select-all shortcut"
-                    ))
+                smartSelectMenu
                 Button(deleteButtonLabel) {
                     attemptCleanup()
                 }
@@ -199,26 +205,26 @@ struct ResultView: View {
         } message: {
             Text("\(cleanupFailures.count) file(s) could not be moved to Trash and remain in place.\n\n\(cleanupFailures.map { $0.url.lastPathComponent }.joined(separator: ", "))")
         }
-        .alert(
-            NSLocalizedString("Moved to Vault", comment: "Cleanup success title"),
-            isPresented: $showCleanupSuccess
-        ) {
-            Button(NSLocalizedString("Open Vault", comment: "Open vault after cleanup")) {
-                showCleanupSuccess = false
-                appState.navigation = .vault
-            }
-            Button(NSLocalizedString("Done", comment: "Dismiss cleanup success"), role: .cancel) {
-                showCleanupSuccess = false
-            }
-        } message: {
-            Text(String(format: NSLocalizedString("%lld file(s) were moved to Trash and safely stored in the vault for 30 days.", comment: "Cleanup success message"),
-                        cleanupSuccessCount))
+        .toast(isPresented: $showCleanupSuccess, autoDismissAfter: 8) {
+            ToastView(
+                title: NSLocalizedString("Moved to Vault", comment: "Cleanup success title"),
+                subtitle: String(format: NSLocalizedString("%lld file(s) moved to Trash. Kept 30 days in the vault.", comment: "Cleanup success subtitle"),
+                                 cleanupSuccessCount),
+                icon: "checkmark.circle.fill",
+                actionTitle: NSLocalizedString("Undo", comment: "Undo cleanup action"),
+                onAction: {
+                    appState.undoLastCleanup()
+                    Task { await reloadAfterUndo() }
+                },
+                onDismiss: { showCleanupSuccess = false }
+            )
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environmentObject(store)
         }
         .onAppear {
+            seedPlannerFromConfig()
             loadGroups()
         }
         // Hidden keyboard-shortcut buttons so ⌘A / ⌘N / Esc work whether or
@@ -271,8 +277,40 @@ struct ResultView: View {
         }
     }
 
+    /// The explainable Smart Select affordance: one menu listing every
+    /// keep-strategy; picking one plans (and stages) all groups at once.
+    private var smartSelectMenu: some View {
+        Menu {
+            ForEach(SelectionStrategy.allCases, id: \.self) { strategy in
+                Button {
+                    viewModel.applyAutoSelect(strategy: strategy, scanRoots: viewModel.scanRoots)
+                } label: {
+                    HStack {
+                        Text(strategy.title)
+                        if strategy == viewModel.defaultStrategy {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+                .help(strategy.help)
+            }
+            Divider()
+            Button {
+                viewModel.clearSelection()
+            } label: {
+                Text(NSLocalizedString("Select None", comment: "Smart Select menu — clear selection"))
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "wand.and.stars")
+                Text(NSLocalizedString("Smart Select", comment: "Smart Select menu label"))
+            }
+        }
+        .help(NSLocalizedString("Automatically pick which copy to keep in every group, with a visible reason", comment: "Smart Select tooltip"))
+    }
+
     private var deleteButtonLabel: String {
-        let bytes = selectedSize
+        let bytes = viewModel.selectedBytes
         let base = String(format: NSLocalizedString("Delete (%@)", comment: "Delete selected groups, size in parens"), formatBytes(bytes))
         if !store.isPaidUser, store.freeTierBytesCleaned + bytes > StoreManager.freeCleanupQuotaBytes {
             return base + NSLocalizedString(" · Upgrade", comment: "Upgrade hint appended to delete label")
@@ -281,7 +319,7 @@ struct ResultView: View {
     }
 
     private func attemptCleanup() {
-        let bytes = selectedSize
+        let bytes = viewModel.selectedBytes
         if store.canCleanup(additionalBytes: bytes) {
             viewModel.showCleanupConfirmation = true
         } else {
@@ -298,7 +336,8 @@ struct ResultView: View {
 
     private func runCleanup() {
         let manager = CleanupManager()
-        let bytes = selectedSize
+        let bytes = viewModel.selectedBytes
+        let stagedCount = viewModel.stagedFileCount
         Task {
             let failures = await viewModel.removeSelected(using: manager)
             if !failures.isEmpty { cleanupFailures = failures }
@@ -315,13 +354,26 @@ struct ResultView: View {
                 .reduce(0) { $0 + $1.size }
             let succeeded = bytes - failedBytes
             store.recordFreeTierCleanup(bytes: succeeded)
-            // Surface cleanup success so the user can jump straight to the
-            // Vault. Only show when at least one file actually moved.
+            // Keep AppState in sync: undo works from any screen, and a
+            // later navigation back to Results must not resurrect the
+            // files that were just cleaned.
+            appState.lastCleanupSession = viewModel.lastCleanupSession
+            appState.latestGroups = viewModel.groups
+            // Surface cleanup success with a non-blocking undo toast. Only
+            // show when at least one file actually moved.
             if succeeded > 0 {
-                cleanupSuccessCount = viewModel.selectedGroupIds.count
+                cleanupSuccessCount = stagedCount
                 showCleanupSuccess = true
             }
         }
+    }
+
+    /// Refreshes the list after an undo so restored files reappear. The
+    /// vault restore puts files back on disk; the in-memory groups no
+    /// longer contain them, so reload from the persisted record.
+    private func reloadAfterUndo() async {
+        appState.latestGroups = []
+        loadGroups()
     }
 
     private func loadGroups() {
@@ -343,10 +395,13 @@ struct ResultView: View {
         }
     }
 
-    private var selectedSize: Int64 {
-        viewModel.groups
-            .filter { viewModel.selectedGroupIds.contains($0.id) }
-            .reduce(0) { $0 + $1.totalSize }
+    /// Seeds the Smart Select default strategy and scan roots from the
+    /// persisted profile config so auto-select honors the user's choice.
+    private func seedPlannerFromConfig() {
+        let config = ProfileConfigStore.load()
+        viewModel.defaultStrategy = config.selectionStrategy
+        viewModel.scanRoots = (config.type.scanningDirectories + config.customDirectories)
+            .map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
     }
 
     private func formatBytes(_ bytes: Int64) -> String {
@@ -421,6 +476,14 @@ struct StatItem: View {
 
 struct GroupRowView: View {
     let group: DuplicateGroup
+    /// Whether this group is staged for cleanup. Drives the leading
+    /// checkbox so the user can hand-pick groups instead of relying only
+    /// on Smart Select.
+    var isSelected: Bool = false
+    /// Called when the user taps the selection checkbox. The row itself is
+    /// a NavigationLink, so the checkbox is an explicit nested Button that
+    /// captures its own tap.
+    var onToggle: (() -> Void)?
     /// How many sibling groups share the same first-file name. > 1 means this
     /// row is part of a same-name cluster (e.g. "IMG_1234.jpg" duplicated
     /// across 3 different folders). Computed upstream so the row stays O(1).
@@ -435,6 +498,24 @@ struct GroupRowView: View {
     var body: some View {
         GlassPanel {
             HStack {
+                Button {
+                    onToggle?()
+                } label: {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .font(.system(size: 16))
+                        .foregroundColor(isSelected ? .accentColor : .secondary)
+                }
+                .buttonStyle(.plain)
+                .help(NSLocalizedString(
+                    "Stage this group for cleanup",
+                    comment: "Group selection checkbox tooltip"
+                ))
+                .accessibilityLabel(Text(
+                    String(format: NSLocalizedString("Select group %@", comment: "Checkbox a11y label"),
+                           group.category.displayName)
+                ))
+                .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
+
                 Image(systemName: group.category.iconName)
                     .foregroundColor(group.category.color)
                     .frame(width: 24)

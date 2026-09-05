@@ -35,9 +35,20 @@ final class ResultViewModelTests: XCTestCase {
 
     func testAutoSelect() {
         let vm = ResultViewModel()
-        vm.groups = [makeGroup(cat: .identical, size: 100)]
+        // Two-file group: auto-select stages the group plus a plan that
+        // keeps one copy and removes the other. Single-copy groups have
+        // nothing to remove and stay unselected.
+        let a = FileItem.mock(url: URL(filePath: "/tmp/a.bin"), size: 100)
+        let b = FileItem.mock(url: URL(filePath: "/tmp/b.bin"), size: 100)
+        let pair = DuplicateGroup.mock(
+            category: .identical, totalSize: 200, fileCount: 2, files: [a, b]
+        )
+        vm.groups = [pair, makeGroup(cat: .identical, size: 100)]
         vm.autoSelectGroups()
-        XCTAssertEqual(vm.selectedGroupIds.count, 1)
+        XCTAssertEqual(vm.selectedGroupIds.count, 1, "Only groups with removable copies get selected")
+        XCTAssertEqual(vm.stagedFileCount, 1, "Exactly one duplicate copy is staged")
+        XCTAssertEqual(vm.selectedBytes, 100)
+        XCTAssertNotNil(vm.selectionPlans[pair.id], "Selected group gets an explainable plan")
     }
 
     func testLoadGroupsReplacesAndResetsSelection() {

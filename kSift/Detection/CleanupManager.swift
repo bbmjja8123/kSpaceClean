@@ -21,6 +21,39 @@ public actor CleanupManager {
         return restored
     }
 
+    /// Restores every item of a cleanup session back to its original
+    /// location — the "Undo" affordance. Best-effort per file: a file
+    /// whose original path is now occupied (or which vanished from the
+    /// vault) is reported as a failure instead of aborting the batch.
+    @discardableResult
+    public func restoreSession(_ session: CleanupSession) async -> [VaultMoveFailure] {
+        let items = (try? await vault.vaultItems()) ?? []
+        let urlById = Dictionary(
+            items
+                .filter { session.vaultItemIds.contains($0.id) }
+                .map { (id: $0.id, url: $0.originalURL) },
+            uniquingKeysWith: { _, url in url }
+        )
+        var failures: [VaultMoveFailure] = []
+        for id in session.vaultItemIds {
+            let originalURL = urlById[id] ?? URL(fileURLWithPath: "/")
+            do {
+                _ = try await vault.restore(itemID: id)
+            } catch VaultError.restoreTargetExists(let target) {
+                failures.append(VaultMoveFailure(
+                    url: target,
+                    reason: NSLocalizedString(
+                        "A file already exists at the original location",
+                        comment: "Undo failure when the restore target is occupied"
+                    )
+                ))
+            } catch {
+                failures.append(VaultMoveFailure(url: originalURL, reason: error.localizedDescription))
+            }
+        }
+        return failures
+    }
+
     public func vaultItems() async throws -> [VaultItem] {
         try await vault.vaultItems()
     }
