@@ -36,6 +36,7 @@ public actor ScanOrchestrator {
     private let buildArtifactDetector: BuildArtifactDetector
     private let rawJPEGDetector: RawJPEGPairDetector
     private let nameHeuristicDetector: NameHeuristicDetector
+    private let similarVideoDetector: SimilarVideoDetector?
     private let repository: DuplicateRepositoryProtocol
     private let incrementalIndex: (any IncrementalIndexProtocol)?
 
@@ -52,6 +53,7 @@ public actor ScanOrchestrator {
         buildArtifactDetector: BuildArtifactDetector = BuildArtifactDetector(),
         rawJPEGDetector: RawJPEGPairDetector = RawJPEGPairDetector(),
         nameHeuristicDetector: NameHeuristicDetector = NameHeuristicDetector(),
+        similarVideoDetector: SimilarVideoDetector? = nil,
         repository: DuplicateRepositoryProtocol = DuplicateRepositoryCoreData(),
         incrementalIndex: (any IncrementalIndexProtocol)? = nil
     ) {
@@ -64,6 +66,7 @@ public actor ScanOrchestrator {
         self.buildArtifactDetector = buildArtifactDetector
         self.rawJPEGDetector = rawJPEGDetector
         self.nameHeuristicDetector = nameHeuristicDetector
+        self.similarVideoDetector = similarVideoDetector
         self.repository = repository
         self.incrementalIndex = incrementalIndex
     }
@@ -74,6 +77,19 @@ public actor ScanOrchestrator {
     public func run(config: ProfileConfig, controller: ScanController) -> AsyncStream<ScanEvent> {
         AsyncStream { continuation in
             Task {
+                await performScan(config: config, controller: controller, into: continuation)
+                continuation.finish()
+            }
+        }
+    }
+
+    /// The full scan pipeline. Extracted from `run` so the type-checker
+    /// sees a plain async method instead of a deeply nested closure.
+    private func performScan(
+        config: ProfileConfig,
+        controller: ScanController,
+        into continuation: AsyncStream<ScanEvent>.Continuation
+    ) async {
                 let startDate = Date()
                 do {
                 let target = ScanTarget(
@@ -142,85 +158,40 @@ public actor ScanOrchestrator {
                 let verifiedCache = await byteDetector.verifiedCache
                 let scanRoots = target.directories.map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
 
-                // Per-run detectors driven by the persisted config: the
-                // similarity preset (Settings-tunable) and the large-file
-                // threshold. An init-injected instance (tests) wins.
-                let perceptualDetector = self.perceptualDetector ?? PerceptualDetector(
-                    maximumHammingDistance: config.similarityPreset.maximumHammingDistance,
-                    visionDistanceThreshold: config.similarityPreset.visionDistanceThreshold
-                )
-                let largeFileDetector = self.largeFileDetector
-                    ?? LargeFileDetector(threshold: config.largeFileSizeThreshold)
-
                 // A cancel that lands between phases must not fan out a
                 // barrage of phase-start events; bail before the fan-out.
                 guard !controller.isCancelled else { continuation.finish(); return }
 
-                continuation.yield(.progress(ScanProgress(
-                    phase: .directoryDedup,
-                    progress: 0.4,
-                    filesScanned: allURLs.count,
-                    duplicatesFound: identicalCount
-                )))
+                // Phase-start events for the parallel detectors.
+                yieldPhase(.directoryDedup, allURLs.count, identicalCount, to: continuation)
                 if config.enablePerceptualScan {
-                    continuation.yield(.progress(ScanProgress(
-                        phase: .perceptual,
-                        progress: 0.4,
-                        filesScanned: allURLs.count,
-                        duplicatesFound: identicalCount
-                    )))
+                    yieldPhase(.perceptual, allURLs.count, identicalCount, to: continuation)
                 }
-                continuation.yield(.progress(ScanProgress(
-                    phase: .largeFiles,
-                    progress: 0.4,
-                    filesScanned: allURLs.count,
-                    duplicatesFound: identicalCount
-                )))
+                yieldPhase(.largeFiles, allURLs.count, identicalCount, to: continuation)
                 if config.enableBuildArtifacts {
-                    continuation.yield(.progress(ScanProgress(
-                        phase: .buildArtifacts,
-                        progress: 0.4,
-                        filesScanned: allURLs.count,
-                        duplicatesFound: identicalCount
-                    )))
+                    yieldPhase(.buildArtifacts, allURLs.count, identicalCount, to: continuation)
                 }
-                continuation.yield(.progress(ScanProgress(
-                    phase: .rawJPEG,
-                    progress: 0.4,
-                    filesScanned: allURLs.count,
-                    duplicatesFound: identicalCount
-                )))
-                continuation.yield(.progress(ScanProgress(
-                    phase: .nameHeuristic,
-                    progress: 0.4,
-                    filesScanned: allURLs.count,
-                    duplicatesFound: identicalCount
-                )))
+                yieldPhase(.rawJPEG, allURLs.count, identicalCount, to: continuation)
+                yieldPhase(.nameHeuristic, allURLs.count, identicalCount, to: continuation)
+                yieldPhase(.similarVideo, allURLs.count, identicalCount, to: continuation)
 
-                async let dedupGroups: [DuplicateGroup] = dirDedupDetector.detect(
-                    allURLs,
-                    roots: scanRoots,
-                    controller: controller,
-                    verifiedCache: verifiedCache
+                // Per-run detector fan-out (extracted to keep `run` within
+                // the type-checker's complexity budget).
+                let results = await runParallelDetectors(
+                    allURLs: allURLs,
+                    fileItems: fileItems,
+                    verifiedCache: verifiedCache,
+                    scanRoots: scanRoots,
+                    config: config,
+                    controller: controller
                 )
-                async let perceptualGroups: [DuplicateGroup] = config.enablePerceptualScan
-                    ? perceptualDetector.detect(files: fileItems, controller: controller)
-                    : []
-                async let largeFiles: [FileItem] = largeFileDetector.detect(files: fileItems, controller: controller)
-                async let buildGroups: [DuplicateGroup] = config.enableBuildArtifacts
-                    ? buildArtifactDetector.detect(files: fileItems, controller: controller)
-                    : []
-                async let rawJPEGGroups: [DuplicateGroup] = rawJPEGDetector.detect(files: fileItems, controller: controller)
-                async let nameHeuristicGroups: [DuplicateGroup] = nameHeuristicDetector.detect(files: fileItems, controller: controller)
-
-                // Await in dependency-friendly order; each `await` resolves
-                // immediately if the underlying task already finished.
-                let dedupResults = await dedupGroups
-                let perceptualResults = await perceptualGroups
-                let largeFileResults = await largeFiles
-                let buildResults = await buildGroups
-                let rawJPEGResults = await rawJPEGGroups
-                let nameHeuristicResults = await nameHeuristicGroups
+                let dedupResults = results.dedup
+                let perceptualResults = results.perceptual
+                let largeFileResults = results.largeFiles
+                let buildResults = results.build
+                let rawJPEGResults = results.rawJPEG
+                let nameHeuristicResults = results.nameHeuristic
+                let videoResults = results.video
 
                 // Cancellation may have landed while the fan-out was in
                 // flight — a cancelled scan must not report a summary or
@@ -248,8 +219,11 @@ public actor ScanOrchestrator {
                 for group in nameHeuristicResults {
                     continuation.yield(.group(duplicateGroup: group))
                 }
+                for group in videoResults {
+                    continuation.yield(.group(duplicateGroup: group))
+                }
 
-                let allGroups = identicalGroups + dedupResults + perceptualResults + buildResults + rawJPEGResults + nameHeuristicResults
+                let allGroups = identicalGroups + dedupResults + perceptualResults + buildResults + rawJPEGResults + nameHeuristicResults + videoResults
                 let groupCounts = Dictionary(grouping: allGroups, by: \.category).mapValues(\.count)
                 let totalDuplicates = allGroups.reduce(largeFileResults.count) { $0 + $1.files.count }
                 let totalReclaimable = allGroups.reduce(largeFileBytes) { partial, group in
@@ -289,9 +263,84 @@ public actor ScanOrchestrator {
                         continuation.yield(.failed(error.localizedDescription))
                     }
                 }
-                continuation.finish()
-            }
-        }
+    }
+
+    /// Emits one phase-start progress event.
+    private func yieldPhase(
+        _ phase: ScanPhase,
+        _ filesScanned: Int,
+        _ duplicatesFound: Int,
+        to continuation: AsyncStream<ScanEvent>.Continuation
+    ) {
+        continuation.yield(.progress(ScanProgress(
+            phase: phase,
+            progress: 0.4,
+            filesScanned: filesScanned,
+            duplicatesFound: duplicatesFound
+        )))
+    }
+
+    /// Runs every post-byteIdentical detector concurrently. After
+    /// byteIdentical finishes, the remaining detectors are independent of
+    /// each other (directoryDedup only needs the verifiedCache already
+    /// produced), so they run on the cooperative thread pool: an 8-core
+    /// Mac overlaps the I/O-bound hash pass with the CPU-bound perceptual
+    /// and video passes instead of serializing them.
+    private func runParallelDetectors(
+        allURLs: [URL],
+        fileItems: [FileItem],
+        verifiedCache: [URL: CachedVerification],
+        scanRoots: [URL],
+        config: ProfileConfig,
+        controller: ScanController
+    ) async -> (
+        dedup: [DuplicateGroup],
+        perceptual: [DuplicateGroup],
+        largeFiles: [FileItem],
+        build: [DuplicateGroup],
+        rawJPEG: [DuplicateGroup],
+        nameHeuristic: [DuplicateGroup],
+        video: [DuplicateGroup]
+    ) {
+        // Per-run detectors driven by the persisted config: the
+        // similarity preset (Settings-tunable) and the large-file
+        // threshold. An init-injected instance (tests) wins.
+        let perceptualDetector = self.perceptualDetector ?? PerceptualDetector(
+            maximumHammingDistance: config.similarityPreset.maximumHammingDistance,
+            visionDistanceThreshold: config.similarityPreset.visionDistanceThreshold
+        )
+        let largeFileDetector = self.largeFileDetector
+            ?? LargeFileDetector(threshold: config.largeFileSizeThreshold)
+        let videoDetector = self.similarVideoDetector ?? SimilarVideoDetector()
+
+        async let dedupGroups: [DuplicateGroup] = dirDedupDetector.detect(
+            allURLs,
+            roots: scanRoots,
+            controller: controller,
+            verifiedCache: verifiedCache
+        )
+        async let perceptualGroups: [DuplicateGroup] = config.enablePerceptualScan
+            ? perceptualDetector.detect(files: fileItems, controller: controller)
+            : []
+        async let largeFiles: [FileItem] = largeFileDetector.detect(files: fileItems, controller: controller)
+        async let buildGroups: [DuplicateGroup] = config.enableBuildArtifacts
+            ? buildArtifactDetector.detect(files: fileItems, controller: controller)
+            : []
+        async let rawJPEGGroups: [DuplicateGroup] = rawJPEGDetector.detect(files: fileItems, controller: controller)
+        async let nameHeuristicGroups: [DuplicateGroup] = nameHeuristicDetector.detect(files: fileItems, controller: controller)
+        async let videoGroups: [DuplicateGroup] = videoDetector.detect(files: fileItems, controller: controller)
+
+        // Await in dependency-friendly order; each `await` resolves
+        // immediately if the underlying task already finished.
+        return (
+            dedup: await dedupGroups,
+            perceptual: await perceptualGroups,
+            largeFiles: await largeFiles,
+            build: await buildGroups,
+            rawJPEG: await rawJPEGGroups,
+            nameHeuristic: await nameHeuristicGroups,
+            video: await videoGroups
+        )
     }
 
     public func saveResults(_ groups: [DuplicateGroup], config: ProfileConfig, duration: TimeInterval, filesScanned: Int) async throws {

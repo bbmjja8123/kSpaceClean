@@ -194,6 +194,8 @@ public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
                 stem: first.url.lastPathComponent,
                 variantCount: files.count
             )
+        case .similarVideo:
+            return .similarVideo(matchedFrameRatio: 0.7, frameCount: 8)
         }
     }
 }

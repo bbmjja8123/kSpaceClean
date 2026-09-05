@@ -149,6 +149,7 @@ struct ScanProgressView: View {
         case .buildArtifacts: return NSLocalizedString("Identifying build artifacts...", comment: "Scan phase title")
         case .rawJPEG: return NSLocalizedString("Matching RAW + JPEG pairs...", comment: "Scan phase title")
         case .nameHeuristic: return NSLocalizedString("Detecting renamed copies...", comment: "Scan phase title")
+        case .similarVideo: return NSLocalizedString("Comparing videos...", comment: "Scan phase title")
         case .completed: return NSLocalizedString("Scan complete!", comment: "Scan phase title")
         }
     }

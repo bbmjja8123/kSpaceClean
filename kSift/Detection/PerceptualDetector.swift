@@ -146,38 +146,11 @@ public actor PerceptualDetector {
     }
 
     func dHash(of image: CGImage) -> UInt64? {
-        guard let context = CGContext(
-            data: nil,
-            width: 9,
-            height: 8,
-            bitsPerComponent: 8,
-            bytesPerRow: 9,
-            space: CGColorSpaceCreateDeviceGray(),
-            bitmapInfo: CGImageAlphaInfo.none.rawValue
-        ) else {
-            return nil
-        }
-
-        context.interpolationQuality = .low
-        context.draw(image, in: CGRect(x: 0, y: 0, width: 9, height: 8))
-        guard let data = context.data else { return nil }
-        let pixels = data.assumingMemoryBound(to: UInt8.self)
-        var hash: UInt64 = 0
-        var bit = 0
-
-        for row in 0..<8 {
-            for column in 0..<8 {
-                if pixels[row * 9 + column] > pixels[row * 9 + column + 1] {
-                    hash |= UInt64(1) << UInt64(bit)
-                }
-                bit += 1
-            }
-        }
-        return hash
+        PerceptualHashing.dHash(of: image)
     }
 
     func hammingDistance(_ lhs: UInt64, _ rhs: UInt64) -> Int {
-        (lhs ^ rhs).nonzeroBitCount
+        PerceptualHashing.hammingDistance(lhs, rhs)
     }
 
     private func candidatePairs(in candidates: [Candidate]) -> Set<Pair> {

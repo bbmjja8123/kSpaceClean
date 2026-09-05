@@ -387,3 +387,7 @@
 "Delete this scan record?" = "このスキャン記録を削除しますか？";
 "Delete record" = "記録を削除";
 "Only the history entry is removed — no files are affected." = "履歴エントリのみを削除します — ファイルには影響しません。";
+
+/* Phase F1: 類似動画 */
+"Similar Video" = "類似動画";
+"Comparing videos..." = "動画を比較中...";

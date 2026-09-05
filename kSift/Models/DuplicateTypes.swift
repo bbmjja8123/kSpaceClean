@@ -9,6 +9,7 @@ public enum DuplicateCategory: String, Sendable, Codable, CaseIterable {
     case buildArtifact
     case rawJPEG
     case nameHeuristic
+    case similarVideo
 }
 
 #if canImport(AppIntents)
@@ -29,6 +30,7 @@ extension DuplicateCategory: AppEnum {
             .buildArtifact: "Build Artifact",
             .rawJPEG: "RAW/JPEG",
             .nameHeuristic: "Same Name",
+            .similarVideo: "Similar Video",
         ]
     }
 }
@@ -74,6 +76,9 @@ public enum CategoryEvidence: Sendable, Codable {
     /// and "IMG_1234 (1).jpg") across distinct folders — likely
     /// re-downloads / re-exports the user wants to consolidate.
     case nameHeuristic(stem: String, variantCount: Int)
+    /// Videos whose sampled frame hashes match across a sufficient ratio
+    /// of frames — same footage, different encode/export.
+    case similarVideo(matchedFrameRatio: Double, frameCount: Int)
 }
 
 public struct DuplicateGroup: Sendable, Identifiable, Codable {

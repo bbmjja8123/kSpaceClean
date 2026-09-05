@@ -382,3 +382,7 @@
 "Delete this scan record?" = "删除这条扫描记录？";
 "Delete record" = "删除记录";
 "Only the history entry is removed — no files are affected." = "仅删除历史记录——不会影响任何文件。";
+
+/* Phase F1: 相似视频 */
+"Similar Video" = "相似视频";
+"Comparing videos..." = "正在比较视频...";

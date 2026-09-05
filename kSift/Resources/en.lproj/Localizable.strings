@@ -382,3 +382,7 @@
 "Delete this scan record?" = "Delete this scan record?";
 "Delete record" = "Delete record";
 "Only the history entry is removed — no files are affected." = "Only the history entry is removed — no files are affected.";
+
+/* Phase F1: similar video */
+"Similar Video" = "Similar Video";
+"Comparing videos..." = "Comparing videos...";

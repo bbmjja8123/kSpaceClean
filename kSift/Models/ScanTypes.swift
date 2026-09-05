@@ -21,6 +21,7 @@ public enum ScanPhase: String, Sendable {
     case buildArtifacts
     case rawJPEG
     case nameHeuristic
+    case similarVideo
     case completed
 }
 

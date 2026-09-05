@@ -117,6 +117,8 @@ extension DuplicateGroup {
             return .rawJPEGPair(rawFile: first, jpegFile: second, exifMatch: false)
         case .nameHeuristic:
             return .nameHeuristic(stem: first.url.lastPathComponent, variantCount: files.count)
+        case .similarVideo:
+            return .similarVideo(matchedFrameRatio: 0.7, frameCount: 8)
         }
     }
 }
