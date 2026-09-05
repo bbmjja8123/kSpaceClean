@@ -10,7 +10,7 @@ import Foundation
 /// background timer, the purge runs when the app next touches the history.
 ///
 /// Codegen is Manual/None: the entity is declared in
-/// `Resources/KSpaceClean.xcdatamodeld` and this file is the hand-written companion.
+/// `Resources/kWise.xcdatamodeld` and this file is the hand-written companion.
 @objc(CleanupHistoryItem)
 public class CleanupHistoryItem: NSManagedObject {
 }

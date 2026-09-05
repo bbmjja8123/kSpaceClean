@@ -39,14 +39,14 @@ public enum SmartCareState: Equatable {
 /// * Delegates actual scanning to an injected ``ScanResultsViewModel`` (which
 ///   in turn owns the lower-level `ScanEngine`).
 /// * Recommended-pick algorithm: filters the engine's leaf entries to
-///   `ScanResultEntry.isRecommended == true` (set by `ScanRule`).
+///   `ScanResult.isRecommended == true` (set by `ScanRule`).
 ///
 /// Follow-up tasks hook ``confirm()`` into `CleanupEngine.cleanup(targets:)`
 /// (Task 5) and wire `SmartCareHeroView`'s CTA (Task 4).
 @MainActor
-public final class SmartCareOrchestrator: ObservableObject {
+final class SmartCareOrchestrator: ObservableObject {
     @Published public private(set) var state: SmartCareState = .idle
-    @Published public private(set) var recommendedItems: [ScanResultEntry] = []
+    @Published private(set) var recommendedItems: [ScanResult] = []
 
     private weak var scanResultsViewModel: ScanResultsViewModel?
     /// Injected cleanup engine. Defaults to a fresh instance backed by the
@@ -56,14 +56,16 @@ public final class SmartCareOrchestrator: ObservableObject {
     /// Designated initializer. The view model can also be attached later
     /// via ``attach(scanResultsViewModel:)`` when SwiftUI environment
     /// resolution is preferred.
-    public init(scanResultsViewModel: ScanResultsViewModel? = nil,
-                cleanupEngine: CleanupEngine = CleanupEngine()) {
+    init(scanResultsViewModel: ScanResultsViewModel? = nil,
+                cleanupEngine: CleanupEngine? = nil) {
         self.scanResultsViewModel = scanResultsViewModel
-        self.cleanupEngine = cleanupEngine
+        // `CleanupEngine.standard()` needs MainActor isolation — resolving
+        // here (inside a @MainActor init) keeps the default optional.
+        self.cleanupEngine = cleanupEngine ?? CleanupEngine.standard()
     }
 
     /// Late-binds a scan view model after construction.
-    public func attach(scanResultsViewModel: ScanResultsViewModel) {
+    func attach(scanResultsViewModel: ScanResultsViewModel) {
         self.scanResultsViewModel = scanResultsViewModel
         state = .idle
         recommendedItems = []
@@ -90,7 +92,7 @@ public final class SmartCareOrchestrator: ObservableObject {
             let started = Date()
             let targets = recommendedItems.map { entry -> CleanupTarget in
                 let url = URL(fileURLWithPath: entry.path)
-                return CleanupTarget(url: url, size: entry.size, risk: .recommended)
+                return CleanupTarget(url: url, size: entry.fileSize, risk: .recommended)
             }
             do {
                 let outcome = try await cleanupEngine.cleanup(targets: targets)
@@ -131,19 +133,19 @@ public final class SmartCareOrchestrator: ObservableObject {
         }
 
         // Auto-pick: collect all leaf entries where
-        // `ScanResultEntry.isRecommended == true`.
+        // `ScanResult.isRecommended == true`.
         state = .recommending
         let picks = computeRecommendedPicks(scanVM: scanVM)
         recommendedItems = picks
 
-        let totalSize = picks.reduce(Int64(0)) { $0 + $1.size }
+        let totalSize = picks.reduce(Int64(0)) { $0 + $1.fileSize }
         state = .confirming(itemCount: picks.count, totalSize: totalSize)
     }
 
     /// Recommended-pick algorithm: every category → subcategory → action →
     /// leaf entry whose `isRecommended` flag is set.
-    private func computeRecommendedPicks(scanVM: ScanResultsViewModel) -> [ScanResultEntry] {
-        var picks: [ScanResultEntry] = []
+    private func computeRecommendedPicks(scanVM: ScanResultsViewModel) -> [ScanResult] {
+        var picks: [ScanResult] = []
         for category in scanVM.categories {
             for sub in category.subItems {
                 for action in sub.actions {

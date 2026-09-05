@@ -25,8 +25,8 @@ public struct PermissionCategory: Identifiable, Hashable, Sendable {
     public init(id: String,
                 title: String,
                 service: String,
-                grantedAppCount: Int,
-                totalAppCount: Int,
+                grantedAppCount: Int = 0,
+                totalAppCount: Int = 0,
                 lastUpdatedAt: Date? = nil) {
         self.id = id
         self.title = title

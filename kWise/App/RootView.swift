@@ -198,7 +198,7 @@ private struct PlaceholderModuleView: View {
     var body: some View {
         VStack(spacing: AppSpacing.md) {
             Text(title)
-                .font(AppFont.title)
+                .font(AppFont.title2)
                 .foregroundStyle(Color.textPrimary)
             Text(subtitle)
                 .font(AppFont.body)

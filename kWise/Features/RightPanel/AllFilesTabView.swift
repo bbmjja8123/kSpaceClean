@@ -134,7 +134,7 @@ struct AllFilesTabView: View {
         }
         guard !paths.isEmpty else { return }
         let urls = paths.map { URL(fileURLWithPath: $0) }
-        let engine = CleanupEngine()
+        let engine = CleanupEngine.standard()
         Task { @MainActor in
             for await progress in engine.cleanup(urls: urls) {
                 if progress.state == .completed || progress.state == .failed {

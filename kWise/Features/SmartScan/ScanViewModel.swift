@@ -308,7 +308,7 @@ public final class ScanViewModel: ObservableObject {
         guard !selectedPaths.isEmpty else { return }
 
         let urls = selectedPaths.map { URL(fileURLWithPath: $0) }
-        let cleanupEngine = CleanupEngine()
+        let cleanupEngine = CleanupEngine.standard()
 
         Task { @MainActor in
             // Phase 1: detect running apps via the dedicated service.

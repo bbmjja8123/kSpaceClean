@@ -68,7 +68,7 @@ final class ScarewareCopyAuditTests: XCTestCase {
         var violations: [String] = []
         for dir in auditedDirs {
             guard let enumerator = fm.enumerator(atPath: dir) else { continue }
-            while let path = enumerator.next() as? String {
+            while let path = enumerator.nextObject() as? String {
                 // Skip tests, hidden dirs, generated outputs.
                 if path.contains("/Tests/") || path.hasPrefix(".") { continue }
                 let ext = (path as NSString).pathExtension

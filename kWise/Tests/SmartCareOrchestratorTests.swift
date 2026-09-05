@@ -47,10 +47,15 @@ final class SmartCareOrchestratorTests: XCTestCase {
 
         orch.confirm()
         try? await Task.sleep(nanoseconds: 100_000_000)
-        if case .cleaning = orch.state {
+        switch orch.state {
+        case .cleaning:
             // OK mid-flight
-        } else {
-            XCTFail("expected .cleaning immediately after confirm, got \(orch.state)")
+            break
+        case .done:
+            // Zero recommended items: the engine completes near-instantly.
+            break
+        default:
+            XCTFail("expected .cleaning (or already .done for empty picks), got \(orch.state)")
         }
 
         // confirm()'s stub sleeps 1.5s before transitioning to .done.

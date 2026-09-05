@@ -121,7 +121,7 @@ struct CleanCacheIntent: AppIntent {
         guard !urls.isEmpty else { return .result(value: 0) }
 
         // Move matched files to Trash via the cleanup engine
-        let cleanupEngine = CleanupEngine()
+        let cleanupEngine = CleanupEngine.standard()
         var totalFreed: Int64 = 0
         for await progress in cleanupEngine.cleanup(urls: urls, warnHandling: .skip) {
             totalFreed = progress.processedBytes

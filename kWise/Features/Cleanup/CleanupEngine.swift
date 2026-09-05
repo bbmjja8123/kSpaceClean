@@ -130,12 +130,23 @@ public actor CleanupEngine {
     /// live in this file. The service is an `actor`, so callers `await` it.
     private let warningService: WarningDetectionService
 
-    public init(persistence: PersistenceController = .shared,
+    /// Note: no default argument for `persistence` — `PersistenceController.shared`
+    /// is `@MainActor`-isolated and cannot be referenced from a nonisolated
+    /// actor-init default value (Swift 5.9 strict concurrency). Use
+    /// `CleanupEngine.standard()` on the main actor, or pass an explicit stack.
+    public init(persistence: PersistenceController,
                 mover: TrashMover = TrashMover(),
                 warningService: WarningDetectionService = WarningDetectionService()) {
         self.persistence = persistence
         self.mover = mover
         self.warningService = warningService
+    }
+
+    /// App-standard engine wired to the shared persistence stack.
+    /// Must be called from a `@MainActor` context.
+    @MainActor
+    public static func standard() -> CleanupEngine {
+        CleanupEngine(persistence: .shared)
     }
 
     // MARK: - Streaming API (legacy surface, preserved)
@@ -465,6 +476,33 @@ public actor CleanupEngine {
             persistence.insertHistory(targets: targets, in: context)
             persistence.save(context: context)
             defaults.set(true, forKey: key)
+        }
+    }
+}
+
+// MARK: - App termination helper (moved from CleanupViewModel.swift)
+
+extension CleanupEngine {
+    /// Send `terminate()` to every running app whose bundleID matches a
+    /// target's `bundleID`. Falls back to `forceTerminate()` for unresponsive
+    /// apps. Best-effort — silently skips apps that don't own any target.
+    private func terminateOwningApps(for targets: [CleanupTarget]) {
+        let targetBundleIDs = Set(targets.compactMap(\.bundleID))
+        guard !targetBundleIDs.isEmpty else { return }
+        for app in NSWorkspace.shared.runningApplications
+            where app.bundleIdentifier.map(targetBundleIDs.contains) == true {
+            app.terminate()
+        }
+        // Force-terminate anything still hanging around after a beat.
+        let liveAppBundleIDs = Set(
+            NSWorkspace.shared.runningApplications
+                .compactMap(\.bundleIdentifier)
+        )
+        for bundleID in targetBundleIDs.intersection(liveAppBundleIDs) {
+            if let app = NSWorkspace.shared.runningApplications
+                .first(where: { $0.bundleIdentifier == bundleID }) {
+                app.forceTerminate()
+            }
         }
     }
 }

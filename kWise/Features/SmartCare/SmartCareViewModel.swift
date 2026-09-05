@@ -29,14 +29,21 @@ public final class SmartCareViewModel: ObservableObject {
         }
     }
 
-    public init(scanResultsViewModel: ScanResultsViewModel? = nil) {
+    init(scanResultsViewModel: ScanResultsViewModel? = nil) {
         let orch = SmartCareOrchestrator(scanResultsViewModel: scanResultsViewModel)
         self.orchestrator = orch
         // Seed state synchronously so SwiftUI has a non-optional initial value.
         self.state = orch.state
         orch.objectWillChange
             .receive(on: RunLoop.main)
-            .sink { [weak self] in self?.objectWillChange.send() }
+            .sink { [weak self] in
+                guard let self else { return }
+                // Forward the state VALUE, not just the invalidation — without
+                // this copy `state` stays at its seeded `.idle` forever and
+                // the hero UI never reflects scan/clean progress.
+                self.state = self.orchestrator.state
+                self.objectWillChange.send()
+            }
             .store(in: &cancellables)
     }
 
@@ -46,21 +53,25 @@ public final class SmartCareViewModel: ObservableObject {
 
     /// Hero CTA. Triggers `Smart Care`: scan → auto-pick → confirm.
     public func runSmartCare() {
-        orch.start()
+        orchestrator.start()
+        state = orchestrator.state
     }
 
     /// User confirms the recommended picks. Cleans them up.
     public func confirm() {
-        orch.confirm()
+        orchestrator.confirm()
+        state = orchestrator.state
     }
 
     /// Re-arm for another run.
     public func reset() {
-        orch.reset()
+        orchestrator.reset()
+        state = orchestrator.state
     }
 
     /// Late-bind the scan view model after SwiftUI environment resolution.
-    public func attach(scanResultsViewModel: ScanResultsViewModel) {
-        orch.attach(scanResultsViewModel: scanResultsViewModel)
+    func attach(scanResultsViewModel: ScanResultsViewModel) {
+        orchestrator.attach(scanResultsViewModel: scanResultsViewModel)
+        state = orchestrator.state
     }
 }

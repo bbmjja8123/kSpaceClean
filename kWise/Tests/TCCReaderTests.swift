@@ -74,7 +74,7 @@ final class TCCReaderTests: XCTestCase {
 
     // MARK: - parseTCCDate (indirect via reader internal API)
 
-    func testParseTCCDateTolerantOfGarbage() {
+    func testParseTCCDateTolerantOfGarbage() async {
         // We don't expose parseTCCDate as public; this test is a placeholder
         // for a future refactor that pulls the date parser out behind an
         // internal `init?(rawString:)` so we can hit it directly.
@@ -82,6 +82,10 @@ final class TCCReaderTests: XCTestCase {
         // Trigger a refresh that internally hits the parser for any rows.
         // With an unreadable DB, the parser isn't called at all. So this
         // test only verifies the reader doesn't crash on a missing path.
-        XCTAssertNoThrow(await r.refresh())
+        do {
+            await r.refresh()
+        } catch {
+            XCTFail("refresh() must not throw: \(error)")
+        }
     }
 }

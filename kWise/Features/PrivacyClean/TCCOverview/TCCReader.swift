@@ -101,7 +101,7 @@ public final class TCCReader: ObservableObject {
         let prepResult = sqlite3_prepare_v2(database, sql, -1, &statement, nil)
         guard prepResult == SQLITE_OK, let stmt = statement else {
             let msg = String(cString: sqlite3_errmsg(database))
-            sqlite3_finalize(stmt)
+            sqlite3_finalize(statement)
             throw TCCReaderError.queryFailed(msg)
         }
         defer { sqlite3_finalize(stmt) }

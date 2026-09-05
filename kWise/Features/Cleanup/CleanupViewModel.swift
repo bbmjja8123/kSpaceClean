@@ -18,8 +18,9 @@ public final class CleanupViewModel: ObservableObject {
     /// driven by the shared `PersistenceController`.
     private let engine: CleanupEngine
 
-    public init(engine: CleanupEngine = CleanupEngine()) {
-        self.engine = engine
+    public init(engine: CleanupEngine? = nil) {
+        // Resolve on the main actor so `CleanupEngine.standard()` is legal.
+        self.engine = engine ?? CleanupEngine.standard()
     }
 
     public func moveToTrash(urls: [URL]) async {
@@ -91,32 +92,5 @@ public final class CleanupViewModel: ObservableObject {
 
     public func refreshHistory() async {
         cleanupHistory = history.fetchRecent()
-    }
-}
-
-// MARK: - Engine termination helper
-
-extension CleanupEngine {
-    /// Send `terminate()` to every running app whose bundleID matches a
-    /// target's `bundleID`. Falls back to `forceTerminate()` for unresponsive
-    /// apps. Best-effort — silently skips apps that don't own any target.
-    fileprivate func terminateOwningApps(for targets: [CleanupTarget]) {
-        let targetBundleIDs = Set(targets.compactMap(\.bundleID))
-        guard !targetBundleIDs.isEmpty else { return }
-        for app in NSWorkspace.shared.runningApplications
-            where app.bundleIdentifier.map(targetBundleIDs.contains) == true {
-            app.terminate()
-        }
-        // Force-terminate anything still hanging around after a beat.
-        let liveAppBundleIDs = Set(
-            NSWorkspace.shared.runningApplications
-                .compactMap(\.bundleIdentifier)
-        )
-        for bundleID in targetBundleIDs.intersection(liveAppBundleIDs) {
-            if let app = NSWorkspace.shared.runningApplications
-                .first(where: { $0.bundleIdentifier == bundleID }) {
-                app.forceTerminate()
-            }
-        }
     }
 }
