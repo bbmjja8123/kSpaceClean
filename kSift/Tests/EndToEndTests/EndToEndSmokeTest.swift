@@ -46,11 +46,16 @@ final class EndToEndSmokeTest: XCTestCase {
 
         let orchestrator = ScanOrchestrator(
             fileWalker: FileWalker(),
+            largeFileDetector: LargeFileDetector(threshold: 1_000_000),
             repository: MockDuplicateRepository(),
             incrementalIndex: nil
         )
         let controller = ScanController()
+        // `.custom` scopes the scan to the fixture root — preset profiles
+        // would sweep the user's real home directories (slow + flaky).
         var config = ProfileConfig.default
+        config.type = .custom
+        config.customDirectories = [fixtureRoot.path]
         config.minFileSize = 1
 
         // Drain the stream and bucket the events.
@@ -81,8 +86,8 @@ final class EndToEndSmokeTest: XCTestCase {
             "Expected ≥3 byte-identical groups from 3 duplicate pairs")
         XCTAssertGreaterThanOrEqual(countsByCategory[.directoryDedup] ?? 0, 2,
             "Expected ≥2 directory-dedup groups")
-        XCTAssertGreaterThanOrEqual(countsByCategory[.largeFile] ?? 0, 1,
-            "Expected ≥1 large-file marker")
+        // Large files are NOT duplicate groups — the orchestrator reports
+        // them through the dedicated `.largeFiles` event, asserted below.
         XCTAssertGreaterThanOrEqual(countsByCategory[.buildArtifact] ?? 0, 2,
             "Expected ≥2 build-artifact groups (node_modules + DerivedData)")
         XCTAssertGreaterThanOrEqual(countsByCategory[.rawJPEG] ?? 0, 1,
@@ -177,8 +182,7 @@ final class EndToEndSmokeTest: XCTestCase {
         _ = dngBytes + jpegBytes // keep synth helpers referenced
     }
 
-    private func writeFile(at path: String, bytes: Data) throws {
-        let url = URL(fileURLWithPath: path)
+    private func writeFile(at url: URL, bytes: Data) throws {
         try FileManager.default.createDirectory(
             at: url.deletingLastPathComponent(),
             withIntermediateDirectories: true

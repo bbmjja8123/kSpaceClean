@@ -60,8 +60,6 @@ public actor ScanOrchestrator {
         self.largeFileDetector = largeFileDetector
         self.buildArtifactDetector = buildArtifactDetector
         self.rawJPEGDetector = rawJPEGDetector
-        self.buildArtifactDetector = buildArtifactDetector
-        self.rawJPEGDetector = rawJPEGDetector
         self.nameHeuristicDetector = nameHeuristicDetector
         self.repository = repository
         self.incrementalIndex = incrementalIndex
@@ -141,6 +139,10 @@ public actor ScanOrchestrator {
                 let verifiedCache = await byteDetector.verifiedCache
                 let scanRoots = target.directories.map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
 
+                // A cancel that lands between phases must not fan out a
+                // barrage of phase-start events; bail before the fan-out.
+                guard !controller.isCancelled else { continuation.finish(); return }
+
                 continuation.yield(.progress(ScanProgress(
                     phase: .directoryDedup,
                     progress: 0.4,
@@ -206,6 +208,11 @@ public actor ScanOrchestrator {
                 let buildResults = await buildGroups
                 let rawJPEGResults = await rawJPEGGroups
                 let nameHeuristicResults = await nameHeuristicGroups
+
+                // Cancellation may have landed while the fan-out was in
+                // flight — a cancelled scan must not report a summary or
+                // .completed (it would look like a finished scan in the UI).
+                guard !controller.isCancelled else { continuation.finish(); return }
 
                 let dedupCount = dedupResults.reduce(0) { $0 + $1.files.count }
                 for group in dedupResults {

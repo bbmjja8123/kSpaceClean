@@ -28,6 +28,7 @@ extension DuplicateCategory: AppEnum {
             .largeFile: "Large File",
             .buildArtifact: "Build Artifact",
             .rawJPEG: "RAW/JPEG",
+            .nameHeuristic: "Same Name",
         ]
     }
 }

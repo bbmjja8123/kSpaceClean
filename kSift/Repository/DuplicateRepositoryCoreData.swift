@@ -189,6 +189,11 @@ public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
                 jpegFile: files.dropFirst().first ?? first,
                 exifMatch: false
             )
+        case .nameHeuristic:
+            return .nameHeuristic(
+                stem: first.url.lastPathComponent,
+                variantCount: files.count
+            )
         }
     }
 }

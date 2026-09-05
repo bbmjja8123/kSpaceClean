@@ -64,12 +64,11 @@ public final class ScanController: @unchecked Sendable {
     /// while paused, the parked continuation is released so it doesn't
     /// leak.
     public func awaitResumed() async {
-        let shouldPark: Bool = pauseLock.lock(); defer {
-            pauseLock.unlock()
-        }(); return _isPaused
-        // Unreachable; the lock+read above is the gate. The actual park
-        // happens below if needed.
-        _ = shouldPark
+        // Fast path: not paused — nothing to wait for.
+        pauseLock.lock()
+        let wasPaused = _isPaused
+        pauseLock.unlock()
+        guard wasPaused else { return }
 
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             var didPark = false

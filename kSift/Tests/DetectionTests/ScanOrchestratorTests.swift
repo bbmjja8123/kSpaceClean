@@ -92,8 +92,11 @@ actor MockDuplicateRepository: DuplicateRepositoryProtocol {
 final class ScanOrchestratorTests: XCTestCase {
     /// A config that scans only the caller's temp dir via the stub walker.
     private func config(for dir: URL) -> ProfileConfig {
+        // `.custom` scopes the scan to exactly `dir` — preset profiles
+        // would sweep the user's real Desktop/Downloads/Documents, making
+        // the suite slow, machine-dependent, and flaky.
         ProfileConfig(
-            type: .designer,
+            type: .custom,
             customDirectories: [dir.path],
             exclusions: [],
             minFileSize: 1,
@@ -186,34 +189,42 @@ final class ScanOrchestratorTests: XCTestCase {
         try createTempFile(named: "file-1.bin", in: dir, withSize: 1024)
         try createTempFile(named: "file-2.bin", in: dir, withSize: 1024)
 
+        // The REAL FileWalker honors the pause gate (`awaitResumed`) at
+        // each enumeration step, so a paused scan parks before producing
+        // any events. StubFileWalker bypasses the gate, which is why the
+        // real walker is required here.
         let controller = ScanController()
         controller.pause()
         XCTAssertTrue(controller.isPaused)
 
-        let orchestrator = ScanOrchestrator(fileWalker: StubFileWalker(root: dir), repository: MockDuplicateRepository())
-        let streamTask = Task {
-            await orchestrator.run(config: config(for: dir), controller: controller)
-        }
+        let orchestrator = ScanOrchestrator(fileWalker: FileWalker(), repository: MockDuplicateRepository())
+        let stream = await orchestrator.run(config: config(for: dir), controller: controller)
 
-        // Give the pause gate a moment to engage. While paused, no
-        // .completed should arrive.
-        try await Task.sleep(nanoseconds: 200_000_000)
-        let stream = await streamTask.value
-        var sawCompletedWhilePaused = false
-        for await event in stream {
-            if case .completed = event {
-                sawCompletedWhilePaused = true
-                break
+        // Consume the stream in a side task and record when .completed
+        // arrives. While the gate holds, nothing should complete.
+        final class CompletionBox: @unchecked Sendable {
+            var completed = false
+        }
+        let box = CompletionBox()
+        let collector = Task {
+            for await event in stream {
+                if case .completed = event {
+                    box.completed = true
+                    break
+                }
             }
         }
-        // Reaching here means the stream finished without .completed
-        // (which is correct — pause is still on). Resume and run a
-        // second stream from a fresh scan that completes normally.
+
+        // While paused: park long enough that an unpause-less scan would
+        // have finished (the fixture is tiny), then assert no completion.
+        try await Task.sleep(nanoseconds: 400_000_000)
+        XCTAssertFalse(box.completed, "Paused scan must not emit .completed")
+
+        // Resume: the parked walker unblocks and the scan runs to .completed.
         controller.resume()
         XCTAssertFalse(controller.isPaused)
-
-        XCTAssertFalse(sawCompletedWhilePaused,
-                       "Paused scan must not emit .completed")
+        await collector.value
+        XCTAssertTrue(box.completed, "Resumed scan must run to .completed")
     }
 
     func testSaveResultsRecordsData() async throws {

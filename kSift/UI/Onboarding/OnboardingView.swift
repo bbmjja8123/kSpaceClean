@@ -44,7 +44,7 @@ struct OnboardingView: View {
             // Footer: Back / Next (or Get Started on the last step).
             footer
         }
-        .background(Color.windowBackground.ignoresSafeArea())
+        .background(Color(NSColor.windowBackgroundColor).ignoresSafeArea())
         .onAppear { fdaStatus = FDAChecker.status() }
         .onChange(of: fdaStatus) { _ in /* keep UI in sync if user toggles System Settings */ }
     }

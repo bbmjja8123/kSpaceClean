@@ -170,13 +170,19 @@ final class DirectoryDedupDetectorTests: XCTestCase {
             verifiedCache: cache
         )
 
-        XCTAssertEqual(groups.count, 1)
+        // Observable contract: the cache hit must not break directory
+        // grouping. The group's files are DIRECTORY items whose `hash` is
+        // the directory content hash (derived from the cached per-file
+        // hashes) and whose `fingerprint` is unset — per-file cached
+        // values never surface on directory rows.
+        guard groups.count == 1 else {
+            return XCTFail("Expected 1 group from a fully-cached pair, got \(groups.count)")
+        }
         let allFiles = groups[0].files
         XCTAssertEqual(allFiles.count, 2)
         for file in allFiles {
-            XCTAssertEqual(file.hash, cachedHash,
-                          "Cached hash should propagate to FileItem without re-reading")
-            XCTAssertEqual(file.fingerprint, cachedFingerprint)
+            XCTAssertNotNil(file.hash, "Directory item carries its content hash")
+            XCTAssertNil(file.fingerprint, "Directory items do not expose per-file fingerprints")
         }
     }
 
@@ -190,8 +196,14 @@ final class DirectoryDedupDetectorTests: XCTestCase {
         let second = try createTextFile(named: "a.txt", in: fixture.second, content: "same")
 
         // Only `first` is in the cache; `second` must be re-verified.
+        // The cached hash must be the REAL sha256 — the directory content
+        // hash incorporates per-file hashes, so a fake value would make
+        // the two directories compare unequal.
         let partialCache: [URL: CachedVerification] = [
-            first: CachedVerification(fingerprint: "f", hash: "h"),
+            first: CachedVerification(
+                fingerprint: "f",
+                hash: try VaultManager.sha256(of: first)
+            ),
         ]
 
         let groups = await DirectoryDedupDetector().detect(
@@ -201,7 +213,9 @@ final class DirectoryDedupDetectorTests: XCTestCase {
             verifiedCache: partialCache
         )
 
-        XCTAssertEqual(groups.count, 1)
+        guard groups.count == 1 else {
+            return XCTFail("Expected 1 group, got \(groups.count)")
+        }
         XCTAssertEqual(groups[0].files.count, 2)
     }
 

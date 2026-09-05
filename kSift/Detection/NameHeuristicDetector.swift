@@ -26,7 +26,7 @@ public actor NameHeuristicDetector {
         var byStem: [String: [FileItem]] = [:]
         for file in files {
             guard !isCancelled(controller) else { return [] }
-            let stem = normalizedStem(for: file.url.lastPathComponent)
+            let stem = Self.normalizedStem(for: file.url.lastPathComponent)
             guard !stem.isEmpty else { continue }
             byStem[stem, default: []].append(file)
         }

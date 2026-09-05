@@ -94,7 +94,7 @@ final class StoreManagerTests: XCTestCase {
     /// + live `isPaidUser`. Verified by recording some cleanups then
     /// checking that the next call sees the updated counter.
     func testInstanceCanCleanupRoutesThroughLiveState() {
-        let manager = StoreManager()
+        let manager = StoreManager(defaults: defaults)
         // Newly initialized: counter is 0, paid is false, 1 MB is allowed.
         XCTAssertTrue(manager.canCleanup(additionalBytes: 1_000_000))
 
@@ -102,7 +102,9 @@ final class StoreManagerTests: XCTestCase {
         manager.recordFreeTierCleanup(bytes: StoreManager.freeCleanupQuotaBytes - 1)
         XCTAssertTrue(manager.canCleanup(additionalBytes: 1))
 
-        // One more byte puts us over the cap.
+        // Record that last byte: the counter now sits at the cap, so the
+        // next cleanup must be blocked.
+        manager.recordFreeTierCleanup(bytes: 1)
         XCTAssertFalse(manager.canCleanup(additionalBytes: 1))
     }
 
@@ -111,7 +113,7 @@ final class StoreManagerTests: XCTestCase {
     /// recordFreeTierCleanup accumulates and is reflected on the
     /// @Published `freeTierBytesCleaned`.
     func testRecordFreeTierCleanupAccumulates() {
-        let manager = StoreManager()
+        let manager = StoreManager(defaults: defaults)
         manager.recordFreeTierCleanup(bytes: 1_000)
         XCTAssertEqual(manager.freeTierBytesCleaned, 1_000)
         manager.recordFreeTierCleanup(bytes: 2_500)
@@ -123,7 +125,7 @@ final class StoreManagerTests: XCTestCase {
     /// public `recordFreeTierCleanup` should never re-accumulate
     /// from a Pro context. Verifies the guard.
     func testRecordFreeTierCleanupNoOpForPaidUser() {
-        let manager = StoreManager()
+        let manager = StoreManager(defaults: defaults)
         // We can't trigger the StoreKit purchase path in a unit test,
         // but we can flip the isPaidUser flag by calling a private
         // setter exposed only for tests via reflection — easier: just
@@ -145,7 +147,7 @@ final class StoreManagerTests: XCTestCase {
     /// trapping on integer overflow. Without the guard, a future
     /// user with many gigs cleaned could trigger a runtime crash.
     func testRecordFreeTierCleanupSaturates() {
-        let manager = StoreManager()
+        let manager = StoreManager(defaults: defaults)
         manager.recordFreeTierCleanup(bytes: Int64.max - 100)
         manager.recordFreeTierCleanup(bytes: 1_000_000_000)
         XCTAssertEqual(manager.freeTierBytesCleaned, Int64.max,
@@ -158,11 +160,11 @@ final class StoreManagerTests: XCTestCase {
     /// relaunch sees the accumulated counter (the paywall gate cares
     /// about this).
     func testRecordFreeTierCleanupPersistsAcrossInstances() {
-        let first = StoreManager()
+        let first = StoreManager(defaults: defaults)
         first.recordFreeTierCleanup(bytes: 1_234_567)
 
         // New StoreManager reads from the same UserDefaults.
-        let second = StoreManager()
+        let second = StoreManager(defaults: defaults)
         XCTAssertEqual(second.freeTierBytesCleaned, 1_234_567,
                        "Counter must survive a relaunch")
     }
@@ -173,17 +175,20 @@ final class StoreManagerTests: XCTestCase {
     /// entry below the cap falsely unlocks Pro-only flows.
     func testLegacyCounterBelowCapPreserved() {
         defaults.set(Int64(500_000_000), forKey: Self.freeBytesKey)
-        let manager = StoreManager()
+        let manager = StoreManager(defaults: defaults)
         XCTAssertEqual(manager.freeTierBytesCleaned, 500_000_000)
-        // 1.6 GB more still fits (total 2.1 GB, > 2 GB cap → block).
-        XCTAssertFalse(manager.canCleanup(additionalBytes: 1_600_000_000))
+        // cap − 500 MB + 1 byte pushes the total 1 byte past the 2 GB cap
+        // (0.5 GB + 1.6 GB = 2.1 GB is still under the 2_147_483_648-byte cap).
+        XCTAssertFalse(manager.canCleanup(
+            additionalBytes: StoreManager.freeCleanupQuotaBytes - 500_000_000 + 1
+        ))
     }
 
     /// Missing key (fresh install) defaults to zero so the user isn't
     /// stuck in a "I've already cleaned 2 GB" state from the start.
     func testFreshInstallStartsAtZero() {
         // defaults.removePersistentDomain in setUp guarantees no key.
-        let manager = StoreManager()
+        let manager = StoreManager(defaults: defaults)
         XCTAssertEqual(manager.freeTierBytesCleaned, 0)
         XCTAssertTrue(manager.canCleanup(additionalBytes: 1))
     }
@@ -193,7 +198,7 @@ final class StoreManagerTests: XCTestCase {
     /// persistence were skipped at any write path.
     func testCounterWritesThroughUserDefaultsKey() {
         defaults.set(Int64(999), forKey: Self.freeBytesKey)
-        let manager = StoreManager()
+        let manager = StoreManager(defaults: defaults)
         XCTAssertEqual(manager.freeTierBytesCleaned, 999,
                        "Manager must read the exact stored value, not a default")
     }

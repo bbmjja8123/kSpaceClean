@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Horizontal scrolling thumbnail strip for perceptual / directory groups
 /// shown inline in result rows. Caps visible count to keep the row compact;

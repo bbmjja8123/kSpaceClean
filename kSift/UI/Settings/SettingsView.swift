@@ -160,6 +160,7 @@ struct SettingsView: View {
         case .developer: return "hammer.fill"
         case .photographer: return "camera.fill"
         case .designer: return "person.fill"
+        case .custom: return "slider.horizontal.3"
         }
     }
 

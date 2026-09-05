@@ -84,8 +84,7 @@ final class NameHeuristicDetectorTests: XCTestCase {
 
     // MARK: - Helpers
 
-    private func createFile(at relativePath: String, size: Int) throws {
-        let url = URL(fileURLWithPath: relativePath)
+    private func createFile(at url: URL, size: Int) throws {
         try FileManager.default.createDirectory(
             at: url.deletingLastPathComponent(),
             withIntermediateDirectories: true

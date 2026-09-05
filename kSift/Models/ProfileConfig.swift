@@ -4,12 +4,15 @@ public enum ProfileType: String, Sendable, CaseIterable, Codable {
     case developer
     case photographer
     case designer
+    /// No preset directories — only `customDirectories` are scanned.
+    case custom
 
     public var title: String {
         switch self {
         case .developer: return NSLocalizedString("Developer", comment: "Profile name")
         case .photographer: return NSLocalizedString("Photographer", comment: "Profile name")
         case .designer: return NSLocalizedString("Designer", comment: "Profile name")
+        case .custom: return NSLocalizedString("Custom", comment: "Profile name")
         }
     }
 
@@ -21,6 +24,8 @@ public enum ProfileType: String, Sendable, CaseIterable, Codable {
             return ["~/Pictures", "~/Desktop", "~/Downloads", "~/Documents"]
         case .designer:
             return ["~/Desktop", "~/Downloads", "~/Documents"]
+        case .custom:
+            return []
         }
     }
 
@@ -31,6 +36,8 @@ public enum ProfileType: String, Sendable, CaseIterable, Codable {
         case .photographer:
             return []
         case .designer:
+            return []
+        case .custom:
             return []
         }
     }
@@ -43,6 +50,9 @@ public struct ProfileConfig: Sendable, Codable, Equatable {
     public var minFileSize: Int64
     public var enablePerceptualScan: Bool
     public var enableBuildArtifacts: Bool
+    /// Strategy the "Auto Keep" affordances apply when picking the copy to
+    /// keep. Added after v1.2; older payloads decode to `.keepNewest`.
+    public var selectionStrategy: SelectionStrategy
 
     public static let `default` = ProfileConfig(
         type: .developer,
@@ -50,24 +60,28 @@ public struct ProfileConfig: Sendable, Codable, Equatable {
         exclusions: ProfileType.developer.additionalExclusions,
         minFileSize: 1024,
         enablePerceptualScan: true,
-        enableBuildArtifacts: true
+        enableBuildArtifacts: true,
+        selectionStrategy: .keepNewest
     )
 
     public init(type: ProfileType, customDirectories: [String], exclusions: [String],
                 minFileSize: Int64, enablePerceptualScan: Bool,
-                enableBuildArtifacts: Bool = true) {
+                enableBuildArtifacts: Bool = true,
+                selectionStrategy: SelectionStrategy = .keepNewest) {
         self.type = type
         self.customDirectories = customDirectories
         self.exclusions = exclusions
         self.minFileSize = minFileSize
         self.enablePerceptualScan = enablePerceptualScan
         self.enableBuildArtifacts = enableBuildArtifacts
+        self.selectionStrategy = selectionStrategy
     }
 
     // Forward/backward compat: tolerate older serialized JSON missing newer
     // fields. `enableBuildArtifacts` was added after v0; older payloads still
     // decode by defaulting it to true (matches the prior behavior of always
-    // running the build-artifact detector).
+    // running the build-artifact detector). `selectionStrategy` was added
+    // after v1.2 and decodes to the historical `.keepNewest` behavior.
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try c.decodeIfPresent(ProfileType.self, forKey: .type) ?? .developer
@@ -76,5 +90,6 @@ public struct ProfileConfig: Sendable, Codable, Equatable {
         self.minFileSize = try c.decodeIfPresent(Int64.self, forKey: .minFileSize) ?? 1024
         self.enablePerceptualScan = try c.decodeIfPresent(Bool.self, forKey: .enablePerceptualScan) ?? true
         self.enableBuildArtifacts = try c.decodeIfPresent(Bool.self, forKey: .enableBuildArtifacts) ?? true
+        self.selectionStrategy = try c.decodeIfPresent(SelectionStrategy.self, forKey: .selectionStrategy) ?? .keepNewest
     }
 }

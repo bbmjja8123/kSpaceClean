@@ -46,6 +46,7 @@ struct ProfileSetupView: View {
         case .developer: return "terminal"
         case .photographer: return "camera"
         case .designer: return "person"
+        case .custom: return "slider.horizontal.3"
         }
     }
 
@@ -54,6 +55,7 @@ struct ProfileSetupView: View {
         case .developer: return NSLocalizedString("Scans projects, build artifacts, and development directories", comment: "Developer profile description")
         case .photographer: return NSLocalizedString("Scans photos, RAW files, and creative assets", comment: "Photographer profile description")
         case .designer: return NSLocalizedString("Scans desktop, downloads, and documents", comment: "Designer profile description")
+        case .custom: return NSLocalizedString("Scans only the folders you choose", comment: "Custom profile description")
         }
     }
 }

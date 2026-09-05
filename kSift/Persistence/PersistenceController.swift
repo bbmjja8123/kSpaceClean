@@ -18,11 +18,19 @@ public final class PersistenceController: @unchecked Sendable {
 
         let container = NSPersistentContainer(name: "kSift", managedObjectModel: model)
 
+        // Unit tests must never touch the user's real store (and the test
+        // host runs unsigned, so the App Group container may be flaky).
+        // When running under XCTest, isolate the store in a temp directory.
+        let runningTests = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+
         // Prefer the App Group container so the Finder Sync extension can
         // share the same store; fall back to Application Support if the
         // entitlement is missing (development machines, unsigned runs).
         let storeURL: URL
-        if let appGroup = FileManager.default
+        if runningTests {
+            storeURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent("ksift-tests-\(UUID().uuidString).sqlite")
+        } else if let appGroup = FileManager.default
             .containerURL(forSecurityApplicationGroupIdentifier: "group.app.kraftly.ksift") {
             storeURL = appGroup.appendingPathComponent("kSift.sqlite")
         } else {

@@ -20,7 +20,17 @@ final class ProfileConfigStoreTests: XCTestCase {
 
     func testLoadOnEmptyDefaultsReturnsDeveloperProfile() {
         let loaded = ProfileConfigStore.load(defaults: defaults)
-        XCTAssertEqual(loaded, .default)
+        // The store persists only CUSTOM exclusion patterns; the profile's
+        // built-in exclusions are merged at scan time
+        // (`ProfileType.additionalExclusions`), so an empty store yields
+        // empty custom exclusions rather than `.default`'s seeded list.
+        XCTAssertEqual(loaded.type, .developer)
+        XCTAssertEqual(loaded.customDirectories, [])
+        XCTAssertEqual(loaded.exclusions, [])
+        XCTAssertEqual(loaded.minFileSize, 1024)
+        XCTAssertTrue(loaded.enablePerceptualScan)
+        XCTAssertTrue(loaded.enableBuildArtifacts)
+        XCTAssertEqual(loaded.selectionStrategy, .keepNewest)
     }
 
     func testRoundTripPreservesEveryField() {
