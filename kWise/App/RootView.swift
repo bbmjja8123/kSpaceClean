@@ -166,7 +166,7 @@ struct RootView: View {
         case .cleanup:
             CleanupContentView(viewModel: cleanupViewModel)
         case .history:
-            HistoryContentView()
+            TimelineView()
         case .settings:
             SettingsView()
         // v1.5 stage B — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
@@ -192,7 +192,7 @@ struct RootView: View {
         case .spaceMap:
             SpaceMapView(viewModel: spaceMapViewModel)
         case .monthlyReport:
-            PlaceholderModuleView(title: "健康月报", subtitle: "Phase 7 接入")
+            MonthlyReportView()
         case .assistant:
             PlaceholderModuleView(title: "清理助手", subtitle: "Phase 8 接入")
         case .duplicates:

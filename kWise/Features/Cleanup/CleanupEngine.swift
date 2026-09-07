@@ -304,7 +304,11 @@ public actor CleanupEngine {
                         )
                     }
                     let historyContext = await self.persistence.newBackgroundContext()
-                    let recordedTargets = await self.recordHistory(for: targets, in: historyContext)
+                    let recordedTargets = await self.recordHistory(
+                        for: targets,
+                        actionKind: CleanupHistoryItem.ActionKind.cleanup,
+                        in: historyContext
+                    )
                     let recordedPaths = Set(recordedTargets.map(\.url.path))
                     for url in recordedPaths { failedPaths.removeAll { $0 == url } }
 
@@ -429,9 +433,11 @@ public actor CleanupEngine {
         }
         let toCleanFinal = toClean2
 
-        // Record history (batched in one background context).
+        // Record history (batched in one background context). One runID per
+        // `cleanup(targets:)` call groups rows into a timeline event (Phase 7).
+        let runID = UUID()
         let historyContext = persistence.newBackgroundContext()
-        let recorded = await recordHistory(for: toCleanFinal, in: historyContext)
+        let recorded = await recordHistory(for: toCleanFinal, runID: runID, in: historyContext)
 
         // Move files to trash. Use FileManager.trashItem — it routes through the
         // Finder Trash so the user can undo via Finder's "Put Back". NSWorkspace
@@ -512,9 +518,14 @@ public actor CleanupEngine {
     /// and saves once at the end. Returns the targets whose insert succeeded,
     /// so the caller can clean only the recorded ones (best-effort consistency).
     private func recordHistory(for targets: [CleanupTarget],
+                               runID: UUID? = nil,
+                               actionKind: String? = nil,
                                in context: NSManagedObjectContext) async -> [CleanupTarget] {
         await context.perform { [persistence] in
-            let inserted = persistence.insertHistory(targets: targets, in: context)
+            let inserted = persistence.insertHistory(
+                targets: targets, runID: runID,
+                actionKind: actionKind, in: context
+            )
             persistence.save(context: context)
             // We can't tell individual failures apart from a batched save; assume
             // success and let the trash-move phase surface real failures.

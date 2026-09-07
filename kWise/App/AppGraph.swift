@@ -55,12 +55,13 @@ public final class AppGraph: ObservableObject {
         }
         let quotaLedger = FreeQuotaStore.standard()
         // The menu bar observes the same event stream (C-8 "最近清理" row);
-        // the widget snapshot feed updates last-cleanup the same way.
+        // the widget snapshot feed + streak ledger update the same way.
         self.eventSinks = [
             QuotaRecordSink(store: quotaLedger),
             CleanupNotificationSink(),
             menuBarManager,
             WidgetSnapshotSink(),
+            StreakSink(),
         ]
         self.cleanupEngine = CleanupEngine(
             persistence: persistence,

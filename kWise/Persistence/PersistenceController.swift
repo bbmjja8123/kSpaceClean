@@ -116,6 +116,8 @@ public final class PersistenceController: @unchecked Sendable {
     @discardableResult
     public func insertHistory(targets: [CleanupTarget],
                               cleanedAt: Date = Date(),
+                              runID: UUID? = nil,
+                              actionKind: String? = nil,
                               in context: NSManagedObjectContext) -> [CleanupHistoryItem] {
         targets.map { target in
             let item = CleanupHistoryItem(context: context)
@@ -126,6 +128,9 @@ public final class PersistenceController: @unchecked Sendable {
             item.bundleID = target.bundleID
             item.categoryID = target.categoryID
             item.risk = target.risk
+            // v2.0 Phase 7 — timeline fields (nil for legacy call sites).
+            item.runID = runID
+            item.actionKind = actionKind
             return item
         }
     }

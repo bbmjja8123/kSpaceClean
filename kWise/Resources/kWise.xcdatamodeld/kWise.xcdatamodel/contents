@@ -15,6 +15,9 @@
         <attribute name="path" attributeType="String"/>
         <attribute name="riskLevel" attributeType="String" defaultValueString="recommended"/>
         <attribute name="size" attributeType="Integer 64" usesScalarValueType="YES" defaultValueString="0"/>
+        <attribute name="runID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="actionKind" optional="YES" attributeType="String"/>
+        <attribute name="restoredAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <entity name="FileEntry" representedClassName="FileEntry" syncable="YES">
         <attribute name="actionID" attributeType="Integer 64" usesScalarValueType="YES" defaultValueString="-1"/>

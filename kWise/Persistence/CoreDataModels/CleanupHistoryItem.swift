@@ -35,6 +35,37 @@ extension CleanupHistoryItem {
     /// `RiskLevel.persistenceKey` — stored as a string so the model survives
     /// re-ordering of the enum's raw `Int` values.
     @NSManaged public var riskLevel: String?
+
+    // v2.0 Phase 7 — timeline grouping + per-run rollback (lightweight
+    // migration: optional attributes, no versioned model needed).
+
+    /// One GUID per `cleanup(targets:)` run — groups rows into timeline events.
+    @NSManaged public var runID: UUID?
+    /// `"cleanup" | "shred" | "startupItem" | nil` (nil = legacy v1 row).
+    @NSManaged public var actionKind: String?
+    /// When the item was restored from the Trash; nil until restored.
+    @NSManaged public var restoredAt: Date?
+}
+
+extension CleanupHistoryItem {
+    /// Well-known action kinds.
+    public enum ActionKind {
+        public static let cleanup = "cleanup"
+        public static let shred = "shred"
+        public static let startupItem = "startupItem"
+    }
+
+    /// Friendly kind label for the timeline; legacy rows read as cleanup.
+    public var kindLabel: String {
+        switch actionKind {
+        case ActionKind.shred: return "粉碎"
+        case ActionKind.startupItem: return "启动项"
+        default: return "清理"
+        }
+    }
+
+    /// Whether a restore already happened for this row.
+    public var isRestored: Bool { restoredAt != nil }
 }
 
 extension CleanupHistoryItem {

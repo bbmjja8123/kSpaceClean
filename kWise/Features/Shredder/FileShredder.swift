@@ -214,7 +214,12 @@ public actor FileShredder {
         let context = persistence.newBackgroundContext()
         let target = CleanupTarget(url: url, size: size, risk: .caution)
         await context.perform { [persistence] in
-            persistence.insertHistory(targets: [target], in: context)
+            persistence.insertHistory(
+                targets: [target],
+                runID: UUID(),
+                actionKind: CleanupHistoryItem.ActionKind.shred,
+                in: context
+            )
             persistence.save(context: context)
         }
     }

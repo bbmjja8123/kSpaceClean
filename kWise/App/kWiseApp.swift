@@ -32,6 +32,8 @@ struct kWiseApp: App {
                     // Phase 6: opportunistically refresh the widget feed's
                     // disk numbers (no background agent — MAS policy).
                     WidgetSnapshotSink.refreshDiskInfo()
+                    // Phase 7: daily disk-usage sample (opportunistic).
+                    DiskUsageSampler().sample()
                 }
         }
         .windowStyle(.hiddenTitleBar)

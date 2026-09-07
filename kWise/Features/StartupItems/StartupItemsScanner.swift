@@ -167,7 +167,12 @@ public actor StartupItemToggler {
             bundleID: entry.label
         )
         await context.perform { [persistence] in
-            persistence.insertHistory(targets: [target], in: context)
+            persistence.insertHistory(
+                targets: [target],
+                runID: UUID(),
+                actionKind: CleanupHistoryItem.ActionKind.startupItem,
+                in: context
+            )
             persistence.save(context: context)
         }
         // Keep the trash mapping for restore.
