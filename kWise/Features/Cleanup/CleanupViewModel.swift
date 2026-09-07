@@ -6,6 +6,10 @@ import SwiftUI
 public final class CleanupViewModel: ObservableObject {
     @Published public var isCleaning = false
     @Published public var lastResult: TrashResult?
+    /// Raw engine outcome of the last structured run — the scan surface's
+    /// confirm sheet shows the truthful freed bytes from here (the legacy
+    /// `TrashResult` records `fileSize: 0`, so it cannot).
+    @Published public private(set) var lastOutcome: CleanupOutcome?
     @Published public var cleanupHistory: [CleanupHistoryItem] = []
     /// Pending cleanup list — set externally (e.g. by the Smart Care
     /// orchestrator's `.confirm()` or the CleanupContentView confirm dialog)
@@ -64,7 +68,11 @@ public final class CleanupViewModel: ObservableObject {
     /// the v1.5 confirmation dialog. Maps `urlsToCleanup` (raw URLs) onto
     /// `CleanupTarget`s, calls into the engine, and refreshes history on
     /// return. Errors are surfaced via `lastResult` for the UI to read.
-    public func cleanupNow() async {
+    ///
+    /// - Parameter sizes: scanned size per URL (from the selection), so the
+    ///   outcome reports truthful freed bytes without a per-URL syscall
+    ///   storm. `nil` = fall back to a per-URL stat.
+    public func cleanupNow(sizes: [URL: Int64]? = nil) async {
         let urls = urlsToCleanup
         guard !urls.isEmpty else { return }
         isCleaning = true
@@ -73,11 +81,14 @@ public final class CleanupViewModel: ObservableObject {
             Task { await self.refreshHistory() }
         }
         let targets = urls.map { url -> CleanupTarget in
-            let size = (try? url.resourceValues(forKeys: [.fileSizeKey]))?.fileSize.map(Int64.init) ?? 0
+            let size = sizes?[url]
+                ?? (try? url.resourceValues(forKeys: [.fileSizeKey])).flatMap { $0.fileSize.map(Int64.init) }
+                ?? 0
             return CleanupTarget(url: url, size: size, risk: .recommended)
         }
         do {
             let outcome = try await engine.cleanup(targets: targets)
+            self.lastOutcome = outcome
             // Best-effort conversion into the legacy TrashResult shape so the
             // history list view keeps rendering through the existing
             // `lastResult` accessor.

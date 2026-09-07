@@ -41,11 +41,15 @@ struct ScanResultsView: View {
     /// it in; previews use the no-arg init.
     @ObservedObject var viewModel: ScanResultsViewModel
 
-    /// Smart Care view model. Same ownership pattern as `viewModel` — owned
-    /// by `RootView`'s `@StateObject` and shared across the home and scan
-    /// surfaces so the 清 理 button on the results bar can trigger the
-    /// same 3-step pipeline that the home surface does.
+    /// Smart Care view model — used by the Smart Care surface only. The
+    /// results SummaryBar now cleans the user's actual selection through
+    /// `cleanupViewModel` (UX 重构 Phase 2).
     @ObservedObject var smartCareViewModel: SmartCareViewModel
+
+    /// Cleanup view model (graph engine + quota + paywall routing) —
+    /// the SummaryBar 清理 CTA runs the checked URLs through it.
+    @ObservedObject var cleanupViewModel: CleanupViewModel
+    @State private var showCleanupConfirm = false
 
     /// Builds the full screen as a vertical stack of header / divider /
     /// scrollable tree / divider / summary bar.
@@ -80,45 +84,24 @@ struct ScanResultsView: View {
                     )
                 }
             } else {
-                VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Toggle("显示过滤掉的项", isOn: $viewModel.showAllHidden)
-                            .font(Typography.regularBody())
-                            .foregroundStyle(Color.textSecondary)
-                            .toggleStyle(.checkbox)
-                            .accessibilityLabel("显示过滤掉的项")
-                    }
-                    .padding(.horizontal, Spacing.md)
-                    .padding(.vertical, Spacing.xs)
-
-                    ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 0) {
-                            ForEach(viewModel.categories) { category in
-                                let treeNode = RecursiveTreeNode(
-                                    node: category,
-                                    level: 0,
-                                    expandedIDs: viewModel.expandedIDs,
-                                    showAllHidden: viewModel.showAllHidden,
-                                    onToggleExpand: viewModel.toggleExpand,
-                                    onToggleSelect: viewModel.toggleSelect
-                                )
-                                if treeNode.isVisibleWhenHidden(showAllHidden: viewModel.showAllHidden) {
-                                    treeNode.equatable()
-                                }
-                            }
-                        }
-                        .padding(.vertical, Spacing.sm)
-                    }
-                }
+                // UX 重构 Phase 2: 分类→应用→文件 三级主从视图. Row suppliers
+                // return capped slices so expanding never materializes a whole
+                // subtree (the old RecursiveTreeNode freeze).
+                ScanResultsMasterDetailView(viewModel: viewModel)
             }
 
             Divider().background(Color.divider)
 
             // Summary bar
-            SummaryBar(viewModel: viewModel, smartCareViewModel: smartCareViewModel)
+            SummaryBar(viewModel: viewModel, onClean: { showCleanupConfirm = true })
         }
         .background(Color.bgCanvas)
+        .sheet(isPresented: $showCleanupConfirm) {
+            CleanupConfirmSheet(viewModel: viewModel, cleanupViewModel: cleanupViewModel) {
+                showCleanupConfirm = false
+            }
+            .frame(width: 440, height: 320)
+        }
     }
 
     /// Header bar: large title on the leading edge, selection count + total
@@ -297,82 +280,8 @@ struct PreScanPanel: View {
 /// level-specific fields.
 ///
 /// `RecursiveTreeNode` conforms to `Equatable` so SwiftUI can skip the
-/// body re-evaluation for a whole subtree whose `(node.id, level,
-/// expandedIDs, showAllHidden)` tuple is unchanged. The two callbacks are
-/// stable references for the view tree's lifetime and would only force
-/// equality churn on every parent invalidation.
-struct RecursiveTreeNode: View, Equatable {
-    /// Tree node being rendered. Polymorphic — `ScanTreeRow` handles the
-    /// per-level field access via runtime `as?` checks.
-    let node: any ScanTreeNode
-    /// Zero-based nesting depth driving the leading indent.
-    let level: Int
-    /// Set of expanded node ids — mirrors the owning view-model state.
-    let expandedIDs: Set<UUID>
-    /// When `true`, `isHiddenByFilter` nodes render too (the "显示过滤掉的项"
-    /// toggle). Fold-not-delete: hidden nodes stay in the data model and
-    /// are skipped by the renderer at every level unless revealed.
-    let showAllHidden: Bool
-    /// User tapped the chevron. Parent toggles its expanded state.
-    let onToggleExpand: (UUID) -> Void
-    /// User tapped the checkbox. Parent routes through the cascade.
-    let onToggleSelect: (any ScanTreeNode) -> Void
 
-    /// Equatable conformance — drives `.equatable()` on the recursive
-    /// children in `body` so subtrees whose `(node.id, level,
-    /// expandedIDs, showAllHidden)` tuple is unchanged skip body
-    /// evaluation. This is the key win for the leaf-level `.on → .off`
-    /// flip case described in the perf brief: a sibling leaf toggling no
-    /// longer rebuilds the HStack for every other row in the tree.
-    /// `showAllHidden` participates so flipping the "显示过滤掉的项" toggle
-    /// invalidates every row and forces a re-render.
-    static func == (lhs: RecursiveTreeNode, rhs: RecursiveTreeNode) -> Bool {
-        lhs.node.id == rhs.node.id
-            && lhs.level == rhs.level
-            && lhs.expandedIDs == rhs.expandedIDs
-            && lhs.showAllHidden == rhs.showAllHidden
-    }
 
-    /// Always renders the row; the children are wrapped in a single
-    /// `Group` so the body shape stays uniform across the recursion.
-    var body: some View {
-        let isExpanded = expandedIDs.contains(node.id)
-        ScanTreeRow(
-            node: node,
-            level: level,
-            isExpanded: isExpanded,
-            onToggleExpand: { onToggleExpand(node.id) },
-            onToggleSelect: { onToggleSelect(node) }
-        )
-        .equatable()
-        Group {
-            if isExpanded {
-                ForEach(Array(node.children.enumerated()), id: \.element.id) { _, child in
-                    let childNode = RecursiveTreeNode(
-                        node: child,
-                        level: level + 1,
-                        expandedIDs: expandedIDs,
-                        showAllHidden: showAllHidden,
-                        onToggleExpand: onToggleExpand,
-                        onToggleSelect: onToggleSelect
-                    )
-                    if childNode.isVisibleWhenHidden(showAllHidden: showAllHidden) {
-                        childNode.equatable()
-                    }
-                }
-            }
-        }
-    }
-}
-
-extension RecursiveTreeNode {
-    /// Hidden nodes stay in the data model (fold-not-delete) but are
-    /// skipped by the renderer unless the user reveals them.
-    func isVisibleWhenHidden(showAllHidden: Bool) -> Bool {
-        if showAllHidden { return true }
-        return !node.isHiddenByFilter
-    }
-}
 
 /// Bottom-pinned summary bar with selection count / size, bulk-select
 /// buttons, and the primary cleanup CTA.
@@ -391,9 +300,11 @@ struct SummaryBar: View {
     /// model's lifetime via `@StateObject`.
     @ObservedObject var viewModel: ScanResultsViewModel
 
-    /// Smart Care VM — same lifetime contract. Used by the 清 理 CTA
-    /// (Phase B Task 4 wiring) to start the 3-step Smart Care pipeline.
-    @ObservedObject var smartCareViewModel: SmartCareViewModel
+    /// Invoked when the user taps 清 理 — the parent presents the
+    /// confirmation sheet and cleans the *checked* selection through the
+    /// graph engine (quota + paywall + history). The old wiring re-ran
+    /// Smart Care and ignored the selection entirely.
+    let onClean: () -> Void
 
     /// Renders the summary bar content: stack of two text lines on the
     /// left, two bordered bulk-select buttons, and the primary cleanup
@@ -420,7 +331,7 @@ struct SummaryBar: View {
             }
 
             Button {
-                smartCareViewModel.runSmartCare()
+                onClean()
             } label: {
                 Text("清 理")
                     .font(Typography.largeBody())
@@ -449,6 +360,97 @@ struct SummaryBar: View {
     }
 }
 
+// MARK: - Cleanup confirmation sheet (UX 重构 Phase 2)
+
+/// Confirm panel for cleaning the checked selection: item count, total
+/// bytes, risk breakdown, and the 确认清理 action. The cleanup runs
+/// through the graph engine (history + quota + paywall) — not Smart Care.
+struct CleanupConfirmSheet: View {
+    @ObservedObject var viewModel: ScanResultsViewModel
+    @ObservedObject var cleanupViewModel: CleanupViewModel
+    let onDismiss: () -> Void
+
+    /// Risk breakdown over the checked leaves (single walk).
+    private var riskCounts: (recommended: Int, caution: Int, dangerous: Int) {
+        var counts = (recommended: 0, caution: 0, dangerous: 0)
+        func walk(_ node: any ScanTreeNode) {
+            if node.state == .checked, node.children.isEmpty {
+                switch node.riskLevel {
+                case .recommended: counts.recommended += 1
+                case .optional: break
+                case .caution: counts.caution += 1
+                case .dangerous: counts.dangerous += 1
+                }
+            }
+            if node.state != .unchecked {
+                for child in node.children { walk(child) }
+            }
+        }
+        for category in viewModel.categories { walk(category) }
+        return counts
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.lg) {
+            Text("确认清理")
+                .font(Typography.largeTitle())
+                .foregroundStyle(Color.textPrimary)
+
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                Text("\(viewModel.totalSelectedCount) 项 · \(formatBytes(viewModel.totalSelectedSize))")
+                    .font(Typography.largeBody())
+                    .foregroundStyle(Color.textPrimary)
+                let risks = riskCounts
+                if risks.caution > 0 || risks.dangerous > 0 {
+                    Text("包含 \(risks.caution) 项注意 / \(risks.dangerous) 项危险，请确认。")
+                        .font(Typography.regularBody())
+                        .foregroundStyle(Color.warning)
+                }
+                Text("所有项目将移入废纸篓，30 天内可随时还原。")
+                    .font(Typography.regularBody())
+                    .foregroundStyle(Color.textSecondary)
+            }
+
+            if let outcome = cleanupViewModel.lastOutcome {
+                HStack(spacing: Spacing.sm) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(Color.success)
+                    Text("已释放 \(formatBytes(outcome.freedBytes))")
+                        .font(Typography.largeBody())
+                        .foregroundStyle(Color.success)
+                }
+            }
+
+            if cleanupViewModel.isCleaning {
+                ProgressView()
+                    .controlSize(.small)
+            }
+
+            Spacer()
+
+            HStack {
+                Button("取消", action: onDismiss)
+                    .buttonStyle(.bordered)
+                Spacer()
+                Button("确认清理") {
+                    Task {
+                        cleanupViewModel.urlsToCleanup = viewModel.selectedURLs()
+                        await cleanupViewModel.cleanupNow(sizes: viewModel.selectedSizesByURL())
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(Color.brandPrimary)
+                .disabled(cleanupViewModel.isCleaning || viewModel.totalSelectedSize == 0)
+            }
+        }
+        .padding(Spacing.lg)
+    }
+
+    private func formatBytes(_ bytes: Int64) -> String {
+        sharedByteCountFormatter.string(fromByteCount: bytes)
+    }
+}
+
 #if DEBUG
 /// Xcode 14 preview surface — exercises the full screen at the
 /// 960×720 design-system canvas size.
@@ -456,7 +458,8 @@ struct ScanResultsView_Previews: PreviewProvider {
     static var previews: some View {
         ScanResultsView(
             viewModel: ScanResultsViewModel(engine: nil),
-            smartCareViewModel: SmartCareViewModel()
+            smartCareViewModel: SmartCareViewModel(),
+            cleanupViewModel: CleanupViewModel()
         )
             .frame(width: 960, height: 720)
     }

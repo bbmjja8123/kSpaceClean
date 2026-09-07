@@ -149,7 +149,8 @@ struct RootView: View {
         case .scan:
             ScanResultsView(
                 viewModel: scanResultsViewModel,
-                smartCareViewModel: smartCareViewModel
+                smartCareViewModel: smartCareViewModel,
+                cleanupViewModel: cleanupViewModel
             )
         case .cleanup:
             CleanupContentView(viewModel: cleanupViewModel)
