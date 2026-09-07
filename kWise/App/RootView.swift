@@ -175,7 +175,7 @@ struct RootView: View {
         case .photoClean:
             PhotoCleanView(viewModel: makePhotoCleanViewModel())
         case .maintenance:
-            MaintenanceView()
+            MaintenanceView(viewModel: makeMaintenanceViewModel())
         }
     }
 
@@ -204,6 +204,12 @@ struct RootView: View {
 
     private func makePhotoCleanViewModel() -> PhotoCleanViewModel {
         let vm = PhotoCleanViewModel(engine: graph.cleanupEngine)
+        vm.onQuotaExhausted = { coordinator.presentPaywall() }
+        return vm
+    }
+
+    private func makeMaintenanceViewModel() -> MaintenanceViewModel {
+        let vm = MaintenanceViewModel(engine: graph.cleanupEngine)
         vm.onQuotaExhausted = { coordinator.presentPaywall() }
         return vm
     }
