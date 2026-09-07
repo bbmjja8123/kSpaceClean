@@ -71,6 +71,12 @@ struct ToolboxView: View {
                         subtitle: "维护任务与引导",
                         destination: .maintenance
                     )
+                    ToolboxCard(
+                        icon: "sparkles",
+                        title: "清理助手",
+                        subtitle: "问一句，找到该删的",
+                        destination: .assistant
+                    )
                 }
             }
             .padding(AppSpacing.lg)

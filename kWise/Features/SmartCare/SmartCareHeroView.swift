@@ -205,7 +205,7 @@ struct SmartCareHeroView: View {
 
     // MARK: - Module grid
 
-    /// Module grid — Disk Health card (live grade) + Privacy + Settings.
+    /// Module grid — Disk Health card (live grade) + Privacy + Assistant + Settings.
     private var moduleGrid: some View {
         HStack(spacing: AppSpacing.md) {
             DiskHealthCard(viewModel: diskHealthViewModel) {
@@ -216,6 +216,12 @@ struct SmartCareHeroView: View {
                 title: "隐私",
                 subtitle: "浏览器 · 权限",
                 destination: .privacy
+            )
+            moduleCard(
+                icon: "sparkles",
+                title: "清理助手",
+                subtitle: "问一句就找到",
+                destination: .assistant
             )
             moduleCard(
                 icon: "gear",

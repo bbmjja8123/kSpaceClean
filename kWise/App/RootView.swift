@@ -35,6 +35,10 @@ struct RootView: View {
     @StateObject private var spaceMapViewModel = SpaceMapViewModel(
         rootsProvider: { [] }
     )
+    /// First-launch onboarding (v2.0 Phase 8) — welcome → PowerScope grant
+    /// → menu bar & widget tour. Never re-shown once completed.
+    @AppStorage("onboarding.completed.v1") private var onboardingCompleted = false
+    @State private var showOnboarding = false
 
     var body: some View {
         GeometryReader { geo in
@@ -115,6 +119,17 @@ struct RootView: View {
         .sheet(item: $coordinator.presentedSheet) { _ in
             PaywallView(store: graph.storeManager)
         }
+        // First-launch onboarding — attached to a nested view so it can
+        // coexist with the paywall sheet (only one sheet per view node).
+        .background(
+            Color.clear
+                .sheet(isPresented: $showOnboarding) {
+                    OnboardingContainerView {
+                        onboardingCompleted = true
+                        showOnboarding = false
+                    }
+                }
+        )
         .onAppear {
             // Late-bind the Smart Care VM to the scan VM. Two @StateObject
             // can't reference each other at init time; `.attach` resolves the
@@ -144,6 +159,10 @@ struct RootView: View {
             }
             graph.menuBarManager.onOpenSettings = {
                 appState.navigation = .settings
+            }
+            // First-launch onboarding (v2.0 Phase 8).
+            if !onboardingCompleted {
+                showOnboarding = true
             }
         }
     }
@@ -194,7 +213,7 @@ struct RootView: View {
         case .monthlyReport:
             MonthlyReportView()
         case .assistant:
-            PlaceholderModuleView(title: "清理助手", subtitle: "Phase 8 接入")
+            AssistantView()
         case .duplicates:
             DuplicateView(viewModel: makeDuplicateViewModel())
         case .largeOld:

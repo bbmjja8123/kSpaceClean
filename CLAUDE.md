@@ -321,14 +321,26 @@ kWise/
 - [x] **5 commits per phase / 18 commits total** — worktree-kwise-v1 ahead of origin/main
 - [x] **精品 MUST 6/6** — C-1 ✅ C-3 ✅ C-4 ✅ C-5 ✅ C-6 ✅ C-8 ✅
 
+### kWise v2.0 — 竞品超越冲刺 ✅ (2026-09-07)
+> 8 phases / 9 commits on `worktree-kwise-v1`。计划：`.claude/plans/atomic-bubbling-wave.md`（含竞品差距矩阵 + 验收清单）。
+- [x] **Phase 1 DI 统一 + 配额** — AppGraph 单根（1 StoreManager / 1 MenuBarManager / engine 带 quota+sinks）；1 GiB/月免费额度（超限截断 → Paywall）；SMAppService 登录启动；清理后通知真实化；Settings prefs 持久化修复；AI toggle 改名「智能推荐（本机规则）」；删 Spotlight/LiveActivity/LaunchAgent 死目录
+- [x] **Phase 2 Toolbox + 孤儿接线** — 固定 6 项 rail + ToolboxView（8 卡片）；AppUninstall/LargeOld/Duplicate/PhotoClean 全部走 CleanupEngine（历史/回滚/配额）；Maintenance 去 Process → 引导式（~/Library/Logs 引擎动作）；deep link `?path=` 消费
+- [x] **Phase 3 CTA + 菜单栏** — Smart Care hero CTA 全流程状态机 + containerOnly 授权卡；DiskHealthCard 上首页；菜单栏 quickClean/quickScan/openSettings 实现 + 真实「最近清理」行（CleanupEventSink）
+- [x] **Phase 4 空间地图 2D** — SegmentBuilder（2π 守恒/小项折叠）+ Canvas sunburst/treemap + 下钻/面包屑 + ⌘选中映射 ScanTreeNode（删 .galaxy）
+- [x] **Phase 5 M2 + M6** — 启动项：PowerScope 扫描 + 用户级 trash/restore 开关 + 系统级「需手动处理」引导；粉碎：护栏 → 1-pass 覆写（SSD 诚实文案）→ 校验 → 3 次改名 → trash 处置 + DELETE 确认
+- [x] **Phase 6 Widget + Intents** — kWise/Shared/WidgetFeed 双 target（WidgetSnapshot 原子写 App Group + schemaVersion 守卫）；Widget 真实数据 + 交互清理按钮（Button(intent:) → kwise://smartcare）；Intents 回 target（Shortcuts 恢复）
+- [x] **Phase 7 创意三件套** — Core Data 轻量迁移（runID/actionKind/restoredAt）+ 时间线（按 run 分组、整体回滚）；月报（DiskSampleStore 环形采样 + OLS 预测，r²<0.5 → 波动较大）；StreakStore/9 成就/StreakSink → widget streak
+- [x] **Phase 8 助手 + Onboarding + 本地化** — AssistantIntentMatcher（zh/en 模板表，零网络，audit 测试禁 URLSession）+ 答案卡片；Onboarding 首启（welcome → PowerScope → tour）；xcstrings 30 → 51 keys（nav.* 三语）；NewCopyAuditTests（scareware 禁语 + 粉碎诚实文案）
+- [x] **测试** — Phase 1/2/3/4/5/6/7/8 各模块新增 ~90 用例；⚠️ xcodebuild test-runner 挂起（环境 wedge，2026-09-05 已知，重启后跑全量）
+
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
 - [ ] kUninstall 设计 — 应用卸载
-- [ ] kWise v1.6 — Interactive Widget / Live Activities 完整接线 / Shortcuts 全套 / CoreML 模型训练 / 定时自动清理
-- [ ] kWise v2 — 3D 磁盘星系图（Paywall 文案已撤回，未来重启前需 Product 拍板）
+- [ ] kWise v2.0 后续 — CreateML 文本分类器（本地路径语料）· 月报通知深链 · 定时自动清理 · 存量 UI 本地化补齐（v2.0 新文案三语已完成，老界面仍硬编码中文）
+- [ ] kWise v2 — 3D 磁盘星系图（已被 2D 空间地图替代交付；Metal 重启需 Product 拍板）
 
 > ⚠️ **现阶段不要写实现代码**。所有设计待汇总到 spec 文档并通过后，再通过 writing-plans 技能拆解为可执行任务。
 
 ---
 
-最后更新：2026-08-15（kWise v1.5 stage B ship-ready，5 phases / 18 commits / 6/6 精品 MUST）
+最后更新：2026-09-07（kWise v2.0 竞品超越冲刺 8 phases / 9 commits；待重启后全量 test）
