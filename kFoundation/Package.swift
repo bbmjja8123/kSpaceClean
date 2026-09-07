@@ -12,6 +12,10 @@ let package = Package(
         .library(name: "CommonUtils", targets: ["CommonUtils"]),
         .library(name: "MetricsKit", targets: ["MetricsKit"]),
         .library(name: "PowerScope", targets: ["PowerScope"]),
+        // v2.2 framework architecture — per-app engine modules (kSift / kFresh / kWatch).
+        .library(name: "DetectionCore", targets: ["DetectionCore"]),
+        .library(name: "AppCatalogCore", targets: ["AppCatalogCore"]),
+        .library(name: "MonitorCore", targets: ["MonitorCore"]),
     ],
     targets: [
         .target(name: "DesignSystem", dependencies: ["MetricsKit"]),
@@ -20,10 +24,29 @@ let package = Package(
         .target(name: "CommonUtils"),
         .target(name: "MetricsKit"),
         .target(name: "PowerScope"),
+        // DetectionCore (extracted from kSift): duplicate/large-file detection
+        // pipeline. Depends only on FileScanner — no AppKit/CoreData/Photos.
+        .target(name: "DetectionCore", dependencies: ["FileScanner"]),
+        // AppCatalogCore (extracted from kFresh): app catalog + residue rules
+        // (cask_rules.json / zh_app_mappings.json shipped as package resources).
+        .target(
+            name: "AppCatalogCore",
+            dependencies: ["CommonUtils", "FileScanner"],
+            resources: [
+                .copy("Resources/cask_rules.json"),
+                .copy("Resources/zh_app_mappings.json"),
+            ]
+        ),
+        // MonitorCore (extracted from kWatch): snapshot export, history/alert
+        // repositories, diagnostics. Built on MetricsKit.
+        .target(name: "MonitorCore", dependencies: ["MetricsKit"]),
         .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"]),
         .testTarget(name: "FileScannerTests", dependencies: ["FileScanner"]),
         .testTarget(name: "CommonUtilsTests", dependencies: ["CommonUtils", "DesignSystem"]),
         .testTarget(name: "MetricsKitTests", dependencies: ["MetricsKit"]),
         .testTarget(name: "PowerScopeTests", dependencies: ["PowerScope"]),
+        .testTarget(name: "DetectionCoreTests", dependencies: ["DetectionCore"]),
+        .testTarget(name: "AppCatalogCoreTests", dependencies: ["AppCatalogCore"]),
+        .testTarget(name: "MonitorCoreTests", dependencies: ["MonitorCore"]),
     ]
 )
