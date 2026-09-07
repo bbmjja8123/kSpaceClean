@@ -14,16 +14,30 @@ public final class AppState: ObservableObject {
         case cleanup = "cleanup"
         case history = "history"
         case settings = "settings"
-        // v1.5 stage B — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
-        // Added in Task 1; placeholder views only. Real module wiring in Phase B/C/D.
         case smartCare = "smartCare"
         case privacy = "privacy"
         case diskHealth = "diskHealth"
-        // Phase 3+ — M2 / M5 / M6 surfaces and the Phase 7 galaxy view.
+        // v2.0 — module surfaces (see plan: kWise 全面深度优化).
         case startupItems = "startupItems"
         case appUninstall = "appUninstall"
         case shredder = "shredder"
-        case galaxy = "galaxy"
+        // v2.0 — toolbox + creative surfaces. `.galaxy` (3D) was removed:
+        // the 2D space map is `.spaceMap`.
+        case tools = "tools"
+        case spaceMap = "spaceMap"
+        case monthlyReport = "monthlyReport"
+        case assistant = "assistant"
+        case duplicates = "duplicates"
+        case largeOld = "largeOld"
+        case photoClean = "photoClean"
+        case maintenance = "maintenance"
+
+        /// Fixed icon-rail order (v2.0 Phase 2). The rail no longer grows
+        /// with every module — deep surfaces live in the toolbox and are
+        /// reachable via deep links + `allCases`.
+        public static var railItems: [NavigationItem] {
+            [.smartCare, .scan, .tools, .cleanup, .history, .settings]
+        }
 
         public var iconName: String {
             switch self {
@@ -37,23 +51,37 @@ public final class AppState: ObservableObject {
             case .startupItems: return "power"
             case .appUninstall: return "app.badge.checkmark"
             case .shredder: return "document.badge.ellipsis"
-            case .galaxy: return "sparkles.rectangle.stack"
+            case .tools: return "square.grid.2x2"
+            case .spaceMap: return "circle.hexagongrid.circle"
+            case .monthlyReport: return "chart.bar.doc.horizontal"
+            case .assistant: return "sparkles"
+            case .duplicates: return "doc.on.doc"
+            case .largeOld: return "arrow.up.left.and.arrow.down.right"
+            case .photoClean: return "photo.on.rectangle"
+            case .maintenance: return "wrench.and.screwdriver"
             }
         }
 
         public var tooltip: String {
             switch self {
-            case .scan: return "扫描"
-            case .cleanup: return "清理"
-            case .history: return "历史"
-            case .settings: return "设置"
-            case .smartCare: return "智能清理"
-            case .privacy: return "隐私"
-            case .diskHealth: return "磁盘健康"
-            case .startupItems: return "启动项"
-            case .appUninstall: return "应用卸载"
-            case .shredder: return "文件粉碎"
-            case .galaxy: return "磁盘星系"
+            case .scan: return String(localized: "nav.scan")
+            case .cleanup: return String(localized: "nav.cleanup")
+            case .history: return String(localized: "nav.history")
+            case .settings: return String(localized: "nav.settings")
+            case .smartCare: return String(localized: "nav.smartCare")
+            case .privacy: return String(localized: "nav.privacy")
+            case .diskHealth: return String(localized: "nav.diskHealth")
+            case .startupItems: return String(localized: "nav.startupItems")
+            case .appUninstall: return String(localized: "nav.appUninstall")
+            case .shredder: return String(localized: "nav.shredder")
+            case .tools: return String(localized: "nav.tools")
+            case .spaceMap: return String(localized: "nav.spaceMap")
+            case .monthlyReport: return String(localized: "nav.monthlyReport")
+            case .assistant: return String(localized: "nav.assistant")
+            case .duplicates: return String(localized: "nav.duplicates")
+            case .largeOld: return String(localized: "nav.largeOld")
+            case .photoClean: return String(localized: "nav.photoClean")
+            case .maintenance: return String(localized: "nav.maintenance")
             }
         }
     }

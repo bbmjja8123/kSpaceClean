@@ -154,21 +154,67 @@ struct RootView: View {
         case .diskHealth:
             DiskHealthDetailView()  // Phase D Task 12 — wire disk health detail view
         case .startupItems:
-            PlaceholderModuleView(title: "启动项", subtitle: "M2 模块将在 Phase 3 接入")  // Phase 3
+            PlaceholderModuleView(title: "启动项", subtitle: "Phase 5 接入")
         case .appUninstall:
-            PlaceholderModuleView(title: "应用卸载", subtitle: "M5 模块将在 Phase 4 接入")  // Phase 4 wires the existing scanner
+            AppUninstallView(viewModel: makeAppUninstallViewModel())
         case .shredder:
-            PlaceholderModuleView(title: "文件粉碎", subtitle: "M6 模块将在 Phase 3 接入")  // Phase 3
-        case .galaxy:
-            PlaceholderModuleView(title: "磁盘星系", subtitle: "3D 可视化将在 Phase 7 接入")  // Phase 7
+            PlaceholderModuleView(title: "文件粉碎", subtitle: "Phase 5 接入")
+        // v2.0 — toolbox + deep surfaces.
+        case .tools:
+            ToolboxView()
+        case .spaceMap:
+            PlaceholderModuleView(title: "空间地图", subtitle: "Phase 4 接入")
+        case .monthlyReport:
+            PlaceholderModuleView(title: "健康月报", subtitle: "Phase 7 接入")
+        case .assistant:
+            PlaceholderModuleView(title: "清理助手", subtitle: "Phase 8 接入")
+        case .duplicates:
+            DuplicateView(viewModel: makeDuplicateViewModel())
+        case .largeOld:
+            LargeOldView(viewModel: makeLargeOldViewModel())
+        case .photoClean:
+            PhotoCleanView(viewModel: makePhotoCleanViewModel())
+        case .maintenance:
+            MaintenanceView()
         }
+    }
+
+    // MARK: - Tool view-model factories
+
+    /// Tool VMs get the graph engine (quota + sinks) and route quota
+    /// exhaustion to the paywall. `@StateObject` keeps the first instance,
+    /// so re-rendering does not recreate scanners.
+    private func makeAppUninstallViewModel() -> AppUninstallViewModel {
+        let vm = AppUninstallViewModel(engine: graph.cleanupEngine)
+        vm.onQuotaExhausted = { coordinator.presentPaywall() }
+        return vm
+    }
+
+    private func makeDuplicateViewModel() -> DuplicateViewModel {
+        let vm = DuplicateViewModel(engine: graph.cleanupEngine)
+        vm.onQuotaExhausted = { coordinator.presentPaywall() }
+        return vm
+    }
+
+    private func makeLargeOldViewModel() -> LargeOldViewModel {
+        let vm = LargeOldViewModel(engine: graph.cleanupEngine)
+        vm.onQuotaExhausted = { coordinator.presentPaywall() }
+        return vm
+    }
+
+    private func makePhotoCleanViewModel() -> PhotoCleanViewModel {
+        let vm = PhotoCleanViewModel(engine: graph.cleanupEngine)
+        vm.onQuotaExhausted = { coordinator.presentPaywall() }
+        return vm
     }
 
     // MARK: - Icon Rail
     private var iconRail: some View {
         GlassPanel {
             VStack(spacing: 4) {
-                ForEach(AppState.NavigationItem.allCases, id: \.self) { item in
+                // Fixed rail (v2.0 Phase 2): deep surfaces live in the
+                // toolbox instead of growing the rail.
+                ForEach(AppState.NavigationItem.railItems, id: \.self) { item in
                     IconRailButton(
                         item: item,
                         isSelected: appState.navigation == item,

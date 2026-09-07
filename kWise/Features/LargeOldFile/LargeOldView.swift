@@ -4,10 +4,15 @@ import CommonUtils
 
 /// Main view for large/old file scanning and cleanup.
 struct LargeOldView: View {
-    @StateObject private var viewModel = LargeOldViewModel()
+    @StateObject private var viewModel: LargeOldViewModel
     @State private var showFolderPicker = false
     @State private var sizePreset: SizePreset = .mb50
     @State private var agePreset: Int = 0
+
+    /// Injectable for the app root (graph engine + quota routing).
+    init(viewModel: LargeOldViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? LargeOldViewModel())
+    }
 
     enum SizePreset: Int, CaseIterable, Identifiable {
         case mb50 = 50

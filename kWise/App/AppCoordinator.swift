@@ -37,8 +37,7 @@ public final class AppCoordinator: ObservableObject {
             navigate(to: .scan)
             return true
         case "clean":
-            navigate(to: .cleanup)
-            return true
+            return handleCleanLink(url)
         case "smartcare":
             navigate(to: .smartCare)
             return true
@@ -57,8 +56,29 @@ public final class AppCoordinator: ObservableObject {
         case "shred":
             navigate(to: .shredder)
             return true
-        case "galaxy":
-            navigate(to: .galaxy)
+        case "tools":
+            navigate(to: .tools)
+            return true
+        case "spacemap":
+            navigate(to: .spaceMap)
+            return true
+        case "report", "monthlyreport":
+            navigate(to: .monthlyReport)
+            return true
+        case "assistant":
+            navigate(to: .assistant)
+            return true
+        case "duplicates":
+            navigate(to: .duplicates)
+            return true
+        case "largefiles":
+            navigate(to: .largeOld)
+            return true
+        case "photoclean":
+            navigate(to: .photoClean)
+            return true
+        case "maintenance":
+            navigate(to: .maintenance)
             return true
         case "history":
             navigate(to: .history)
@@ -70,6 +90,23 @@ public final class AppCoordinator: ObservableObject {
             return false
         }
     }
+
+    /// `kwise://clean?path=/some/file` — the Finder extension's context-menu
+    /// deep link. The `path` parameter was historically ignored; it now
+    /// pre-seeds the cleanup surface with that file (v2.0 Phase 2).
+    private func handleCleanLink(_ url: URL) -> Bool {
+        navigate(to: .cleanup)
+        if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let path = components.queryItems?.first(where: { $0.name == "path" })?.value,
+           !path.isEmpty {
+            cleanLinkSeed = path
+        }
+        return true
+    }
+
+    /// Last path received via a clean deep link, consumed by the cleanup
+    /// surface (`CleanupContentView`) to pre-select the target.
+    @Published public var cleanLinkSeed: String?
 
     // MARK: - Navigation
 

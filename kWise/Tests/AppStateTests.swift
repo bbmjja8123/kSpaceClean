@@ -53,7 +53,19 @@ final class AppStateTests: XCTestCase {
     }
 
     func test_NavigationItem_allCases() {
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 11)
+        // v2.0 Phase 2: 11 original + 8 new (tools/spaceMap/monthlyReport/
+        // assistant/duplicates/largeOld/photoClean/maintenance) − galaxy.
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 18)
+    }
+
+    /// v2.0 Phase 2: the rail is fixed at six entries and never grows.
+    func test_NavigationItem_railItems() {
+        XCTAssertEqual(AppState.NavigationItem.railItems, [
+            .smartCare, .scan, .tools, .cleanup, .history, .settings
+        ])
+        for item in AppState.NavigationItem.railItems {
+            XCTAssertTrue(AppState.NavigationItem.allCases.contains(item))
+        }
     }
 
     func test_NavigationItem_tooltip_notEmpty() {
