@@ -7,8 +7,27 @@ public final class AppState: ObservableObject {
     /// Selection detail panel (UX 重构 Phase 1/3): auto-hidden until a row
     /// is selected; ⌘I toggles it manually.
     @Published public var rightPanelVisible = false
+    /// Row whose context the detail panel shows. Holds the node *id* —
+    /// resolved live through `ScanResultsViewModel.node(for:)` so cascade
+    /// changes never render stale values.
+    @Published public var detailSelection: DetailSelection?
     @Published public var selectedCategory: FileCategory?
     @Published public var scanState: ScanState = .idle
+
+    public struct DetailSelection: Equatable {
+        public enum Kind: Equatable { case category, app, file }
+        public let nodeID: UUID
+        public let kind: Kind
+
+        public init(nodeID: UUID, kind: Kind) {
+            self.nodeID = nodeID
+            self.kind = kind
+        }
+
+        public static func == (lhs: DetailSelection, rhs: DetailSelection) -> Bool {
+            lhs.nodeID == rhs.nodeID && lhs.kind == rhs.kind
+        }
+    }
 
     public enum NavigationItem: String, CaseIterable {
         case scan = "scan"

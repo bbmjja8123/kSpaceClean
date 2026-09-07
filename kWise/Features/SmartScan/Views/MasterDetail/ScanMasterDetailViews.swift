@@ -51,6 +51,7 @@ private struct CategoryColumnView: View {
 
 private struct CategoryCardView: View {
     @ObservedObject var viewModel: ScanResultsViewModel
+    @EnvironmentObject var appState: AppState
     let category: ScanCategory
     let isFocused: Bool
     @State private var isHovering = false
@@ -60,6 +61,8 @@ private struct CategoryCardView: View {
             withAnimation(KFAnimation.easeInOut) {
                 viewModel.focus(category)
             }
+            appState.detailSelection = .init(nodeID: category.id, kind: .category)
+            appState.rightPanelVisible = true
         } label: {
             HStack(spacing: AppSpacing.sm) {
                 Image(systemName: Self.icon(for: category.categoryID))
@@ -319,6 +322,7 @@ private struct AppRowView: View {
 
 struct FileRowView: View {
     @ObservedObject var viewModel: ScanResultsViewModel
+    @EnvironmentObject var appState: AppState
     let node: any ScanTreeNode
 
     var body: some View {
@@ -353,7 +357,11 @@ struct FileRowView: View {
         .padding(.horizontal, AppSpacing.md)
         .padding(.vertical, AppSpacing.xs)
         .contentShape(Rectangle())
-        .onTapGesture { viewModel.selectDetail(node.id) }
+        .onTapGesture {
+            viewModel.selectDetail(node.id)
+            appState.detailSelection = .init(nodeID: node.id, kind: .file)
+            appState.rightPanelVisible = true
+        }
     }
 }
 

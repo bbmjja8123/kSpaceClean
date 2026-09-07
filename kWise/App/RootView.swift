@@ -41,7 +41,7 @@ struct RootView: View {
     @State private var showOnboarding = false
 
     var body: some View {
-        GeometryReader { _ in
+        GeometryReader { geo in
             ZStack {
                 // Layer 1: Background
                 backgroundLayer
@@ -60,8 +60,16 @@ struct RootView: View {
                     mainContent
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                    // Detail panel lands in Phase 3 — auto-hidden until a
-                    // row is selected; no compensating paddings anywhere.
+                    // Selection detail panel (UX 重构 Phase 3): auto-hidden
+                    // until a row is tapped; ⌘I toggles. No compensating
+                    // paddings — the rail/content alignment accounts for it.
+                    if appState.rightPanelVisible, appState.detailSelection != nil {
+                        DetailPanelView(viewModel: scanResultsViewModel)
+                            .frame(width: min(280, geo.size.width * 0.28))
+                            .padding(.trailing, 12)
+                            .padding(.vertical, 12)
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                    }
                 }
             }
         }
