@@ -9,6 +9,17 @@
 /* Onboarding */
 "Welcome to kSift" = "Welcome to kSift";
 "Find and remove duplicate files, reclaim disk space" = "Find and remove duplicate files, reclaim disk space";
+"Find duplicates across your Mac" = "Find duplicates across your Mac";
+"Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders." = "Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders.";
+"Everything stays on your Mac" = "Everything stays on your Mac";
+"No uploads, no telemetry, no network calls during scanning." = "No uploads, no telemetry, no network calls during scanning.";
+"Trash + 30-day vault undo" = "Trash + 30-day vault undo";
+"Cleaned files move to a private vault you can restore for 30 days." = "Cleaned files move to a private vault you can restore for 30 days.";
+"Grant Full Disk Access" = "Grant Full Disk Access";
+"Required to scan protected folders like Desktop, Documents, and Downloads." = "Required to scan protected folders like Desktop, Documents, and Downloads.";
+"You can skip this and grant later in Settings." = "You can skip this and grant later in Settings.";
+"Back" = "Back";
+"Next" = "Next";
 "Get Started" = "Get Started";
 "Choose Your Profile" = "Choose Your Profile";
 "kSift optimizes scanning based on your workflow" = "kSift optimizes scanning based on your workflow";
@@ -25,7 +36,7 @@
 /* Profile names */
 "Developer" = "Developer";
 "Photographer" = "Photographer";
-"Simple" = "Simple";
+"Designer" = "Designer";
 
 /* Profile descriptions */
 "Scans projects, build artifacts, and development directories" = "Scans projects, build artifacts, and development directories";
@@ -53,6 +64,11 @@
 "Review Results" = "Review Results";
 "Rescan" = "Rescan";
 "Cancel scan" = "Cancel scan";
+"Paused" = "Paused";
+"Pause" = "Pause";
+"Resume" = "Resume";
+"Resume scan" = "Resume scan";
+"Detecting renamed copies..." = "Detecting renamed copies...";
 "Elapsed" = "Elapsed";
 "Groups found" = "Groups found";
 "Current folder" = "Current folder";
@@ -103,6 +119,10 @@
 "Scan Directories" = "Scan Directories";
 "Remove" = "Remove";
 "Add Directory" = "Add Directory";
+"Excluded Patterns" = "Excluded Patterns";
+"Add pattern" = "Add pattern";
+"Add" = "Add";
+"Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan." = "Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan.";
 "kSift Pro" = "kSift Pro";
 "Free Tier" = "Free Tier";
 "Unlimited cleanup, incremental index, and Finder Sync." = "Unlimited cleanup, incremental index, and Finder Sync.";
@@ -153,8 +173,16 @@
 "Files you clean will be kept here for 30 days so you can restore them." = "Files you clean will be kept here for 30 days so you can restore them.";
 "Files are kept for 30 days after cleanup. Restore or purge them at any time." = "Files are kept for 30 days after cleanup. Restore or purge them at any time.";
 "Purge expired" = "Purge expired";
+"Purge now" = "Purge now";
 "Items" = "Items";
 "Total size" = "Total size";
+"Next auto-purge" = "Next auto-purge";
+"Vault no upcoming purge" = "—";
+"%lld item(s) are past their 30-day retention and ready to purge." = "%lld item(s) are past their 30-day retention and ready to purge.";
+"Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now." = "Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now.";
+"%dd %dh" = "%dd %dh";
+"%dh" = "%dh";
+"<1h" = "<1h";
 "Vaulted" = "Vaulted";
 "Restored" = "Restored";
 "Restore" = "Restore";
@@ -215,3 +243,163 @@
 "This group shares the same name with %d other groups" = "This group shares the same name with %d other groups";
 "APFS clones share physical blocks — cleaning frees logical size only" = "APFS clones share physical blocks — cleaning frees logical size only";
 "%d clones" = "%d clones";
+
+// MARK: - Phase A: Smart Select / selection / undo / rail
+
+/* Selection strategies */
+"Keep Newest" = "Keep Newest";
+"Keep Oldest" = "Keep Oldest";
+"Keep Shortest Path" = "Keep Shortest Path";
+"Keep Inside Scan Folder" = "Keep Inside Scan Folder";
+"Keep Canonical Folder" = "Keep Canonical Folder";
+
+/* Selection strategy help */
+"Keeps the most recently modified copy and marks the rest for removal." = "Keeps the most recently modified copy and marks the rest for removal.";
+"Keeps the oldest copy — useful when later files are re-downloads or re-encodes." = "Keeps the oldest copy — useful when later files are re-downloads or re-encodes.";
+"Keeps the copy closest to the volume root, typically the canonical location." = "Keeps the copy closest to the volume root, typically the canonical location.";
+"Prefers the copy inside the scanned folder, removing stray copies elsewhere." = "Prefers the copy inside the scanned folder, removing stray copies elsewhere.";
+"Keeps copies in the alphabetically first folder so the canonical directory survives." = "Keeps copies in the alphabetically first folder so the canonical directory survives.";
+
+/* Selection reasons */
+"Kept — most recently modified copy" = "Kept — most recently modified copy";
+"Kept — oldest copy (original)" = "Kept — oldest copy (original)";
+"Kept — shortest path (canonical location)" = "Kept — shortest path (canonical location)";
+"Kept — inside the scanned folder" = "Kept — inside the scanned folder";
+"Kept — canonical folder copy" = "Kept — canonical folder copy";
+"Kept — the only copy in this group" = "Kept — the only copy in this group";
+"Marked for removal — duplicate of the kept copy" = "Marked for removal — duplicate of the kept copy";
+
+/* Navigation & menus */
+"Welcome" = "Welcome";
+"Scan" = "Scan";
+"Results" = "Results";
+"History" = "History";
+"New Scan" = "New Scan";
+"Undo Cleanup" = "Undo Cleanup";
+"Undo" = "Undo";
+"Go" = "Go";
+
+/* Undo */
+"Some files could not be restored" = "Some files could not be restored";
+"%lld file(s) could not be restored:\n\n%@" = "%lld file(s) could not be restored:\n\n%@";
+"A file already exists at the original location" = "A file already exists at the original location";
+
+/* Group selection */
+"Stage this group for cleanup" = "Stage this group for cleanup";
+"Select group %@" = "Select group %@";
+
+/* Smart Select */
+"%lld groups · %lld files staged (%@)" = "%lld groups · %lld files staged (%@)";
+"Smart Select" = "Smart Select";
+"Select None" = "Select None";
+"Automatically pick which copy to keep in every group, with a visible reason" = "Automatically pick which copy to keep in every group, with a visible reason";
+"Auto Keep" = "Auto Keep";
+"Automatically keep one copy — the reason is shown next to each file" = "Automatically keep one copy — the reason is shown next to each file";
+
+/* Cleanup toast */
+"%lld file(s) moved to Trash. Kept 30 days in the vault." = "%lld file(s) moved to Trash. Kept 30 days in the vault.";
+
+/* Custom profile */
+"Custom" = "Custom";
+"Scans only the folders you choose" = "Scans only the folders you choose";
+
+/* Phase B: idle dashboard + scan throughput */
+"Quick Start" = "Quick Start";
+"Find duplicate, similar, and oversized files — then reclaim the space in one tap." = "Find duplicate, similar, and oversized files — then reclaim the space in one tap.";
+"Scan with the %@ profile" = "Scan with the %@ profile";
+"Last scan" = "Last scan";
+"Found %lld duplicates · %@ reclaimable" = "Found %lld duplicates · %@ reclaimable";
+"Projects, build artifacts, dev directories" = "Projects, build artifacts, dev directories";
+"Photos, RAW files, creative assets" = "Photos, RAW files, creative assets";
+"Desktop, downloads, documents" = "Desktop, downloads, documents";
+"Only the folders you choose" = "Only the folders you choose";
+"Throughput" = "Throughput";
+"%lld files/s" = "%lld files/s";
+"Time remaining" = "Time remaining";
+"Data scanned" = "Data scanned";
+
+/* Phase C: similarity presets + large files + compatibility */
+"Strict" = "Strict";
+"Normal" = "Normal";
+"Loose" = "Loose";
+"Groups only near-identical images — fewest false positives." = "Groups only near-identical images — fewest false positives.";
+"Balanced matching — the recommended default." = "Balanced matching — the recommended default.";
+"Groups same-scene shots too — more results, more noise." = "Groups same-scene shots too — more results, more noise.";
+"Similar Image Sensitivity" = "Similar Image Sensitivity";
+"Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots." = "Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots.";
+"Large file threshold" = "Large file threshold";
+"Large Files" = "Large Files";
+"Files at or above this size are listed in the Large Files results tab." = "Files at or above this size are listed in the Large Files results tab.";
+"Duplicates" = "Duplicates";
+"Compatibility" = "Compatibility";
+"Reduced on macOS 13" = "Reduced on macOS 13";
+"Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same." = "Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same.";
+"%lld files · %@ total" = "%lld files · %@ total";
+"%lld selected · %@" = "%lld selected · %@";
+"No large files in this scan" = "No large files in this scan";
+"Files at or above the threshold in Settings appear here after a scan." = "Files at or above the threshold in Settings appear here after a scan.";
+"%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "%lld file(s) will be moved to Trash and kept in the vault for 30 days.";
+
+/* Phase D: paywall rewrite */
+"Menu bar quick scan" = "Menu bar quick scan";
+"Scan folders and check reclaimed space from the menu bar." = "Scan folders and check reclaimed space from the menu bar.";
+"Shortcuts automation" = "Shortcuts automation";
+"Build scans and cleanups into your own Shortcuts workflows." = "Build scans and cleanups into your own Shortcuts workflows.";
+"Explainable Smart Select" = "Explainable Smart Select";
+"Five keep strategies with a visible reason for every copy." = "Five keep strategies with a visible reason for every copy.";
+"Price" = "Price";
+"After 1 year" = "After 1 year";
+"Stop paying" = "Stop paying";
+"Free" = "Free";
+"Pay once" = "Pay once";
+"Pay every month" = "Pay every month";
+"2 GB cleaned" = "2 GB cleaned";
+"Still yours" = "Still yours";
+"Billed 12×" = "Billed 12×";
+"Keep everything" = "Keep everything";
+"Lose Pro features" = "Lose Pro features";
+"Is this a subscription?" = "Is this a subscription?";
+"No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind." = "No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind.";
+"How many Macs can I use it on?" = "How many Macs can I use it on?";
+"Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost." = "Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost.";
+"What happens to files I already cleaned?" = "What happens to files I already cleaned?";
+"Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean." = "Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean.";
+
+/* Phase D: in-use check */
+"Some files are in use" = "Some files are in use";
+"Check for open files" = "Check for open files";
+"These files are currently open in other apps:" = "These files are currently open in other apps:";
+"These files were modified moments ago and may be in use:" = "These files were modified moments ago and may be in use:";
+"The open-file check could not run in this environment, so the list above is heuristic only." = "The open-file check could not run in this environment, so the list above is heuristic only.";
+"Skip in-use files" = "Skip in-use files";
+"Move anyway" = "Move anyway";
+"…and %lld more" = "…and %lld more";
+
+/* Phase E: history trend */
+"reclaimed across scans" = "reclaimed across scans";
+"scans" = "scans";
+"Scan history for the last 8 weeks will appear here." = "Scan history for the last 8 weeks will appear here.";
+"Delete this scan record?" = "Delete this scan record?";
+"Delete record" = "Delete record";
+"Only the history entry is removed — no files are affected." = "Only the history entry is removed — no files are affected.";
+
+/* Phase F1: similar video */
+"Similar Video" = "Similar Video";
+"Comparing videos..." = "Comparing videos...";
+
+/* Phase F2: Photos library */
+"Photos" = "Photos";
+"Find duplicates in your photo library" = "Find duplicates in your photo library";
+"kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded." = "kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded.";
+"Access was denied. Grant it in System Settings → Privacy & Security → Photos." = "Access was denied. Grant it in System Settings → Privacy & Security → Photos.";
+"Grant Access & Scan" = "Grant Access & Scan";
+"Scanning your photo library locally…" = "Scanning your photo library locally…";
+"Assets scanned" = "Assets scanned";
+"iCloud-only skipped" = "iCloud-only skipped";
+"Re-scan" = "Re-scan";
+"%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them." = "%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them.";
+"No duplicate photos found" = "No duplicate photos found";
+"Your photo library has no duplicate or near-duplicate images." = "Your photo library has no duplicate or near-duplicate images.";
+"Remove from Library" = "Remove from Library";
+"Some photos could not be deleted" = "Some photos could not be deleted";
+"%lld photo(s) could not be deleted. They may already be removed." = "%lld photo(s) could not be deleted. They may already be removed.";

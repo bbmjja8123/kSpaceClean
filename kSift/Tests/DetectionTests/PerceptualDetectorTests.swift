@@ -49,9 +49,10 @@ final class PerceptualDetectorTests: XCTestCase {
         let image = directory.appendingPathComponent("image.png")
         try writeImage(at: image, pattern: .verticalSplit)
         let detector = PerceptualDetector()
+        var thumbnails: [URL: CGImage] = [:]
 
-        let first = await detector.dHash(of: image)
-        let second = await detector.dHash(of: image)
+        let first = await detector.dHash(of: image, thumbnailCache: &thumbnails)
+        let second = await detector.dHash(of: image, thumbnailCache: &thumbnails)
 
         XCTAssertNotNil(first)
         XCTAssertEqual(first, second)

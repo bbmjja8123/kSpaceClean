@@ -20,10 +20,15 @@ final class StoreManager: ObservableObject {
 
     private static let freeBytesKey = "ksift.store.freeBytesCleaned"
 
+    /// Injectable so unit tests can isolate the counter in a private
+    /// UserDefaults suite instead of polluting `.standard`.
+    private let defaults: UserDefaults
+
     private var updatesTask: Task<Void, Never>?
 
-    init() {
-        self.freeTierBytesCleaned = UserDefaults.standard.object(forKey: Self.freeBytesKey) as? Int64 ?? 0
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        self.freeTierBytesCleaned = defaults.object(forKey: Self.freeBytesKey) as? Int64 ?? 0
         // Observe transaction updates (renewals, refunds, Family Sharing)
         // for the lifetime of the app so Pro status flips without a
         // relaunch when, e.g., a Family Sharing invite is accepted.
@@ -116,13 +121,15 @@ final class StoreManager: ObservableObject {
 
     /// Call after a successful free-tier cleanup to roll the counter
     /// forward. No-op for Pro users (their counter stays at zero).
+    /// Saturates at `Int64.max` instead of trapping on overflow.
     func recordFreeTierCleanup(bytes: Int64) {
         guard !isPaidUser else { return }
-        setFreeBytesCleaned(freeTierBytesCleaned + bytes)
+        let (sum, overflow) = freeTierBytesCleaned.addingReportingOverflow(bytes)
+        setFreeBytesCleaned(overflow ? Int64.max : sum)
     }
 
     private func setFreeBytesCleaned(_ value: Int64) {
         freeTierBytesCleaned = value
-        UserDefaults.standard.set(value, forKey: Self.freeBytesKey)
+        defaults.set(value, forKey: Self.freeBytesKey)
     }
 }

@@ -1,22 +1,5 @@
 {
   "identifier" : "BE9453CC",
-  "nonRenewingSubscriptions" : [
-    {
-      "displayPrice" : "7.99",
-      "familyShareable" : false,
-      "internalID" : "FFE9C2F5",
-      "localizations" : [
-        {
-          "description" : "kWatch Pro lifetime",
-          "displayName" : "kWatch Pro (Test)",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "app.kraftly.kwatch.pro.subscription",
-      "referenceName" : "kWatch Pro Non-Renewing Test Subscription",
-      "type" : "NonRenewingSubscription"
-    }
-  ],
   "products" : [
     {
       "displayPrice" : "7.99",

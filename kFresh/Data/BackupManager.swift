@@ -152,6 +152,13 @@ public actor BackupManager {
         return appSupport.appendingPathComponent("app.kraftly.kfresh/Backups")
     }
 
+    /// Public read-only alias of ``defaultRootURL()`` so callers outside
+    /// this type — e.g. ``DryRunReport`` surfacing the backup destination
+    /// in the "模拟卸载" alert — can show the same path the real uninstall
+    /// would write to. Routes through the same private function so a
+    /// future path-layout change touches only one branch.
+    public static var defaultRoot: URL { defaultRootURL() }
+
     // MARK: - Backup
 
     /// Copies each residue into a new versioned subdirectory and writes a

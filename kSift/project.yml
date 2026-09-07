@@ -97,4 +97,17 @@ targets:
 
 packages:
   kFoundation:
-    path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation
+    path: ../kFoundation
+
+schemes:
+  kSift:
+    build:
+      targets:
+        kSift: all
+        kSiftTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - kSiftTests

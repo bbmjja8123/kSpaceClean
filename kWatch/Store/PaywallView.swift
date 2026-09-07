@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import DesignSystem
 
 /// Sheet content shown by the dashboard when the user opens the Pro gate.
@@ -119,8 +120,17 @@ public struct PaywallView: View {
                 get: { viewModel.acceptedTerms },
                 set: { viewModel.acceptedTerms = $0 }
             )) {
-                Text(disclosure.supportLink)
-                    .font(.caption2)
+                // Render the disclosure link copy as a real hyperlink so the
+                // user can verify the policy and the support contact before
+                // ticking the box. Both targets come from SubscriptionTerms
+                // so the URLs stay in sync with C4 (privacy) and C5 (support).
+                HStack(spacing: 8) {
+                    Text(disclosure.supportLink)
+                        .font(.caption2)
+                        .foregroundStyle(Color.brandSecondary)
+                    linkButton(label: "Privacy Policy", url: SubscriptionTerms.privacyPolicyURL)
+                    linkButton(label: "Support", url: SubscriptionTerms.supportURL)
+                }
             }
             .toggleStyle(.checkbox)
             .controlSize(.small)
@@ -128,6 +138,21 @@ public struct PaywallView: View {
         .padding(8)
         .background(Color.textSecondary.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 6))
+    }
+
+    /// Small text-link button that opens an external URL in the user's
+    /// default browser. Kept private because it is only meaningful inside
+    /// `termsDisclosure`.
+    private func linkButton(label: LocalizedStringKey, url: URL) -> some View {
+        Button {
+            NSWorkspace.shared.open(url)
+        } label: {
+            Text(label)
+                .font(.caption2)
+                .underline()
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(Color.brandSecondary)
     }
 
     private func errorBanner(message: String) -> some View {

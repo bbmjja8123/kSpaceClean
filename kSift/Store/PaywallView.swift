@@ -7,9 +7,10 @@ struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isPurchasing = false
     @State private var purchaseError: String?
+    @State private var expandedFAQ: Int?
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 18) {
             // Hero
             VStack(spacing: 8) {
                 Image(systemName: "sparkles")
@@ -27,18 +28,47 @@ struct PaywallView: View {
                     .multilineTextAlignment(.center)
             }
 
-            // Feature list
-            VStack(alignment: .leading, spacing: 12) {
+            // Feature list — leads with the platform integrations that no
+            // duplicate-finder competitor ships (menu bar, Shortcuts,
+            // Finder extension), then the cleanup capacities.
+            VStack(alignment: .leading, spacing: 10) {
                 featureRow(icon: "infinity", title: "Unlimited cleanup",
                            detail: "Remove the 2 GB free-tier cap and free as much space as you need.")
                 featureRow(icon: "bolt.fill", title: "Incremental index",
                            detail: "Re-scans only the files that actually changed — typically 10x faster.")
+                featureRow(icon: "menubar.dock.rectangle", title: "Menu bar quick scan",
+                           detail: "Scan folders and check reclaimed space from the menu bar.")
+                featureRow(icon: "square.3.layers.3d", title: "Shortcuts automation",
+                           detail: "Build scans and cleanups into your own Shortcuts workflows.")
                 featureRow(icon: "puzzlepiece.extension.fill", title: "Finder Sync extension",
                            detail: "Right-click any folder in Finder → \"Scan with kSift\".")
-                featureRow(icon: "sparkles", title: "Future Pro features",
-                           detail: "Every paid feature we ship from now on, included.")
+                featureRow(icon: "wand.and.stars", title: "Explainable Smart Select",
+                           detail: "Five keep strategies with a visible reason for every copy.")
             }
             .padding(.horizontal, 4)
+
+            // Pricing-model comparison — states the one-time advantage
+            // without naming any competitor (App Store guideline 2.3.10).
+            pricingComparison
+
+            // FAQ
+            VStack(alignment: .leading, spacing: 0) {
+                faqRow(
+                    index: 0,
+                    question: "Is this a subscription?",
+                    answer: "No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind."
+                )
+                faqRow(
+                    index: 1,
+                    question: "How many Macs can I use it on?",
+                    answer: "Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost."
+                )
+                faqRow(
+                    index: 2,
+                    question: "What happens to files I already cleaned?",
+                    answer: "Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean."
+                )
+            }
 
             // Product + CTA
             VStack(spacing: 8) {
@@ -93,10 +123,75 @@ struct PaywallView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(24)
-        .frame(width: 440)
+        .frame(width: 460)
         .task {
             await store.loadProducts()
         }
+    }
+
+    private var pricingComparison: some View {
+        GlassPanel {
+            VStack(spacing: 10) {
+                comparisonRow(
+                    label: "Price",
+                    free: "Free",
+                    oneTime: "Pay once",
+                    subscription: "Pay every month"
+                )
+                comparisonRow(
+                    label: "After 1 year",
+                    free: "2 GB cleaned",
+                    oneTime: "Still yours",
+                    subscription: "Billed 12×"
+                )
+                comparisonRow(
+                    label: "Stop paying",
+                    free: "—",
+                    oneTime: "Keep everything",
+                    subscription: "Lose Pro features"
+                )
+            }
+            .padding(12)
+        }
+    }
+
+    private func comparisonRow(label: String, free: String, oneTime: String, subscription: String) -> some View {
+        HStack {
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(width: 80, alignment: .leading)
+            Text(free)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity)
+            Text(oneTime)
+                .font(.caption).bold()
+                .foregroundColor(.brandPrimary)
+                .frame(maxWidth: .infinity)
+            Text(subscription)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    @ViewBuilder
+    private func faqRow(index: Int, question: String, answer: String) -> some View {
+        DisclosureGroup(isExpanded: Binding(
+            get: { expandedFAQ == index },
+            set: { expandedFAQ = $0 ? index : nil }
+        )) {
+            Text(answer)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.bottom, 8)
+        } label: {
+            Text(question)
+                .font(.subheadline)
+        }
+        .padding(.vertical, 4)
     }
 
     @ViewBuilder
@@ -125,4 +220,3 @@ struct PaywallView: View {
         }
     }
 }
-

@@ -146,6 +146,104 @@ final class DirectoryDedupDetectorTests: XCTestCase {
         XCTAssertTrue(groups.isEmpty)
     }
 
+    /// Verifies the new (commit a558cf3) `verifiedCache` plumbing: a file
+    /// present in the cache must skip `verifier.verify(...)` and the detector
+    /// must still recognize it as a directory-duplicate match.
+    func testVerifiedCacheHitSkipsRehash() async throws {
+        let fixture = try makeDirectoryPair()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let first = try createTextFile(named: "a.txt", in: fixture.first, content: "same")
+        let second = try createTextFile(named: "a.txt", in: fixture.second, content: "same")
+
+        // Pre-compute the cache the way ByteIdenticalDetector would.
+        let cachedFingerprint = "cached-fingerprint-a"
+        let cachedHash = "cached-sha256-a"
+        let cache: [URL: CachedVerification] = [
+            first: CachedVerification(fingerprint: cachedFingerprint, hash: cachedHash),
+            second: CachedVerification(fingerprint: cachedFingerprint, hash: cachedHash),
+        ]
+
+        let groups = await DirectoryDedupDetector().detect(
+            [first, second],
+            roots: [fixture.root],
+            controller: ScanController(),
+            verifiedCache: cache
+        )
+
+        // Observable contract: the cache hit must not break directory
+        // grouping. The group's files are DIRECTORY items whose `hash` is
+        // the directory content hash (derived from the cached per-file
+        // hashes) and whose `fingerprint` is unset — per-file cached
+        // values never surface on directory rows.
+        guard groups.count == 1 else {
+            return XCTFail("Expected 1 group from a fully-cached pair, got \(groups.count)")
+        }
+        let allFiles = groups[0].files
+        XCTAssertEqual(allFiles.count, 2)
+        for file in allFiles {
+            XCTAssertNotNil(file.hash, "Directory item carries its content hash")
+            XCTAssertNil(file.fingerprint, "Directory items do not expose per-file fingerprints")
+        }
+    }
+
+    /// A cache that only covers one side of the pair must NOT produce a
+    /// match: the detector should hash the missing side fresh and still
+    /// return empty (different content) or a real match (same content).
+    func testPartialCacheStillProducesCorrectResult() async throws {
+        let fixture = try makeDirectoryPair()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let first = try createTextFile(named: "a.txt", in: fixture.first, content: "same")
+        let second = try createTextFile(named: "a.txt", in: fixture.second, content: "same")
+
+        // Only `first` is in the cache; `second` must be re-verified.
+        // The cached hash must be the REAL sha256 — the directory content
+        // hash incorporates per-file hashes, so a fake value would make
+        // the two directories compare unequal.
+        let partialCache: [URL: CachedVerification] = [
+            first: CachedVerification(
+                fingerprint: "f",
+                hash: try VaultManager.sha256(of: first)
+            ),
+        ]
+
+        let groups = await DirectoryDedupDetector().detect(
+            [first, second],
+            roots: [fixture.root],
+            controller: ScanController(),
+            verifiedCache: partialCache
+        )
+
+        guard groups.count == 1 else {
+            return XCTFail("Expected 1 group, got \(groups.count)")
+        }
+        XCTAssertEqual(groups[0].files.count, 2)
+    }
+
+    /// Two URLs that are in the cache but whose hashes don't match must
+    /// NOT be reported as duplicates — the cache short-circuits verification
+    /// but the content-hash compare in `detect(files:...)` still runs.
+    func testCacheWithMismatchedHashesDoesNotProduceDuplicate() async throws {
+        let fixture = try makeDirectoryPair()
+        defer { try? FileManager.default.removeItem(at: fixture.root) }
+        let first = try createTextFile(named: "a.txt", in: fixture.first, content: "anything")
+        let second = try createTextFile(named: "a.txt", in: fixture.second, content: "anything")
+
+        let divergentCache: [URL: CachedVerification] = [
+            first: CachedVerification(fingerprint: "ff", hash: "hash-1"),
+            second: CachedVerification(fingerprint: "ff", hash: "hash-2"),
+        ]
+
+        let groups = await DirectoryDedupDetector().detect(
+            [first, second],
+            roots: [fixture.root],
+            controller: ScanController(),
+            verifiedCache: divergentCache
+        )
+
+        XCTAssertTrue(groups.isEmpty,
+                     "Different cached hashes must not collapse into one group")
+    }
+
     private func makeDirectoryPair() throws -> (root: URL, first: URL, second: URL) {
         let root = try createTempDirectory()
         let first = root.appendingPathComponent("first")

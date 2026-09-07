@@ -107,4 +107,48 @@ final class UninstallConfirmFlowTests: XCTestCase {
         let image = hosting.bitmapImageRepForCachingDisplay(in: hosting.bounds)
         XCTAssertNotNil(image, "Toast must render without crashing")
     }
+
+    // MARK: - Wave 2 P1 (G-KF-04) freed-bytes readout
+
+    /// Legacy 3-arg init defaults `totalFreedBytes` to `appSize` —
+    /// preserves the "app body only" contract that v1.x callers rely on
+    /// when they haven't been taught about the residue total.
+    func testToastLegacyInitDefaultsTotalFreedToAppSize() {
+        let state = UninstallToast.State(
+            recordID: UUID(),
+            appName: "Sample",
+            appSize: 4096
+        )
+        XCTAssertEqual(state.totalFreedBytes, 4096,
+                       "Backward-compat init must default totalFreedBytes to appSize")
+    }
+
+    /// Explicit totalFreedBytes (app body + residue sum) is preserved
+    /// verbatim — no rounding, no clamping. Drives the post-uninstall
+    /// '已释放 X' headline.
+    func testToastCarriesExplicitTotalFreedBytes() {
+        let state = UninstallToast.State(
+            recordID: UUID(),
+            appName: "Sample",
+            appSize: 4096,
+            totalFreedBytes: 4096 + 12_345_678 // app + a fat residue
+        )
+        XCTAssertEqual(state.totalFreedBytes, 12_349_774)
+    }
+
+    /// The new toast with full state must still render (no layout
+    /// regression from the split into two lines + the 1.04× bounce).
+    func testToastRendersWithExplicitTotalFreed() {
+        let state = UninstallToast.State(
+            recordID: UUID(),
+            appName: "BigResidue",
+            appSize: 50_000,
+            totalFreedBytes: 2_000_000_000
+        )
+        let view = UninstallToast(state: state, onUndo: {})
+        let hosting = NSHostingView(rootView: view)
+        hosting.frame = NSRect(x: 0, y: 0, width: 480, height: 100)
+        let image = hosting.bitmapImageRepForCachingDisplay(in: hosting.bounds)
+        XCTAssertNotNil(image, "Toast with totalFreedBytes must render without crashing")
+    }
 }

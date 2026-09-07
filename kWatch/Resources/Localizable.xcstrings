@@ -1,6 +1,42 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Pause monitoring": {
+      "comment": "Tooltip for the pause toggle in the quick-toggle bar; stops the metrics sampling loop.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause monitoring"
+          }
+        }
+      }
+    },
+    "Resume monitoring": {
+      "comment": "Tooltip shown when monitoring is paused; resumes the metrics sampling loop.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume monitoring"
+          }
+        }
+      }
+    },
+    "Wi-Fi status — click to open Network settings": {
+      "comment": "Tooltip for the read-only Wi-Fi status hint in the quick-toggle bar.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi status — click to open Network settings"
+          }
+        }
+      }
+    },
     "$7.99 one-time purchase": {
       "comment": "Paywall price line for the lifetime unlock.",
       "extractionState": "manual",
@@ -289,18 +325,6 @@
         }
       }
     },
-    "Bluetooth": {
-      "comment": "Tooltip for the Bluetooth quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth"
-          }
-        }
-      }
-    },
     "CPU": {
       "comment": "CPU metric label.",
       "extractionState": "manual",
@@ -561,18 +585,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dismiss"
-          }
-        }
-      }
-    },
-    "Do Not Disturb": {
-      "comment": "Tooltip for the Do Not Disturb quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do Not Disturb"
           }
         }
       }
@@ -1317,18 +1329,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Next"
-          }
-        }
-      }
-    },
-    "Night Shift": {
-      "comment": "Tooltip for the Night Shift quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Night Shift"
           }
         }
       }
@@ -2329,14 +2329,14 @@
         }
       }
     },
-    "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Activity, and 8 Shortcuts.": {
+    "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Widgets, and 8 Shortcuts.": {
       "comment": "Pro feature list description in onboarding.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Activity, and 8 Shortcuts."
+            "value": "Unlock temperature, fan, and battery readings, 30-day history, threshold alerts, interactive Widget, Live Widgets, and 8 Shortcuts."
           }
         }
       }
@@ -2521,18 +2521,6 @@
         }
       }
     },
-    "Wi-Fi": {
-      "comment": "Tooltip for the Wi-Fi quick toggle.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wi-Fi"
-          }
-        }
-      }
-    },
     "You’re all set": {
       "comment": "Onboarding completion headline.",
       "extractionState": "manual",
@@ -2582,31 +2570,31 @@
       }
     },
     "subscription.terms.body": {
-      "comment": "Auto-renewal disclosure body required by App Store Review Guidelines §3.1.2(a).",
+      "comment": "One-time purchase disclosure body. kWatch Pro is a Non-Consumable; no subscription or auto-renew language may appear here (App Review §3.1.2(a)). The support/privacy links render as a separate element in PaywallView, so the body must not embed a link placeholder.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions in your App Store account settings."
+            "value": "kWatch Pro is a one-time purchase of $7.99 (local pricing applies at checkout). Payment is charged once to your Apple ID. There is no subscription and no automatic renewal. Restore anytime on this Mac with \"Restore Purchases\"."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "购买确认时将从您的 Apple ID 账户扣款。除非在当前订阅期结束前至少 24 小时关闭自动续订,否则订阅将自动续订。在当前订阅期结束前 24 小时内,系统会从您的账户扣款续订。您可以在 App Store 账户设置中管理和取消订阅。"
+            "value": "kWatch Pro 为一次性买断（结算时按当地定价显示，约 ¥68）。费用通过您的 Apple ID 一次性支付，无订阅、无自动续费。可随时在本机通过「恢复购买」找回。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "購入確定時に Apple ID アカウントに課金されます。現在の期間が終了する少なくとも 24 時間前に自動更新をオフにしない限り、サブスクリプションは自動的に更新されます。現在の期間が終了する 24 時間前までにアカウントに更新料金が課金されます。サブスクリプションの管理とキャンセルは App Store のアカウント設定で行えます。"
+            "value": "kWatch Pro は買い切り（¥1,200・購入時に現地価格で表示）。Apple ID に一度だけ請求されます。サブスクリプションではなく自動更新もありません。「購入を復元」からいつでも復元できます。"
           }
         }
       }
     },
     "subscription.terms.supportLink": {
-      "comment": "Hyperlink copy pointing to Terms of Use and Privacy Policy.",
+      "comment": "Hyperlink copy pointing to Terms of Use and Privacy Policy (rendered as a separate link element below the disclosure body).",
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -2630,25 +2618,25 @@
       }
     },
     "subscription.terms.title": {
-      "comment": "Title shown above the auto-renewal disclosure block in the Paywall.",
+      "comment": "Title shown above the one-time purchase disclosure block in the Paywall.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Subscription Terms"
+            "value": "kWatch Pro — One-Time Purchase"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "订阅条款"
+            "value": "kWatch Pro — 一次买断"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "サブスクリプション規約"
+            "value": "kWatch Pro — 買い切り"
           }
         }
       }

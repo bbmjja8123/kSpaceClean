@@ -28,21 +28,51 @@ public struct SettingsView: View {
 
             AlertSettingsView(viewModel: viewModel)
                 .tabItem {
-                    Label(String(localized: "Alerts"), systemImage: "bell.badge")
+                    Label(String(localized: "Notifications"), systemImage: "bell.badge")
                 }
-                .tag(SettingsTab.alerts)
+                .tag(SettingsTab.notifications)
 
             MetricSettingsView(viewModel: viewModel)
                 .tabItem {
-                    Label(String(localized: "Metrics"), systemImage: "chart.line.uptrend.xyaxis")
+                    Label(String(localized: "Sampling"), systemImage: "chart.line.uptrend.xyaxis")
                 }
-                .tag(SettingsTab.metrics)
+                .tag(SettingsTab.sampling)
+
+            // Per-metric tabs — V1-TODO U5 calls for CPU / Memory / Disk /
+            // Network / Sensors / Battery as siblings. We collapse Sensors
+            // and Battery into "Sensors" since both are hardware telemetry
+            // and share the same global toggle pattern. Future per-metric
+            // overrides (thresholds, sampling intervals, alert rules) will
+            // land here.
+            PerMetricTabView(viewModel: viewModel, kind: .cpu)
+                .tabItem {
+                    Label(String(localized: "CPU"), systemImage: "cpu")
+                }
+                .tag(SettingsTab.cpu)
+
+            PerMetricTabView(viewModel: viewModel, kind: .memory)
+                .tabItem {
+                    Label(String(localized: "Memory"), systemImage: "memorychip")
+                }
+                .tag(SettingsTab.memory)
+
+            PerMetricTabView(viewModel: viewModel, kind: .disk)
+                .tabItem {
+                    Label(String(localized: "Disk"), systemImage: "internaldrive")
+                }
+                .tag(SettingsTab.disk)
+
+            PerMetricTabView(viewModel: viewModel, kind: .network)
+                .tabItem {
+                    Label(String(localized: "Network"), systemImage: "network")
+                }
+                .tag(SettingsTab.network)
 
             AppearanceSettingsView(viewModel: viewModel)
                 .tabItem {
-                    Label(String(localized: "Appearance"), systemImage: "paintbrush")
+                    Label(String(localized: "Display"), systemImage: "paintbrush")
                 }
-                .tag(SettingsTab.appearance)
+                .tag(SettingsTab.display)
 
             WidgetSettingsView(viewModel: viewModel)
                 .tabItem {
@@ -56,7 +86,7 @@ public struct SettingsView: View {
                 }
                 .tag(SettingsTab.about)
         }
-        .frame(width: 560, height: 420)
+        .frame(width: 640, height: 460)
         .task {
             await viewModel.syncNotificationAuthorization()
         }
@@ -75,12 +105,18 @@ public struct SettingsView: View {
     }
 
     /// Tabs surfaced by the Settings window. Stable raw values are used so
-    /// the persisted selection survives rebuilds.
+    /// the persisted selection survives rebuilds. V1-TODO U5 calls for a
+    /// 10-tab layout covering MenuBar / Notifications / per-metric /
+    /// Display / General / About.
     public enum SettingsTab: Hashable {
         case menuBar
-        case alerts
-        case metrics
-        case appearance
+        case notifications
+        case sampling
+        case cpu
+        case memory
+        case disk
+        case network
+        case display
         case general
         case about
     }

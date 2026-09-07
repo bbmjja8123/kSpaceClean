@@ -11,6 +11,14 @@ public final class ScanViewModel: ObservableObject {
     @Published public var summary: ScanSummary?
     @Published public var groupsFound = 0
     @Published public var elapsed: TimeInterval = 0
+    /// Smoothed throughput from `ScanThroughputEstimator` (files/s). Nil
+    /// until two progress samples arrive.
+    @Published public private(set) var filesPerSecond: Double?
+    /// EWMA-based ETA. Nil when the scan has no measurable forward
+    /// progress yet (e.g. paused or between phases).
+    @Published public private(set) var estimatedRemaining: TimeInterval?
+
+    private var throughput = ScanThroughputEstimator()
 
     private let orchestrator: ScanOrchestrator
     private var controller = ScanController()
@@ -25,6 +33,14 @@ public final class ScanViewModel: ObservableObject {
     /// persisted. Lets the owning view publish results into `AppState` so
     /// `ResultView` (recreated per navigation) can pick them up.
     public var onScanCompleted: (([DuplicateGroup]) -> Void)?
+    /// Invoked when the large-files event arrives during a scan.
+    public var onLargeFilesScanned: (([FileItem]) -> Void)?
+
+    /// True when the user has paused the current scan. Read by the
+    /// progress view to swap the Pause button for Resume. Bridges the
+    /// non-Sendable `ScanController` to SwiftUI safely via a fresh read
+    /// each access.
+    public var controllerIsPaused: Bool { controller.isPaused }
 
     public init(orchestrator: ScanOrchestrator? = nil, paidFlag: PaidUserFlag? = nil) {
         self.paidFlag = paidFlag
@@ -54,6 +70,9 @@ public final class ScanViewModel: ObservableObject {
         progress = nil
         groupsFound = 0
         elapsed = 0
+        filesPerSecond = nil
+        estimatedRemaining = nil
+        throughput.reset()
         elapsedTask?.cancel()
         let startDate = Date()
         elapsedTask = Task { [weak self] in
@@ -75,11 +94,19 @@ public final class ScanViewModel: ObservableObject {
                 case .progress(let p):
                     progress = p
                     scanState = .scanning(p.progress)
+                    throughput.record(
+                        filesScanned: p.filesScanned,
+                        progress: p.progress,
+                        at: elapsed
+                    )
+                    filesPerSecond = throughput.filesPerSecond
+                    estimatedRemaining = throughput.estimatedRemaining(progress: p.progress)
                 case .group(let group):
                     scanResult.append(group)
                     groupsFound += 1
                 case .largeFiles(let items):
                     largeFiles = items
+                    onLargeFilesScanned?(items)
                 case .warning(let warning):
                     warnings.append(warning)
                 case .failed(let message):
@@ -118,5 +145,20 @@ public final class ScanViewModel: ObservableObject {
         elapsedTask = nil
         // Return to idle immediately; the cancelled stream must not publish a result.
         scanState = .idle
+    }
+
+    /// Pauses an in-flight scan. Detectors suspend at the next safe
+    /// checkpoint via `ScanController.awaitResumed()`. No-op when not
+    /// scanning.
+    public func pauseScan() {
+        guard case .scanning = scanState else { return }
+        controller.pause()
+    }
+
+    /// Resumes a previously-paused scan. Wakes every detector suspended
+    /// on the pause gate. No-op when not paused.
+    public func resumeScan() {
+        guard controller.isPaused else { return }
+        controller.resume()
     }
 }

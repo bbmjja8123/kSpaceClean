@@ -30,7 +30,7 @@ private func makeProcesses(count: Int) -> [ProcessInfoSnapshot] {
         result.append(ProcessInfoSnapshot(
             pid: pid, name: name,
             cpuPercent: cpu, memoryBytes: mem,
-            networkBytesPerSecond: net
+            networkBytesDownload: net
         ))
     }
     return result
@@ -117,7 +117,9 @@ final class ProcessesViewModelTests: XCTestCase {
         XCTAssertTrue(model.availableSorts.contains(.network))
         XCTAssertTrue(model.availableSorts.contains(.cpu))
         XCTAssertTrue(model.availableSorts.contains(.memory))
-        XCTAssertEqual(model.availableSorts.count, 3)
+        XCTAssertTrue(model.availableSorts.contains(.networkDownload))
+        XCTAssertTrue(model.availableSorts.contains(.networkUpload))
+        XCTAssertEqual(model.availableSorts.count, 5)
     }
 
     func testFreeUserNetworkSortIsClampedToCpu() async {
@@ -142,9 +144,9 @@ final class ProcessesViewModelTests: XCTestCase {
 
     func testProSearchFiltersProcesses() async {
         let processes = [
-            ProcessInfoSnapshot(pid: 1, name: "Safari", cpuPercent: 10, memoryBytes: 100, networkBytesPerSecond: 0),
-            ProcessInfoSnapshot(pid: 2, name: "Safari WebKit", cpuPercent: 20, memoryBytes: 200, networkBytesPerSecond: 0),
-            ProcessInfoSnapshot(pid: 3, name: "Terminal", cpuPercent: 5, memoryBytes: 50, networkBytesPerSecond: 0)
+            ProcessInfoSnapshot(pid: 1, name: "Safari", cpuPercent: 10, memoryBytes: 100, networkBytesDownload: 0),
+            ProcessInfoSnapshot(pid: 2, name: "Safari WebKit", cpuPercent: 20, memoryBytes: 200, networkBytesDownload: 0),
+            ProcessInfoSnapshot(pid: 3, name: "Terminal", cpuPercent: 5, memoryBytes: 50, networkBytesDownload: 0)
         ]
         let provider = StubProcessProvider(processes: processes)
         let monitor = ProcessMonitor(provider: provider)
@@ -161,8 +163,8 @@ final class ProcessesViewModelTests: XCTestCase {
 
     func testProSearchIsCaseInsensitive() async {
         let processes = [
-            ProcessInfoSnapshot(pid: 1, name: "Safari", cpuPercent: 10, memoryBytes: 100, networkBytesPerSecond: 0),
-            ProcessInfoSnapshot(pid: 2, name: "safari", cpuPercent: 20, memoryBytes: 200, networkBytesPerSecond: 0)
+            ProcessInfoSnapshot(pid: 1, name: "Safari", cpuPercent: 10, memoryBytes: 100, networkBytesDownload: 0),
+            ProcessInfoSnapshot(pid: 2, name: "safari", cpuPercent: 20, memoryBytes: 200, networkBytesDownload: 0)
         ]
         let provider = StubProcessProvider(processes: processes)
         let monitor = ProcessMonitor(provider: provider)
@@ -262,7 +264,7 @@ final class ProcessesViewModelTests: XCTestCase {
             name: "TestApp",
             cpuPercent: 12.5,
             memoryBytes: 145_000_000,
-            networkBytesPerSecond: 2_300_000
+            networkBytesDownload: 2_300_000
         )
         let provider = StubProcessProvider(processes: [process])
         let monitor = ProcessMonitor(provider: provider)

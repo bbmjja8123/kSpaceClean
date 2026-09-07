@@ -9,6 +9,17 @@
 /* Onboarding */
 "Welcome to kSift" = "欢迎使用 kSift";
 "Find and remove duplicate files, reclaim disk space" = "查找并删除重复文件，回收磁盘空间";
+"Find duplicates across your Mac" = "查找 Mac 上的重复文件";
+"Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders." = "字节级完全相同、近似图片、RAW+JPEG 配对、复制粘贴的整目录都能识别。";
+"Everything stays on your Mac" = "全部计算在本地完成";
+"No uploads, no telemetry, no network calls during scanning." = "不上传、无埋点、扫描过程零网络请求。";
+"Trash + 30-day vault undo" = "废纸篓 + 30 天保险库可恢复";
+"Cleaned files move to a private vault you can restore for 30 days." = "清理后的文件会进入私人保险库，30 天内可随时还原。";
+"Grant Full Disk Access" = "授予完整磁盘访问权限";
+"Required to scan protected folders like Desktop, Documents, and Downloads." = "扫描桌面、文稿、下载等受保护目录需要此权限。";
+"You can skip this and grant later in Settings." = "可跳过，后续在设置中授予。";
+"Back" = "上一步";
+"Next" = "下一步";
 "Get Started" = "开始使用";
 "Choose Your Profile" = "选择使用场景";
 "kSift optimizes scanning based on your workflow" = "kSift 会根据你的使用习惯优化扫描";
@@ -25,7 +36,7 @@
 /* Profile names */
 "Developer" = "开发者";
 "Photographer" = "摄影师";
-"Simple" = "极简";
+"Designer" = "设计师";
 
 /* Profile descriptions */
 "Scans projects, build artifacts, and development directories" = "扫描项目、构建产物和开发目录";
@@ -53,6 +64,11 @@
 "Review Results" = "查看结果";
 "Rescan" = "重新扫描";
 "Cancel scan" = "取消扫描";
+"Paused" = "已暂停";
+"Pause" = "暂停";
+"Resume" = "继续";
+"Resume scan" = "继续扫描";
+"Detecting renamed copies..." = "正在检测重命名副本...";
 "Elapsed" = "已用时";
 "Groups found" = "已发现";
 "Current folder" = "当前目录";
@@ -103,6 +119,10 @@
 "Scan Directories" = "扫描目录";
 "Remove" = "移除";
 "Add Directory" = "添加目录";
+"Excluded Patterns" = "排除规则";
+"Add pattern" = "添加规则";
+"Add" = "添加";
+"Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan." = "Glob 风格的规则（如 **/node_modules/**、*.log）。匹配任一规则的文件会在扫描时被跳过。";
 "kSift Pro" = "kSift Pro";
 "Free Tier" = "免费版";
 "Unlimited cleanup, incremental index, and Finder Sync." = "无限清理、增量索引和 Finder 同步。";
@@ -153,8 +173,16 @@
 "Files you clean will be kept here for 30 days so you can restore them." = "清理后的文件将在此保留 30 天，可随时恢复。";
 "Files are kept for 30 days after cleanup. Restore or purge them at any time." = "清理后的文件会保留 30 天，可随时恢复或清除。";
 "Purge expired" = "清理过期";
+"Purge now" = "立即清理";
 "Items" = "条目";
 "Total size" = "总占用";
+"Next auto-purge" = "下次自动清理";
+"Vault no upcoming purge" = "—";
+"%lld item(s) are past their 30-day retention and ready to purge." = "%lld 个条目已超过 30 天保留期，可清理。";
+"Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now." = "保险库中的文件将在 30 天后自动删除。现在点击清理即可立即释放空间。";
+"%dd %dh" = "%d 天 %d 小时";
+"%dh" = "%d 小时";
+"<1h" = "不到 1 小时";
 "Vaulted" = "保险中";
 "Restored" = "已恢复";
 "Restore" = "恢复";
@@ -215,3 +243,163 @@
 "This group shares the same name with %d other groups" = "此分组与另外 %d 个分组共享相同文件名";
 "APFS clones share physical blocks — cleaning frees logical size only" = "APFS 克隆文件共享物理块，清理仅释放逻辑大小";
 "%d clones" = "%d 个克隆";
+
+// MARK: - Phase A: 智能选择 / 选择模型 / 撤销 / 导航
+
+/* 选择策略 */
+"Keep Newest" = "保留最新";
+"Keep Oldest" = "保留最旧";
+"Keep Shortest Path" = "保留最短路径";
+"Keep Inside Scan Folder" = "保留扫描文件夹内";
+"Keep Canonical Folder" = "保留规范文件夹";
+
+/* 选择策略说明 */
+"Keeps the most recently modified copy and marks the rest for removal." = "保留最近修改的副本，其余标记为待删除。";
+"Keeps the oldest copy — useful when later files are re-downloads or re-encodes." = "保留最旧的副本——适合后来的是重新下载或转码文件的情况。";
+"Keeps the copy closest to the volume root, typically the canonical location." = "保留最接近卷根目录的副本，通常即规范位置。";
+"Prefers the copy inside the scanned folder, removing stray copies elsewhere." = "优先保留扫描文件夹内的副本，移除其他位置的散落副本。";
+"Keeps copies in the alphabetically first folder so the canonical directory survives." = "保留按字母顺序排在最前的文件夹中的副本，以保留规范目录。";
+
+/* 选择原因 */
+"Kept — most recently modified copy" = "保留——最近修改的副本";
+"Kept — oldest copy (original)" = "保留——最旧副本（原件）";
+"Kept — shortest path (canonical location)" = "保留——最短路径（规范位置）";
+"Kept — inside the scanned folder" = "保留——位于扫描文件夹内";
+"Kept — canonical folder copy" = "保留——规范文件夹中的副本";
+"Kept — the only copy in this group" = "保留——此组中的唯一副本";
+"Marked for removal — duplicate of the kept copy" = "标记待删除——保留副本的重复项";
+
+/* 导航与菜单 */
+"Welcome" = "欢迎";
+"Scan" = "扫描";
+"Results" = "结果";
+"History" = "历史记录";
+"New Scan" = "新建扫描";
+"Undo Cleanup" = "撤销清理";
+"Undo" = "撤销";
+"Go" = "前往";
+
+/* 撤销 */
+"Some files could not be restored" = "部分文件无法恢复";
+"%lld file(s) could not be restored:\n\n%@" = "%lld 个文件无法恢复：\n\n%@";
+"A file already exists at the original location" = "原始位置已存在同名文件";
+
+/* 分组选择 */
+"Stage this group for cleanup" = "将此组标记为待清理";
+"Select group %@" = "选择组 %@";
+
+/* 智能选择 */
+"%lld groups · %lld files staged (%@)" = "%lld 组 · %lld 个文件待删除（%@）";
+"Smart Select" = "智能选择";
+"Select None" = "全不选";
+"Automatically pick which copy to keep in every group, with a visible reason" = "自动为每组选择保留的副本，并显示选择原因";
+"Auto Keep" = "自动保留";
+"Automatically keep one copy — the reason is shown next to each file" = "自动保留一份副本——每个文件旁会显示原因";
+
+/* 清理提示 */
+"%lld file(s) moved to Trash. Kept 30 days in the vault." = "%lld 个文件已移到废纸篓，并在保险库中保留 30 天。";
+
+/* 自定义档案 */
+"Custom" = "自定义";
+"Scans only the folders you choose" = "仅扫描你选择的文件夹";
+
+/* Phase B: 首屏仪表盘 + 扫描吞吐 */
+"Quick Start" = "快速开始";
+"Find duplicate, similar, and oversized files — then reclaim the space in one tap." = "查找重复、相似和超大文件——一键腾出空间。";
+"Scan with the %@ profile" = "用“%@”档案扫描";
+"Last scan" = "上次扫描";
+"Found %lld duplicates · %@ reclaimable" = "发现 %lld 个重复项 · 可释放 %@";
+"Projects, build artifacts, dev directories" = "项目、构建产物、开发目录";
+"Photos, RAW files, creative assets" = "照片、RAW 文件、创意素材";
+"Desktop, downloads, documents" = "桌面、下载、文稿";
+"Only the folders you choose" = "仅你选择的文件夹";
+"Throughput" = "扫描速度";
+"%lld files/s" = "%lld 个文件/秒";
+"Time remaining" = "剩余时间";
+"Data scanned" = "已扫描数据";
+
+/* Phase C: 相似度预设 + 大文件 + 兼容性 */
+"Strict" = "严格";
+"Normal" = "标准";
+"Loose" = "宽松";
+"Groups only near-identical images — fewest false positives." = "仅分组几乎完全相同的图片——误报最少。";
+"Balanced matching — the recommended default." = "均衡匹配——推荐默认。";
+"Groups same-scene shots too — more results, more noise." = "同场景照片也会分组——结果更多，噪声也更多。";
+"Similar Image Sensitivity" = "相似图片灵敏度";
+"Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots." = "低灵敏度只聚合几乎相同的图片；高灵敏度会把同场景照片也归为一组。";
+"Large file threshold" = "大文件阈值";
+"Large Files" = "大文件";
+"Files at or above this size are listed in the Large Files results tab." = "达到或超过该大小的文件将显示在结果页的大文件标签中。";
+"Duplicates" = "重复项";
+"Compatibility" = "兼容性";
+"Reduced on macOS 13" = "macOS 13 下功能受限";
+"Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same." = "在 macOS 13 上，部分视觉动效与自动化交互会有所简化，其余功能完全一致。";
+"%lld files · %@ total" = "%lld 个文件 · 共 %@";
+"%lld selected · %@" = "已选 %lld 个 · %@";
+"No large files in this scan" = "本次扫描未发现大文件";
+"Files at or above the threshold in Settings appear here after a scan." = "扫描后，达到设置中阈值的文件会显示在这里。";
+"%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "将有 %lld 个文件移到废纸篓，并在保险库中保留 30 天。";
+
+/* Phase D: 付费页重写 */
+"Menu bar quick scan" = "菜单栏快速扫描";
+"Scan folders and check reclaimed space from the menu bar." = "从菜单栏扫描文件夹、查看已释放空间。";
+"Shortcuts automation" = "快捷指令自动化";
+"Build scans and cleanups into your own Shortcuts workflows." = "把扫描和清理接入你自己的快捷指令流程。";
+"Explainable Smart Select" = "可解释的智能选择";
+"Five keep strategies with a visible reason for every copy." = "五种保留策略，每个副本都显示选择原因。";
+"Price" = "价格";
+"After 1 year" = "一年后";
+"Stop paying" = "停止付费";
+"Free" = "免费";
+"Pay once" = "一次付费";
+"Pay every month" = "每月付费";
+"2 GB cleaned" = "已清理 2 GB";
+"Still yours" = "永久属于你";
+"Billed 12×" = "扣费 12 次";
+"Keep everything" = "保留全部功能";
+"Lose Pro features" = "失去 Pro 功能";
+"Is this a subscription?" = "这是订阅吗？";
+"No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind." = "不是。一次付费，kSift Pro 永久属于你，包括今后所有 Pro 新功能，没有任何形式的持续扣费。";
+"How many Macs can I use it on?" = "可以在几台 Mac 上使用？";
+"Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost." = "购买覆盖同一 Apple ID 登录的所有 Mac——台式机和笔记本都可安装，无需额外付费。";
+"What happens to files I already cleaned?" = "已清理的文件怎么办？";
+"Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean." = "无论哪个版本，已清理的文件都会在保险库中保留 30 天且可恢复；删除文件本身从不需要 Pro——Pro 解除的是 2 GB 清理额度限制。";
+
+/* Phase D: 在用检测 */
+"Some files are in use" = "部分文件正在使用中";
+"Check for open files" = "检查打开的文件";
+"These files are currently open in other apps:" = "这些文件正在其他 App 中打开：";
+"These files were modified moments ago and may be in use:" = "这些文件刚被修改过，可能正在使用：";
+"The open-file check could not run in this environment, so the list above is heuristic only." = "当前环境无法运行打开文件检测，以上列表仅为启发式判断。";
+"Skip in-use files" = "跳过使用中的文件";
+"Move anyway" = "仍然移动";
+"…and %lld more" = "…以及另外 %lld 个";
+
+/* Phase E: 历史趋势 */
+"reclaimed across scans" = "累计释放空间";
+"scans" = "次扫描";
+"Scan history for the last 8 weeks will appear here." = "最近 8 周的扫描历史将显示在这里。";
+"Delete this scan record?" = "删除这条扫描记录？";
+"Delete record" = "删除记录";
+"Only the history entry is removed — no files are affected." = "仅删除历史记录——不会影响任何文件。";
+
+/* Phase F1: 相似视频 */
+"Similar Video" = "相似视频";
+"Comparing videos..." = "正在比较视频...";
+
+/* Phase F2: 照片库 */
+"Photos" = "照片";
+"Find duplicates in your photo library" = "查找照片库中的重复照片";
+"kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded." = "kSift 完全在本机扫描你的照片库。仅存于 iCloud 的照片会被跳过——不下载、不上传任何内容。";
+"Access was denied. Grant it in System Settings → Privacy & Security → Photos." = "访问被拒绝。请在系统设置 → 隐私与安全性 → 照片中授权。";
+"Grant Access & Scan" = "授权并扫描";
+"Scanning your photo library locally…" = "正在本机扫描照片库…";
+"Assets scanned" = "已扫描照片";
+"iCloud-only skipped" = "跳过 iCloud 照片";
+"Re-scan" = "重新扫描";
+"%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them." = "已跳过 %lld 张仅存于 iCloud 的照片——开启“下载原始图片到这台 Mac”即可包含它们。";
+"No duplicate photos found" = "未发现重复照片";
+"Your photo library has no duplicate or near-duplicate images." = "你的照片库中没有重复或相似图片。";
+"Remove from Library" = "从图库中移除";
+"Some photos could not be deleted" = "部分照片无法删除";
+"%lld photo(s) could not be deleted. They may already be removed." = "%lld 张照片无法删除，可能已被移除。";

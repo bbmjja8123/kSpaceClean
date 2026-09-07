@@ -311,13 +311,21 @@ final class SettingsViewModelTests: XCTestCase {
 
     // MARK: - Tab navigation (SettingsTab enum)
 
-    func testSettingsTabHasSixCases() {
-        let allTabs: [SettingsView.SettingsTab] = [.menuBar, .alerts, .metrics, .appearance, .general, .about]
-        XCTAssertEqual(allTabs.count, 6)
+    func testSettingsTabHasTenCases() {
+        let allTabs: [SettingsView.SettingsTab] = [
+            .menuBar, .notifications, .sampling,
+            .cpu, .memory, .disk, .network,
+            .display, .general, .about
+        ]
+        XCTAssertEqual(allTabs.count, 10, "V1-TODO U5 mandates a 10-tab Settings layout")
     }
 
     func testSettingsTabAllCasesAreDistinct() {
-        let allTabs: [SettingsView.SettingsTab] = [.menuBar, .alerts, .metrics, .appearance, .general, .about]
+        let allTabs: [SettingsView.SettingsTab] = [
+            .menuBar, .notifications, .sampling,
+            .cpu, .memory, .disk, .network,
+            .display, .general, .about
+        ]
         let unique = Set(allTabs)
         XCTAssertEqual(unique.count, allTabs.count, "All tabs should be unique")
     }

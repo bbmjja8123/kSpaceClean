@@ -1,116 +1,84 @@
 import SwiftUI
 import AppKit
-import Foundation
 import DesignSystem
 
-/// A row of 4 system toggles displayed at the top of the menu-bar popover.
-/// Each toggle calls a public AppKit API — no TCC required.
+/// A row of quick controls at the top of the menu-bar popover.
+///
+/// Everything here is genuinely functional inside the App Store sandbox:
+/// - Pause monitoring: gates the `MetricsAggregator` sampling loop.
+/// - Wi-Fi status: read-only indicator; tapping opens the system Wi-Fi
+///   settings pane (writing network configuration is not sandbox-safe).
 public struct QuickToggleBar: View {
-    @State private var wifiEnabled: Bool = QuickToggleBar.readWiFi()
-    @State private var bluetoothEnabled: Bool = QuickToggleBar.readBluetooth()
-    @State private var nightShiftEnabled: Bool = QuickToggleBar.readNightShift()
-    @State private var dndEnabled: Bool = QuickToggleBar.readDND()
+    @ObservedObject public var viewModel: MenuBarViewModel
+    var onOpenSystemSettings: (() -> Void)? = nil
 
-    public init() {}
+    /// Lazily probed Wi-Fi hardware state — probed once per popover
+    /// appearance so `networksetup` is never spawned on every render.
+    @State private var wifiOn: Bool = false
+
+    public init(viewModel: MenuBarViewModel, onOpenSystemSettings: (() -> Void)? = nil) {
+        self.viewModel = viewModel
+        self.onOpenSystemSettings = onOpenSystemSettings
+    }
 
     public var body: some View {
         HStack(spacing: 12) {
-            Toggle(isOn: $wifiEnabled) { icon("wifi", enabled: wifiEnabled) }
-                .toggleStyle(.button)
-                .help(String(localized: "Wi-Fi"))
-                .onChange(of: wifiEnabled) { newValue in
-                    QuickToggleBar.setWiFi(newValue)
-                }
-            Toggle(isOn: $bluetoothEnabled) { icon("personalhotspot", enabled: bluetoothEnabled) }
-                .toggleStyle(.button)
-                .help(String(localized: "Bluetooth"))
-                .onChange(of: bluetoothEnabled) { newValue in
-                    QuickToggleBar.setBluetooth(newValue)
-                }
-            Toggle(isOn: $nightShiftEnabled) { icon("moon.fill", enabled: nightShiftEnabled) }
-                .toggleStyle(.button)
-                .help(String(localized: "Night Shift"))
-                .onChange(of: nightShiftEnabled) { newValue in
-                    QuickToggleBar.setNightShift(newValue)
-                }
-            Toggle(isOn: $dndEnabled) { icon("moon.circle.fill", enabled: dndEnabled) }
-                .toggleStyle(.button)
-                .help(String(localized: "Do Not Disturb"))
-                .onChange(of: dndEnabled) { newValue in
-                    QuickToggleBar.setDND(newValue)
-                }
+            Button {
+                viewModel.togglePause()
+            } label: {
+                icon(
+                    viewModel.isPaused ? "pause.circle.fill" : "play.circle.fill",
+                    active: !viewModel.isPaused
+                )
+            }
+            .buttonStyle(.plain)
+            .help(String(localized: viewModel.isPaused ? "Resume monitoring" : "Pause monitoring"))
+
+            Button {
+                (onOpenSystemSettings ?? Self.openWiFiSettings)()
+            } label: {
+                icon("wifi", active: wifiOn)
+            }
+            .buttonStyle(.plain)
+            .help(String(localized: "Wi-Fi status — click to open Network settings"))
+
             Spacer()
         }
         .padding(.vertical, 4)
+        .onAppear {
+            wifiOn = Self.readWiFiStatus()
+        }
     }
 
-    private func icon(_ name: String, enabled: Bool) -> some View {
+    private func icon(_ name: String, active: Bool) -> some View {
         Image(systemName: name)
-            .foregroundStyle(enabled ? Color.brandPrimary : Color.textSecondary)
+            .foregroundStyle(active ? Color.brandPrimary : Color.textSecondary)
     }
 
-    // MARK: - System state readers
-
-    /// Reads Wi-Fi power state via `networksetup -getairportpower en0`.
-    /// Returns `true` if Wi-Fi is on; `false` otherwise. Returns `false`
-    /// silently if the command fails (e.g. no en0 interface in a VM).
-    public static func readWiFi() -> Bool {
+    /// Read-only Wi-Fi hardware status via `networksetup -getairportpower`.
+    /// Returns `false` silently when the command is unavailable (sandbox
+    /// or VMs without en0) — this is a status *hint*, never a control.
+    public static func readWiFiStatus() -> Bool {
         let process = Process()
-        process.launchPath = "/usr/sbin/networksetup"
+        process.executableURL = URL(fileURLWithPath: "/usr/sbin/networksetup")
         process.arguments = ["-getairportpower", "en0"]
         let pipe = Pipe()
         process.standardOutput = pipe
+        process.standardError = Pipe()
         do {
             try process.run()
             process.waitUntilExit()
             let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            let str = String(data: data, encoding: .utf8) ?? ""
-            return str.contains("On")
+            return (String(data: data, encoding: .utf8) ?? "").contains("On")
         } catch {
             return false
         }
     }
 
-    public static func readBluetooth() -> Bool {
-        // Apple removed the public Bluetooth power API; conservatively return false.
-        // The toggle UI is still functional (writes a no-op log).
-        return false
-    }
-
-    public static func readNightShift() -> Bool {
-        // Night Shift is per-display and not directly readable; return false.
-        return false
-    }
-
-    public static func readDND() -> Bool {
-        // Notifications framework can read DND; conservatively return false here.
-        return false
-    }
-
-    // MARK: - System state writers
-
-    public static func setWiFi(_ enabled: Bool) {
-        let process = Process()
-        process.launchPath = "/usr/sbin/networksetup"
-        process.arguments = ["-setairportpower", "en0", enabled ? "on" : "off"]
-        do {
-            try process.run()
-            process.waitUntilExit()
-        } catch {
-            NSLog("kWatch: setWiFi(\(enabled)) failed: \(error.localizedDescription)")
+    /// Deep-link into System Settings → Wi-Fi (public URL scheme).
+    public static func openWiFiSettings() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.wifi-settings-duiextension") {
+            NSWorkspace.shared.open(url)
         }
-    }
-
-    public static func setBluetooth(_ enabled: Bool) {
-        // Best-effort log; macOS exposes no public toggle.
-        NSLog("kWatch: setBluetooth(\(enabled)) — no public API available")
-    }
-
-    public static func setNightShift(_ enabled: Bool) {
-        NSLog("kWatch: setNightShift(\(enabled)) — system Preferences path only")
-    }
-
-    public static func setDND(_ enabled: Bool) {
-        NSLog("kWatch: setDND(\(enabled)) — user must use Control Center")
     }
 }

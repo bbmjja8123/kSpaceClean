@@ -22,7 +22,7 @@ public final class MenuBarViewModel: ObservableObject {
     @Published public private(set) var temperatureCelsius: Double? = nil
     @Published public private(set) var fanRPM: Int? = nil
     @Published public private(set) var batteryPercent: Double? = nil
-    @Published public private(set) var gpuTemperature: Double? = nil
+    @Published public private(set) var gpuUsagePercent: Double? = nil
     @Published public private(set) var cpuHistory: [Double] = []
     @Published public var mode: MenuBarMode = .trend {
         didSet {
@@ -35,6 +35,9 @@ public final class MenuBarViewModel: ObservableObject {
         }
     }
     @Published public private(set) var isPro: Bool = false
+    /// `true` while the user has paused monitoring from the quick-toggle
+    /// bar. Mirrors the aggregator's `isPaused` flag.
+    @Published public private(set) var isPaused: Bool = false
 
     private let container: any AppContainerProtocol
     private var preferences: any PreferencesRepositoryProtocol
@@ -75,6 +78,16 @@ public final class MenuBarViewModel: ObservableObject {
         self.mode = mode
     }
 
+    /// Toggle monitoring on/off from the quick-toggle bar. Pausing stops the
+    /// aggregator from sampling (zero extra CPU/battery cost) without tearing
+    /// down consumer streams.
+    public func togglePause() {
+        isPaused.toggle()
+        let aggregator = container.aggregator
+        let paused = isPaused
+        Task { await aggregator.setPaused(paused) }
+    }
+
     /// The compact status-item title for the current mode.
     ///
     /// - `.trend` renders a chart in the popover, so the title stays empty.
@@ -100,7 +113,7 @@ public final class MenuBarViewModel: ObservableObject {
         case .temperature: return ([], temperatureCelsius ?? 0, "°C")
         case .fan: return ([], Double(fanRPM ?? 0), "RPM")
         case .battery: return ([], batteryPercent ?? 0, "%")
-        case .gpu: return ([], Double(gpuTemperature ?? 0), "°C")
+        case .gpu: return ([], gpuUsagePercent ?? 0, "%")
         }
     }
 
@@ -133,13 +146,23 @@ public final class MenuBarViewModel: ObservableObject {
         temperatureCelsius = pro ? snapshot.values[.temperature]?.degreesCelsius : nil
         fanRPM = pro ? snapshot.values[.fan]?.revolutionsPerMinute.map(Int.init) : nil
         batteryPercent = pro ? snapshot.values[.battery]?.percentage : nil
-        gpuTemperature = pro ? snapshot.values[.gpu]?.degreesCelsius : nil
+        // `GPUMonitor` reports GPU *usage* as `.percentage` (VRAM/occupancy
+        // on Apple Silicon); there is no temperature reading to consume.
+        gpuUsagePercent = pro ? snapshot.values[.gpu]?.percentage : nil
 
-        // Append to history, normalized to 0...1 (MiniTrendChart auto-scales).
+        // Append to history, normalized to 0...1.
         cpuHistory.append(cpuPercent / 100)
         if cpuHistory.count > historyCapacity {
             cpuHistory.removeFirst(cpuHistory.count - historyCapacity)
         }
         isPro = pro
     }
+
+    #if DEBUG
+    /// Test-only entry point that bypasses the aggregator stream so unit
+    /// tests can feed a fixed `MetricSnapshot` directly.
+    func consumeForTesting(_ snapshot: MetricSnapshot) {
+        consume(snapshot: snapshot)
+    }
+    #endif
 }

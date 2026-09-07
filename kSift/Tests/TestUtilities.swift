@@ -115,6 +115,10 @@ extension DuplicateGroup {
         case .rawJPEG:
             let second = files.dropFirst().first ?? first
             return .rawJPEGPair(rawFile: first, jpegFile: second, exifMatch: false)
+        case .nameHeuristic:
+            return .nameHeuristic(stem: first.url.lastPathComponent, variantCount: files.count)
+        case .similarVideo:
+            return .similarVideo(matchedFrameRatio: 0.7, frameCount: 8)
         }
     }
 }

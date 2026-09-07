@@ -92,14 +92,26 @@ public struct HistoryView: View {
     private var content: some View {
         if viewModel.isLocked {
             proGateView
-        } else if viewModel.isLoading {
-            loadingView
-        } else if let errorMessage = viewModel.errorMessage {
-            errorView(message: errorMessage)
-        } else if viewModel.isEmpty {
-            emptyView
         } else {
             dataView
+                .loadingOverlay(
+                    isLoading: viewModel.isLoading,
+                    title: String(localized: "Loading history…")
+                )
+                .errorState(message: viewModel.errorMessage) {
+                    Button(String(localized: "Retry")) {
+                        Task { await viewModel.load() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .emptyState(
+                    isEmpty: viewModel.isEmpty,
+                    iconName: "chart.xyaxis.line",
+                    title: String(localized: "No History Yet"),
+                    subtitle: String(localized: "History snapshots are written every few minutes. Check back soon."),
+                    actionLabel: String(localized: "Retry"),
+                    action: { Task { await viewModel.load() } }
+                )
         }
     }
 
@@ -132,71 +144,6 @@ public struct HistoryView: View {
                 onOpenPaywall?()
             }
             .buttonStyle(.borderedProminent)
-
-            Spacer()
-        }
-    }
-
-    // MARK: Loading
-
-    private var loadingView: some View {
-        VStack(spacing: 12) {
-            Spacer()
-            ProgressView()
-                .scaleEffect(1.2)
-            Text(String(localized: "Loading history…"))
-                .font(.callout)
-                .foregroundStyle(Color.textSecondary)
-            Spacer()
-        }
-    }
-
-    // MARK: Error
-
-    private func errorView(message: String) -> some View {
-        VStack(spacing: 12) {
-            Spacer()
-
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 36))
-                .foregroundStyle(Color.brandAccent)
-
-            Text(String(localized: "Failed to Load History"))
-                .font(.headline)
-
-            Text(message)
-                .font(.callout)
-                .foregroundStyle(Color.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-
-            Button(String(localized: "Retry")) {
-                Task { await viewModel.load() }
-            }
-            .buttonStyle(.borderedProminent)
-
-            Spacer()
-        }
-    }
-
-    // MARK: Empty
-
-    private var emptyView: some View {
-        VStack(spacing: 12) {
-            Spacer()
-
-            Image(systemName: "chart.xyaxis.line")
-                .font(.system(size: 36))
-                .foregroundStyle(Color.textSecondary)
-
-            Text(String(localized: "No Data"))
-                .font(.headline)
-
-            Text(String(localized: "No history records found for the selected range and metric. Data collection may have just started."))
-                .font(.callout)
-                .foregroundStyle(Color.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
 
             Spacer()
         }

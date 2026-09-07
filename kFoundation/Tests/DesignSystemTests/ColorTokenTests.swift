@@ -100,13 +100,3 @@ final class ColorTokenTests: XCTestCase {
         XCTAssertNotNil(color)
     }
 }
-
-private extension Color {
-    /// Lightweight wrapper around `Color._resolveColor` that converts to a
-    /// description string so equality checks across schemes are observable
-    /// in tests. SwiftUI's `Color` does not expose its resolved components
-    /// publicly on macOS 13, so we compare descriptions as a stable proxy.
-    func resolve(in env: EnvironmentValues) -> Color {
-        self
-    }
-}

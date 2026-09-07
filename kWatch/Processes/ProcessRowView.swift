@@ -52,9 +52,11 @@ struct ProcessRowView_Previews: PreviewProvider {
         ProcessRowView(viewModel: ProcessRowViewModel(
             pid: 1234,
             name: "Safari",
+            bundleID: "com.apple.Safari",
             cpuPercent: 12.5,
             memoryBytes: 145_000_000,
-            networkBytesPerSecond: 2_300_000
+            networkBytesDownload: 2_300_000,
+            networkBytesUpload: 80_000
         ))
         .padding(8)
         .frame(width: 500)

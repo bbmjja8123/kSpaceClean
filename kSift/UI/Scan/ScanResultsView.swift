@@ -1,7 +1,7 @@
 import SwiftUI
 import DesignSystem
 
-struct ScanResultView: View {
+struct ScanResultsView: View {
     let groups: [DuplicateGroup]
     let onReview: () -> Void
     let onRescan: () -> Void
