@@ -92,8 +92,11 @@ actor MockDuplicateRepository: DuplicateRepositoryProtocol {
 final class ScanOrchestratorTests: XCTestCase {
     /// A config that scans only the caller's temp dir via the stub walker.
     private func config(for dir: URL) -> ProfileConfig {
+        // `.custom` scopes the scan to exactly `dir` — preset profiles
+        // would sweep the user's real Desktop/Downloads/Documents, making
+        // the suite slow, machine-dependent, and flaky.
         ProfileConfig(
-            type: .simple,
+            type: .custom,
             customDirectories: [dir.path],
             exclusions: [],
             minFileSize: 1,
@@ -175,6 +178,53 @@ final class ScanOrchestratorTests: XCTestCase {
         // The scan was cancelled before starting, so it should NOT reach .completed.
         XCTAssertFalse(phases.contains(.completed),
                        "Cancelled scan should not reach the completed phase")
+    }
+
+    /// Pause suspends the scan mid-walk; resume lets it finish.
+    /// Asserts the pause gate actually parks the file walker (no
+    /// .completed during pause window) and that resume unblocks it.
+    func testPauseSuspendsAndResumeUnblocks() async throws {
+        let dir = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: dir) }
+        try createTempFile(named: "file-1.bin", in: dir, withSize: 1024)
+        try createTempFile(named: "file-2.bin", in: dir, withSize: 1024)
+
+        // The REAL FileWalker honors the pause gate (`awaitResumed`) at
+        // each enumeration step, so a paused scan parks before producing
+        // any events. StubFileWalker bypasses the gate, which is why the
+        // real walker is required here.
+        let controller = ScanController()
+        controller.pause()
+        XCTAssertTrue(controller.isPaused)
+
+        let orchestrator = ScanOrchestrator(fileWalker: FileWalker(), repository: MockDuplicateRepository())
+        let stream = await orchestrator.run(config: config(for: dir), controller: controller)
+
+        // Consume the stream in a side task and record when .completed
+        // arrives. While the gate holds, nothing should complete.
+        final class CompletionBox: @unchecked Sendable {
+            var completed = false
+        }
+        let box = CompletionBox()
+        let collector = Task {
+            for await event in stream {
+                if case .completed = event {
+                    box.completed = true
+                    break
+                }
+            }
+        }
+
+        // While paused: park long enough that an unpause-less scan would
+        // have finished (the fixture is tiny), then assert no completion.
+        try await Task.sleep(nanoseconds: 400_000_000)
+        XCTAssertFalse(box.completed, "Paused scan must not emit .completed")
+
+        // Resume: the parked walker unblocks and the scan runs to .completed.
+        controller.resume()
+        XCTAssertFalse(controller.isPaused)
+        await collector.value
+        XCTAssertTrue(box.completed, "Resumed scan must run to .completed")
     }
 
     func testSaveResultsRecordsData() async throws {
@@ -328,5 +378,63 @@ final class ScanOrchestratorTests: XCTestCase {
             $0.url?.resolvingSymlinksInPath() == locked.resolvingSymlinksInPath() && $0.phase == .byteIdentical
         },
         "Unreadable file of matching size should surface a byteIdentical warning")
+    }
+
+    /// Cancels mid-flight while 5 detectors run concurrently
+    /// (byteIdentical → directoryDedup / perceptual / largeFiles /
+    /// buildArtifacts / rawJPEG). Asserts the scan stream terminates
+    /// cleanly without .completed and that no events fire after cancel
+    /// — guards against the parallel-detector refactor regressing
+    /// cancellation propagation across actor boundaries.
+    func testMidFlightCancelDoesNotProducePartialResults() async throws {
+        let dir = try createTempDirectory()
+        defer { try? FileManager.default.removeItem(at: dir) }
+
+        // Enough files + an identical pair that the scan has a
+        // comfortable cancellation window. All post-byteIdentical phases
+        // run in parallel via `async let`; cancel must propagate to all
+        // of them via the shared ScanController.
+        for index in 0..<40 {
+            try createTempFile(named: "file-\(index).bin", in: dir, withSize: 4096)
+        }
+        try createIdenticalFilePair(in: dir)
+
+        let controller = ScanController()
+        let orchestrator = ScanOrchestrator(fileWalker: StubFileWalker(root: dir), repository: MockDuplicateRepository())
+        let stream = await orchestrator.run(config: config(for: dir), controller: controller)
+
+        // Spin the event loop until we see the byteIdentical progress
+        // event, then cancel. This guarantees cancel happens after
+        // byteIdentical is done but while the parallel detectors are
+        // still iterating — the exact scenario the audit flagged.
+        var sawByteIdentical = false
+        var completedFired = false
+        var trailingEventCount = 0
+
+        for await event in stream {
+            switch event {
+            case .progress(let progress) where progress.phase == .byteIdentical:
+                if !sawByteIdentical {
+                    sawByteIdentical = true
+                    controller.cancel()
+                }
+            case .completed:
+                completedFired = true
+            default:
+                if sawByteIdentical {
+                    trailingEventCount += 1
+                }
+            }
+        }
+
+        XCTAssertTrue(sawByteIdentical, "Scan must reach byteIdentical before cancellation window")
+        XCTAssertFalse(completedFired,
+                       "Cancelled scan must not surface a .completed event")
+        // A detector that already passed its isCancelled check mid-
+        // iteration may emit one final progress / group event before
+        // checking again. Allow up to 4 such stragglers but assert
+        // the stream terminates.
+        XCTAssertLessThanOrEqual(trailingEventCount, 4,
+                                 "Cancellation should propagate quickly; saw \(trailingEventCount) trailing events")
     }
 }

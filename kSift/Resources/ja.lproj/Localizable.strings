@@ -1,0 +1,410 @@
+/* kSift — Japanese localization
+ *
+ * NOTE: translations done with care but should be reviewed by a native
+ * Japanese speaker before App Store submission. Strings mirror the structure
+ * of en.lproj/Localizable.strings so adding keys stays in sync. */
+
+"Quick Scan…" = "クイックスキャン…";
+"Recent Results" = "最近の結果";
+"Show Vault" = "ボールトを表示";
+"Quit kSift" = "kSift を終了";
+"Open kSift" = "kSift を開く";
+"freed" = "解放済み";
+"kSift" = "kSift";
+
+/* Onboarding */
+"Welcome to kSift" = "kSift へようこそ";
+"Find and remove duplicate files, reclaim disk space" = "重複ファイルを見つけて削除し、ディスク容量を確保します";
+"Find duplicates across your Mac" = "Mac 全体で重複ファイルを検出";
+"Byte-identical, near-duplicate images, RAW+JPEG pairs, and copy-paste folders." = "バイト一致、類似画像、RAW+JPEG ペア、コピー＆ペーストフォルダを検出。";
+"Everything stays on your Mac" = "すべて Mac 内で完結";
+"No uploads, no telemetry, no network calls during scanning." = "アップロードなし、テレメトリなし、スキャン中の通信なし。";
+"Trash + 30-day vault undo" = "ゴミ箱 + 30 日ボールトで復元可能";
+"Cleaned files move to a private vault you can restore for 30 days." = "削除したファイルは 30 日間復元可能なボールトへ移動。";
+"Grant Full Disk Access" = "フルディスクアクセスを許可";
+"Required to scan protected folders like Desktop, Documents, and Downloads." = "デスクトップ、ドキュメント、ダウンロードなどの保護フォルダのスキャンに必要。";
+"You can skip this and grant later in Settings." = "スキップ可能。あとで設定から許可できます。";
+"Back" = "戻る";
+"Next" = "次へ";
+"Get Started" = "はじめる";
+"Choose Your Profile" = "プロファイルを選択";
+"kSift optimizes scanning based on your workflow" = "作業内容に応じてスキャンを最適化します";
+
+/* Full Disk Access */
+"Full Disk Access granted" = "フルディスクアクセスが許可されています";
+"Full Disk Access required" = "フルディスクアクセスが必要です";
+"kSift can scan protected folders like Desktop, Documents, and Downloads." = "kSift はデスクトップ、ドキュメント、ダウンロードなどの保護フォルダをスキャンできます。";
+"kSift needs Full Disk Access to scan protected folders like Desktop, Documents, and Downloads." = "デスクトップ、ドキュメント、ダウンロードなどの保護フォルダをスキャンするにはフルディスクアクセスが必要です。";
+"Open System Settings" = "システム設定を開く";
+"Re-check" = "再確認";
+"Scan anyway" = "このままスキャン";
+
+/* Profile names */
+"Developer" = "開発者";
+"Photographer" = "フォトグラファー";
+"Designer" = "デザイナー";
+
+/* Profile descriptions */
+"Scans projects, build artifacts, and development directories" = "プロジェクト、ビルド成果物、開発ディレクトリをスキャン";
+"Scans photos, RAW files, and creative assets" = "写真、RAW ファイル、クリエイティブアセットをスキャン";
+"Scans desktop, downloads, and documents" = "デスクトップ、ダウンロード、ドキュメントをスキャン";
+
+/* Scan */
+"Ready to Scan" = "スキャン準備完了";
+"Choose a profile in Settings or start with Developer mode" = "設定でプロファイルを選択するか、開発者モードで開始";
+"Start Scan" = "スキャンを開始";
+"Scan Failed" = "スキャン失敗";
+"Scan Complete" = "スキャン完了";
+"%lld files scanned" = "%lld ファイルをスキャンしました";
+"%lld duplicates found" = "%lld 件の重複が見つかりました";
+"Scanning files..." = "ファイルをスキャン中...";
+"Checking identical files..." = "同一ファイルを確認中...";
+"Cross-directory analysis..." = "ディレクトリ横断分析中...";
+"Comparing images..." = "画像を比較中...";
+"Finding large files..." = "大きいファイルを検索中...";
+"Identifying build artifacts..." = "ビルド成果物を識別中...";
+"Matching RAW + JPEG pairs..." = "RAW + JPEG ペアを照合中...";
+"Scan complete!" = "スキャン完了！";
+"Duplicate Groups" = "重複グループ";
+"Wasteable Space" = "削減可能な容量";
+"Review Results" = "結果を確認";
+"Rescan" = "再スキャン";
+"Cancel scan" = "スキャンをキャンセル";
+"Paused" = "一時停止中";
+"Pause" = "一時停止";
+"Resume" = "再開";
+"Resume scan" = "スキャンを再開";
+"Detecting renamed copies..." = "リネームされた複製を検出中...";
+"Elapsed" = "経過時間";
+"Groups found" = "見つかったグループ";
+"Current folder" = "現在のフォルダ";
+
+/* Results */
+"Groups" = "グループ";
+"Duplicates" = "重複";
+"All" = "すべて";
+"%lld groups selected" = "%lld 件のグループを選択中";
+"Auto Select" = "自動選択";
+"Move to Trash?" = "ゴミ箱へ移動しますか？";
+"Cancel" = "キャンセル";
+"Delete" = "削除";
+"%lld groups will be moved to Trash. The newest copy of each group is kept." = "%lld 件のグループをゴミ箱へ移動します。各グループで最新コピーは保持されます。";
+"Some files could not be moved" = "一部のファイルを移動できませんでした";
+"OK" = "OK";
+"%lld file(s) could not be moved to Trash and remain in place.\n\n%@" = "%lld 件のファイルをゴミ箱へ移動できなかったため元の場所に残っています。\n\n%@";
+"Delete (%@)" = "削除 (%@)";
+" · Upgrade" = " · アップグレード";
+"%lld files · %@" = "%lld ファイル · %@";
+"%lld selected · %@" = "%lld 件選択中 · %@";
+"Auto Keep Newest (%lld to delete)" = "最新以外を自動削除 (削除 %lld 件)";
+"Reveal in Finder" = "Finder で表示";
+"QuickLook" = "クイックルック";
+"Move %lld to Trash" = "%lld 件をゴミ箱へ移動";
+"%lld file(s) will be moved to Trash. The newest copy of the group is kept." = "%lld 件のファイルをゴミ箱へ移動します。グループの最新コピーは保持されます。";
+"Cleaning %@ would exceed your %@ free-tier quota (only %@ left)." = "%@ を削除すると無料枠 (%@) の上限を超えます (残り %@)。";
+
+/* History */
+"Scan History" = "スキャン履歴";
+"Loading history..." = "履歴を読み込み中...";
+"No scans yet" = "まだスキャン履歴がありません";
+"Run a scan to see history here" = "スキャンを実行するとここに履歴が表示されます";
+"%lld groups · %@" = "%lld グループ · %@";
+"Waste" = "削減容量";
+"Duration" = "所要時間";
+"No groups in this scan" = "このスキャンにはグループがありません";
+"The scan finished without finding any duplicates." = "スキャンは重複を検出せずに完了しました。";
+
+/* Settings */
+"Settings" = "設定";
+"Profile" = "プロファイル";
+"Scan Profile" = "スキャンプロファイル";
+"Scan Options" = "スキャンオプション";
+"Min file size: %@" = "最小ファイルサイズ: %@";
+"Enable perceptual similarity (macOS 14+)" = "知覚的類似を有効化 (macOS 14+)";
+"Scan build artifacts" = "ビルド成果物をスキャン";
+"Scan Directories" = "スキャン対象ディレクトリ";
+"Remove" = "削除";
+"Add Directory" = "ディレクトリを追加";
+"Excluded Patterns" = "除外パターン";
+"Add pattern" = "パターンを追加";
+"Add" = "追加";
+"Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan." = "Glob 形式のパターン (例: **/node_modules/**、*.log)。いずれかのパターンに一致するファイルはスキャン時にスキップされます。";
+"kSift Pro" = "kSift Pro";
+"Free Tier" = "無料プラン";
+"Unlimited cleanup, incremental index, and Finder Sync." = "無制限のクリーンアップ、増分インデックス、Finder 連携。";
+"Cleaned %@ of %@ free quota." = "無料枠 %@ のうち %@ を使用しました。";
+"Upgrade" = "アップグレード";
+"Restore" = "復元";
+
+/* Store / Paywall */
+"Unlock kSift Pro" = "kSift Pro のロックを解除";
+"One-time purchase. Lifetime updates. No subscription." = "一回限りの購入。生涯アップデート。サブスクリプション不要。";
+"Unlimited cleanup" = "無制限のクリーンアップ";
+"Remove the 2 GB free-tier cap and free as much space as you need." = "2 GB の無料枠制限を撤廃し、必要なだけ容量を解放できます。";
+"Incremental index" = "増分インデックス";
+"Re-scans only the files that actually changed — typically 10x faster." = "実際に変更されたファイルのみを再スキャン — 通常 10 倍高速です。";
+"Finder Sync extension" = "Finder Sync 拡張";
+"Right-click any folder in Finder → \"Scan with kSift\"." = "Finder でフォルダを右クリック → 「kSift でスキャン」";
+"Future Pro features" = "将来の Pro 機能";
+"Every paid feature we ship from now on, included." = "今後リリースされるすべての有料機能が含まれます。";
+"Processing…" = "処理中…";
+"Buy %@" = "%@ を購入";
+"Loading product…" = "製品情報を読み込み中…";
+"Restore Purchases" = "購入を復元";
+"Free tier includes up to 2 GB of cleanup. Quota resets after purchase." = "無料プランには最大 2 GB までのクリーンアップが含まれます。購入後は枠がリセットされます。";
+
+/* Category Display Names */
+"Categories" = "カテゴリ";
+"Identical" = "完全一致";
+"Directory" = "ディレクトリ";
+"Similar" = "類似";
+"Large" = "大容量";
+"Artifacts" = "成果物";
+"RAW+JPEG" = "RAW+JPEG";
+
+/* Intents */
+"Scan for Duplicates" = "重複をスキャン";
+"Scans a directory for identical and similar files." = "ディレクトリ内の同一ファイルと類似ファイルをスキャンします。";
+"Clean Up Duplicates" = "重複をクリーンアップ";
+"Moves duplicate files in the selected category to the Trash." = "選択したカテゴリの重複ファイルをゴミ箱へ移動します。";
+"Show Large Files" = "大きいファイルを表示";
+"Finds files larger than the specified minimum size." = "指定した最小サイズより大きいファイルを検索します。";
+"Category" = "カテゴリ";
+"Minimum Size (MB)" = "最小サイズ (MB)";
+
+/* Vault */
+"Vault" = "ボールト";
+"Loading vault..." = "ボールトを読み込み中...";
+"Vault is empty" = "ボールトは空です";
+"Files you clean will be kept here for 30 days so you can restore them." = "削除したファイルは復元できるよう 30 日間ここに保管されます。";
+"Files are kept for 30 days after cleanup. Restore or purge them at any time." = "クリーンアップ後 30 日間ファイルが保管されます。いつでも復元または削除できます。";
+"Purge expired" = "期限切れを削除";
+"Purge now" = "今すぐ削除";
+"Items" = "アイテム数";
+"Total size" = "合計サイズ";
+"Next auto-purge" = "次回自動削除";
+"Vault no upcoming purge" = "—";
+"%lld item(s) are past their 30-day retention and ready to purge." = "%lld 件のアイテムが 30 日の保管期間を超えているため削除できます。";
+"Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now." = "ボールト内のファイルは 30 日後に自動的に削除されます。今すぐ削除してスペースを確保できます。";
+"%dd %dh" = "%d日 %d時間";
+"%dh" = "%d時間";
+"<1h" = "1時間未満";
+"Vaulted" = "ボールト済み";
+"Restored" = "復元済み";
+"Restore" = "復元";
+"Show" = "表示";
+"Vault error" = "ボールトエラー";
+"Vault unavailable: %@" = "ボールトを利用できません: %@";
+"Failed to copy %@ into the vault: %@" = "%@ をボールトへコピーできませんでした: %@";
+"SHA-256 mismatch for %@" = "%@ の SHA-256 が一致しません";
+"This vault item no longer exists." = "このボールトアイテムは存在しません。";
+"The vault copy of %@ is missing." = "%@ のボールトコピーが見つかりません。";
+"Cannot restore: %@ already exists." = "復元できません: %@ は既に存在します。";
+"Failed to restore %@: %@" = "%@ の復元に失敗しました: %@";
+"Cannot restore" = "復元できません";
+"Show in Finder" = "Finder で表示";
+"'%@' already exists at the original location. Move it aside, then try again." = "「%@」は元の場所に既に存在します。別の場所へ移動してから再試行してください。";
+"Moved to Vault" = "ボールトへ移動しました";
+"Open Vault" = "ボールトを開く";
+"Done" = "完了";
+"%lld file(s) were moved to Trash and safely stored in the vault for 30 days." = "%lld 件のファイルをゴミ箱へ移動し、安全のため 30 日間ボールトに保管しました。";
+
+/* Task 3 — P0-9 scan range preview */
+"Scan range" = "スキャン範囲";
+"Estimating scan range…" = "スキャン範囲を推定中…";
+"Will scan %@" = "%@ をスキャンします";
+"%lld folder(s)" = "%lld フォルダ";
+"about %@ files" = "約 %@ ファイル";
+"about %@" = "約 %@";
+"50k+ files" = "5万ファイル以上";
+"over %@" = "%@ 以上";
+"no files to scan" = "スキャン対象のファイルがありません";
+"No folders to scan" = "スキャン対象のフォルダがありません";
+"Drop a folder here, or choose directories in Settings." = "ここにフォルダをドロップするか、設定でディレクトリを選択してください。";
+
+/* Task 4 — P0-5 drag-and-drop scan */
+"Drop to start scanning" = "ドロップしてスキャンを開始";
+
+/* Task 5 — P1-5 keyboard navigation */
+"Select all groups (⌘A)" = "すべてのグループを選択 (⌘A)";
+"Start a new scan (⌘N)" = "新規スキャン (⌘N)";
+"Clear selection (Esc)" = "選択をクリア (Esc)";
+"QuickLook selected file (Space)" = "選択中ファイルをクイックルック (Space)";
+
+/* Task 1 — P1-1 multi-dim filters */
+"More filters" = "詳細フィルター";
+"Less filters" = "フィルターを閉じる";
+"Size range" = "サイズ範囲";
+"Min" = "最小";
+"Max" = "最大";
+"Date range" = "日付範囲";
+"From" = "開始";
+"To" = "終了";
+"Any date" = "日付指定なし";
+"Clear date" = "日付をクリア";
+"Any size" = "サイズ指定なし";
+"Any" = "指定なし";
+"Reset filters" = "フィルターをリセット";
+"Missing" = "見つかりません";
+"This group shares the same name with %d other groups" = "このグループは他に %d 件のグループと同じ名前を共有しています";
+"APFS clones share physical blocks — cleaning frees logical size only" = "APFS クローンは物理ブロックを共有しています — 削除しても論理サイズのみ解放されます";
+"%d clones" = "%d 件のクローン";
+// MARK: - Phase A: スマート選択 / 選択モデル / 取り消し / ナビゲーション
+
+/* 選択ストラテジー */
+"Keep Newest" = "最新を残す";
+"Keep Oldest" = "最古を残す";
+"Keep Shortest Path" = "最短パスを残す";
+"Keep Inside Scan Folder" = "スキャンフォルダ内を残す";
+"Keep Canonical Folder" = "基準フォルダを残す";
+
+/* ストラテジー説明 */
+"Keeps the most recently modified copy and marks the rest for removal." = "最も最近に変更されたコピーを残し、残りを削除対象にします。";
+"Keeps the oldest copy — useful when later files are re-downloads or re-encodes." = "最も古いコピーを残します。後のファイルが再ダウンロードや再エンコードの場合に便利です。";
+"Keeps the copy closest to the volume root, typically the canonical location." = "ボリュームのルートに最も近いコピーを残します。通常は正規の場所です。";
+"Prefers the copy inside the scanned folder, removing stray copies elsewhere." = "スキャンしたフォルダ内のコピーを優先的に残し、他の場所のコピーを削除します。";
+"Keeps copies in the alphabetically first folder so the canonical directory survives." = "アルファベット順で最初のフォルダ内のコピーを残し、基準ディレクトリを維持します。";
+
+/* 選択理由 */
+"Kept — most recently modified copy" = "残す — 最近変更されたコピー";
+"Kept — oldest copy (original)" = "残す — 最古のコピー（原本）";
+"Kept — shortest path (canonical location)" = "残す — 最短パス（正規の場所）";
+"Kept — inside the scanned folder" = "残す — スキャンフォルダ内";
+"Kept — canonical folder copy" = "残す — 基準フォルダのコピー";
+"Kept — the only copy in this group" = "残す — このグループの唯一のコピー";
+"Marked for removal — duplicate of the kept copy" = "削除対象 — 残すコピーの重複";
+
+/* ナビゲーションとメニュー */
+"Welcome" = "ようこそ";
+"Scan" = "スキャン";
+"Results" = "結果";
+"History" = "履歴";
+"New Scan" = "新規スキャン";
+"Undo Cleanup" = "クリーンアップを取り消す";
+"Undo" = "取り消す";
+"Go" = "移動";
+
+/* 取り消し */
+"Some files could not be restored" = "一部のファイルを復元できませんでした";
+"%lld file(s) could not be restored:\n\n%@" = "%lld 個のファイルを復元できませんでした：\n\n%@";
+"A file already exists at the original location" = "元の場所にすでにファイルが存在します";
+
+/* グループ選択 */
+"Stage this group for cleanup" = "このグループをクリーンアップ対象にする";
+"Select group %@" = "グループ %@ を選択";
+
+/* スマート選択 */
+"%lld groups · %lld files staged (%@)" = "%lld グループ · %lld ファイルが削除対象（%@）";
+"Smart Select" = "スマート選択";
+"Select None" = "すべて選択解除";
+"Automatically pick which copy to keep in every group, with a visible reason" = "各グループで残すコピーを自動的に選び、その理由を表示します";
+"Auto Keep" = "自動で残す";
+"Automatically keep one copy — the reason is shown next to each file" = "1つのコピーを自動的に残します — 各ファイルの横に理由が表示されます";
+
+/* クリーンアップトースト */
+"%lld file(s) moved to Trash. Kept 30 days in the vault." = "%lld 個のファイルをゴミ箱に移動しました。ボールトに30日間保管されます。";
+
+/* カスタムプロファイル */
+"Custom" = "カスタム";
+"Scans only the folders you choose" = "選択したフォルダのみをスキャンします";
+
+/* Phase B: ホームダッシュボード + スキャン速度 */
+"Quick Start" = "クイックスタート";
+"Find duplicate, similar, and oversized files — then reclaim the space in one tap." = "重複・類似・巨大ファイルを探し、ワンタップで空き容量を取り戻します。";
+"Scan with the %@ profile" = "「%@」プロファイルでスキャン";
+"Last scan" = "前回のスキャン";
+"Found %lld duplicates · %@ reclaimable" = "%lld 件の重複を発見 · %@ 解放可能";
+"Projects, build artifacts, dev directories" = "プロジェクト、ビルド成果物、開発ディレクトリ";
+"Photos, RAW files, creative assets" = "写真、RAW ファイル、制作素材";
+"Desktop, downloads, documents" = "デスクトップ、ダウンロード、書類";
+"Only the folders you choose" = "選択したフォルダのみ";
+"Throughput" = "スキャン速度";
+"%lld files/s" = "%lld ファイル/秒";
+"Time remaining" = "残り時間";
+"Data scanned" = "スキャン済みデータ";
+
+/* Phase C: 類似度プリセット + 大きいファイル + 互換性 */
+"Strict" = "厳密";
+"Normal" = "標準";
+"Loose" = "緩い";
+"Groups only near-identical images — fewest false positives." = "ほぼ同一の画像のみをグループ化 — 誤検出が最も少ない。";
+"Balanced matching — the recommended default." = "バランスの取れたマッチング — 推奨のデフォルト。";
+"Groups same-scene shots too — more results, more noise." = "同じシーンの写真もグループ化 — 結果は増えますがノイズも増えます。";
+"Similar Image Sensitivity" = "類似画像の感度";
+"Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots." = "感度を下げるとほぼ同一の画像のみ、上げると同じシーンの写真もグループ化されます。";
+"Large file threshold" = "大きいファイルのしきい値";
+"Large Files" = "大きいファイル";
+"Files at or above this size are listed in the Large Files results tab." = "このサイズ以上のファイルは、結果の「大きいファイル」タブに表示されます。";
+"Duplicates" = "重複項目";
+"Compatibility" = "互換性";
+"Reduced on macOS 13" = "macOS 13 では一部機能を簡素化";
+"Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same." = "macOS 13 では一部の視覚効果と自動化が簡素化されます。その他の機能は同じです。";
+"%lld files · %@ total" = "%lld ファイル · 合計 %@";
+"%lld selected · %@" = "%lld 件選択 · %@";
+"No large files in this scan" = "このスキャンで大きいファイルは見つかりませんでした";
+"Files at or above the threshold in Settings appear here after a scan." = "スキャン後、設定のしきい値以上のファイルがここに表示されます。";
+"%lld file(s) will be moved to Trash and kept in the vault for 30 days." = "%lld 個のファイルをゴミ箱に移動し、ボールトに30日間保管します。";
+
+/* Phase D: ペイウォール書き直し */
+"Menu bar quick scan" = "メニューバークイックスキャン";
+"Scan folders and check reclaimed space from the menu bar." = "メニューバーからフォルダをスキャンし、解放した容量を確認できます。";
+"Shortcuts automation" = "ショートカット自動化";
+"Build scans and cleanups into your own Shortcuts workflows." = "スキャンとクリーンアップを自分のショートカットに組み込めます。";
+"Explainable Smart Select" = "理由が見えるスマート選択";
+"Five keep strategies with a visible reason for every copy." = "5つの保持ストラテジーで、各コピーに理由を表示します。";
+"Price" = "価格";
+"After 1 year" = "1年後";
+"Stop paying" = "支払いを止める";
+"Free" = "無料";
+"Pay once" = "一度だけ支払い";
+"Pay every month" = "毎月支払い";
+"2 GB cleaned" = "2 GB クリーンアップ済み";
+"Still yours" = "ずっと使える";
+"Billed 12×" = "12回請求";
+"Keep everything" = "全機能を維持";
+"Lose Pro features" = "Pro 機能を失う";
+"Is this a subscription?" = "これはサブスクリプションですか？";
+"No. You pay once and kSift Pro is yours forever, including all future Pro features. There is no recurring charge of any kind." = "いいえ。一度の支払いで kSift Pro は将来の Pro 機能も含めて永久に使えます。継続課金は一切ありません。";
+"How many Macs can I use it on?" = "何台の Mac で使えますか？";
+"Your purchase covers every Mac signed into the same Apple ID — install it on your desktop and your laptop at no extra cost." = "同じ Apple ID でサインインしているすべての Mac で利用できます — デスクトップとノートブックの両方に追加料金なしでインストール可能です。";
+"What happens to files I already cleaned?" = "クリーンアップ済みのファイルはどうなりますか？";
+"Every cleaned file stays restorable in the vault for 30 days regardless of tier, and deleting files never requires Pro — Pro removes the 2 GB quota on how much you can clean." = "クリーンアップしたファイルは、プランに関係なくボールトに30日間保管され復元できます。ファイル削除に Pro は不要です — Pro は 2 GB のクリーンアップ上限を解除します。";
+
+/* Phase D: 使用中チェック */
+"Some files are in use" = "一部のファイルが使用中です";
+"Check for open files" = "開いているファイルを確認";
+"These files are currently open in other apps:" = "これらのファイルは他のアプリで開いています：";
+"These files were modified moments ago and may be in use:" = "これらのファイルは直前に変更されたため使用中の可能性があります：";
+"The open-file check could not run in this environment, so the list above is heuristic only." = "この環境では開いているファイルのチェックを実行できなかったため、上記はヒューリスティックな判断です。";
+"Skip in-use files" = "使用中のファイルをスキップ";
+"Move anyway" = "それでも移動";
+"…and %lld more" = "…他 %lld 件";
+
+/* Phase E: 履歴トレンド */
+"reclaimed across scans" = "累計解放容量";
+"scans" = "回のスキャン";
+"Scan history for the last 8 weeks will appear here." = "過去8週間のスキャン履歴がここに表示されます。";
+"Delete this scan record?" = "このスキャン記録を削除しますか？";
+"Delete record" = "記録を削除";
+"Only the history entry is removed — no files are affected." = "履歴エントリのみを削除します — ファイルには影響しません。";
+
+/* Phase F1: 類似動画 */
+"Similar Video" = "類似動画";
+"Comparing videos..." = "動画を比較中...";
+
+/* Phase F2: 写真ライブラリ */
+"Photos" = "写真";
+"Find duplicates in your photo library" = "写真ライブラリの重複を見つける";
+"kSift scans your photo library entirely on this Mac. Cloud-only photos are skipped — nothing is downloaded or uploaded." = "kSift は写真ライブラリをこの Mac 上で完全にスキャンします。クラウドのみの写真はスキップされ、ダウンロードもアップロードも行われません。";
+"Access was denied. Grant it in System Settings → Privacy & Security → Photos." = "アクセスが拒否されました。システム設定 → プライバシーとセキュリティ → 写真で許可してください。";
+"Grant Access & Scan" = "アクセスを許可してスキャン";
+"Scanning your photo library locally…" = "写真ライブラリをローカルでスキャン中…";
+"Assets scanned" = "スキャン済みアセット";
+"iCloud-only skipped" = "iCloud のみをスキップ";
+"Re-scan" = "再スキャン";
+"%lld iCloud-only photo(s) were skipped — enable Download originals on this Mac to include them." = "iCloud のみの写真 %lld 枚をスキップしました — 「オリジナルをこの Mac にダウンロード」を有効にすると含まれます。";
+"No duplicate photos found" = "重複する写真は見つかりませんでした";
+"Your photo library has no duplicate or near-duplicate images." = "写真ライブラリに重複や類似の画像はありません。";
+"Remove from Library" = "ライブラリから削除";
+"Some photos could not be deleted" = "一部の写真を削除できませんでした";
+"%lld photo(s) could not be deleted. They may already be removed." = "%lld 枚の写真を削除できませんでした。すでに削除されている可能性があります。";

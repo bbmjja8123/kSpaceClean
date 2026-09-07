@@ -20,6 +20,14 @@ final class SettingsViewModel: ObservableObject {
     @Published var enableBuildArtifacts: Bool = true {
         didSet { syncIfReady() }
     }
+    /// How aggressively similar images are grouped (strict/normal/loose).
+    @Published var similarityPreset: SimilarityPreset = .normal {
+        didSet { syncIfReady() }
+    }
+    /// Files at or above this size appear in the Large Files results.
+    @Published var largeFileSizeThreshold: Int64 = 100 * 1024 * 1024 {
+        didSet { syncIfReady() }
+    }
 
     /// Suppresses the per-property didSet writes while `load()` is running so
     /// we don't persist six intermediate states between assigns.
@@ -34,9 +42,16 @@ final class SettingsViewModel: ObservableObject {
             exclusions: additionalExclusions,
             minFileSize: minFileSize,
             enablePerceptualScan: enablePerceptual,
-            enableBuildArtifacts: enableBuildArtifacts
+            enableBuildArtifacts: enableBuildArtifacts,
+            selectionStrategy: selectionStrategy,
+            similarityPreset: similarityPreset,
+            largeFileSizeThreshold: largeFileSizeThreshold
         )
     }
+
+    /// Auto Keep strategy — read-only mirror here (edited from the
+    /// results screen's Smart Select menu); still round-tripped on save.
+    var selectionStrategy: SelectionStrategy = .keepNewest
 
     func load() {
         let config = ProfileConfigStore.load()
@@ -47,6 +62,9 @@ final class SettingsViewModel: ObservableObject {
         minFileSize = config.minFileSize
         enablePerceptual = config.enablePerceptualScan
         enableBuildArtifacts = config.enableBuildArtifacts
+        selectionStrategy = config.selectionStrategy
+        similarityPreset = config.similarityPreset
+        largeFileSizeThreshold = config.largeFileSizeThreshold
         isLoading = false
     }
 

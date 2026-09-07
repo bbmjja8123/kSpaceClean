@@ -8,6 +8,8 @@ public enum DuplicateCategory: String, Sendable, Codable, CaseIterable {
     case largeFile
     case buildArtifact
     case rawJPEG
+    case nameHeuristic
+    case similarVideo
 }
 
 #if canImport(AppIntents)
@@ -27,6 +29,8 @@ extension DuplicateCategory: AppEnum {
             .largeFile: "Large File",
             .buildArtifact: "Build Artifact",
             .rawJPEG: "RAW/JPEG",
+            .nameHeuristic: "Same Name",
+            .similarVideo: "Similar Video",
         ]
     }
 }
@@ -68,6 +72,13 @@ public enum CategoryEvidence: Sendable, Codable {
     case rawJPEGPair(rawFile: FileItem, jpegFile: FileItem, exifMatch: Bool)
     case buildArtifact(pattern: BuildPattern)
     case largeFile
+    /// Multiple files share the same basename stem (e.g. "IMG_1234.jpg"
+    /// and "IMG_1234 (1).jpg") across distinct folders — likely
+    /// re-downloads / re-exports the user wants to consolidate.
+    case nameHeuristic(stem: String, variantCount: Int)
+    /// Videos whose sampled frame hashes match across a sufficient ratio
+    /// of frames — same footage, different encode/export.
+    case similarVideo(matchedFrameRatio: Double, frameCount: Int)
 }
 
 public struct DuplicateGroup: Sendable, Identifiable, Codable {
@@ -113,6 +124,11 @@ public struct FileItem: Sendable, Identifiable, Codable {
     public let isAPFSClone: Bool
     public let physicalSize: Int64?
     public let fileType: UTType?
+    /// PHAsset localIdentifier when this item represents a photo-library
+    /// asset. Cleanup routes through the Photos "Recently Deleted" album
+    /// instead of the Trash/Vault. Not persisted to Core Data — after a
+    /// restore it degrades gracefully to Finder semantics.
+    public let photosLocalIdentifier: String?
 
     public init(
         id: UUID,
@@ -125,7 +141,8 @@ public struct FileItem: Sendable, Identifiable, Codable {
         inode: UInt64? = nil,
         isAPFSClone: Bool = false,
         physicalSize: Int64? = nil,
-        fileType: UTType? = nil
+        fileType: UTType? = nil,
+        photosLocalIdentifier: String? = nil
     ) {
         self.id = id
         self.url = url
@@ -138,5 +155,34 @@ public struct FileItem: Sendable, Identifiable, Codable {
         self.isAPFSClone = isAPFSClone
         self.physicalSize = physicalSize
         self.fileType = fileType
+        self.photosLocalIdentifier = photosLocalIdentifier
+    }
+
+    /// Loads light metadata (size, dates, physicalSize, fileType) for a URL
+    /// via a single `URL.resourceValues` call and wraps it in a `FileItem`.
+    /// Returns nil if the URL is not a regular file (directories, symlinks
+    /// to nothing, broken aliases).
+    ///
+    /// Used by every metadata-only detector so they share one stat-style
+    /// pass instead of each calling `resourceValues` independently.
+    public static func fromMetadata(_ url: URL) -> FileItem? {
+        guard let values = try? url.resourceValues(forKeys: [
+            .fileSizeKey,
+            .contentModificationDateKey,
+            .creationDateKey,
+            .totalFileAllocatedSizeKey,
+            .isRegularFileKey,
+        ]), values.isRegularFile == true else {
+            return nil
+        }
+        return FileItem(
+            id: UUID(),
+            url: url,
+            size: Int64(values.fileSize ?? 0),
+            modificationDate: values.contentModificationDate ?? .distantPast,
+            creationDate: values.creationDate,
+            physicalSize: values.totalFileAllocatedSize.map(Int64.init),
+            fileType: UTType(filenameExtension: url.pathExtension)
+        )
     }
 }

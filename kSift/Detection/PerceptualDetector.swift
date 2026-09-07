@@ -1,7 +1,6 @@
 import CoreGraphics
 import Foundation
 import ImageIO
-import UniformTypeIdentifiers
 import Vision
 
 /// Finds visually similar images with a dHash coarse pass and Vision feature-print verification.
@@ -66,17 +65,23 @@ public actor PerceptualDetector {
 
     /// Loads lightweight metadata and detects perceptual groups from file URLs.
     public func detect(_ urls: [URL], controller: ScanController) async -> [DuplicateGroup] {
-        let items = urls.compactMap(makeFileItem)
+        let items = urls.compactMap(FileItem.fromMetadata)
         return await detect(files: items, controller: controller)
     }
 
     /// Detects perceptual groups without decoding full-resolution source images.
     public func detect(files: [FileItem], controller: ScanController) async -> [DuplicateGroup] {
         var candidates: [Candidate] = []
+        // Thumbnail cache shared between dHash (coarse filter) and featurePrint
+        // (verification). ImageIO's CGImageSourceCreateThumbnailAtIndex decodes
+        // a JPEG/PNG/HEIC preview — the most expensive per-file step in the
+        // perceptual pass — so avoiding a second decode for any URL that
+        // survives the dHash filter halves the ImageIO work.
+        var thumbnails: [URL: CGImage] = [:]
         for item in files {
             guard !isCancelled(controller) else { return [] }
             guard supportedExtensions.contains(item.url.pathExtension.lowercased()),
-                  let hash = dHash(of: item.url) else {
+                  let hash = dHash(of: item.url, thumbnailCache: &thumbnails) else {
                 continue
             }
             candidates.append(Candidate(item: item, dHash: hash))
@@ -110,10 +115,16 @@ public actor PerceptualDetector {
             guard !isCancelled(controller) else { return makeGroups(candidates, parents, acceptedPairs) }
 
             if observations[pair.first] == nil {
-                observations[pair.first] = featurePrint(of: candidates[pair.first].item.url)
+                observations[pair.first] = featurePrint(
+                    of: candidates[pair.first].item.url,
+                    thumbnailCache: &thumbnails
+                )
             }
             if observations[pair.second] == nil {
-                observations[pair.second] = featurePrint(of: candidates[pair.second].item.url)
+                observations[pair.second] = featurePrint(
+                    of: candidates[pair.second].item.url,
+                    thumbnailCache: &thumbnails
+                )
             }
             guard let first = observations[pair.first],
                   let second = observations[pair.second],
@@ -129,44 +140,17 @@ public actor PerceptualDetector {
         return makeGroups(candidates, parents, acceptedPairs)
     }
 
-    func dHash(of url: URL) -> UInt64? {
-        guard let image = thumbnail(of: url, maximumPixelSize: 256) else { return nil }
+    func dHash(of url: URL, thumbnailCache: inout [URL: CGImage]) -> UInt64? {
+        guard let image = thumbnail(of: url, maximumPixelSize: 256, thumbnailCache: &thumbnailCache) else { return nil }
         return dHash(of: image)
     }
 
     func dHash(of image: CGImage) -> UInt64? {
-        guard let context = CGContext(
-            data: nil,
-            width: 9,
-            height: 8,
-            bitsPerComponent: 8,
-            bytesPerRow: 9,
-            space: CGColorSpaceCreateDeviceGray(),
-            bitmapInfo: CGImageAlphaInfo.none.rawValue
-        ) else {
-            return nil
-        }
-
-        context.interpolationQuality = .low
-        context.draw(image, in: CGRect(x: 0, y: 0, width: 9, height: 8))
-        guard let data = context.data else { return nil }
-        let pixels = data.assumingMemoryBound(to: UInt8.self)
-        var hash: UInt64 = 0
-        var bit = 0
-
-        for row in 0..<8 {
-            for column in 0..<8 {
-                if pixels[row * 9 + column] > pixels[row * 9 + column + 1] {
-                    hash |= UInt64(1) << UInt64(bit)
-                }
-                bit += 1
-            }
-        }
-        return hash
+        PerceptualHashing.dHash(of: image)
     }
 
     func hammingDistance(_ lhs: UInt64, _ rhs: UInt64) -> Int {
-        (lhs ^ rhs).nonzeroBitCount
+        PerceptualHashing.hammingDistance(lhs, rhs)
     }
 
     private func candidatePairs(in candidates: [Candidate]) -> Set<Pair> {
@@ -189,8 +173,8 @@ public actor PerceptualDetector {
         return pairs
     }
 
-    private func featurePrint(of url: URL) -> VNFeaturePrintObservation? {
-        guard let image = thumbnail(of: url, maximumPixelSize: 256) else { return nil }
+    private func featurePrint(of url: URL, thumbnailCache: inout [URL: CGImage]) -> VNFeaturePrintObservation? {
+        guard let image = thumbnail(of: url, maximumPixelSize: 256, thumbnailCache: &thumbnailCache) else { return nil }
         let request = VNGenerateImageFeaturePrintRequest()
         do {
             try VNImageRequestHandler(cgImage: image, options: [:]).perform([request])
@@ -213,7 +197,8 @@ public actor PerceptualDetector {
         }
     }
 
-    private func thumbnail(of url: URL, maximumPixelSize: Int) -> CGImage? {
+    private func thumbnail(of url: URL, maximumPixelSize: Int, thumbnailCache: inout [URL: CGImage]) -> CGImage? {
+        if let cached = thumbnailCache[url] { return cached }
         guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else { return nil }
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
@@ -221,7 +206,11 @@ public actor PerceptualDetector {
             kCGImageSourceThumbnailMaxPixelSize: maximumPixelSize,
             kCGImageSourceShouldCacheImmediately: true,
         ]
-        return CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
+        guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
+            return nil
+        }
+        thumbnailCache[url] = image
+        return image
     }
 
     private func makeGroups(
@@ -274,26 +263,6 @@ public actor PerceptualDetector {
         .sorted { ($0.similarity ?? 0) > ($1.similarity ?? 0) }
     }
 
-    private func makeFileItem(_ url: URL) -> FileItem? {
-        guard let values = try? url.resourceValues(forKeys: [
-            .fileSizeKey,
-            .contentModificationDateKey,
-            .creationDateKey,
-            .totalFileAllocatedSizeKey,
-            .isRegularFileKey,
-        ]), values.isRegularFile == true else {
-            return nil
-        }
-        return FileItem(
-            id: UUID(),
-            url: url,
-            size: Int64(values.fileSize ?? 0),
-            modificationDate: values.contentModificationDate ?? .distantPast,
-            creationDate: values.creationDate,
-            physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-            fileType: UTType(filenameExtension: url.pathExtension)
-        )
-    }
 
     private func isCancelled(_ controller: ScanController) -> Bool {
         controller.isCancelled || Task.isCancelled

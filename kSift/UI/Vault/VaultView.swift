@@ -71,7 +71,10 @@ struct VaultView: View {
                               systemImage: "trash")
                     }
                     .buttonStyle(.bordered)
-                    .disabled(viewModel.items.isEmpty || viewModel.isProcessing)
+                    .disabled(viewModel.expiredCount == 0 || viewModel.isProcessing)
+                }
+                if viewModel.expiredCount > 0 {
+                    autoPurgeBanner
                 }
                 Text(NSLocalizedString("Files are kept for 30 days after cleanup. Restore or purge them at any time.", comment: "Vault retention policy"))
                     .font(.callout)
@@ -81,12 +84,49 @@ struct VaultView: View {
                          value: "\(viewModel.items.count)")
                     stat(title: NSLocalizedString("Total size", comment: "Vault total size"),
                          value: formatBytes(viewModel.totalSize))
+                    stat(title: NSLocalizedString("Next auto-purge", comment: "Vault next auto-purge"),
+                         value: viewModel.nextExpiryFormatted ?? NSLocalizedString("—", comment: "Vault no upcoming purge"))
                 }
             }
             .padding(AppSpacing.lg)
         }
         .padding(.horizontal, AppSpacing.lg)
         .padding(.top, AppSpacing.lg)
+    }
+
+    /// Inline warning banner that surfaces the auto-purge policy plus the
+    /// current backlog of expired items, with a one-click purge action.
+    /// Helps users understand why disk usage will drop 30 days after cleanup.
+    private var autoPurgeBanner: some View {
+        HStack(alignment: .top, spacing: AppSpacing.sm) {
+            Image(systemName: "clock.badge.exclamationmark")
+                .foregroundColor(.orange)
+                .font(.title3)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(String(format: NSLocalizedString(
+                    "%lld item(s) are past their 30-day retention and ready to purge.",
+                    comment: "Vault auto-purge banner title"
+                ), Int64(viewModel.expiredCount)))
+                    .font(.callout).bold()
+                Text(NSLocalizedString(
+                    "Files in the vault are automatically removed after 30 days. Use Purge to reclaim the space now.",
+                    comment: "Vault auto-purge banner body"
+                ))
+                .font(.caption)
+                .foregroundColor(.textSecondary)
+            }
+            Spacer()
+            Button(NSLocalizedString("Purge now", comment: "Purge now")) {
+                Task { await viewModel.purgeExpired() }
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.small)
+        }
+        .padding(AppSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: AppRadius.md)
+                .fill(Color.orange.opacity(0.12))
+        )
     }
 
     private func stat(title: String, value: String) -> some View {
