@@ -55,10 +55,12 @@ struct ScanResultsView: View {
     /// scrollable tree / divider / summary bar.
     var body: some View {
         VStack(spacing: 0) {
-            // Header
-            headerView
-
-            Divider().background(Color.divider)
+            // Header — hidden before the first scan (the pre-scan panel
+            // carries its own hero; reclaims 64pt of vertical budget).
+            if viewModel.hasScanned || viewModel.isScanning {
+                headerView
+                Divider().background(Color.divider)
+            }
 
             // Tree — four states:
             // 1. scan in flight  → live progress view
@@ -179,7 +181,10 @@ struct PreScanPanel: View {
         )
     }
 
-    /// Hero icon + copy, the four controls, then the full-width CTA.
+    /// Hero icon + copy, the four controls (scrollable), and the CTA
+    /// pinned OUTSIDE the scroll area — at the 1024×680 minimum window the
+    /// 开始扫描 button is always fully visible (UX 重构 Phase 4: the old
+    /// non-scrolling VStack clipped it).
     var body: some View {
         VStack(spacing: Spacing.lg) {
             Spacer(minLength: 0)
@@ -193,15 +198,20 @@ struct PreScanPanel: View {
                 Text("准备扫描")
                     .font(Typography.largeTitle())
                     .foregroundStyle(Color.textPrimary)
-                Text("kWise 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按 4 级树展示。")
+                Text("kWise 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按应用归组展示。")
                     .font(Typography.regularBody())
                     .foregroundStyle(Color.textSecondary)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: 420)
             }
 
-            filterControls
-                .frame(maxWidth: 420)
+            // Filters scroll if the window is short; the CTA never moves.
+            ScrollView {
+                filterControls
+                    .frame(maxWidth: 420)
+                    .frame(maxWidth: .infinity)
+            }
+            .frame(maxHeight: 240)
 
             Button {
                 viewModel.startScan()

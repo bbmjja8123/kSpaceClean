@@ -207,3 +207,45 @@ final class ScanMasterDetailViewModelTests: XCTestCase {
         XCTAssertEqual(other.state, .unchecked, "Scoped 全选 must not touch other categories")
     }
 }
+
+// MARK: - Freeze regression guard (UX 重构 Phase 4)
+
+final class ScanCapRegressionTests: XCTestCase {
+
+    /// 400 pseudo-app buckets × 500 leaves — the shape that froze the old
+    /// RecursiveTreeNode renderer. The suppliers must return bounded
+    /// slices regardless of the underlying tree size.
+    @MainActor
+    func testCapsHoldOnHugeTree() {
+        let vm = ScanResultsViewModel(engine: nil)
+        var subs: [ScanSubCategory] = []
+        for i in 0..<400 {
+            let leaves = (0..<500).map { j in
+                ScanResult(url: URL(fileURLWithPath: "/tmp/big\(i)/f\(j)"),
+                           path: "/tmp/big\(i)/f\(j)",
+                           title: "f\(j)", fileSize: Int64(j))
+            }
+            subs.append(ScanSubCategory(
+                subCategoryID: "pseudo\(i)", title: "目录 \(i)",
+                totalSize: Int64(500 - i), directResults: leaves,
+                showAction: false, isPseudoApp: true
+            ))
+        }
+        var snapshot = ScanResultsViewModel.ScanSnapshot()
+        snapshot.categories = [ScanCategory(categoryID: "app.cache",
+                                            title: "应用缓存", subItems: subs)]
+        vm.assign(snapshot: snapshot)
+        vm.rebuildIndices()
+
+        let category = vm.categories[0]
+        XCTAssertEqual(vm.visibleSubcategories(in: category).count,
+                       ScanResultsViewModel.ScanListCap.subcategories)
+        let sub = category.subItems.first!
+        XCTAssertEqual(vm.visibleFiles(in: sub).count,
+                       ScanResultsViewModel.ScanListCap.files)
+
+        // Cap lift returns everything — bounded by user intent, not layout.
+        vm.capLiftedIDs.insert(sub.id)
+        XCTAssertEqual(vm.visibleFiles(in: sub).count, 500)
+    }
+}
