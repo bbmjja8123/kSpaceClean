@@ -44,19 +44,27 @@ public final class AppGraph: ObservableObject {
         self.scope = scope ?? AppScope.shared.scope
         self.persistence = PersistenceController(stack: CoreDataStack.shared)
         self.storeManager = StoreManager()
+        // Created first: the menu bar is itself a CleanupEventSink and must
+        // join the fan-out before the engine exists.
+        let menuBarManager = menuBar ?? MenuBarManager()
+        self.menuBarManager = menuBarManager
         self.quotaChecker = CleanupQuotaChecker { [storeManager] in
             await storeManager.checkSubscription()
             // `isSubscribed` is MainActor-isolated; hop back for the read.
             return await MainActor.run { storeManager.isSubscribed }
         }
         let quotaLedger = FreeQuotaStore.standard()
-        self.eventSinks = [QuotaRecordSink(store: quotaLedger), CleanupNotificationSink()]
+        // The menu bar observes the same event stream (C-8 "最近清理" row).
+        self.eventSinks = [
+            QuotaRecordSink(store: quotaLedger),
+            CleanupNotificationSink(),
+            menuBarManager,
+        ]
         self.cleanupEngine = CleanupEngine(
             persistence: persistence,
             quota: quotaChecker,
             sinks: eventSinks
         )
-        self.menuBarManager = menuBar ?? MenuBarManager()
     }
 
     // MARK: Service factories

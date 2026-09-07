@@ -140,10 +140,10 @@ final class SmartCareOrchestrator: ObservableObject {
         }
         state = .scanning(progress: 1.0)
 
-        // Sandboxed / no-FDA: surface the gap instead of presenting an
-        // empty results page.
+        // Sandboxed / scope-limited: surface the gap instead of presenting
+        // an empty results page (PowerScope-era copy — no FDA promises).
         if scanVM.needsFullDiskAccess {
-            state = .failed(message: "需要完整磁盘访问权限")
+            state = .failed(message: "需要主目录访问权限，请在设置中授权后重试")
             return
         }
 

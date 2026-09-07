@@ -1,22 +1,21 @@
 import SwiftUI
 import DesignSystem
+import PowerScope
 
-/// Hybrid UI first screen (v1.5).
+/// Hybrid UI first screen (v1.5 hero + v2.0 Phase 3 wiring).
 ///
-/// Renders the home surface: a hero CTA for Smart Care + a 3-card module
-/// grid (Privacy / Disk Health / Settings). Replaces the prior
-/// "default ScanResults" first screen per Q1 of the v1.5 grill-me
-/// convergence.
+/// Renders the home surface: a hero card driving the Smart Care 3-step
+/// flow (scan → recommend → confirm → clean) + a module grid. The hero
+/// CTA used to be `Button(action: {})` — it now runs the orchestrator
+/// end-to-end and honestly surfaces the scope state (container-only users
+/// see a grant card, never an empty scan).
 ///
 /// - C-2 (SHOULD): hero CTA occupies ≤30% of available vertical area.
-///
-/// Phase B (Task 3+) wires the hero CTA action to
-/// `SmartCareOrchestrator.start()`. For now (Task 2 shell), the CTA is
-/// a no-op.
-///
-/// - SeeAlso: `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md` Task 2.
 struct SmartCareHeroView: View {
     @EnvironmentObject var appState: AppState
+    @ObservedObject var viewModel: SmartCareViewModel
+    @ObservedObject var diskHealthViewModel: DiskHealthViewModel
+    @ObservedObject private var appScope = AppScope.shared
 
     var body: some View {
         VStack(spacing: AppSpacing.lg) {
@@ -29,10 +28,74 @@ struct SmartCareHeroView: View {
         .background(Color.bgPrimary)
     }
 
-    /// Hero CTA — C-2 SHOULD ≤30% visual area.
-    /// Phase B replaces this empty action with `SmartCareOrchestrator.start()`.
+    // MARK: - Hero (state-driven, C-2 ≤30% area)
+
+    @ViewBuilder
     private var heroCard: some View {
-        Button(action: {}) {
+        // Scope fast-fail: without the home grant a scan would find almost
+        // nothing. Show the grant card instead of a pointless run.
+        if appScope.capability.level == .containerOnly {
+            scopeGrantCard
+        } else {
+            stateCard
+        }
+    }
+
+    private var scopeGrantCard: some View {
+        HStack(spacing: AppSpacing.md) {
+            Image(systemName: "lock.open")
+                .font(.system(size: 32))
+                .foregroundStyle(Color.brandAccent)
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                Text("授权后开始 Smart Care")
+                    .font(AppFont.title2)
+                    .foregroundStyle(Color.textPrimary)
+                Text("授权主目录后，kWise 才能发现可清理的缓存与残留。")
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
+            Spacer()
+            Button("授权主目录") {
+                Task { await appScope.grant() }
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .padding(AppSpacing.md)
+        .frame(maxWidth: .infinity, minHeight: 80)
+        .background(Color.brandPrimary.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+    }
+
+    @ViewBuilder
+    private var stateCard: some View {
+        HStack(spacing: AppSpacing.md) {
+            switch viewModel.state {
+            case .idle:
+                idleHero
+            case .scanning(let progress):
+                busyHero(phase: "正在扫描", progress: progress)
+            case .recommending:
+                busyHero(phase: "正在挑选可清理项", progress: nil)
+            case .confirming(let itemCount, let totalSize):
+                confirmHero(itemCount: itemCount, totalSize: totalSize)
+            case .cleaning(let progress):
+                busyHero(phase: "正在清理", progress: progress)
+            case .done(let freedBytes, _):
+                doneHero(freedBytes: freedBytes)
+            case .failed(let message):
+                failedHero(message: message)
+            }
+        }
+        .padding(AppSpacing.md)
+        .frame(maxWidth: .infinity, minHeight: 80)
+        .background(Color.brandPrimary.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+    }
+
+    private var idleHero: some View {
+        Button {
+            viewModel.runSmartCare()
+        } label: {
             HStack(spacing: AppSpacing.md) {
                 Image(systemName: "wand.and.stars")
                     .font(.system(size: 32))
@@ -50,28 +113,109 @@ struct SmartCareHeroView: View {
                     .font(AppFont.body)
                     .foregroundStyle(Color.textSecondary)
             }
-            .padding(AppSpacing.md)
-            .frame(maxWidth: .infinity, minHeight: 80)
-            .background(Color.brandPrimary.opacity(0.08))
-            .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
         }
         .buttonStyle(.plain)
     }
 
-    /// Module grid — Privacy / Disk Health / Settings.
+    private func busyHero(phase: String, progress: Double?) -> some View {
+        HStack(spacing: AppSpacing.md) {
+            if let progress {
+                ProgressRing(progress: min(max(progress, 0), 1))
+                    .frame(width: 40, height: 40)
+            } else {
+                ProgressView()
+                    .controlSize(.small)
+            }
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                Text("Smart Care")
+                    .font(AppFont.title2)
+                    .foregroundStyle(Color.textPrimary)
+                Text(phase)
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
+            Spacer()
+            Button("取消") { viewModel.reset() }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+        }
+    }
+
+    private func confirmHero(itemCount: Int, totalSize: Int64) -> some View {
+        HStack(spacing: AppSpacing.md) {
+            Image(systemName: "wand.and.stars")
+                .font(.system(size: 32))
+                .foregroundStyle(Color.brandPrimary)
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                Text("发现 \(itemCount) 项可清理")
+                    .font(AppFont.title2)
+                    .foregroundStyle(Color.textPrimary)
+                Text("预计释放 \(Self.formatBytes(totalSize))（移入废纸篓，可随时还原）")
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
+            Spacer()
+            Button("一键清理") { viewModel.confirm() }
+                .buttonStyle(.borderedProminent)
+            Button("取消") { viewModel.reset() }
+                .buttonStyle(.bordered)
+        }
+    }
+
+    private func doneHero(freedBytes: Int64) -> some View {
+        HStack(spacing: AppSpacing.md) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 32))
+                .foregroundStyle(Color.success)
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                Text("已释放 \(Self.formatBytes(freedBytes))")
+                    .font(AppFont.title2)
+                    .foregroundStyle(Color.textPrimary)
+                Text("项目已移入废纸篓，30 天内可在历史中还原。")
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
+            Spacer()
+            Button("再来一次") { viewModel.reset() }
+                .buttonStyle(.bordered)
+        }
+    }
+
+    private func failedHero(message: String) -> some View {
+        HStack(spacing: AppSpacing.md) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 32))
+                .foregroundStyle(Color.warning)
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                Text("未能完成")
+                    .font(AppFont.title2)
+                    .foregroundStyle(Color.textPrimary)
+                Text(message)
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
+            Spacer()
+            Button("重试") {
+                viewModel.reset()
+                viewModel.runSmartCare()
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+
+    // MARK: - Module grid
+
+    /// Module grid — Disk Health card (live grade) + Privacy + Settings.
     private var moduleGrid: some View {
         HStack(spacing: AppSpacing.md) {
+            DiskHealthCard(viewModel: diskHealthViewModel) {
+                appState.navigation = .diskHealth
+            }
             moduleCard(
                 icon: "lock.shield",
                 title: "隐私",
                 subtitle: "浏览器 · 权限",
                 destination: .privacy
-            )
-            moduleCard(
-                icon: "internaldrive",
-                title: "磁盘健康",
-                subtitle: "S.M.A.R.T. · 卷",
-                destination: .diskHealth
             )
             moduleCard(
                 icon: "gear",
@@ -112,12 +256,23 @@ struct SmartCareHeroView: View {
         }
         .buttonStyle(.plain)
     }
+
+    // MARK: - Helpers
+
+    /// C-3 freed-bytes formatting — one shared formatter so the hero, the
+    /// menu bar and the history view never disagree.
+    static func formatBytes(_ bytes: Int64) -> String {
+        ByteCountFormatter.string(fromByteCount: max(0, bytes), countStyle: .file)
+    }
 }
 
 #if DEBUG
 #Preview {
-    SmartCareHeroView()
-        .environmentObject(AppState())
-        .frame(width: 700, height: 500)
+    SmartCareHeroView(
+        viewModel: SmartCareViewModel(),
+        diskHealthViewModel: DiskHealthViewModel()
+    )
+    .environmentObject(AppState())
+    .frame(width: 700, height: 500)
 }
 #endif
