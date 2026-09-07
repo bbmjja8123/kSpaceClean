@@ -333,6 +333,13 @@ kWise/
 - [x] **Phase 8 助手 + Onboarding + 本地化** — AssistantIntentMatcher（zh/en 模板表，零网络，audit 测试禁 URLSession）+ 答案卡片；Onboarding 首启（welcome → PowerScope → tour）；xcstrings 30 → 51 keys（nav.* 三语）；NewCopyAuditTests（scareware 禁语 + 粉碎诚实文案）
 - [x] **测试** — Phase 1/2/3/4/5/6/7/8 各模块新增 ~90 用例；⚠️ xcodebuild test-runner 挂起（环境 wedge，2026-09-05 已知，重启后跑全量）
 
+### kWise v2.1 — 精品级 UX 重构 ✅ (2026-09-07)
+> 用户手动验收后判定的 4 个硬伤全部修复。4 commits on `worktree-kwise-v1`。
+- [x] **Phase 1 壳层** — 删 ToolbarView（4 按钮全是 rail 重复）；rail 56pt + 品牌标志 + 对齐修复；窗口 minSize 1024×680；⌘I 面板开关；Onboarding 步骤指示（5 圆点 + 第 N/5 步 + 上一步/完成）；删 3 个空白旧页签 + 死代码（TwoColumnView/ScanContentView）
+- [x] **Phase 2 三级主从扫描结果** — 根因修复：RecursiveTreeNode 展开时整棵子树一次性物化 → 主线程卡死；新 MasterDetail（分类卡 → 应用行(中文名+图标+整行点击展开) → 文件行(friendly path)）；行供给器 cap 30/20 + "显示其余 N 项"；O(1) nodeIndex/parentIndex + 增量汇总（原每次点击 2 次全树 DFS）；SummaryBar 清理改走真实勾选 + 确认面板 + 真实已释放字节
+- [x] **Phase 3 详情面板** — DetailPanelView（app/category/file 三态，活解析不陈旧，C-1 raw path 仅 tooltip）；点行自动出现、无选中自动隐藏
+- [x] **Phase 4 垂直预算** — PreScan 筛选控件滚动 + CTA 钉底（最小窗口不再裁切）；未扫描跳过 64pt header；400×500 卡死回归守卫测试
+
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
 - [ ] kUninstall 设计 — 应用卸载
