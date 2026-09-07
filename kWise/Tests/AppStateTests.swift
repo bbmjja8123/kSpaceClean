@@ -53,7 +53,7 @@ final class AppStateTests: XCTestCase {
     }
 
     func test_NavigationItem_allCases() {
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 7)
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 11)
     }
 
     func test_NavigationItem_tooltip_notEmpty() {

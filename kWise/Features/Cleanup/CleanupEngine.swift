@@ -129,6 +129,12 @@ public actor CleanupEngine {
     /// of the broken `detectWarnItems` prefix-only heuristic that used to
     /// live in this file. The service is an `actor`, so callers `await` it.
     private let warningService: WarningDetectionService
+    /// Free-tier quota gate (v2.0 Phase 1). `nil` disables quota (tests,
+    /// legacy call sites that already enforce their own limits).
+    private let quota: CleanupQuotaChecking?
+    /// Observers fanned out after every finished run — quota ledger, menu
+    /// bar "最近清理" row, streaks, monthly report, widget snapshot.
+    private let sinks: [CleanupEventSink]
 
     /// Note: no default argument for `persistence` — `PersistenceController.shared`
     /// is `@MainActor`-isolated and cannot be referenced from a nonisolated
@@ -136,10 +142,14 @@ public actor CleanupEngine {
     /// `CleanupEngine.standard()` on the main actor, or pass an explicit stack.
     public init(persistence: PersistenceController,
                 mover: TrashMover = TrashMover(),
-                warningService: WarningDetectionService = WarningDetectionService()) {
+                warningService: WarningDetectionService = WarningDetectionService(),
+                quota: CleanupQuotaChecking? = nil,
+                sinks: [CleanupEventSink] = []) {
         self.persistence = persistence
         self.mover = mover
         self.warningService = warningService
+        self.quota = quota
+        self.sinks = sinks
     }
 
     /// App-standard engine wired to the shared persistence stack.
@@ -147,6 +157,14 @@ public actor CleanupEngine {
     @MainActor
     public static func standard() -> CleanupEngine {
         CleanupEngine(persistence: .shared)
+    }
+
+    /// Notify every sink about a finished run. Best-effort: a throwing/hung
+    /// sink must never fail the cleanup itself.
+    private func notifySinks(_ event: CleanupEvent) {
+        for sink in sinks {
+            Task { await sink.cleanupDidFinish(event) }
+        }
     }
 
     // MARK: - Streaming API (legacy surface, preserved)
@@ -215,9 +233,33 @@ public actor CleanupEngine {
                 // Compute the actual deletion set: if `.skip`, drop
                 // everything that conflicts; otherwise delete everything.
                 let conflicting: Set<String> = Set(detected.flatMap(\.conflictingPaths))
-                let urlsToProcess: [URL] = (warnHandling == .skip)
+                var urlsToProcess: [URL] = (warnHandling == .skip)
                     ? urls.filter { !conflicting.contains($0.path) }
                     : urls
+
+                // Free-tier quota (v2.0 Phase 1): same greedy largest-first
+                // truncation as the structured API. Sizes are statted here
+                // because the streaming surface takes bare URLs.
+                var quotaSkippedCount = 0
+                if let remaining = await self.quota?.remainingFreeBytes() {
+                    let budget = max(0, remaining)
+                    var used: Int64 = 0
+                    var kept: Set<String> = []
+                    let sized = urlsToProcess.map { url -> (URL, Int64) in
+                        let size = (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize)
+                            .flatMap { Int64($0) } ?? 0
+                        return (url, size)
+                    }
+                    for (url, size) in sized.sorted(by: { $0.1 > $1.1 }) {
+                        if used + size <= budget {
+                            used += size
+                            kept.insert(url.path)
+                        } else {
+                            quotaSkippedCount += 1
+                        }
+                    }
+                    urlsToProcess = urlsToProcess.filter { kept.contains($0.path) }
+                }
 
                 // Concurrent deletion — 12 tasks per batch.
                 let batchSize = 12
@@ -293,6 +335,17 @@ public actor CleanupEngine {
                 )
                 continuation.yield(final)
                 continuation.finish()
+                // Meter the streaming surface too — quota ledger, streaks and
+                // the widget snapshot must see the same events as the
+                // structured API.
+                if processedBytes > 0 {
+                    await self.notifySinks(CleanupEvent(
+                        freedBytes: processedBytes,
+                        measuredBytes: nil,
+                        itemCount: completed,
+                        quotaExhausted: quotaSkippedCount > 0
+                    ))
+                }
             }
         }
     }
@@ -350,9 +403,35 @@ public actor CleanupEngine {
             skipped = []
         }
 
+        // Free-tier quota (v2.0 Phase 1): largest targets first until the
+        // remaining allowance is exhausted, then leave the rest behind and
+        // surface the paywall instead of a generic failure. Unlimited when
+        // `quota` is nil or returns nil (subscribed users).
+        var toClean2 = toClean
+        var quotaSkipped: [URL] = []
+        if let remaining = await quota?.remainingFreeBytes() {
+            let budget = max(0, remaining)
+            var used: Int64 = 0
+            var kept: [CleanupTarget] = []
+            var dropped: [URL] = []
+            for target in toClean.sorted(by: { $0.size > $1.size }) {
+                if used + target.size <= budget {
+                    used += target.size
+                    kept.append(target)
+                } else {
+                    dropped.append(target.url)
+                }
+            }
+            // Keep the user's original selection order for what we clean.
+            let keptPaths = Set(kept.map(\.url.path))
+            toClean2 = toClean.filter { keptPaths.contains($0.url.path) }
+            quotaSkipped = dropped
+        }
+        let toCleanFinal = toClean2
+
         // Record history (batched in one background context).
         let historyContext = persistence.newBackgroundContext()
-        let recorded = await recordHistory(for: toClean, in: historyContext)
+        let recorded = await recordHistory(for: toCleanFinal, in: historyContext)
 
         // Move files to trash. Use FileManager.trashItem — it routes through the
         // Finder Trash so the user can undo via Finder's "Put Back". NSWorkspace
@@ -361,6 +440,10 @@ public actor CleanupEngine {
         var succeeded: [URL] = []
         var failed: [CleanupFailure] = []
         var freedBytes: Int64 = 0
+
+        // Measured accounting: record volume free space before the batch so
+        // the outcome can report a real delta, not just the size prediction.
+        let volumeBefore = Self.freeBytesOfVolume(for: recorded.first?.url ?? URL(fileURLWithPath: NSHomeDirectory()))
 
         for target in recorded {
             do {
@@ -379,12 +462,48 @@ public actor CleanupEngine {
         // Lazy expiry — sweeps rows older than the retention window.
         persistence.purgeExpiredHistory(olderThan: config.retentionDays, in: persistence.viewContext)
 
-        return CleanupOutcome(
+        // Re-measure after the batch. APFS may lag freeing space (purgeable
+        // accounting), so a non-positive delta reports `nil` instead of a lie.
+        var measuredBytes: Int64?
+        if let before = volumeBefore,
+           let after = Self.freeBytesOfVolume(for: succeeded.first ?? URL(fileURLWithPath: NSHomeDirectory())) {
+            let delta = after - before
+            if delta > 0 {
+                measuredBytes = delta
+            } else {
+                Log.cleanup.info("measured free-space delta non-positive (\(delta)); reporting prediction only")
+            }
+        }
+
+        let outcome = CleanupOutcome(
             succeeded: succeeded,
             failed: failed,
             skipped: skipped,
-            freedBytes: freedBytes
+            freedBytes: freedBytes,
+            measuredBytes: measuredBytes,
+            skippedForQuota: quotaSkipped,
+            quotaExhausted: !quotaSkipped.isEmpty
         )
+        // Single metering point — quota ledger, streaks, report, widget all
+        // observe the same event. Fired even for failed/empty runs so the
+        // ledger and "最近清理" row stay consistent with what actually moved.
+        if outcome.successCount > 0 {
+            notifySinks(CleanupEvent(
+                freedBytes: outcome.freedBytes,
+                measuredBytes: outcome.measuredBytes,
+                itemCount: outcome.successCount,
+                quotaExhausted: outcome.quotaExhausted
+            ))
+        }
+        return outcome
+    }
+
+    /// Free bytes available for "important usage" on the volume containing
+    /// `url`. Returns nil on failure (unmounted, sandbox denial, ...).
+    private static func freeBytesOfVolume(for url: URL) -> Int64? {
+        let values = try? url.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+        guard let raw = values?.volumeAvailableCapacityForImportantUsage else { return nil }
+        return Int64(raw)
     }
 
     // MARK: - History helpers

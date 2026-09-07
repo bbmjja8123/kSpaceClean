@@ -50,8 +50,12 @@ final class SmartCareOrchestrator: ObservableObject {
 
     private weak var scanResultsViewModel: ScanResultsViewModel?
     /// Injected cleanup engine. Defaults to a fresh instance backed by the
-    /// shared `PersistenceController`; tests can substitute a stub.
-    private let cleanupEngine: CleanupEngine
+    /// shared `PersistenceController`; tests can substitute a stub. The app
+    /// root re-points it at the graph engine (quota + sinks) in `.onAppear`.
+    private(set) var cleanupEngine: CleanupEngine
+    /// `true` when the most recent `.done` run left targets behind because
+    /// the free-tier quota ran out. The view model surfaces the paywall.
+    @Published public private(set) var lastRunQuotaExhausted = false
 
     /// Designated initializer. The view model can also be attached later
     /// via ``attach(scanResultsViewModel:)`` when SwiftUI environment
@@ -62,6 +66,11 @@ final class SmartCareOrchestrator: ObservableObject {
         // `CleanupEngine.standard()` needs MainActor isolation — resolving
         // here (inside a @MainActor init) keeps the default optional.
         self.cleanupEngine = cleanupEngine ?? CleanupEngine.standard()
+    }
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    func useEngine(_ engine: CleanupEngine) {
+        self.cleanupEngine = engine
     }
 
     /// Late-binds a scan view model after construction.
@@ -96,6 +105,7 @@ final class SmartCareOrchestrator: ObservableObject {
             }
             do {
                 let outcome = try await cleanupEngine.cleanup(targets: targets)
+                lastRunQuotaExhausted = outcome.quotaExhausted
                 state = .done(
                     freedBytes: outcome.freedBytes,
                     durationSeconds: Date().timeIntervalSince(started)
@@ -110,6 +120,11 @@ final class SmartCareOrchestrator: ObservableObject {
     public func reset() {
         state = .idle
         recommendedItems = []
+    }
+
+    /// Clears the one-shot paywall flag after the view model has reacted.
+    func resetQuotaFlag() {
+        lastRunQuotaExhausted = false
     }
 
     // MARK: - Pipeline

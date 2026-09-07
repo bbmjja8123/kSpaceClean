@@ -5,7 +5,13 @@ import DesignSystem
 /// Displays different content based on appState.navigation.
 struct RootView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var coordinator: AppCoordinator
+    @Environment(\.appGraph) private var injectedGraph
     @StateObject private var cleanupViewModel = CleanupViewModel()
+
+    /// The injected graph in production; a lazily-built standalone graph only
+    /// in previews/tests that run without `kWiseApp`.
+    private var graph: AppGraph { injectedGraph ?? AppGraph() }
 
     // C1: production scan pipeline. Owned at the root so the scan state
     // survives navigation switches (e.g. user starts a scan, navigates
@@ -97,11 +103,24 @@ struct RootView: View {
             }
         )
         .modifier(RootKeyboardShortcuts(appState: appState))
+        // Free-tier paywall — the only place the sheet is presented from
+        // (v2.0 Phase 1). `CleanupOutcome.quotaExhausted` routes here via
+        // `AppCoordinator.presentPaywall()`.
+        .sheet(item: $coordinator.presentedSheet) { _ in
+            PaywallView(store: graph.storeManager)
+        }
         .onAppear {
             // Late-bind the Smart Care VM to the scan VM. Two @StateObject
             // can't reference each other at init time; `.attach` resolves the
             // dependency once both views have been created.
             smartCareViewModel.attach(scanResultsViewModel: scanResultsViewModel)
+            // v2.0 Phase 1 — DI unification: re-point both view models at the
+            // graph engine so quota + event sinks apply to every cleanup
+            // surface, and route quota exhaustion to the paywall sheet.
+            cleanupViewModel.useEngine(graph.cleanupEngine)
+            cleanupViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
+            smartCareViewModel.useEngine(graph.cleanupEngine)
+            smartCareViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
         }
     }
 
@@ -134,6 +153,14 @@ struct RootView: View {
             PrivacyView()  // Phase C Task 7 — wire PrivacyView into nav
         case .diskHealth:
             DiskHealthDetailView()  // Phase D Task 12 — wire disk health detail view
+        case .startupItems:
+            PlaceholderModuleView(title: "启动项", subtitle: "M2 模块将在 Phase 3 接入")  // Phase 3
+        case .appUninstall:
+            PlaceholderModuleView(title: "应用卸载", subtitle: "M5 模块将在 Phase 4 接入")  // Phase 4 wires the existing scanner
+        case .shredder:
+            PlaceholderModuleView(title: "文件粉碎", subtitle: "M6 模块将在 Phase 3 接入")  // Phase 3
+        case .galaxy:
+            PlaceholderModuleView(title: "磁盘星系", subtitle: "3D 可视化将在 Phase 7 接入")  // Phase 7
         }
     }
 

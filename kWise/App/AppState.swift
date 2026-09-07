@@ -19,6 +19,11 @@ public final class AppState: ObservableObject {
         case smartCare = "smartCare"
         case privacy = "privacy"
         case diskHealth = "diskHealth"
+        // Phase 3+ — M2 / M5 / M6 surfaces and the Phase 7 galaxy view.
+        case startupItems = "startupItems"
+        case appUninstall = "appUninstall"
+        case shredder = "shredder"
+        case galaxy = "galaxy"
 
         public var iconName: String {
             switch self {
@@ -29,6 +34,10 @@ public final class AppState: ObservableObject {
             case .smartCare: return "wand.and.stars"
             case .privacy: return "lock.shield"
             case .diskHealth: return "internaldrive"
+            case .startupItems: return "power"
+            case .appUninstall: return "app.badge.checkmark"
+            case .shredder: return "document.badge.ellipsis"
+            case .galaxy: return "sparkles.rectangle.stack"
             }
         }
 
@@ -41,6 +50,10 @@ public final class AppState: ObservableObject {
             case .smartCare: return "智能清理"
             case .privacy: return "隐私"
             case .diskHealth: return "磁盘健康"
+            case .startupItems: return "启动项"
+            case .appUninstall: return "应用卸载"
+            case .shredder: return "文件粉碎"
+            case .galaxy: return "磁盘星系"
             }
         }
     }

@@ -42,12 +42,25 @@ public final class SmartCareViewModel: ObservableObject {
                 // this copy `state` stays at its seeded `.idle` forever and
                 // the hero UI never reflects scan/clean progress.
                 self.state = self.orchestrator.state
+                if case .done = self.state, self.orchestrator.lastRunQuotaExhausted {
+                    self.orchestrator.resetQuotaFlag()
+                    self.onQuotaExhausted?()
+                }
                 self.objectWillChange.send()
             }
             .store(in: &cancellables)
     }
 
     private var cancellables: Set<AnyCancellable> = []
+
+    /// Invoked when the confirmed run hit the free-quota ceiling — the root
+    /// presents the paywall (never the view itself).
+    public var onQuotaExhausted: (() -> Void)?
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    func useEngine(_ engine: CleanupEngine) {
+        orchestrator.useEngine(engine)
+    }
 
     // MARK: - Intent
 

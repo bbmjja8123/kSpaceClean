@@ -15,12 +15,22 @@ public final class CleanupViewModel: ObservableObject {
     private let history = CleanupHistory()
     /// Structured-API engine — used by ``cleanupNow()`` and the
     /// `CleanupContentView` confirmation flow. Defaults to a fresh instance
-    /// driven by the shared `PersistenceController`.
-    private let engine: CleanupEngine
+    /// driven by the shared `PersistenceController`; the app root re-points
+    /// it at the graph engine (quota + sinks) in `.onAppear`.
+    private(set) var engine: CleanupEngine
+
+    /// Invoked when a run leaves targets behind because the free quota was
+    /// exhausted — the root presents the paywall (never the view itself).
+    public var onQuotaExhausted: (() -> Void)?
 
     public init(engine: CleanupEngine? = nil) {
         // Resolve on the main actor so `CleanupEngine.standard()` is legal.
         self.engine = engine ?? CleanupEngine.standard()
+    }
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    public func useEngine(_ engine: CleanupEngine) {
+        self.engine = engine
     }
 
     public func moveToTrash(urls: [URL]) async {
@@ -84,6 +94,9 @@ public final class CleanupViewModel: ObservableObject {
             }
             self.lastResult = TrashResult(snapshots: succeededSnapshots, failed: failed)
             self.urlsToCleanup = []
+            if outcome.quotaExhausted {
+                onQuotaExhausted?()
+            }
         } catch {
             // Phase B Task 5: best-effort; UI shows the error via `lastResult`.
             self.lastResult = nil

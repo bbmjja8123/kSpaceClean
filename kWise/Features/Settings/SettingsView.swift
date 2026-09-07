@@ -1,14 +1,22 @@
 import SwiftUI
 import DesignSystem
 import PowerScope
+import UserNotifications
 
 struct SettingsView: View {
     @State private var prefs = UserPreferences.load()
     @ObservedObject private var appScope = AppScope.shared
+    /// Injected graph services (v2.0 Phase 1): one `StoreManager`, real
+    /// `LoginItemService` — the old toggle had no implementation behind it.
+    @Environment(\.appGraph) private var injectedGraph
+    @StateObject private var loginItemService = LoginItemService()
+    @State private var subscriptionStatusChecked = false
+
+    private var graph: AppGraph { injectedGraph ?? AppGraph() }
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.lg) {
-            Text("\u{8BBE}\u{7F6E}")
+            Text("设置")
                 .font(AppFont.title2)
                 .foregroundColor(.textPrimary)
 
@@ -17,14 +25,14 @@ struct SettingsView: View {
                     scopeRow
                 }
 
-                Section("\u{901A}\u{7528}") {
-                    Toggle("\u{542F}\u{52A8}\u{65F6}\u{81EA}\u{52A8}\u{626B}\u{63CF}", isOn: $prefs.launchAtLogin)
-                    Toggle("\u{83DC}\u{5355}\u{680F}\u{663E}\u{793A}\u{78C1}\u{76D8}\u{5360}\u{7528}", isOn: $prefs.showMenuBarDiskUsage)
-                    Toggle("\u{6E05}\u{7406}\u{540E}\u{901A}\u{77E5}", isOn: .constant(true))
+                Section("通用") {
+                    Toggle("登录时启动 kWise", isOn: launchAtLoginBinding)
+                    Toggle("菜单栏显示磁盘占用", isOn: $prefs.showMenuBarDiskUsage)
+                    Toggle("清理后通知", isOn: $prefs.notifyAfterCleanup)
                 }
 
-                Section("\u{626B}\u{63CF}") {
-                    Picker("\u{626B}\u{63CF}\u{901F}\u{5EA6}", selection: $prefs.scanSpeed) {
+                Section("扫描") {
+                    Picker("扫描速度", selection: $prefs.scanSpeed) {
                         ForEach(ScanSpeed.allCases, id: \.self) { speed in
                             VStack(alignment: .leading) {
                                 Text(speed.displayName).tag(speed)
@@ -37,26 +45,94 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.menu)
 
-                    Picker("\u{5927}\u{6587}\u{4EF6}\u{9608}\u{503C}", selection: $prefs.largeFileThreshold) {
+                    Picker("大文件阈值", selection: $prefs.largeFileThreshold) {
                         Text("50 MB").tag(Int64(50_000_000))
                         Text("100 MB").tag(Int64(100_000_000))
                         Text("500 MB").tag(Int64(500_000_000))
                         Text("1 GB").tag(Int64(1_000_000_000))
                     }
-                    Toggle("AI \u{5206}\u{7C7B}\u{542F}\u{7528}", isOn: $prefs.aiClassificationEnabled)
+                    // C-5 honesty: there is no CoreML model in the bundle —
+                    // classification is the local rule engine. The old
+                    // "AI 分类启用" label was a lie.
+                    Toggle("智能推荐（本机规则）", isOn: $prefs.aiClassificationEnabled)
                 }
 
-                Section("\u{8BA2}\u{9605}") {
-                    Text("\u{5F53}\u{524D}: Pro")
-                        .font(AppFont.body)
-                        .foregroundColor(.textPrimary)
-                    Button("\u{7BA1}\u{7406}\u{8BA2}\u{9605}") { /* open App Store */ }
+                Section("订阅") {
+                    subscriptionRow
                 }
             }
             .formStyle(.grouped)
+            .onChange(of: prefs) { newValue in
+                newValue.save()
+            }
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear {
+            loginItemService.refreshStatus()
+            Task { await graph.storeManager.checkSubscription() }
+        }
+        .alert(
+            "登录项设置失败",
+            isPresented: Binding(
+                get: { loginItemService.lastError != nil },
+                set: { if !$0 { loginItemService.acknowledgeError() } }
+            )
+        ) {
+            Button("好", role: .cancel) {}
+        } message: {
+            Text(loginItemService.lastError ?? "")
+        }
+        // 清理后通知 — turning the toggle on is the moment we ask for
+        // permission (never a prompt at first launch).
+        .onChange(of: prefs.notifyAfterCleanup) { enabled in
+            if enabled {
+                CleanupNotificationSink.requestAuthorization()
+            }
+        }
+    }
+
+    // MARK: - Launch at login (SMAppService)
+
+    /// Two-way binding: toggle → `LoginItemService`, system status → toggle.
+    /// The published `isEnabled` is refreshed from SMAppService after every
+    /// transition, so a failed register/unregister snaps the toggle back.
+    private var launchAtLoginBinding: Binding<Bool> {
+        Binding(
+            get: { loginItemService.isEnabled },
+            set: { newValue in
+                loginItemService.setEnabled(newValue)
+                prefs.launchAtLogin = loginItemService.isEnabled
+            }
+        )
+    }
+
+    // MARK: - Subscription (single StoreManager)
+
+    @ViewBuilder
+    private var subscriptionRow: some View {
+        let store = graph.storeManager
+        LabeledContent {
+            if store.isSubscribed {
+                Text("已订阅")
+                    .foregroundColor(.success)
+            } else {
+                Button("管理订阅") {
+                    openSubscriptionManagement()
+                }
+            }
+        } label: {
+            Text(store.isSubscribed ? "当前: Pro" : "当前: 免费版")
+            Text("免费版每 30 天可清理 1 GB，订阅后不限量。")
+                .font(AppFont.caption)
+                .foregroundColor(.textSecondary)
+        }
+    }
+
+    private func openSubscriptionManagement() {
+        if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     // MARK: - File Access (PowerScope)

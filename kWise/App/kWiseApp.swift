@@ -5,13 +5,18 @@ import CoreData
 struct kWiseApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var coordinator = AppCoordinator()
-    @StateObject private var menuBarManager = MenuBarManager()
+    /// Single DI root (v2.0 Phase 1). Everything process-wide — cleanup
+    /// engine, store manager, menu bar — lives on the graph so surfaces
+    /// can't disagree (the old code had two `MenuBarManager`s and three
+    /// `StoreManager`s).
+    @StateObject private var graph = AppGraph()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(appState)
                 .environmentObject(coordinator)
+                .environment(\.appGraph, graph)
                 .environment(\.managedObjectContext, CoreDataStack.shared.viewContext)
                 .preferredColorScheme(.dark)
                 .onOpenURL { url in
@@ -19,7 +24,7 @@ struct kWiseApp: App {
                 }
                 .onAppear {
                     coordinator.appState = appState
-                    menuBarManager.setup()
+                    graph.menuBarManager.setup()
                     installMetricKitReceiver()
                     // Phase 1: resolve any persisted home-folder bookmark
                     // and probe sandbox-readable dirs once per session.
