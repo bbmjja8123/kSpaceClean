@@ -31,6 +31,10 @@ struct RootView: View {
     @StateObject private var smartCareViewModel = SmartCareViewModel()
     /// Live disk-health grade shown on the home grid card (v2.0 Phase 3).
     @StateObject private var diskHealthViewModel = DiskHealthViewModel()
+    /// 空间地图 (v2.0 Phase 4) — renders the same tree the results view owns.
+    @StateObject private var spaceMapViewModel = SpaceMapViewModel(
+        rootsProvider: { [] }
+    )
 
     var body: some View {
         GeometryReader { geo in
@@ -123,6 +127,9 @@ struct RootView: View {
             cleanupViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
             smartCareViewModel.useEngine(graph.cleanupEngine)
             smartCareViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
+            // 空间地图 renders the scan tree — rebind the roots provider now
+            // that scanResultsViewModel exists (init-time capture would be nil).
+            spaceMapViewModel.rebindRoots { scanResultsViewModel.categories }
             // Menu bar quick actions (C-8, v2.0 Phase 3): route through the
             // coordinator — the menu never mutates appState directly.
             graph.menuBarManager.onQuickScan = {
@@ -183,7 +190,7 @@ struct RootView: View {
         case .tools:
             ToolboxView()
         case .spaceMap:
-            PlaceholderModuleView(title: "空间地图", subtitle: "Phase 4 接入")
+            SpaceMapView(viewModel: spaceMapViewModel)
         case .monthlyReport:
             PlaceholderModuleView(title: "健康月报", subtitle: "Phase 7 接入")
         case .assistant:
