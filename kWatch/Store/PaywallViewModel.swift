@@ -29,7 +29,7 @@ public final class PaywallViewModel: ObservableObject {
     /// localized banner.
     @Published public private(set) var errorMessage: String?
 
-    /// Whether the user has acknowledged the auto-renewal disclosure.
+    /// Whether the user has acknowledged the one-time purchase disclosure.
     /// Defaults to `false`; the paywall disables the purchase button
     /// until the user checks the terms checkbox (or is already Pro).
     @Published public var acceptedTerms: Bool = false

@@ -227,9 +227,10 @@ internal func extractDouble(from value: MetricValue?, for kind: MetricKind) -> D
         return number
     case (.network, .bytesPerSecond(let bytesPerSecond)):
         return Double(bytesPerSecond)
-    case (.temperature, .degreesCelsius(let degrees)),
-         (.gpu, .degreesCelsius(let degrees)):
+    case (.temperature, .degreesCelsius(let degrees)):
         return degrees
+    case (.gpu, .percentage(let percentage)):
+        return percentage
     case (.fan, .revolutionsPerMinute(let rpm)):
         return rpm
     default:

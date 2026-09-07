@@ -13,6 +13,21 @@ final class StubMonitor: MetricMonitor {
     }
 }
 
+/// A monitor that counts how many times it was sampled. Uses a lock so the
+/// count can be read back deterministically from the test thread.
+final class CountingMonitor: MetricMonitor, @unchecked Sendable {
+    let kind: MetricKind = .cpu
+    private let lock = NSLock()
+    private var count = 0
+
+    var sampleCount: Int { lock.withLock { count } }
+
+    func sample() async throws -> MetricSample {
+        lock.withLock { count += 1 }
+        return MetricSample(kind: kind, value: .percentage(1), availability: .available, timestamp: Date())
+    }
+}
+
 final class MetricsAggregatorTests: XCTestCase {
     func testAggregatorPublishesSnapshotsToMultipleConsumers() async throws {
         let monitor = StubMonitor(kind: .cpu, samples: [.percentage(10), .percentage(20)])
@@ -40,6 +55,39 @@ final class MetricsAggregatorTests: XCTestCase {
         let snapshot = try XCTUnwrap(emitted)
         if case .unavailable = snapshot.values[.memory] {} else { XCTFail("expected unavailable value, got \(String(describing: snapshot.values[.memory]))") }
         if case .unavailable = snapshot.availability[.memory] {} else { XCTFail("expected unavailable availability") }
+        await aggregator.stop()
+    }
+
+    func testIsPausedDefaultsFalseAndSetterReflects() async {
+        let monitor = CountingMonitor()
+        let aggregator = MetricsAggregator(monitors: [monitor])
+        let initial = await aggregator.isPaused
+        XCTAssertFalse(initial)
+        await aggregator.setPaused(true)
+        let paused = await aggregator.isPaused
+        XCTAssertTrue(paused)
+        await aggregator.setPaused(false)
+        let resumed = await aggregator.isPaused
+        XCTAssertFalse(resumed)
+    }
+
+    /// Pausing must gate the sampling loop entirely: no `sample()` calls
+    /// and no snapshot emission while paused; sampling resumes after
+    /// `setPaused(false)`.
+    func testPauseSkipsSampling() async throws {
+        let monitor = CountingMonitor()
+        let aggregator = MetricsAggregator(
+            monitors: [monitor],
+            strategy: SamplingStrategy(interval: .milliseconds(5)))
+        await aggregator.setPaused(true)
+        await aggregator.start()
+        try await Task.sleep(for: .milliseconds(100))
+        let countWhilePaused = monitor.sampleCount
+        XCTAssertEqual(countWhilePaused, 0)
+        await aggregator.setPaused(false)
+        try await Task.sleep(for: .milliseconds(200))
+        let countAfterResume = monitor.sampleCount
+        XCTAssertGreaterThan(countAfterResume, 0)
         await aggregator.stop()
     }
 }

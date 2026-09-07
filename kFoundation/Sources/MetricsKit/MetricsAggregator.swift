@@ -16,6 +16,17 @@ public actor MetricsAggregator {
     private var continuations: [UUID: AsyncStream<MetricSnapshot>.Continuation] = [:]
     private var task: Task<Void, Never>?
 
+    /// When `true`, the sampling loop skips `sampleOnce()` (consumers keep
+    /// their last snapshot; no new samples are emitted). Zero CPU/battery
+    /// cost while paused — the loop just idles on its sleep.
+    public private(set) var isPaused = false
+
+    /// Pause or resume the sampling loop. Safe to call in any state
+    /// (before `start()`, while running, or after `stop()`).
+    public func setPaused(_ paused: Bool) {
+        isPaused = paused
+    }
+
     public init(monitors: [any MetricMonitor],
                 strategy: SamplingStrategy = .init(),
                 clock: any KWatchClock = SystemClock()) {
@@ -46,7 +57,9 @@ public actor MetricsAggregator {
         let interval = strategy.interval
         task = Task { [weak self] in
             while !Task.isCancelled {
-                await self?.sampleOnce()
+                if await self?.isPaused == false {
+                    await self?.sampleOnce()
+                }
                 try? await Task.sleep(for: interval)
             }
         }
