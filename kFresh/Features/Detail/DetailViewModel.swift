@@ -98,15 +98,32 @@ final class DetailViewModel: ObservableObject {
     /// ``lastUninstallResult`` so the view can react without re-running the
     /// mover.
     ///
-    /// - Parameter includeResidues: When `true` (the recommended default),
-    ///   the currently-scanned residue files are trashed alongside the app
-    ///   bundle. When the user unchecks the residue toggle in
-    ///   ``UninstallConfirmSheet`` (I1), the residues are filtered out so
-    ///   the trash operation touches only the app bundle itself.
-    func confirmUninstall(includeResidues: Bool = true) async -> Result<UninstallRecord, TrashError>? {
+    /// Drives the uninstall confirmation flow end-to-end:
+    /// 1. The view-model's residue scan has populated ``residues`` (cached
+    ///    on the view-model so the confirm sheet can render without
+    ///    re-scanning).
+    /// 2. ``AppDetailView`` presents ``UninstallConfirmSheet``, which lets
+    ///    the user toggle individual residues per ``ResidueRiskLevel``
+    ///    bucket.
+    /// 3. The user taps "确认卸载" and the sheet calls back with the
+    ///    user-selected ``[ResidueFile]`` subset.
+    /// 4. This method forwards that subset to the shared ``TrashMover``,
+    ///    which deletes the app body + the selected residues in one trash
+    ///    operation.
+    ///
+    /// Returns `nil` only when ``canUninstall`` is false, so a `nil` here
+    /// means "we reached the call from a path the UI didn't gate
+    /// correctly". Otherwise returns the ``TrashMover`` result verbatim
+    /// and mirrors it onto ``lastUninstallResult`` so the view can react
+    /// without re-running the mover.
+    ///
+    /// - Parameter selectedResidues: The exact residue subset the user
+    ///   approved in the 4-level confirm sheet (an empty array means
+    ///   "app body only"). Passed straight to the mover — the mover is
+    ///   responsible for the confidence filter and the actual delete.
+    func confirmUninstall(selectedResidues: [ResidueFile] = []) async -> Result<UninstallRecord, TrashError>? {
         guard canUninstall else { return nil }
-        let residuesToDelete = includeResidues ? residues : []
-        let result = await mover.moveToTrash(app: app, residues: residuesToDelete)
+        let result = await mover.moveToTrash(app: app, residues: selectedResidues)
         lastUninstallResult = result
         return result
     }

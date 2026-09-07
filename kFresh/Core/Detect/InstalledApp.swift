@@ -50,6 +50,67 @@ public enum ResidueType: String, Codable, CaseIterable, Sendable {
     case other
 }
 
+// MARK: - Residue Risk Level
+
+/// Risk classification that drives the 4-level uninstall confirm sheet
+/// (see `kFresh/Features/Detail/UninstallConfirmSheet.swift`).
+///
+/// The four buckets follow the Kraftly CLAUDE.md §8.6 convention also used
+/// by kSpaceClean: 🟢 Recommended (safe by default), ⚪ Optional (off by
+/// default, single confirm), 🟠 Caution (off by default, warning copy),
+/// 🔴 Dangerous (off by default, double-confirm + literal "DELETE" input).
+public enum ResidueRiskLevel: String, Codable, CaseIterable, Sendable {
+    case recommended
+    case optional
+    case caution
+    case dangerous
+
+    /// Default checkbox state when the confirm sheet first opens.
+    var defaultSelected: Bool {
+        switch self {
+        case .recommended: return true
+        case .optional, .caution, .dangerous: return false
+        }
+    }
+
+    /// Human-readable section title shown above the residue list.
+    var sectionTitle: String {
+        switch self {
+        case .recommended: return "推荐清理"
+        case .optional:    return "可选清理"
+        case .caution:     return "谨慎清理"
+        case .dangerous:   return "高危清理"
+        }
+    }
+
+    /// Map a ``ResidueType`` (and whether the file lives at system scope) to
+    /// its risk bucket. Mirrors CLAUDE.md §8.6 and the spec at
+    /// `docs/superpowers/specs/2026-08-03-kfresh-v1x-design.md` §2.1.
+    ///
+    /// Why this lives here rather than in the detector: the detector only
+    /// decides *which* residues to surface; this function decides *how
+    /// dangerous* each surfaced residue is, which is independent of the
+    /// detection path. Keeping it on the enum means callers (detector,
+    /// TrashMover, UninstallConfirmSheet, tests) all reach one mapping.
+    static func classify(type: ResidueType, isSystemLevel: Bool) -> ResidueRiskLevel {
+        switch type {
+        // 🟢 Cache-like: safe to delete, default ON
+        case .caches, .httpStorage, .webKit, .log:
+            return .recommended
+        // 🔴 Anything that auto-runs on next login or boot
+        case .launchAgent, .launchDaemon, .startupItem:
+            return .dangerous
+        // 🟠 User preferences + auth-bearing cookies
+        case .preferences, .cookie:
+            return .caution
+        // ⚪ Application data — useful to keep, free to wipe
+        case .appSupport, .container, .savedState, .groupContainer,
+             .plugin, .prefPane, .appleScript, .other:
+            return .optional
+        }
+    }
+}
+
 // MARK: - Residue File
 
 public struct ResidueFile: Identifiable, Codable, Sendable {
@@ -61,8 +122,16 @@ public struct ResidueFile: Identifiable, Codable, Sendable {
     let description: String
     let isSystemLevel: Bool
     let isProtected: Bool
+    let riskLevel: ResidueRiskLevel
 
-    public init(url: URL, type: ResidueType, sizeBytes: Int64, confidence: Double, description: String = "", isSystemLevel: Bool = false, isProtected: Bool = false) {
+    public init(url: URL,
+                type: ResidueType,
+                sizeBytes: Int64,
+                confidence: Double,
+                description: String = "",
+                isSystemLevel: Bool = false,
+                isProtected: Bool = false,
+                riskLevel: ResidueRiskLevel? = nil) {
         self.url = url
         self.type = type
         self.sizeBytes = sizeBytes
@@ -70,6 +139,7 @@ public struct ResidueFile: Identifiable, Codable, Sendable {
         self.description = description
         self.isSystemLevel = isSystemLevel
         self.isProtected = isProtected
+        self.riskLevel = riskLevel ?? ResidueRiskLevel.classify(type: type, isSystemLevel: isSystemLevel)
     }
 
     var sizeFormatted: String {

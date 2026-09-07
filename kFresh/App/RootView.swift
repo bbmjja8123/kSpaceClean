@@ -23,6 +23,12 @@ struct RootView: View {
         .sheet(isPresented: $coordinator.showSettings) {
             SettingsView(viewModel: SettingsViewModel(coordinator: coordinator))
         }
+        .sheet(isPresented: $coordinator.showDeepClean) {
+            DeepCleanView()
+        }
+        .sheet(isPresented: $coordinator.showStartupItems) {
+            StartupItemsView(viewModel: StartupItemsViewModel(manager: StartupItemManager()))
+        }
         .sheet(isPresented: $coordinator.showPaywall) {
             PaywallView(store: services.store)
         }

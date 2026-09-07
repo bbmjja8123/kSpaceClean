@@ -1,3 +1,4 @@
+import AppKit
 import Combine
 import Foundation
 
@@ -176,5 +177,77 @@ final class AppListViewModel: ObservableObject {
     /// Re-runs the scan, preserving the user's filter / sort / selection.
     func refresh() async {
         await startScan()
+    }
+
+    // MARK: - Drag-and-drop ingestion (Wave 2 P1, G-KF-03)
+
+    /// Ingests a Finder-dropped URL as a virtual app entry.
+    ///
+    /// The full catalog scan lives behind a wall-clock budget the user
+    /// shouldn't pay for a single app they're already holding in their
+    /// hand. The drop handler turns "drop the .app on the window" into
+    /// the same flow as "find the row in the list" without forcing a
+    /// full rescan first.
+    ///
+    /// - The dropped URL must point at an existing `.app` bundle (or a
+    ///   folder whose only child is one) — anything else is silently
+    ///   ignored, mirroring the AppCleaner / Pearcleaner drop contract.
+    /// - The new entry is merged into ``apps`` by bundle ID, so a second
+    ///   drop of the same `.app` replaces the prior virtual entry rather
+    ///   than duplicating the row.
+    /// - `isRunning` defaults to `false` because a Finder drop is
+    ///   presumed-intentional, not a side effect of the user launching
+    ///   the app.
+    func ingestDroppedApp(url: URL) {
+        let resolvedURL = resolveAppURL(from: url)
+        guard FileManager.default.fileExists(atPath: resolvedURL.path),
+              resolvedURL.pathExtension == "app" else {
+            return
+        }
+        let bundle = Bundle(url: resolvedURL)
+        let bundleID = bundle?.bundleIdentifier
+            ?? "dropped.\(resolvedURL.deletingPathExtension().lastPathComponent)"
+        let displayName = bundle?.infoDictionary?["CFBundleName"] as? String
+            ?? resolvedURL.deletingPathExtension().lastPathComponent
+        let version = bundle?.infoDictionary?["CFBundleVersion"] as? String ?? "1.0"
+        let source = AppCatalogService.classifySource(url: resolvedURL, bundleID: bundleID)
+
+        // If a real catalog row already exists for this bundle ID, the
+        // user just dropped an already-installed app — do nothing so we
+        // don't double-list it.
+        if apps.contains(where: { $0.bundleID == bundleID }) { return }
+
+        let dropped = InstalledApp(
+            url: resolvedURL,
+            displayName: displayName,
+            bundleID: bundleID,
+            version: version,
+            icon: NSImage(),
+            sizeBytes: 0,
+            source: source,
+            isRunning: false,
+            lastUsedDate: nil,
+            residues: []
+        )
+        apps.append(dropped)
+    }
+
+    /// Walk one level deep if the drop URL is a folder whose only child
+    /// is an `.app` bundle — that catches the common "drag a folder
+    /// containing the app" Finder gesture without forcing the user to
+    /// drop the inner `.app` exactly.
+    private func resolveAppURL(from url: URL) -> URL {
+        var isDir: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir),
+              isDir.boolValue else {
+            return url
+        }
+        let children = (try? FileManager.default.contentsOfDirectory(atPath: url.path)) ?? []
+        if children.count == 1,
+           let only = children.first,
+           only.hasSuffix(".app") {
+            return url.appendingPathComponent(only, isDirectory: true)
+        }
+        return url
     }
 }
