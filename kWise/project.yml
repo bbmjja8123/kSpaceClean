@@ -29,10 +29,6 @@ targets:
           - "scripts/**"
           - "Widgets/**"          # separate widget appex target
           - "FinderExtension/**"  # separate Finder Sync appex target
-          - "LiveActivity/**"     # ActivityKit is unavailable on macOS — dead code, removed in Phase 6
-          - "Spotlight/**"        # cut in v1.6 plan
-          - "LaunchAgent/**"      # cut in v1.6 plan (App Store review risk)
-          - "Intents/**"          # compiled into app until Phase 6 unifies AppIntents
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean
@@ -52,6 +48,7 @@ targets:
     deploymentTarget: "14.0"
     sources:
       - Widgets
+      - Shared            # WidgetSnapshot feed + RunSmartCareIntent (dual-target)
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.widget
