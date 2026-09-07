@@ -181,11 +181,11 @@ struct RootView: View {
         case .diskHealth:
             DiskHealthDetailView()  // Phase D Task 12 — wire disk health detail view
         case .startupItems:
-            PlaceholderModuleView(title: "启动项", subtitle: "Phase 5 接入")
+            StartupItemsView()
         case .appUninstall:
             AppUninstallView(viewModel: makeAppUninstallViewModel())
         case .shredder:
-            PlaceholderModuleView(title: "文件粉碎", subtitle: "Phase 5 接入")
+            ShredderView()
         // v2.0 — toolbox + deep surfaces.
         case .tools:
             ToolboxView()
