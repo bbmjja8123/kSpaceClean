@@ -38,7 +38,7 @@ struct kWiseApp: App {
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentMinSize)
-        .defaultSize(width: 960, height: 660)
+        .defaultSize(width: 1120, height: 720)
         .commands {
             CommandGroup(replacing: .newItem) {}
         }

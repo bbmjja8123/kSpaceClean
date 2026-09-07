@@ -4,8 +4,9 @@ import DesignSystem
 @MainActor
 public final class AppState: ObservableObject {
     @Published public var navigation: NavigationItem = .smartCare  // v1.5: home is the Smart Care surface (Q1 Hybrid UI)
-    @Published public var rightPanelTab: RightPanelTab = .overview
-    @Published public var rightPanelVisible = true
+    /// Selection detail panel (UX 重构 Phase 1/3): auto-hidden until a row
+    /// is selected; ⌘I toggles it manually.
+    @Published public var rightPanelVisible = false
     @Published public var selectedCategory: FileCategory?
     @Published public var scanState: ScanState = .idle
 
@@ -84,12 +85,6 @@ public final class AppState: ObservableObject {
             case .maintenance: return String(localized: "nav.maintenance")
             }
         }
-    }
-
-    public enum RightPanelTab: String, CaseIterable {
-        case overview = "\u{6982}\u{89C8}"
-        case results = "\u{7ED3}\u{679C}\u{6811}"
-        case suggestions = "\u{5EFA}\u{8BAE}"
     }
 
     public enum ScanState: Equatable {

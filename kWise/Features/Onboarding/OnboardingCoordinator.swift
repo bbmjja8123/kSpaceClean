@@ -21,6 +21,12 @@ final class OnboardingCoordinator: ObservableObject {
         }
     }
 
+    /// Go back one page (UX 重构 Phase 1 — step indicator). No-op on page 0.
+    func back() {
+        guard currentPage > 0 else { return }
+        currentPage -= 1
+    }
+
     // MARK: - FDA Actions
 
     /// Open System Preferences at the Full Disk Access pane.

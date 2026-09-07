@@ -41,62 +41,31 @@ struct RootView: View {
     @State private var showOnboarding = false
 
     var body: some View {
-        GeometryReader { geo in
+        GeometryReader { _ in
             ZStack {
                 // Layer 1: Background
                 backgroundLayer
 
-                // Layer 2: Top toolbar (Scan / Clean / Warning / Account) — brand
-                // mark on the leading edge, four icon-and-label buttons on the
-                // trailing edge. Wired in A14 after sitting as dead code since
-                // A12 (see A14 report).
-                VStack(spacing: 0) {
-                    ToolbarView(
-                        onScan: {
-                            appState.navigation = .scan
-                            scanResultsViewModel.startScan()
-                        },
-                        onClean: {
-                            appState.navigation = .cleanup
-                        },
-                        onWarning: {
-                            // Phase C will surface a real warning sheet here
-                            // (Task C6 WarningToast). For now, switching to
-                            // the cleanup route gives the user the closest
-                            // existing surface that surfaces the warnings.
-                            appState.navigation = .cleanup
-                        },
-                        onProfile: {
-                            appState.navigation = .settings
-                        }
-                    )
-                    .zIndex(10)
+                // UX 重构 (v2.1 Phase 1): the top toolbar is gone — its four
+                // buttons all duplicated rail items. The rail is now the only
+                // global navigation; page-level actions live inside each page.
+                HStack(spacing: 0) {
+                    // Icon Rail (left sidebar) — brand mark on top, fixed 6 items.
+                    iconRail
+                        .frame(width: 56)
+                        .padding(.leading, 8)
+                        .padding(.vertical, 12)
 
-                    // Layer 3: Main content + icon rail side by side
-                    HStack(spacing: 0) {
-                        // Icon Rail (left sidebar)
-                        iconRail
-                            .frame(width: 48)
-                            .padding(.leading, 8)
+                    // Main content area (switches based on navigation)
+                    mainContent
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                        // Main content area (switches based on navigation)
-                        mainContent
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                        // Right panel (driven solely by rightPanelVisible
-                        // since the 3D galaxy visualization was removed in
-                        // v1.0 per CLAUDE.md §8.1)
-                        if appState.rightPanelVisible {
-                            RightPanelView()
-                                .frame(width: min(260, geo.size.width * 0.3))
-                                .padding(.trailing, 12)
-                                .padding(.top, 48)
-                                .padding(.bottom, 68)
-                        }
-                    }
+                    // Detail panel lands in Phase 3 — auto-hidden until a
+                    // row is selected; no compensating paddings anywhere.
                 }
             }
         }
+        .frame(minWidth: 1024, minHeight: 680)
         .scanKeyboardShortcuts(
             onNewScan: {
                 // ⌘N — switch to the scan surface and start a fresh scan
@@ -264,6 +233,15 @@ struct RootView: View {
     private var iconRail: some View {
         GlassPanel {
             VStack(spacing: 4) {
+                // Brand mark — the toolbar's only unique asset, preserved
+                // here at the top of the rail.
+                Image(systemName: "sparkles")
+                    .font(.system(size: 18))
+                    .foregroundStyle(Color.brandPrimary)
+                    .frame(width: 36, height: 36)
+                    .help("kWise")
+                Divider()
+                    .padding(.horizontal, AppSpacing.sm)
                 // Fixed rail (v2.0 Phase 2): deep surfaces live in the
                 // toolbox instead of growing the rail.
                 ForEach(AppState.NavigationItem.railItems, id: \.self) { item in
@@ -277,7 +255,7 @@ struct RootView: View {
             }
             .padding(.vertical, AppSpacing.sm)
         }
-        .frame(width: 42)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -308,34 +286,6 @@ private struct IconRailButton: View, Equatable {
     }
 }
 
-// MARK: - v1.5 Placeholder Module View
-
-/// Placeholder view for v1.5 modules pending real implementation.
-///
-/// Renders title + subtitle in the main content area for Smart Care /
-/// Privacy / Disk Health until their Phase B/C/D real module views land
-/// (see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md` Tasks 2 / 7 / 11).
-///
-/// Inlined in this file (not its own Swift file) to avoid touching
-/// `kWise.xcodeproj/project.pbxproj` until Phase B wires the real views.
-private struct PlaceholderModuleView: View {
-    let title: String
-    let subtitle: String
-
-    var body: some View {
-        VStack(spacing: AppSpacing.md) {
-            Text(title)
-                .font(AppFont.title2)
-                .foregroundStyle(Color.textPrimary)
-            Text(subtitle)
-                .font(AppFont.body)
-                .foregroundStyle(Color.textSecondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bgPrimary)
-    }
-}
-
 // MARK: - Root Keyboard Shortcuts
 
 /// Global keyboard shortcuts for the main app window.
@@ -353,9 +303,10 @@ private struct RootKeyboardShortcuts: ViewModifier {
                     guard isCommand else { return event }
 
                     switch event.charactersIgnoringModifiers {
-                    case "f":
-                        appState.rightPanelTab = .results
-                        appState.rightPanelVisible = true
+                    case "i":
+                        // ⌘I — toggle the selection detail panel (macOS
+                        // inspector convention, UX 重构 Phase 1).
+                        appState.rightPanelVisible.toggle()
                         return nil
                     default: return event
                     }

@@ -7,8 +7,8 @@ final class AppStateTests: XCTestCase {
         let state = AppState()
         XCTAssertEqual(state.navigation, .smartCare)
         XCTAssertEqual(state.scanState, .idle)
-        XCTAssertTrue(state.rightPanelVisible)
-        XCTAssertEqual(state.rightPanelTab, .overview)
+        // UX 重构 Phase 1: the detail panel is auto-hidden until selected.
+        XCTAssertFalse(state.rightPanelVisible)
         XCTAssertNil(state.selectedCategory)
     }
 
@@ -36,12 +36,12 @@ final class AppStateTests: XCTestCase {
         XCTAssertFalse(state.rightPanelVisible)
     }
 
-    func test_rightPanelTab_change() {
+    func test_rightPanelVisible_toggle() {
         let state = AppState()
-        state.rightPanelTab = .results
-        XCTAssertEqual(state.rightPanelTab, .results)
-        state.rightPanelTab = .suggestions
-        XCTAssertEqual(state.rightPanelTab, .suggestions)
+        state.rightPanelVisible = true
+        XCTAssertTrue(state.rightPanelVisible)
+        state.rightPanelVisible = false
+        XCTAssertFalse(state.rightPanelVisible)
     }
 
     func test_selectedCategory() {
