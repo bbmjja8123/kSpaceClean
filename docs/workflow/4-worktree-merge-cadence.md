@@ -6,7 +6,7 @@
 
 | App | 分支 | Worktree 路径 |
 |---|---|---|
-| kWise | `worktree-kwise-v1` | `/Users/torsys/Documents/aicoding/kWise` |
+| kWise | `main`（直接开发） | `/Users/torsys/Documents/aicoding/kSpaceClean`（主 worktree） |
 | kMonitor | `worktree-kmonitor-v1` | `/Users/torsys/Documents/aicoding/kMonitor` |
 | kSift | `worktree-ksift-v1` | `/Users/torsys/Documents/aicoding/kSift` |
 | kFresh | `worktree-kfresh-v1` | `/Users/torsys/Documents/aicoding/kFresh` |
