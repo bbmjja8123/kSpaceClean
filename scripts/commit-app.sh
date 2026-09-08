@@ -39,9 +39,9 @@ for arg in "$@"; do
 done
 
 case "$APP" in
-    kWise|kWatch|kSift|kFresh) ;;
+    kWise|kMonitor|kSift|kFresh) ;;
     *)
-        echo "error: app must be one of: kWise | kWatch | kSift | kFresh (got '$APP')" >&2
+        echo "error: app must be one of: kWise | kMonitor | kSift | kFresh (got '$APP')" >&2
         exit 65
         ;;
 esac

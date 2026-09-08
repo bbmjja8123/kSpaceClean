@@ -1,0 +1,272 @@
+import SwiftUI
+import MetricsKit
+import DesignSystem
+
+/// The history trends screen, showing a range selector, metric picker,
+/// summary statistics, and the trend chart.
+///
+/// Free users see a Pro gate instead of chart content. Pro users can
+/// select 24-hour, 7-day, or 30-day windows for any supported metric.
+/// Loading, error, and empty states are handled explicitly.
+public struct HistoryView: View {
+    @ObservedObject private var viewModel: HistoryViewModel
+    private let onBack: (() -> Void)?
+    private let onOpenPaywall: (() -> Void)?
+
+    public init(
+        viewModel: HistoryViewModel,
+        onBack: (() -> Void)? = nil,
+        onOpenPaywall: (() -> Void)? = nil
+    ) {
+        self.viewModel = viewModel
+        self.onBack = onBack
+        self.onOpenPaywall = onOpenPaywall
+    }
+
+    public var body: some View {
+        VStack(spacing: 0) {
+            // MARK: Top bar
+            topBar
+                .padding(.horizontal)
+                .padding(.top, 8)
+
+            Divider()
+                .padding(.top, 8)
+
+            // MARK: Content
+            content
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .task { await viewModel.load() }
+        .onChange(of: viewModel.selectedRange) { _ in
+            Task { await viewModel.load() }
+        }
+        .onChange(of: viewModel.selectedMetric) { _ in
+            Task { await viewModel.load() }
+        }
+    }
+
+    // MARK: - Top bar
+
+    private var topBar: some View {
+        HStack(spacing: 12) {
+            Button {
+                onBack?()
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "chevron.left")
+                    Text(String(localized: "Dashboard"))
+                }
+            }
+            .buttonStyle(.plain)
+            .help(String(localized: "Return to Dashboard"))
+
+            Spacer()
+
+            Text(String(localized: "History"))
+                .font(.headline)
+                .foregroundStyle(Color.textSecondary)
+
+            Spacer()
+
+            Picker(String(localized: "Range"), selection: $viewModel.selectedRange) {
+                Text(String(localized: "24 Hours")).tag(HistoryRange.hours24)
+                Text(String(localized: "7 Days")).tag(HistoryRange.days7)
+                Text(String(localized: "30 Days")).tag(HistoryRange.days30)
+            }
+            .pickerStyle(.segmented)
+            .frame(width: 200)
+
+            Picker(String(localized: "Metric"), selection: $viewModel.selectedMetric) {
+                ForEach(MetricKind.allCases, id: \.self) { kind in
+                    Text(metricLabel(kind)).tag(kind)
+                }
+            }
+            .frame(width: 140)
+        }
+    }
+
+    // MARK: - Content
+
+    @ViewBuilder
+    private var content: some View {
+        if viewModel.isLocked {
+            proGateView
+        } else {
+            dataView
+                .loadingOverlay(
+                    isLoading: viewModel.isLoading,
+                    title: String(localized: "Loading history…")
+                )
+                .errorState(message: viewModel.errorMessage) {
+                    Button(String(localized: "Retry")) {
+                        Task { await viewModel.load() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .emptyState(
+                    isEmpty: viewModel.isEmpty,
+                    iconName: "chart.xyaxis.line",
+                    title: String(localized: "No History Yet"),
+                    subtitle: String(localized: "History snapshots are written every few minutes. Check back soon."),
+                    actionLabel: String(localized: "Retry"),
+                    action: { Task { await viewModel.load() } }
+                )
+        }
+    }
+
+    // MARK: Pro gate
+
+    private var proGateView: some View {
+        VStack(spacing: 16) {
+            Spacer()
+
+            Image(systemName: "lock.fill")
+                .font(.system(size: 36))
+                .foregroundStyle(Color.textSecondary)
+
+            Text(String(localized: "Metric History"))
+                .font(.title2)
+                .fontWeight(.semibold)
+
+            Text(String(localized: "Upgrade to Pro to view historical trends, charts, and detailed summaries for all metrics."))
+                .font(.callout)
+                .foregroundStyle(Color.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+
+            Text(String(localized: "Free users can monitor live CPU, Memory, Disk, and Network."))
+                .font(.caption)
+                .foregroundStyle(Color.textSecondary.opacity(0.6))
+                .multilineTextAlignment(.center)
+
+            Button(String(localized: "View kMonitor Pro")) {
+                onOpenPaywall?()
+            }
+            .buttonStyle(.borderedProminent)
+
+            Spacer()
+        }
+    }
+
+    // MARK: Data view (chart + summaries)
+
+    private var dataView: some View {
+        VStack(spacing: 12) {
+            // Summary row
+            HStack(spacing: 0) {
+                summaryItem(label: String(localized: "Min"), value: viewModel.minDisplay)
+                Spacer()
+                summaryItem(label: String(localized: "Average"), value: viewModel.averageDisplay)
+                Spacer()
+                summaryItem(label: String(localized: "Max"), value: viewModel.maxDisplay)
+            }
+            .padding(.horizontal)
+            .padding(.top, 12)
+
+            // Chart
+            TrendChart(
+                points: viewModel.points,
+                lineColor: chartColor(for: viewModel.selectedMetric)
+            )
+            .frame(minHeight: 180, maxHeight: 240)
+            .padding(.horizontal)
+            .padding(.bottom, 12)
+        }
+    }
+
+    // MARK: - Sub-views
+
+    @ViewBuilder
+    private func summaryItem(label: String, value: String?) -> some View {
+        VStack(spacing: 2) {
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(Color.textSecondary.opacity(0.6))
+            Text(value ?? "--")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .foregroundStyle(Color.textPrimary)
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func metricLabel(_ kind: MetricKind) -> String {
+        switch kind {
+        case .cpu:         return String(localized: "CPU")
+        case .memory:      return String(localized: "Memory")
+        case .disk:        return String(localized: "Disk")
+        case .network:     return String(localized: "Network")
+        case .temperature: return String(localized: "Temperature")
+        case .fan:         return String(localized: "Fan")
+        case .battery:     return String(localized: "Battery")
+        case .gpu:         return String(localized: "GPU")
+        }
+    }
+
+    private func chartColor(for kind: MetricKind) -> Color {
+        switch kind {
+        case .cpu:         return .blue
+        case .memory:      return .green
+        case .disk:        return .orange
+        case .network:     return .purple
+        case .temperature: return .red
+        case .fan:         return .yellow
+        case .battery:     return .green
+        case .gpu:         return .purple
+        }
+    }
+}
+
+// MARK: - Preview
+
+struct HistoryView_Data_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = HistoryViewModel(
+            repository: InMemoryHistoryRepository(snapshots: {
+                let now = Date()
+                return (0..<100).map { i in
+                    MetricSnapshot(
+                        timestamp: now.addingTimeInterval(Double(-i * 60)),
+                        values: [.cpu: .percentage(Double.random(in: 20...90))],
+                        availability: [:]
+                    )
+                }
+            }()),
+            purchaseState: {
+                let ps = PurchaseState()
+                ps.update(isPro: true)
+                return ps
+            }()
+        )
+        HistoryView(viewModel: vm)
+            .frame(width: 700, height: 400)
+    }
+}
+
+struct HistoryView_Locked_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = HistoryViewModel(
+            repository: InMemoryHistoryRepository(),
+            purchaseState: PurchaseState()
+        )
+        HistoryView(viewModel: vm)
+            .frame(width: 700, height: 400)
+    }
+}
+
+struct HistoryView_Empty_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm = HistoryViewModel(
+            repository: InMemoryHistoryRepository(),
+            purchaseState: {
+                let ps = PurchaseState()
+                ps.update(isPro: true)
+                return ps
+            }()
+        )
+        HistoryView(viewModel: vm)
+            .frame(width: 700, height: 400)
+    }
+}

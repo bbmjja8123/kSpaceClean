@@ -20,11 +20,11 @@ public protocol NetworkStatsProvider: Sendable {
 public final class NetworkMonitor: MetricMonitor, @unchecked Sendable {
     public let kind: MetricKind = .network
     private let provider: any NetworkStatsProvider
-    private let clock: any KWatchClock
+    private let clock: any KMonitorClock
     private var previousBytes: InterfaceBytes?
     private var previousDate: Date?
 
-    public init(provider: any NetworkStatsProvider, clock: any KWatchClock = SystemClock()) {
+    public init(provider: any NetworkStatsProvider, clock: any KMonitorClock = SystemClock()) {
         self.provider = provider
         self.clock = clock
     }
