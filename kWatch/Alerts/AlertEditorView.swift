@@ -1,6 +1,7 @@
 import SwiftUI
 import MetricsKit
 import DesignSystem
+import MonitorCore
 
 /// A per-metric configuration form for threshold alerts.
 ///

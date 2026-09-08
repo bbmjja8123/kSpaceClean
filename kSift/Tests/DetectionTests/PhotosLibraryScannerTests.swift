@@ -1,5 +1,6 @@
 import CoreGraphics
 import XCTest
+import DetectionCore
 @testable import kSift
 
 final class PhotosLibraryScannerTests: XCTestCase {

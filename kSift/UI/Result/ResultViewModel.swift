@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import DetectionCore
 
 @MainActor
 final class ResultViewModel: ObservableObject {

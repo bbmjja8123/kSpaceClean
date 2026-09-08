@@ -1,4 +1,6 @@
 import Foundation
+import CommonUtils
+import DetectionCore
 
 // MARK: - Configuration
 
@@ -66,170 +68,68 @@ public struct LargeOldFileEntry: Identifiable, Sendable, Equatable {
     }
 }
 
-// MARK: - Scanner
+// MARK: - Scanner (DetectionCore adapter)
 
-/// Two-phase scanner that finds files above a size threshold.
+/// Large/old file scanner backed by the DetectionCore engine (kSift's
+/// `FileWalker` + `LargeFileDetector`).
 ///
-/// **Phase 1** runs `mdfind -onlyin <path> "kMDItemFSSize > N"` to leverage Spotlight,
-/// which is dramatically faster than walking the file system from scratch.
-///
-/// **Phase 2** enumerates the same paths via `FileManager.enumerator` as a fallback
-/// (Spotlight excludes certain locations such as `~/Library/Caches/` for some users).
-///
-/// Results are deduplicated and streamed through an `AsyncStream`.
+/// The old implementation spawned `/usr/bin/mdfind` — a child process the
+/// App Sandbox cannot launch (it either failed silently or lied, C-5) —
+/// plus a redundant second walk. The engine swap keeps the same
+/// `scan(config:) -> AsyncStream<LargeOldFileEntry>` UI contract; only the
+/// age filter is applied app-side after the detector returns.
 public final class LargeOldScanner: @unchecked Sendable {
-    private let fileManager: FileManager
 
-    public init(fileManager: FileManager = .default) {
-        self.fileManager = fileManager
-    }
+    public init() {}
 
     /// Starts a scan.
     ///
     /// - Parameter config: Scan parameters (size threshold, age filter, root paths).
-    /// - Returns: An `AsyncStream` of `LargeOldFileEntry`. Order is unspecified.
+    /// - Returns: An `AsyncStream` of `LargeOldFileEntry`, sorted size-descending.
     public func scan(config: LargeOldScanConfig) -> AsyncStream<LargeOldFileEntry> {
         AsyncStream { continuation in
-            Task.detached(priority: .userInitiated) { [fileManager] in
-                var seen: Set<String> = []
+            Task.detached(priority: .userInitiated) {
+                let controller = ScanController()
+                let walker = FileWalker()
+                let target = ScanTarget(
+                    directories: config.scanPaths.map(\.path),
+                    exclusions: [],
+                    minFileSize: config.minFileSize
+                )
 
-                // Phase 1: Spotlight
-                let spotlight = await Self.runMDFind(config: config)
-                for entry in spotlight where !seen.contains(entry.path) {
-                    seen.insert(entry.path)
-                    continuation.yield(entry)
+                let urls: [URL]
+                do {
+                    urls = try await walker.walk(target: target, controller: controller) { _ in }
+                } catch {
+                    continuation.finish()
+                    return
                 }
 
-                // Phase 2: Manual fallback
-                let manual = await Self.runFileSystem(config: config, fileManager: fileManager)
-                for entry in manual where !seen.contains(entry.path) {
-                    seen.insert(entry.path)
+                let detected = await LargeFileDetector(threshold: config.minFileSize)
+                    .detect(urls, controller: controller)
+
+                let now = Date()
+                let entries: [LargeOldFileEntry] = detected
+                    .compactMap { item -> LargeOldFileEntry? in
+                        let modDate = item.modificationDate ?? Date.distantPast
+                        if let age = config.minFileAge,
+                           now.timeIntervalSince(modDate) < age {
+                            return nil
+                        }
+                        return LargeOldFileEntry(
+                            url: item.url,
+                            size: item.size,
+                            modificationDate: modDate,
+                            creationDate: item.creationDate
+                        )
+                    }
+                    .sorted { $0.size > $1.size }
+
+                for entry in entries {
                     continuation.yield(entry)
                 }
-
                 continuation.finish()
             }
         }
-    }
-
-    // MARK: - Phase 1: Spotlight (mdfind)
-
-    private static func runMDFind(config: LargeOldScanConfig) async -> [LargeOldFileEntry] {
-        var all: [LargeOldFileEntry] = []
-        for root in config.scanPaths {
-            let paths = await runMDFind(scope: root, minSize: config.minFileSize)
-            for path in paths {
-                guard let entry = entryFromPath(path, config: config) else { continue }
-                all.append(entry)
-            }
-        }
-        return all
-    }
-
-    private static func runMDFind(scope: URL, minSize: Int64) async -> [String] {
-        await withCheckedContinuation { continuation in
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/mdfind")
-            process.arguments = [
-                "-onlyin", scope.path,
-                "kMDItemFSSize > \(minSize)"
-            ]
-
-            let pipe = Pipe()
-            process.standardOutput = pipe
-            process.standardError = Pipe()
-
-            do {
-                try process.run()
-            } catch {
-                continuation.resume(returning: [])
-                return
-            }
-
-            process.waitUntilExit()
-
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            let output = String(data: data, encoding: .utf8) ?? ""
-            let lines = output
-                .split(separator: "\n", omittingEmptySubsequences: true)
-                .map(String.init)
-            continuation.resume(returning: lines)
-        }
-    }
-
-    // MARK: - Phase 2: File system walk
-
-    private static func runFileSystem(
-        config: LargeOldScanConfig,
-        fileManager: FileManager
-    ) async -> [LargeOldFileEntry] {
-        var all: [LargeOldFileEntry] = []
-
-        for root in config.scanPaths {
-            guard let enumerator = fileManager.enumerator(
-                at: root,
-                includingPropertiesForKeys: [
-                    .fileSizeKey,
-                    .contentModificationDateKey,
-                    .creationDateKey,
-                    .contentAccessDateKey,
-                    .isRegularFileKey
-                ],
-                options: [.skipsHiddenFiles, .skipsPackageDescendants]
-            ) else { continue }
-
-            for case let url as URL in enumerator {
-                guard let values = try? url.resourceValues(forKeys: Set([
-                    .isRegularFileKey, .fileSizeKey, .contentModificationDateKey
-                ])),
-                      values.isRegularFile == true,
-                      let size = values.fileSize,
-                      Int64(size) >= config.minFileSize
-                else { continue }
-
-                let modDate = values.contentModificationDate ?? Date.distantPast
-                if let age = config.minFileAge,
-                   Date().timeIntervalSince(modDate) < age {
-                    continue
-                }
-
-                let creation = (try? url.resourceValues(forKeys: [.creationDateKey]).creationDate)
-                let access = (try? url.resourceValues(forKeys: [.contentAccessDateKey]).contentAccessDate)
-
-                all.append(LargeOldFileEntry(
-                    url: url,
-                    size: Int64(size),
-                    modificationDate: modDate,
-                    creationDate: creation,
-                    lastAccessDate: access
-                ))
-            }
-        }
-
-        return all
-    }
-
-    // MARK: - Path → Entry
-
-    private static func entryFromPath(_ path: String, config: LargeOldScanConfig) -> LargeOldFileEntry? {
-        let url = URL(fileURLWithPath: path)
-        guard let attrs = try? FileManager.default.attributesOfItem(atPath: path),
-              let size = attrs[.size] as? Int64,
-              size >= config.minFileSize
-        else { return nil }
-
-        let modDate = attrs[.modificationDate] as? Date ?? Date.distantPast
-        if let age = config.minFileAge,
-           Date().timeIntervalSince(modDate) < age {
-            return nil
-        }
-
-        return LargeOldFileEntry(
-            url: url,
-            size: size,
-            modificationDate: modDate,
-            creationDate: attrs[.creationDate] as? Date,
-            lastAccessDate: nil
-        )
     }
 }

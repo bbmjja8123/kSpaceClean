@@ -1,5 +1,6 @@
 import SwiftUI
 import MetricsKit
+import MonitorCore
 
 /// Second onboarding page: let the user pick a menu-bar style and the
 /// free-tier metrics they want enabled by default.

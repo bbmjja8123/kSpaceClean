@@ -1,6 +1,7 @@
 import CoreData
 import Foundation
 import UniformTypeIdentifiers
+import DetectionCore
 
 public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
     private let controller: PersistenceController

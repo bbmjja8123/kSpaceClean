@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 /// Photos-library dedup screen: explicit permission flow (mirroring the
 /// FDA onboarding pattern, including the macOS "limited" state), a local

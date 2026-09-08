@@ -1,4 +1,5 @@
 import Foundation
+import AppCatalogCore
 
 /// Drives the five-page first-launch onboarding flow.
 ///

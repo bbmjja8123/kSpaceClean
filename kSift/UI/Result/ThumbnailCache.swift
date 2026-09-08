@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 import QuickLookThumbnailing
+import DetectionCore
 
 /// Caches NSImage thumbnails for FileItem URLs so perceptual groups can show
 /// inline previews without blocking the main thread on QuickLook generation.

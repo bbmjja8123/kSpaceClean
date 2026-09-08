@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct ScanProgressView: View {
     let progress: ScanProgress

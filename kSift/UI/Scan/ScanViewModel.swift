@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 @MainActor
 public final class ScanViewModel: ObservableObject {
@@ -49,14 +50,14 @@ public final class ScanViewModel: ObservableObject {
         if let orchestrator {
             self.orchestrator = orchestrator
         } else if let paidFlag {
-            self.orchestrator = ScanOrchestrator(
+            self.orchestrator = CleanupStack.makeScanOrchestrator(
                 incrementalIndex: IncrementalIndex(
                     repository: IncrementalIndexRepositoryCoreData(),
                     isPaidUser: { paidFlag.value }
                 )
             )
         } else {
-            self.orchestrator = ScanOrchestrator()
+            self.orchestrator = CleanupStack.makeScanOrchestrator()
         }
     }
 

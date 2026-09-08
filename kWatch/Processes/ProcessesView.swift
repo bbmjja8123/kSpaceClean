@@ -121,17 +121,33 @@ public struct ProcessesView: View {
 
     // MARK: - Content
 
+    /// Stack the three DesignSystem state modifiers over `dataView` so the
+    /// loading / error / empty states share their styling with the rest
+    /// of the app (Stage 2 V8). The custom `loadingView` / `errorView` /
+    /// `emptyView` private helpers below remain in place for now as
+    /// reference implementations — the public modifiers wrap the data
+    /// path instead so we get the consistent placeholder visuals.
     @ViewBuilder
     private var content: some View {
-        if viewModel.isLoading {
-            loadingView
-        } else if let errorMessage = viewModel.errorMessage {
-            errorView(message: errorMessage)
-        } else if viewModel.isEmpty {
-            emptyView
-        } else {
-            dataView
-        }
+        dataView
+            .loadingOverlay(
+                isLoading: viewModel.isLoading,
+                title: String(localized: "Loading processes…")
+            )
+            .errorState(message: viewModel.errorMessage) {
+                Button(String(localized: "Retry")) {
+                    Task { await viewModel.refresh() }
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            .emptyState(
+                isEmpty: viewModel.isEmpty,
+                iconName: "tray",
+                title: String(localized: "No Processes"),
+                subtitle: String(localized: "No processes found. Try adjusting the sort or search criteria."),
+                actionLabel: String(localized: "Retry"),
+                action: { Task { await viewModel.refresh() } }
+            )
     }
 
     // MARK: Loading
@@ -248,9 +264,11 @@ public struct ProcessesView: View {
 
     private func sortLabel(_ sort: ProcessSort) -> String {
         switch sort {
-        case .cpu:     return String(localized: "CPU")
-        case .memory:  return String(localized: "Memory")
-        case .network: return String(localized: "Network")
+        case .cpu:             return String(localized: "CPU")
+        case .memory:          return String(localized: "Memory")
+        case .network:         return String(localized: "Total Net")
+        case .networkDownload: return String(localized: "Download")
+        case .networkUpload:   return String(localized: "Upload")
         }
     }
 }

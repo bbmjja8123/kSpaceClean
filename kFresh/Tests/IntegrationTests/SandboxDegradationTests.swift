@@ -1,4 +1,5 @@
 import XCTest
+import AppCatalogCore
 @testable import kFresh
 
 final class SandboxDegradationTests: XCTestCase {

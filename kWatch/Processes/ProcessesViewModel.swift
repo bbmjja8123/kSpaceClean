@@ -19,7 +19,16 @@ public struct ProcessRowViewModel: Identifiable, Equatable {
     public let pid: Int32
     public let cpuPercent: Double
     public let memoryBytes: UInt64
-    public let networkBytesPerSecond: UInt64
+    public let networkBytesDownload: UInt64
+    public let networkBytesUpload: UInt64
+    /// Bundle identifier for app processes (e.g. `com.apple.Safari`),
+    /// `nil` for system / kernel processes.
+    public let bundleID: String?
+
+    /// Convenience accessor — sum of upload + download.
+    public var networkBytesPerSecond: UInt64 {
+        networkBytesDownload + networkBytesUpload
+    }
 
     // MARK: Display properties
 
@@ -32,7 +41,14 @@ public struct ProcessRowViewModel: Identifiable, Equatable {
     /// Formatted memory usage (e.g. "45 MB", "1.2 GB").
     public let memoryDisplay: String
 
-    /// Formatted network rate (e.g. "2.3 KB/s", "0 B/s").
+    /// Formatted download rate (e.g. "↓ 2.3 KB/s").
+    public let downloadDisplay: String
+
+    /// Formatted upload rate (e.g. "↑ 1.1 MB/s").
+    public let uploadDisplay: String
+
+    /// Combined rate (e.g. "2.3 KB/s"). Used for the legacy single-column
+    /// network view before F5 introduced the upload/download split.
     public let networkDisplay: String
 
     // MARK: Init
@@ -41,20 +57,28 @@ public struct ProcessRowViewModel: Identifiable, Equatable {
     public init(
         pid: Int32,
         name: String,
+        bundleID: String? = nil,
         cpuPercent: Double,
         memoryBytes: UInt64,
-        networkBytesPerSecond: UInt64
+        networkBytesDownload: UInt64 = 0,
+        networkBytesUpload: UInt64 = 0
     ) {
         self.id = pid
         self.pid = pid
         self.name = name
+        self.bundleID = bundleID
         self.cpuPercent = cpuPercent
         self.memoryBytes = memoryBytes
-        self.networkBytesPerSecond = networkBytesPerSecond
+        self.networkBytesDownload = networkBytesDownload
+        self.networkBytesUpload = networkBytesUpload
 
         self.cpuDisplay = "\(Int(round(cpuPercent)))%"
         self.memoryDisplay = Self.formatBytes(memoryBytes)
-        self.networkDisplay = "\(Self.formatBytes(networkBytesPerSecond))/s"
+        let down = Self.formatBytes(networkBytesDownload)
+        let up = Self.formatBytes(networkBytesUpload)
+        self.downloadDisplay = "↓ \(down)/s"
+        self.uploadDisplay = "↑ \(up)/s"
+        self.networkDisplay = "\(Self.formatBytes(networkBytesDownload + networkBytesUpload))/s"
     }
 
     /// Convenience conversion from a MetricsKit `ProcessInfoSnapshot`.
@@ -62,9 +86,11 @@ public struct ProcessRowViewModel: Identifiable, Equatable {
         self.init(
             pid: process.pid,
             name: process.name,
+            bundleID: process.bundleID,
             cpuPercent: process.cpuPercent,
             memoryBytes: process.memoryBytes,
-            networkBytesPerSecond: process.networkBytesPerSecond
+            networkBytesDownload: process.networkBytesDownload,
+            networkBytesUpload: process.networkBytesUpload
         )
     }
 
@@ -122,7 +148,7 @@ public final class ProcessesViewModel: ObservableObject {
 
     /// Sort options available to this user.
     public var availableSorts: [ProcessSort] {
-        isPro ? [.cpu, .memory, .network] : [.cpu, .memory]
+        isPro ? [.cpu, .memory, .network, .networkDownload, .networkUpload] : [.cpu, .memory]
     }
 
     // MARK: Dependencies

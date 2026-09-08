@@ -4,6 +4,7 @@ import DesignSystem
 // since macOS 11, despite older docs saying 14). Neither SwiftUI nor
 // QuickLookUI re-exports it, so import the backing module directly.
 import _QuickLook_SwiftUI
+import DetectionCore
 
 struct GroupDetailView: View {
     let group: DuplicateGroup
@@ -305,9 +306,9 @@ struct GroupDetailView: View {
     private func deleteSelected() async {
         let failures: [VaultMoveFailure]
         if let viewModel {
-            failures = await viewModel.removeFiles(group: group, using: CleanupManager())
+            failures = await viewModel.removeFiles(group: group, using: CleanupStack.makeCleanupManager())
         } else {
-            let manager = CleanupManager()
+            let manager = CleanupStack.makeCleanupManager()
             let filesToDelete = group.files.filter { localSelectedFileIds.contains($0.id) }
             do {
                 let result = try await manager.moveToTrash(filesToDelete)

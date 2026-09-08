@@ -1,4 +1,6 @@
 import SwiftUI
+import AppCatalogCore
+import DesignSystem
 
 /// One row of the app list: icon, name, source badge, size, and a running
 /// indicator. Layout uses the shared DesignSystem spacing / font tokens.

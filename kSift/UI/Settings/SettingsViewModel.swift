@@ -1,4 +1,5 @@
 import SwiftUI
+import DetectionCore
 
 @MainActor
 final class SettingsViewModel: ObservableObject {

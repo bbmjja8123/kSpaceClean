@@ -1,4 +1,5 @@
 import SwiftUI
+import AppCatalogCore
 
 @MainActor
 class AppCoordinator: ObservableObject {
@@ -8,6 +9,8 @@ class AppCoordinator: ObservableObject {
     @Published var showOnboarding: Bool
     @Published var showHistory = false
     @Published var showSettings = false
+    @Published var showDeepClean = false
+    @Published var showStartupItems = false
 
     var appState: AppState?
 
@@ -46,5 +49,13 @@ class AppCoordinator: ObservableObject {
 
     func navigateToHistory() {
         showHistory = true
+    }
+
+    func navigateToDeepClean() {
+        showDeepClean = true
+    }
+
+    func navigateToStartupItems() {
+        showStartupItems = true
     }
 }

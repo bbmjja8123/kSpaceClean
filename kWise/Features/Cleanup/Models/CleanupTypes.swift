@@ -168,17 +168,33 @@ public struct CleanupOutcome: Sendable {
     public let failed: [CleanupFailure]
     /// URLs deliberately left alone because of `WarnHandling.skip`.
     public let skipped: [URL]
-    /// Bytes reclaimed, summed over `succeeded`.
+    /// Bytes reclaimed, summed over `succeeded` (a prediction based on
+    /// scanned file sizes).
     public let freedBytes: Int64
+    /// Volume free-space delta measured before/after the run. `nil` when
+    /// the measurement was noisy or unavailable (e.g. APFS purgeable-space
+    /// timing) — the UI must then show the prediction as an estimate.
+    public let measuredBytes: Int64?
+    /// Targets left behind because the free-tier quota ran out mid-run.
+    public let skippedForQuota: [URL]
+    /// `true` when at least one target was dropped for quota (`skippedForQuota`
+    /// is non-empty). The UI surfaces the paywall instead of a generic error.
+    public let quotaExhausted: Bool
 
     public init(succeeded: [URL] = [],
                 failed: [CleanupFailure] = [],
                 skipped: [URL] = [],
-                freedBytes: Int64 = 0) {
+                freedBytes: Int64 = 0,
+                measuredBytes: Int64? = nil,
+                skippedForQuota: [URL] = [],
+                quotaExhausted: Bool = false) {
         self.succeeded = succeeded
         self.failed = failed
         self.skipped = skipped
         self.freedBytes = freedBytes
+        self.measuredBytes = measuredBytes
+        self.skippedForQuota = skippedForQuota
+        self.quotaExhausted = quotaExhausted
     }
 
     /// Number of items successfully cleaned.

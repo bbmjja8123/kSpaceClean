@@ -1,5 +1,6 @@
 import Foundation
 import MetricsKit
+import MonitorCore
 
 /// Main-actor-isolated view model for the threshold alerts feature.
 ///

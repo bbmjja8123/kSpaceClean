@@ -1,8 +1,11 @@
 import SwiftUI
 import DesignSystem
 
+/// Paywall sheet. The `StoreManager` is injected (v2.0 Phase 1) so the
+/// sheet observes the *same* instance the app graph owns — a purchase made
+/// here immediately unblocks the quota everywhere else.
 struct PaywallView: View {
-    @StateObject private var store = StoreManager()
+    @ObservedObject var store: StoreManager
 
     var body: some View {
         GlassPanel {
@@ -18,7 +21,7 @@ struct PaywallView: View {
                 FeatureList(items: [
                     ("无限清理", "免费版仅 1GB"),
                     ("AI 智能分类", "本地 CoreML"),
-                    ("3D 磁盘星系图", "Metal 渲染"),
+                    ("Smart Care", "一键扫描 · 智能清理"),
                     ("桌面 Widget + Shortcuts", "macOS 深度集成"),
                 ])
 

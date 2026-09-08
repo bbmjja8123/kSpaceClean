@@ -1,6 +1,7 @@
 import SwiftUI
 import Charts
 import DesignSystem
+import DetectionCore
 
 /// Weekly reclaimable-bytes bar chart plus the all-time header stats.
 /// Swift Charts is available from macOS 13, so no #available gating.

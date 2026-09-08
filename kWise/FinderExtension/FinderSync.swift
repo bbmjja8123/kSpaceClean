@@ -14,7 +14,7 @@ final class FinderSync: FIFinderSync {
         let menu = NSMenu(title: "kWise")
         let scanItem = NSMenuItem(
             title: "Scan with kWise",
-            action: #selector(scanWithKSpaceClean(_:)),
+            action: #selector(scanWithKWise(_:)),
             keyEquivalent: ""
         )
         scanItem.image = NSImage(systemSymbolName: "externaldrive.fill", accessibilityDescription: nil)
@@ -23,7 +23,7 @@ final class FinderSync: FIFinderSync {
     }
 
     @objc
-    private func scanWithKSpaceClean(_ sender: AnyObject) {
+    private func scanWithKWise(_ sender: AnyObject) {
         guard let selectedURLs = FIFinderSyncController.default().selectedItemURLs(),
               let firstURL = selectedURLs.first
         else { return }

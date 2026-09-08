@@ -36,12 +36,15 @@ public final class LibprocProcessProvider: ProcessProvider, @unchecked Sendable 
             let result = _proc_pidinfo(pid, PROC_PIDTASKINFO, 0, &taskInfo, Int32(infoSize))
             guard result == infoSize else { return nil }
             let name = Self.processName(for: pid)
+            let bundleID = Self.bundleID(for: pid)
             return ProcessInfoSnapshot(
                 pid: Int32(pid),
                 name: name,
+                bundleID: bundleID,
                 cpuPercent: 0,
                 memoryBytes: UInt64(taskInfo.pti_resident_size),
-                networkBytesPerSecond: 0
+                networkBytesDownload: 0,
+                networkBytesUpload: 0
             )
         }
     }
@@ -52,5 +55,16 @@ public final class LibprocProcessProvider: ProcessProvider, @unchecked Sendable 
         guard length > 0 else { return "pid \(pid)" }
         return String(cString: buffer)
     }
+
+    /// Resolves the bundle identifier (e.g. `com.apple.Safari`) for a PID
+/// by reading `/proc/<pid>/osbundle`. Returns nil for system / kernel
+/// processes that have no app bundle.
+private static func bundleID(for pid: pid_t) -> String? {
+    let path = "/proc/\(pid)/osbundle"
+    guard let data = try? String(contentsOfFile: path, encoding: .utf8)
+    else { return nil }
+    let trimmed = data.trimmingCharacters(in: .whitespacesAndNewlines)
+    return trimmed.isEmpty ? nil : trimmed
+}
 }
 #endif

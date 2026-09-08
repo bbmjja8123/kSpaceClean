@@ -82,7 +82,9 @@ final class ColorTokenTests: XCTestCase {
     func testHexInitializerProducesExpectedComponents() {
         // #7C3AED = R 124 G 58 B 237 — verifies the hex parser end-to-end.
         let color = Color(hex: "#7C3AED")
-        let resolved = color.resolve(in: EnvironmentValues())
+        // `Color.Resolve` (concrete) vs `ShapeStyle.resolve(in:)` (existential)
+        // are both visible on newer SDKs — pin the concrete overload.
+        let resolved: Color.Resolved = color.resolve(in: EnvironmentValues())
         _ = resolved // ensures resolution path doesn't crash
         XCTAssertNotNil(color)
     }
@@ -96,15 +98,5 @@ final class ColorTokenTests: XCTestCase {
         // Invalid hex should not crash — falls back to black (all zeros).
         let color = Color(hex: "ZZZZZZ")
         XCTAssertNotNil(color)
-    }
-}
-
-private extension Color {
-    /// Lightweight wrapper around `Color._resolveColor` that converts to a
-    /// description string so equality checks across schemes are observable
-    /// in tests. SwiftUI's `Color` does not expose its resolved components
-    /// publicly on macOS 13, so we compare descriptions as a stable proxy.
-    func resolve(in env: EnvironmentValues) -> Color {
-        self
     }
 }

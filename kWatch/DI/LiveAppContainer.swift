@@ -1,5 +1,6 @@
 import Foundation
 import MetricsKit
+import MonitorCore
 
 /// Production wiring. Constructs real adapters and aggregates them into a single container.
 ///
@@ -67,7 +68,10 @@ public final class LiveAppContainer: AppContainerProtocol, @unchecked Sendable {
             TemperatureMonitor(provider: IOKitSMCReadingProvider()),
             FanMonitor(provider: IOKitSMCReadingProvider()),
             BatteryMonitor(provider: IOPSBatteryProvider()),
-            GPUMonitor(provider: IOKitSMCReadingProvider())
+            GPUMonitor(
+                smcProvider: IOKitSMCReadingProvider(),
+                usageProvider: MetalGPUUsageProvider()
+            )
         ]
         self.aggregator = MetricsAggregator(monitors: monitors, strategy: SamplingStrategy())
         self.storeManager = StoreManager(

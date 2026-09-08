@@ -1,5 +1,6 @@
 import AppIntents
 import Foundation
+import AppCatalogCore
 
 /// Shortcuts / Siri action: scans the three system directories
 /// (`/Library/LaunchAgents`, `/Library/LaunchDaemons`,

@@ -1,6 +1,7 @@
 import SwiftUI
 import Capabilities
 import DesignSystem
+import DetectionCore
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()

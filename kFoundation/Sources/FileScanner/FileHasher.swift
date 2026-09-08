@@ -21,8 +21,10 @@ public actor FileHasher {
         var hasher = SHA256()
         let frontData = try handle.read(upToCount: 4096) ?? Data()
         hasher.update(data: frontData)
-        try handle.seekToEnd()
-        let tailOffset = max(0, try handle.offset() - 4096)
+        let endOffset = try handle.seekToEnd()
+        // `offset` is UInt64 — clamp before subtracting so files smaller
+        // than the 4KB window don't underflow (arithmetic-overflow trap).
+        let tailOffset = endOffset > 4096 ? endOffset - 4096 : 0
         try handle.seek(toOffset: tailOffset)
         let tailData = try handle.read(upToCount: 4096) ?? Data()
         hasher.update(data: tailData)

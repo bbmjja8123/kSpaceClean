@@ -47,6 +47,18 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 └── docs/
 ```
 
+### 2.1.1 kFoundation 框架架构（v2.2 起）
+
+各 App 的引擎代码已抽取为 kFoundation 的独立 library target，App 只做 UI 壳：
+
+| Target | 来源 App | 内容 | 依赖 |
+|---|---|---|---|
+| `DetectionCore` | kSift | 重复/大文件检测管线（字节级/APFS clone/感知哈希/构建产物/目录去重）、ScanOrchestrator、Vault、SelectionPlanner | FileScanner |
+| `AppCatalogCore` | kFresh | 应用目录扫描、残留检测（cask_rules.json 1141 条 + zh_app_mappings.json 为包资源）、Backup/Audit、FDA probe | CommonUtils, FileScanner |
+| `MonitorCore` | kWatch | SharedSnapshot/SnapshotWriter（App Group 契约）、MetricAlert、AlertEvaluator、诊断导出 | MetricsKit |
+
+**规则**：修改这三个 target 走 kFoundation 特殊路径（§5，--allow-kfoundation）；App 专属实现（Core Data 仓库、FDA 引导、Photos、支付）留在各自 App 目录；注入点：kSift `App/CleanupStack.swift`、kFresh `App/AppServices.swift`。
+
 ### 2.2 关键技术决策
 - **语言**：Swift 5.9+
 - **UI**：SwiftUI 为主 + AppKit 兜底菜单栏 / 系统集成
@@ -331,4 +343,43 @@ kWise/
 
 ---
 
-最后更新：2026-09-06（kSift v1.2 精品包 ship-ready，Phase 0-A/B/C/D/E/F1/F2 共 8 commits）
+### kWise v1.5 stage B — Ship-Ready ✅ (2026-08-08 → 2026-08-15)
+- [x] **grill-me convergence** — 11 decisions locked (UI=Hybrid, Quality=MUST C-1/C-3/C-4/C-5/C-6/C-8, Scope=M1+M3+M4)
+- [x] **Phase A (UI Shell)** — NavigationItem cases + Hybrid first-screen hero CTA + module grid
+- [x] **Phase B (M1 Smart Care)** — 3-step orchestrator + recommended-pick + 全选/反选/清理 wiring + performCleanup+terminate+C-3 freed-bytes+C-4 rollback+C-8 menu bar + tests (11 cases)
+- [x] **Phase C (M3 隐私清理)** — PrivacyView nav + inline minimal TCC.db reader (FDA-aware) + TCC overview view (12 services) + tests (7 cases)
+- [x] **Phase D (M4 磁盘健康)** — SMART reader (diskutil subprocess + Apple Silicon graceful fallback) + VolumeDiagnostics + 首屏小卡 + detail view + tests (14 cases)
+- [x] **Phase E (精品 audit + 本地化)** — C-1 audit (ScanTreeRow friendlyPath + 8-case test) + C-5/C-6 audit (PaywallView 3D → Smart Care + ScarewareCopyAuditTests) + Localizable.xcstrings v1.0 → v1.1 (16 new strings) + CLAUDE.md sync
+- [x] **5 commits per phase / 18 commits total** — worktree-kwise-v1 ahead of origin/main
+- [x] **精品 MUST 6/6** — C-1 ✅ C-3 ✅ C-4 ✅ C-5 ✅ C-6 ✅ C-8 ✅
+
+### kWise v2.0 — 竞品超越冲刺 ✅ (2026-09-07)
+> 8 phases / 9 commits on `worktree-kwise-v1`。计划：`.claude/plans/atomic-bubbling-wave.md`（含竞品差距矩阵 + 验收清单）。
+- [x] **Phase 1 DI 统一 + 配额** — AppGraph 单根（1 StoreManager / 1 MenuBarManager / engine 带 quota+sinks）；1 GiB/月免费额度（超限截断 → Paywall）；SMAppService 登录启动；清理后通知真实化；Settings prefs 持久化修复；AI toggle 改名「智能推荐（本机规则）」；删 Spotlight/LiveActivity/LaunchAgent 死目录
+- [x] **Phase 2 Toolbox + 孤儿接线** — 固定 6 项 rail + ToolboxView（8 卡片）；AppUninstall/LargeOld/Duplicate/PhotoClean 全部走 CleanupEngine（历史/回滚/配额）；Maintenance 去 Process → 引导式（~/Library/Logs 引擎动作）；deep link `?path=` 消费
+- [x] **Phase 3 CTA + 菜单栏** — Smart Care hero CTA 全流程状态机 + containerOnly 授权卡；DiskHealthCard 上首页；菜单栏 quickClean/quickScan/openSettings 实现 + 真实「最近清理」行（CleanupEventSink）
+- [x] **Phase 4 空间地图 2D** — SegmentBuilder（2π 守恒/小项折叠）+ Canvas sunburst/treemap + 下钻/面包屑 + ⌘选中映射 ScanTreeNode（删 .galaxy）
+- [x] **Phase 5 M2 + M6** — 启动项：PowerScope 扫描 + 用户级 trash/restore 开关 + 系统级「需手动处理」引导；粉碎：护栏 → 1-pass 覆写（SSD 诚实文案）→ 校验 → 3 次改名 → trash 处置 + DELETE 确认
+- [x] **Phase 6 Widget + Intents** — kWise/Shared/WidgetFeed 双 target（WidgetSnapshot 原子写 App Group + schemaVersion 守卫）；Widget 真实数据 + 交互清理按钮（Button(intent:) → kwise://smartcare）；Intents 回 target（Shortcuts 恢复）
+- [x] **Phase 7 创意三件套** — Core Data 轻量迁移（runID/actionKind/restoredAt）+ 时间线（按 run 分组、整体回滚）；月报（DiskSampleStore 环形采样 + OLS 预测，r²<0.5 → 波动较大）；StreakStore/9 成就/StreakSink → widget streak
+- [x] **Phase 8 助手 + Onboarding + 本地化** — AssistantIntentMatcher（zh/en 模板表，零网络，audit 测试禁 URLSession）+ 答案卡片；Onboarding 首启（welcome → PowerScope → tour）；xcstrings 30 → 51 keys（nav.* 三语）；NewCopyAuditTests（scareware 禁语 + 粉碎诚实文案）
+- [x] **测试** — Phase 1/2/3/4/5/6/7/8 各模块新增 ~90 用例；⚠️ xcodebuild test-runner 挂起（环境 wedge，2026-09-05 已知，重启后跑全量）
+
+### kWise v2.1 — 精品级 UX 重构 ✅ (2026-09-07)
+> 用户手动验收后判定的 4 个硬伤全部修复。4 commits on `worktree-kwise-v1`。
+- [x] **Phase 1 壳层** — 删 ToolbarView（4 按钮全是 rail 重复）；rail 56pt + 品牌标志 + 对齐修复；窗口 minSize 1024×680；⌘I 面板开关；Onboarding 步骤指示（5 圆点 + 第 N/5 步 + 上一步/完成）；删 3 个空白旧页签 + 死代码（TwoColumnView/ScanContentView）
+- [x] **Phase 2 三级主从扫描结果** — 根因修复：RecursiveTreeNode 展开时整棵子树一次性物化 → 主线程卡死；新 MasterDetail（分类卡 → 应用行(中文名+图标+整行点击展开) → 文件行(friendly path)）；行供给器 cap 30/20 + "显示其余 N 项"；O(1) nodeIndex/parentIndex + 增量汇总（原每次点击 2 次全树 DFS）；SummaryBar 清理改走真实勾选 + 确认面板 + 真实已释放字节
+- [x] **Phase 3 详情面板** — DetailPanelView（app/category/file 三态，活解析不陈旧，C-1 raw path 仅 tooltip）；点行自动出现、无选中自动隐藏
+- [x] **Phase 4 垂直预算** — PreScan 筛选控件滚动 + CTA 钉底（最小窗口不再裁切）；未扫描跳过 64pt header；400×500 卡死回归守卫测试
+
+### Backlog（待设计）
+- [ ] kDupe 设计 — 重复/大文件
+- [ ] kUninstall 设计 — 应用卸载
+- [ ] kWise v2.0 后续 — CreateML 文本分类器（本地路径语料）· 月报通知深链 · 定时自动清理 · 存量 UI 本地化补齐（v2.0 新文案三语已完成，老界面仍硬编码中文）
+- [ ] kWise v2 — 3D 磁盘星系图（已被 2D 空间地图替代交付；Metal 重启需 Product 拍板）
+
+> ⚠️ **现阶段不要写实现代码**。所有设计待汇总到 spec 文档并通过后，再通过 writing-plans 技能拆解为可执行任务。
+
+---
+
+最后更新：2026-09-07（kWise v2.0 竞品超越冲刺 8 phases / 9 commits；待重启后全量 test）

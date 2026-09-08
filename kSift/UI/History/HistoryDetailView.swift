@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 /// Read-only summary of a past scan. The user can browse the duplicate
 /// groups found at the time and, if they want to delete any of them, drill

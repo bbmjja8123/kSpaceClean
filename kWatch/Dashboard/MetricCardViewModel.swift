@@ -171,7 +171,7 @@ public struct MetricCardViewModel: Identifiable, Equatable {
         case .temperature: return String(localized: "System Temperature")
         case .fan: return String(localized: "Fan Speed")
         case .battery: return String(localized: "Battery Charge")
-        case .gpu: return String(localized: "GPU Temperature")
+        case .gpu: return String(localized: "GPU Usage")
         }
     }
 

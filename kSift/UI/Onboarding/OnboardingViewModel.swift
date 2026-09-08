@@ -1,4 +1,5 @@
 import SwiftUI
+import DetectionCore
 
 @MainActor
 public final class OnboardingViewModel: ObservableObject {

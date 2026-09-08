@@ -1,4 +1,5 @@
 import SwiftUI
+import DetectionCore
 
 /// Shared presentation helper for the pre-cleanup in-use warning. The
 /// alert wiring lives in each cleanup surface (ResultView,
