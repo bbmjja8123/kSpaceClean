@@ -197,7 +197,10 @@ struct RootView: View {
         case .largeOld:
             LargeOldView(viewModel: makeLargeOldViewModel())
         case .photoClean:
-            PhotoCleanView(viewModel: makePhotoCleanViewModel())
+            PhotoCleanView(
+                viewModel: makePhotoCleanViewModel(),
+                similarityViewModel: makePhotoSimilarityViewModel()
+            )
         case .maintenance:
             MaintenanceView(viewModel: makeMaintenanceViewModel())
         }
@@ -228,6 +231,12 @@ struct RootView: View {
 
     private func makePhotoCleanViewModel() -> PhotoCleanViewModel {
         let vm = PhotoCleanViewModel(engine: graph.cleanupEngine)
+        vm.onQuotaExhausted = { coordinator.presentPaywall() }
+        return vm
+    }
+
+    private func makePhotoSimilarityViewModel() -> PhotoSimilarityViewModel {
+        let vm = PhotoSimilarityViewModel(engine: graph.cleanupEngine)
         vm.onQuotaExhausted = { coordinator.presentPaywall() }
         return vm
     }

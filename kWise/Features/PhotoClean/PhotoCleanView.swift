@@ -1,23 +1,193 @@
+// kWise/Features/PhotoClean/PhotoCleanView.swift
+//
+// 照片清理 — 双 Tab（v2.3 Phase 3）：相似照片（感知哈希网格）+ 传统缓存
+// （保留原有 PhotoCacheScanner 全部逻辑）。
 import SwiftUI
 import DesignSystem
 import CommonUtils
+import DetectionCore
+import PowerScope
 
-/// Photo Cache Cleaner view.
-///
-/// Matches the layout conventions used throughout kWise:
-/// a scan button (when idle), results grouped by photo-cache category
-/// with selection checkboxes, and a summary bar at the bottom.
 struct PhotoCleanView: View {
+    enum Tab: String, CaseIterable {
+        case similar = "相似照片"
+        case caches = "传统缓存"
+    }
+
     @StateObject private var viewModel: PhotoCleanViewModel
+    @StateObject private var similarityVM: PhotoSimilarityViewModel
+    @State private var tab: Tab = .similar
+    @State private var previewURL: URL?
+    @ObservedObject private var appScope = AppScope.shared
 
     /// Injectable for the app root (graph engine + quota routing).
-    init(viewModel: PhotoCleanViewModel? = nil) {
+    init(viewModel: PhotoCleanViewModel? = nil,
+         similarityViewModel: PhotoSimilarityViewModel? = nil) {
         _viewModel = StateObject(wrappedValue: viewModel ?? PhotoCleanViewModel())
+        _similarityVM = StateObject(wrappedValue: similarityViewModel ?? PhotoSimilarityViewModel())
     }
 
     var body: some View {
+        VStack(spacing: 0) {
+            Picker("模式", selection: $tab) {
+                ForEach(Tab.allCases, id: \.self) { t in
+                    Text(t.rawValue).tag(t)
+                }
+            }
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 280)
+            .padding(.horizontal, AppSpacing.lg)
+            .padding(.top, AppSpacing.md)
+
+            switch tab {
+            case .similar:
+                similarityTab
+            case .caches:
+                legacyCacheTab
+            }
+        }
+        .kwQuickLookPreview($previewURL)
+        .onAppear {
+            // 相似照片在首次进入时刷新候选目录；不自动扫描（用户触发）。
+        }
+    }
+
+    // MARK: - Similar Photos Tab
+
+    private var similarityTab: some View {
+        VStack(spacing: 0) {
+            if similarityVM.isScanning {
+                similarityProgress
+            } else if similarityVM.groups.isEmpty {
+                similarityIdle
+            } else {
+                similarityResults
+            }
+        }
+    }
+
+    private var similarityIdle: some View {
         VStack(spacing: AppSpacing.lg) {
-            // Header
+            Spacer()
+            if similarityVM.candidateDirectories.isEmpty, appScope.capability.level == .containerOnly {
+                // Scope honesty: container-only users get a grant CTA, never
+                // a fake "0 files scanned" result.
+                EmptyStateView(
+                    icon: "lock.open",
+                    title: "授权后开始查找相似照片",
+                    subtitle: "授权主目录后，kWise 在本机比对 截图/下载/桌面/图片 目录中的相似照片（不联网）。"
+                )
+                Button("授权主目录") {
+                    Task { await appScope.grant() }
+                }
+                .buttonStyle(.borderedProminent)
+            } else {
+                Image(systemName: "photo.stack")
+                    .font(.system(size: 56))
+                    .foregroundColor(.brandPrimary)
+                Text("查找相似照片")
+                    .font(AppFont.title3)
+                    .foregroundColor(.textPrimary)
+                Text("扫描 \(similarityVM.candidateDirectories.count) 个照片目录，找出截图堆积与相似照片。比对完全在本机完成。")
+                    .font(AppFont.body)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                Button {
+                    similarityVM.startScan()
+                } label: {
+                    Label("开始扫描", systemImage: "sparkles")
+                        .font(AppFont.title3)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.brandPrimary)
+            }
+            if let message = similarityVM.statusMessage {
+                Text(message)
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
+            Spacer()
+        }
+        .frame(maxHeight: .infinity)
+    }
+
+    private var similarityProgress: some View {
+        VStack(spacing: AppSpacing.md) {
+            Spacer()
+            ProgressView(value: similarityVM.scanProgress)
+                .progressViewStyle(.linear)
+                .tint(.brandPrimary)
+                .frame(maxWidth: 420)
+            if let file = similarityVM.currentFile {
+                Text(file)
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+            Button("取消") { similarityVM.cancelScan() }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            Spacer()
+        }
+        .padding(AppSpacing.lg)
+        .frame(maxHeight: .infinity)
+    }
+
+    private var similarityResults: some View {
+        VStack(spacing: 0) {
+            ScrollView {
+                LazyVStack(spacing: AppSpacing.md) {
+                    ForEach(similarityVM.groups) { group in
+                        PhotoSimilarityGroupCard(
+                            group: group,
+                            toggleFile: { similarityVM.toggleFile($0) },
+                            toggleGroup: { similarityVM.toggleGroup($0) },
+                            preview: { previewURL = $0 }
+                        )
+                    }
+                }
+                .padding(AppSpacing.lg)
+            }
+            similaritySummaryBar
+        }
+    }
+
+    private var similaritySummaryBar: some View {
+        HStack(spacing: AppSpacing.md) {
+            HStack(spacing: AppSpacing.xs) {
+                Image(systemName: "checkmark.circle")
+                    .foregroundColor(.brandPrimary)
+                    .font(.system(size: 14))
+                Text("已选 \(similarityVM.selectedFiles.count) 张 · 可释放约 \(FileSizeFormatter.abbreviated(from: similarityVM.selectedSize))")
+                    .font(AppFont.callout)
+                    .foregroundColor(.textPrimary)
+            }
+            Spacer()
+            Button("取消全选") { similarityVM.deselectAll() }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            Button {
+                Task { await similarityVM.cleanupSelected() }
+            } label: {
+                Label("清理所选", systemImage: AppIcon.clean)
+                    .font(AppFont.callout)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.danger)
+            .controlSize(.small)
+            .disabled(similarityVM.selectedFiles.isEmpty)
+        }
+        .padding(.horizontal, AppSpacing.lg)
+        .padding(.vertical, AppSpacing.md)
+        .background(Color.bgPrimary)
+    }
+
+    // MARK: - Legacy Cache Tab (pre-v2.3 surface, preserved)
+
+    private var legacyCacheTab: some View {
+        VStack(spacing: AppSpacing.lg) {
             HStack {
                 Text("照片缓存")
                     .font(AppFont.title2)
@@ -33,9 +203,7 @@ struct PhotoCleanView: View {
                 }
             }
             .padding(.horizontal, AppSpacing.lg)
-            .padding(.top, 16)
 
-            // Content
             if viewModel.isScanning {
                 scanningState
             } else if viewModel.items.isEmpty {
@@ -46,7 +214,7 @@ struct PhotoCleanView: View {
         }
     }
 
-    // MARK: - Idle
+    // MARK: - Idle (legacy)
 
     private var idleState: some View {
         VStack(spacing: AppSpacing.lg) {
@@ -80,7 +248,7 @@ struct PhotoCleanView: View {
         .frame(maxHeight: .infinity)
     }
 
-    // MARK: - Scanning
+    // MARK: - Scanning (legacy)
 
     private var scanningState: some View {
         VStack(spacing: AppSpacing.md) {
@@ -95,11 +263,10 @@ struct PhotoCleanView: View {
         .frame(maxHeight: .infinity)
     }
 
-    // MARK: - Results
+    // MARK: - Results (legacy)
 
     private var resultsState: some View {
         VStack(spacing: 0) {
-            // Scrollable category list
             ScrollView {
                 LazyVStack(spacing: AppSpacing.md) {
                     ForEach(PhotoCacheItem.PhotoCacheCategory.allCases, id: \.self) { category in
@@ -117,12 +284,11 @@ struct PhotoCleanView: View {
                 .padding(.bottom, AppSpacing.lg)
             }
 
-            // Summary bar
             summaryBar
         }
     }
 
-    // MARK: - Summary
+    // MARK: - Summary (legacy)
 
     private var summaryBar: some View {
         VStack(spacing: 0) {
@@ -130,7 +296,6 @@ struct PhotoCleanView: View {
                 .foregroundColor(.separatorColor)
 
             HStack(spacing: AppSpacing.md) {
-                // Selected count
                 HStack(spacing: AppSpacing.xs) {
                     Image(systemName: "checkmark.circle")
                         .foregroundColor(.brandPrimary)
@@ -140,14 +305,12 @@ struct PhotoCleanView: View {
                         .foregroundColor(.textPrimary)
                 }
 
-                // Selected size
                 Text(FileSizeFormatter.abbreviated(from: viewModel.selectedSize))
                     .font(AppFont.monoDigit)
                     .foregroundColor(.textSecondary)
 
                 Spacer()
 
-                // Cleanup button
                 Button {
                     Task { await viewModel.cleanupSelected() }
                 } label: {
@@ -166,7 +329,91 @@ struct PhotoCleanView: View {
     }
 }
 
-// MARK: - Category Section
+// MARK: - Similarity Group Card
+
+private struct PhotoSimilarityGroupCard: View {
+    let group: ToolboxGroup
+    let toggleFile: (UUID) -> Void
+    let toggleGroup: (UUID) -> Void
+    let preview: (URL) -> Void
+
+    var body: some View {
+        GlassPanel {
+            VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                HStack(spacing: AppSpacing.sm) {
+                    Toggle(isOn: Binding(
+                        get: { group.files.allSatisfy(\.isSelected) },
+                        set: { _ in toggleGroup(group.id) }
+                    )) { }
+                    .toggleStyle(.checkbox)
+                    .controlSize(.small)
+
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(group.files.first?.url.lastPathComponent ?? "相似组")
+                            .font(AppFont.body)
+                            .fontWeight(.medium)
+                            .foregroundColor(.textPrimary)
+                            .lineLimit(1)
+                        HStack(spacing: AppSpacing.sm) {
+                            Text(group.evidenceSummary)
+                                .font(AppFont.caption)
+                                .foregroundColor(.brandPrimary)
+                            Text("\(group.files.count) 张 · 可释放约 \(FileSizeFormatter.abbreviated(from: group.honestlyReclaimable))")
+                                .font(AppFont.caption)
+                                .foregroundColor(.textSecondary)
+                        }
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, AppSpacing.md)
+                .padding(.top, AppSpacing.md)
+
+                // Thumbnail grid — at least one photo per group stays.
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: AppSpacing.sm) {
+                        ForEach(group.files) { file in
+                            VStack(spacing: AppSpacing.xs) {
+                                Button {
+                                    toggleFile(file.id)
+                                } label: {
+                                    ZStack(alignment: .topTrailing) {
+                                        KWThumbnailView(url: file.url, size: 120)
+                                        Image(systemName: file.isSelected
+                                              ? "checkmark.circle.fill" : "circle")
+                                            .font(.system(size: 18))
+                                            .foregroundColor(file.isSelected ? .brandPrimary : .white)
+                                            .shadow(radius: 2)
+                                            .padding(4)
+                                    }
+                                }
+                                .buttonStyle(.plain)
+                                Text(FileSizeFormatter.abbreviated(from: file.size))
+                                    .font(AppFont.caption)
+                                    .foregroundColor(.textSecondary)
+                            }
+                            .onTapGesture(count: 2) { preview(file.url) }
+                        }
+                    }
+                    .padding(.horizontal, AppSpacing.md)
+                }
+
+                HStack {
+                    Spacer()
+                    Button("查看大图") {
+                        if let first = group.files.first { preview(first.url) }
+                    }
+                    .buttonStyle(.borderless)
+                    .font(AppFont.caption)
+                }
+                .padding(.horizontal, AppSpacing.md)
+                .padding(.bottom, AppSpacing.sm)
+            }
+            .padding(.vertical, AppSpacing.sm)
+        }
+    }
+}
+
+// MARK: - Category Section (legacy)
 
 private struct PhotoCategorySection: View {
     let category: PhotoCacheItem.PhotoCacheCategory
@@ -175,7 +422,6 @@ private struct PhotoCategorySection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            // Category header
             HStack(spacing: AppSpacing.sm) {
                 Image(systemName: category.icon)
                     .font(.system(size: 16))
@@ -191,7 +437,6 @@ private struct PhotoCategorySection: View {
             .padding(.horizontal, AppSpacing.xs)
             .padding(.top, AppSpacing.xs)
 
-            // Items
             ForEach(items) { item in
                 PhotoCacheItemRow(
                     item: item,
@@ -206,7 +451,7 @@ private struct PhotoCategorySection: View {
     }
 }
 
-// MARK: - Item Row
+// MARK: - Item Row (legacy)
 
 private struct PhotoCacheItemRow: View {
     let item: PhotoCacheItem
@@ -215,7 +460,6 @@ private struct PhotoCacheItemRow: View {
     var body: some View {
         GlassPanel {
             HStack(spacing: AppSpacing.md) {
-                // Checkbox
                 Button(action: toggle) {
                     Image(systemName: item.isSelected ? "checkmark.circle.fill" : "circle")
                         .font(.system(size: 18))
@@ -223,13 +467,11 @@ private struct PhotoCacheItemRow: View {
                 }
                 .buttonStyle(.plain)
 
-                // Category icon
                 Image(systemName: item.category.icon)
                     .font(.system(size: 16))
                     .foregroundColor(.categoryCache)
                     .frame(width: 24)
 
-                // Item name
                 Text(item.name)
                     .font(AppFont.body)
                     .foregroundColor(.textPrimary)
@@ -237,7 +479,6 @@ private struct PhotoCacheItemRow: View {
 
                 Spacer()
 
-                // Size
                 Text(FileSizeFormatter.abbreviated(from: item.estimatedSize))
                     .font(AppFont.monoDigit)
                     .foregroundColor(.textSecondary)
@@ -248,8 +489,6 @@ private struct PhotoCacheItemRow: View {
         .onTapGesture(perform: toggle)
     }
 }
-
-// MARK: - Preview
 
 #if DEBUG
 struct PhotoCleanView_Previews: PreviewProvider {
