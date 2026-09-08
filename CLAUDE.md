@@ -47,6 +47,18 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 └── docs/
 ```
 
+### 2.1.1 kFoundation 框架架构（v2.2 起）
+
+各 App 的引擎代码已抽取为 kFoundation 的独立 library target，App 只做 UI 壳：
+
+| Target | 来源 App | 内容 | 依赖 |
+|---|---|---|---|
+| `DetectionCore` | kSift | 重复/大文件检测管线（字节级/APFS clone/感知哈希/构建产物/目录去重）、ScanOrchestrator、Vault、SelectionPlanner | FileScanner |
+| `AppCatalogCore` | kFresh | 应用目录扫描、残留检测（cask_rules.json 1141 条 + zh_app_mappings.json 为包资源）、Backup/Audit、FDA probe | CommonUtils, FileScanner |
+| `MonitorCore` | kWatch | SharedSnapshot/SnapshotWriter（App Group 契约）、MetricAlert、AlertEvaluator、诊断导出 | MetricsKit |
+
+**规则**：修改这三个 target 走 kFoundation 特殊路径（§5，--allow-kfoundation）；App 专属实现（Core Data 仓库、FDA 引导、Photos、支付）留在各自 App 目录；注入点：kSift `App/CleanupStack.swift`、kFresh `App/AppServices.swift`。
+
 ### 2.2 关键技术决策
 - **语言**：Swift 5.9+
 - **UI**：SwiftUI 为主 + AppKit 兜底菜单栏 / 系统集成
