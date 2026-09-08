@@ -77,8 +77,49 @@ struct StartupItemsView: View {
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
                 section(title: "用户启动代理", subtitle: "kWise 可以停用并在 30 天内恢复", items: viewModel.userItems)
                 section(title: "系统级项目", subtitle: "位于系统目录，需管理员手动处理", items: viewModel.systemItems)
+                if !viewModel.malformedItems.isEmpty {
+                    malformedSection
+                }
             }
             .padding(AppSpacing.lg)
+        }
+    }
+
+    /// 异常项 — honest reporting of launch plists that exist but cannot
+    /// run. No scareware; states the problem and offers the file.
+    private var malformedSection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("异常项")
+                    .font(AppFont.title3)
+                    .foregroundColor(.textPrimary)
+                Text("以下启动配置存在异常，可能已失效")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
+            ForEach(viewModel.malformedItems) { item in
+                HStack(spacing: AppSpacing.md) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .foregroundColor(.warning)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(item.plistURL.lastPathComponent)
+                            .font(AppFont.body)
+                            .foregroundColor(.textPrimary)
+                        Text(item.reason)
+                            .font(AppFont.caption)
+                            .foregroundColor(.textSecondary)
+                    }
+                    Spacer()
+                    Button("查看文件") {
+                        NSWorkspace.shared.activateFileViewerSelecting([item.plistURL])
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
+                .padding(AppSpacing.md)
+                .background(Color.bgSecondary)
+                .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+            }
         }
     }
 
@@ -133,6 +174,16 @@ struct StartupItemsView: View {
         .padding(AppSpacing.md)
         .background(Color.bgSecondary)
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+    }
+
+    private func badge(_ text: String) -> some View {
+        Text(text)
+            .font(AppFont.caption)
+            .foregroundColor(.textSecondary)
+            .padding(.horizontal, AppSpacing.sm)
+            .padding(.vertical, 1)
+            .background(Color.bgSecondary)
+            .clipShape(Capsule())
     }
 
     @ViewBuilder

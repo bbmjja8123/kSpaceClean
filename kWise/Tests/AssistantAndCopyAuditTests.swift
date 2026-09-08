@@ -72,6 +72,10 @@ final class NewCopyAuditTests: XCTestCase {
         "Features/Assistant/AssistantView.swift",
         "Features/SpaceMap/SpaceMapView.swift",
         "Features/SmartCare/SmartCareHeroView.swift",
+        "Features/PhotoClean/PhotoCleanView.swift",
+        "Features/PhotoClean/PhotoSimilarityScanner.swift",
+        "Features/AppUninstall/UninstallBackupStore.swift",
+        "Features/StartupItems/StartupItemsView.swift",
     ]
 
     private static let bannedPhrases = [

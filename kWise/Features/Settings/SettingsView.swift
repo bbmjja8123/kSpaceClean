@@ -2,6 +2,7 @@ import SwiftUI
 import DesignSystem
 import PowerScope
 import UserNotifications
+import DetectionCore
 
 struct SettingsView: View {
     @State private var prefs = UserPreferences.load()
@@ -55,6 +56,16 @@ struct SettingsView: View {
                     // classification is the local rule engine. The old
                     // "AI 分类启用" label was a lie.
                     Toggle("智能推荐（本机规则）", isOn: $prefs.aiClassificationEnabled)
+
+                    Picker("相似照片灵敏度", selection: $prefs.similarityPresetRaw) {
+                        Text("严格（仅几乎相同）").tag(SimilarityPreset.strict.rawValue)
+                        Text("标准").tag(SimilarityPreset.normal.rawValue)
+                        Text("宽松（找出更多）").tag(SimilarityPreset.loose.rawValue)
+                    }
+                    .pickerStyle(.menu)
+                    .onChange(of: prefs.similarityPresetRaw) { _ in
+                        prefs.save()
+                    }
                 }
 
                 Section("订阅") {

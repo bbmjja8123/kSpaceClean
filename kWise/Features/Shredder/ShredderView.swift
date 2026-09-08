@@ -5,12 +5,14 @@
 // overwrite + verify + rename + trash. The tooltip is honest about SSD
 // (C-5): one pass is sufficient, multi-pass is opt-in for spinning disks.
 import SwiftUI
+import UniformTypeIdentifiers
 import DesignSystem
 import PowerScope
 
 struct ShredderView: View {
     @StateObject private var viewModel: ShredderViewModel
     @State private var showConfirm = false
+    @State private var isDropTargeted = false
 
     init(scope: (any PowerScopeProviding)? = nil,
          persistence: PersistenceController? = nil) {
@@ -26,6 +28,7 @@ struct ShredderView: View {
             content
         }
         .background(Color.bgPrimary)
+        .onAppear { viewModel.refreshHistory() }
         .sheet(isPresented: $showConfirm) {
             DangerousConfirmDialog(
                 onConfirm: {
@@ -63,18 +66,14 @@ struct ShredderView: View {
     private var content: some View {
         VStack(spacing: 0) {
             if viewModel.stagedURLs.isEmpty {
-                EmptyStateView(
-                    icon: "document.badge.ellipsis",
-                    title: "尚未添加文件",
-                    subtitle: "添加需要安全删除的文件。文件内容将被覆写，此操作不可逆。"
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                emptyDropZone
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List {
                     ForEach(viewModel.stagedURLs, id: \.self) { url in
                         HStack {
-                            Image(systemName: "doc")
-                                .foregroundStyle(Color.brandPrimary)
+                            KWThumbnailView(url: url, size: 28)
+                                .clipShape(RoundedRectangle(cornerRadius: AppRadius.xs))
                             Text(url.lastPathComponent)
                                 .font(AppFont.body)
                                 .foregroundStyle(Color.textPrimary)
@@ -98,9 +97,77 @@ struct ShredderView: View {
                 .listStyle(.plain)
             }
 
+            if !viewModel.history.isEmpty {
+                historyBlock
+            }
             Divider()
             footer
         }
+    }
+
+    // MARK: - Drop Zone (empty state doubles as drop target)
+
+    private var emptyDropZone: some View {
+        VStack(spacing: AppSpacing.md) {
+            EmptyStateView(
+                icon: "document.badge.ellipsis",
+                title: isDropTargeted ? "松开以添加文件" : "拖入文件或点击添加",
+                subtitle: "文件内容将被覆写，此操作不可逆。仅支持用户文件。"
+            )
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(isDropTargeted ? Color.brandPrimary.opacity(0.08) : Color.clear)
+        .contentShape(Rectangle())
+        .onDrop(of: [.fileURL], isTargeted: $isDropTargeted) { providers in
+            handleDrop(providers)
+        }
+    }
+
+    /// Resolves dropped file-URL providers and stages them via the VM.
+    private func handleDrop(_ providers: [NSItemProvider]) -> Bool {
+        let group = DispatchGroup()
+        var urls: [URL] = []
+        let lock = NSLock()
+        for provider in providers where provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
+            group.enter()
+            _ = provider.loadObject(ofClass: URL.self) { url, _ in
+                if let url { lock.lock(); urls.append(url); lock.unlock() }
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) { [weak viewModel] in
+            viewModel?.handleDrop(urls: urls)
+        }
+        return true
+    }
+
+    // MARK: - History Block
+
+    private var historyBlock: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+            Text("最近粉碎记录")
+                .font(AppFont.caption)
+                .foregroundColor(.textSecondary)
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.top, AppSpacing.sm)
+            ForEach(viewModel.history.prefix(5), id: \.objectID) { row in
+                HStack {
+                    Image(systemName: "checkmark.seal")
+                        .foregroundColor(.success)
+                    Text(row.path ?? "")
+                        .font(AppFont.caption)
+                        .foregroundColor(.textSecondary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                    Spacer()
+                    Text(ByteCountFormatter.string(fromByteCount: row.size, countStyle: .file))
+                        .font(AppFont.caption)
+                        .foregroundColor(.textSecondary)
+                }
+                .padding(.horizontal, AppSpacing.lg)
+            }
+        }
+        .padding(.bottom, AppSpacing.xs)
     }
 
     private var footer: some View {

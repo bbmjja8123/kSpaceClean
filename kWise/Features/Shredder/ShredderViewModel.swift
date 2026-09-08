@@ -10,8 +10,12 @@ public final class ShredderViewModel: ObservableObject {
     @Published public private(set) var isShredding = false
     @Published public private(set) var progressText: String = ""
     @Published public private(set) var completedMessage: String?
-    /// Files staged for shredding (picked via NSOpenPanel).
+    /// Files staged for shredding (picked or dropped).
     @Published public private(set) var stagedURLs: [URL] = []
+    /// Recent shred history rows (time/path/size), newest first.
+    @Published public private(set) var history: [CleanupHistoryItem] = []
+    /// True while a drag hovers the staging area (drop highlight).
+    @Published public var isDropTargeted = false
 
     /// Passes from preferences (1 = SSD default, 3 = HDD mode).
     public var plan: ShredPlan {
@@ -41,6 +45,24 @@ public final class ShredderViewModel: ObservableObject {
         panel.message = "选择要粉碎的文件（内容将被覆写，不可恢复）"
         guard panel.runModal() == .OK else { return }
         stagedURLs += panel.urls.filter { !stagedURLs.contains($0) }
+    }
+
+    /// Drag & drop entry point. Only regular in-scope files are staged;
+    /// directories and system paths are refused with an honest message.
+    func handleDrop(urls: [URL]) {
+        let acceptable = urls.filter { FileShredder.guardrailsPass(for: $0) }
+        let rejected = urls.count - acceptable.count
+        stagedURLs += acceptable.filter { !stagedURLs.contains($0) }
+        if rejected > 0 {
+            completedMessage = "\(rejected) 个项目被拒绝（仅支持用户文件，目录与系统路径不可粉碎）"
+        }
+    }
+
+    /// Recent shred history for the in-tool history block.
+    func refreshHistory() {
+        history = PersistenceController.shared.fetchHistory(limit: 50)
+            .filter { $0.actionKind == CleanupHistoryItem.ActionKind.shred }
+            .prefix(5).map { $0 }
     }
 
     public func remove(_ url: URL) {
@@ -86,6 +108,7 @@ public final class ShredderViewModel: ObservableObject {
             completedMessage = "已完成粉碎 \(total) 个文件"
             stagedURLs.removeAll()
             progressText = ""
+            refreshHistory()
         case .failed(let message):
             completedMessage = message
             progressText = ""

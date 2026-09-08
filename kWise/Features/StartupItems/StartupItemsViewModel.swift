@@ -8,6 +8,7 @@ import PowerScope
 public final class StartupItemsViewModel: ObservableObject {
     @Published public private(set) var userItems: [LoginItemEntry] = []
     @Published public private(set) var systemItems: [LoginItemEntry] = []
+    @Published public private(set) var malformedItems: [LaunchPlistParser.MalformedItem] = []
     @Published public private(set) var isScanning = false
     /// Row-local operation feedback (`entryID` → message).
     @Published public private(set) var messages: [UUID: String] = [:]
@@ -28,6 +29,7 @@ public final class StartupItemsViewModel: ObservableObject {
             let result = await scanner.scan()
             userItems = result.user
             systemItems = result.system
+            malformedItems = result.malformed
             isScanning = false
         }
     }

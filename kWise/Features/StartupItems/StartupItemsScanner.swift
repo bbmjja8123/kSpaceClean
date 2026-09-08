@@ -57,6 +57,28 @@ public struct LoginItemEntry: Identifiable, Sendable, Codable {
 /// One launch-agent plist parsed defensively — malformed files are skipped,
 /// never thrown.
 public enum LaunchPlistParser {
+    /// A launch plist that exists but cannot be used — surfaced honestly in
+    /// the 异常项 section instead of silently disappearing (C-5).
+    public struct MalformedItem: Identifiable, Sendable {
+        public let id = UUID()
+        public let plistURL: URL
+        public let reason: String
+    }
+
+    public static func parseMalformed(url: URL) -> MalformedItem? {
+        let data = try? Data(contentsOf: url)
+        let plist = data.flatMap { try? PropertyListSerialization.propertyList(
+            from: $0, options: [], format: nil) as? [String: Any] }
+        guard plist != nil else {
+            return MalformedItem(plistURL: url, reason: "文件损坏或不是有效的 plist")
+        }
+        guard (plist?["Program"] as? String) != nil
+                || (plist?["ProgramArguments"] as? [String]) != nil else {
+            return MalformedItem(plistURL: url, reason: "缺少 Program / ProgramArguments，无法启动")
+        }
+        return nil
+    }
+
     public static func parse(url: URL, scope: ItemScope) -> LoginItemEntry? {
         guard let data = try? Data(contentsOf: url),
               let plist = try? PropertyListSerialization.propertyList(
@@ -101,13 +123,15 @@ public actor StartupItemsScanner {
         self.scope = scope
     }
 
-    public func scan() async -> (user: [LoginItemEntry], system: [LoginItemEntry]) {
+    public func scan() async -> (user: [LoginItemEntry], system: [LoginItemEntry], malformed: [LaunchPlistParser.MalformedItem]) {
         // User agents live inside the granted home scope.
         var userItems: [LoginItemEntry] = []
         let agentsURL = FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent("Library/LaunchAgents", isDirectory: true)
+        var malformed: [LaunchPlistParser.MalformedItem] = []
         if let granted = try? await scope.withAccess(agentsURL, { $0 }) {
             userItems = Self.items(in: granted, scope: .user)
+            malformed += Self.malformedItems(in: granted)
         }
 
         // System directories are world-readable; probe before reading.
@@ -117,7 +141,16 @@ public actor StartupItemsScanner {
             guard FileManager.default.isReadableFile(atPath: url.path) else { continue }
             systemItems += Self.items(in: url, scope: .system)
         }
-        return (userItems, systemItems)
+        return (userItems, systemItems, malformed)
+    }
+
+    static func malformedItems(in directory: URL) -> [LaunchPlistParser.MalformedItem] {
+        let contents = (try? FileManager.default.contentsOfDirectory(
+            at: directory, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]
+        )) ?? []
+        return contents
+            .filter { $0.pathExtension == "plist" }
+            .compactMap { LaunchPlistParser.parseMalformed(url: $0) }
     }
 
     static func items(in directory: URL, scope: ItemScope) -> [LoginItemEntry] {
