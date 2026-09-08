@@ -46,7 +46,7 @@ struct kWatchApp: App {
             onOpenHistory: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .history) },
             onOpenProcesses: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .processes) },
             onOpenAlerts: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .alerts) },
-            onOpenPaywall: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .history) }
+            onOpenPaywall: { AppWindowRouter.openDashboardWindow(); container.appState.navigate(to: .dashboard) }
         )
     }
 
@@ -77,6 +77,21 @@ struct kWatchApp: App {
             )
         }
         .menuBarExtraStyle(.window)
+
+        // Custom URL scheme handler for widget deep-links. Widgets tap
+        // `widgetURL("kwatch://open")` (see WidgetViews.swift OpenDashboardButton
+        // and ControlWidgetView.swift ControlWidgetView) which the system
+        // routes here, bringing kWatch to the foreground and opening the
+        // Dashboard window.
+        WindowGroup("kWatch Deep Link", id: "deeplink") {
+            Color.clear
+                .frame(width: 0, height: 0)
+                .onOpenURL { url in
+                    handleDeepLink(url)
+                }
+        }
+        .defaultSize(width: 0, height: 0)
+        .windowResizability(.contentSize)
 
         Window("kWatch Dashboard", id: "dashboard") {
             DashboardSceneContent(
@@ -114,6 +129,21 @@ struct kWatchApp: App {
 
     private var appState: AppState { kWatchAppDelegate.shared.container.appState }
     private var purchaseState: PurchaseState { kWatchAppDelegate.shared.container.purchaseState }
+
+    /// Route a `kwatch://` URL to the right in-app destination. Currently
+    /// only the `open` action exists — it's used by the System Status
+    /// widget and Control Widget to bring the user straight to the
+    /// Dashboard window.
+    private func handleDeepLink(_ url: URL) {
+        guard url.scheme?.lowercased() == "kwatch" else { return }
+        switch url.host?.lowercased() {
+        case "open":
+            AppWindowRouter.openDashboardWindow()
+            appState.navigate(to: .dashboard)
+        default:
+            AppWindowRouter.openDashboardWindow()
+        }
+    }
 }
 
 /// Wraps `MenuBarView` so navigation closures can access the `openWindow`

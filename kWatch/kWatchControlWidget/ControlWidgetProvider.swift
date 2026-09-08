@@ -11,6 +11,7 @@
 
 import Foundation
 import WidgetKit
+import MonitorCore
 
 // MARK: - Reader boundary
 

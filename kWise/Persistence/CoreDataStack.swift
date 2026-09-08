@@ -40,18 +40,18 @@ public final class CoreDataStack: ObservableObject {
 
             if let desc = container.persistentStoreDescriptions.first {
                 desc.url = storeURL
-                print("[CoreData] Store URL: \(storeURL?.path ?? "nil")")
+                Log.ui.info("[CoreData] Store URL: \(storeURL?.path ?? "nil")")
             }
         }
 
         container.loadPersistentStores { _, error in
             if let error = error {
-                print("[CoreData] Store load error: \(error)")
+                Log.ui.error("[CoreData] Store load error: \(error)")
                 if self.isTestEnvironment {
                     fatalError("Test Core Data stack failed: \(error)")
                 }
             } else {
-                print("[CoreData] Store loaded successfully")
+                Log.ui.info("[CoreData] Store loaded successfully")
             }
         }
         container.viewContext.automaticallyMergesChangesFromParent = true

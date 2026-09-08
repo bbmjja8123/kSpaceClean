@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Transient undo toast shown after a successful uninstall.
 ///

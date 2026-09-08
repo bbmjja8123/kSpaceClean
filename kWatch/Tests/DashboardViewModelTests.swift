@@ -356,7 +356,7 @@ final class DashboardViewModelTests: XCTestCase {
 
         let gpuCard = vm.cards.first { $0.kind == .gpu }!
         XCTAssertFalse(gpuCard.isLocked)
-        XCTAssertEqual(gpuCard.subtitle, "GPU Temperature")
+        XCTAssertEqual(gpuCard.subtitle, "GPU Usage")
         XCTAssertEqual(gpuCard.icon, "display")
         XCTAssertEqual(gpuCard.cardColor, .purple)
         XCTAssertEqual(gpuCard.displayValue, "75°C")

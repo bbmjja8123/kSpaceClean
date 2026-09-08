@@ -1,4 +1,5 @@
 import Foundation
+import DetectionCore
 @testable import kSift
 
 /// In-memory mock of `VaultRepositoryProtocol` for unit tests. Records every

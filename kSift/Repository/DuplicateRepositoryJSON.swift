@@ -1,4 +1,5 @@
 import Foundation
+import DetectionCore
 
 public actor DuplicateRepositoryJSON: DuplicateRepositoryProtocol {
     private let fileManager: FileManager

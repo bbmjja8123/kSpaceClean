@@ -1,4 +1,6 @@
 import SwiftUI
+import DesignSystem
+import AppCatalogCore
 
 /// Single-row rendering of a ``StartupItem`` inside the
 /// `StartupItemsView` list. Displays the item's label, full path,

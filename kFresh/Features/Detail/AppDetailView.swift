@@ -1,4 +1,6 @@
 import SwiftUI
+import AppCatalogCore
+import DesignSystem
 
 /// Detail pane of the `NavigationSplitView`: hero, size overview, residue
 /// list, Pro-locked entries, and the uninstall entry point.

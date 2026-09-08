@@ -1,4 +1,5 @@
 import AppIntents
+import AppCatalogCore
 
 struct ScanResidueIntent: AppIntent {
     static var title: LocalizedStringResource = "扫描 App 残留"

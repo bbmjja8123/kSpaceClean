@@ -1,4 +1,5 @@
 import SwiftUI
+import DetectionCore
 
 extension DuplicateCategory {
     var displayName: String {
@@ -9,6 +10,8 @@ extension DuplicateCategory {
         case .largeFile: return NSLocalizedString("Large", comment: "Duplicate category")
         case .buildArtifact: return NSLocalizedString("Artifacts", comment: "Duplicate category")
         case .rawJPEG: return NSLocalizedString("RAW+JPEG", comment: "Duplicate category")
+        case .nameHeuristic: return NSLocalizedString("Renamed", comment: "Duplicate category")
+        case .similarVideo: return NSLocalizedString("Similar Video", comment: "Duplicate category")
         }
     }
 
@@ -20,6 +23,8 @@ extension DuplicateCategory {
         case .largeFile: return "doc.resize"
         case .buildArtifact: return "hammer"
         case .rawJPEG: return "camera"
+        case .nameHeuristic: return "rectangle.stack.badge.person.crop"
+        case .similarVideo: return "film.stack"
         }
     }
 
@@ -31,6 +36,8 @@ extension DuplicateCategory {
         case .largeFile: return .red
         case .buildArtifact: return .gray
         case .rawJPEG: return .green
+        case .nameHeuristic: return .teal
+        case .similarVideo: return .mint
         }
     }
 }

@@ -28,12 +28,22 @@ public final class DuplicateViewModel: ObservableObject {
     // MARK: Private state
 
     private let scanner = DuplicateScanner()
-    private let mover = TrashMover()
+    /// Structured-API engine (v2.0 Phase 2): duplicate cleanup lands in the
+    /// 30-day history and consumes free-tier quota.
+    private(set) var engine: CleanupEngine
+    public var onQuotaExhausted: (() -> Void)?
     private var scanTask: Task<Void, Never>?
 
     // MARK: Lifecycle
 
-    public init() {}
+    public init(engine: CleanupEngine? = nil) {
+        self.engine = engine ?? CleanupEngine.standard()
+    }
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    public func useEngine(_ engine: CleanupEngine) {
+        self.engine = engine
+    }
 
     deinit {
         scanTask?.cancel()
@@ -172,30 +182,38 @@ public final class DuplicateViewModel: ObservableObject {
 
     // MARK: Cleanup
 
-    /// Moves all currently-selected duplicate files to the Trash.
+    /// Moves all currently-selected duplicate files to the Trash via the
+    /// shared cleanup engine (history + quota, v2.0 Phase 2).
     ///
-    /// - Throws: Errors from ``TrashMover`` if any file cannot be trashed.
+    /// - Throws: Errors from the engine if the run could not complete.
     public func cleanupSelected() async throws {
-        let urls = groups
+        let selected = groups
             .flatMap(\.files)
             .filter(\.isSelected)
-            .map(\.url)
 
-        guard !urls.isEmpty else { return }
+        guard !selected.isEmpty else { return }
 
-        let result = await mover.moveToTrash(urls: urls)
+        let targets = selected.map { file in
+            CleanupTarget(url: file.url, size: file.size, risk: .caution)
+        }
+        let outcome = try await engine.cleanup(targets: targets)
 
         // Remove successfully-trashed files from their groups.
-        let trashedPaths = Set(result.snapshots.map(\.originalPath))
+        let trashedPaths = Set(outcome.succeeded.map(\.path))
         for gi in groups.indices.reversed() {
             groups[gi].files.removeAll { trashedPaths.contains($0.path) }
         }
         // Remove empty groups.
         groups.removeAll { $0.files.isEmpty }
 
+        if outcome.quotaExhausted {
+            onQuotaExhausted?()
+        }
+
         // If any files failed, we could surface them, but for now just throw the first error.
-        if let firstFailure = result.failed.first {
-            throw TrashMover.MoveError.trashFailed(firstFailure.0, firstFailure.1)
+        if let firstFailure = outcome.failed.first {
+            throw TrashMover.MoveError.trashFailed(firstFailure.url,
+                NSError(domain: "CleanupEngine", code: 0))
         }
     }
 

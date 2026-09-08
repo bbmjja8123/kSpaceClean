@@ -1,10 +1,24 @@
 import SwiftUI
+import Capabilities
 import DesignSystem
+import DetectionCore
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
+    @State private var newExclusionPattern = ""
+
+    /// Append the pending exclusion pattern (if non-empty after trim) and
+    /// clear the input. No-ops on empty input; doesn't deduplicate to
+    /// let users keep overlapping patterns if they want (e.g. one
+    /// case-sensitive + one case-insensitive via different shapes).
+    private func commitExclusionPattern() {
+        let trimmed = newExclusionPattern.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        viewModel.additionalExclusions.append(trimmed)
+        newExclusionPattern = ""
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -41,6 +55,63 @@ struct SettingsView: View {
                           isOn: $viewModel.enableBuildArtifacts)
                 }
 
+                Section {
+                    Picker("Similarity", selection: $viewModel.similarityPreset) {
+                        ForEach(SimilarityPreset.allCases, id: \.self) { preset in
+                            Text(preset.title).tag(preset)
+                        }
+                    }
+                    .pickerStyle(.radioGroup)
+                    .disabled(!viewModel.enablePerceptual)
+                    Text(viewModel.similarityPreset.help)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                } header: {
+                    Text("Similar Image Sensitivity")
+                } footer: {
+                    Text(NSLocalizedString(
+                        "Lower sensitivity keeps near-identical images together; higher sensitivity also groups same-scene shots.",
+                        comment: "Similarity preset help footer"
+                    ))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+
+                Section {
+                    Picker("Large file threshold", selection: $viewModel.largeFileSizeThreshold) {
+                        ForEach(largeFileThresholdOptions, id: \.self) { threshold in
+                            Text(formatBytes(threshold)).tag(threshold)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                } header: {
+                    Text("Large Files")
+                } footer: {
+                    Text(NSLocalizedString(
+                        "Files at or above this size are listed in the Large Files results tab.",
+                        comment: "Large-file threshold help footer"
+                    ))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                }
+
+                if !CapabilityGate.isMacOS14 {
+                    Section {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Label("Reduced on macOS 13", systemImage: "info.circle")
+                                .font(.callout).bold()
+                            Text(NSLocalizedString(
+                                "Some visual polish and interactive automation features are simplified on macOS 13. Everything else works the same.",
+                                comment: "macOS 13 capability degradation footer"
+                            ))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        }
+                    } header: {
+                        Text("Compatibility")
+                    }
+                }
+
                 Section("Scan Directories") {
                     ForEach(viewModel.customDirectories, id: \.self) { dir in
                         HStack {
@@ -58,6 +129,40 @@ struct SettingsView: View {
                         guard panel.runModal() == .OK, let url = panel.url else { return }
                         viewModel.customDirectories.append(url.path)
                     }
+                }
+
+                Section {
+                    ForEach(viewModel.additionalExclusions, id: \.self) { pattern in
+                        HStack {
+                            Text(pattern)
+                                .font(.system(.body, design: .monospaced))
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            Spacer()
+                            Button("Remove") {
+                                viewModel.additionalExclusions.removeAll { $0 == pattern }
+                            }
+                        }
+                    }
+                    HStack {
+                        TextField(
+                            NSLocalizedString("Add pattern", comment: "Excluded pattern placeholder"),
+                            text: $newExclusionPattern
+                        )
+                        .textFieldStyle(.roundedBorder)
+                        .onSubmit { commitExclusionPattern() }
+                        Button("Add") { commitExclusionPattern() }
+                            .disabled(newExclusionPattern.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    }
+                } header: {
+                    Text("Excluded Patterns")
+                } footer: {
+                    Text(NSLocalizedString(
+                        "Glob-style patterns (e.g. **/node_modules/**, *.log). Files matching any pattern are skipped during scan.",
+                        comment: "Excluded patterns help footer"
+                    ))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 }
             }
         }
@@ -109,11 +214,22 @@ struct SettingsView: View {
         }
     }
 
+    private var largeFileThresholdOptions: [Int64] {
+        [
+            10 * 1024 * 1024,
+            50 * 1024 * 1024,
+            100 * 1024 * 1024,
+            500 * 1024 * 1024,
+            1024 * 1024 * 1024,
+        ]
+    }
+
     private func profileIcon(_ profile: ProfileType) -> String {
         switch profile {
         case .developer: return "hammer.fill"
         case .photographer: return "camera.fill"
-        case .simple: return "person.fill"
+        case .designer: return "person.fill"
+        case .custom: return "slider.horizontal.3"
         }
     }
 

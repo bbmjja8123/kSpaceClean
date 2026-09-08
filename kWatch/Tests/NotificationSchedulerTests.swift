@@ -1,6 +1,7 @@
 import XCTest
 import UserNotifications
 import MetricsKit
+import MonitorCore
 @testable import kWatch
 
 // MARK: - NotificationSchedulerTests

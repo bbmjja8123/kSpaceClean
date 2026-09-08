@@ -260,6 +260,12 @@ final class HistoryViewModelTests: XCTestCase {
         XCTAssertEqual(extractDouble(from: .percentage(91), for: .battery), 91)
     }
 
+    /// `GPUMonitor` emits `.percentage` (usage) on Apple Silicon; the
+    /// history chart must plot it instead of only accepting temperatures.
+    func testExtractDoubleAcceptsGPUPercentage() {
+        XCTAssertEqual(extractDouble(from: .percentage(66.0), for: .gpu), 66.0)
+    }
+
     func testExtractDoubleRejectsMismatchedValueType() {
         XCTAssertNil(extractDouble(from: .percentage(50), for: .temperature))
         XCTAssertNil(extractDouble(from: .bytes(1024), for: .memory))

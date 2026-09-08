@@ -3,12 +3,17 @@ options:
   bundleIdPrefix: app.kraftly
   deploymentTarget:
     macOS: "13.0"
-  xcodeVersion: "15.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
 
 settings:
-  SWIFT_STRICT_CONCURRENCY: complete
-  MACOSX_DEPLOYMENT_TARGET: "13.0"
-  SWIFT_VERSION: "5.9"
+  base:
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "1.5.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
 
 targets:
   kWise:
@@ -20,17 +25,85 @@ targets:
           - "project.yml"
           - "**/*.md"
           - "Tests/**"
+          - "UITests/**"
+          - "scripts/**"
+          - "Widgets/**"          # separate widget appex target
+          - "FinderExtension/**"  # separate Finder Sync appex target
     settings:
-      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean
-      INFOPLIST_FILE: Info.plist
-      CODE_SIGN_STYLE: Automatic
-      DEVELOPMENT_TEAM: ""
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean
+        INFOPLIST_FILE: Info.plist
+        PRODUCT_NAME: kWise
+        ENTITLEMENTS_FILE: kWise.entitlements
     dependencies:
       - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: PowerScope
+      - package: kFoundation
+        product: CommonUtils
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: DesignSystem
     preBuildScripts:
       - name: "SwiftLint"
         script: "if which swiftlint >/dev/null; then swiftlint; fi"
         basedOnDependencyAnalysis: false
+
+  kWiseWidget:
+    type: app-extension
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - Widgets
+      - Shared            # WidgetSnapshot feed + RunSmartCareIntent (dual-target)
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.widget
+        PRODUCT_NAME: kWiseWidget
+        INFOPLIST_FILE: Widgets/Info.plist
+        ENTITLEMENTS_FILE: kWiseWidget.entitlements
+    dependencies:
+      - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: PowerScope
+      - package: kFoundation
+        product: CommonUtils
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: DesignSystem
+
+  kWiseFinder:
+    type: app-extension
+    platform: macOS
+    sources:
+      - FinderExtension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.finder
+        PRODUCT_NAME: kWiseFinder
+        INFOPLIST_FILE: FinderExtension/Info.plist
+        ENTITLEMENTS_FILE: kWiseFinder.entitlements
+    dependencies:
+      - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: PowerScope
+      - package: kFoundation
+        product: CommonUtils
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: DesignSystem
 
   kWiseTests:
     type: bundle.unit-test
@@ -38,13 +111,45 @@ targets:
     sources:
       - Tests
     settings:
-      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.tests
-      MACOSX_DEPLOYMENT_TARGET: "13.0"
-      SWIFT_VERSION: "5.9"
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.tests
+        GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - target: kWise
       - package: kFoundation
 
+  kWiseUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources:
+      - path: UITests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.uitests
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: kWise
+
 packages:
   kFoundation:
-    path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation
+    path: ../kFoundation
+
+schemes:
+  kWise:
+    build:
+      targets:
+        kWise: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - kWiseTests   # UITests excluded from default test action until Phase 8
+  kWiseWidget:
+    build:
+      targets:
+        kWiseWidget: all
+  kWiseFinder:
+    build:
+      targets:
+        kWiseFinder: all

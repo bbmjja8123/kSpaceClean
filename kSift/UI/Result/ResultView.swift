@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct ResultView: View {
     @EnvironmentObject var appState: AppState
@@ -11,9 +12,40 @@ struct ResultView: View {
     @State private var showPaywall = false
     @State private var paywallReason: String = ""
     @State private var showAdvancedFilters: Bool = false
+    @State private var inUseReport: InUseReport?
     @FocusState private var searchFocused: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let inUseChecker = InUseChecker()
 
     var body: some View {
+        VStack(spacing: 0) {
+            // Section switch: duplicate groups vs. large files. One results
+            // hub, shared filter bar position / undo / paywall gating.
+            if !appState.latestLargeFiles.isEmpty || appState.resultsSection == .largeFiles {
+                Picker("Results section", selection: $appState.resultsSection) {
+                    ForEach(AppState.ResultsSection.allCases, id: \.self) { section in
+                        Text(section.title).tag(section)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .frame(maxWidth: 280)
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+            }
+
+            if appState.resultsSection == .largeFiles {
+                LargeFilesListView(files: appState.latestLargeFiles)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                duplicatesContent
+            }
+        }
+    }
+
+    /// The duplicate-groups experience (stats bar → filters → group list).
+    private var duplicatesContent: some View {
         VStack(spacing: 0) {
             // Stats bar
             GlassPanel {
@@ -46,7 +78,7 @@ struct ResultView: View {
 
             // Filter bar
             FilterBarView(activeCategory: $viewModel.activeCategory,
-                         counts: categoryCounts)
+                         counts: viewModel.categoryCounts)
 
             // P1-1: collapsible advanced filter chips (size range + date
             // range). Toggled via a small "More filters" / "Less filters"
@@ -148,29 +180,40 @@ struct ResultView: View {
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(viewModel.filteredGroups) { group in
-                            NavigationLink(destination: GroupDetailView(group: group)) {
+                            NavigationLink(destination: GroupDetailView(group: group, viewModel: viewModel)) {
                                 GroupRowView(
                                     group: group,
-                                    sameNameSiblingCount: sameNameCounts[group.files.first?.url.lastPathComponent ?? ""] ?? 0
+                                    isSelected: viewModel.selectedGroupIds.contains(group.id),
+                                    onToggle: { viewModel.toggleGroup(group.id) },
+                                    sameNameSiblingCount: viewModel.sameNameCounts[group.files.first?.url.lastPathComponent ?? ""] ?? 0
                                 )
                             }
                             .buttonStyle(.plain)
+                            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
                         }
                     }
+                    .animation(
+                        reduceMotion ? nil : .easeInOut(duration: 0.25),
+                        value: viewModel.groups.count
+                    )
                     .padding(16)
                 }
             }
 
             // Bottom action bar
             HStack {
-                Text("\(viewModel.selectedGroupIds.count) groups selected")
-                    .foregroundColor(.secondary)
+                if viewModel.selectedGroupIds.isEmpty {
+                    Text("\(viewModel.totalGroupCount) groups found")
+                        .foregroundColor(.secondary)
+                } else {
+                    Text(String(format: NSLocalizedString("%lld groups · %lld files staged (%@)", comment: "Bottom bar selection summary"),
+                                viewModel.selectedGroupIds.count,
+                                viewModel.stagedFileCount,
+                                formatBytes(viewModel.selectedBytes)))
+                        .foregroundColor(.secondary)
+                }
                 Spacer()
-                Button("Auto Select", action: viewModel.autoSelectGroups)
-                    .help(NSLocalizedString(
-                        "Select all groups (⌘A)",
-                        comment: "Tooltip for Command-A select-all shortcut"
-                    ))
+                smartSelectMenu
                 Button(deleteButtonLabel) {
                     attemptCleanup()
                 }
@@ -189,6 +232,35 @@ struct ResultView: View {
             Text("\(viewModel.selectedGroupIds.count) groups will be moved to Trash. The newest copy of each group is kept.")
         }
         .alert(
+            InUsePrompt.title(inUseReport ?? InUseReport()),
+            isPresented: Binding(
+                get: { inUseReport != nil },
+                set: { if !$0 { inUseReport = nil } }
+            )
+        ) {
+            Button(NSLocalizedString("Skip in-use files", comment: "In-use prompt — clean everything else")) {
+                if let report = inUseReport {
+                    let skip = Set(InUsePrompt.filesToSkip(report))
+                    for groupId in viewModel.selectedGroupIds {
+                        let staged = viewModel.groups
+                            .first { $0.id == groupId }
+                            .map { viewModel.stagedFiles(for: $0) } ?? []
+                        let remaining = Set(staged.filter { !skip.contains($0.url) }.map(\.id))
+                        viewModel.setFileSelection(groupId: groupId, fileIds: remaining)
+                    }
+                }
+                inUseReport = nil
+                viewModel.showCleanupConfirmation = true
+            }
+            Button(NSLocalizedString("Move anyway", comment: "In-use prompt — clean everything including open files"), role: .destructive) {
+                inUseReport = nil
+                runCleanup()
+            }
+            Button("Cancel", role: .cancel) { inUseReport = nil }
+        } message: {
+            Text(InUsePrompt.message(inUseReport ?? InUseReport()))
+        }
+        .alert(
             "Some files could not be moved",
             isPresented: Binding(
                 get: { !cleanupFailures.isEmpty },
@@ -199,26 +271,26 @@ struct ResultView: View {
         } message: {
             Text("\(cleanupFailures.count) file(s) could not be moved to Trash and remain in place.\n\n\(cleanupFailures.map { $0.url.lastPathComponent }.joined(separator: ", "))")
         }
-        .alert(
-            NSLocalizedString("Moved to Vault", comment: "Cleanup success title"),
-            isPresented: $showCleanupSuccess
-        ) {
-            Button(NSLocalizedString("Open Vault", comment: "Open vault after cleanup")) {
-                showCleanupSuccess = false
-                appState.navigation = .vault
-            }
-            Button(NSLocalizedString("Done", comment: "Dismiss cleanup success"), role: .cancel) {
-                showCleanupSuccess = false
-            }
-        } message: {
-            Text(String(format: NSLocalizedString("%lld file(s) were moved to Trash and safely stored in the vault for 30 days.", comment: "Cleanup success message"),
-                        cleanupSuccessCount))
+        .toast(isPresented: $showCleanupSuccess, autoDismissAfter: 8) {
+            ToastView(
+                title: NSLocalizedString("Moved to Vault", comment: "Cleanup success title"),
+                subtitle: String(format: NSLocalizedString("%lld file(s) moved to Trash. Kept 30 days in the vault.", comment: "Cleanup success subtitle"),
+                                 cleanupSuccessCount),
+                icon: "checkmark.circle.fill",
+                actionTitle: NSLocalizedString("Undo", comment: "Undo cleanup action"),
+                onAction: {
+                    appState.undoLastCleanup()
+                    Task { await reloadAfterUndo() }
+                },
+                onDismiss: { showCleanupSuccess = false }
+            )
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environmentObject(store)
         }
         .onAppear {
+            seedPlannerFromConfig()
             loadGroups()
         }
         // Hidden keyboard-shortcut buttons so ⌘A / ⌘N / Esc work whether or
@@ -271,8 +343,40 @@ struct ResultView: View {
         }
     }
 
+    /// The explainable Smart Select affordance: one menu listing every
+    /// keep-strategy; picking one plans (and stages) all groups at once.
+    private var smartSelectMenu: some View {
+        Menu {
+            ForEach(SelectionStrategy.allCases, id: \.self) { strategy in
+                Button {
+                    viewModel.applyAutoSelect(strategy: strategy, scanRoots: viewModel.scanRoots)
+                } label: {
+                    HStack {
+                        Text(strategy.title)
+                        if strategy == viewModel.defaultStrategy {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
+                .help(strategy.help)
+            }
+            Divider()
+            Button {
+                viewModel.clearSelection()
+            } label: {
+                Text(NSLocalizedString("Select None", comment: "Smart Select menu — clear selection"))
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "wand.and.stars")
+                Text(NSLocalizedString("Smart Select", comment: "Smart Select menu label"))
+            }
+        }
+        .help(NSLocalizedString("Automatically pick which copy to keep in every group, with a visible reason", comment: "Smart Select tooltip"))
+    }
+
     private var deleteButtonLabel: String {
-        let bytes = selectedSize
+        let bytes = viewModel.selectedBytes
         let base = String(format: NSLocalizedString("Delete (%@)", comment: "Delete selected groups, size in parens"), formatBytes(bytes))
         if !store.isPaidUser, store.freeTierBytesCleaned + bytes > StoreManager.freeCleanupQuotaBytes {
             return base + NSLocalizedString(" · Upgrade", comment: "Upgrade hint appended to delete label")
@@ -281,9 +385,21 @@ struct ResultView: View {
     }
 
     private func attemptCleanup() {
-        let bytes = selectedSize
+        let bytes = viewModel.selectedBytes
         if store.canCleanup(additionalBytes: bytes) {
-            viewModel.showCleanupConfirmation = true
+            Task {
+                // In-use gate: real descriptor holders block the batch
+                // behind an explicit skip/override prompt.
+                let staged = viewModel.groups
+                    .filter { viewModel.selectedGroupIds.contains($0.id) }
+                    .flatMap { viewModel.stagedFiles(for: $0) }
+                let report = await inUseChecker.assess(staged)
+                if report.isEmpty {
+                    viewModel.showCleanupConfirmation = true
+                } else {
+                    inUseReport = report
+                }
+            }
         } else {
             let remaining = max(StoreManager.freeCleanupQuotaBytes - store.freeTierBytesCleaned, 0)
             paywallReason = String(
@@ -297,8 +413,9 @@ struct ResultView: View {
     }
 
     private func runCleanup() {
-        let manager = CleanupManager()
-        let bytes = selectedSize
+        let manager = CleanupStack.makeCleanupManager()
+        let bytes = viewModel.selectedBytes
+        let stagedCount = viewModel.stagedFileCount
         Task {
             let failures = await viewModel.removeSelected(using: manager)
             if !failures.isEmpty { cleanupFailures = failures }
@@ -315,50 +432,55 @@ struct ResultView: View {
                 .reduce(0) { $0 + $1.size }
             let succeeded = bytes - failedBytes
             store.recordFreeTierCleanup(bytes: succeeded)
-            // Surface cleanup success so the user can jump straight to the
-            // Vault. Only show when at least one file actually moved.
+            // Keep AppState in sync: undo works from any screen, and a
+            // later navigation back to Results must not resurrect the
+            // files that were just cleaned.
+            appState.lastCleanupSession = viewModel.lastCleanupSession
+            appState.latestGroups = viewModel.groups
+            // Surface cleanup success with a non-blocking undo toast. Only
+            // show when at least one file actually moved.
             if succeeded > 0 {
-                cleanupSuccessCount = viewModel.selectedGroupIds.count
+                cleanupSuccessCount = stagedCount
                 showCleanupSuccess = true
             }
         }
     }
 
+    /// Refreshes the list after an undo so restored files reappear. The
+    /// vault restore puts files back on disk; the in-memory groups no
+    /// longer contain them, so reload from the persisted record.
+    private func reloadAfterUndo() async {
+        appState.latestGroups = []
+        loadGroups()
+    }
+
     private func loadGroups() {
+        appState.resultsSection = .duplicates
         if !appState.latestGroups.isEmpty {
             viewModel.loadGroups(appState.latestGroups)
         } else {
             // Deep-link (.results) or navigation without a fresh scan: fall back
-            // to the most recent persisted record.
-            Task {
+            // to the most recent persisted record. Repository uses
+            // PersistenceController.shared by default; run the load detached so
+            // it doesn't pay MainActor hop cost before crossing the actor.
+            Task.detached(priority: .userInitiated) {
                 let record = try? await DuplicateRepositoryCoreData().loadScanRecords().first
                 if let record, !record.groups.isEmpty {
-                    viewModel.loadGroups(record.groups)
+                    await MainActor.run {
+                        viewModel.loadGroups(record.groups)
+                    }
                 }
             }
         }
     }
 
-    private var categoryCounts: [DuplicateCategory: Int] {
-        Dictionary(grouping: viewModel.groups, by: \.category)
-            .mapValues { $0.count }
-    }
-
-    private var selectedSize: Int64 {
-        viewModel.groups
-            .filter { viewModel.selectedGroupIds.contains($0.id) }
-            .reduce(0) { $0 + $1.totalSize }
-    }
-
-    /// Counts of how many groups share each first-file basename. Pre-computed
-    /// once per render pass so GroupRowView can show "×N" without recomputing
-    /// the dictionary on every list cell. Empty-string keys are skipped
-    /// (groups with no files shouldn't happen, but guard anyway).
-    private var sameNameCounts: [String: Int] {
-        Dictionary(
-            grouping: viewModel.filteredGroups.compactMap { $0.files.first?.url.lastPathComponent },
-            by: { $0 }
-        ).mapValues { $0.count }
+    /// Seeds the Smart Select default strategy and scan roots from the
+    /// persisted profile config so auto-select honors the user's choice.
+    private func seedPlannerFromConfig() {
+        let config = ProfileConfigStore.load()
+        viewModel.defaultStrategy = config.selectionStrategy
+        viewModel.scanRoots = (config.type.scanningDirectories + config.customDirectories)
+            .map { URL(fileURLWithPath: ($0 as NSString).expandingTildeInPath) }
     }
 
     private func formatBytes(_ bytes: Int64) -> String {
@@ -433,6 +555,14 @@ struct StatItem: View {
 
 struct GroupRowView: View {
     let group: DuplicateGroup
+    /// Whether this group is staged for cleanup. Drives the leading
+    /// checkbox so the user can hand-pick groups instead of relying only
+    /// on Smart Select.
+    var isSelected: Bool = false
+    /// Called when the user taps the selection checkbox. The row itself is
+    /// a NavigationLink, so the checkbox is an explicit nested Button that
+    /// captures its own tap.
+    var onToggle: (() -> Void)?
     /// How many sibling groups share the same first-file name. > 1 means this
     /// row is part of a same-name cluster (e.g. "IMG_1234.jpg" duplicated
     /// across 3 different folders). Computed upstream so the row stays O(1).
@@ -447,6 +577,24 @@ struct GroupRowView: View {
     var body: some View {
         GlassPanel {
             HStack {
+                Button {
+                    onToggle?()
+                } label: {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .font(.system(size: 16))
+                        .foregroundColor(isSelected ? .accentColor : .secondary)
+                }
+                .buttonStyle(.plain)
+                .help(NSLocalizedString(
+                    "Stage this group for cleanup",
+                    comment: "Group selection checkbox tooltip"
+                ))
+                .accessibilityLabel(Text(
+                    String(format: NSLocalizedString("Select group %@", comment: "Checkbox a11y label"),
+                           group.category.displayName)
+                ))
+                .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
+
                 Image(systemName: group.category.iconName)
                     .foregroundColor(group.category.color)
                     .frame(width: 24)
@@ -465,10 +613,13 @@ struct GroupRowView: View {
                                 .background(Color.accentColor.opacity(0.15))
                                 .foregroundColor(.accentColor)
                                 .clipShape(Capsule())
-                                .help(NSLocalizedString(
-                                    "This group shares the same name with %d other groups",
-                                    comment: "Same-name cluster tooltip"
-                                ).replacingOccurrences(of: "%d", with: "\(sameNameSiblingCount)"))
+                                .help(String.localizedStringWithFormat(
+                                    NSLocalizedString(
+                                        "This group shares the same name with %d other groups",
+                                        comment: "Same-name cluster tooltip"
+                                    ),
+                                    sameNameSiblingCount
+                                ))
                         }
                         // APFS-clone badge: lets the user know these files
                         // share physical blocks; cleaning them only frees
@@ -492,15 +643,31 @@ struct GroupRowView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
-                // Perceptual groups preview the first image inline; other
-                // categories stay text-only to keep the row visually calm.
-                if group.category == .perceptual, let first = group.files.first {
-                    ThumbnailView(url: first.url, size: 36)
+                // Visual categories get an inline thumbnail strip so users
+                // can confirm "yes, these are duplicates" without opening
+                // the detail view. Non-visual categories stay text-only.
+                if showsThumbnailStrip {
+                    ThumbnailStrip(files: group.files)
+                        .frame(maxWidth: 200, alignment: .trailing)
                 }
                 Image(systemName: "chevron.right")
                     .foregroundColor(.secondary)
             }
             .padding(12)
+        }
+    }
+
+    /// True for categories whose duplicates benefit from a quick visual
+    /// confirmation in the row. Identical byte matches are also shown —
+    /// filenames + sizes usually disambiguate, but a thumbnail strip
+    /// makes the "are these really the same image?" question answerable
+    /// in-place for the perceptual category.
+    private var showsThumbnailStrip: Bool {
+        switch group.category {
+        case .perceptual, .directoryDedup, .identical, .nameHeuristic, .similarVideo:
+            return true
+        case .largeFile, .buildArtifact, .rawJPEG:
+            return false
         }
     }
 }

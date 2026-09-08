@@ -17,5 +17,22 @@
     <dict>
         <key>NSAllowsArbitraryLoads</key><false/>
     </dict>
+    <!-- Custom URL scheme so the System Status and Control widgets can
+         deep-link into kWatch when tapped. Widgets tap
+         `widgetURL("kwatch://open")` (see WidgetViews.swift
+         OpenDashboardButton and ControlWidgetView.swift); the main app's
+         `.onOpenURL` handler in kWatchApp.swift routes that to the
+         Dashboard window. -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>app.kraftly.kwatch.deeplink</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>kwatch</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

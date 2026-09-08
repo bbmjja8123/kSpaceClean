@@ -8,7 +8,12 @@ import CommonUtils
 /// a scan button (when idle), results grouped by photo-cache category
 /// with selection checkboxes, and a summary bar at the bottom.
 struct PhotoCleanView: View {
-    @StateObject private var viewModel = PhotoCleanViewModel()
+    @StateObject private var viewModel: PhotoCleanViewModel
+
+    /// Injectable for the app root (graph engine + quota routing).
+    init(viewModel: PhotoCleanViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? PhotoCleanViewModel())
+    }
 
     var body: some View {
         VStack(spacing: AppSpacing.lg) {

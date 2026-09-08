@@ -1,6 +1,7 @@
 import SwiftUI
 import MetricsKit
 import DesignSystem
+import MonitorCore
 
 /// Menu Bar settings pane: presentation mode picker and per-metric-kind
 /// enable toggles. All mutations go through `SettingsViewModel` so they are

@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// History tab: lists the last 30 days of uninstall records and lets
 /// the user restore any of them via the row's "恢复" button. State

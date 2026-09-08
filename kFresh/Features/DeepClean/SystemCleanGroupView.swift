@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// One section of the ``DeepCleanView`` list: a header showing the
 /// ``SystemCleanCategory`` (icon + name + item count) followed by one

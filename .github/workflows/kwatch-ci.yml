@@ -1,0 +1,96 @@
+name: kWatch CI
+
+on:
+  push:
+    branches: [main, worktree-kwatch-v1]
+  pull_request:
+    branches: [main, worktree-kwatch-v1]
+
+# Cancel duplicate runs for the same ref to save CI minutes.
+concurrency:
+  group: kwatch-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SwiftLint
+        run: brew install swiftlint
+      - name: Run SwiftLint
+        # kFoundation ships its own .swiftlint.yml that the kWatch app
+        # target inherits. `lint` (not `lint --strict`) so the CI gate
+        # catches real warnings without treating style nits as blocking.
+        run: cd kWatch && swiftlint lint
+
+  test:
+    name: Unit Tests
+    runs-on: macos-14
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        # The Kraftly project targets Xcode 15.0 / Swift 5.9. macos-14
+        # runners ship with Xcode 16 by default; pin to 15.0 so the
+        # same compiler warnings surface locally and in CI.
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+
+      - name: Run kWatch tests
+        run: |
+          xcodebuild test \
+            -project kWatch/kWatch.xcodeproj \
+            -scheme kWatch \
+            -destination 'platform=macOS' \
+            -quiet \
+            -skip-testing:kWatchUITests
+
+  build:
+    name: Build (Debug)
+    runs-on: macos-14
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+      - name: Build
+        run: |
+          xcodebuild build \
+            -project kWatch/kWatch.xcodeproj \
+            -scheme kWatch \
+            -destination 'platform=macOS' \
+            -configuration Debug \
+            -quiet
+
+  archive:
+    # Only archive on tag push — App Store submission flow uses this
+    # artifact, so we keep it off the hot path.
+    name: Archive (Release)
+    runs-on: macos-14
+    needs: [lint, test, build]
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+      - name: Archive
+        run: |
+          xcodebuild archive \
+            -project kWatch/kWatch.xcodeproj \
+            -scheme kWatch \
+            -destination 'platform=macOS' \
+            -configuration Release \
+            -archivePath build/kWatch.xcarchive
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kWatch-${{ github.ref_name }}
+          path: build/kWatch.xcarchive
+          if-no-files-found: error

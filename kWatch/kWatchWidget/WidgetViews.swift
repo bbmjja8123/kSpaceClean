@@ -14,6 +14,7 @@
 import AppIntents
 import SwiftUI
 import WidgetKit
+import MonitorCore
 
 // MARK: - Intent stub
 

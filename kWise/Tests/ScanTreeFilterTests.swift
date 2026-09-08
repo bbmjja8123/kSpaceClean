@@ -80,52 +80,35 @@ final class ScanResultsViewModelFilterTests: XCTestCase {
 
 @MainActor
 final class ScanResultsViewHiddenRenderingTests: XCTestCase {
-    func testHiddenNodeVisibilityFollowsShowAllHidden() {
-        let hiddenResult = ScanResult(
-            url: URL(fileURLWithPath: "/tmp/hidden"),
-            path: "/tmp/hidden",
-            title: "hidden",
-            fileSize: 100,
-            cleanType: .cache,
-            isHiddenByFilter: true
+    /// UX 重构 Phase 2: the RecursiveTreeNode renderer is gone; the
+    /// showAllHidden contract now lives in the master-detail suppliers.
+    @MainActor
+    func testHiddenNodeVisibilityFollowsShowAllHidden() async {
+        let vm = ScanResultsViewModel(engine: nil)
+        let hiddenSub = ScanSubCategory(
+            subCategoryID: "h1", title: "hidden",
+            directResults: [], isHiddenByFilter: true
         )
-        let node = RecursiveTreeNode(
-            node: hiddenResult,
-            level: 0,
-            expandedIDs: [],
-            showAllHidden: false,
-            onToggleExpand: { _ in },
-            onToggleSelect: { _ in }
-        )
-        XCTAssertFalse(node.isVisibleWhenHidden(showAllHidden: false),
-                       "hidden node must not render when showAllHidden is off")
-        XCTAssertTrue(node.isVisibleWhenHidden(showAllHidden: true),
-                      "hidden node must render when showAllHidden is on")
+        let visibleSub = ScanSubCategory(subCategoryID: "v1", title: "visible")
+        var snapshot = ScanResultsViewModel.ScanSnapshot()
+        snapshot.categories = [ScanCategory(categoryID: "c", title: "c",
+                                            subItems: [hiddenSub, visibleSub])]
+        vm.assign(snapshot: snapshot)
+        vm.rebuildIndices()
+
+        let category = vm.categories[0]
+        vm.showAllHidden = false
+        let filtered = vm.visibleSubcategories(in: category).compactMap { $0 as? ScanSubCategory }
+        XCTAssertFalse(filtered.contains { $0.id == hiddenSub.id },
+                       "hidden node must not appear when showAllHidden is off")
+        XCTAssertTrue(filtered.contains { $0.id == visibleSub.id })
+
+        vm.showAllHidden = true
+        let shown = vm.visibleSubcategories(in: category).compactMap { $0 as? ScanSubCategory }
+        XCTAssertTrue(shown.contains { $0.id == hiddenSub.id },
+                      "hidden node must appear when showAllHidden is on")
     }
 
-    func testRecursiveTreeNodeEqualityIncludesShowAllHidden() {
-        let result = ScanResult(
-            url: URL(fileURLWithPath: "/tmp/v"),
-            path: "/tmp/v",
-            title: "v",
-            fileSize: 10_000_000,
-            cleanType: .cache
-        )
-        let hidden = RecursiveTreeNode(
-            node: result, level: 0, expandedIDs: [],
-            showAllHidden: false, onToggleExpand: { _ in }, onToggleSelect: { _ in }
-        )
-        let shown = RecursiveTreeNode(
-            node: result, level: 0, expandedIDs: [],
-            showAllHidden: true, onToggleExpand: { _ in }, onToggleSelect: { _ in }
-        )
-        XCTAssertNotEqual(hidden, shown,
-                          "flipping showAllHidden must invalidate row equality so the tree re-renders")
-    }
-}
-
-@MainActor
-final class PseudoAppFilterExemptionTests: XCTestCase {
     func testPseudoAppRowWithContentNeverFoldsUpHidden() {
         let result = ScanResult(
             url: URL(fileURLWithPath: "/tmp/folder/file.bin"),

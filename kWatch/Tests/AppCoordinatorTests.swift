@@ -1,5 +1,6 @@
 import XCTest
 import MetricsKit
+import MonitorCore
 @testable import kWatch
 
 @MainActor

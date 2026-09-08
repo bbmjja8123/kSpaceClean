@@ -1,4 +1,5 @@
 import XCTest
+import AppCatalogCore
 @testable import kFresh
 
 /// Placeholder UI test for the first-launch onboarding flow.

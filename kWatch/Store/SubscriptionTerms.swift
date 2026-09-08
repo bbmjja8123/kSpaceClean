@@ -1,19 +1,28 @@
 import Foundation
 
-/// Localized auto-renewal disclosure text required by App Store Review
-/// Guidelines §3.1.2(a). Surfaced in the Paywall view *before* the user
-/// can complete a purchase.
+/// Localized one-time purchase disclosure text shown in the Paywall *before*
+/// the user can complete a purchase.
 ///
-/// The text follows Apple's standard subscription disclosure template and
-/// is intentionally identical across all 3 supported locales except for
-/// translation. Each translation lives in the `Localizable.xcstrings`
+/// kWatch Pro is a Non-Consumable ($7.99, one-time). The copy must state the
+/// one-time nature explicitly and must never describe auto-renewal — a
+/// subscription-style disclosure on a one-time product misstates the business
+/// model and is an App Review risk (cf. Guidelines §3.1.2(a) templates).
+///
+/// The text is intentionally identical across all 3 supported locales except
+/// for translation. Each translation lives in the `Localizable.xcstrings`
 /// catalog under the keys listed below.
 public enum SubscriptionTerms {
+    /// URLs the disclosure links to. Centralised so `PaywallView` and any
+    /// other presentation surfaces share the same targets. Update these
+    /// when the privacy / support sites move (see V1-TODO C4 + C5).
+    public static let privacyPolicyURL: URL = URL(string: "https://kraftly.app/kwatch/privacy")!
+    public static let supportURL: URL = URL(string: "https://kraftly.app/kwatch/support")!
+
     /// Localization keys used to look up the disclosure copy.
     public enum LocalizationKey: String, CaseIterable {
         /// Title shown above the disclosure block.
         case title = "subscription.terms.title"
-        /// Body paragraph explaining the auto-renewal behavior.
+        /// Body paragraph stating the one-time purchase terms.
         case body = "subscription.terms.body"
         /// Hyperlink copy pointing to the support URL.
         case supportLink = "subscription.terms.supportLink"

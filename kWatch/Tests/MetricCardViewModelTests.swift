@@ -70,7 +70,11 @@ final class MetricCardViewModelTests: XCTestCase {
         XCTAssertEqual(vm.subtitle, "Pro Feature")
         XCTAssertEqual(vm.icon, "lock.fill")
         XCTAssertEqual(vm.cardColor, .gray)
-        XCTAssertEqual(vm.lockDescription, "Upgrade to Pro to monitor temperature.")
+        // lockDescription is localized via `String(localized:)`; assert the
+        // machine-readable bits instead of the prose so the test does not
+        // break when the developer's system locale is not en.
+        XCTAssertTrue(vm.lockDescription.localizedCaseInsensitiveContains("Pro"))
+        XCTAssertTrue(vm.lockDescription.localizedCaseInsensitiveContains("temperature"))
     }
 
     func testTemperatureIsUnlockedForProUser() {

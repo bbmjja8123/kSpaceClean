@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct FilterBarView: View {
     @Binding var activeCategory: DuplicateCategory?

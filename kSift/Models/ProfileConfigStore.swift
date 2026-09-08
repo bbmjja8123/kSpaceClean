@@ -1,4 +1,5 @@
 import Foundation
+import DetectionCore
 
 /// Single source of truth for persisting the user's scan configuration.
 ///
@@ -14,6 +15,9 @@ public enum ProfileConfigStore {
         static let minFileSize = "ksift.profile.minFileSize"
         static let enablePerceptual = "ksift.profile.enablePerceptual"
         static let enableBuildArtifacts = "ksift.profile.enableBuildArtifacts"
+        static let selectionStrategy = "ksift.profile.selectionStrategy"
+        static let similarityPreset = "ksift.profile.similarityPreset"
+        static let largeFileSizeThreshold = "ksift.profile.largeFileSizeThreshold"
     }
 
     /// Reads the persisted config, falling back to `.default` for any
@@ -28,13 +32,22 @@ public enum ProfileConfigStore {
         // a never-set toggle defaults to true (matches ProfileConfig.default).
         let perceptual = defaults.object(forKey: Keys.enablePerceptual) as? Bool ?? true
         let buildArtifacts = defaults.object(forKey: Keys.enableBuildArtifacts) as? Bool ?? true
+        let selectionStrategy = defaults.string(forKey: Keys.selectionStrategy)
+            .flatMap(SelectionStrategy.init(rawValue:)) ?? .keepNewest
+        let similarityPreset = defaults.string(forKey: Keys.similarityPreset)
+            .flatMap(SimilarityPreset.init(rawValue:)) ?? .normal
+        let largeThreshold = defaults.object(forKey: Keys.largeFileSizeThreshold) as? Int64
+            ?? 100 * 1024 * 1024
         return ProfileConfig(
             type: type,
             customDirectories: customDirs,
             exclusions: customExcls,
             minFileSize: minSize,
             enablePerceptualScan: perceptual,
-            enableBuildArtifacts: buildArtifacts
+            enableBuildArtifacts: buildArtifacts,
+            selectionStrategy: selectionStrategy,
+            similarityPreset: similarityPreset,
+            largeFileSizeThreshold: largeThreshold
         )
     }
 
@@ -47,5 +60,8 @@ public enum ProfileConfigStore {
         defaults.set(config.minFileSize, forKey: Keys.minFileSize)
         defaults.set(config.enablePerceptualScan, forKey: Keys.enablePerceptual)
         defaults.set(config.enableBuildArtifacts, forKey: Keys.enableBuildArtifacts)
+        defaults.set(config.selectionStrategy.rawValue, forKey: Keys.selectionStrategy)
+        defaults.set(config.similarityPreset.rawValue, forKey: Keys.similarityPreset)
+        defaults.set(config.largeFileSizeThreshold, forKey: Keys.largeFileSizeThreshold)
     }
 }

@@ -1,16 +1,17 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct CategoryBreakdownBar: View {
     let groups: [DuplicateGroup]
 
     private var categoryTotals: [(category: DuplicateCategory, size: Int64, groupCount: Int)] {
-        Dictionary(grouping: groups, by: \.category)
-            .map { category, groups in
-                (category: category,
-                 size: groups.reduce(0) { $0 + max($1.totalSize, 0) },
-                 groupCount: groups.count)
-            }
+        let grouped = Dictionary(grouping: groups, by: \.category)
+        let totals: [(category: DuplicateCategory, size: Int64, groupCount: Int)] = grouped.map { category, groups in
+            let size = groups.reduce(Int64(0)) { $0 + max($1.totalSize, 0) }
+            return (category: category, size: size, groupCount: groups.count)
+        }
+        return totals
             .filter { $0.size > 0 }
             .sorted { $0.size > $1.size }
     }

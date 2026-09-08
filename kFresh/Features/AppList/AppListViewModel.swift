@@ -1,6 +1,7 @@
 import AppKit
 import Combine
 import Foundation
+import AppCatalogCore
 
 /// Backing state for the AppList main page: scan lifecycle, the filtered /
 /// sorted view of the catalog, and the recent-uninstall section.

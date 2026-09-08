@@ -1,6 +1,7 @@
 import SwiftUI
 import MetricsKit
 import DesignSystem
+import MonitorCore
 
 /// Displays the list of threshold alerts with enable/disable toggles,
 /// add and delete actions, and a notification-permission banner.
@@ -62,11 +63,18 @@ struct AlertsView: View {
             notificationPermissionBanner
         }
 
-        if viewModel.alerts.isEmpty {
-            emptyState
-        } else {
-            alertList
-        }
+        // Use the DesignSystem empty-state modifier instead of a custom
+        // private `emptyState` view so the Alerts screen shares its
+        // placeholder styling with the rest of the app (Stage 2 V8 spec).
+        alertList
+            .emptyState(
+                isEmpty: viewModel.alerts.isEmpty,
+                iconName: "bell.badge",
+                title: String(localized: "No Alerts"),
+                subtitle: String(localized: "Tap Add to create a threshold alert."),
+                actionLabel: String(localized: "Add Alert"),
+                action: { viewModel.beginAdd() }
+            )
     }
 
     // MARK: - Notification permission banner
@@ -84,22 +92,6 @@ struct AlertsView: View {
         }
         .padding(.horizontal)
         .padding(.bottom, 8)
-    }
-
-    // MARK: - Empty state
-
-    private var emptyState: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "bell.badge")
-                .font(.largeTitle)
-                .foregroundColor(Color.textSecondary)
-            Text(String(localized: "No Alerts"))
-                .font(.headline)
-            Text(String(localized: "Tap Add to create a threshold alert."))
-                .font(.caption)
-                .foregroundColor(Color.textSecondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     // MARK: - Alert list

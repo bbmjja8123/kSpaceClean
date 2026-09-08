@@ -1,5 +1,6 @@
 import UniformTypeIdentifiers
 import XCTest
+import DetectionCore
 @testable import kSift
 
 /// Pure round-trip tests for `ModelMapping` — the sentinel conversions and

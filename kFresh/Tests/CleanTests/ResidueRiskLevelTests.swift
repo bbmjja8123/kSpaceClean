@@ -1,5 +1,6 @@
 import XCTest
 import AppKit
+import AppCatalogCore
 @testable import kFresh
 
 /// Unit tests for the v1.x-B I-4 pieces:

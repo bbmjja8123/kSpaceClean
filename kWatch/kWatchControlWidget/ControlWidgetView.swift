@@ -9,6 +9,7 @@
 
 import SwiftUI
 import WidgetKit
+import MonitorCore
 
 // MARK: - Entry View
 
@@ -21,12 +22,19 @@ public struct ControlWidgetView: View {
     }
 
     public var body: some View {
-        switch entry.state {
-        case .placeholder:
-            PlaceholderView()
-        case .live, .stale:
-            GaugeGridView(snapshot: entry.snapshot, stale: entry.state == .stale)
+        // The whole widget tap-target routes to `kwatch://open`, which the
+        // main app's `handleDeepLink` turns into "open the Dashboard window
+        // and bring kWatch to the foreground". Works on macOS 13+ without
+        // any Button(intent:) dependency, so we don't need a 14+ gate here.
+        Group {
+            switch entry.state {
+            case .placeholder:
+                PlaceholderView()
+            case .live, .stale:
+                GaugeGridView(snapshot: entry.snapshot, stale: entry.state == .stale)
+            }
         }
+        .widgetURL(URL(string: "kwatch://open"))
     }
 }
 

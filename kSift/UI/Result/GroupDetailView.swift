@@ -1,13 +1,27 @@
 import SwiftUI
 import DesignSystem
+// `.quickLookPreview` lives in Apple's `_QuickLook_SwiftUI` module (exposed
+// since macOS 11, despite older docs saying 14). Neither SwiftUI nor
+// QuickLookUI re-exports it, so import the backing module directly.
+import _QuickLook_SwiftUI
+import DetectionCore
 
 struct GroupDetailView: View {
     let group: DuplicateGroup
+    /// The shared results view model. Nil when opened from a history
+    /// record — in that case file selection lives locally and cleanup
+    /// failures surface through the same alert path.
+    weak var viewModel: ResultViewModel?
     @EnvironmentObject var store: StoreManager
-    @State private var selectedFileIds: Set<UUID> = []
+    @State private var localSelectedFileIds: Set<UUID> = []
+    @State private var localPlan: SelectionPlan?
     @State private var showPaywall = false
     @State private var showConfirmation = false
+    @State private var cleanupFailures: [VaultMoveFailure] = []
+    @State private var inUseReport: InUseReport?
     @State private var fileSort: FileSortOrder = .dateDesc
+    @State private var quickLookURL: URL?
+    private let inUseChecker = InUseChecker()
 
     enum FileSortOrder {
         case dateDesc, dateAsc, sizeDesc, sizeAsc, pathAsc
@@ -23,13 +37,33 @@ struct GroupDetailView: View {
         }
     }
 
+    /// File selection: shared with the results list when a view model is
+    /// available (so group↔detail selection always agrees), otherwise local.
+    private var selectedFileIds: Binding<Set<UUID>> {
+        if let viewModel {
+            return Binding(
+                get: { viewModel.fileSelections[group.id] ?? [] },
+                set: { viewModel.setFileSelection(groupId: group.id, fileIds: $0) }
+            )
+        }
+        return Binding(
+            get: { localSelectedFileIds },
+            set: { localSelectedFileIds = $0 }
+        )
+    }
+
+    /// The explainable plan backing this group, if one exists.
+    private var activePlan: SelectionPlan? {
+        viewModel?.selectionPlans[group.id] ?? localPlan
+    }
+
     private var sortedFiles: [FileItem] {
         switch fileSort {
         case .dateDesc: return group.files.sorted { $0.modificationDate > $1.modificationDate }
         case .dateAsc: return group.files.sorted { $0.modificationDate < $1.modificationDate }
         case .sizeDesc: return group.files.sorted { $0.size > $1.size }
         case .sizeAsc: return group.files.sorted { $0.size < $1.size }
-        case .pathAsc: return group.files.sorted { $0.url.path < $1.url.path }
+        case .pathAsc: return group.files.sorted { $0.url.path.localizedStandardCompare($1.url.path) == .orderedAscending }
         }
     }
 
@@ -55,20 +89,15 @@ struct GroupDetailView: View {
             // Perceptual groups get an inline thumbnail strip so the user can
             // see which photos are similar at a glance without opening each one.
             if group.category == .perceptual {
-                ThumbnailStrip(files: group.files)
+                ThumbnailStrip(files: group.files, size: 80, maxVisible: 12)
                     .padding(.horizontal, 16)
                     .padding(.bottom, 4)
             }
 
-            // Auto-Select button
+            // Smart Select: pick which copy to keep with a visible strategy,
+            // then see the reason badges next to each row.
             HStack {
-                Button("Auto Keep Newest (\(group.files.count - 1) to delete)") {
-                    let sorted = group.files.sorted { $0.modificationDate > $1.modificationDate }
-                    if let newest = sorted.first {
-                        selectedFileIds = Set(group.files.filter { $0.id != newest.id }.map(\.id))
-                    }
-                }
-                .buttonStyle(.bordered)
+                strategyMenu
                 Spacer()
                 // In-group sort: lets the user cluster files by date, size, or
                 // path within a single group (e.g., to find the biggest copy).
@@ -91,30 +120,33 @@ struct GroupDetailView: View {
             .padding(.horizontal, 16)
 
             // File list
-            List(selection: $selectedFileIds) {
+            List(selection: selectedFileIds) {
                 ForEach(sortedFiles) { file in
-                    FileRowView(file: file, isSelected: selectedFileIds.contains(file.id))
-                        .tag(file.id)
-                        .onTapGesture(count: 2) { openQuickLook(for: file.url) }
-                        .contextMenu {
-                            Button("Reveal in Finder") {
-                                NSWorkspace.shared.activateFileViewerSelecting([file.url])
-                            }
-                            Button("QuickLook") { openQuickLook(for: file.url) }
+                    FileRowView(
+                        file: file,
+                        isSelected: selectedFileIds.wrappedValue.contains(file.id),
+                        reason: activePlan?.reasons[file.id]
+                    )
+                    .tag(file.id)
+                    .contextMenu {
+                        Button("Reveal in Finder") {
+                            NSWorkspace.shared.activateFileViewerSelecting([file.url])
                         }
+                        Button("QuickLook") { quickLookURL = file.url }
+                    }
                 }
             }
 
             // Bottom bar
             HStack {
-                Text("\(selectedFileIds.count) selected · \(formatBytes(selectedSize))")
+                Text("\(selectedFileIds.wrappedValue.count) selected · \(formatBytes(selectedSize))")
                 Spacer()
                 Button(deleteButtonLabel) {
                     attemptCleanup()
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.red)
-                .disabled(selectedFileIds.isEmpty)
+                .disabled(selectedFileIds.wrappedValue.isEmpty)
             }
             .padding(16)
         }
@@ -124,23 +156,60 @@ struct GroupDetailView: View {
                 Task { await deleteSelected() }
             }
         } message: {
-            Text("\(selectedFileIds.count) file(s) will be moved to Trash. The newest copy of the group is kept.")
+            Text("\(selectedFileIds.wrappedValue.count) file(s) will be moved to Trash and kept in the vault for 30 days.")
+        }
+        .alert(
+            InUsePrompt.title(inUseReport ?? InUseReport()),
+            isPresented: Binding(
+                get: { inUseReport != nil },
+                set: { if !$0 { inUseReport = nil } }
+            )
+        ) {
+            Button(NSLocalizedString("Skip in-use files", comment: "In-use prompt — clean everything else")) {
+                if let report = inUseReport {
+                    let skip = Set(InUsePrompt.filesToSkip(report))
+                    let staged = group.files.filter { selectedFileIds.wrappedValue.contains($0.id) }
+                    let remaining = Set(staged.filter { !skip.contains($0.url) }.map(\.id))
+                    selectedFileIds.wrappedValue = remaining
+                }
+                inUseReport = nil
+                if !selectedFileIds.wrappedValue.isEmpty {
+                    showConfirmation = true
+                }
+            }
+            Button(NSLocalizedString("Move anyway", comment: "In-use prompt — clean everything including open files"), role: .destructive) {
+                inUseReport = nil
+                Task { await deleteSelected() }
+            }
+            Button("Cancel", role: .cancel) { inUseReport = nil }
+        } message: {
+            Text(InUsePrompt.message(inUseReport ?? InUseReport()))
+        }
+        .alert(
+            NSLocalizedString("Some files could not be moved", comment: "Cleanup failure alert title"),
+            isPresented: Binding(
+                get: { !cleanupFailures.isEmpty },
+                set: { if !$0 { cleanupFailures = [] } }
+            )
+        ) {
+            Button("OK", role: .cancel) { cleanupFailures = [] }
+        } message: {
+            Text("\(cleanupFailures.count) file(s) could not be moved to Trash and remain in place.\n\n\(cleanupFailures.map { $0.url.lastPathComponent }.joined(separator: ", "))")
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environmentObject(store)
         }
+        // Real QuickLook on macOS 14+; LaunchServices open as the macOS 13
+        // fallback (the SDK on this toolchain exposes .quickLookPreview).
+        .modifier(QuickLookModifier(url: $quickLookURL))
         // Keyboard shortcuts: Space opens QuickLook for the selected file;
-        // Esc clears the current selection. Wired through hidden buttons so
-        // they work whether or not the row context menu is on screen.
+        // Esc clears the file selection.
         .background {
             Group {
-                // Space — open QuickLook for the first selected file. List
-                // sets `selectedFileIds` on arrow navigation, so the most
-                // recent focused row is the first one returned here.
                 Button("QuickLook Selected") {
-                    if let file = group.files.first(where: { selectedFileIds.contains($0.id) }) {
-                        openQuickLook(for: file.url)
+                    if let file = group.files.first(where: { selectedFileIds.wrappedValue.contains($0.id) }) {
+                        quickLookURL = file.url
                     }
                 }
                 .keyboardShortcut(.space, modifiers: [])
@@ -152,10 +221,8 @@ struct GroupDetailView: View {
                 .opacity(0)
                 .accessibilityHidden(true)
 
-                // Esc — clear the file selection. SwiftUI's `.cancelAction`
-                // shortcut maps to Esc.
                 Button("Clear Selection") {
-                    selectedFileIds.removeAll()
+                    selectedFileIds.wrappedValue.removeAll()
                 }
                 .keyboardShortcut(.cancelAction)
                 .help(NSLocalizedString(
@@ -167,15 +234,47 @@ struct GroupDetailView: View {
                 .accessibilityHidden(true)
             }
         }
-        // Tab focus across the rows is provided by SwiftUI's default `List`
-        // keyboard routing on macOS 13 and 14. A custom `onKeyPress(.tab)`
-        // handler would be nicer on macOS 14+, but that API only exists in
-        // SwiftUI versions newer than the one shipped with this Xcode (15),
-        // so we deliberately rely on the built-in behaviour.
+    }
+
+    /// Applies a keep-strategy to this group only: the winning copy gets a
+    /// reason badge, every other copy is staged for removal.
+    private var strategyMenu: some View {
+        Menu {
+            ForEach(SelectionStrategy.allCases, id: \.self) { strategy in
+                Button {
+                    apply(strategy: strategy)
+                } label: {
+                    Text(strategy.title)
+                }
+                .help(strategy.help)
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "wand.and.stars")
+                Text(NSLocalizedString("Auto Keep", comment: "Auto Keep strategy menu label"))
+            }
+            .font(.callout)
+        }
+        .help(NSLocalizedString("Automatically keep one copy — the reason is shown next to each file", comment: "Auto Keep tooltip"))
+    }
+
+    private func apply(strategy: SelectionStrategy) {
+        let plan = SelectionPlanner.plan(for: group, strategy: strategy)
+        if let viewModel {
+            // Stage through the shared model so the parent list selection
+            // stays in sync with what the detail view shows.
+            if !viewModel.selectedGroupIds.contains(group.id) {
+                viewModel.toggleGroup(group.id)
+            }
+            viewModel.setPlan(plan, for: group.id)
+        } else {
+            localPlan = plan
+            localSelectedFileIds = Set(plan.remove.map(\.id))
+        }
     }
 
     private var deleteButtonLabel: String {
-        let base = String(format: NSLocalizedString("Move %lld to Trash", comment: "Move selected files to Trash"), selectedFileIds.count)
+        let base = String(format: NSLocalizedString("Move %lld to Trash", comment: "Move selected files to Trash"), selectedFileIds.wrappedValue.count)
         if !store.isPaidUser,
            store.freeTierBytesCleaned + selectedSize > StoreManager.freeCleanupQuotaBytes {
             return base + NSLocalizedString(" · Upgrade", comment: "Upgrade hint appended to delete label")
@@ -184,70 +283,61 @@ struct GroupDetailView: View {
     }
 
     private var selectedSize: Int64 {
-        group.files.filter { selectedFileIds.contains($0.id) }.reduce(0) { $0 + $1.size }
+        group.files.filter { selectedFileIds.wrappedValue.contains($0.id) }.reduce(0) { $0 + $1.size }
     }
 
     private func attemptCleanup() {
         let bytes = selectedSize
         if store.canCleanup(additionalBytes: bytes) {
-            showConfirmation = true
+            Task {
+                let staged = group.files.filter { selectedFileIds.wrappedValue.contains($0.id) }
+                let report = await inUseChecker.assess(staged)
+                if report.isEmpty {
+                    showConfirmation = true
+                } else {
+                    inUseReport = report
+                }
+            }
         } else {
             showPaywall = true
         }
     }
 
     private func deleteSelected() async {
-        let manager = CleanupManager()
-        let filesToDelete = group.files.filter { selectedFileIds.contains($0.id) }
-        let bytes = filesToDelete.reduce(Int64(0)) { $0 + $1.size }
-        do {
-            try await manager.moveToTrash(filesToDelete)
-            store.recordFreeTierCleanup(bytes: bytes)
-        } catch {
-            // Manager surfaces failures as exceptions; the user already saw
-            // the confirmation alert, so just log and let them re-attempt.
+        let failures: [VaultMoveFailure]
+        if let viewModel {
+            failures = await viewModel.removeFiles(group: group, using: CleanupStack.makeCleanupManager())
+        } else {
+            let manager = CleanupStack.makeCleanupManager()
+            let filesToDelete = group.files.filter { localSelectedFileIds.contains($0.id) }
+            do {
+                let result = try await manager.moveToTrash(filesToDelete)
+                failures = result.failures
+            } catch {
+                failures = [VaultMoveFailure(
+                    url: filesToDelete.first?.url ?? URL(fileURLWithPath: "/"),
+                    reason: error.localizedDescription
+                )]
+            }
+        }
+        // Failures are surfaced (previously this path swallowed errors so a
+        // failed cleanup looked like a successful one).
+        if !failures.isEmpty {
+            cleanupFailures = failures
         }
     }
 
     private func formatBytes(_ bytes: Int64) -> String {
         ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
     }
-
-    /// Opens the system QuickLook window for `url`. SwiftUI's
-    /// `.quickLookPreview(_:)` modifier is unavailable in the SDK shipped
-    /// with Xcode 15; delegating to `NSWorkspace.shared.open` opens the
-    /// preview window through the normal LaunchServices path, which gives
-    /// users the standard QuickLook experience for any file type.
-    private func openQuickLook(for url: URL) {
-        NSWorkspace.shared.open(url)
-    }
 }
 
-/// Horizontal scrolling thumbnail strip for perceptual groups. Caps at 12
-/// thumbnails to keep the strip readable; overflow is rendered as a "+N" tile.
-private struct ThumbnailStrip: View {
-    let files: [FileItem]
-    private static let maxVisible = 12
+/// Real system QuickLook sheet — `.quickLookPreview` is available from
+/// macOS 11 via `_QuickLook_SwiftUI`, so no #available gating is needed.
+struct QuickLookModifier: ViewModifier {
+    @Binding var url: URL?
 
-    var body: some View {
-        let visible = Array(files.prefix(Self.maxVisible))
-        let overflow = files.count - visible.count
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(visible) { file in
-                    ThumbnailView(url: file.url, size: 80)
-                }
-                if overflow > 0 {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: AppRadius.sm)
-                            .fill(Color.secondary.opacity(0.15))
-                        Text(String(format: NSLocalizedString("+%lld", comment: "More thumbnails overflow"), overflow))
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                    }
-                    .frame(width: 80, height: 80)
-                }
-            }
-        }
+    func body(content: Content) -> some View {
+        content.quickLookPreview($url)
     }
 }

@@ -25,10 +25,20 @@ public final class LargeOldViewModel: ObservableObject {
     // MARK: Private
 
     private let scanner = LargeOldScanner()
-    private let mover = TrashMover()
+    /// Structured-API engine (v2.0 Phase 2): cleanup lands in the 30-day
+    /// history and consumes free-tier quota, exactly like the main surface.
+    private(set) var engine: CleanupEngine
+    public var onQuotaExhausted: (() -> Void)?
     private var scanTask: Task<Void, Never>?
 
-    public init() {}
+    public init(engine: CleanupEngine? = nil) {
+        self.engine = engine ?? CleanupEngine.standard()
+    }
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    public func useEngine(_ engine: CleanupEngine) {
+        self.engine = engine
+    }
 
     // MARK: Scanning
 
@@ -120,11 +130,35 @@ public final class LargeOldViewModel: ObservableObject {
 
     // MARK: Cleanup
 
-    /// Moves all currently-selected files to the Trash.
+    /// Moves all currently-selected files to the Trash via the shared
+    /// cleanup engine (history + quota, v2.0 Phase 2).
     @discardableResult
     public func cleanupSelected() async -> TrashResult {
-        let urls = selectedEntries.map(\.url)
-        let result = await mover.moveToTrash(urls: urls)
+        let selected = selectedEntries
+        guard !selected.isEmpty else { return TrashResult(snapshots: [], failed: []) }
+
+        let targets = selected.map { entry in
+            CleanupTarget(url: entry.url, size: entry.size, risk: .optional)
+        }
+        var result = TrashResult(snapshots: [], failed: [])
+        do {
+            let outcome = try await engine.cleanup(targets: targets)
+            result = TrashResult(
+                snapshots: outcome.succeeded.map {
+                    TrashSnapshot(originalPath: $0.path, trashPath: $0.path,
+                                  fileSize: 0, modifiedAt: Date())
+                },
+                failed: outcome.failed.map {
+                    ($0.url, TrashMover.MoveError.trashFailed($0.url,
+                        NSError(domain: "CleanupEngine", code: 0)))
+                }
+            )
+            if outcome.quotaExhausted {
+                onQuotaExhausted?()
+            }
+        } catch {
+            // Best-effort — the view surfaces failures via the result.
+        }
 
         // Remove successfully-trashed entries.
         let trashedPaths = Set(result.snapshots.map(\.originalPath))

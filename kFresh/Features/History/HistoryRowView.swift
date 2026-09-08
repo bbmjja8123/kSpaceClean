@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Row view for a single uninstall record in the History list.
 ///

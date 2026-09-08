@@ -1,4 +1,6 @@
 import SwiftUI
+import AppCatalogCore
+import DesignSystem
 
 /// Confirmation sheet shown after the user taps "卸载" on
 /// ``AppDetailView``. Renders the 4-level residue risk classification

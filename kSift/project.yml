@@ -48,6 +48,15 @@ targets:
       ENABLE_HARDENED_RUNTIME: YES
     dependencies:
       - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: DesignSystem
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: Capabilities
       - target: kSiftFinderSync
     preBuildScripts:
       - name: "SwiftLint"
@@ -70,6 +79,9 @@ targets:
     dependencies:
       - target: kSift
       - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: DesignSystem
 
   kSiftFinderSync:
     type: app-extension
@@ -94,7 +106,21 @@ targets:
       SWIFT_INSTALL_OBJC_HEADER: NO
     dependencies:
       - package: kFoundation
+        product: DetectionCore
 
 packages:
   kFoundation:
-    path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation
+    path: ../kFoundation
+
+schemes:
+  kSift:
+    build:
+      targets:
+        kSift: all
+        kSiftTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - kSiftTests

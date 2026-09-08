@@ -1,6 +1,7 @@
 import CoreData
 import Foundation
 import UniformTypeIdentifiers
+import DetectionCore
 
 public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
     private let controller: PersistenceController
@@ -189,6 +190,13 @@ public actor DuplicateRepositoryCoreData: DuplicateRepositoryProtocol {
                 jpegFile: files.dropFirst().first ?? first,
                 exifMatch: false
             )
+        case .nameHeuristic:
+            return .nameHeuristic(
+                stem: first.url.lastPathComponent,
+                variantCount: files.count
+            )
+        case .similarVideo:
+            return .similarVideo(matchedFrameRatio: 0.7, frameCount: 8)
         }
     }
 }
