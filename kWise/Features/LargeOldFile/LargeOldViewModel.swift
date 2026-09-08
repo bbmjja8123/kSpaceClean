@@ -21,6 +21,52 @@ public final class LargeOldViewModel: ObservableObject {
     @Published public var config = LargeOldScanConfig()
     @Published public var sortBy: LargeOldSortField = .size
     @Published public var sortAscending = false
+    /// 文件列表 vs 文件夹聚合 (v2.3 Phase 5).
+    @Published public var displayMode: DisplayMode = .files
+
+    public enum DisplayMode: String, CaseIterable {
+        case files = "文件列表"
+        case folders = "文件夹聚合"
+    }
+
+    /// One aggregated folder — computed from the current entries, no extra
+    /// engine calls.
+    public struct FolderAggregate: Identifiable {
+        public let id: URL
+        public let url: URL
+        public let totalSize: Int64
+        public let fileCount: Int
+        public let oldestDate: Date?
+        /// Share of the grand total, for the usage bar.
+        public var fraction: Double { total > 0 ? Double(totalSize) / Double(total) : 0 }
+        var total: Int64
+
+        public init(id: URL, url: URL, totalSize: Int64, fileCount: Int,
+                    oldestDate: Date?, total: Int64) {
+            self.id = id
+            self.url = url
+            self.totalSize = totalSize
+            self.fileCount = fileCount
+            self.oldestDate = oldestDate
+            self.total = total
+        }
+    }
+
+    /// Folders aggregated from current entries (immediate parent grouping).
+    public var folderAggregates: [FolderAggregate] {
+        let byFolder = Dictionary(grouping: entries) { $0.url.deletingLastPathComponent() }
+        let total = entries.reduce(Int64(0)) { $0 + $1.size }
+        let aggs = byFolder.map { url, items in
+            FolderAggregate(
+                id: url, url: url,
+                totalSize: items.reduce(0) { $0 + $1.size },
+                fileCount: items.count,
+                oldestDate: items.map(\.modificationDate).min(),
+                total: total
+            )
+        }
+        return aggs.sorted { $0.totalSize > $1.totalSize }
+    }
 
     // MARK: Private
 
@@ -29,6 +75,8 @@ public final class LargeOldViewModel: ObservableObject {
     /// history and consumes free-tier quota, exactly like the main surface.
     private(set) var engine: CleanupEngine
     public var onQuotaExhausted: (() -> Void)?
+    /// Files skipped because a running process holds them open.
+    @Published public var skippedInUseMessage: String?
     private var scanTask: Task<Void, Never>?
 
     public init(engine: CleanupEngine? = nil) {
@@ -137,7 +185,21 @@ public final class LargeOldViewModel: ObservableObject {
         let selected = selectedEntries
         guard !selected.isEmpty else { return TrashResult(snapshots: [], failed: []) }
 
-        let targets = selected.map { entry in
+        // In-use guard (v2.3 Phase 5): files held open by a running process
+        // are skipped and reported, never silently failed (C-5).
+        let warningService = WarningDetectionService()
+        let warnItems = await warningService.detectWarnItems(for: selected.map(\.path))
+        let inUsePaths = Set(warnItems.flatMap(\.conflictingPaths))
+        let skippedInUse = selected.filter { inUsePaths.contains($0.path) }
+        let cleanable = selected.filter { !inUsePaths.contains($0.path) }
+        if !skippedInUse.isEmpty {
+            skippedInUseMessage = skippedInUse.map { $0.fileName }.prefix(3).joined(separator: "、")
+        } else {
+            skippedInUseMessage = nil
+        }
+        guard !cleanable.isEmpty else { return TrashResult(snapshots: [], failed: []) }
+
+        let targets = cleanable.map { entry in
             CleanupTarget(url: entry.url, size: entry.size, risk: .optional)
         }
         var result = TrashResult(snapshots: [], failed: [])

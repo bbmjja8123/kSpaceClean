@@ -13,26 +13,68 @@ struct SpaceMapView: View {
     @ObservedObject var viewModel: SpaceMapViewModel
     @State private var hoveredSegmentID: UUID?
 
+    @State private var showFolderPicker = false
+
     var body: some View {
         VStack(spacing: 0) {
             headerBar
             Divider()
-            GeometryReader { geo in
-                let side = min(geo.size.width, geo.size.height)
-                Group {
-                    switch viewModel.mode {
-                    case .sunburst:
-                        sunburst(size: side)
-                    case .treemap:
-                        treemap(size: side)
+            if viewModel.segments.isEmpty {
+                emptyFolderState
+            } else {
+                GeometryReader { geo in
+                    let side = min(geo.size.width, geo.size.height)
+                    Group {
+                        switch viewModel.mode {
+                        case .sunburst:
+                            sunburst(size: side)
+                        case .treemap:
+                            treemap(size: side)
+                        }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             footerBar
         }
         .background(Color.bgPrimary)
         .onAppear { viewModel.rebuild() }
+        .background(
+            Color.clear
+                .sheet(isPresented: $showFolderPicker) {
+                    FolderPickerView(isPresented: $showFolderPicker) { urls in
+                        if let url = urls.first {
+                            viewModel.bindFolderRoot(url)
+                        }
+                    }
+                }
+        )
+    }
+
+    /// 未扫描也有内容：选择任意（授权范围内的）文件夹可视化。
+    private var emptyFolderState: some View {
+        VStack(spacing: AppSpacing.lg) {
+            Spacer()
+            Image(systemName: "circle.hexagongrid.circle")
+                .font(.system(size: 56))
+                .foregroundColor(.brandPrimary)
+            Text("选择要可视化的文件夹")
+                .font(AppFont.title3)
+                .foregroundColor(.textPrimary)
+            Text("也可以先运行一次智能扫描，地图将展示全部分类。")
+                .font(AppFont.body)
+                .foregroundColor(.textSecondary)
+            Button("选择文件夹…") { showFolderPicker = true }
+                .buttonStyle(.borderedProminent)
+            if viewModel.hasSmartScanForest {
+                Button("显示智能扫描结果") {
+                    viewModel.clearFolderMode()
+                }
+                .buttonStyle(.bordered)
+            }
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     // MARK: - Header

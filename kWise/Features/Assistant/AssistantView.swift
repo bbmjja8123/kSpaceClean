@@ -6,9 +6,20 @@ import SwiftUI
 import DesignSystem
 
 struct AssistantView: View {
+    @Environment(\.appGraph) private var injectedGraph
     @StateObject private var viewModel = AssistantViewModel()
 
+    private var graph: AppGraph { injectedGraph ?? AppGraph.shared }
+
     var body: some View {
+        assistantBody
+            .onAppear {
+                // 实扫数据接线：largestFiles/categorySummary 回答基于真实扫描。
+                viewModel.scanResultsProvider = { graph.assistantScanVM }
+            }
+    }
+
+    private var assistantBody: some View {
         VStack(spacing: 0) {
             header
             Divider()

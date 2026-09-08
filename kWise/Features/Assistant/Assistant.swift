@@ -279,6 +279,9 @@ final class AssistantViewModel: ObservableObject {
         draft = ""
     }
 
+    /// Live scan results provider (wired to AppGraph by AssistantView).
+    var scanResultsProvider: (() -> ScanResultsViewModel?)?
+
     /// Pure-ish entry point for tests.
     func respond(to utterance: String) -> AssistantAnswer {
         guard let intent = matcher.match(utterance) else {
@@ -288,7 +291,8 @@ final class AssistantViewModel: ObservableObject {
                 suggestions: AssistantAnswerBuilder.exampleQuestions
             )
         }
-        return AssistantAnswerBuilder.build(intent: intent, scanVM: nil)
+        let scanVM = scanResultsProvider?()
+        return AssistantAnswerBuilder.build(intent: intent, scanVM: scanVM)
     }
 
     func askSuggestion(_ text: String) {

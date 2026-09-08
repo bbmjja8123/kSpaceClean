@@ -122,6 +122,8 @@ struct RootView: View {
             // 空间地图 renders the scan tree — rebind the roots provider now
             // that scanResultsViewModel exists (init-time capture would be nil).
             spaceMapViewModel.rebindRoots { scanResultsViewModel.categories }
+            // 清理助手 reads the live scan results for data-backed answers.
+            graph.assistantScanVM = scanResultsViewModel
             // Menu bar quick actions (C-8, v2.0 Phase 3): route through the
             // coordinator — the menu never mutates appState directly.
             graph.menuBarManager.onQuickScan = {

@@ -6,6 +6,7 @@ import CommonUtils
 struct LargeOldView: View {
     @StateObject private var viewModel: LargeOldViewModel
     @State private var showFolderPicker = false
+    @State private var previewURL: URL?
     @State private var sizePreset: SizePreset = .mb50
     @State private var agePreset: Int = 0
 
@@ -35,6 +36,7 @@ struct LargeOldView: View {
     var body: some View {
         VStack(spacing: 0) {
             configBar
+        .kwQuickLookPreview($previewURL)
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.top, AppSpacing.md)
                 .padding(.bottom, AppSpacing.sm)
@@ -149,10 +151,26 @@ struct LargeOldView: View {
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.vertical, AppSpacing.sm)
 
+            Picker("显示方式", selection: $viewModel.displayMode) {
+                ForEach(LargeOldViewModel.DisplayMode.allCases, id: \.self) { mode in
+                    Text(mode.rawValue).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 220)
+            .padding(.horizontal, AppSpacing.lg)
+
             ScrollView {
                 LazyVStack(spacing: 2) {
-                    ForEach(viewModel.entries) { entry in
-                        fileRow(entry)
+                    switch viewModel.displayMode {
+                    case .files:
+                        ForEach(viewModel.entries) { entry in
+                            fileRow(entry)
+                        }
+                    case .folders:
+                        ForEach(viewModel.folderAggregates) { folder in
+                            folderRow(folder)
+                        }
                     }
                 }
                 .padding(.horizontal, AppSpacing.lg)
@@ -163,6 +181,44 @@ struct LargeOldView: View {
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.vertical, AppSpacing.md)
         }
+    }
+
+    private func folderRow(_ folder: LargeOldViewModel.FolderAggregate) -> some View {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+            HStack(spacing: AppSpacing.sm) {
+                Image(systemName: "folder")
+                    .foregroundColor(.brandPrimary)
+                Text(Self.abbreviate(folder.url.path))
+                    .font(AppFont.body)
+                    .foregroundColor(.textPrimary)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                Spacer()
+                Text("\(folder.fileCount) 个文件")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+                Text(FileSizeFormatter.abbreviated(from: folder.totalSize))
+                    .font(AppFont.monoDigit)
+                    .foregroundColor(.textPrimary)
+            }
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Color.bgSecondary)
+                    Capsule()
+                        .fill(Color.brandPrimary.opacity(0.6))
+                        .frame(width: max(4, geo.size.width * folder.fraction))
+                }
+            }
+            .frame(height: 6)
+        }
+        .padding(AppSpacing.sm)
+        .background(Color.bgSecondary)
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.sm))
+    }
+
+    private static func abbreviate(_ path: String) -> String {
+        let home = NSHomeDirectory()
+        return path.hasPrefix(home) ? "~" + path.dropFirst(home.count) : path
     }
 
     // MARK: - Sorting Bar

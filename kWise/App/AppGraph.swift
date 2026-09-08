@@ -29,6 +29,9 @@ public final class AppGraph: ObservableObject {
     /// Observers fanned out after each cleanup (quota ledger today; streaks,
     /// monthly report and widget snapshot join in later phases).
     public let eventSinks: [CleanupEventSink]
+    /// Live scan results the assistant reads for data-backed answers.
+    /// Weak — RootView owns the scan VM's lifetime.
+    weak var assistantScanVM: ScanResultsViewModel?
 
     // MARK: Shared instance for App Intents / widget intents
 
