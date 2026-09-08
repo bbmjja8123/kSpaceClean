@@ -152,7 +152,7 @@ final class DiagnosticsExporterTests: XCTestCase {
         XCTAssertEqual(url, destination)
         XCTAssertEqual(panel.promptCount, 1)
         XCTAssertNotNil(panel.capturedFilename)
-        XCTAssertTrue(panel.capturedFilename?.hasPrefix("kWatch-Diagnostics-") == true)
+        XCTAssertTrue(panel.capturedFilename?.hasPrefix("kMonitor-Diagnostics-") == true)
         XCTAssertTrue(FileManager.default.fileExists(atPath: destination.path))
     }
 
@@ -198,7 +198,7 @@ final class DiagnosticsExporterTests: XCTestCase {
 
     private func tempURL(suffix: String = "json") -> URL {
         let directory = FileManager.default.temporaryDirectory
-            .appendingPathComponent("kWatch.diagnostics.\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("kMonitor.diagnostics.\(UUID().uuidString)", isDirectory: true)
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         return directory.appendingPathComponent("export.\(suffix)")
     }

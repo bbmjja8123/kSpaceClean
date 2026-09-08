@@ -3,7 +3,7 @@ import XCTest
 
 final class SnapshotWriterTests: XCTestCase {
     private func makeTempDirectory() -> URL {
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("kWatch.snapshot.tests.\(UUID().uuidString)", isDirectory: true)
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("kMonitor.snapshot.tests.\(UUID().uuidString)", isDirectory: true)
         try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         return directory
     }
