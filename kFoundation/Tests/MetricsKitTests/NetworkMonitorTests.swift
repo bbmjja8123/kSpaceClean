@@ -11,7 +11,7 @@ final class StubNetworkStatsProvider: NetworkStatsProvider, @unchecked Sendable 
     }
 }
 
-final class TestClock: KWatchClock, @unchecked Sendable {
+final class TestClock: KMonitorClock, @unchecked Sendable {
     private let times: [TimeInterval]
     private var index = 0
     init(_ times: [TimeInterval]) { self.times = times }

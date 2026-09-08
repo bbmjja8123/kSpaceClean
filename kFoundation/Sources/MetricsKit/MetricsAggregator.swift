@@ -12,7 +12,7 @@ import Foundation
 public actor MetricsAggregator {
     private let monitors: [any MetricMonitor]
     private let strategy: SamplingStrategy
-    private let clock: any KWatchClock
+    private let clock: any KMonitorClock
     private var continuations: [UUID: AsyncStream<MetricSnapshot>.Continuation] = [:]
     private var task: Task<Void, Never>?
 
@@ -29,7 +29,7 @@ public actor MetricsAggregator {
 
     public init(monitors: [any MetricMonitor],
                 strategy: SamplingStrategy = .init(),
-                clock: any KWatchClock = SystemClock()) {
+                clock: any KMonitorClock = SystemClock()) {
         self.monitors = monitors
         self.strategy = strategy
         self.clock = clock

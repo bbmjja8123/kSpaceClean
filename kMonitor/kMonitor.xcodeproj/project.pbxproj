@@ -1,0 +1,1490 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05824E026CFB065796652C40 /* StartMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6E6F5EA23C67F578F24D4 /* StartMonitoringIntent.swift */; };
+		06A55E5EF0201B271E0C6FF2 /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1D379AD61F390A1853D49DA5 /* MonitorCore */; };
+		0A07BD438D84E45CF5DDE1AA /* ExportDiagnosticsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6B0AF378062F9E1BADD8C9 /* ExportDiagnosticsIntent.swift */; };
+		0ABDD7DE1BBE5E45C05C13E5 /* kWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5240ECC3F0126FD0803CA257 /* kWatchApp.swift */; };
+		0CA551EF9A0FCFC743D00E59 /* ShowNetworkRateIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64F74A59F19BF4168A35E08 /* ShowNetworkRateIntent.swift */; };
+		118096DC3165005019B5CE4E /* kMonitorIntents.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 14D8A8DCF96FA0D6E68F74AD /* kMonitorIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		14A49DEDF69C51A16C19CFF9 /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = F83CA6BD2E7CA2FBBAC6E74B /* MetricsKit */; };
+		1783C1D549BE815C248E6F13 /* RestorePurchaseStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ED34BD76D676254E33DE4C /* RestorePurchaseStubs.swift */; };
+		1D2AFC3E0204DA53D117983C /* PerMetricTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F109DCAF822E0D87B82C820 /* PerMetricTabView.swift */; };
+		1F716C5D22E6B1D8DF6E22A4 /* MenuBarCustomizePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67924BFA1D97B8AEFD8DAB5 /* MenuBarCustomizePage.swift */; };
+		2093888AF81669C7AD7F9D78 /* ShowNetworkRateIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64F74A59F19BF4168A35E08 /* ShowNetworkRateIntent.swift */; };
+		214D72D581BA3D4DFA942E34 /* SettingsViewModelRestoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43CEEB6EC8687396CA60E28 /* SettingsViewModelRestoreTests.swift */; };
+		21CE3BFDADD80E56CFF2FFD3 /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1A5EC381334242F15D3C93 /* DashboardViewModelTests.swift */; };
+		231D7FABF1F97869F63F11EF /* AppShortcutsIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1010711C30CD298BD496D7 /* AppShortcutsIntegrationTests.swift */; };
+		237F76B2D4F0E38FDC760A3A /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 4B24F9596D5422A695C95B6F /* DesignSystem */; };
+		28FCE6125CD24E820E99426A /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A011EA5511BBED82F710DF94 /* AlertsView.swift */; };
+		29A55F892D3B25CBD28491B4 /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B0323583B8B5AD33D6F9E9 /* StoreManagerTests.swift */; };
+		2C81684B44C81549694323E3 /* LiveIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD665E077FC1788E7F302691 /* LiveIntentService.swift */; };
+		2CCFFDFF8748BD27E223FC49 /* KWatchSpotlightIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CCADCCB91BBF7E174D0F22 /* KWatchSpotlightIndexer.swift */; };
+		2DC4EDEDF85E510506D4BC31 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F944076E988AA5A800F94DD0 /* SettingsViewModel.swift */; };
+		3083760836C6838EA0381618 /* CoreDataStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00D177BF5A99B6F38F6FFAA /* CoreDataStackTests.swift */; };
+		3100FE287476E9AF8C49F2E1 /* MetricCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83A571ADFFFFD02384A22F8 /* MetricCardViewModel.swift */; };
+		3172043C2BA65E6507455C53 /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6989F8A2842E33A6F975A4DF /* WidgetBundle.swift */; };
+		31CF4937E498510ED89E8C68 /* CompletePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1607049087E94845142C2E /* CompletePage.swift */; };
+		327A33AC28F0D226EB32E5A3 /* KWatchPurchaseJourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDBE8178EBFE5D37A76B332 /* KWatchPurchaseJourneyTests.swift */; };
+		346F786C0F5AC841C3F2D849 /* AlertsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3F588CD259B940E63DB96D /* AlertsViewModel.swift */; };
+		35361C86EECE8F04AF941C97 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB087A60354BB08511B4A583 /* SettingsViewModelTests.swift */; };
+		381B611E84E11870150BFD42 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEEB9F7C19F88515C83C9DE /* PaywallViewModel.swift */; };
+		39112568CFA815D620A64E2A /* MenuBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44669DE7CAB43C06F15D9C16 /* MenuBarSettingsView.swift */; };
+		3C73B51881EB77125D22A779 /* SystemStatusWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64565067BC9E718BD71C9024 /* SystemStatusWidget.swift */; };
+		3F9ACDD523D1E10E2C3C4F4C /* ProcessesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0049336F3FE479D730B8C651 /* ProcessesViewModel.swift */; };
+		401FF00D804C8BD96CE8FFB5 /* MetricDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F76987F0E575405507F83FD /* MetricDetailView.swift */; };
+		406E3E6A84693AB7886DBAA2 /* ProcessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBAD218D9479D2B322511BB /* ProcessRowView.swift */; };
+		4271D71DD3C4172A148765A3 /* PurchaseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE94729890845CD1E9066A /* PurchaseState.swift */; };
+		4493EFC5BD4D557D49EF3573 /* TrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57439E92FBDB11950B008C34 /* TrendChart.swift */; };
+		463DF653A6EB10F48076119B /* StopMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E3AADC2633A8D3070C890 /* StopMonitoringIntent.swift */; };
+		4730EACC1F51CE38C341CA8A /* ProcessesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1D3E618B96EEFD6D3BBD9C /* ProcessesViewModelTests.swift */; };
+		49C3AE8D9C0BC65C10AF06DC /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD90E56BF68DADB3A6FAA4E /* MonitorCore */; };
+		49E2EEA4B5881B24E98259DB /* MetricDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C02E2F1C5E20E879E15939 /* MetricDetailViewModel.swift */; };
+		4A315AC5EF63D9E7F7293DC0 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5550A591D050CB1ED1A802 /* CoreDataStack.swift */; };
+		4AA23868ACA8815A69BD7DDC /* MultiIconStatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E4B08F02C15E6FFD6C98F /* MultiIconStatusItemController.swift */; };
+		4B0F431842277AF49AD1756F /* PauseMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99816D23DCAC34EF96A4BB3 /* PauseMonitoringIntent.swift */; };
+		4B62E0167BBA2BACDA3A3F4D /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB50DBDAE29990DE6D3015BB /* MenuBarView.swift */; };
+		4D4AD5B267FB20465E344E82 /* SubscriptionTermsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3AD27DF768711E895E79C /* SubscriptionTermsTests.swift */; };
+		4D96C578A9EB9ED403CF7387 /* PaywallViewModelTermsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4508AD7749F0CFD5C7AD62 /* PaywallViewModelTermsTests.swift */; };
+		50715292D94773CFE4C1E507 /* WidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9ADC05EAE1C4CA55BF9640 /* WidgetEntry.swift */; };
+		52333485AB09620EE1056266 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 87C603992918B99175A1CC8C /* PrivacyInfo.xcprivacy */; };
+		54BD460AA32ED0FC54135B75 /* MenuBarIconTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510FF4BD2097D55D6E926BF5 /* MenuBarIconTheme.swift */; };
+		58DECA907D128A04F94042D9 /* KWatchAppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99E4A99C9CEC14B8B7EB73 /* KWatchAppShortcuts.swift */; };
+		59BAE82A40F414B0B394895E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4909EEF4232E4B07601E07 /* OnboardingView.swift */; };
+		5CE775D4D75D99ACE0CCBDAD /* AppContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1764AD4BF236A159870FEE7A /* AppContainerTests.swift */; };
+		5D489F1B9E404C00EB5142B1 /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E917D0FED1ECFB51FBB4B09 /* OnboardingViewModelTests.swift */; };
+		5DA4F91740687619BC86D429 /* WidgetReloadTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C63ADE1BE8BFD39DD51119D /* WidgetReloadTriggerTests.swift */; };
+		5FFD1093567E8569B25648AB /* ProIntroPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED7331C75EB024DECF9E85F /* ProIntroPage.swift */; };
+		619F98CFCF705584748DC9DB /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72DD2DF41D5D4C070CD831E /* DashboardViewModel.swift */; };
+		634B70C9584AC10725F01898 /* MenuBarIconThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0419CC98BE6003DAA32D0E5 /* MenuBarIconThemeTests.swift */; };
+		63F689DF2EF1482A518A9F8F /* IntentParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AAC130A42320AF4A32DD4A /* IntentParameterTests.swift */; };
+		6620C0DCCF42E9E62E58A4B8 /* IntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3E10883A83D7D389A32BD /* IntentTests.swift */; };
+		668D05A5B40D041567FBEA31 /* SendableBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B507DBB19B873D9E140E0C /* SendableBox.swift */; };
+		67D3F12EEDC935E5A4255DD2 /* AppShortcutsVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F4E247CA8B47CC50AE27D /* AppShortcutsVerificationTests.swift */; };
+		68B650DB502B167529E1856D /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3375437C0532B3D5168FA678 /* MonitorCore */; };
+		6E61DABFA60F9F536F0CB89F /* StubIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4310C0334372418A4DBB270E /* StubIntentService.swift */; };
+		70C917381DEC698BDBDD02B2 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52925E9952F75FF6EC474E46 /* StoreManager.swift */; };
+		74FB66B526D3965076B8B76D /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B009E5B312AA2363BFE2E8 /* AppContainer.swift */; };
+		792F3E0864E070271D4A5BBE /* AlertRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA70BF4D659EEC960CF51FE6 /* AlertRepository.swift */; };
+		796C454815C5794A63121E32 /* AlertsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA598A608BA32CD627304A /* AlertsViewModelTests.swift */; };
+		7A84E1181ACD18503F4D2DE4 /* MetricSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE3542BCC2357020F08309EA /* MetricSettingsView.swift */; };
+		8092FCCD5802659F7F3AB779 /* kMonitor.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 55680A9AC4E14F7316C11C99 /* kMonitor.xcodeproj */; };
+		80BF72015691ACA397D27827 /* AppWindowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8C82B6EC6DADBB974EF4A7 /* AppWindowRouter.swift */; };
+		82EA19C46A40BDA17DF5CB1B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C363023F0D780EC1739E6D89 /* AppCoordinator.swift */; };
+		837F5DE7DFD1495D90E8E0F1 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = D8B39567082CD67ACD220E10 /* DesignSystem */; };
+		83F0741193FEDA1833E1595A /* MetricCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84459328BDF4E0702C0F5B83 /* MetricCardView.swift */; };
+		8A0CAB8655CE2A5AECD86546 /* LiveAppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7055B8720EE34EE2AD71F765 /* LiveAppContainer.swift */; };
+		8D4C835DFF04E37190CDF68E /* HistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B363F26F34745A85E6B07E34 /* HistoryRepository.swift */; };
+		8EDAE368F09D6FD584BD0863 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E401574AFD02B98E6919FD5A /* AboutView.swift */; };
+		8F24351B43475C45521EAD39 /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 756E1CDB4C3D9B3E5052E53A /* MetricsKit */; };
+		912F0259F653185CBCD5E8A2 /* ProcessesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099EF1EC1B7850255670FE88 /* ProcessesView.swift */; };
+		923EE2EFB8172110EB06D991 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E247E081000B1EAFF6CA0ED /* DashboardView.swift */; };
+		94635CB9BBD6054BB5C0D38E /* StoreKitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188C2A0300FA1DC533E56AA8 /* StoreKitClient.swift */; };
+		9534BBC58CF96949758E78E7 /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA22CD4F6F1A8EDE5DF7E19 /* PurchaseButton.swift */; };
+		95E25703AD231D7EDAE74901 /* MetricMenuRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ECC25D65569B0E109FB4B /* MetricMenuRow.swift */; };
+		96B912A5573EC082ED3BF007 /* AlertRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0DA64A94BA071DF3DA8B8C /* AlertRepositoryTests.swift */; };
+		9704266ECFDF07C0034812A9 /* WelcomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C3F30CE599E2F84902F625 /* WelcomePage.swift */; };
+		977FE58B215640B653F856FF /* TestAppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69DB98C77168E901610695E /* TestAppContainer.swift */; };
+		988A54B9F47776D7F0042F0E /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8043926B2BE4A4435E2ABA4 /* HistoryViewModelTests.swift */; };
+		9DD13AFA351D267D82DF50A7 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444FCD88325B02BB7659A0DE /* HistoryViewModel.swift */; };
+		9ECC21862EB974FFB71DEE82 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BB563FFE38AF54E85A1EB1 /* AppState.swift */; };
+		A1813C9F43CF2C18B77CDF57 /* LiveIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD665E077FC1788E7F302691 /* LiveIntentService.swift */; };
+		A21F92EF4B3DA7E1DED4D945 /* StartMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6E6F5EA23C67F578F24D4 /* StartMonitoringIntent.swift */; };
+		A47AFDFBAEDF5ACBF4B5DD27 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A2503C7BDD6461ABA110DB /* OnboardingViewModel.swift */; };
+		A5CB5D034E560A8D87BF9407 /* PreferencesRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA3D5D4D987D411EAD970F /* PreferencesRepositoryTests.swift */; };
+		A67EF780A736C9897B7BE0E2 /* PauseMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99816D23DCAC34EF96A4BB3 /* PauseMonitoringIntent.swift */; };
+		A6D4377CB5E81C123CB74DED /* WidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0A7ABFA7B4970717E529C0 /* WidgetViews.swift */; };
+		ABB65C91BD8D23EADA602B00 /* ManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345820821DFFF9E65DA2A606 /* ManagedObjects.swift */; };
+		AD125E6489228959D8A0ED3B /* NotificationSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0967706276B108ACD61DED8E /* NotificationSchedulerTests.swift */; };
+		AD3F16EE92B1E6BC8BAAB8FB /* generate_project.py in Resources */ = {isa = PBXBuildFile; fileRef = 557CFB4D9A1E63B89650F918 /* generate_project.py */; };
+		AFC1A5CB5ED24B3AC262FEC9 /* QuickToggleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9A03056FE6FAAAA06604EE /* QuickToggleBar.swift */; };
+		B221897935CE4A85F6EB9444 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068949ED09BF9EBFAA928917 /* AppearanceSettingsView.swift */; };
+		B24DE081B034EF483A4266ED /* OpenDashboardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72132ADC175B2911789244 /* OpenDashboardIntent.swift */; };
+		B328EECE778D39A89F273A7D /* ShowTopProcessesIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9846EC6CB2D4B3B7CC5E2 /* ShowTopProcessesIntent.swift */; };
+		B3E6D28E888AEE1C0FF3EA27 /* AlertEditorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE47F244A0B5AE6D4F7A808 /* AlertEditorViewModelTests.swift */; };
+		B5476C09E2D5EFE2F524B85B /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 9135FAE79DE43C16B7051788 /* DesignSystem */; };
+		B59EA169AFA826099915443A /* OpenDashboardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72132ADC175B2911789244 /* OpenDashboardIntent.swift */; };
+		B70579CFC817CBA2EC1F99EF /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 745FABC2E256B729BD879253 /* MonitorCore */; };
+		B756A9826890398B92E8E648 /* PreferencesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E676158BFA43F47CEED534D /* PreferencesRepository.swift */; };
+		B9DA8101E928C212EF84D6E4 /* QuickToggleBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968B27DE3B7059FF66C8CED4 /* QuickToggleBarTests.swift */; };
+		BD9A161DC40556A50849690A /* QueryMetricIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F1E7A94686A9FE4786BE0 /* QueryMetricIntent.swift */; };
+		C19EBAB9E5E2EEF1E2CCEE93 /* ShowDiskUsageIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B2401A687CC7F5BDD871C0 /* ShowDiskUsageIntent.swift */; };
+		C35F6CCF46CF3F24B889EB27 /* MetricDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31578520202007D6206B34 /* MetricDetailViewModelTests.swift */; };
+		C4609D1D53DF5FA3B0E56A71 /* IntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFAF9E53223AA2EDA66CF61 /* IntentService.swift */; };
+		C6887A7F7D526DBF56803566 /* ci.yml in Resources */ = {isa = PBXBuildFile; fileRef = 51AD7B6E67C2BCFB8E3A7562 /* ci.yml */; };
+		C7C92B8A0F0C2882CB5DB5F5 /* ControlWidgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAB9E483A5F2E0A4E85E256 /* ControlWidgetTests.swift */; };
+		CBD57311CF34C66E00D61904 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B265FE899B04A5FF45FBFB0D /* HistoryView.swift */; };
+		CF06B4890A33749AC301188D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A3F29D52C10D49FA35DC9D /* SettingsView.swift */; };
+		CF0FC1F1C75839C0FBE24BA9 /* QueryMetricIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F1E7A94686A9FE4786BE0 /* QueryMetricIntent.swift */; };
+		D06B00027F83E8C726A6A5EE /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7E9C757ECD216E0C0D068A /* PaywallView.swift */; };
+		D1398DA28CA6D1294E547DA1 /* MetricCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01493903A7FCCB3D0AEB1AA9 /* MetricCardViewModelTests.swift */; };
+		D236A0565D492737F0D8E38B /* SubscriptionTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40132F16AEBA524F469D0E9 /* SubscriptionTerms.swift */; };
+		D3EEA26680FEDADEDE46A0B8 /* StoreKitTestConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = B22F99CF82A2FC099E538598 /* StoreKitTestConfiguration.storekit */; };
+		D526668773E8536143171C8D /* MenuBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702286A4A2EFB56B0BE9E532 /* MenuBarViewModelTests.swift */; };
+		D58E93699E868FB03E8EE19A /* KWatchAppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99E4A99C9CEC14B8B7EB73 /* KWatchAppShortcuts.swift */; };
+		D590B31F1F1DF0304094CF3B /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 134D080F708572CF90717769 /* MetricsKit */; };
+		D5DBA857406B7385A3E146F7 /* StubIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4310C0334372418A4DBB270E /* StubIntentService.swift */; };
+		D77337F3ABB6DA878A956A68 /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F184A454A90B36506E266E33 /* AppCoordinatorTests.swift */; };
+		D86BF09054581F33B484C836 /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = AB9242154E78AE6ABB5D1339 /* MetricsKit */; };
+		DB922459EA7FFB4B1FD680DC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 381861576316C222412A69C9 /* DesignSystem */; };
+		DF3C728915A268058757AE25 /* RepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B79CCAA8EB0432601F5B08 /* RepositoryTests.swift */; };
+		E2D0CD3AD15CBD1A48A7D511 /* ShowDiskUsageIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B2401A687CC7F5BDD871C0 /* ShowDiskUsageIntent.swift */; };
+		E5DB62B53A2B97E52A2393EF /* IntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFAF9E53223AA2EDA66CF61 /* IntentService.swift */; };
+		E6CA46ED7E8DCED61922B7AF /* kWatchAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308E396103809EC897635003 /* kWatchAppDelegate.swift */; };
+		E6FAC8D954F71CEE12905E99 /* ShowTopProcessesIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9846EC6CB2D4B3B7CC5E2 /* ShowTopProcessesIntent.swift */; };
+		ED5FE2C91AC3F452F0BA0ECF /* AlertEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D394A1E041E6E344A7261B7E /* AlertEditorView.swift */; };
+		EDF1DE632317FDB8F0F44CDB /* WidgetSnapshotProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B34678188BD560138CA989 /* WidgetSnapshotProvider.swift */; };
+		EF5CC447FD72ABEB36E59612 /* MenuBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AD6ACF75BA6770A316FD53 /* MenuBarViewModel.swift */; };
+		F245F6769786B58342FD86D7 /* InteractiveWidgetIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BE75DF9A0D4059D232423 /* InteractiveWidgetIntentTests.swift */; };
+		F5CEDB09A7EC4861194F95CF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 97F9111526EC3FF428BA065E /* Localizable.xcstrings */; };
+		F9ADEA904394DCD8B534F2A3 /* KWatchLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5589C0298E51A5CFF56324ED /* KWatchLaunchTests.swift */; };
+		FA5C6F5FA856EEB4D1D72EF6 /* StopMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34E3AADC2633A8D3070C890 /* StopMonitoringIntent.swift */; };
+		FC58FF07B08C89A18DC27156 /* ExportDiagnosticsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6B0AF378062F9E1BADD8C9 /* ExportDiagnosticsIntent.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0FD190C5A31D057335C44D04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE49A5A8E914E84B8FBD5977 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9E63C8A36E1AD92E2D65C5BB;
+			remoteInfo = kMonitor;
+		};
+		1D11E76E58C25C7E97D26FF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE49A5A8E914E84B8FBD5977 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9E63C8A36E1AD92E2D65C5BB;
+			remoteInfo = kMonitor;
+		};
+		9692D050B0EF7D7A6B534DCF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE49A5A8E914E84B8FBD5977 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BC6838369F404BEF3AAB789C;
+			remoteInfo = kMonitorIntents;
+		};
+		99DBCD5150F3CA1C59C3FE2C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE49A5A8E914E84B8FBD5977 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BC6838369F404BEF3AAB789C;
+			remoteInfo = kMonitorIntents;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A7FC4B64B65BB28E88A443E6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				118096DC3165005019B5CE4E /* kMonitorIntents.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0049336F3FE479D730B8C651 /* ProcessesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessesViewModel.swift; sourceTree = "<group>"; };
+		01493903A7FCCB3D0AEB1AA9 /* MetricCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCardViewModelTests.swift; sourceTree = "<group>"; };
+		01A2503C7BDD6461ABA110DB /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		068949ED09BF9EBFAA928917 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
+		0967706276B108ACD61DED8E /* NotificationSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSchedulerTests.swift; sourceTree = "<group>"; };
+		099EF1EC1B7850255670FE88 /* ProcessesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessesView.swift; sourceTree = "<group>"; };
+		09ED34BD76D676254E33DE4C /* RestorePurchaseStubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseStubs.swift; sourceTree = "<group>"; };
+		0D1D3E618B96EEFD6D3BBD9C /* ProcessesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessesViewModelTests.swift; sourceTree = "<group>"; };
+		0D5550A591D050CB1ED1A802 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		0E247E081000B1EAFF6CA0ED /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		14D8A8DCF96FA0D6E68F74AD /* kMonitorIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = kMonitorIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1764AD4BF236A159870FEE7A /* AppContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainerTests.swift; sourceTree = "<group>"; };
+		188C2A0300FA1DC533E56AA8 /* StoreKitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitClient.swift; sourceTree = "<group>"; };
+		1A0DA64A94BA071DF3DA8B8C /* AlertRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertRepositoryTests.swift; sourceTree = "<group>"; };
+		1A7E9C757ECD216E0C0D068A /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		1A99E4A99C9CEC14B8B7EB73 /* KWatchAppShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchAppShortcuts.swift; sourceTree = "<group>"; };
+		1CE3AD27DF768711E895E79C /* SubscriptionTermsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTermsTests.swift; sourceTree = "<group>"; };
+		1D6B0AF378062F9E1BADD8C9 /* ExportDiagnosticsIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDiagnosticsIntent.swift; sourceTree = "<group>"; };
+		1D6F1E7A94686A9FE4786BE0 /* QueryMetricIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryMetricIntent.swift; sourceTree = "<group>"; };
+		1E676158BFA43F47CEED534D /* PreferencesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesRepository.swift; sourceTree = "<group>"; };
+		1F109DCAF822E0D87B82C820 /* PerMetricTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerMetricTabView.swift; sourceTree = "<group>"; };
+		213CD280943D6503A5871A15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		23C3F30CE599E2F84902F625 /* WelcomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomePage.swift; sourceTree = "<group>"; };
+		2AE47F244A0B5AE6D4F7A808 /* AlertEditorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertEditorViewModelTests.swift; sourceTree = "<group>"; };
+		308E396103809EC897635003 /* kWatchAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kWatchAppDelegate.swift; sourceTree = "<group>"; };
+		345820821DFFF9E65DA2A606 /* ManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjects.swift; sourceTree = "<group>"; };
+		36B0323583B8B5AD33D6F9E9 /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
+		38B34678188BD560138CA989 /* WidgetSnapshotProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotProvider.swift; sourceTree = "<group>"; };
+		3B1607049087E94845142C2E /* CompletePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletePage.swift; sourceTree = "<group>"; };
+		3F9E4B08F02C15E6FFD6C98F /* MultiIconStatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiIconStatusItemController.swift; sourceTree = "<group>"; };
+		41B2401A687CC7F5BDD871C0 /* ShowDiskUsageIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDiskUsageIntent.swift; sourceTree = "<group>"; };
+		4310C0334372418A4DBB270E /* StubIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubIntentService.swift; sourceTree = "<group>"; };
+		444FCD88325B02BB7659A0DE /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		44669DE7CAB43C06F15D9C16 /* MenuBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarSettingsView.swift; sourceTree = "<group>"; };
+		46CE94729890845CD1E9066A /* PurchaseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseState.swift; sourceTree = "<group>"; };
+		4C1ECC25D65569B0E109FB4B /* MetricMenuRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricMenuRow.swift; sourceTree = "<group>"; };
+		510FF4BD2097D55D6E926BF5 /* MenuBarIconTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconTheme.swift; sourceTree = "<group>"; };
+		51AD7B6E67C2BCFB8E3A7562 /* ci.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = ci.yml; sourceTree = "<group>"; };
+		5240ECC3F0126FD0803CA257 /* kWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kWatchApp.swift; sourceTree = "<group>"; };
+		52925E9952F75FF6EC474E46 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		55680A9AC4E14F7316C11C99 /* kMonitor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = kMonitor.xcodeproj; sourceTree = "<group>"; };
+		557CFB4D9A1E63B89650F918 /* generate_project.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = generate_project.py; sourceTree = "<group>"; };
+		5589C0298E51A5CFF56324ED /* KWatchLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchLaunchTests.swift; sourceTree = "<group>"; };
+		57439E92FBDB11950B008C34 /* TrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendChart.swift; sourceTree = "<group>"; };
+		5A3F588CD259B940E63DB96D /* AlertsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModel.swift; sourceTree = "<group>"; };
+		5E1A5EC381334242F15D3C93 /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
+		5ED7331C75EB024DECF9E85F /* ProIntroPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProIntroPage.swift; sourceTree = "<group>"; };
+		61AD6ACF75BA6770A316FD53 /* MenuBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewModel.swift; sourceTree = "<group>"; };
+		62106E0598058A200465C1FE /* kMonitorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kMonitorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		64565067BC9E718BD71C9024 /* SystemStatusWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemStatusWidget.swift; sourceTree = "<group>"; };
+		64B507DBB19B873D9E140E0C /* SendableBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendableBox.swift; sourceTree = "<group>"; };
+		6989F8A2842E33A6F975A4DF /* WidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBundle.swift; sourceTree = "<group>"; };
+		69C02E2F1C5E20E879E15939 /* MetricDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDetailViewModel.swift; sourceTree = "<group>"; };
+		6DA22CD4F6F1A8EDE5DF7E19 /* PurchaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseButton.swift; sourceTree = "<group>"; };
+		6F76987F0E575405507F83FD /* MetricDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDetailView.swift; sourceTree = "<group>"; };
+		6F9A03056FE6FAAAA06604EE /* QuickToggleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickToggleBar.swift; sourceTree = "<group>"; };
+		702286A4A2EFB56B0BE9E532 /* MenuBarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewModelTests.swift; sourceTree = "<group>"; };
+		7055B8720EE34EE2AD71F765 /* LiveAppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAppContainer.swift; sourceTree = "<group>"; };
+		74BB563FFE38AF54E85A1EB1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		754C3AA716BF76E132072346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		78A3F29D52C10D49FA35DC9D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7B1ADF71DA24B4E2FA626D6F /* kMonitorWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = kMonitorWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D0A7ABFA7B4970717E529C0 /* WidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViews.swift; sourceTree = "<group>"; };
+		82AAC130A42320AF4A32DD4A /* IntentParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParameterTests.swift; sourceTree = "<group>"; };
+		84459328BDF4E0702C0F5B83 /* MetricCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCardView.swift; sourceTree = "<group>"; };
+		87C603992918B99175A1CC8C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		8987E368E7044BAA2CB1C599 /* kMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kMonitor.entitlements; sourceTree = "<group>"; };
+		8A72132ADC175B2911789244 /* OpenDashboardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenDashboardIntent.swift; sourceTree = "<group>"; };
+		8A8C82B6EC6DADBB974EF4A7 /* AppWindowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWindowRouter.swift; sourceTree = "<group>"; };
+		8C31578520202007D6206B34 /* MetricDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDetailViewModelTests.swift; sourceTree = "<group>"; };
+		8C63ADE1BE8BFD39DD51119D /* WidgetReloadTriggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetReloadTriggerTests.swift; sourceTree = "<group>"; };
+		8D4909EEF4232E4B07601E07 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		968B27DE3B7059FF66C8CED4 /* QuickToggleBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickToggleBarTests.swift; sourceTree = "<group>"; };
+		97F9111526EC3FF428BA065E /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		9AFAF9E53223AA2EDA66CF61 /* IntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentService.swift; sourceTree = "<group>"; };
+		9DB9846EC6CB2D4B3B7CC5E2 /* ShowTopProcessesIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowTopProcessesIntent.swift; sourceTree = "<group>"; };
+		9E917D0FED1ECFB51FBB4B09 /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
+		A00D177BF5A99B6F38F6FFAA /* CoreDataStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStackTests.swift; sourceTree = "<group>"; };
+		A011EA5511BBED82F710DF94 /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
+		A40132F16AEBA524F469D0E9 /* SubscriptionTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTerms.swift; sourceTree = "<group>"; };
+		A78F4E247CA8B47CC50AE27D /* AppShortcutsVerificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShortcutsVerificationTests.swift; sourceTree = "<group>"; };
+		AE3542BCC2357020F08309EA /* MetricSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricSettingsView.swift; sourceTree = "<group>"; };
+		AF1010711C30CD298BD496D7 /* AppShortcutsIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShortcutsIntegrationTests.swift; sourceTree = "<group>"; };
+		AFD6E6F5EA23C67F578F24D4 /* StartMonitoringIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMonitoringIntent.swift; sourceTree = "<group>"; };
+		B1B009E5B312AA2363BFE2E8 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		B22F99CF82A2FC099E538598 /* StoreKitTestConfiguration.storekit */ = {isa = PBXFileReference; path = StoreKitTestConfiguration.storekit; sourceTree = "<group>"; };
+		B265FE899B04A5FF45FBFB0D /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		B2AA598A608BA32CD627304A /* AlertsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModelTests.swift; sourceTree = "<group>"; };
+		B363F26F34745A85E6B07E34 /* HistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepository.swift; sourceTree = "<group>"; };
+		B72DD2DF41D5D4C070CD831E /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		B8043926B2BE4A4435E2ABA4 /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
+		BA70BF4D659EEC960CF51FE6 /* AlertRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertRepository.swift; sourceTree = "<group>"; };
+		BB087A60354BB08511B4A583 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
+		BCBAD218D9479D2B322511BB /* ProcessRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRowView.swift; sourceTree = "<group>"; };
+		BDAB9E483A5F2E0A4E85E256 /* ControlWidgetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlWidgetTests.swift; sourceTree = "<group>"; };
+		C34E3AADC2633A8D3070C890 /* StopMonitoringIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopMonitoringIntent.swift; sourceTree = "<group>"; };
+		C363023F0D780EC1739E6D89 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		C4003825A70BA9DF389BA972 /* kMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB50DBDAE29990DE6D3015BB /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		CBEEB9F7C19F88515C83C9DE /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
+		CD2BE75DF9A0D4059D232423 /* InteractiveWidgetIntentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveWidgetIntentTests.swift; sourceTree = "<group>"; };
+		CD665E077FC1788E7F302691 /* LiveIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveIntentService.swift; sourceTree = "<group>"; };
+		D0419CC98BE6003DAA32D0E5 /* MenuBarIconThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconThemeTests.swift; sourceTree = "<group>"; };
+		D394A1E041E6E344A7261B7E /* AlertEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertEditorView.swift; sourceTree = "<group>"; };
+		D5B79CCAA8EB0432601F5B08 /* RepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTests.swift; sourceTree = "<group>"; };
+		D67924BFA1D97B8AEFD8DAB5 /* MenuBarCustomizePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarCustomizePage.swift; sourceTree = "<group>"; };
+		D83A571ADFFFFD02384A22F8 /* MetricCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCardViewModel.swift; sourceTree = "<group>"; };
+		DEDBE8178EBFE5D37A76B332 /* KWatchPurchaseJourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchPurchaseJourneyTests.swift; sourceTree = "<group>"; };
+		E401574AFD02B98E6919FD5A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		E43CEEB6EC8687396CA60E28 /* SettingsViewModelRestoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelRestoreTests.swift; sourceTree = "<group>"; };
+		E69DB98C77168E901610695E /* TestAppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppContainer.swift; sourceTree = "<group>"; };
+		E99816D23DCAC34EF96A4BB3 /* PauseMonitoringIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMonitoringIntent.swift; sourceTree = "<group>"; };
+		ED012A59D59CEF7D18140CEB /* kMonitorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kMonitorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE9ADC05EAE1C4CA55BF9640 /* WidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntry.swift; sourceTree = "<group>"; };
+		F147E27DDF1F7C6FE17609A2 /* kFoundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kFoundation; path = ../kFoundation; sourceTree = SOURCE_ROOT; };
+		F184A454A90B36506E266E33 /* AppCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorTests.swift; sourceTree = "<group>"; };
+		F2A3E10883A83D7D389A32BD /* IntentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentTests.swift; sourceTree = "<group>"; };
+		F5CCADCCB91BBF7E174D0F22 /* KWatchSpotlightIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchSpotlightIndexer.swift; sourceTree = "<group>"; };
+		F64F74A59F19BF4168A35E08 /* ShowNetworkRateIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowNetworkRateIntent.swift; sourceTree = "<group>"; };
+		F944076E988AA5A800F94DD0 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		FA4508AD7749F0CFD5C7AD62 /* PaywallViewModelTermsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModelTermsTests.swift; sourceTree = "<group>"; };
+		FAFA3D5D4D987D411EAD970F /* PreferencesRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesRepositoryTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		16E9E375E9AF78FE845304A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F24351B43475C45521EAD39 /* MetricsKit in Frameworks */,
+				49C3AE8D9C0BC65C10AF06DC /* MonitorCore in Frameworks */,
+				B5476C09E2D5EFE2F524B85B /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AE8C86BE77739AADB952BAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14A49DEDF69C51A16C19CFF9 /* MetricsKit in Frameworks */,
+				68B650DB502B167529E1856D /* MonitorCore in Frameworks */,
+				DB922459EA7FFB4B1FD680DC /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB9CDC45155ED263D1A3F108 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D590B31F1F1DF0304094CF3B /* MetricsKit in Frameworks */,
+				06A55E5EF0201B271E0C6FF2 /* MonitorCore in Frameworks */,
+				837F5DE7DFD1495D90E8E0F1 /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED2E9946C2CEF1098BBAAF26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D86BF09054581F33B484C836 /* MetricsKit in Frameworks */,
+				B70579CFC817CBA2EC1F99EF /* MonitorCore in Frameworks */,
+				237F76B2D4F0E38FDC760A3A /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		070EB263D1E4E804FFB1BEC7 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				D394A1E041E6E344A7261B7E /* AlertEditorView.swift */,
+				A011EA5511BBED82F710DF94 /* AlertsView.swift */,
+				5A3F588CD259B940E63DB96D /* AlertsViewModel.swift */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
+		1709CC2D2ED7FF2F2846732E /* kMonitorWidget */ = {
+			isa = PBXGroup;
+			children = (
+				213CD280943D6503A5871A15 /* Info.plist */,
+				64565067BC9E718BD71C9024 /* SystemStatusWidget.swift */,
+				6989F8A2842E33A6F975A4DF /* WidgetBundle.swift */,
+				EE9ADC05EAE1C4CA55BF9640 /* WidgetEntry.swift */,
+				38B34678188BD560138CA989 /* WidgetSnapshotProvider.swift */,
+				7D0A7ABFA7B4970717E529C0 /* WidgetViews.swift */,
+			);
+			path = kMonitorWidget;
+			sourceTree = "<group>";
+		};
+		19B9182D6C8CDFE793C27CED /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E401574AFD02B98E6919FD5A /* AboutView.swift */,
+				068949ED09BF9EBFAA928917 /* AppearanceSettingsView.swift */,
+				44669DE7CAB43C06F15D9C16 /* MenuBarSettingsView.swift */,
+				AE3542BCC2357020F08309EA /* MetricSettingsView.swift */,
+				1F109DCAF822E0D87B82C820 /* PerMetricTabView.swift */,
+				78A3F29D52C10D49FA35DC9D /* SettingsView.swift */,
+				F944076E988AA5A800F94DD0 /* SettingsViewModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		239482A019CF96C06049F99E /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				1A7E9C757ECD216E0C0D068A /* PaywallView.swift */,
+				CBEEB9F7C19F88515C83C9DE /* PaywallViewModel.swift */,
+				6DA22CD4F6F1A8EDE5DF7E19 /* PurchaseButton.swift */,
+				188C2A0300FA1DC533E56AA8 /* StoreKitClient.swift */,
+				B22F99CF82A2FC099E538598 /* StoreKitTestConfiguration.storekit */,
+				52925E9952F75FF6EC474E46 /* StoreManager.swift */,
+				A40132F16AEBA524F469D0E9 /* SubscriptionTerms.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		272C4C8E3505F1112A851F8B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				C363023F0D780EC1739E6D89 /* AppCoordinator.swift */,
+				5240ECC3F0126FD0803CA257 /* kWatchApp.swift */,
+				308E396103809EC897635003 /* kWatchAppDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		2DFA1DF4781424E14DC25AF0 /* workflows */ = {
+			isa = PBXGroup;
+			children = (
+				51AD7B6E67C2BCFB8E3A7562 /* ci.yml */,
+			);
+			path = workflows;
+			sourceTree = "<group>";
+		};
+		2E77A921DB2C4F11E27F79A9 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				1D6B0AF378062F9E1BADD8C9 /* ExportDiagnosticsIntent.swift */,
+				9AFAF9E53223AA2EDA66CF61 /* IntentService.swift */,
+				1A99E4A99C9CEC14B8B7EB73 /* KWatchAppShortcuts.swift */,
+				CD665E077FC1788E7F302691 /* LiveIntentService.swift */,
+				8A72132ADC175B2911789244 /* OpenDashboardIntent.swift */,
+				E99816D23DCAC34EF96A4BB3 /* PauseMonitoringIntent.swift */,
+				1D6F1E7A94686A9FE4786BE0 /* QueryMetricIntent.swift */,
+				41B2401A687CC7F5BDD871C0 /* ShowDiskUsageIntent.swift */,
+				F64F74A59F19BF4168A35E08 /* ShowNetworkRateIntent.swift */,
+				9DB9846EC6CB2D4B3B7CC5E2 /* ShowTopProcessesIntent.swift */,
+				AFD6E6F5EA23C67F578F24D4 /* StartMonitoringIntent.swift */,
+				C34E3AADC2633A8D3070C890 /* StopMonitoringIntent.swift */,
+				4310C0334372418A4DBB270E /* StubIntentService.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		2EA4AC6804E84541FB526C48 /* kMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				557CFB4D9A1E63B89650F918 /* generate_project.py */,
+				754C3AA716BF76E132072346 /* Info.plist */,
+				8987E368E7044BAA2CB1C599 /* kMonitor.entitlements */,
+				55680A9AC4E14F7316C11C99 /* kMonitor.xcodeproj */,
+				DDBA23DAFF530F96AF6E6008 /* .github */,
+				070EB263D1E4E804FFB1BEC7 /* Alerts */,
+				272C4C8E3505F1112A851F8B /* App */,
+				9AF6A0A205C35E91EE2BB8C2 /* Dashboard */,
+				E9E94197E244B30A4ADF9B29 /* Data */,
+				550AC5C876CC528EE8C2D2C0 /* DI */,
+				56B70D8953438B92A2A44730 /* History */,
+				DD6F6FAB25FC2054FBEA50ED /* Integrations */,
+				2E77A921DB2C4F11E27F79A9 /* Intents */,
+				E34E4FE6004ADFBB2DD2F106 /* MenuBar */,
+				41AA525C3F4C495751C7275A /* Onboarding */,
+				80AD25B8AB24B4798914D1D8 /* Processes */,
+				C5A375ACE57BFF67D273FD80 /* Resources */,
+				19B9182D6C8CDFE793C27CED /* Settings */,
+				C44F8D80657C5659F641BD16 /* State */,
+				239482A019CF96C06049F99E /* Store */,
+			);
+			name = kMonitor;
+			path = .;
+			sourceTree = "<group>";
+		};
+		41AA525C3F4C495751C7275A /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				3B1607049087E94845142C2E /* CompletePage.swift */,
+				D67924BFA1D97B8AEFD8DAB5 /* MenuBarCustomizePage.swift */,
+				8D4909EEF4232E4B07601E07 /* OnboardingView.swift */,
+				01A2503C7BDD6461ABA110DB /* OnboardingViewModel.swift */,
+				5ED7331C75EB024DECF9E85F /* ProIntroPage.swift */,
+				23C3F30CE599E2F84902F625 /* WelcomePage.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		550AC5C876CC528EE8C2D2C0 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				B1B009E5B312AA2363BFE2E8 /* AppContainer.swift */,
+				7055B8720EE34EE2AD71F765 /* LiveAppContainer.swift */,
+				E69DB98C77168E901610695E /* TestAppContainer.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		56B70D8953438B92A2A44730 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				B265FE899B04A5FF45FBFB0D /* HistoryView.swift */,
+				444FCD88325B02BB7659A0DE /* HistoryViewModel.swift */,
+				57439E92FBDB11950B008C34 /* TrendChart.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		79E2F9D99CB9EB0FA83BAD32 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2AE47F244A0B5AE6D4F7A808 /* AlertEditorViewModelTests.swift */,
+				1A0DA64A94BA071DF3DA8B8C /* AlertRepositoryTests.swift */,
+				B2AA598A608BA32CD627304A /* AlertsViewModelTests.swift */,
+				1764AD4BF236A159870FEE7A /* AppContainerTests.swift */,
+				F184A454A90B36506E266E33 /* AppCoordinatorTests.swift */,
+				AF1010711C30CD298BD496D7 /* AppShortcutsIntegrationTests.swift */,
+				A78F4E247CA8B47CC50AE27D /* AppShortcutsVerificationTests.swift */,
+				BDAB9E483A5F2E0A4E85E256 /* ControlWidgetTests.swift */,
+				A00D177BF5A99B6F38F6FFAA /* CoreDataStackTests.swift */,
+				5E1A5EC381334242F15D3C93 /* DashboardViewModelTests.swift */,
+				B8043926B2BE4A4435E2ABA4 /* HistoryViewModelTests.swift */,
+				82AAC130A42320AF4A32DD4A /* IntentParameterTests.swift */,
+				F2A3E10883A83D7D389A32BD /* IntentTests.swift */,
+				CD2BE75DF9A0D4059D232423 /* InteractiveWidgetIntentTests.swift */,
+				D0419CC98BE6003DAA32D0E5 /* MenuBarIconThemeTests.swift */,
+				702286A4A2EFB56B0BE9E532 /* MenuBarViewModelTests.swift */,
+				01493903A7FCCB3D0AEB1AA9 /* MetricCardViewModelTests.swift */,
+				8C31578520202007D6206B34 /* MetricDetailViewModelTests.swift */,
+				0967706276B108ACD61DED8E /* NotificationSchedulerTests.swift */,
+				9E917D0FED1ECFB51FBB4B09 /* OnboardingViewModelTests.swift */,
+				FA4508AD7749F0CFD5C7AD62 /* PaywallViewModelTermsTests.swift */,
+				FAFA3D5D4D987D411EAD970F /* PreferencesRepositoryTests.swift */,
+				0D1D3E618B96EEFD6D3BBD9C /* ProcessesViewModelTests.swift */,
+				968B27DE3B7059FF66C8CED4 /* QuickToggleBarTests.swift */,
+				D5B79CCAA8EB0432601F5B08 /* RepositoryTests.swift */,
+				09ED34BD76D676254E33DE4C /* RestorePurchaseStubs.swift */,
+				64B507DBB19B873D9E140E0C /* SendableBox.swift */,
+				E43CEEB6EC8687396CA60E28 /* SettingsViewModelRestoreTests.swift */,
+				BB087A60354BB08511B4A583 /* SettingsViewModelTests.swift */,
+				36B0323583B8B5AD33D6F9E9 /* StoreManagerTests.swift */,
+				1CE3AD27DF768711E895E79C /* SubscriptionTermsTests.swift */,
+				8C63ADE1BE8BFD39DD51119D /* WidgetReloadTriggerTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		80AD25B8AB24B4798914D1D8 /* Processes */ = {
+			isa = PBXGroup;
+			children = (
+				099EF1EC1B7850255670FE88 /* ProcessesView.swift */,
+				0049336F3FE479D730B8C651 /* ProcessesViewModel.swift */,
+				BCBAD218D9479D2B322511BB /* ProcessRowView.swift */,
+			);
+			path = Processes;
+			sourceTree = "<group>";
+		};
+		8986AD5769FD4303F899E7FA /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				5589C0298E51A5CFF56324ED /* KWatchLaunchTests.swift */,
+				DEDBE8178EBFE5D37A76B332 /* KWatchPurchaseJourneyTests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		9ACB873CC5544318B6F113D3 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				F147E27DDF1F7C6FE17609A2 /* kFoundation */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		9AF6A0A205C35E91EE2BB8C2 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				0E247E081000B1EAFF6CA0ED /* DashboardView.swift */,
+				B72DD2DF41D5D4C070CD831E /* DashboardViewModel.swift */,
+				84459328BDF4E0702C0F5B83 /* MetricCardView.swift */,
+				D83A571ADFFFFD02384A22F8 /* MetricCardViewModel.swift */,
+				6F76987F0E575405507F83FD /* MetricDetailView.swift */,
+				69C02E2F1C5E20E879E15939 /* MetricDetailViewModel.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		B0D550253F8D546809E7BA8F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4003825A70BA9DF389BA972 /* kMonitor.app */,
+				14D8A8DCF96FA0D6E68F74AD /* kMonitorIntents.appex */,
+				62106E0598058A200465C1FE /* kMonitorTests.xctest */,
+				ED012A59D59CEF7D18140CEB /* kMonitorUITests.xctest */,
+				7B1ADF71DA24B4E2FA626D6F /* kMonitorWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B4084195FF22D7E45C5362C5 = {
+			isa = PBXGroup;
+			children = (
+				DDBA23DAFF530F96AF6E6008 /* .github */,
+				070EB263D1E4E804FFB1BEC7 /* Alerts */,
+				272C4C8E3505F1112A851F8B /* App */,
+				9AF6A0A205C35E91EE2BB8C2 /* Dashboard */,
+				E9E94197E244B30A4ADF9B29 /* Data */,
+				550AC5C876CC528EE8C2D2C0 /* DI */,
+				56B70D8953438B92A2A44730 /* History */,
+				DD6F6FAB25FC2054FBEA50ED /* Integrations */,
+				2E77A921DB2C4F11E27F79A9 /* Intents */,
+				2EA4AC6804E84541FB526C48 /* kMonitor */,
+				1709CC2D2ED7FF2F2846732E /* kMonitorWidget */,
+				E34E4FE6004ADFBB2DD2F106 /* MenuBar */,
+				41AA525C3F4C495751C7275A /* Onboarding */,
+				9ACB873CC5544318B6F113D3 /* Packages */,
+				80AD25B8AB24B4798914D1D8 /* Processes */,
+				C5A375ACE57BFF67D273FD80 /* Resources */,
+				19B9182D6C8CDFE793C27CED /* Settings */,
+				C44F8D80657C5659F641BD16 /* State */,
+				239482A019CF96C06049F99E /* Store */,
+				79E2F9D99CB9EB0FA83BAD32 /* Tests */,
+				8986AD5769FD4303F899E7FA /* UITests */,
+				B0D550253F8D546809E7BA8F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C44F8D80657C5659F641BD16 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				74BB563FFE38AF54E85A1EB1 /* AppState.swift */,
+				46CE94729890845CD1E9066A /* PurchaseState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		C5A375ACE57BFF67D273FD80 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				97F9111526EC3FF428BA065E /* Localizable.xcstrings */,
+				87C603992918B99175A1CC8C /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DD6F6FAB25FC2054FBEA50ED /* Integrations */ = {
+			isa = PBXGroup;
+			children = (
+				F5CCADCCB91BBF7E174D0F22 /* KWatchSpotlightIndexer.swift */,
+			);
+			path = Integrations;
+			sourceTree = "<group>";
+		};
+		DDBA23DAFF530F96AF6E6008 /* .github */ = {
+			isa = PBXGroup;
+			children = (
+				2DFA1DF4781424E14DC25AF0 /* workflows */,
+			);
+			path = .github;
+			sourceTree = "<group>";
+		};
+		E34E4FE6004ADFBB2DD2F106 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				8A8C82B6EC6DADBB974EF4A7 /* AppWindowRouter.swift */,
+				510FF4BD2097D55D6E926BF5 /* MenuBarIconTheme.swift */,
+				CB50DBDAE29990DE6D3015BB /* MenuBarView.swift */,
+				61AD6ACF75BA6770A316FD53 /* MenuBarViewModel.swift */,
+				4C1ECC25D65569B0E109FB4B /* MetricMenuRow.swift */,
+				3F9E4B08F02C15E6FFD6C98F /* MultiIconStatusItemController.swift */,
+				6F9A03056FE6FAAAA06604EE /* QuickToggleBar.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		E9E94197E244B30A4ADF9B29 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				BA70BF4D659EEC960CF51FE6 /* AlertRepository.swift */,
+				0D5550A591D050CB1ED1A802 /* CoreDataStack.swift */,
+				B363F26F34745A85E6B07E34 /* HistoryRepository.swift */,
+				345820821DFFF9E65DA2A606 /* ManagedObjects.swift */,
+				1E676158BFA43F47CEED534D /* PreferencesRepository.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3F689011BCDF34ABCBF9CF3F /* kMonitorUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 62DA3EB6B2D3114626CE3075 /* Build configuration list for PBXNativeTarget "kMonitorUITests" */;
+			buildPhases = (
+				FD7638EAA9E992F5D46008FA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C5FDA476931C05F9F6445BBF /* PBXTargetDependency */,
+			);
+			name = kMonitorUITests;
+			packageProductDependencies = (
+			);
+			productName = kMonitorUITests;
+			productReference = ED012A59D59CEF7D18140CEB /* kMonitorUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		9E63C8A36E1AD92E2D65C5BB /* kMonitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 290847F646537DE427E5F663 /* Build configuration list for PBXNativeTarget "kMonitor" */;
+			buildPhases = (
+				8B04F362739A39D157ED1A8C /* SwiftLint */,
+				D678E80DCCFF19C6DC45E7AE /* Sources */,
+				37D83C4C61F3574BEF3955D4 /* Resources */,
+				ED2E9946C2CEF1098BBAAF26 /* Frameworks */,
+				A7FC4B64B65BB28E88A443E6 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D85CCD464434722314F4575D /* PBXTargetDependency */,
+			);
+			name = kMonitor;
+			packageProductDependencies = (
+				AB9242154E78AE6ABB5D1339 /* MetricsKit */,
+				745FABC2E256B729BD879253 /* MonitorCore */,
+				4B24F9596D5422A695C95B6F /* DesignSystem */,
+			);
+			productName = kMonitor;
+			productReference = C4003825A70BA9DF389BA972 /* kMonitor.app */;
+			productType = "com.apple.product-type.application";
+		};
+		ABAE045D367421B280126394 /* kMonitorWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 73B947161F79394E9664DE55 /* Build configuration list for PBXNativeTarget "kMonitorWidget" */;
+			buildPhases = (
+				E7D16C5CBCF88026A046CB71 /* Sources */,
+				BB9CDC45155ED263D1A3F108 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kMonitorWidget;
+			packageProductDependencies = (
+				134D080F708572CF90717769 /* MetricsKit */,
+				1D379AD61F390A1853D49DA5 /* MonitorCore */,
+				D8B39567082CD67ACD220E10 /* DesignSystem */,
+			);
+			productName = kMonitorWidget;
+			productReference = 7B1ADF71DA24B4E2FA626D6F /* kMonitorWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		BC6838369F404BEF3AAB789C /* kMonitorIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F806442B647D459D7FB19CD /* Build configuration list for PBXNativeTarget "kMonitorIntents" */;
+			buildPhases = (
+				66E040C37CBECA21EC7171F4 /* Sources */,
+				7AE8C86BE77739AADB952BAB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kMonitorIntents;
+			packageProductDependencies = (
+				F83CA6BD2E7CA2FBBAC6E74B /* MetricsKit */,
+				3375437C0532B3D5168FA678 /* MonitorCore */,
+				381861576316C222412A69C9 /* DesignSystem */,
+			);
+			productName = kMonitorIntents;
+			productReference = 14D8A8DCF96FA0D6E68F74AD /* kMonitorIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		EF55899B62C5020E8DCAE9F4 /* kMonitorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4FDED27A399CD473A115A0D /* Build configuration list for PBXNativeTarget "kMonitorTests" */;
+			buildPhases = (
+				717F309D7C3F73100C7442F1 /* Sources */,
+				16E9E375E9AF78FE845304A3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				371250F568FFECB2F9544B29 /* PBXTargetDependency */,
+				7B6E944CFA54E033E52E52BA /* PBXTargetDependency */,
+			);
+			name = kMonitorTests;
+			packageProductDependencies = (
+				756E1CDB4C3D9B3E5052E53A /* MetricsKit */,
+				4AD90E56BF68DADB3A6FAA4E /* MonitorCore */,
+				9135FAE79DE43C16B7051788 /* DesignSystem */,
+			);
+			productName = kMonitorTests;
+			productReference = 62106E0598058A200465C1FE /* kMonitorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DE49A5A8E914E84B8FBD5977 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					3F689011BCDF34ABCBF9CF3F = {
+						TestTargetID = 9E63C8A36E1AD92E2D65C5BB;
+					};
+					9E63C8A36E1AD92E2D65C5BB = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C253CAD1275899BB81F5C6DC /* Build configuration list for PBXProject "kMonitor" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+				ja,
+				"zh-Hans",
+			);
+			mainGroup = B4084195FF22D7E45C5362C5;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BAF5F180F65B84FE2360011B /* XCLocalSwiftPackageReference "../kFoundation" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B0D550253F8D546809E7BA8F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9E63C8A36E1AD92E2D65C5BB /* kMonitor */,
+				ABAE045D367421B280126394 /* kMonitorWidget */,
+				BC6838369F404BEF3AAB789C /* kMonitorIntents */,
+				EF55899B62C5020E8DCAE9F4 /* kMonitorTests */,
+				3F689011BCDF34ABCBF9CF3F /* kMonitorUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		37D83C4C61F3574BEF3955D4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5CEDB09A7EC4861194F95CF /* Localizable.xcstrings in Resources */,
+				52333485AB09620EE1056266 /* PrivacyInfo.xcprivacy in Resources */,
+				D3EEA26680FEDADEDE46A0B8 /* StoreKitTestConfiguration.storekit in Resources */,
+				C6887A7F7D526DBF56803566 /* ci.yml in Resources */,
+				AD3F16EE92B1E6BC8BAAB8FB /* generate_project.py in Resources */,
+				8092FCCD5802659F7F3AB779 /* kMonitor.xcodeproj in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8B04F362739A39D157ED1A8C /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then swiftlint; fi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		66E040C37CBECA21EC7171F4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC58FF07B08C89A18DC27156 /* ExportDiagnosticsIntent.swift in Sources */,
+				C4609D1D53DF5FA3B0E56A71 /* IntentService.swift in Sources */,
+				58DECA907D128A04F94042D9 /* KWatchAppShortcuts.swift in Sources */,
+				2C81684B44C81549694323E3 /* LiveIntentService.swift in Sources */,
+				B24DE081B034EF483A4266ED /* OpenDashboardIntent.swift in Sources */,
+				4B0F431842277AF49AD1756F /* PauseMonitoringIntent.swift in Sources */,
+				CF0FC1F1C75839C0FBE24BA9 /* QueryMetricIntent.swift in Sources */,
+				E2D0CD3AD15CBD1A48A7D511 /* ShowDiskUsageIntent.swift in Sources */,
+				0CA551EF9A0FCFC743D00E59 /* ShowNetworkRateIntent.swift in Sources */,
+				E6FAC8D954F71CEE12905E99 /* ShowTopProcessesIntent.swift in Sources */,
+				05824E026CFB065796652C40 /* StartMonitoringIntent.swift in Sources */,
+				FA5C6F5FA856EEB4D1D72EF6 /* StopMonitoringIntent.swift in Sources */,
+				6E61DABFA60F9F536F0CB89F /* StubIntentService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		717F309D7C3F73100C7442F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3E6D28E888AEE1C0FF3EA27 /* AlertEditorViewModelTests.swift in Sources */,
+				96B912A5573EC082ED3BF007 /* AlertRepositoryTests.swift in Sources */,
+				796C454815C5794A63121E32 /* AlertsViewModelTests.swift in Sources */,
+				5CE775D4D75D99ACE0CCBDAD /* AppContainerTests.swift in Sources */,
+				D77337F3ABB6DA878A956A68 /* AppCoordinatorTests.swift in Sources */,
+				231D7FABF1F97869F63F11EF /* AppShortcutsIntegrationTests.swift in Sources */,
+				67D3F12EEDC935E5A4255DD2 /* AppShortcutsVerificationTests.swift in Sources */,
+				C7C92B8A0F0C2882CB5DB5F5 /* ControlWidgetTests.swift in Sources */,
+				3083760836C6838EA0381618 /* CoreDataStackTests.swift in Sources */,
+				21CE3BFDADD80E56CFF2FFD3 /* DashboardViewModelTests.swift in Sources */,
+				988A54B9F47776D7F0042F0E /* HistoryViewModelTests.swift in Sources */,
+				63F689DF2EF1482A518A9F8F /* IntentParameterTests.swift in Sources */,
+				6620C0DCCF42E9E62E58A4B8 /* IntentTests.swift in Sources */,
+				F245F6769786B58342FD86D7 /* InteractiveWidgetIntentTests.swift in Sources */,
+				634B70C9584AC10725F01898 /* MenuBarIconThemeTests.swift in Sources */,
+				D526668773E8536143171C8D /* MenuBarViewModelTests.swift in Sources */,
+				D1398DA28CA6D1294E547DA1 /* MetricCardViewModelTests.swift in Sources */,
+				C35F6CCF46CF3F24B889EB27 /* MetricDetailViewModelTests.swift in Sources */,
+				AD125E6489228959D8A0ED3B /* NotificationSchedulerTests.swift in Sources */,
+				5D489F1B9E404C00EB5142B1 /* OnboardingViewModelTests.swift in Sources */,
+				4D96C578A9EB9ED403CF7387 /* PaywallViewModelTermsTests.swift in Sources */,
+				A5CB5D034E560A8D87BF9407 /* PreferencesRepositoryTests.swift in Sources */,
+				4730EACC1F51CE38C341CA8A /* ProcessesViewModelTests.swift in Sources */,
+				B9DA8101E928C212EF84D6E4 /* QuickToggleBarTests.swift in Sources */,
+				DF3C728915A268058757AE25 /* RepositoryTests.swift in Sources */,
+				1783C1D549BE815C248E6F13 /* RestorePurchaseStubs.swift in Sources */,
+				668D05A5B40D041567FBEA31 /* SendableBox.swift in Sources */,
+				214D72D581BA3D4DFA942E34 /* SettingsViewModelRestoreTests.swift in Sources */,
+				35361C86EECE8F04AF941C97 /* SettingsViewModelTests.swift in Sources */,
+				29A55F892D3B25CBD28491B4 /* StoreManagerTests.swift in Sources */,
+				4D4AD5B267FB20465E344E82 /* SubscriptionTermsTests.swift in Sources */,
+				5DA4F91740687619BC86D429 /* WidgetReloadTriggerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D678E80DCCFF19C6DC45E7AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EDAE368F09D6FD584BD0863 /* AboutView.swift in Sources */,
+				ED5FE2C91AC3F452F0BA0ECF /* AlertEditorView.swift in Sources */,
+				792F3E0864E070271D4A5BBE /* AlertRepository.swift in Sources */,
+				28FCE6125CD24E820E99426A /* AlertsView.swift in Sources */,
+				346F786C0F5AC841C3F2D849 /* AlertsViewModel.swift in Sources */,
+				74FB66B526D3965076B8B76D /* AppContainer.swift in Sources */,
+				82EA19C46A40BDA17DF5CB1B /* AppCoordinator.swift in Sources */,
+				9ECC21862EB974FFB71DEE82 /* AppState.swift in Sources */,
+				80BF72015691ACA397D27827 /* AppWindowRouter.swift in Sources */,
+				B221897935CE4A85F6EB9444 /* AppearanceSettingsView.swift in Sources */,
+				31CF4937E498510ED89E8C68 /* CompletePage.swift in Sources */,
+				4A315AC5EF63D9E7F7293DC0 /* CoreDataStack.swift in Sources */,
+				923EE2EFB8172110EB06D991 /* DashboardView.swift in Sources */,
+				619F98CFCF705584748DC9DB /* DashboardViewModel.swift in Sources */,
+				0A07BD438D84E45CF5DDE1AA /* ExportDiagnosticsIntent.swift in Sources */,
+				8D4C835DFF04E37190CDF68E /* HistoryRepository.swift in Sources */,
+				CBD57311CF34C66E00D61904 /* HistoryView.swift in Sources */,
+				9DD13AFA351D267D82DF50A7 /* HistoryViewModel.swift in Sources */,
+				E5DB62B53A2B97E52A2393EF /* IntentService.swift in Sources */,
+				D58E93699E868FB03E8EE19A /* KWatchAppShortcuts.swift in Sources */,
+				2CCFFDFF8748BD27E223FC49 /* KWatchSpotlightIndexer.swift in Sources */,
+				8A0CAB8655CE2A5AECD86546 /* LiveAppContainer.swift in Sources */,
+				A1813C9F43CF2C18B77CDF57 /* LiveIntentService.swift in Sources */,
+				ABB65C91BD8D23EADA602B00 /* ManagedObjects.swift in Sources */,
+				1F716C5D22E6B1D8DF6E22A4 /* MenuBarCustomizePage.swift in Sources */,
+				54BD460AA32ED0FC54135B75 /* MenuBarIconTheme.swift in Sources */,
+				39112568CFA815D620A64E2A /* MenuBarSettingsView.swift in Sources */,
+				4B62E0167BBA2BACDA3A3F4D /* MenuBarView.swift in Sources */,
+				EF5CC447FD72ABEB36E59612 /* MenuBarViewModel.swift in Sources */,
+				83F0741193FEDA1833E1595A /* MetricCardView.swift in Sources */,
+				3100FE287476E9AF8C49F2E1 /* MetricCardViewModel.swift in Sources */,
+				401FF00D804C8BD96CE8FFB5 /* MetricDetailView.swift in Sources */,
+				49E2EEA4B5881B24E98259DB /* MetricDetailViewModel.swift in Sources */,
+				95E25703AD231D7EDAE74901 /* MetricMenuRow.swift in Sources */,
+				7A84E1181ACD18503F4D2DE4 /* MetricSettingsView.swift in Sources */,
+				4AA23868ACA8815A69BD7DDC /* MultiIconStatusItemController.swift in Sources */,
+				59BAE82A40F414B0B394895E /* OnboardingView.swift in Sources */,
+				A47AFDFBAEDF5ACBF4B5DD27 /* OnboardingViewModel.swift in Sources */,
+				B59EA169AFA826099915443A /* OpenDashboardIntent.swift in Sources */,
+				A67EF780A736C9897B7BE0E2 /* PauseMonitoringIntent.swift in Sources */,
+				D06B00027F83E8C726A6A5EE /* PaywallView.swift in Sources */,
+				381B611E84E11870150BFD42 /* PaywallViewModel.swift in Sources */,
+				1D2AFC3E0204DA53D117983C /* PerMetricTabView.swift in Sources */,
+				B756A9826890398B92E8E648 /* PreferencesRepository.swift in Sources */,
+				5FFD1093567E8569B25648AB /* ProIntroPage.swift in Sources */,
+				406E3E6A84693AB7886DBAA2 /* ProcessRowView.swift in Sources */,
+				912F0259F653185CBCD5E8A2 /* ProcessesView.swift in Sources */,
+				3F9ACDD523D1E10E2C3C4F4C /* ProcessesViewModel.swift in Sources */,
+				9534BBC58CF96949758E78E7 /* PurchaseButton.swift in Sources */,
+				4271D71DD3C4172A148765A3 /* PurchaseState.swift in Sources */,
+				BD9A161DC40556A50849690A /* QueryMetricIntent.swift in Sources */,
+				AFC1A5CB5ED24B3AC262FEC9 /* QuickToggleBar.swift in Sources */,
+				CF06B4890A33749AC301188D /* SettingsView.swift in Sources */,
+				2DC4EDEDF85E510506D4BC31 /* SettingsViewModel.swift in Sources */,
+				C19EBAB9E5E2EEF1E2CCEE93 /* ShowDiskUsageIntent.swift in Sources */,
+				2093888AF81669C7AD7F9D78 /* ShowNetworkRateIntent.swift in Sources */,
+				B328EECE778D39A89F273A7D /* ShowTopProcessesIntent.swift in Sources */,
+				A21F92EF4B3DA7E1DED4D945 /* StartMonitoringIntent.swift in Sources */,
+				463DF653A6EB10F48076119B /* StopMonitoringIntent.swift in Sources */,
+				94635CB9BBD6054BB5C0D38E /* StoreKitClient.swift in Sources */,
+				70C917381DEC698BDBDD02B2 /* StoreManager.swift in Sources */,
+				D5DBA857406B7385A3E146F7 /* StubIntentService.swift in Sources */,
+				D236A0565D492737F0D8E38B /* SubscriptionTerms.swift in Sources */,
+				977FE58B215640B653F856FF /* TestAppContainer.swift in Sources */,
+				4493EFC5BD4D557D49EF3573 /* TrendChart.swift in Sources */,
+				9704266ECFDF07C0034812A9 /* WelcomePage.swift in Sources */,
+				0ABDD7DE1BBE5E45C05C13E5 /* kWatchApp.swift in Sources */,
+				E6CA46ED7E8DCED61922B7AF /* kWatchAppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7D16C5CBCF88026A046CB71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C73B51881EB77125D22A779 /* SystemStatusWidget.swift in Sources */,
+				3172043C2BA65E6507455C53 /* WidgetBundle.swift in Sources */,
+				50715292D94773CFE4C1E507 /* WidgetEntry.swift in Sources */,
+				EDF1DE632317FDB8F0F44CDB /* WidgetSnapshotProvider.swift in Sources */,
+				A6D4377CB5E81C123CB74DED /* WidgetViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FD7638EAA9E992F5D46008FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ADEA904394DCD8B534F2A3 /* KWatchLaunchTests.swift in Sources */,
+				327A33AC28F0D226EB32E5A3 /* KWatchPurchaseJourneyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		371250F568FFECB2F9544B29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9E63C8A36E1AD92E2D65C5BB /* kMonitor */;
+			targetProxy = 1D11E76E58C25C7E97D26FF0 /* PBXContainerItemProxy */;
+		};
+		7B6E944CFA54E033E52E52BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BC6838369F404BEF3AAB789C /* kMonitorIntents */;
+			targetProxy = 99DBCD5150F3CA1C59C3FE2C /* PBXContainerItemProxy */;
+		};
+		C5FDA476931C05F9F6445BBF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9E63C8A36E1AD92E2D65C5BB /* kMonitor */;
+			targetProxy = 0FD190C5A31D057335C44D04 /* PBXContainerItemProxy */;
+		};
+		D85CCD464434722314F4575D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BC6838369F404BEF3AAB789C /* kMonitorIntents */;
+			targetProxy = 9692D050B0EF7D7A6B534DCF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0429E922E4AD3B2DBF134C93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Intents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.intents;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		2BA0D67C4F529AC3A2BB3AC5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Intents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.intents;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		2F458058B4026778F1FA0854 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = kMonitorWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.widget;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		3FBE17F0EA45B7474093F6FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LSUIElement = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		59181713EE3C45E086BC02F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LSUIElement = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5A3F7426B21BDC58F483FCC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.uitests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_TARGET_NAME = kMonitor;
+			};
+			name = Debug;
+		};
+		5BDD11B1CC7F377144C278C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kMonitor.app/Contents/MacOS/kMonitor";
+			};
+			name = Debug;
+		};
+		7428F7F9B5E50EC572D742FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.uitests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_TARGET_NAME = kMonitor;
+			};
+			name = Release;
+		};
+		8813EA1D5CFDCC6A19A37239 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		8CA151D67C17F97D5B330D0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		9F897AC316959DCF6EEB3AB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = kMonitorWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.widget;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		E43C2B12AA1FBC77B22DBB28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kmonitor.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kMonitor.app/Contents/MacOS/kMonitor";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		290847F646537DE427E5F663 /* Build configuration list for PBXNativeTarget "kMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59181713EE3C45E086BC02F5 /* Debug */,
+				3FBE17F0EA45B7474093F6FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5F806442B647D459D7FB19CD /* Build configuration list for PBXNativeTarget "kMonitorIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BA0D67C4F529AC3A2BB3AC5 /* Debug */,
+				0429E922E4AD3B2DBF134C93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		62DA3EB6B2D3114626CE3075 /* Build configuration list for PBXNativeTarget "kMonitorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A3F7426B21BDC58F483FCC8 /* Debug */,
+				7428F7F9B5E50EC572D742FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		73B947161F79394E9664DE55 /* Build configuration list for PBXNativeTarget "kMonitorWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F897AC316959DCF6EEB3AB0 /* Debug */,
+				2F458058B4026778F1FA0854 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C253CAD1275899BB81F5C6DC /* Build configuration list for PBXProject "kMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8813EA1D5CFDCC6A19A37239 /* Debug */,
+				8CA151D67C17F97D5B330D0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D4FDED27A399CD473A115A0D /* Build configuration list for PBXNativeTarget "kMonitorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5BDD11B1CC7F377144C278C1 /* Debug */,
+				E43C2B12AA1FBC77B22DBB28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		BAF5F180F65B84FE2360011B /* XCLocalSwiftPackageReference "../kFoundation" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../kFoundation;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		134D080F708572CF90717769 /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
+		1D379AD61F390A1853D49DA5 /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		3375437C0532B3D5168FA678 /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		381861576316C222412A69C9 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		4AD90E56BF68DADB3A6FAA4E /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		4B24F9596D5422A695C95B6F /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		745FABC2E256B729BD879253 /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		756E1CDB4C3D9B3E5052E53A /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
+		9135FAE79DE43C16B7051788 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		AB9242154E78AE6ABB5D1339 /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
+		D8B39567082CD67ACD220E10 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		F83CA6BD2E7CA2FBBAC6E74B /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = DE49A5A8E914E84B8FBD5977 /* Project object */;
+}
