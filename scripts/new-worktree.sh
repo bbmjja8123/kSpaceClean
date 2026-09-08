@@ -17,15 +17,15 @@ set -euo pipefail
 
 if [[ $# -lt 1 ]]; then
     echo "usage: $0 <app>" >&2
-    echo "  app: kWise | kWatch | kSift | kFresh" >&2
+    echo "  app: kWise | kMonitor | kSift | kFresh" >&2
     exit 64
 fi
 
 APP="$1"
 
 case "$APP" in
-    kWise|kWatch|kSift|kFresh) ;;
-    *) echo "error: app must be kWise | kWatch | kSift | kFresh (got '$APP')" >&2; exit 65 ;;
+    kWise|kMonitor|kSift|kFresh) ;;
+    *) echo "error: app must be kWise | kMonitor | kSift | kFresh (got '$APP')" >&2; exit 65 ;;
 esac
 
 LOWER=$(echo "$APP" | tr '[:upper:]' '[:lower:]')

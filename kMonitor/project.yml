@@ -1,0 +1,119 @@
+name: kMonitor
+options:
+  bundleIdPrefix: app.kraftly
+  deploymentTarget:
+    macOS: "13.0"
+  xcodeVersion: "15.0"
+
+settings:
+  SWIFT_STRICT_CONCURRENCY: complete
+  MACOSX_DEPLOYMENT_TARGET: "13.0"
+  SWIFT_VERSION: "5.9"
+
+targets:
+  kMonitor:
+    type: application
+    platform: macOS
+    sources:
+      - path: .
+        excludes:
+          - "project.yml"
+          - "**/*.md"
+          - "Tests/**"
+          - "UITests/**"
+          - "kMonitorWidget/**"
+          - "kMonitorWidgetTests/**"
+          - "kMonitorControlWidget/**"
+          - "Intents/Info.plist"
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kmonitor
+      INFOPLIST_FILE: Info.plist
+      CODE_SIGN_STYLE: Automatic
+      DEVELOPMENT_TEAM: ""
+      LSUIElement: true
+    dependencies:
+      - package: kFoundation
+        product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
+      - target: kMonitorIntents
+    preBuildScripts:
+      - name: "SwiftLint"
+        script: "if which swiftlint >/dev/null; then swiftlint; fi"
+        basedOnDependencyAnalysis: false
+
+  kMonitorWidget:
+    type: app-extension
+    platform: macOS
+    sources:
+      - kMonitorWidget
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kmonitor.widget
+      MACOSX_DEPLOYMENT_TARGET: "13.0"
+      SWIFT_VERSION: "5.9"
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - package: kFoundation
+        product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
+
+  kMonitorIntents:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Intents
+        excludes:
+          - "Info.plist"
+    settings:
+      INFOPLIST_FILE: Intents/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kmonitor.intents
+      MACOSX_DEPLOYMENT_TARGET: "13.0"
+      SWIFT_VERSION: "5.9"
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - package: kFoundation
+        product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
+
+  kMonitorTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kmonitor.tests
+      MACOSX_DEPLOYMENT_TARGET: "13.0"
+      SWIFT_VERSION: "5.9"
+    dependencies:
+      - target: kMonitor
+      - target: kMonitorIntents
+      - package: kFoundation
+        product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
+
+  kMonitorUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources:
+      - UITests
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kmonitor.uitests
+      MACOSX_DEPLOYMENT_TARGET: "13.0"
+      SWIFT_VERSION: "5.9"
+    dependencies:
+      - target: kMonitor
+
+packages:
+  kFoundation:
+    path: ../kFoundation

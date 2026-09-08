@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key><string>kMonitor</string>
+    <key>CFBundleDisplayName</key><string>kMonitor</string>
+    <key>CFBundleIdentifier</key><string>app.kraftly.kmonitor</string>
+    <key>CFBundleVersion</key><string>1</string>
+    <key>CFBundleShortVersionString</key><string>1.0.0</string>
+    <key>CFBundlePackageType</key><string>APPL</string>
+    <key>LSMinimumSystemVersion</key><string>13.0</string>
+    <key>LSUIElement</key><true/>
+    <key>NSHumanReadableCopyright</key><string>Copyright © 2026 Kraftly. All rights reserved.</string>
+    <key>NSSupportsLiveActivities</key><true/>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key><false/>
+    </dict>
+    <!-- Custom URL scheme so the System Status and Control widgets can
+         deep-link into kMonitor when tapped. Widgets tap
+         `widgetURL("kmonitor://open")` (see WidgetViews.swift
+         OpenDashboardButton and ControlWidgetView.swift); the main app's
+         `.onOpenURL` handler in kMonitorApp.swift routes that to the
+         Dashboard window. -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>app.kraftly.kmonitor.deeplink</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>kmonitor</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>

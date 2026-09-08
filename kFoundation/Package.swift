@@ -12,7 +12,7 @@ let package = Package(
         .library(name: "CommonUtils", targets: ["CommonUtils"]),
         .library(name: "MetricsKit", targets: ["MetricsKit"]),
         .library(name: "PowerScope", targets: ["PowerScope"]),
-        // v2.2 framework architecture — per-app engine modules (kSift / kFresh / kWatch).
+        // v2.2 framework architecture — per-app engine modules (kSift / kFresh / kMonitor).
         .library(name: "DetectionCore", targets: ["DetectionCore"]),
         .library(name: "AppCatalogCore", targets: ["AppCatalogCore"]),
         .library(name: "MonitorCore", targets: ["MonitorCore"]),
@@ -37,7 +37,7 @@ let package = Package(
                 .copy("Resources/zh_app_mappings.json"),
             ]
         ),
-        // MonitorCore (extracted from kWatch): snapshot export, history/alert
+        // MonitorCore (extracted from kMonitor): snapshot export, history/alert
         // repositories, diagnostics. Built on MetricsKit.
         .target(name: "MonitorCore", dependencies: ["MetricsKit"]),
         .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"]),
