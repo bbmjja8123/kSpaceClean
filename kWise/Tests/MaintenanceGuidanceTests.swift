@@ -77,14 +77,14 @@ final class MaintenanceViewModelTests: XCTestCase {
             persistence: PersistenceController(inMemory: true)
         ))
         await vm.execute(.dnsFlush)
-        XCTAssertTrue(vm.results[.dnsFlush.id]?.contains("终端") == true,
+        XCTAssertTrue(vm.results[MaintenanceTask.dnsFlush.id]?.contains("终端") == true,
                       "Guidance tasks must say they need Terminal, never claim success")
     }
 
     func testCopyCommandWritesPasteboard() {
         let vm = MaintenanceViewModel()
         vm.copyCommand(for: .spotlightRebuild)
-        XCTAssertTrue(vm.copiedCommands.contains(.spotlightRebuild.id))
+        XCTAssertTrue(vm.copiedCommands.contains(MaintenanceTask.spotlightRebuild.id))
         let board = NSPasteboard.general
         let content = board.string(forType: .string)
         XCTAssertEqual(content, MaintenanceTask.spotlightRebuild.terminalCommand)

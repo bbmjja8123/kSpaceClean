@@ -6,6 +6,7 @@ import XCTest
 
 // MARK: - StartupItems scanner
 
+@MainActor
 final class StartupItemsScannerTests: XCTestCase {
 
     private func makePlist(directory: URL, label: String,
@@ -143,6 +144,7 @@ final class StartupItemToggleTests: XCTestCase {
 
 // MARK: - FileShredder
 
+@MainActor
 final class FileShredderTests: XCTestCase {
 
     private func makeFile(sizeBytes: Int, content: UInt8 = 0xAA) throws -> URL {
@@ -174,14 +176,15 @@ final class FileShredderTests: XCTestCase {
         let shredder = FileShredder(scope: AppScope.shared.scope,
                                     persistence: PersistenceController(inMemory: true))
         var phases: [ShredProgress.Phase] = []
-        for await progress in await shredder.shred(urls: [url], plan: ShredPlan.standard) {
+        let stream = await shredder.shred(urls: [url], plan: ShredPlan.standard)
+        for await progress in stream {
             phases.append(progress.phase)
         }
 
         XCTAssertTrue(phases.contains { if case .overwriting(let pass) = $0 { return pass == 1 } else { return false } },
                       "Standard plan must run exactly one overwrite pass")
-        XCTAssertTrue(phases.contains(.verifying))
-        XCTAssertTrue(phases.contains(.renaming))
+        XCTAssertTrue(phases.contains { if case .verifying = $0 { return true } else { return false } })
+        XCTAssertTrue(phases.contains { if case .renaming = $0 { return true } else { return false } })
         XCTAssertTrue(phases.contains { if case .done = $0 { return true } else { return false } })
 
         // Content destroyed + shell gone from the original path (trashed).
@@ -193,7 +196,8 @@ final class FileShredderTests: XCTestCase {
         let shredder = FileShredder(scope: AppScope.shared.scope,
                                     persistence: PersistenceController(inMemory: true))
         var failures = 0
-        for await progress in await shredder.shred(urls: [systemPath]) {
+        let stream = await shredder.shred(urls: [systemPath])
+        for await progress in stream {
             if case .failed = progress.phase { failures += 1 }
         }
         XCTAssertGreaterThan(failures, 0, "Out-of-scope paths must be refused, never shredded")
@@ -207,7 +211,8 @@ final class FileShredderTests: XCTestCase {
         let shredder = FileShredder(scope: AppScope.shared.scope, persistence: persistence)
 
         var sawHistoryDuringRun = false
-        for await progress in await shredder.shred(urls: [url]) {
+        let stream = await shredder.shred(urls: [url])
+        for await progress in stream {
             let history = persistence.fetchHistory(limit: 0)
             if !history.isEmpty { sawHistoryDuringRun = true }
             if case .done = progress.phase { break }

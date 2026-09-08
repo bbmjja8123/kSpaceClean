@@ -21,6 +21,7 @@ final class ScanMasterDetailViewModelTests: XCTestCase {
                     path: "/tmp/app\(i)/file\(j).bin",
                     title: "file\(j).bin",
                     fileSize: Int64(j * 1000),
+                    cleanType: .cache,
                     riskLevel: .recommended
                 ))
             }
@@ -197,14 +198,15 @@ final class ScanMasterDetailViewModelTests: XCTestCase {
                                      subCategoryID: "o1", title: "o",
                                      directResults: [ScanResult(
                                          url: URL(fileURLWithPath: "/tmp/o"),
-                                         path: "/tmp/o", title: "o", fileSize: 1)])])
+                                         path: "/tmp/o", title: "o", fileSize: 1,
+                                         cleanType: .cache)])])
         var snapshot = ScanResultsViewModel.ScanSnapshot()
         snapshot.categories = makeCategories() + [other]
         vm.assign(snapshot: snapshot)
         vm.rebuildIndices()
 
         vm.selectAll(in: vm.categories[0])
-        XCTAssertEqual(other.state, .unchecked, "Scoped 全选 must not touch other categories")
+        XCTAssertEqual(other.state, CheckState.unchecked, "Scoped 全选 must not touch other categories")
     }
 }
 
@@ -223,7 +225,7 @@ final class ScanCapRegressionTests: XCTestCase {
             let leaves = (0..<500).map { j in
                 ScanResult(url: URL(fileURLWithPath: "/tmp/big\(i)/f\(j)"),
                            path: "/tmp/big\(i)/f\(j)",
-                           title: "f\(j)", fileSize: Int64(j))
+                           title: "f\(j)", fileSize: Int64(j), cleanType: .cache)
             }
             subs.append(ScanSubCategory(
                 subCategoryID: "pseudo\(i)", title: "目录 \(i)",

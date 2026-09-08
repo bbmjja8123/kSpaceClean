@@ -120,7 +120,7 @@ public actor StartupItemsScanner {
         return (userItems, systemItems)
     }
 
-    private static func items(in directory: URL, scope: ItemScope) -> [LoginItemEntry] {
+    static func items(in directory: URL, scope: ItemScope) -> [LoginItemEntry] {
         let contents = (try? FileManager.default.contentsOfDirectory(
             at: directory,
             includingPropertiesForKeys: [.isRegularFileKey],

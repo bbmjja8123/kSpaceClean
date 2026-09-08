@@ -15,6 +15,7 @@ final class SegmentBuilderTests: XCTestCase {
             path: "/tmp/\(title)",
             title: title,
             fileSize: size,
+            cleanType: .cache,
             riskLevel: risk
         )
     }
@@ -112,7 +113,8 @@ final class SpaceMapViewModelTests: XCTestCase {
             url: URL(fileURLWithPath: "/tmp/leaf"),
             path: "/tmp/leaf",
             title: "leaf",
-            fileSize: 100
+            fileSize: 100,
+            cleanType: .cache
         )
         let action = ScanAction(
             actionID: "test.action",

@@ -131,7 +131,7 @@ final class StreakAchievementTests: XCTestCase {
     func testStreakBadgesAtBoundaries() {
         var s = state()
         var day = 1
-        func nextDay() -> String { String(format: "2026-09-%02d", day += 1) }
+        func nextDay() -> String { day += 1; return String(format: "2026-09-%02d", day) }
         for _ in 0..<3 { StreakLogic.recordCleanup(&s, freedBytes: 1, on: nextDay()) }
         XCTAssertTrue(AchievementEngine.evaluate(s).contains { $0.id == "streak.3" })
     }
