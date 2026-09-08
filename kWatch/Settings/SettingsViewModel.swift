@@ -5,6 +5,7 @@ import AppKit
 import MetricsKit
 import StoreKit
 import UserNotifications
+import MonitorCore
 
 /// Drives the Settings window.
 ///

@@ -1,4 +1,5 @@
 import SwiftUI
+import DetectionCore
 
 /// One week bucket of reclaimable-bytes history, oldest first.
 struct HistoryTrendPoint: Equatable {

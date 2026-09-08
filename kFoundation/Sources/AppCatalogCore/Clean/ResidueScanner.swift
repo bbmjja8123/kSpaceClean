@@ -21,7 +21,7 @@ import Foundation
 /// Tests inject a custom `ruleStore` via ``init(ruleStore:appCatalog:)``
 /// to assert deterministic behaviour without depending on the bundled
 /// resource.
-actor ResidueScanner {
+public actor ResidueScanner {
     private let appCatalog: AppCatalogService
     private let residueDetector: ResidueDetector
 
@@ -29,7 +29,7 @@ actor ResidueScanner {
     /// main bundle so the curated rules apply. When the bundled JSON
     /// is unavailable (e.g. during very early launch before the bundle
     /// is set up), the scanner still works via the template branch.
-    init() {
+    public init() {
         self.appCatalog = AppCatalogService()
         let store = BundleRuleStore.loadFromBundledJSON() ?? nil
         self.residueDetector = ResidueDetector(ruleStore: store)
@@ -43,7 +43,7 @@ actor ResidueScanner {
     ///   - ruleStore: Curated rules for the residue detector. Pass
     ///     `nil` to fall back to template-only detection.
     ///   - appCatalog: App catalog service (default: real one).
-    init(ruleStore: BundleRuleStore?, appCatalog: AppCatalogService = AppCatalogService()) {
+    public init(ruleStore: BundleRuleStore?, appCatalog: AppCatalogService = AppCatalogService()) {
         self.appCatalog = appCatalog
         self.residueDetector = ResidueDetector(ruleStore: ruleStore)
     }
@@ -52,7 +52,7 @@ actor ResidueScanner {
     /// - Returns: Apps sorted by display name, each carrying its
     ///   detected residue set (curated rule paths first, then template
     ///   fallbacks).
-    func scanAll() async -> [InstalledApp] {
+    public func scanAll() async -> [InstalledApp] {
         let apps = await appCatalog.scan()
         return await withTaskGroup(of: InstalledApp.self) { group in
             for app in apps {

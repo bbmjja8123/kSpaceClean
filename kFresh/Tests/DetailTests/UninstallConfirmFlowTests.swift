@@ -1,6 +1,7 @@
 import XCTest
 import AppKit
 import SwiftUI
+import AppCatalogCore
 @testable import kFresh
 
 /// Placeholder UI test for the uninstall confirm + toast flow.

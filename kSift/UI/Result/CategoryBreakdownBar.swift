@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct CategoryBreakdownBar: View {
     let groups: [DuplicateGroup]

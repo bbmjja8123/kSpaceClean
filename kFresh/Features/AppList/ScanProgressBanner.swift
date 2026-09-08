@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Slim banner above the app list that reflects the current scan lifecycle:
 /// a progress bar while scanning and an error row with a retry button when a

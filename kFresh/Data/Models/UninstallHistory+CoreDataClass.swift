@@ -1,5 +1,6 @@
 import CoreData
 import os
+import AppCatalogCore
 
 @objc(UninstallHistory)
 public class UninstallHistory: NSManagedObject {

@@ -15,7 +15,7 @@ import AppKit
 /// Results are deduplicated by bundle ID, preferring the entry backed by a
 /// running process (its URL is authoritative) and filling in blanks from the
 /// other candidates.
-actor AppCatalogService {
+public actor AppCatalogService {
     private let fileManager: FileManager
 
     /// Creates a catalog service backed by `FileManager.default`.
@@ -23,7 +23,7 @@ actor AppCatalogService {
     /// Split from ``init(fileManager:)`` deliberately: `FileManager` is not
     /// `Sendable`, so a defaulted parameter would emit a strict-concurrency
     /// warning at every plain `AppCatalogService()` call site.
-    init() {
+    public init() {
         self.fileManager = .default
     }
 
@@ -41,7 +41,7 @@ actor AppCatalogService {
     /// never throws and degrades gracefully without Full Disk Access.
     ///
     /// - Returns: Apps sorted by display name, deduplicated by bundle ID.
-    func scan() async -> [InstalledApp] {
+    public func scan() async -> [InstalledApp] {
         let candidates = await enumerateCandidates()
         var deduped: [String: InstalledApp] = [:]
         for app in candidates {
@@ -66,7 +66,7 @@ actor AppCatalogService {
     ///   - maxDepth: Maximum number of path components below `url` to descend.
     ///     Defaults to 5.
     /// - Returns: Total size in bytes, or `0` if `url` cannot be enumerated.
-    func sizeOfApp(at url: URL, maxDepth: Int = 5) async -> Int64 {
+    public func sizeOfApp(at url: URL, maxDepth: Int = 5) async -> Int64 {
         // m-4 fix: route through the shared `DirectorySizeCalculator`
         // helper in kFoundation. This method previously reimplemented
         // the enumerator + size-sum loop with a depth cap applied via
@@ -109,7 +109,7 @@ actor AppCatalogService {
     ///   - url: Location of the `.app` bundle.
     ///   - bundleID: The bundle identifier of the app.
     /// - Returns: The best-matching ``AppSource``, or ``AppSource/unknown``.
-    nonisolated static func classifySource(url: URL, bundleID: String) -> AppSource {
+    public nonisolated static func classifySource(url: URL, bundleID: String) -> AppSource {
         let path = url.path
         if path.hasPrefix("/System/") { return .system }
         if bundleID == "com.apple.finder" { return .system }

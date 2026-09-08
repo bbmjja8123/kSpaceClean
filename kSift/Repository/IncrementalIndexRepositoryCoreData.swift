@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import DetectionCore
 
 /// Core Data-backed incremental index storage, sharing the main kSift store.
 ///

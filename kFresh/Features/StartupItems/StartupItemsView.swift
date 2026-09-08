@@ -1,4 +1,5 @@
 import SwiftUI
+import AppCatalogCore
 
 /// "启动项" (Startup Items) tab — lists each macOS startup item
 /// (LaunchAgents, LaunchDaemons, PrefPanes) bucketed by type. Loads

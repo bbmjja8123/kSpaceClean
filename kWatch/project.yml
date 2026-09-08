@@ -23,6 +23,8 @@ targets:
           - "UITests/**"
           - "kWatchWidget/**"
           - "kWatchWidgetTests/**"
+          - "kWatchControlWidget/**"
+          - "Intents/Info.plist"
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch
       INFOPLIST_FILE: Info.plist
@@ -32,6 +34,10 @@ targets:
     dependencies:
       - package: kFoundation
         product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
       - target: kWatchIntents
     preBuildScripts:
       - name: "SwiftLint"
@@ -47,22 +53,35 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch.widget
       MACOSX_DEPLOYMENT_TARGET: "13.0"
       SWIFT_VERSION: "5.9"
+      GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - package: kFoundation
         product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
 
   kWatchIntents:
     type: app-extension
     platform: macOS
     sources:
-      - Intents
+      - path: Intents
+        excludes:
+          - "Info.plist"
     settings:
+      INFOPLIST_FILE: Intents/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.kwatch.intents
       MACOSX_DEPLOYMENT_TARGET: "13.0"
       SWIFT_VERSION: "5.9"
+      GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - package: kFoundation
         product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
 
   kWatchTests:
     type: bundle.unit-test
@@ -78,6 +97,10 @@ targets:
       - target: kWatchIntents
       - package: kFoundation
         product: MetricsKit
+      - package: kFoundation
+        product: MonitorCore
+      - package: kFoundation
+        product: DesignSystem
 
   kWatchUITests:
     type: bundle.ui-testing

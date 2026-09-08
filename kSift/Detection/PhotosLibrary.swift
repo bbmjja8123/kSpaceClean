@@ -1,6 +1,7 @@
 import CryptoKit
 import Foundation
 import Photos
+import DetectionCore
 import CoreGraphics
 
 // MARK: - Provider abstraction

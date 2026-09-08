@@ -3,2845 +3,1488 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
-	013D61A70C1AF22B263E391A /* 013D61A70C1AF22B263E391A */ = {
-		isa = PBXBuildFile;
-		fileRef = E3AE5C0A4342834CD9EBC485;
-	};
-	06EEC4E6AC4F52932B175794 /* 06EEC4E6AC4F52932B175794 */ = {
-		isa = PBXBuildFile;
-		fileRef = 69EB0B0622236B9768337050;
-	};
-	0ACD8B40E9A9457A4BC272FA /* 0ACD8B40E9A9457A4BC272FA */ = {
-		isa = PBXBuildFile;
-		fileRef = 0DB76AB594043D4161B1E925;
-	};
-	0B5D65122CCEA549841ACF90 /* 0B5D65122CCEA549841ACF90 */ = {
-		isa = PBXBuildFile;
-		fileRef = 2DECC88B7BA0D84E8211F331;
-	};
-	0D27E40F8EB385B980A249C9 /* 0D27E40F8EB385B980A249C9 */ = {
-		isa = PBXBuildFile;
-		fileRef = 87C6346ABF829F835904215B;
-	};
-	0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */ = {
-		isa = PBXBuildFile;
-		fileRef = FC8F976B27828057A607616A;
-	};
-	0E01BDDD2FB92BAD7ED42E5C /* 0E01BDDD2FB92BAD7ED42E5C */ = {
-		isa = PBXBuildFile;
-		fileRef = DACD1765745408BDE51CB982;
-	};
-	0E24A497FEDBEA092EDABEFC /* 0E24A497FEDBEA092EDABEFC */ = {
-		isa = PBXBuildFile;
-		fileRef = 5C86CEE8DB95B9A6854B7FDA;
-	};
-	1221B49D9C14EEFF06BD129B /* 1221B49D9C14EEFF06BD129B */ = {
-		isa = PBXBuildFile;
-		fileRef = 573656E9AEDAA16D9C8FB2A8;
-	};
-	12808F75D4C835148295B24A /* 12808F75D4C835148295B24A */ = {
-		isa = PBXBuildFile;
-		fileRef = 45998CFD96B10AA003C9A45A;
-	};
-	13CB88A31BA3DBB41BBA3686 /* 13CB88A31BA3DBB41BBA3686 */ = {
-		isa = PBXBuildFile;
-		fileRef = 850549EF72103F28B4766B06;
-	};
-	1502EA48D8C6DCB048BC60FB /* 1502EA48D8C6DCB048BC60FB */ = {
-		isa = PBXBuildFile;
-		fileRef = EC7AC2A12DE9FDACAF5C7302;
-	};
-	153C543E0B1E0A405F363A75 /* 153C543E0B1E0A405F363A75 */ = {
-		isa = PBXBuildFile;
-		fileRef = 226991BF3D28520B833DC3C6;
-		settings = {
-			ATTRIBUTES = (
-				RemoveHeadersOnCopy,
-			);
-		};
-	};
-	1578E2645DDE9FF630F86870 /* 1578E2645DDE9FF630F86870 */ = {
-		isa = PBXBuildFile;
-		fileRef = E4D32DAFD639987B4156B38E;
-	};
-	174ADA3EB2B832B4B928161E /* 174ADA3EB2B832B4B928161E */ = {
-		isa = PBXBuildFile;
-		fileRef = 714436BF5CC75EC99246EDE8;
-	};
-	1A832DA7ACF5E9577DB5ECF8 /* 1A832DA7ACF5E9577DB5ECF8 */ = {
-		isa = PBXBuildFile;
-		fileRef = E4AEAE19CF431C4F59AAD577;
-	};
-	1CB34D4640ED9149922B3F46 /* 1CB34D4640ED9149922B3F46 */ = {
-		isa = PBXBuildFile;
-		fileRef = C24F07B10668382339D44CB4;
-	};
-	1EF98D12306759D7C668C238 /* 1EF98D12306759D7C668C238 */ = {
-		isa = PBXBuildFile;
-		fileRef = 20AE518F458646658B17671B;
-	};
-	1FCA59498704879B83EAD38D /* 1FCA59498704879B83EAD38D */ = {
-		isa = PBXBuildFile;
-		fileRef = EBAEA6EE6E87228840E53575;
-	};
-	20F76562244EC0EAFF0E5C56 /* 20F76562244EC0EAFF0E5C56 */ = {
-		isa = PBXBuildFile;
-		fileRef = BD56D4A7FC8C8A288F6D2929;
-	};
-	21A87195E055CF6E9635EA0D /* 21A87195E055CF6E9635EA0D */ = {
-		isa = PBXBuildFile;
-		fileRef = 94C7B14022E755AC60EF55BD;
-	};
-	21D44ACFBB293C6063406191 /* 21D44ACFBB293C6063406191 */ = {
-		isa = PBXBuildFile;
-		fileRef = 99FA0B3AAC6F206137CA6D88;
-	};
-	232A95C7D99C371A3FB4D6C8 /* 232A95C7D99C371A3FB4D6C8 */ = {
-		isa = PBXBuildFile;
-		fileRef = 10CE68CC65989FDAC81A76A8;
-	};
-	23902937173293A28723E119 /* 23902937173293A28723E119 */ = {
-		isa = PBXBuildFile;
-		fileRef = 37D497C12E3BFCD7D1C437EA;
-	};
-	2450760FDBBA95BA3831B679 /* 2450760FDBBA95BA3831B679 */ = {
-		isa = PBXBuildFile;
-		fileRef = A29162E0D77513BD4BA5B451;
-	};
-	246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */ = {
-		isa = PBXBuildFile;
-		fileRef = 0843E97F195214F62BD29C3F;
-	};
-	29A4D3320F9CB93A6CDF1715 /* 29A4D3320F9CB93A6CDF1715 */ = {
-		isa = PBXBuildFile;
-		fileRef = 5C86CEE8DB95B9A6854B7FDA;
-	};
-	2B65BC3402FD3269056DFF7F /* 2B65BC3402FD3269056DFF7F */ = {
-		isa = PBXBuildFile;
-		fileRef = 48CBBF63493E2A8BC8F68341;
-	};
-	2DB5559D34A7311F59623D69 /* 2DB5559D34A7311F59623D69 */ = {
-		isa = PBXBuildFile;
-		fileRef = 8DE9C4C0C7C3F94BF4D199EF;
-	};
-	2F2D0BFD9368388549531F52 /* 2F2D0BFD9368388549531F52 */ = {
-		isa = PBXBuildFile;
-		fileRef = 3BE6F2F521E5B82DD44D9B50;
-	};
-	3323A447F4CE7D34C7F80946 /* 3323A447F4CE7D34C7F80946 */ = {
-		isa = PBXBuildFile;
-		fileRef = 87E02E0D4DC7DFCE9CEBB1E3;
-	};
-	36DA42A90C1B39459B1015BD /* 36DA42A90C1B39459B1015BD */ = {
-		isa = PBXBuildFile;
-		fileRef = FECC79E0002C91CC89A14B48;
-	};
-	3914674CDC322EE925016E12 /* 3914674CDC322EE925016E12 */ = {
-		isa = PBXBuildFile;
-		fileRef = E37721BEEA9C99BB4A0AA485;
-	};
-	437F83DF9CE86644C8F5A457 /* 437F83DF9CE86644C8F5A457 */ = {
-		isa = PBXBuildFile;
-		fileRef = 6FE5F15008CB18403BBDBB92;
-	};
-	457F893F00F2425273D33534 /* 457F893F00F2425273D33534 */ = {
-		isa = PBXBuildFile;
-		fileRef = E37721BEEA9C99BB4A0AA485;
-	};
-	4989CE2EF8D6A12482179081 /* 4989CE2EF8D6A12482179081 */ = {
-		isa = PBXBuildFile;
-		fileRef = 76E4C471C0F679BCC35C5BE2;
-	};
-	49F9A6E099B3972867C17FD4 /* 49F9A6E099B3972867C17FD4 */ = {
-		isa = PBXBuildFile;
-		fileRef = 4E08A802CAF3AAC9CE0905B4;
-		settings = {
-			ATTRIBUTES = (
-				RemoveHeadersOnCopy,
-			);
-		};
-	};
-	4A9F6111ADFF4A8610BC095C /* 4A9F6111ADFF4A8610BC095C */ = {
-		isa = PBXBuildFile;
-		fileRef = 42A8FD07BDDC626DBA3184A4;
-	};
-	50462B0A78871C43A4E77B9B /* 50462B0A78871C43A4E77B9B */ = {
-		isa = PBXBuildFile;
-		fileRef = 2906D24E92EE5AE02B27EE3D;
-	};
-	5098DD3CB6A57977716F8E78 /* 5098DD3CB6A57977716F8E78 */ = {
-		isa = PBXBuildFile;
-		fileRef = 03B411213CED55739D9FB3DE;
-	};
-	50D1D3011755FDB7763A9A80 /* 50D1D3011755FDB7763A9A80 */ = {
-		isa = PBXBuildFile;
-		fileRef = 50DC2D83A733C1BF5C4929F8;
-	};
-	5989688F44F8AE746569FFB8 /* 5989688F44F8AE746569FFB8 */ = {
-		isa = PBXBuildFile;
-		fileRef = 20AE518F458646658B17671B;
-	};
-	5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */ = {
-		isa = PBXBuildFile;
-		fileRef = 0ADB26D41ACA3A15E19ABEE3;
-	};
-	5BD62E81B0F33800CCE8C893 /* 5BD62E81B0F33800CCE8C893 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7D3632F28B178B4934AEB9E5;
-	};
-	5BF62D5F32C77B3E2C20ACFD /* 5BF62D5F32C77B3E2C20ACFD */ = {
-		isa = PBXBuildFile;
-		fileRef = 1B71C81D108972C624F49028;
-	};
-	5D67B2C11FB43761E5979CC4 /* 5D67B2C11FB43761E5979CC4 */ = {
-		isa = PBXBuildFile;
-		fileRef = F7805EC4C5BDFD41408CE1E6;
-	};
-	5FD178779095D3207DDA9602 /* 5FD178779095D3207DDA9602 */ = {
-		isa = PBXBuildFile;
-		fileRef = E579DA7F8DDCF448ECFD9806;
-	};
-	6135F5B5AA64C89E3D5BE3E1 /* 6135F5B5AA64C89E3D5BE3E1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 0D6929E9A6E57E49DAAD3D8F;
-	};
-	61C6D81024D3617BD61AB1C8 /* 61C6D81024D3617BD61AB1C8 */ = {
-		isa = PBXBuildFile;
-		fileRef = FE986E9F52381180BA28CA3C;
-	};
-	62DD2B2A146B30FC1666A265 /* 62DD2B2A146B30FC1666A265 */ = {
-		isa = PBXBuildFile;
-		fileRef = EDA8E236CF307FFD01EAB981;
-	};
-	63770470650F58347C4A5767 /* 63770470650F58347C4A5767 */ = {
-		isa = PBXBuildFile;
-		fileRef = 8E6073E09384508C1CD9618F;
-	};
-	671E289ADC376CB571A8FF1B /* 671E289ADC376CB571A8FF1B */ = {
-		isa = PBXBuildFile;
-		fileRef = 93A7C93FEFC27AA23D7F62E9;
-	};
-	676A9A2AD306E936A4D5E7C1 /* 676A9A2AD306E936A4D5E7C1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 30A54EC256A9FCAFCC87B5B5;
-	};
-	679C32ADA037D5D79D192A25 /* 679C32ADA037D5D79D192A25 */ = {
-		isa = PBXBuildFile;
-		fileRef = 10B159B999CC9DE4EF6A7608;
-	};
-	688BA67F404AA9A6367F06BD /* 688BA67F404AA9A6367F06BD */ = {
-		isa = PBXBuildFile;
-		fileRef = D69C4DDC1546D9CE51A13A24;
-	};
-	6A53B82381A1806E2C2168BA /* 6A53B82381A1806E2C2168BA */ = {
-		isa = PBXBuildFile;
-		fileRef = C8620777E51DC1E62B029214;
-		settings = {
-			ATTRIBUTES = (
-				RemoveHeadersOnCopy,
-			);
-		};
-	};
-	6B52D19EE1A24A6E56289CD2 /* 6B52D19EE1A24A6E56289CD2 */ = {
-		isa = PBXBuildFile;
-		fileRef = 04352AFF564492984D436EFC;
-	};
-	6C4221A9DB4B2FA497B426BA /* 6C4221A9DB4B2FA497B426BA */ = {
-		isa = PBXBuildFile;
-		fileRef = ED4F566D52FE3601B804A724;
-	};
-	6D076F78D9E8299B8DC5F9E0 /* 6D076F78D9E8299B8DC5F9E0 */ = {
-		isa = PBXBuildFile;
-		fileRef = 2A812D057C988CCABAFDE897;
-	};
-	6D7CC1394A444868F8FBE0F1 /* 6D7CC1394A444868F8FBE0F1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7FDF6912055D4600AC1D886C;
-	};
-	6D8A3D5F2985B28C9E886A81 /* 6D8A3D5F2985B28C9E886A81 */ = {
-		isa = PBXBuildFile;
-		fileRef = 14F6CCBD9BD786F8D93438BB;
-	};
-	6E550E08DAFC516BAD575DAF /* 6E550E08DAFC516BAD575DAF */ = {
-		isa = PBXBuildFile;
-		fileRef = 2CF8DC4F0E4143E5C0979667;
-	};
-	6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */ = {
-		isa = PBXBuildFile;
-		fileRef = 6CAA3CF4C412CEDDEAA934C3;
-	};
-	6F9B450F2A998EADF70F625F /* 6F9B450F2A998EADF70F625F */ = {
-		isa = PBXBuildFile;
-		fileRef = 950B093D752E8DD14ADDCB38;
-	};
-	70399AFF00E668E0A8380B3D /* 70399AFF00E668E0A8380B3D */ = {
-		isa = PBXBuildFile;
-		fileRef = CB9DB25AEDF2DBDA82889E8C;
-	};
-	74D22ACEEFDDAD3D8F39C05B /* 74D22ACEEFDDAD3D8F39C05B */ = {
-		isa = PBXBuildFile;
-		fileRef = 376128D5C1619C1B69525157;
-	};
-	75494F42FA48D6E4B7857029 /* 75494F42FA48D6E4B7857029 */ = {
-		isa = PBXBuildFile;
-		fileRef = AAFC929D30570FAF6E303587;
-	};
-	75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */ = {
-		isa = PBXBuildFile;
-		fileRef = FAA3A8E09031388A4E38C620;
-	};
-	75E5F429EBBEE8D03A74FD66 /* 75E5F429EBBEE8D03A74FD66 */ = {
-		isa = PBXBuildFile;
-		fileRef = FECC79E0002C91CC89A14B48;
-	};
-	7615C7E382C1A48031244B7C /* 7615C7E382C1A48031244B7C */ = {
-		isa = PBXBuildFile;
-		fileRef = 9BA078B6A3F6E8513319F5EE;
-	};
-	78FC53C2575E66C3A18329CE /* 78FC53C2575E66C3A18329CE */ = {
-		isa = PBXBuildFile;
-		fileRef = 6B9A8FCE2833D10C66B21B94;
-	};
-	7BD05F30F005B9FC84B735E8 /* 7BD05F30F005B9FC84B735E8 */ = {
-		isa = PBXBuildFile;
-		fileRef = BD56D4A7FC8C8A288F6D2929;
-	};
-	7C4297C9B447DE44801F8420 /* 7C4297C9B447DE44801F8420 */ = {
-		isa = PBXBuildFile;
-		fileRef = F5D549D758B8D2ABE78ECD3A;
-	};
-	7CFC339001174BDEEDCD407E /* 7CFC339001174BDEEDCD407E */ = {
-		isa = PBXBuildFile;
-		fileRef = C7BC5CEB13C59B9B5F16B91E;
-	};
-	7D33D9492BE6DC52F230B582 /* 7D33D9492BE6DC52F230B582 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7B090475EC1BDC2834C61076;
-	};
-	808356CB94DC1A5EA501A606 /* 808356CB94DC1A5EA501A606 */ = {
-		isa = PBXBuildFile;
-		fileRef = 8B74A86F52E77C4FB7C7020B;
-	};
-	82E0B01159B09B9D2C690377 /* 82E0B01159B09B9D2C690377 */ = {
-		isa = PBXBuildFile;
-		fileRef = EFDE86780F58671C82353994;
-	};
-	83125204BC66FC1B6E241CE8 /* 83125204BC66FC1B6E241CE8 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7B8C9586EC2FD67B8EB631DA;
-	};
-	84BD3D0C65879977E026D9A9 /* 84BD3D0C65879977E026D9A9 */ = {
-		isa = PBXBuildFile;
-		fileRef = 8EFDA98B20F0167B99720C0B;
-	};
-	860F597F6EDB1E7E0BF3D1B9 /* 860F597F6EDB1E7E0BF3D1B9 */ = {
-		isa = PBXBuildFile;
-		fileRef = E37721BEEA9C99BB4A0AA485;
-	};
-	88E1770D02B3D40EF1566F47 /* 88E1770D02B3D40EF1566F47 */ = {
-		isa = PBXBuildFile;
-		fileRef = 176A31D2206F32C458902EC6;
-	};
-	8A7BA831214CAE887B0437E1 /* 8A7BA831214CAE887B0437E1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 1BF74DE0B495D314D07467D4;
-	};
-	8AA0AB5412E4A5C724DB8D0A /* 8AA0AB5412E4A5C724DB8D0A */ = {
-		isa = PBXBuildFile;
-		fileRef = EA7D9B08DA006024D4AE3931;
-	};
-	8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */ = {
-		isa = PBXBuildFile;
-		fileRef = BFA7754C2E9614BC7641312C;
-	};
-	8B4C6717D22271144EDB9965 /* 8B4C6717D22271144EDB9965 */ = {
-		isa = PBXBuildFile;
-		fileRef = 282BA7C1EF08746DEE167794;
-	};
-	8B78D281B81E67B1F43A3161 /* 8B78D281B81E67B1F43A3161 */ = {
-		isa = PBXBuildFile;
-		fileRef = F5D549D758B8D2ABE78ECD3A;
-	};
-	8B87D472FA584CEBEE1F4F7E /* 8B87D472FA584CEBEE1F4F7E */ = {
-		isa = PBXBuildFile;
-		fileRef = 20AE518F458646658B17671B;
-	};
-	8F2107E120FFE5D47C3098D2 /* 8F2107E120FFE5D47C3098D2 */ = {
-		isa = PBXBuildFile;
-		fileRef = 85467F0AE21D25713C3894F5;
-	};
-	924D895492CCEFFDF819E8EF /* 924D895492CCEFFDF819E8EF */ = {
-		isa = PBXBuildFile;
-		fileRef = 412E1108FFF483BAE72A6509;
-	};
-	92BEC11FC8DD9F77F04CEF4F /* 92BEC11FC8DD9F77F04CEF4F */ = {
-		isa = PBXBuildFile;
-		fileRef = 77BF1B73572625F9518ED83C;
-	};
-	931E0DDB1639A5531174CF32 /* 931E0DDB1639A5531174CF32 */ = {
-		isa = PBXBuildFile;
-		fileRef = 97D8C41CF6C4CF8C7C52E96E;
-	};
-	98CF7DD3B9667F19997F7EB3 /* 98CF7DD3B9667F19997F7EB3 */ = {
-		isa = PBXBuildFile;
-		fileRef = EC7AC2A12DE9FDACAF5C7302;
-	};
-	98F18BEC132E0558BF27B792 /* 98F18BEC132E0558BF27B792 */ = {
-		isa = PBXBuildFile;
-		fileRef = AAEA3FCC869E5B9F1AF52EF4;
-	};
-	9D21360D80FEA5C4B9833ED1 /* 9D21360D80FEA5C4B9833ED1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 05876A10316C9EF6984FAC4F;
-	};
-	9ED470394FCB26778124D2F8 /* 9ED470394FCB26778124D2F8 */ = {
-		isa = PBXBuildFile;
-		fileRef = FEA5F4DC21670ED6938C81D6;
-	};
-	A237208B4D438763BC30B633 /* A237208B4D438763BC30B633 */ = {
-		isa = PBXBuildFile;
-		fileRef = 170722350E893EFDAA96A1CD;
-	};
-	A23A4B553335D12B0C078995 /* A23A4B553335D12B0C078995 */ = {
-		isa = PBXBuildFile;
-		fileRef = 8ECCE3506745FB1153CB8267;
-	};
-	A24FD4DA453ED7F871E3B548 /* A24FD4DA453ED7F871E3B548 */ = {
-		isa = PBXBuildFile;
-		fileRef = 4222344899ADE78AE2154CBD;
-	};
-	A2A2B2D52E52A0038A70163C /* A2A2B2D52E52A0038A70163C */ = {
-		isa = PBXBuildFile;
-		fileRef = FF3B633668A0E32697CC38F0;
-	};
-	A870777C0955E4956EAFCA52 /* A870777C0955E4956EAFCA52 */ = {
-		isa = PBXBuildFile;
-		fileRef = 77150D054169C6226C7EB412;
-	};
-	A8BBF15A1D10D4E6660E7CB0 /* A8BBF15A1D10D4E6660E7CB0 */ = {
-		isa = PBXBuildFile;
-		fileRef = E37721BEEA9C99BB4A0AA485;
-	};
-	AC146A5743413D01DA1ED2CB /* AC146A5743413D01DA1ED2CB */ = {
-		isa = PBXBuildFile;
-		fileRef = 340B6EC4BCEB13C7C0CA9C0E;
-	};
-	AD4B131A673D15859CC25D38 /* AD4B131A673D15859CC25D38 */ = {
-		isa = PBXBuildFile;
-		fileRef = A93D454F0C41DB76BBED1DB9;
-	};
-	AED6A965AEBDDECE519EEBAA /* AED6A965AEBDDECE519EEBAA */ = {
-		isa = PBXBuildFile;
-		fileRef = DEEE9528EA5DE4ED7AC00281;
-	};
-	B2F05911BF4FB1259E1783A2 /* B2F05911BF4FB1259E1783A2 */ = {
-		isa = PBXBuildFile;
-		fileRef = 57B9ABD1FDA51F02494FAB4F;
-	};
-	B3A48E969BF3D520CF9A89FB /* B3A48E969BF3D520CF9A89FB */ = {
-		isa = PBXBuildFile;
-		fileRef = 2DECC88B7BA0D84E8211F331;
-	};
-	B4BA95D344234077B5B19732 /* B4BA95D344234077B5B19732 */ = {
-		isa = PBXBuildFile;
-		fileRef = 408D99E9B7E338183780E5D7;
-	};
-	B680EBC7B2D746FA9F7D5674 /* B680EBC7B2D746FA9F7D5674 */ = {
-		isa = PBXBuildFile;
-		fileRef = B792E301EE89B1CC7BBFBB6E;
-	};
-	B87EF9F2FBB14C7B4B6FD14A /* B87EF9F2FBB14C7B4B6FD14A */ = {
-		isa = PBXBuildFile;
-		fileRef = 653A10396E298C1B05E94EC6;
-	};
-	BC7C77518AE68CBA406DDDEE /* BC7C77518AE68CBA406DDDEE */ = {
-		isa = PBXBuildFile;
-		fileRef = 64C76C3AF6D7C1D08AE81C00;
-	};
-	C0435261C99720AB8B4075FD /* C0435261C99720AB8B4075FD */ = {
-		isa = PBXBuildFile;
-		fileRef = 360159E7F6FB1F6FCD8DF23A;
-	};
-	C06D563FF64FB7F57ABD9FEE /* C06D563FF64FB7F57ABD9FEE */ = {
-		isa = PBXBuildFile;
-		fileRef = DE20B5A69037812C2667FB37;
-	};
-	C4F73D55634F77916BBC03AB /* C4F73D55634F77916BBC03AB */ = {
-		isa = PBXBuildFile;
-		fileRef = 42A8FD07BDDC626DBA3184A4;
-	};
-	C7673D98A5C5888376193C31 /* C7673D98A5C5888376193C31 */ = {
-		isa = PBXBuildFile;
-		fileRef = DF22949BA727DFE5918DA961;
-	};
-	C8BF3F2FAC5AB2BD54696262 /* C8BF3F2FAC5AB2BD54696262 */ = {
-		isa = PBXBuildFile;
-		fileRef = 69EB0B0622236B9768337050;
-	};
-	CECA1D74EFFCEEE270B086DC /* CECA1D74EFFCEEE270B086DC */ = {
-		isa = PBXBuildFile;
-		fileRef = F4AFB5925141C7DADE945D68;
-	};
-	CFA3A56CE1389DF9289443E8 /* CFA3A56CE1389DF9289443E8 */ = {
-		isa = PBXBuildFile;
-		fileRef = DE30952806BAD3D158E74464;
-	};
-	D170A7B277F4C85C902FD749 /* D170A7B277F4C85C902FD749 */ = {
-		isa = PBXBuildFile;
-		fileRef = 42A8FD07BDDC626DBA3184A4;
-	};
-	D231F2291A20553B6F352E9F /* D231F2291A20553B6F352E9F */ = {
-		isa = PBXBuildFile;
-		fileRef = 519386D7F436003927EAABCB;
-	};
-	D46F21D489B2CEEBCB979A90 /* D46F21D489B2CEEBCB979A90 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7FDF6912055D4600AC1D886C;
-	};
-	D553641DE1EC897E61632421 /* D553641DE1EC897E61632421 */ = {
-		isa = PBXBuildFile;
-		fileRef = C800D4DC1D31F795B415E42C;
-	};
-	D66B415948FDFBEC1509A926 /* D66B415948FDFBEC1509A926 */ = {
-		isa = PBXBuildFile;
-		fileRef = 42A8FD07BDDC626DBA3184A4;
-	};
-	D9270252174563095501DDD8 /* D9270252174563095501DDD8 */ = {
-		isa = PBXBuildFile;
-		fileRef = A29162E0D77513BD4BA5B451;
-	};
-	D96937041669DA5D4CFD772D /* D96937041669DA5D4CFD772D */ = {
-		isa = PBXBuildFile;
-		fileRef = 3F5A280592344A01BF293381;
-	};
-	D9C83DAA5CA58B44EC554129 /* D9C83DAA5CA58B44EC554129 */ = {
-		isa = PBXBuildFile;
-		fileRef = 933426BE7C99ACFAC34C4F90;
-	};
-	DAA08C7C942D437F4D186DB6 /* DAA08C7C942D437F4D186DB6 */ = {
-		isa = PBXBuildFile;
-		fileRef = B8C7D2F5F505A91B64D3C6F9;
-	};
-	DBF041637F69E6FAF31C49F7 /* DBF041637F69E6FAF31C49F7 */ = {
-		isa = PBXBuildFile;
-		fileRef = 97D5754210E7D3F69530AAB5;
-	};
-	DD92D548C385F21DE431F1E6 /* DD92D548C385F21DE431F1E6 */ = {
-		isa = PBXBuildFile;
-		fileRef = 76E4C471C0F679BCC35C5BE2;
-	};
-	DE329FEA4CF5EFB872CD11D0 /* DE329FEA4CF5EFB872CD11D0 */ = {
-		isa = PBXBuildFile;
-		fileRef = 50983C2E12673DF28C54327B;
-	};
-	DF0CBDCDDE0EE468325C863B /* DF0CBDCDDE0EE468325C863B */ = {
-		isa = PBXBuildFile;
-		fileRef = 78528845AAD156289D52EE2F;
-	};
-	E07E6E132E02DA40D44308CA /* E07E6E132E02DA40D44308CA */ = {
-		isa = PBXBuildFile;
-		fileRef = F1A34B16C0E46D22F48F6148;
-	};
-	E1C3ED4675E1F975DB11D883 /* E1C3ED4675E1F975DB11D883 */ = {
-		isa = PBXBuildFile;
-		fileRef = F5D549D758B8D2ABE78ECD3A;
-	};
-	E4F5BB78841CF956AA3F9FF4 /* E4F5BB78841CF956AA3F9FF4 */ = {
-		isa = PBXBuildFile;
-		fileRef = D6DCAF56A82C475B6EB3E767;
-	};
-	E5D84FBAEC4E2364C7F69DA0 /* E5D84FBAEC4E2364C7F69DA0 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7176DCD3604F7D24DDE333F3;
-	};
-	E85924BCE4D46E7424EC284B /* E85924BCE4D46E7424EC284B */ = {
-		isa = PBXBuildFile;
-		fileRef = 177414483EBA673E7A0C4143;
-	};
-	E9E2596369EBFE703821D9D6 /* E9E2596369EBFE703821D9D6 */ = {
-		isa = PBXBuildFile;
-		fileRef = 408D99E9B7E338183780E5D7;
-	};
-	EA98837D17977FDF07F448F5 /* EA98837D17977FDF07F448F5 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7ECE422A857C4BC9B14B1768;
-	};
-	ECE44D8B3BAE3B06F12EB9CB /* ECE44D8B3BAE3B06F12EB9CB */ = {
-		isa = PBXBuildFile;
-		fileRef = DACD1765745408BDE51CB982;
-	};
-	EE2B5959CBE35813A255AFC1 /* EE2B5959CBE35813A255AFC1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 01D2F70ABD54918F287BC071;
-	};
-	EE70942A2C65E584BF0830B6 /* EE70942A2C65E584BF0830B6 */ = {
-		isa = PBXBuildFile;
-		fileRef = 592D1EDFC0B4EA95EC8659EE;
-	};
-	F34814A681F8DF89DABE34ED /* F34814A681F8DF89DABE34ED */ = {
-		isa = PBXBuildFile;
-		fileRef = EDFEA602AB2A5352BBD64650;
-	};
-	F490CB5E664CFD7BC1D0DDC4 /* F490CB5E664CFD7BC1D0DDC4 */ = {
-		isa = PBXBuildFile;
-		fileRef = A9521DBAEC8BDFC7B589022D;
-	};
-	F5B002705E880FD7B9665789 /* F5B002705E880FD7B9665789 */ = {
-		isa = PBXBuildFile;
-		fileRef = 024F1C2F979C5749ECEFCCDC;
-	};
-	F635ABC2DE1E32C726E6861A /* F635ABC2DE1E32C726E6861A */ = {
-		isa = PBXBuildFile;
-		fileRef = 443B69E3590BADE5F657F64E;
-	};
-	F75FAF8410131F408861706E /* F75FAF8410131F408861706E */ = {
-		isa = PBXBuildFile;
-		fileRef = C04667034C299F1C3195FD02;
-	};
-	F799F1C8FD709366D6824FC0 /* F799F1C8FD709366D6824FC0 */ = {
-		isa = PBXBuildFile;
-		fileRef = 20AE518F458646658B17671B;
-	};
-	F8020BF51162D654C015B5C1 /* F8020BF51162D654C015B5C1 */ = {
-		isa = PBXBuildFile;
-		fileRef = 9938DF78C5FA02BEE2726CC4;
-	};
-	FB4404A665137F70FC5DA848 /* FB4404A665137F70FC5DA848 */ = {
-		isa = PBXBuildFile;
-		fileRef = D69C4DDC1546D9CE51A13A24;
-	};
-	FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */ = {
-		isa = PBXBuildFile;
-		fileRef = 29548BE5AD0B39AAFE6CF22F;
-	};
-	FE9E4E390D38ABEBA2A2872B /* FE9E4E390D38ABEBA2A2872B */ = {
-		isa = PBXBuildFile;
-		fileRef = 9BFBC8ED06E21A4F05B62022;
-	};
-	FFD4B1A3AA6C19DFA3A94412 /* FFD4B1A3AA6C19DFA3A94412 */ = {
-		isa = PBXBuildFile;
-		fileRef = 7B8C9586EC2FD67B8EB631DA;
-	};
+		014E6CEAAE22DE89D1269F8E /* HistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B51F0E582A29FCE3FDBD44E /* HistoryViewModelTests.swift */; };
+		06BBF6F8D96AF1CE41493F40 /* ProcessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A559F7FBCB38298ADD25346 /* ProcessRowView.swift */; };
+		0AD6F520C475EE6B0978CD56 /* MenuBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB2292FC809FF3A42B7CD1F /* MenuBarSettingsView.swift */; };
+		0BF87B2E8D456E9BE06CA893 /* MetricDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676BDD4F52006B6E330E0FF3 /* MetricDetailViewModelTests.swift */; };
+		0CF3C1CBCA6AB0DB2ED2E27E /* QuickToggleBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87FE6D6F72E1A2D1B6A05697 /* QuickToggleBarTests.swift */; };
+		0EB50AD5C3DC86BAD80EEBD2 /* PaywallViewModelTermsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D695F14A3037BA615173CD /* PaywallViewModelTermsTests.swift */; };
+		100913C200308DB70C248BAD /* ManagedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C296DA3C96BE360E642BB7 /* ManagedObjects.swift */; };
+		119196F7B3D2EB6CC95EB331 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F91D8AA66948EB4D3140D4D /* OnboardingViewModel.swift */; };
+		11F9889731F7A1EE2B513932 /* AlertRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104E381F1853CF3122D02BCF /* AlertRepositoryTests.swift */; };
+		1406D6DFBD48D3FE316C6958 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 320F22E5BF2D0A630D958D57 /* DesignSystem */; };
+		19DC72691857A4502048D013 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BCAEEF622FAA178EDD634A /* HistoryViewModel.swift */; };
+		1BCF665F885BCE9280D2C0A5 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92402B0378C72D1E14BB6DA9 /* AlertsView.swift */; };
+		1CCC8D9D70797688B5A27441 /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = C4EB650C262F762C1921B15F /* MonitorCore */; };
+		1D91E6CE48496582832BEFDF /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89EC97238517D99542A850F2 /* PurchaseButton.swift */; };
+		1E6F2EFA53568BAC4C26311A /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0A128168444A858AFE1F0 /* MenuBarView.swift */; };
+		1ECFFCBA9DB5C3F3C833FE1B /* MetricCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B393745072EF45F18B336A4B /* MetricCardViewModelTests.swift */; };
+		232249DA6EEDA55BD47C2877 /* KWatchLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6655FD2C77B2FCB3A6C382B4 /* KWatchLaunchTests.swift */; };
+		24058B63A8D9D959BE986A7E /* PreferencesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952C94B53D2E1B066414914B /* PreferencesRepository.swift */; };
+		2561CF35D994D212EB357D28 /* IntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87ED2799B3B675DF25B3864C /* IntentService.swift */; };
+		27B5C0DEBDB4CF17E028C884 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308950F62A252421378157F8 /* PaywallViewModel.swift */; };
+		2B5CA7132C2503F3AD90CD94 /* ShowDiskUsageIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45426B2219A8E65813D3BE /* ShowDiskUsageIntent.swift */; };
+		2BC401A7285F5AD82F710B4A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9F69BADF390498860B8516 /* SettingsViewModel.swift */; };
+		2CBEF6A1238EB93348276A9A /* LiveIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FFE6E00B78F18EA04F3D42 /* LiveIntentService.swift */; };
+		2D9537E75D6B90545EAC28DF /* MultiIconStatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B75EE55C9C374A8CD9FC679 /* MultiIconStatusItemController.swift */; };
+		2F58374BC538E83D8FA37464 /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C4CBA83AEC4F030AD32078 /* WidgetBundle.swift */; };
+		303AC00816686006B2E9FE06 /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0F89AFBE919DB7663EEB420E /* MonitorCore */; };
+		33224A96C4CD79D16519A1BD /* SubscriptionTerms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E7AAD11A1C0A7647ABB017 /* SubscriptionTerms.swift */; };
+		34036900DBE09D5BFD42409B /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 646F994FB92D7004ACE01238 /* MetricsKit */; };
+		3470D1C6FFFF47ABC8475354 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2F24A0FD9A9B5B8D77A640 /* AppContainer.swift */; };
+		34A7FA0DA0ABA6B75AEC15A5 /* ShowNetworkRateIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66DEB5655E81603E671F68 /* ShowNetworkRateIntent.swift */; };
+		35E405309D06912BA7744093 /* OpenDashboardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A3C928FA0DCA9DFE393159 /* OpenDashboardIntent.swift */; };
+		38A4002EE66EE427CF8FC866 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2717620CABEF96ED0AD03DF0 /* DashboardViewModel.swift */; };
+		39AA58369130DA09C5D648E2 /* kWatchIntents.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DB235532202A107A0B6F64FD /* kWatchIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BD6500F23E976DEC49B71D5 /* ProcessesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8820DE70E4E22E1D167F5149 /* ProcessesView.swift */; };
+		3CE6C79614048B0BA81FF980 /* PauseMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9E9EF46056D4523495540B /* PauseMonitoringIntent.swift */; };
+		3F51A4237C208C045CF3F893 /* QueryMetricIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9EE8544D25E0ECE1ED349D /* QueryMetricIntent.swift */; };
+		43B8463886A39BAFC143D6A0 /* AlertEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5BF3AEF9D8C932E967415 /* AlertEditorView.swift */; };
+		4401A9C9D9C6BAE2BEF0D2E5 /* AlertRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3564D7D36E505C87A1E007 /* AlertRepository.swift */; };
+		4871C00612594ACC924D1DA6 /* kWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1852737B9D94A497AB1724D1 /* kWatchApp.swift */; };
+		494FFF1E41148752264EF979 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = A000FAFFF0C719BD02AEC564 /* DesignSystem */; };
+		4AEE281BD77DB16C50872F5C /* AppWindowRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B1BFB9772B9243F0EDBB1F /* AppWindowRouter.swift */; };
+		4B05B1ACEBE829CABC92A734 /* CoreDataStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EC7342AD21D8C51DDFA9B1 /* CoreDataStackTests.swift */; };
+		4D6D10F869BCAC25473F211B /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE16E5D3E7FE6149C866D7D /* OnboardingViewModelTests.swift */; };
+		4FA8613AE596B18FB39D4468 /* StopMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F173DE4BC938FCB6EE8A48E4 /* StopMonitoringIntent.swift */; };
+		51900B24FAA4125FDB3EBC44 /* InteractiveWidgetIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0487FE560B636FFC2AD5168 /* InteractiveWidgetIntentTests.swift */; };
+		519445697A18978EA40DDD7B /* ShowTopProcessesIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E0DD895E6D33770EE2A5F9 /* ShowTopProcessesIntent.swift */; };
+		51F5A867CD7B34FC57F17CDA /* ShowDiskUsageIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45426B2219A8E65813D3BE /* ShowDiskUsageIntent.swift */; };
+		54BEA7DD76A63E164E005BF3 /* IntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87ED2799B3B675DF25B3864C /* IntentService.swift */; };
+		55C5119CDB883661EBA2DEC8 /* kWatch.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 205108B2ABA1E31E66B14FAC /* kWatch.xcodeproj */; };
+		55CC11996009CD0FDDF3A8EA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106DFBE976257CC2E75FDB08 /* AppState.swift */; };
+		565C9DDC51BCD1CA4BC45F6C /* PurchaseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7276C88D4679D33A49B570D /* PurchaseState.swift */; };
+		56CCFBF969F66B2CFE8B4059 /* StoreKitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F053279A433C37151B2F2630 /* StoreKitClient.swift */; };
+		58877F61100AB420A3DBBFC1 /* WelcomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079B79EB1CF9DA0F4AEFD51 /* WelcomePage.swift */; };
+		5982223FF712DFD90CE9FAB5 /* SettingsViewModelRestoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC4B0C893C3EAF1C9CF1DB2 /* SettingsViewModelRestoreTests.swift */; };
+		5C107CFC0F117E1BCB3EF129 /* generate_project.py in Resources */ = {isa = PBXBuildFile; fileRef = CE7CE94F9004760C579254A6 /* generate_project.py */; };
+		62D036625F692B24F9F91F76 /* OpenDashboardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A3C928FA0DCA9DFE393159 /* OpenDashboardIntent.swift */; };
+		62EE0EB169EC3065AB4DFD0B /* KWatchAppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9666A90372F9EBCBF10CC /* KWatchAppShortcuts.swift */; };
+		646C714369ADF5CE149737BB /* WidgetSnapshotProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B55F978DAA1CDEE334932AE /* WidgetSnapshotProvider.swift */; };
+		66550A2D334336DB28A45049 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7F8AD60CA58160E2F0C1D5 /* OnboardingView.swift */; };
+		6821C194B3305F74F11F26E6 /* ProcessesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CB9452EF3828299C7B7DE /* ProcessesViewModel.swift */; };
+		6BF07364278C6F4849D7550D /* WidgetViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3BD1C6C77D82E2F8307C6A /* WidgetViews.swift */; };
+		6CDDC0D60A91E97FFCB684A9 /* MetricDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894B5F69A7A9064AD7583C36 /* MetricDetailViewModel.swift */; };
+		6D2944BD231860E5C6D9BF37 /* MenuBarCustomizePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BCC35547E2E15A3D506B22F /* MenuBarCustomizePage.swift */; };
+		6D29F5436FDE7B55BA906DB8 /* WidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A629C5D9CE901A8BA7D909 /* WidgetEntry.swift */; };
+		6F9031299E6C1EC2DE48F6F0 /* PreferencesRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99AFB520FA40C82A6542C9B /* PreferencesRepositoryTests.swift */; };
+		6FA21903C6110CB9FA34615B /* AlertsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F9C0B301FC1DE93B87B44A /* AlertsViewModelTests.swift */; };
+		6FE086D021CB7AB21FA5D57D /* KWatchSpotlightIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1121277150085C2371AFB092 /* KWatchSpotlightIndexer.swift */; };
+		70A359CFE4C146419E17B99C /* NotificationSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB1DA5C785E4EF169573388 /* NotificationSchedulerTests.swift */; };
+		7212B8E1730EAD9663459060 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD9257DF166670E7F57BA7D /* AppearanceSettingsView.swift */; };
+		732C2F0417E24D4FBF83CA13 /* MetricMenuRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5FB04FD3F0ED3D1FA470E4 /* MetricMenuRow.swift */; };
+		73CDA87FD3B7F0CDAFC4E0F8 /* StoreKitTestConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 884EE02B2C288DBFB184CB38 /* StoreKitTestConfiguration.storekit */; };
+		74CB0ECC02417DC12E7EAC3C /* StubIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5460958D480EE94E67BF38 /* StubIntentService.swift */; };
+		78A358A3BFDACE0B8BA8D991 /* PerMetricTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0DC660EA72FC9B73E6C4AA /* PerMetricTabView.swift */; };
+		78D285EAF6E5A7EF644B11E7 /* AlertEditorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CDAE36234FFB1200943ACB /* AlertEditorViewModelTests.swift */; };
+		7B7D9779D4DE540112080D19 /* MenuBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713A8D510C9EA2D8C6EFA945 /* MenuBarViewModel.swift */; };
+		7CA6DBB096B3545DEDB5F54D /* ProIntroPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B462543E912C9FA338EF83C5 /* ProIntroPage.swift */; };
+		7D522B537C20FDBD9C997BE6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B56E8797FBDAC39DB0FE58E3 /* Localizable.xcstrings */; };
+		7DDE41D21B8EB86237D3173C /* CompletePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5003F63055FABF6218564C0E /* CompletePage.swift */; };
+		7F86FA3401659783F64038D5 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 7694C8CD9BED32D40DEA1E56 /* DesignSystem */; };
+		7FADEE0BCD6BF5BA2D0D915B /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC5241B35A21CD961B052F3 /* DashboardViewModelTests.swift */; };
+		7FC4585C836B158259B7B81C /* ci.yml in Resources */ = {isa = PBXBuildFile; fileRef = 820C840D995A0F2E2EE2E56E /* ci.yml */; };
+		8070EADC303B6EF3148F59DD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C79B6C9F6F2755FB9FD5F8 /* SettingsView.swift */; };
+		826F120FA8628A8EFCA11312 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 7FA09A6904FF7788767F21EC /* DesignSystem */; };
+		84B6B26D60230077583C085C /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A60A6960FB76EC4E499030 /* AboutView.swift */; };
+		86D8F8D37845AA7BD337119A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CD45BF643ACB6724439FA4E0 /* PrivacyInfo.xcprivacy */; };
+		88493EC617B32C70A8A75E66 /* MetricDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6774BE33CBF6DAB6767F6489 /* MetricDetailView.swift */; };
+		8A29A38205C377A58132BB45 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01700AB707CFB51277C6077D /* HistoryView.swift */; };
+		8CD92E1F66E2CC73947D33C3 /* SendableBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D90DF4C7E8DBB9B5BA7829 /* SendableBox.swift */; };
+		8DE0FF96D9133D61ABCE83D7 /* MetricCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BB9264EA9F6F359A5E16C /* MetricCardView.swift */; };
+		90AF531294AE9140B378D0BD /* QuickToggleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C123D61F999F3E7588DCCA98 /* QuickToggleBar.swift */; };
+		9181D3F2E4144AD21555D69A /* ExportDiagnosticsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE411E0435B66CE3C027893 /* ExportDiagnosticsIntent.swift */; };
+		9232C9C12EEC8B90642C45AD /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE102EAC720755D9F887DD2 /* SettingsViewModelTests.swift */; };
+		95CA48BDE9154C8047C4FB4C /* MenuBarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C26AC92D6C767D42CDF84A3 /* MenuBarViewModelTests.swift */; };
+		97830DAB320E599447AB0869 /* IntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF8956884AD7A1A94B68246 /* IntentTests.swift */; };
+		99C5D80FFE38F88CFBB4845C /* WidgetReloadTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF028C3349B2EA0EC08FAD5 /* WidgetReloadTriggerTests.swift */; };
+		9B2058E273B055D5F8045985 /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = D4EA8B9DB643BFB40A3ED3EE /* MetricsKit */; };
+		9E7346455B59D9B8A25FEC90 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93181D298359356EC773C8C /* PaywallView.swift */; };
+		9EE7D9B1C3D4D03F23D380AC /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD1931233159167B29FA41E /* DashboardView.swift */; };
+		A132C12BA4D792F34101F370 /* kWatchAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07ABD252A9B754E6E0F34CC /* kWatchAppDelegate.swift */; };
+		A540035714E0AC520D72B8D6 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4961D19A8101E16F6470AD22 /* StoreManager.swift */; };
+		A5AB75916264E486412AAA22 /* KWatchPurchaseJourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAE92E82A4121E951650484 /* KWatchPurchaseJourneyTests.swift */; };
+		AA5B9680B37E9D773D667FA0 /* SubscriptionTermsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDFF2C2476A10FB6BB69D63 /* SubscriptionTermsTests.swift */; };
+		AB091163E41272F2CFC7631B /* TrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DDE123B1E8751F4196C2A6 /* TrendChart.swift */; };
+		ABDB884D0280EA8377E54A3D /* IntentParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002F096F0A5157F132868EA6 /* IntentParameterTests.swift */; };
+		ADBE17A7CA2BB9E422121BB5 /* ShowTopProcessesIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E0DD895E6D33770EE2A5F9 /* ShowTopProcessesIntent.swift */; };
+		AF36D3426AAF1BC2AD5215B9 /* MetricSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD5C63C193713909AF023DB1 /* MetricSettingsView.swift */; };
+		B1BEBB3494809D4694780CD7 /* AlertsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFEAD4D5EFCB10004A47E85 /* AlertsViewModel.swift */; };
+		B46E338971DA587D7AB53B2A /* AppCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166410E0952B3574BDE4F73 /* AppCoordinatorTests.swift */; };
+		B5168A89F7C457510669BC2A /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0484436DB1D252FE9CCEB0A7 /* MonitorCore */; };
+		B5FE6C50175124305FFCC73A /* MetricCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544262EDC42DD2D7A364F43 /* MetricCardViewModel.swift */; };
+		B7D5A4F501E44D451CE55D97 /* ControlWidgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC857107728F31623A1706 /* ControlWidgetTests.swift */; };
+		B7E3F94554DA54684FEA79DD /* MenuBarIconThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE5C44EB90D62F3CD47B4A6 /* MenuBarIconThemeTests.swift */; };
+		BD6E54B83408A76328304B0C /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 602259067287812F73EB443F /* MetricsKit */; };
+		C02FA851F48EAA32123DA140 /* MenuBarIconTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F97957EB9BC415A180496A /* MenuBarIconTheme.swift */; };
+		C56042E97D200A428AA14EA9 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E696E68C8D7BE47C71D7937 /* AppCoordinator.swift */; };
+		C59FA9D65A11470C32C91FE0 /* StartMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CC047083E4341C6CD4F0A4 /* StartMonitoringIntent.swift */; };
+		C856D027BEF77083CA000664 /* StubIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5460958D480EE94E67BF38 /* StubIntentService.swift */; };
+		C9D43EBE853381ED697FAC19 /* MetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = A26D01887FD287FCF3716F16 /* MetricsKit */; };
+		CA84F21C88E3A1C440F5D9D2 /* StopMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F173DE4BC938FCB6EE8A48E4 /* StopMonitoringIntent.swift */; };
+		D32F332B668F780B6437FAC7 /* ExportDiagnosticsIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE411E0435B66CE3C027893 /* ExportDiagnosticsIntent.swift */; };
+		D6F75F807E6B728D562DA8B3 /* ProcessesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A6C766FD131BD00682F9FA /* ProcessesViewModelTests.swift */; };
+		D9B2F8FA4BDE727E8E17B557 /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2FA1104C6A9A2389408D5C /* StoreManagerTests.swift */; };
+		DB5EA69536644EBCA0291A14 /* RestorePurchaseStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC204415CEB806500F7ECF2 /* RestorePurchaseStubs.swift */; };
+		DEE423BABF1978758711399C /* TestAppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A2C5A89CCFFD1148D0CADD /* TestAppContainer.swift */; };
+		E1B6D1E68CC76889E5AA3CB0 /* SystemStatusWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F14A30B33136F965E33E58E /* SystemStatusWidget.swift */; };
+		E6D9CC74A4AE9F929327AD01 /* AppShortcutsVerificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC6EE3883385DD8D6049B70 /* AppShortcutsVerificationTests.swift */; };
+		E706FBF4648778F4C6ECC068 /* LiveIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FFE6E00B78F18EA04F3D42 /* LiveIntentService.swift */; };
+		E7F74F6F571A0854283F0EEB /* LiveAppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FD6810B88D54433263236 /* LiveAppContainer.swift */; };
+		E8634A0F13AF86F0AFE776EA /* KWatchAppShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE9666A90372F9EBCBF10CC /* KWatchAppShortcuts.swift */; };
+		EA2EE665E0ADFC1D1F11490C /* QueryMetricIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9EE8544D25E0ECE1ED349D /* QueryMetricIntent.swift */; };
+		EA84D85F05406DEF0CE42183 /* HistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849DED88E97787BAA009C814 /* HistoryRepository.swift */; };
+		EAB4AAFFCDF9E6E3A8F0EE27 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C966DC5D9D36E4F0EFE9A36 /* CoreDataStack.swift */; };
+		F1349F896A860FD26B75DABB /* AppContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7255BA3674338E31122D /* AppContainerTests.swift */; };
+		F1E8527C95F9E0DE03FAA2CA /* MonitorCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1DE04B27EB0693146833FE34 /* MonitorCore */; };
+		F7105FEF776F6A47F4C9985B /* RepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEE033BFAAD744DE1F51D12 /* RepositoryTests.swift */; };
+		F83EC33015FE8AB8C0CDE331 /* ShowNetworkRateIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D66DEB5655E81603E671F68 /* ShowNetworkRateIntent.swift */; };
+		F9BCDC6C050C7ADD76981B26 /* PauseMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9E9EF46056D4523495540B /* PauseMonitoringIntent.swift */; };
+		FB19B45E6E3388A8B6D1AE91 /* StartMonitoringIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CC047083E4341C6CD4F0A4 /* StartMonitoringIntent.swift */; };
+		FC0F2E677D176FA706CA0A57 /* AppShortcutsIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D1E6BAC0EE00E0A4F5D55 /* AppShortcutsIntegrationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-	21CFF3840A31CA42273B798F /* 21CFF3840A31CA42273B798F */ = {
-		isa = PBXContainerItemProxy;
-		containerPortal = 59601E391B529B07AE11313D;
-		proxyType = 1;
-		remoteGlobalIDString = 65EEE750073530D58467161C;
-		remoteInfo = kWatchControlWidget;
-	};
-	2DFC6E306D615E17DB05D8CE /* 2DFC6E306D615E17DB05D8CE */ = {
-		isa = PBXContainerItemProxy;
-		containerPortal = 59601E391B529B07AE11313D;
-		proxyType = 1;
-		remoteGlobalIDString = A24AE00D850A572453BAC933;
-		remoteInfo = kWatchIntents;
-	};
-	3DBD54FC5449A7EA29465702 /* 3DBD54FC5449A7EA29465702 */ = {
-		isa = PBXContainerItemProxy;
-		containerPortal = 59601E391B529B07AE11313D;
-		proxyType = 1;
-		remoteGlobalIDString = 0EEA7C819FA2C1B860563983;
-		remoteInfo = kWatch;
-	};
-	A224ED99DE95FF68A7FBE62D /* A224ED99DE95FF68A7FBE62D */ = {
-		isa = PBXContainerItemProxy;
-		containerPortal = 59601E391B529B07AE11313D;
-		proxyType = 1;
-		remoteGlobalIDString = 0E760447DBF5C92EAE429848;
-		remoteInfo = kWatchWidget;
-	};
-	C8D58F73D9C40A91D5361984 /* C8D58F73D9C40A91D5361984 */ = {
-		isa = PBXContainerItemProxy;
-		containerPortal = 59601E391B529B07AE11313D;
-		proxyType = 1;
-		remoteGlobalIDString = 65EEE750073530D58467161C;
-		remoteInfo = kWatchControlWidget;
-	};
-	D74C8E1A7421B7C3F492BC2C /* D74C8E1A7421B7C3F492BC2C */ = {
-		isa = PBXContainerItemProxy;
-		containerPortal = 59601E391B529B07AE11313D;
-		proxyType = 1;
-		remoteGlobalIDString = A24AE00D850A572453BAC933;
-		remoteInfo = kWatchIntents;
-	};
-	EE0BC38940A6DC77CE9D8F70 /* EE0BC38940A6DC77CE9D8F70 */ = {
-		isa = PBXContainerItemProxy;
-		containerPortal = 59601E391B529B07AE11313D;
-		proxyType = 1;
-		remoteGlobalIDString = 0E760447DBF5C92EAE429848;
-		remoteInfo = kWatchWidget;
-	};
+		2FC6234EE11A33493298E4E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1CA76644F30CC6AD3518AE8A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14C4329FBE5ACF3D107873F4;
+			remoteInfo = kWatchIntents;
+		};
+		3C333843BD9A2FB34A473D3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1CA76644F30CC6AD3518AE8A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34715473ABC605C7F3679679;
+			remoteInfo = kWatch;
+		};
+		52A9C966815731FFE943F557 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1CA76644F30CC6AD3518AE8A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14C4329FBE5ACF3D107873F4;
+			remoteInfo = kWatchIntents;
+		};
+		87285EEBDD967C337E19D497 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1CA76644F30CC6AD3518AE8A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34715473ABC605C7F3679679;
+			remoteInfo = kWatch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-	96A6F6DA128E21F233C118E2 /* Embed App Extensions */ = {
-		isa = PBXCopyFilesBuildPhase;
-		buildActionMask = 2147483647;
-		dstPath = "";
-		dstSubfolderSpec = 13;
-		files = (
-			49F9A6E099B3972867C17FD4 /* 49F9A6E099B3972867C17FD4 */,
-			153C543E0B1E0A405F363A75 /* 153C543E0B1E0A405F363A75 */,
-			6A53B82381A1806E2C2168BA /* 6A53B82381A1806E2C2168BA */,
-		);
-		name = "Embed App Extensions";
-		runOnlyForDeploymentPostprocessing = 0;
-	};
+		441A2E9BBE2964FDED1F241E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				39AA58369130DA09C5D648E2 /* kWatchIntents.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-	01D2F70ABD54918F287BC071 /* PerMetricTabView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PerMetricTabView.swift;
-		path = Settings/PerMetricTabView.swift;
-		sourceTree = "<group>";
-	};
-	024F1C2F979C5749ECEFCCDC /* StoreKitClient.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StoreKitClient.swift;
-		path = Store/StoreKitClient.swift;
-		sourceTree = "<group>";
-	};
-	03B411213CED55739D9FB3DE /* IntentTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = IntentTests.swift;
-		path = Tests/IntentTests.swift;
-		sourceTree = "<group>";
-	};
-	04352AFF564492984D436EFC /* kWatchAppDelegate.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = kWatchAppDelegate.swift;
-		path = App/kWatchAppDelegate.swift;
-		sourceTree = "<group>";
-	};
-	05876A10316C9EF6984FAC4F /* OnboardingView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = OnboardingView.swift;
-		path = Onboarding/OnboardingView.swift;
-		sourceTree = "<group>";
-	};
-	0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppCoordinatorTests.swift;
-		path = Tests/AppCoordinatorTests.swift;
-		sourceTree = "<group>";
-	};
-	09C386C2F6D04F8712E2E85C /* kWatchTests.xctest */ = {
-		isa = PBXFileReference;
-		explicitFileType = "wrapper.cfbundle";
-		includeInIndex = 0;
-		name = kWatchTests.xctest;
-		path = kWatchTests.xctest;
-		sourceTree = BUILT_PRODUCTS_DIR;
-	};
-	0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = CoreDataStack.swift;
-		path = Data/CoreDataStack.swift;
-		sourceTree = "<group>";
-	};
-	0D6929E9A6E57E49DAAD3D8F /* ProcessesViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ProcessesViewModel.swift;
-		path = Processes/ProcessesViewModel.swift;
-		sourceTree = "<group>";
-	};
-	0DB76AB594043D4161B1E925 /* HistoryViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = HistoryViewModel.swift;
-		path = History/HistoryViewModel.swift;
-		sourceTree = "<group>";
-	};
-	10B159B999CC9DE4EF6A7608 /* PreferencesRepositoryTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PreferencesRepositoryTests.swift;
-		path = Tests/PreferencesRepositoryTests.swift;
-		sourceTree = "<group>";
-	};
-	10CE68CC65989FDAC81A76A8 /* DiagnosticsExporterTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DiagnosticsExporterTests.swift;
-		path = Tests/DiagnosticsExporterTests.swift;
-		sourceTree = "<group>";
-	};
-	14F6CCBD9BD786F8D93438BB /* AboutView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AboutView.swift;
-		path = Settings/AboutView.swift;
-		sourceTree = "<group>";
-	};
-	170722350E893EFDAA96A1CD /* SettingsViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SettingsViewModelTests.swift;
-		path = Tests/SettingsViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	176A31D2206F32C458902EC6 /* WidgetSnapshotProvider.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = WidgetSnapshotProvider.swift;
-		path = kWatchWidget/WidgetSnapshotProvider.swift;
-		sourceTree = "<group>";
-	};
-	177414483EBA673E7A0C4143 /* SubscriptionTermsTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SubscriptionTermsTests.swift;
-		path = Tests/SubscriptionTermsTests.swift;
-		sourceTree = "<group>";
-	};
-	1B71C81D108972C624F49028 /* AppShortcutsVerificationTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppShortcutsVerificationTests.swift;
-		path = Tests/AppShortcutsVerificationTests.swift;
-		sourceTree = "<group>";
-	};
-	1BF74DE0B495D314D07467D4 /* LiveAppContainer.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = LiveAppContainer.swift;
-		path = DI/LiveAppContainer.swift;
-		sourceTree = "<group>";
-	};
-	20AE518F458646658B17671B /* AppGroupConfiguration.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppGroupConfiguration.swift;
-		path = Shared/AppGroupConfiguration.swift;
-		sourceTree = "<group>";
-	};
-	226991BF3D28520B833DC3C6 /* kWatchWidget.appex */ = {
-		isa = PBXFileReference;
-		explicitFileType = "wrapper.app-extension";
-		includeInIndex = 0;
-		name = kWatchWidget.appex;
-		path = kWatchWidget.appex;
-		sourceTree = BUILT_PRODUCTS_DIR;
-	};
-	282BA7C1EF08746DEE167794 /* MultiIconStatusItemController.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MultiIconStatusItemController.swift;
-		path = MenuBar/MultiIconStatusItemController.swift;
-		sourceTree = "<group>";
-	};
-	2906D24E92EE5AE02B27EE3D /* NotificationSchedulerTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = NotificationSchedulerTests.swift;
-		path = Tests/NotificationSchedulerTests.swift;
-		sourceTree = "<group>";
-	};
-	29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StoreManager.swift;
-		path = Store/StoreManager.swift;
-		sourceTree = "<group>";
-	};
-	2A812D057C988CCABAFDE897 /* ManagedObjects.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ManagedObjects.swift;
-		path = Data/ManagedObjects.swift;
-		sourceTree = "<group>";
-	};
-	2CF8DC4F0E4143E5C0979667 /* ControlWidgetTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ControlWidgetTests.swift;
-		path = Tests/ControlWidgetTests.swift;
-		sourceTree = "<group>";
-	};
-	2DECC88B7BA0D84E8211F331 /* ShowDiskUsageIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ShowDiskUsageIntent.swift;
-		path = Intents/ShowDiskUsageIntent.swift;
-		sourceTree = "<group>";
-	};
-	30A54EC256A9FCAFCC87B5B5 /* TestAppContainer.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = TestAppContainer.swift;
-		path = DI/TestAppContainer.swift;
-		sourceTree = "<group>";
-	};
-	340B6EC4BCEB13C7C0CA9C0E /* AppWindowRouter.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppWindowRouter.swift;
-		path = MenuBar/AppWindowRouter.swift;
-		sourceTree = "<group>";
-	};
-	360159E7F6FB1F6FCD8DF23A /* SettingsView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SettingsView.swift;
-		path = Settings/SettingsView.swift;
-		sourceTree = "<group>";
-	};
-	376128D5C1619C1B69525157 /* PurchaseButton.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PurchaseButton.swift;
-		path = Store/PurchaseButton.swift;
-		sourceTree = "<group>";
-	};
-	37D497C12E3BFCD7D1C437EA /* ControlWidgetEntry.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ControlWidgetEntry.swift;
-		path = kWatchControlWidget/ControlWidgetEntry.swift;
-		sourceTree = "<group>";
-	};
-	3BE6F2F521E5B82DD44D9B50 /* DiagnosticsExporter.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DiagnosticsExporter.swift;
-		path = Diagnostics/DiagnosticsExporter.swift;
-		sourceTree = "<group>";
-	};
-	3EBAE220C65B95B5461A69F4 /* Info.plist */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.xml;
-		name = Info.plist;
-		path = Info.plist;
-		sourceTree = "<group>";
-	};
-	3F5A280592344A01BF293381 /* MetricMenuRow.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricMenuRow.swift;
-		path = MenuBar/MetricMenuRow.swift;
-		sourceTree = "<group>";
-	};
-	408D99E9B7E338183780E5D7 /* PauseMonitoringIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PauseMonitoringIntent.swift;
-		path = Intents/PauseMonitoringIntent.swift;
-		sourceTree = "<group>";
-	};
-	412E1108FFF483BAE72A6509 /* ProcessesViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ProcessesViewModelTests.swift;
-		path = Tests/ProcessesViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	41C12C02A3F239D3C8342333 /* Info.plist */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.xml;
-		name = Info.plist;
-		path = kWatchControlWidget/Info.plist;
-		sourceTree = "<group>";
-	};
-	4222344899ADE78AE2154CBD /* WidgetReloadTriggerTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = WidgetReloadTriggerTests.swift;
-		path = Tests/WidgetReloadTriggerTests.swift;
-		sourceTree = "<group>";
-	};
-	42A8FD07BDDC626DBA3184A4 /* SharedSnapshot.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SharedSnapshot.swift;
-		path = Shared/SharedSnapshot.swift;
-		sourceTree = "<group>";
-	};
-	443B69E3590BADE5F657F64E /* IntentParameterTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = IntentParameterTests.swift;
-		path = Tests/IntentParameterTests.swift;
-		sourceTree = "<group>";
-	};
-	45998CFD96B10AA003C9A45A /* MenuBarCustomizePage.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarCustomizePage.swift;
-		path = Onboarding/MenuBarCustomizePage.swift;
-		sourceTree = "<group>";
-	};
-	48CBBF63493E2A8BC8F68341 /* MetricCardViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricCardViewModelTests.swift;
-		path = Tests/MetricCardViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	4E08A802CAF3AAC9CE0905B4 /* kWatchIntents.appex */ = {
-		isa = PBXFileReference;
-		explicitFileType = "wrapper.app-extension";
-		includeInIndex = 0;
-		name = kWatchIntents.appex;
-		path = kWatchIntents.appex;
-		sourceTree = BUILT_PRODUCTS_DIR;
-	};
-	50983C2E12673DF28C54327B /* QuickToggleBar.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = QuickToggleBar.swift;
-		path = MenuBar/QuickToggleBar.swift;
-		sourceTree = "<group>";
-	};
-	50DC2D83A733C1BF5C4929F8 /* WidgetBundle.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = WidgetBundle.swift;
-		path = kWatchWidget/WidgetBundle.swift;
-		sourceTree = "<group>";
-	};
-	519386D7F436003927EAABCB /* OnboardingViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = OnboardingViewModelTests.swift;
-		path = Tests/OnboardingViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	573656E9AEDAA16D9C8FB2A8 /* ControlWidgetView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ControlWidgetView.swift;
-		path = kWatchControlWidget/ControlWidgetView.swift;
-		sourceTree = "<group>";
-	};
-	57B9ABD1FDA51F02494FAB4F /* CompletePage.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = CompletePage.swift;
-		path = Onboarding/CompletePage.swift;
-		sourceTree = "<group>";
-	};
-	592A3E8DE2005013EFE473D7 /* kWatch.app */ = {
-		isa = PBXFileReference;
-		explicitFileType = "wrapper.application";
-		includeInIndex = 0;
-		name = kWatch.app;
-		path = kWatch.app;
-		sourceTree = BUILT_PRODUCTS_DIR;
-	};
-	592D1EDFC0B4EA95EC8659EE /* ProcessesView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ProcessesView.swift;
-		path = Processes/ProcessesView.swift;
-		sourceTree = "<group>";
-	};
-	5C86CEE8DB95B9A6854B7FDA /* StopMonitoringIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StopMonitoringIntent.swift;
-		path = Intents/StopMonitoringIntent.swift;
-		sourceTree = "<group>";
-	};
-	64C76C3AF6D7C1D08AE81C00 /* MetricSettingsView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricSettingsView.swift;
-		path = Settings/MetricSettingsView.swift;
-		sourceTree = "<group>";
-	};
-	653A10396E298C1B05E94EC6 /* InteractiveWidgetIntentTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = InteractiveWidgetIntentTests.swift;
-		path = Tests/InteractiveWidgetIntentTests.swift;
-		sourceTree = "<group>";
-	};
-	69EB0B0622236B9768337050 /* QueryMetricIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = QueryMetricIntent.swift;
-		path = Intents/QueryMetricIntent.swift;
-		sourceTree = "<group>";
-	};
-	6B9A8FCE2833D10C66B21B94 /* MetricKitSubscriber.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricKitSubscriber.swift;
-		path = Diagnostics/MetricKitSubscriber.swift;
-		sourceTree = "<group>";
-	};
-	6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PaywallView.swift;
-		path = Store/PaywallView.swift;
-		sourceTree = "<group>";
-	};
-	6FE5F15008CB18403BBDBB92 /* AlertRepository.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertRepository.swift;
-		path = Data/AlertRepository.swift;
-		sourceTree = "<group>";
-	};
-	714436BF5CC75EC99246EDE8 /* kWatchApp.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = kWatchApp.swift;
-		path = App/kWatchApp.swift;
-		sourceTree = "<group>";
-	};
-	7176DCD3604F7D24DDE333F3 /* SettingsViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SettingsViewModel.swift;
-		path = Settings/SettingsViewModel.swift;
-		sourceTree = "<group>";
-	};
-	76E4C471C0F679BCC35C5BE2 /* StartMonitoringIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StartMonitoringIntent.swift;
-		path = Intents/StartMonitoringIntent.swift;
-		sourceTree = "<group>";
-	};
-	77150D054169C6226C7EB412 /* SnapshotRoundTripTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SnapshotRoundTripTests.swift;
-		path = Tests/SnapshotRoundTripTests.swift;
-		sourceTree = "<group>";
-	};
-	77BF1B73572625F9518ED83C /* MenuBarViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarViewModelTests.swift;
-		path = Tests/MenuBarViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	78528845AAD156289D52EE2F /* CoreDataStackTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = CoreDataStackTests.swift;
-		path = Tests/CoreDataStackTests.swift;
-		sourceTree = "<group>";
-	};
-	7B090475EC1BDC2834C61076 /* AppShortcutsIntegrationTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppShortcutsIntegrationTests.swift;
-		path = Tests/AppShortcutsIntegrationTests.swift;
-		sourceTree = "<group>";
-	};
-	7B8C9586EC2FD67B8EB631DA /* ShowNetworkRateIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ShowNetworkRateIntent.swift;
-		path = Intents/ShowNetworkRateIntent.swift;
-		sourceTree = "<group>";
-	};
-	7D3632F28B178B4934AEB9E5 /* MenuBarIconTheme.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarIconTheme.swift;
-		path = MenuBar/MenuBarIconTheme.swift;
-		sourceTree = "<group>";
-	};
-	7ECE422A857C4BC9B14B1768 /* DashboardViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DashboardViewModel.swift;
-		path = Dashboard/DashboardViewModel.swift;
-		sourceTree = "<group>";
-	};
-	7FDF6912055D4600AC1D886C /* StubIntentService.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StubIntentService.swift;
-		path = Intents/StubIntentService.swift;
-		sourceTree = "<group>";
-	};
-	850549EF72103F28B4766B06 /* SystemStatusWidget.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SystemStatusWidget.swift;
-		path = kWatchWidget/SystemStatusWidget.swift;
-		sourceTree = "<group>";
-	};
-	85467F0AE21D25713C3894F5 /* AlertEvaluator.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertEvaluator.swift;
-		path = Data/AlertEvaluator.swift;
-		sourceTree = "<group>";
-	};
-	87C6346ABF829F835904215B /* DashboardView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DashboardView.swift;
-		path = Dashboard/DashboardView.swift;
-		sourceTree = "<group>";
-	};
-	87E02E0D4DC7DFCE9CEBB1E3 /* NotificationScheduler.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = NotificationScheduler.swift;
-		path = Alerts/NotificationScheduler.swift;
-		sourceTree = "<group>";
-	};
-	8B74A86F52E77C4FB7C7020B /* PreferencesRepository.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PreferencesRepository.swift;
-		path = Data/PreferencesRepository.swift;
-		sourceTree = "<group>";
-	};
-	8DE9C4C0C7C3F94BF4D199EF /* HistoryView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = HistoryView.swift;
-		path = History/HistoryView.swift;
-		sourceTree = "<group>";
-	};
-	8E6073E09384508C1CD9618F /* ControlWidgetProvider.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ControlWidgetProvider.swift;
-		path = kWatchControlWidget/ControlWidgetProvider.swift;
-		sourceTree = "<group>";
-	};
-	8ECCE3506745FB1153CB8267 /* QuickToggleBarTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = QuickToggleBarTests.swift;
-		path = Tests/QuickToggleBarTests.swift;
-		sourceTree = "<group>";
-	};
-	8EFDA98B20F0167B99720C0B /* AppContainerTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppContainerTests.swift;
-		path = Tests/AppContainerTests.swift;
-		sourceTree = "<group>";
-	};
-	933426BE7C99ACFAC34C4F90 /* SnapshotWriterTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SnapshotWriterTests.swift;
-		path = Tests/SnapshotWriterTests.swift;
-		sourceTree = "<group>";
-	};
-	93A7C93FEFC27AA23D7F62E9 /* MetricsRepository.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricsRepository.swift;
-		path = Data/MetricsRepository.swift;
-		sourceTree = "<group>";
-	};
-	94C7B14022E755AC60EF55BD /* ControlWidget.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ControlWidget.swift;
-		path = kWatchControlWidget/ControlWidget.swift;
-		sourceTree = "<group>";
-	};
-	950B093D752E8DD14ADDCB38 /* AlertsViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertsViewModelTests.swift;
-		path = Tests/AlertsViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	97D5754210E7D3F69530AAB5 /* StoreManagerTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = StoreManagerTests.swift;
-		path = Tests/StoreManagerTests.swift;
-		sourceTree = "<group>";
-	};
-	97D8C41CF6C4CF8C7C52E96E /* PaywallViewModelTermsTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PaywallViewModelTermsTests.swift;
-		path = Tests/PaywallViewModelTermsTests.swift;
-		sourceTree = "<group>";
-	};
-	9938DF78C5FA02BEE2726CC4 /* AppearanceSettingsView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppearanceSettingsView.swift;
-		path = Settings/AppearanceSettingsView.swift;
-		sourceTree = "<group>";
-	};
-	99FA0B3AAC6F206137CA6D88 /* SubscriptionTerms.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SubscriptionTerms.swift;
-		path = Store/SubscriptionTerms.swift;
-		sourceTree = "<group>";
-	};
-	9BA078B6A3F6E8513319F5EE /* AppState.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppState.swift;
-		path = State/AppState.swift;
-		sourceTree = "<group>";
-	};
-	9BFBC8ED06E21A4F05B62022 /* SendableBox.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SendableBox.swift;
-		path = Tests/SendableBox.swift;
-		sourceTree = "<group>";
-	};
-	A29162E0D77513BD4BA5B451 /* OpenDashboardIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = OpenDashboardIntent.swift;
-		path = Intents/OpenDashboardIntent.swift;
-		sourceTree = "<group>";
-	};
-	A93D454F0C41DB76BBED1DB9 /* MetricDetailViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricDetailViewModelTests.swift;
-		path = Tests/MetricDetailViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	A9521DBAEC8BDFC7B589022D /* TrendChart.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = TrendChart.swift;
-		path = History/TrendChart.swift;
-		sourceTree = "<group>";
-	};
-	AAEA3FCC869E5B9F1AF52EF4 /* HistoryViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = HistoryViewModelTests.swift;
-		path = Tests/HistoryViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	AAFC929D30570FAF6E303587 /* WelcomePage.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = WelcomePage.swift;
-		path = Onboarding/WelcomePage.swift;
-		sourceTree = "<group>";
-	};
-	B792E301EE89B1CC7BBFBB6E /* OnboardingViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = OnboardingViewModel.swift;
-		path = Onboarding/OnboardingViewModel.swift;
-		sourceTree = "<group>";
-	};
-	B8C7D2F5F505A91B64D3C6F9 /* RestorePurchaseStubs.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = RestorePurchaseStubs.swift;
-		path = Tests/RestorePurchaseStubs.swift;
-		sourceTree = "<group>";
-	};
-	BA345ED8032742891B5D49C6 /* kWatch.entitlements */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.entitlements;
-		name = kWatch.entitlements;
-		path = kWatch.entitlements;
-		sourceTree = "<group>";
-	};
-	BD56D4A7FC8C8A288F6D2929 /* ShowTopProcessesIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ShowTopProcessesIntent.swift;
-		path = Intents/ShowTopProcessesIntent.swift;
-		sourceTree = "<group>";
-	};
-	BFA7754C2E9614BC7641312C /* Localizable.xcstrings */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.json.xcstrings;
-		name = Localizable.xcstrings;
-		path = Resources/Localizable.xcstrings;
-		sourceTree = "<group>";
-	};
-	C04667034C299F1C3195FD02 /* MetricDetailView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricDetailView.swift;
-		path = Dashboard/MetricDetailView.swift;
-		sourceTree = "<group>";
-	};
-	C24F07B10668382339D44CB4 /* RepositoryTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = RepositoryTests.swift;
-		path = Tests/RepositoryTests.swift;
-		sourceTree = "<group>";
-	};
-	C7BC5CEB13C59B9B5F16B91E /* AppContainer.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppContainer.swift;
-		path = DI/AppContainer.swift;
-		sourceTree = "<group>";
-	};
-	C800D4DC1D31F795B415E42C /* KWatchSpotlightIndexer.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = KWatchSpotlightIndexer.swift;
-		path = Integrations/KWatchSpotlightIndexer.swift;
-		sourceTree = "<group>";
-	};
-	C8620777E51DC1E62B029214 /* kWatchControlWidget.appex */ = {
-		isa = PBXFileReference;
-		explicitFileType = "wrapper.app-extension";
-		includeInIndex = 0;
-		name = kWatchControlWidget.appex;
-		path = kWatchControlWidget.appex;
-		sourceTree = BUILT_PRODUCTS_DIR;
-	};
-	CB9DB25AEDF2DBDA82889E8C /* SettingsViewModelRestoreTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SettingsViewModelRestoreTests.swift;
-		path = Tests/SettingsViewModelRestoreTests.swift;
-		sourceTree = "<group>";
-	};
-	D129CE46C4ADC2445395633A /* Info.plist */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.xml;
-		name = Info.plist;
-		path = kWatchWidget/Info.plist;
-		sourceTree = "<group>";
-	};
-	D69C4DDC1546D9CE51A13A24 /* LiveIntentService.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = LiveIntentService.swift;
-		path = Intents/LiveIntentService.swift;
-		sourceTree = "<group>";
-	};
-	D6DCAF56A82C475B6EB3E767 /* MenuBarView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarView.swift;
-		path = MenuBar/MenuBarView.swift;
-		sourceTree = "<group>";
-	};
-	DACD1765745408BDE51CB982 /* ExportDiagnosticsIntent.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ExportDiagnosticsIntent.swift;
-		path = Intents/ExportDiagnosticsIntent.swift;
-		sourceTree = "<group>";
-	};
-	DE20B5A69037812C2667FB37 /* PaywallViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PaywallViewModel.swift;
-		path = Store/PaywallViewModel.swift;
-		sourceTree = "<group>";
-	};
-	DE30952806BAD3D158E74464 /* AlertRepositoryTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertRepositoryTests.swift;
-		path = Tests/AlertRepositoryTests.swift;
-		sourceTree = "<group>";
-	};
-	DEEE9528EA5DE4ED7AC00281 /* PurchaseState.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = PurchaseState.swift;
-		path = State/PurchaseState.swift;
-		sourceTree = "<group>";
-	};
-	DF22949BA727DFE5918DA961 /* WidgetViews.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = WidgetViews.swift;
-		path = kWatchWidget/WidgetViews.swift;
-		sourceTree = "<group>";
-	};
-	E37721BEEA9C99BB4A0AA485 /* MenuBarMode.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarMode.swift;
-		path = Shared/MenuBarMode.swift;
-		sourceTree = "<group>";
-	};
-	E3AE5C0A4342834CD9EBC485 /* WidgetEntry.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = WidgetEntry.swift;
-		path = kWatchWidget/WidgetEntry.swift;
-		sourceTree = "<group>";
-	};
-	E4AEAE19CF431C4F59AAD577 /* AlertsViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertsViewModel.swift;
-		path = Alerts/AlertsViewModel.swift;
-		sourceTree = "<group>";
-	};
-	E4D32DAFD639987B4156B38E /* MetricDetailViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricDetailViewModel.swift;
-		path = Dashboard/MetricDetailViewModel.swift;
-		sourceTree = "<group>";
-	};
-	E579DA7F8DDCF448ECFD9806 /* ProcessNetworkSortTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ProcessNetworkSortTests.swift;
-		path = Tests/ProcessNetworkSortTests.swift;
-		sourceTree = "<group>";
-	};
-	EA7D9B08DA006024D4AE3931 /* MetricCardViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricCardViewModel.swift;
-		path = Dashboard/MetricCardViewModel.swift;
-		sourceTree = "<group>";
-	};
-	EBAEA6EE6E87228840E53575 /* ProcessRowView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ProcessRowView.swift;
-		path = Processes/ProcessRowView.swift;
-		sourceTree = "<group>";
-	};
-	EC7AC2A12DE9FDACAF5C7302 /* IntentService.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = IntentService.swift;
-		path = Intents/IntentService.swift;
-		sourceTree = "<group>";
-	};
-	ED4F566D52FE3601B804A724 /* AlertsView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertsView.swift;
-		path = Alerts/AlertsView.swift;
-		sourceTree = "<group>";
-	};
-	EDA8E236CF307FFD01EAB981 /* MenuBarIconThemeTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarIconThemeTests.swift;
-		path = Tests/MenuBarIconThemeTests.swift;
-		sourceTree = "<group>";
-	};
-	EDFEA602AB2A5352BBD64650 /* MenuBarSettingsView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarSettingsView.swift;
-		path = Settings/MenuBarSettingsView.swift;
-		sourceTree = "<group>";
-	};
-	EFDE86780F58671C82353994 /* DashboardViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = DashboardViewModelTests.swift;
-		path = Tests/DashboardViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	F1A34B16C0E46D22F48F6148 /* AlertEditorViewModelTests.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertEditorViewModelTests.swift;
-		path = Tests/AlertEditorViewModelTests.swift;
-		sourceTree = "<group>";
-	};
-	F4AFB5925141C7DADE945D68 /* MetricCardView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MetricCardView.swift;
-		path = Dashboard/MetricCardView.swift;
-		sourceTree = "<group>";
-	};
-	F5D549D758B8D2ABE78ECD3A /* SnapshotWriter.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = SnapshotWriter.swift;
-		path = Shared/SnapshotWriter.swift;
-		sourceTree = "<group>";
-	};
-	F7805EC4C5BDFD41408CE1E6 /* HistoryRepository.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = HistoryRepository.swift;
-		path = Data/HistoryRepository.swift;
-		sourceTree = "<group>";
-	};
-	FA9EFBF4B055F2C54DAA75DB /* kFoundation */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = folder;
-		name = kFoundation;
-		path = ../kFoundation;
-		sourceTree = "<group>";
-	};
-	FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = text.plist.xml;
-		name = PrivacyInfo.xcprivacy;
-		path = Resources/PrivacyInfo.xcprivacy;
-		sourceTree = "<group>";
-	};
-	FC8F976B27828057A607616A /* AppCoordinator.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AppCoordinator.swift;
-		path = App/AppCoordinator.swift;
-		sourceTree = "<group>";
-	};
-	FE986E9F52381180BA28CA3C /* AlertEditorView.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = AlertEditorView.swift;
-		path = Alerts/AlertEditorView.swift;
-		sourceTree = "<group>";
-	};
-	FEA5F4DC21670ED6938C81D6 /* ProIntroPage.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = ProIntroPage.swift;
-		path = Onboarding/ProIntroPage.swift;
-		sourceTree = "<group>";
-	};
-	FECC79E0002C91CC89A14B48 /* KWatchAppShortcuts.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = KWatchAppShortcuts.swift;
-		path = Intents/KWatchAppShortcuts.swift;
-		sourceTree = "<group>";
-	};
-	FF3B633668A0E32697CC38F0 /* MenuBarViewModel.swift */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.swift;
-		name = MenuBarViewModel.swift;
-		path = MenuBar/MenuBarViewModel.swift;
-		sourceTree = "<group>";
-	};
+		002F096F0A5157F132868EA6 /* IntentParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParameterTests.swift; sourceTree = "<group>"; };
+		01700AB707CFB51277C6077D /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		03B1BFB9772B9243F0EDBB1F /* AppWindowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWindowRouter.swift; sourceTree = "<group>"; };
+		0B75EE55C9C374A8CD9FC679 /* MultiIconStatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiIconStatusItemController.swift; sourceTree = "<group>"; };
+		0DC4B0C893C3EAF1C9CF1DB2 /* SettingsViewModelRestoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelRestoreTests.swift; sourceTree = "<group>"; };
+		0EE9666A90372F9EBCBF10CC /* KWatchAppShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchAppShortcuts.swift; sourceTree = "<group>"; };
+		0FD9257DF166670E7F57BA7D /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
+		104E381F1853CF3122D02BCF /* AlertRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertRepositoryTests.swift; sourceTree = "<group>"; };
+		106DFBE976257CC2E75FDB08 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		1121277150085C2371AFB092 /* KWatchSpotlightIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchSpotlightIndexer.swift; sourceTree = "<group>"; };
+		14A6C766FD131BD00682F9FA /* ProcessesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessesViewModelTests.swift; sourceTree = "<group>"; };
+		16FC857107728F31623A1706 /* ControlWidgetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlWidgetTests.swift; sourceTree = "<group>"; };
+		17E7AAD11A1C0A7647ABB017 /* SubscriptionTerms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTerms.swift; sourceTree = "<group>"; };
+		1852737B9D94A497AB1724D1 /* kWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kWatchApp.swift; sourceTree = "<group>"; };
+		19A629C5D9CE901A8BA7D909 /* WidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntry.swift; sourceTree = "<group>"; };
+		1A5460958D480EE94E67BF38 /* StubIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubIntentService.swift; sourceTree = "<group>"; };
+		1B51F0E582A29FCE3FDBD44E /* HistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModelTests.swift; sourceTree = "<group>"; };
+		1BCC35547E2E15A3D506B22F /* MenuBarCustomizePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarCustomizePage.swift; sourceTree = "<group>"; };
+		1C3BD1C6C77D82E2F8307C6A /* WidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViews.swift; sourceTree = "<group>"; };
+		1C7E7255BA3674338E31122D /* AppContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainerTests.swift; sourceTree = "<group>"; };
+		1CDFF2C2476A10FB6BB69D63 /* SubscriptionTermsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTermsTests.swift; sourceTree = "<group>"; };
+		1F1BB9264EA9F6F359A5E16C /* MetricCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCardView.swift; sourceTree = "<group>"; };
+		205108B2ABA1E31E66B14FAC /* kWatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = kWatch.xcodeproj; sourceTree = "<group>"; };
+		26C296DA3C96BE360E642BB7 /* ManagedObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedObjects.swift; sourceTree = "<group>"; };
+		2717620CABEF96ED0AD03DF0 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		28DDE123B1E8751F4196C2A6 /* TrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendChart.swift; sourceTree = "<group>"; };
+		2C2F24A0FD9A9B5B8D77A640 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		2DAE92E82A4121E951650484 /* KWatchPurchaseJourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchPurchaseJourneyTests.swift; sourceTree = "<group>"; };
+		2DEE033BFAAD744DE1F51D12 /* RepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTests.swift; sourceTree = "<group>"; };
+		2EC5241B35A21CD961B052F3 /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
+		308950F62A252421378157F8 /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
+		35A2C5A89CCFFD1148D0CADD /* TestAppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppContainer.swift; sourceTree = "<group>"; };
+		390FD6810B88D54433263236 /* LiveAppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAppContainer.swift; sourceTree = "<group>"; };
+		3B3564D7D36E505C87A1E007 /* AlertRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertRepository.swift; sourceTree = "<group>"; };
+		3C966DC5D9D36E4F0EFE9A36 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		3CC6EE3883385DD8D6049B70 /* AppShortcutsVerificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShortcutsVerificationTests.swift; sourceTree = "<group>"; };
+		3E696E68C8D7BE47C71D7937 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		3EC204415CEB806500F7ECF2 /* RestorePurchaseStubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseStubs.swift; sourceTree = "<group>"; };
+		3F14A30B33136F965E33E58E /* SystemStatusWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemStatusWidget.swift; sourceTree = "<group>"; };
+		4544262EDC42DD2D7A364F43 /* MetricCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCardViewModel.swift; sourceTree = "<group>"; };
+		4961D19A8101E16F6470AD22 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		4C7F8AD60CA58160E2F0C1D5 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		4D45426B2219A8E65813D3BE /* ShowDiskUsageIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDiskUsageIntent.swift; sourceTree = "<group>"; };
+		5003F63055FABF6218564C0E /* CompletePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletePage.swift; sourceTree = "<group>"; };
+		54C9B4E9EFFBA213F649A425 /* kWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		579D1E6BAC0EE00E0A4F5D55 /* AppShortcutsIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShortcutsIntegrationTests.swift; sourceTree = "<group>"; };
+		58BCAEEF622FAA178EDD634A /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		5AE16E5D3E7FE6149C866D7D /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
+		5C26AC92D6C767D42CDF84A3 /* MenuBarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewModelTests.swift; sourceTree = "<group>"; };
+		5D66DEB5655E81603E671F68 /* ShowNetworkRateIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowNetworkRateIntent.swift; sourceTree = "<group>"; };
+		60F9C0B301FC1DE93B87B44A /* AlertsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModelTests.swift; sourceTree = "<group>"; };
+		6655FD2C77B2FCB3A6C382B4 /* KWatchLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KWatchLaunchTests.swift; sourceTree = "<group>"; };
+		676BDD4F52006B6E330E0FF3 /* MetricDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDetailViewModelTests.swift; sourceTree = "<group>"; };
+		6774BE33CBF6DAB6767F6489 /* MetricDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDetailView.swift; sourceTree = "<group>"; };
+		69A60A6960FB76EC4E499030 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		6A5FB04FD3F0ED3D1FA470E4 /* MetricMenuRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricMenuRow.swift; sourceTree = "<group>"; };
+		6F91D8AA66948EB4D3140D4D /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		70D90DF4C7E8DBB9B5BA7829 /* SendableBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendableBox.swift; sourceTree = "<group>"; };
+		713A8D510C9EA2D8C6EFA945 /* MenuBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewModel.swift; sourceTree = "<group>"; };
+		74EC7342AD21D8C51DDFA9B1 /* CoreDataStackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStackTests.swift; sourceTree = "<group>"; };
+		7A559F7FBCB38298ADD25346 /* ProcessRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRowView.swift; sourceTree = "<group>"; };
+		7E2FA1104C6A9A2389408D5C /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
+		7F2CB9452EF3828299C7B7DE /* ProcessesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessesViewModel.swift; sourceTree = "<group>"; };
+		820C840D995A0F2E2EE2E56E /* ci.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = ci.yml; sourceTree = "<group>"; };
+		849DED88E97787BAA009C814 /* HistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepository.swift; sourceTree = "<group>"; };
+		87ED2799B3B675DF25B3864C /* IntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentService.swift; sourceTree = "<group>"; };
+		87FE6D6F72E1A2D1B6A05697 /* QuickToggleBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickToggleBarTests.swift; sourceTree = "<group>"; };
+		8820DE70E4E22E1D167F5149 /* ProcessesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessesView.swift; sourceTree = "<group>"; };
+		884EE02B2C288DBFB184CB38 /* StoreKitTestConfiguration.storekit */ = {isa = PBXFileReference; path = StoreKitTestConfiguration.storekit; sourceTree = "<group>"; };
+		894B5F69A7A9064AD7583C36 /* MetricDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricDetailViewModel.swift; sourceTree = "<group>"; };
+		89C79B6C9F6F2755FB9FD5F8 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		89EC97238517D99542A850F2 /* PurchaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseButton.swift; sourceTree = "<group>"; };
+		8BB2292FC809FF3A42B7CD1F /* MenuBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarSettingsView.swift; sourceTree = "<group>"; };
+		8E0DC660EA72FC9B73E6C4AA /* PerMetricTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerMetricTabView.swift; sourceTree = "<group>"; };
+		8EE411E0435B66CE3C027893 /* ExportDiagnosticsIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDiagnosticsIntent.swift; sourceTree = "<group>"; };
+		8FE102EAC720755D9F887DD2 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
+		91F97957EB9BC415A180496A /* MenuBarIconTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconTheme.swift; sourceTree = "<group>"; };
+		91FFE6E00B78F18EA04F3D42 /* LiveIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveIntentService.swift; sourceTree = "<group>"; };
+		92402B0378C72D1E14BB6DA9 /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
+		952C94B53D2E1B066414914B /* PreferencesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesRepository.swift; sourceTree = "<group>"; };
+		95E0DD895E6D33770EE2A5F9 /* ShowTopProcessesIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowTopProcessesIntent.swift; sourceTree = "<group>"; };
+		9B55F978DAA1CDEE334932AE /* WidgetSnapshotProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotProvider.swift; sourceTree = "<group>"; };
+		9FE5C44EB90D62F3CD47B4A6 /* MenuBarIconThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconThemeTests.swift; sourceTree = "<group>"; };
+		A5C4CBA83AEC4F030AD32078 /* WidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBundle.swift; sourceTree = "<group>"; };
+		AB77863EFEE6FE7ACB90C67E /* kWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kWatch.entitlements; sourceTree = "<group>"; };
+		B0487FE560B636FFC2AD5168 /* InteractiveWidgetIntentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveWidgetIntentTests.swift; sourceTree = "<group>"; };
+		B079B79EB1CF9DA0F4AEFD51 /* WelcomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomePage.swift; sourceTree = "<group>"; };
+		B393745072EF45F18B336A4B /* MetricCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCardViewModelTests.swift; sourceTree = "<group>"; };
+		B462543E912C9FA338EF83C5 /* ProIntroPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProIntroPage.swift; sourceTree = "<group>"; };
+		B56E8797FBDAC39DB0FE58E3 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B7276C88D4679D33A49B570D /* PurchaseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseState.swift; sourceTree = "<group>"; };
+		B8C5BF3AEF9D8C932E967415 /* AlertEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertEditorView.swift; sourceTree = "<group>"; };
+		BA9E9EF46056D4523495540B /* PauseMonitoringIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMonitoringIntent.swift; sourceTree = "<group>"; };
+		BC6A79D66B8CCB4E8465B2DB /* kWatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kWatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFB1DA5C785E4EF169573388 /* NotificationSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSchedulerTests.swift; sourceTree = "<group>"; };
+		C123D61F999F3E7588DCCA98 /* QuickToggleBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickToggleBar.swift; sourceTree = "<group>"; };
+		C14CB5AB60153600B63377B5 /* kWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = kWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C93181D298359356EC773C8C /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		CCF028C3349B2EA0EC08FAD5 /* WidgetReloadTriggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetReloadTriggerTests.swift; sourceTree = "<group>"; };
+		CD45BF643ACB6724439FA4E0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		CDB0A128168444A858AFE1F0 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		CE7CE94F9004760C579254A6 /* generate_project.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = generate_project.py; sourceTree = "<group>"; };
+		D2A3C928FA0DCA9DFE393159 /* OpenDashboardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenDashboardIntent.swift; sourceTree = "<group>"; };
+		D2F756979A978D589ED045F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D7D05C4C53F354A9FD782E15 /* kFoundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kFoundation; path = ../kFoundation; sourceTree = SOURCE_ROOT; };
+		DB235532202A107A0B6F64FD /* kWatchIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = kWatchIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBFEAD4D5EFCB10004A47E85 /* AlertsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModel.swift; sourceTree = "<group>"; };
+		E166410E0952B3574BDE4F73 /* AppCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinatorTests.swift; sourceTree = "<group>"; };
+		E2CDAE36234FFB1200943ACB /* AlertEditorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertEditorViewModelTests.swift; sourceTree = "<group>"; };
+		E4421C60BEF7370F2620AEAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E9CC047083E4341C6CD4F0A4 /* StartMonitoringIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMonitoringIntent.swift; sourceTree = "<group>"; };
+		EEF8956884AD7A1A94B68246 /* IntentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentTests.swift; sourceTree = "<group>"; };
+		F053279A433C37151B2F2630 /* StoreKitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitClient.swift; sourceTree = "<group>"; };
+		F07ABD252A9B754E6E0F34CC /* kWatchAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kWatchAppDelegate.swift; sourceTree = "<group>"; };
+		F173DE4BC938FCB6EE8A48E4 /* StopMonitoringIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopMonitoringIntent.swift; sourceTree = "<group>"; };
+		F2D695F14A3037BA615173CD /* PaywallViewModelTermsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModelTermsTests.swift; sourceTree = "<group>"; };
+		F99AFB520FA40C82A6542C9B /* PreferencesRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesRepositoryTests.swift; sourceTree = "<group>"; };
+		FAD1931233159167B29FA41E /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		FC9F69BADF390498860B8516 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		FD5C63C193713909AF023DB1 /* MetricSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricSettingsView.swift; sourceTree = "<group>"; };
+		FE9EE8544D25E0ECE1ED349D /* QueryMetricIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryMetricIntent.swift; sourceTree = "<group>"; };
+		FF44AD808B7AEAFEC7AF1C12 /* kWatchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kWatchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-	4012D4C9DAE5CD9D31F3FFB2 /* 4012D4C9DAE5CD9D31F3FFB2 */ = {
-		isa = PBXFrameworksBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	639838777480095AEC9EAF3D /* 639838777480095AEC9EAF3D */ = {
-		isa = PBXFrameworksBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	9052CB934E114EC8A438CACE /* 9052CB934E114EC8A438CACE */ = {
-		isa = PBXFrameworksBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	993C060E920F12FFBC071F64 /* 993C060E920F12FFBC071F64 */ = {
-		isa = PBXFrameworksBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	B06836F26B321D31F84AABA4 /* B06836F26B321D31F84AABA4 */ = {
-		isa = PBXFrameworksBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
+		0905A8163DF4E07D4EC471BD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34036900DBE09D5BFD42409B /* MetricsKit in Frameworks */,
+				F1E8527C95F9E0DE03FAA2CA /* MonitorCore in Frameworks */,
+				7F86FA3401659783F64038D5 /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6C85FEAD2E709F86CDE23617 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9D43EBE853381ED697FAC19 /* MetricsKit in Frameworks */,
+				303AC00816686006B2E9FE06 /* MonitorCore in Frameworks */,
+				494FFF1E41148752264EF979 /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5EE419A9653C21388199A87 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B2058E273B055D5F8045985 /* MetricsKit in Frameworks */,
+				B5168A89F7C457510669BC2A /* MonitorCore in Frameworks */,
+				1406D6DFBD48D3FE316C6958 /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A100F5A218A8E3AE8D77AC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD6E54B83408A76328304B0C /* MetricsKit in Frameworks */,
+				1CCC8D9D70797688B5A27441 /* MonitorCore in Frameworks */,
+				826F120FA8628A8EFCA11312 /* DesignSystem in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-	0283ED5888E25C418EDF5949 /* History */ = {
-		isa = PBXGroup;
-		children = (
-			8DE9C4C0C7C3F94BF4D199EF /* HistoryView.swift */,
-			0DB76AB594043D4161B1E925 /* HistoryViewModel.swift */,
-			A9521DBAEC8BDFC7B589022D /* TrendChart.swift */,
-		);
-		name = History;
-		sourceTree = "<group>";
-	};
-	080719DCC0589D18D62EF828 /* Store */ = {
-		isa = PBXGroup;
-		children = (
-			6CAA3CF4C412CEDDEAA934C3 /* PaywallView.swift */,
-			DE20B5A69037812C2667FB37 /* PaywallViewModel.swift */,
-			376128D5C1619C1B69525157 /* PurchaseButton.swift */,
-			024F1C2F979C5749ECEFCCDC /* StoreKitClient.swift */,
-			29548BE5AD0B39AAFE6CF22F /* StoreManager.swift */,
-			99FA0B3AAC6F206137CA6D88 /* SubscriptionTerms.swift */,
-		);
-		name = Store;
-		sourceTree = "<group>";
-	};
-	09B44A2A4904872CFA147FCA /* Frameworks */ = {
-		isa = PBXGroup;
-		children = (
-			FA9EFBF4B055F2C54DAA75DB /* kFoundation */,
-		);
-		name = Frameworks;
-		sourceTree = "<group>";
-	};
-	1119F24AE4A205A534838F74 /* Resources */ = {
-		isa = PBXGroup;
-		children = (
-			BFA7754C2E9614BC7641312C /* Localizable.xcstrings */,
-			FAA3A8E09031388A4E38C620 /* PrivacyInfo.xcprivacy */,
-		);
-		name = Resources;
-		sourceTree = "<group>";
-	};
-	1206E79C33A451432779E54D /* Processes */ = {
-		isa = PBXGroup;
-		children = (
-			EBAEA6EE6E87228840E53575 /* ProcessRowView.swift */,
-			592D1EDFC0B4EA95EC8659EE /* ProcessesView.swift */,
-			0D6929E9A6E57E49DAAD3D8F /* ProcessesViewModel.swift */,
-		);
-		name = Processes;
-		sourceTree = "<group>";
-	};
-	41F3CFCCAD5EAB7C8719BDD0 /* State */ = {
-		isa = PBXGroup;
-		children = (
-			9BA078B6A3F6E8513319F5EE /* AppState.swift */,
-			DEEE9528EA5DE4ED7AC00281 /* PurchaseState.swift */,
-		);
-		name = State;
-		sourceTree = "<group>";
-	};
-	4EC3138C499D87945673EF5E /* Diagnostics */ = {
-		isa = PBXGroup;
-		children = (
-			3BE6F2F521E5B82DD44D9B50 /* DiagnosticsExporter.swift */,
-			6B9A8FCE2833D10C66B21B94 /* MetricKitSubscriber.swift */,
-		);
-		name = Diagnostics;
-		sourceTree = "<group>";
-	};
-	53ACFE42B310D2909B95F8DF /* Integrations */ = {
-		isa = PBXGroup;
-		children = (
-			C800D4DC1D31F795B415E42C /* KWatchSpotlightIndexer.swift */,
-		);
-		name = Integrations;
-		sourceTree = "<group>";
-	};
-	541BE480BD6342CA50028767 /* Data */ = {
-		isa = PBXGroup;
-		children = (
-			85467F0AE21D25713C3894F5 /* AlertEvaluator.swift */,
-			6FE5F15008CB18403BBDBB92 /* AlertRepository.swift */,
-			0ADB26D41ACA3A15E19ABEE3 /* CoreDataStack.swift */,
-			F7805EC4C5BDFD41408CE1E6 /* HistoryRepository.swift */,
-			2A812D057C988CCABAFDE897 /* ManagedObjects.swift */,
-			93A7C93FEFC27AA23D7F62E9 /* MetricsRepository.swift */,
-			8B74A86F52E77C4FB7C7020B /* PreferencesRepository.swift */,
-		);
-		name = Data;
-		sourceTree = "<group>";
-	};
-	66C17086AE8A483AC01405F9 /* LiveActivity */ = {
-		isa = PBXGroup;
-		children = (
-		);
-		name = LiveActivity;
-		sourceTree = "<group>";
-	};
-	68D29968E3AF2DA1E073F9CC /* Dashboard */ = {
-		isa = PBXGroup;
-		children = (
-			87C6346ABF829F835904215B /* DashboardView.swift */,
-			7ECE422A857C4BC9B14B1768 /* DashboardViewModel.swift */,
-			F4AFB5925141C7DADE945D68 /* MetricCardView.swift */,
-			EA7D9B08DA006024D4AE3931 /* MetricCardViewModel.swift */,
-			C04667034C299F1C3195FD02 /* MetricDetailView.swift */,
-			E4D32DAFD639987B4156B38E /* MetricDetailViewModel.swift */,
-		);
-		name = Dashboard;
-		sourceTree = "<group>";
-	};
-	6F58C030241AA286A99EEE08 /* Alerts */ = {
-		isa = PBXGroup;
-		children = (
-			FE986E9F52381180BA28CA3C /* AlertEditorView.swift */,
-			ED4F566D52FE3601B804A724 /* AlertsView.swift */,
-			E4AEAE19CF431C4F59AAD577 /* AlertsViewModel.swift */,
-			87E02E0D4DC7DFCE9CEBB1E3 /* NotificationScheduler.swift */,
-		);
-		name = Alerts;
-		sourceTree = "<group>";
-	};
-	7B7716156DA44B3BD5DD560F /* DI */ = {
-		isa = PBXGroup;
-		children = (
-			C7BC5CEB13C59B9B5F16B91E /* AppContainer.swift */,
-			1BF74DE0B495D314D07467D4 /* LiveAppContainer.swift */,
-			30A54EC256A9FCAFCC87B5B5 /* TestAppContainer.swift */,
-		);
-		name = DI;
-		sourceTree = "<group>";
-	};
-	8737C58DE7045208C482770A /* Intents */ = {
-		isa = PBXGroup;
-		children = (
-			DACD1765745408BDE51CB982 /* ExportDiagnosticsIntent.swift */,
-			EC7AC2A12DE9FDACAF5C7302 /* IntentService.swift */,
-			FECC79E0002C91CC89A14B48 /* KWatchAppShortcuts.swift */,
-			D69C4DDC1546D9CE51A13A24 /* LiveIntentService.swift */,
-			A29162E0D77513BD4BA5B451 /* OpenDashboardIntent.swift */,
-			408D99E9B7E338183780E5D7 /* PauseMonitoringIntent.swift */,
-			69EB0B0622236B9768337050 /* QueryMetricIntent.swift */,
-			2DECC88B7BA0D84E8211F331 /* ShowDiskUsageIntent.swift */,
-			7B8C9586EC2FD67B8EB631DA /* ShowNetworkRateIntent.swift */,
-			BD56D4A7FC8C8A288F6D2929 /* ShowTopProcessesIntent.swift */,
-			76E4C471C0F679BCC35C5BE2 /* StartMonitoringIntent.swift */,
-			5C86CEE8DB95B9A6854B7FDA /* StopMonitoringIntent.swift */,
-			7FDF6912055D4600AC1D886C /* StubIntentService.swift */,
-		);
-		name = Intents;
-		sourceTree = "<group>";
-	};
-	8CB695B89F15D64CF154F9CA /* kWatch */ = {
-		isa = PBXGroup;
-		children = (
-			6F58C030241AA286A99EEE08 /* Alerts */,
-			C2EDC4814724351A3444C62A /* App */,
-			7B7716156DA44B3BD5DD560F /* DI */,
-			68D29968E3AF2DA1E073F9CC /* Dashboard */,
-			541BE480BD6342CA50028767 /* Data */,
-			4EC3138C499D87945673EF5E /* Diagnostics */,
-			0283ED5888E25C418EDF5949 /* History */,
-			53ACFE42B310D2909B95F8DF /* Integrations */,
-			8737C58DE7045208C482770A /* Intents */,
-			66C17086AE8A483AC01405F9 /* LiveActivity */,
-			D086B1D575B679BDD667F1C2 /* MenuBar */,
-			948A46E6570A8D25B50581C8 /* Onboarding */,
-			1206E79C33A451432779E54D /* Processes */,
-			1119F24AE4A205A534838F74 /* Resources */,
-			969679DE865F3E68DEC65C79 /* Settings */,
-			FF1F3FAB2AA54EA25F1F5EE1 /* Shared */,
-			41F3CFCCAD5EAB7C8719BDD0 /* State */,
-			080719DCC0589D18D62EF828 /* Store */,
-			BFF03A4B7DE5959B1AAD4165 /* Tests */,
-			95161E3521C5AA2890E692F0 /* kWatchWidget */,
-			BA163C79D930A5064014CA4C /* kWatchControlWidget */,
-			EBA56EB89A9347CFCE560E19 /* Products */,
-			09B44A2A4904872CFA147FCA /* Frameworks */,
-			3EBAE220C65B95B5461A69F4 /* Info.plist */,
-			BA345ED8032742891B5D49C6 /* kWatch.entitlements */,
-		);
-		name = kWatch;
-		path = "";
-		sourceTree = "<group>";
-	};
-	948A46E6570A8D25B50581C8 /* Onboarding */ = {
-		isa = PBXGroup;
-		children = (
-			57B9ABD1FDA51F02494FAB4F /* CompletePage.swift */,
-			45998CFD96B10AA003C9A45A /* MenuBarCustomizePage.swift */,
-			05876A10316C9EF6984FAC4F /* OnboardingView.swift */,
-			B792E301EE89B1CC7BBFBB6E /* OnboardingViewModel.swift */,
-			FEA5F4DC21670ED6938C81D6 /* ProIntroPage.swift */,
-			AAFC929D30570FAF6E303587 /* WelcomePage.swift */,
-		);
-		name = Onboarding;
-		sourceTree = "<group>";
-	};
-	95161E3521C5AA2890E692F0 /* kWatchWidget */ = {
-		isa = PBXGroup;
-		children = (
-			50DC2D83A733C1BF5C4929F8 /* WidgetBundle.swift */,
-			850549EF72103F28B4766B06 /* SystemStatusWidget.swift */,
-			E3AE5C0A4342834CD9EBC485 /* WidgetEntry.swift */,
-			176A31D2206F32C458902EC6 /* WidgetSnapshotProvider.swift */,
-			DF22949BA727DFE5918DA961 /* WidgetViews.swift */,
-			D129CE46C4ADC2445395633A /* Info.plist */,
-		);
-		name = kWatchWidget;
-		sourceTree = "<group>";
-	};
-	969679DE865F3E68DEC65C79 /* Settings */ = {
-		isa = PBXGroup;
-		children = (
-			14F6CCBD9BD786F8D93438BB /* AboutView.swift */,
-			9938DF78C5FA02BEE2726CC4 /* AppearanceSettingsView.swift */,
-			EDFEA602AB2A5352BBD64650 /* MenuBarSettingsView.swift */,
-			64C76C3AF6D7C1D08AE81C00 /* MetricSettingsView.swift */,
-			01D2F70ABD54918F287BC071 /* PerMetricTabView.swift */,
-			360159E7F6FB1F6FCD8DF23A /* SettingsView.swift */,
-			7176DCD3604F7D24DDE333F3 /* SettingsViewModel.swift */,
-		);
-		name = Settings;
-		sourceTree = "<group>";
-	};
-	BA163C79D930A5064014CA4C /* kWatchControlWidget */ = {
-		isa = PBXGroup;
-		children = (
-			94C7B14022E755AC60EF55BD /* ControlWidget.swift */,
-			573656E9AEDAA16D9C8FB2A8 /* ControlWidgetView.swift */,
-			8E6073E09384508C1CD9618F /* ControlWidgetProvider.swift */,
-			37D497C12E3BFCD7D1C437EA /* ControlWidgetEntry.swift */,
-			41C12C02A3F239D3C8342333 /* Info.plist */,
-		);
-		name = kWatchControlWidget;
-		sourceTree = "<group>";
-	};
-	BFF03A4B7DE5959B1AAD4165 /* Tests */ = {
-		isa = PBXGroup;
-		children = (
-			F1A34B16C0E46D22F48F6148 /* AlertEditorViewModelTests.swift */,
-			DE30952806BAD3D158E74464 /* AlertRepositoryTests.swift */,
-			950B093D752E8DD14ADDCB38 /* AlertsViewModelTests.swift */,
-			8EFDA98B20F0167B99720C0B /* AppContainerTests.swift */,
-			0843E97F195214F62BD29C3F /* AppCoordinatorTests.swift */,
-			7B090475EC1BDC2834C61076 /* AppShortcutsIntegrationTests.swift */,
-			1B71C81D108972C624F49028 /* AppShortcutsVerificationTests.swift */,
-			2CF8DC4F0E4143E5C0979667 /* ControlWidgetTests.swift */,
-			78528845AAD156289D52EE2F /* CoreDataStackTests.swift */,
-			EFDE86780F58671C82353994 /* DashboardViewModelTests.swift */,
-			10CE68CC65989FDAC81A76A8 /* DiagnosticsExporterTests.swift */,
-			AAEA3FCC869E5B9F1AF52EF4 /* HistoryViewModelTests.swift */,
-			443B69E3590BADE5F657F64E /* IntentParameterTests.swift */,
-			03B411213CED55739D9FB3DE /* IntentTests.swift */,
-			653A10396E298C1B05E94EC6 /* InteractiveWidgetIntentTests.swift */,
-			EDA8E236CF307FFD01EAB981 /* MenuBarIconThemeTests.swift */,
-			77BF1B73572625F9518ED83C /* MenuBarViewModelTests.swift */,
-			48CBBF63493E2A8BC8F68341 /* MetricCardViewModelTests.swift */,
-			A93D454F0C41DB76BBED1DB9 /* MetricDetailViewModelTests.swift */,
-			4222344899ADE78AE2154CBD /* WidgetReloadTriggerTests.swift */,
-			2906D24E92EE5AE02B27EE3D /* NotificationSchedulerTests.swift */,
-			519386D7F436003927EAABCB /* OnboardingViewModelTests.swift */,
-			97D8C41CF6C4CF8C7C52E96E /* PaywallViewModelTermsTests.swift */,
-			10B159B999CC9DE4EF6A7608 /* PreferencesRepositoryTests.swift */,
-			E579DA7F8DDCF448ECFD9806 /* ProcessNetworkSortTests.swift */,
-			412E1108FFF483BAE72A6509 /* ProcessesViewModelTests.swift */,
-			8ECCE3506745FB1153CB8267 /* QuickToggleBarTests.swift */,
-			C24F07B10668382339D44CB4 /* RepositoryTests.swift */,
-			B8C7D2F5F505A91B64D3C6F9 /* RestorePurchaseStubs.swift */,
-			9BFBC8ED06E21A4F05B62022 /* SendableBox.swift */,
-			CB9DB25AEDF2DBDA82889E8C /* SettingsViewModelRestoreTests.swift */,
-			170722350E893EFDAA96A1CD /* SettingsViewModelTests.swift */,
-			77150D054169C6226C7EB412 /* SnapshotRoundTripTests.swift */,
-			933426BE7C99ACFAC34C4F90 /* SnapshotWriterTests.swift */,
-			97D5754210E7D3F69530AAB5 /* StoreManagerTests.swift */,
-			177414483EBA673E7A0C4143 /* SubscriptionTermsTests.swift */,
-		);
-		name = Tests;
-		sourceTree = "<group>";
-	};
-	C2EDC4814724351A3444C62A /* App */ = {
-		isa = PBXGroup;
-		children = (
-			FC8F976B27828057A607616A /* AppCoordinator.swift */,
-			714436BF5CC75EC99246EDE8 /* kWatchApp.swift */,
-			04352AFF564492984D436EFC /* kWatchAppDelegate.swift */,
-		);
-		name = App;
-		sourceTree = "<group>";
-	};
-	D086B1D575B679BDD667F1C2 /* MenuBar */ = {
-		isa = PBXGroup;
-		children = (
-			7D3632F28B178B4934AEB9E5 /* MenuBarIconTheme.swift */,
-			D6DCAF56A82C475B6EB3E767 /* MenuBarView.swift */,
-			FF3B633668A0E32697CC38F0 /* MenuBarViewModel.swift */,
-			282BA7C1EF08746DEE167794 /* MultiIconStatusItemController.swift */,
-			340B6EC4BCEB13C7C0CA9C0E /* AppWindowRouter.swift */,
-			50983C2E12673DF28C54327B /* QuickToggleBar.swift */,
-			3F5A280592344A01BF293381 /* MetricMenuRow.swift */,
-		);
-		name = MenuBar;
-		sourceTree = "<group>";
-	};
-	EBA56EB89A9347CFCE560E19 /* Products */ = {
-		isa = PBXGroup;
-		children = (
-			592A3E8DE2005013EFE473D7 /* kWatch.app */,
-			4E08A802CAF3AAC9CE0905B4 /* kWatchIntents.appex */,
-			226991BF3D28520B833DC3C6 /* kWatchWidget.appex */,
-			C8620777E51DC1E62B029214 /* kWatchControlWidget.appex */,
-			09C386C2F6D04F8712E2E85C /* kWatchTests.xctest */,
-		);
-		name = Products;
-		sourceTree = "<group>";
-	};
-	FF1F3FAB2AA54EA25F1F5EE1 /* Shared */ = {
-		isa = PBXGroup;
-		children = (
-			20AE518F458646658B17671B /* AppGroupConfiguration.swift */,
-			E37721BEEA9C99BB4A0AA485 /* MenuBarMode.swift */,
-			42A8FD07BDDC626DBA3184A4 /* SharedSnapshot.swift */,
-			F5D549D758B8D2ABE78ECD3A /* SnapshotWriter.swift */,
-		);
-		name = Shared;
-		sourceTree = "<group>";
-	};
+		0D74497A479F38CFE352EE1C = {
+			isa = PBXGroup;
+			children = (
+				8CDE4DDE8CBA6AD43F3E2B44 /* .github */,
+				340E793F8963E278B91F8330 /* Alerts */,
+				DD133761AFB8DAF098D684F7 /* App */,
+				146BE41E97FE1CFC572C44E1 /* Dashboard */,
+				F4BBDE7EBCBEEAC6F202AB6A /* Data */,
+				32F23460DAFBCD9EA968B319 /* DI */,
+				BE1C6AAB22E1AEE23BE687BF /* History */,
+				CA6BE5358DA683AD86AAB192 /* Integrations */,
+				7CE354CA5C2019EA741D47E7 /* Intents */,
+				8433DE433111FF07BF322E13 /* kWatch */,
+				211124391F00D6CC6D3F6961 /* kWatchWidget */,
+				2730B2E9880267F0B678A1C6 /* MenuBar */,
+				1374BFD7AA90E8061488E1CE /* Onboarding */,
+				AF6F04D576E82D23BF844E65 /* Packages */,
+				C8D283219FF86101E21CEF44 /* Processes */,
+				A52103D58BB0FF6C7E6253FA /* Resources */,
+				5EF69018C200C2610DA7D21F /* Settings */,
+				3F53A23F7AF1F5CD817008FA /* State */,
+				740FDD955D505540A8EA002C /* Store */,
+				1FAAB647A22710763EFCD908 /* Tests */,
+				BF68F70C3333332B3BA574E7 /* UITests */,
+				4050C5CA09E71E33DF42E012 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1374BFD7AA90E8061488E1CE /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				5003F63055FABF6218564C0E /* CompletePage.swift */,
+				1BCC35547E2E15A3D506B22F /* MenuBarCustomizePage.swift */,
+				4C7F8AD60CA58160E2F0C1D5 /* OnboardingView.swift */,
+				6F91D8AA66948EB4D3140D4D /* OnboardingViewModel.swift */,
+				B462543E912C9FA338EF83C5 /* ProIntroPage.swift */,
+				B079B79EB1CF9DA0F4AEFD51 /* WelcomePage.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		146BE41E97FE1CFC572C44E1 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				FAD1931233159167B29FA41E /* DashboardView.swift */,
+				2717620CABEF96ED0AD03DF0 /* DashboardViewModel.swift */,
+				1F1BB9264EA9F6F359A5E16C /* MetricCardView.swift */,
+				4544262EDC42DD2D7A364F43 /* MetricCardViewModel.swift */,
+				6774BE33CBF6DAB6767F6489 /* MetricDetailView.swift */,
+				894B5F69A7A9064AD7583C36 /* MetricDetailViewModel.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		1FAAB647A22710763EFCD908 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E2CDAE36234FFB1200943ACB /* AlertEditorViewModelTests.swift */,
+				104E381F1853CF3122D02BCF /* AlertRepositoryTests.swift */,
+				60F9C0B301FC1DE93B87B44A /* AlertsViewModelTests.swift */,
+				1C7E7255BA3674338E31122D /* AppContainerTests.swift */,
+				E166410E0952B3574BDE4F73 /* AppCoordinatorTests.swift */,
+				579D1E6BAC0EE00E0A4F5D55 /* AppShortcutsIntegrationTests.swift */,
+				3CC6EE3883385DD8D6049B70 /* AppShortcutsVerificationTests.swift */,
+				16FC857107728F31623A1706 /* ControlWidgetTests.swift */,
+				74EC7342AD21D8C51DDFA9B1 /* CoreDataStackTests.swift */,
+				2EC5241B35A21CD961B052F3 /* DashboardViewModelTests.swift */,
+				1B51F0E582A29FCE3FDBD44E /* HistoryViewModelTests.swift */,
+				002F096F0A5157F132868EA6 /* IntentParameterTests.swift */,
+				EEF8956884AD7A1A94B68246 /* IntentTests.swift */,
+				B0487FE560B636FFC2AD5168 /* InteractiveWidgetIntentTests.swift */,
+				9FE5C44EB90D62F3CD47B4A6 /* MenuBarIconThemeTests.swift */,
+				5C26AC92D6C767D42CDF84A3 /* MenuBarViewModelTests.swift */,
+				B393745072EF45F18B336A4B /* MetricCardViewModelTests.swift */,
+				676BDD4F52006B6E330E0FF3 /* MetricDetailViewModelTests.swift */,
+				BFB1DA5C785E4EF169573388 /* NotificationSchedulerTests.swift */,
+				5AE16E5D3E7FE6149C866D7D /* OnboardingViewModelTests.swift */,
+				F2D695F14A3037BA615173CD /* PaywallViewModelTermsTests.swift */,
+				F99AFB520FA40C82A6542C9B /* PreferencesRepositoryTests.swift */,
+				14A6C766FD131BD00682F9FA /* ProcessesViewModelTests.swift */,
+				87FE6D6F72E1A2D1B6A05697 /* QuickToggleBarTests.swift */,
+				2DEE033BFAAD744DE1F51D12 /* RepositoryTests.swift */,
+				3EC204415CEB806500F7ECF2 /* RestorePurchaseStubs.swift */,
+				70D90DF4C7E8DBB9B5BA7829 /* SendableBox.swift */,
+				0DC4B0C893C3EAF1C9CF1DB2 /* SettingsViewModelRestoreTests.swift */,
+				8FE102EAC720755D9F887DD2 /* SettingsViewModelTests.swift */,
+				7E2FA1104C6A9A2389408D5C /* StoreManagerTests.swift */,
+				1CDFF2C2476A10FB6BB69D63 /* SubscriptionTermsTests.swift */,
+				CCF028C3349B2EA0EC08FAD5 /* WidgetReloadTriggerTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		211124391F00D6CC6D3F6961 /* kWatchWidget */ = {
+			isa = PBXGroup;
+			children = (
+				E4421C60BEF7370F2620AEAF /* Info.plist */,
+				3F14A30B33136F965E33E58E /* SystemStatusWidget.swift */,
+				A5C4CBA83AEC4F030AD32078 /* WidgetBundle.swift */,
+				19A629C5D9CE901A8BA7D909 /* WidgetEntry.swift */,
+				9B55F978DAA1CDEE334932AE /* WidgetSnapshotProvider.swift */,
+				1C3BD1C6C77D82E2F8307C6A /* WidgetViews.swift */,
+			);
+			path = kWatchWidget;
+			sourceTree = "<group>";
+		};
+		2730B2E9880267F0B678A1C6 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				03B1BFB9772B9243F0EDBB1F /* AppWindowRouter.swift */,
+				91F97957EB9BC415A180496A /* MenuBarIconTheme.swift */,
+				CDB0A128168444A858AFE1F0 /* MenuBarView.swift */,
+				713A8D510C9EA2D8C6EFA945 /* MenuBarViewModel.swift */,
+				6A5FB04FD3F0ED3D1FA470E4 /* MetricMenuRow.swift */,
+				0B75EE55C9C374A8CD9FC679 /* MultiIconStatusItemController.swift */,
+				C123D61F999F3E7588DCCA98 /* QuickToggleBar.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		32F23460DAFBCD9EA968B319 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				2C2F24A0FD9A9B5B8D77A640 /* AppContainer.swift */,
+				390FD6810B88D54433263236 /* LiveAppContainer.swift */,
+				35A2C5A89CCFFD1148D0CADD /* TestAppContainer.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		340E793F8963E278B91F8330 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				B8C5BF3AEF9D8C932E967415 /* AlertEditorView.swift */,
+				92402B0378C72D1E14BB6DA9 /* AlertsView.swift */,
+				DBFEAD4D5EFCB10004A47E85 /* AlertsViewModel.swift */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
+		3F53A23F7AF1F5CD817008FA /* State */ = {
+			isa = PBXGroup;
+			children = (
+				106DFBE976257CC2E75FDB08 /* AppState.swift */,
+				B7276C88D4679D33A49B570D /* PurchaseState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		4050C5CA09E71E33DF42E012 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54C9B4E9EFFBA213F649A425 /* kWatch.app */,
+				DB235532202A107A0B6F64FD /* kWatchIntents.appex */,
+				BC6A79D66B8CCB4E8465B2DB /* kWatchTests.xctest */,
+				FF44AD808B7AEAFEC7AF1C12 /* kWatchUITests.xctest */,
+				C14CB5AB60153600B63377B5 /* kWatchWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5EF69018C200C2610DA7D21F /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				69A60A6960FB76EC4E499030 /* AboutView.swift */,
+				0FD9257DF166670E7F57BA7D /* AppearanceSettingsView.swift */,
+				8BB2292FC809FF3A42B7CD1F /* MenuBarSettingsView.swift */,
+				FD5C63C193713909AF023DB1 /* MetricSettingsView.swift */,
+				8E0DC660EA72FC9B73E6C4AA /* PerMetricTabView.swift */,
+				89C79B6C9F6F2755FB9FD5F8 /* SettingsView.swift */,
+				FC9F69BADF390498860B8516 /* SettingsViewModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		740FDD955D505540A8EA002C /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				C93181D298359356EC773C8C /* PaywallView.swift */,
+				308950F62A252421378157F8 /* PaywallViewModel.swift */,
+				89EC97238517D99542A850F2 /* PurchaseButton.swift */,
+				F053279A433C37151B2F2630 /* StoreKitClient.swift */,
+				884EE02B2C288DBFB184CB38 /* StoreKitTestConfiguration.storekit */,
+				4961D19A8101E16F6470AD22 /* StoreManager.swift */,
+				17E7AAD11A1C0A7647ABB017 /* SubscriptionTerms.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		7CE354CA5C2019EA741D47E7 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				8EE411E0435B66CE3C027893 /* ExportDiagnosticsIntent.swift */,
+				87ED2799B3B675DF25B3864C /* IntentService.swift */,
+				0EE9666A90372F9EBCBF10CC /* KWatchAppShortcuts.swift */,
+				91FFE6E00B78F18EA04F3D42 /* LiveIntentService.swift */,
+				D2A3C928FA0DCA9DFE393159 /* OpenDashboardIntent.swift */,
+				BA9E9EF46056D4523495540B /* PauseMonitoringIntent.swift */,
+				FE9EE8544D25E0ECE1ED349D /* QueryMetricIntent.swift */,
+				4D45426B2219A8E65813D3BE /* ShowDiskUsageIntent.swift */,
+				5D66DEB5655E81603E671F68 /* ShowNetworkRateIntent.swift */,
+				95E0DD895E6D33770EE2A5F9 /* ShowTopProcessesIntent.swift */,
+				E9CC047083E4341C6CD4F0A4 /* StartMonitoringIntent.swift */,
+				F173DE4BC938FCB6EE8A48E4 /* StopMonitoringIntent.swift */,
+				1A5460958D480EE94E67BF38 /* StubIntentService.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		8433DE433111FF07BF322E13 /* kWatch */ = {
+			isa = PBXGroup;
+			children = (
+				CE7CE94F9004760C579254A6 /* generate_project.py */,
+				D2F756979A978D589ED045F8 /* Info.plist */,
+				AB77863EFEE6FE7ACB90C67E /* kWatch.entitlements */,
+				205108B2ABA1E31E66B14FAC /* kWatch.xcodeproj */,
+				8CDE4DDE8CBA6AD43F3E2B44 /* .github */,
+				340E793F8963E278B91F8330 /* Alerts */,
+				DD133761AFB8DAF098D684F7 /* App */,
+				146BE41E97FE1CFC572C44E1 /* Dashboard */,
+				F4BBDE7EBCBEEAC6F202AB6A /* Data */,
+				32F23460DAFBCD9EA968B319 /* DI */,
+				BE1C6AAB22E1AEE23BE687BF /* History */,
+				CA6BE5358DA683AD86AAB192 /* Integrations */,
+				7CE354CA5C2019EA741D47E7 /* Intents */,
+				2730B2E9880267F0B678A1C6 /* MenuBar */,
+				1374BFD7AA90E8061488E1CE /* Onboarding */,
+				C8D283219FF86101E21CEF44 /* Processes */,
+				A52103D58BB0FF6C7E6253FA /* Resources */,
+				5EF69018C200C2610DA7D21F /* Settings */,
+				3F53A23F7AF1F5CD817008FA /* State */,
+				740FDD955D505540A8EA002C /* Store */,
+			);
+			name = kWatch;
+			path = .;
+			sourceTree = "<group>";
+		};
+		8CDE4DDE8CBA6AD43F3E2B44 /* .github */ = {
+			isa = PBXGroup;
+			children = (
+				F37CB2D0782E9700EC399C14 /* workflows */,
+			);
+			path = .github;
+			sourceTree = "<group>";
+		};
+		A52103D58BB0FF6C7E6253FA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B56E8797FBDAC39DB0FE58E3 /* Localizable.xcstrings */,
+				CD45BF643ACB6724439FA4E0 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AF6F04D576E82D23BF844E65 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				D7D05C4C53F354A9FD782E15 /* kFoundation */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		BE1C6AAB22E1AEE23BE687BF /* History */ = {
+			isa = PBXGroup;
+			children = (
+				01700AB707CFB51277C6077D /* HistoryView.swift */,
+				58BCAEEF622FAA178EDD634A /* HistoryViewModel.swift */,
+				28DDE123B1E8751F4196C2A6 /* TrendChart.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		BF68F70C3333332B3BA574E7 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				6655FD2C77B2FCB3A6C382B4 /* KWatchLaunchTests.swift */,
+				2DAE92E82A4121E951650484 /* KWatchPurchaseJourneyTests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		C8D283219FF86101E21CEF44 /* Processes */ = {
+			isa = PBXGroup;
+			children = (
+				8820DE70E4E22E1D167F5149 /* ProcessesView.swift */,
+				7F2CB9452EF3828299C7B7DE /* ProcessesViewModel.swift */,
+				7A559F7FBCB38298ADD25346 /* ProcessRowView.swift */,
+			);
+			path = Processes;
+			sourceTree = "<group>";
+		};
+		CA6BE5358DA683AD86AAB192 /* Integrations */ = {
+			isa = PBXGroup;
+			children = (
+				1121277150085C2371AFB092 /* KWatchSpotlightIndexer.swift */,
+			);
+			path = Integrations;
+			sourceTree = "<group>";
+		};
+		DD133761AFB8DAF098D684F7 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3E696E68C8D7BE47C71D7937 /* AppCoordinator.swift */,
+				1852737B9D94A497AB1724D1 /* kWatchApp.swift */,
+				F07ABD252A9B754E6E0F34CC /* kWatchAppDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F37CB2D0782E9700EC399C14 /* workflows */ = {
+			isa = PBXGroup;
+			children = (
+				820C840D995A0F2E2EE2E56E /* ci.yml */,
+			);
+			path = workflows;
+			sourceTree = "<group>";
+		};
+		F4BBDE7EBCBEEAC6F202AB6A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				3B3564D7D36E505C87A1E007 /* AlertRepository.swift */,
+				3C966DC5D9D36E4F0EFE9A36 /* CoreDataStack.swift */,
+				849DED88E97787BAA009C814 /* HistoryRepository.swift */,
+				26C296DA3C96BE360E642BB7 /* ManagedObjects.swift */,
+				952C94B53D2E1B066414914B /* PreferencesRepository.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-	0E760447DBF5C92EAE429848 /* kWatchWidget */ = {
-		isa = PBXNativeTarget;
-		buildConfigurationList = 54697D4C03E36964B1FE8389;
-		buildPhases = (
-			D398B53A29660D5F2A6FD051 /* Sources */,
-			993C060E920F12FFBC071F64 /* Frameworks */,
-			A93BB72237C723A47648B0BB /* Resources */,
-		);
-		buildRules = (
-		);
-		dependencies = (
-		);
-		name = kWatchWidget;
-		packageProductDependencies = (
-			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
-			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
-		);
-		productName = kWatchWidget;
-		productReference = 226991BF3D28520B833DC3C6;
-		productType = "com.apple.product-type.app-extension";
-	};
-	0EEA7C819FA2C1B860563983 /* kWatch */ = {
-		isa = PBXNativeTarget;
-		buildConfigurationList = 6080F8A7C5D6A84AD151124F;
-		buildPhases = (
-			D7ADA1B3F2BD4A23138F5A71 /* Sources */,
-			639838777480095AEC9EAF3D /* Frameworks */,
-			0F96DF12DE3D14BDBD2DCA50 /* Resources */,
-			96A6F6DA128E21F233C118E2 /* Embed App Extensions */,
-		);
-		buildRules = (
-		);
-		dependencies = (
-			B8D243EA7E5A3995160721BD /* kWatchIntents */,
-			1080EC1160D86FB1A0437978 /* kWatchWidget */,
-			68D4FB61BEB350497827F7BB /* kWatchControlWidget */,
-		);
-		name = kWatch;
-		packageProductDependencies = (
-			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
-			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
-		);
-		productName = kWatch;
-		productReference = 592A3E8DE2005013EFE473D7;
-		productType = "com.apple.product-type.application";
-	};
-	65EEE750073530D58467161C /* kWatchControlWidget */ = {
-		isa = PBXNativeTarget;
-		buildConfigurationList = 7A7D141192D0A0B985E295E8;
-		buildPhases = (
-			23B189365444EF1FE3991600 /* Sources */,
-			9052CB934E114EC8A438CACE /* Frameworks */,
-			CB086274F2429AD780B7E54F /* Resources */,
-		);
-		buildRules = (
-		);
-		dependencies = (
-		);
-		name = kWatchControlWidget;
-		packageProductDependencies = (
-			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
-			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
-		);
-		productName = kWatchControlWidget;
-		productReference = C8620777E51DC1E62B029214;
-		productType = "com.apple.product-type.app-extension";
-	};
-	93A0A59B7AB918DD71BF8E5F /* kWatchTests */ = {
-		isa = PBXNativeTarget;
-		buildConfigurationList = 3FD6CBC4FF291B9367FDC53D;
-		buildPhases = (
-			A3EBA454EB2F5C879CA40B0C /* Sources */,
-			4012D4C9DAE5CD9D31F3FFB2 /* Frameworks */,
-		);
-		buildRules = (
-		);
-		dependencies = (
-			644EF10CD79DF6ED03438275 /* kWatch */,
-			C13845957E96785DA490046A /* kWatchIntents */,
-			58F910C1F3C54930F80A893F /* kWatchWidget */,
-			2B1F31556199259E31FD88A6 /* kWatchControlWidget */,
-		);
-		name = kWatchTests;
-		packageProductDependencies = (
-			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
-			8FC8EFB927E635ABBEBD95C0 /* DesignSystem */,
-		);
-		productName = kWatchTests;
-		productReference = 09C386C2F6D04F8712E2E85C;
-		productType = "com.apple.product-type.bundle.unit-test";
-	};
-	A24AE00D850A572453BAC933 /* kWatchIntents */ = {
-		isa = PBXNativeTarget;
-		buildConfigurationList = 42E13A23C6D16303C6D25BE4;
-		buildPhases = (
-			11213EFCCD42A4184407E49A /* Sources */,
-			B06836F26B321D31F84AABA4 /* Frameworks */,
-			9BCB017F584213CF3AA3CD71 /* Resources */,
-		);
-		buildRules = (
-		);
-		dependencies = (
-		);
-		name = kWatchIntents;
-		packageProductDependencies = (
-			2CA0D91CFF0FC30A61B2EBEC /* MetricsKit */,
-		);
-		productName = kWatchIntents;
-		productReference = 4E08A802CAF3AAC9CE0905B4;
-		productType = "com.apple.product-type.app-extension";
-	};
+		085C22D08A518E9C7B91C110 /* kWatchWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6226CEDBA0885AFD91758CB /* Build configuration list for PBXNativeTarget "kWatchWidget" */;
+			buildPhases = (
+				3AAB86C5C9B5DDB00C42E636 /* Sources */,
+				0905A8163DF4E07D4EC471BD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kWatchWidget;
+			packageProductDependencies = (
+				646F994FB92D7004ACE01238 /* MetricsKit */,
+				1DE04B27EB0693146833FE34 /* MonitorCore */,
+				7694C8CD9BED32D40DEA1E56 /* DesignSystem */,
+			);
+			productName = kWatchWidget;
+			productReference = C14CB5AB60153600B63377B5 /* kWatchWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		11A6E44CD29BE7A035522B55 /* kWatchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 67A828403BD9EF8C55631BE7 /* Build configuration list for PBXNativeTarget "kWatchTests" */;
+			buildPhases = (
+				DC8F6E0D036C74789FDC03B4 /* Sources */,
+				6C85FEAD2E709F86CDE23617 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				56315A1D9C5F13A5D3BFA98D /* PBXTargetDependency */,
+				701C125BA52E6E4BD910374A /* PBXTargetDependency */,
+			);
+			name = kWatchTests;
+			packageProductDependencies = (
+				A26D01887FD287FCF3716F16 /* MetricsKit */,
+				0F89AFBE919DB7663EEB420E /* MonitorCore */,
+				A000FAFFF0C719BD02AEC564 /* DesignSystem */,
+			);
+			productName = kWatchTests;
+			productReference = BC6A79D66B8CCB4E8465B2DB /* kWatchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		14C4329FBE5ACF3D107873F4 /* kWatchIntents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA344434164830942C2E8CCD /* Build configuration list for PBXNativeTarget "kWatchIntents" */;
+			buildPhases = (
+				53464A062F91079030CB5111 /* Sources */,
+				E9A100F5A218A8E3AE8D77AC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kWatchIntents;
+			packageProductDependencies = (
+				602259067287812F73EB443F /* MetricsKit */,
+				C4EB650C262F762C1921B15F /* MonitorCore */,
+				7FA09A6904FF7788767F21EC /* DesignSystem */,
+			);
+			productName = kWatchIntents;
+			productReference = DB235532202A107A0B6F64FD /* kWatchIntents.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		34715473ABC605C7F3679679 /* kWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5945149CB5D3FB486410DF16 /* Build configuration list for PBXNativeTarget "kWatch" */;
+			buildPhases = (
+				5C3B0E0BC28636A35EF7C417 /* SwiftLint */,
+				DF36012F896386D3C78D2FB5 /* Sources */,
+				C43FE26AC95AB4CAD1531827 /* Resources */,
+				E5EE419A9653C21388199A87 /* Frameworks */,
+				441A2E9BBE2964FDED1F241E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				920DB4E9E39B6A18DF52D268 /* PBXTargetDependency */,
+			);
+			name = kWatch;
+			packageProductDependencies = (
+				D4EA8B9DB643BFB40A3ED3EE /* MetricsKit */,
+				0484436DB1D252FE9CCEB0A7 /* MonitorCore */,
+				320F22E5BF2D0A630D958D57 /* DesignSystem */,
+			);
+			productName = kWatch;
+			productReference = 54C9B4E9EFFBA213F649A425 /* kWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CC2E3C00A70030D7F4C4E6B0 /* kWatchUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDC089085F54F2D507ABBD7C /* Build configuration list for PBXNativeTarget "kWatchUITests" */;
+			buildPhases = (
+				7F40B9109412C43685D3A168 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3F4809F474578508E3E6C861 /* PBXTargetDependency */,
+			);
+			name = kWatchUITests;
+			packageProductDependencies = (
+			);
+			productName = kWatchUITests;
+			productReference = FF44AD808B7AEAFEC7AF1C12 /* kWatchUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-	59601E391B529B07AE11313D /* kWatch */ = {
-		isa = PBXProject;
-		attributes = {
-			BuildIndependentTargetsInParallel = 1;
-			LastSwiftUpdateCheck = 1430;
-			LastUpgradeCheck = 1430;
-			TargetAttributes = {
-				0EEA7C819FA2C1B860563983 /* kWatch */ = {CreatedOnToolsVersion = 14.3; };
-				A24AE00D850A572453BAC933 /* kWatchIntents */ = {CreatedOnToolsVersion = 14.3; };
-				0E760447DBF5C92EAE429848 /* kWatchWidget */ = {CreatedOnToolsVersion = 14.3; };
-				65EEE750073530D58467161C /* kWatchControlWidget */ = {CreatedOnToolsVersion = 14.3; };
-				93A0A59B7AB918DD71BF8E5F /* kWatchTests */ = {CreatedOnToolsVersion = 14.3; TestTargetID = 0EEA7C819FA2C1B860563983; };
+		1CA76644F30CC6AD3518AE8A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					34715473ABC605C7F3679679 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					CC2E3C00A70030D7F4C4E6B0 = {
+						TestTargetID = 34715473ABC605C7F3679679;
+					};
+				};
 			};
+			buildConfigurationList = 62C908247E2FB32DF84E0A1B /* Build configuration list for PBXProject "kWatch" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+				ja,
+				"zh-Hans",
+			);
+			mainGroup = 0D74497A479F38CFE352EE1C;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				601F6B2009943954C4CBBBBE /* XCLocalSwiftPackageReference "../kFoundation" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 4050C5CA09E71E33DF42E012 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34715473ABC605C7F3679679 /* kWatch */,
+				085C22D08A518E9C7B91C110 /* kWatchWidget */,
+				14C4329FBE5ACF3D107873F4 /* kWatchIntents */,
+				11A6E44CD29BE7A035522B55 /* kWatchTests */,
+				CC2E3C00A70030D7F4C4E6B0 /* kWatchUITests */,
+			);
 		};
-		buildConfigurationList = CF35BBADA1B6673793B45974;
-		compatibilityVersion = "Xcode 14.0";
-		developmentRegion = en;
-		hasScannedForEncodings = 0;
-		knownRegions = (
-			en,
-			Base,
-			zh-Hans,
-			ja,
-		);
-		mainGroup = 8CB695B89F15D64CF154F9CA;
-		name = kWatch;
-		packageReferences = (
-			0FF3C456B3FB47CBB23203A7 /* kFoundation */,
-		);
-		productRefGroup = EBA56EB89A9347CFCE560E19;
-		projectDirPath = "";
-		projectRoot = "";
-		targets = (
-			0EEA7C819FA2C1B860563983 /* kWatch */,
-			A24AE00D850A572453BAC933 /* kWatchIntents */,
-			0E760447DBF5C92EAE429848 /* kWatchWidget */,
-			65EEE750073530D58467161C /* kWatchControlWidget */,
-			93A0A59B7AB918DD71BF8E5F /* kWatchTests */,
-		);
-	};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-	0F96DF12DE3D14BDBD2DCA50 /* 0F96DF12DE3D14BDBD2DCA50 */ = {
-		isa = PBXResourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-			8B1C577B2FB5E67B3BBBF057 /* 8B1C577B2FB5E67B3BBBF057 */,
-			75A18B135C03660DC8263DA1 /* 75A18B135C03660DC8263DA1 */,
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	9BCB017F584213CF3AA3CD71 /* 9BCB017F584213CF3AA3CD71 */ = {
-		isa = PBXResourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	A93BB72237C723A47648B0BB /* A93BB72237C723A47648B0BB */ = {
-		isa = PBXResourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	CB086274F2429AD780B7E54F /* CB086274F2429AD780B7E54F */ = {
-		isa = PBXResourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
+		C43FE26AC95AB4CAD1531827 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D522B537C20FDBD9C997BE6 /* Localizable.xcstrings in Resources */,
+				86D8F8D37845AA7BD337119A /* PrivacyInfo.xcprivacy in Resources */,
+				73CDA87FD3B7F0CDAFC4E0F8 /* StoreKitTestConfiguration.storekit in Resources */,
+				7FC4585C836B158259B7B81C /* ci.yml in Resources */,
+				5C107CFC0F117E1BCB3EF129 /* generate_project.py in Resources */,
+				55C5119CDB883661EBA2DEC8 /* kWatch.xcodeproj in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5C3B0E0BC28636A35EF7C417 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then swiftlint; fi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-	11213EFCCD42A4184407E49A /* 11213EFCCD42A4184407E49A */ = {
-		isa = PBXSourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-			ECE44D8B3BAE3B06F12EB9CB /* ECE44D8B3BAE3B06F12EB9CB */,
-			98CF7DD3B9667F19997F7EB3 /* 98CF7DD3B9667F19997F7EB3 */,
-			36DA42A90C1B39459B1015BD /* 36DA42A90C1B39459B1015BD */,
-			FB4404A665137F70FC5DA848 /* FB4404A665137F70FC5DA848 */,
-			D9270252174563095501DDD8 /* D9270252174563095501DDD8 */,
-			B4BA95D344234077B5B19732 /* B4BA95D344234077B5B19732 */,
-			C8BF3F2FAC5AB2BD54696262 /* C8BF3F2FAC5AB2BD54696262 */,
-			0B5D65122CCEA549841ACF90 /* 0B5D65122CCEA549841ACF90 */,
-			FFD4B1A3AA6C19DFA3A94412 /* FFD4B1A3AA6C19DFA3A94412 */,
-			20F76562244EC0EAFF0E5C56 /* 20F76562244EC0EAFF0E5C56 */,
-			4989CE2EF8D6A12482179081 /* 4989CE2EF8D6A12482179081 */,
-			0E24A497FEDBEA092EDABEFC /* 0E24A497FEDBEA092EDABEFC */,
-			D46F21D489B2CEEBCB979A90 /* D46F21D489B2CEEBCB979A90 */,
-			8B87D472FA584CEBEE1F4F7E /* 8B87D472FA584CEBEE1F4F7E */,
-			860F597F6EDB1E7E0BF3D1B9 /* 860F597F6EDB1E7E0BF3D1B9 */,
-			4A9F6111ADFF4A8610BC095C /* 4A9F6111ADFF4A8610BC095C */,
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	23B189365444EF1FE3991600 /* 23B189365444EF1FE3991600 */ = {
-		isa = PBXSourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-			21A87195E055CF6E9635EA0D /* 21A87195E055CF6E9635EA0D */,
-			1221B49D9C14EEFF06BD129B /* 1221B49D9C14EEFF06BD129B */,
-			63770470650F58347C4A5767 /* 63770470650F58347C4A5767 */,
-			23902937173293A28723E119 /* 23902937173293A28723E119 */,
-			1EF98D12306759D7C668C238 /* 1EF98D12306759D7C668C238 */,
-			457F893F00F2425273D33534 /* 457F893F00F2425273D33534 */,
-			D66B415948FDFBEC1509A926 /* D66B415948FDFBEC1509A926 */,
-			7C4297C9B447DE44801F8420 /* 7C4297C9B447DE44801F8420 */,
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	A3EBA454EB2F5C879CA40B0C /* A3EBA454EB2F5C879CA40B0C */ = {
-		isa = PBXSourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-			E07E6E132E02DA40D44308CA /* E07E6E132E02DA40D44308CA */,
-			CFA3A56CE1389DF9289443E8 /* CFA3A56CE1389DF9289443E8 */,
-			6F9B450F2A998EADF70F625F /* 6F9B450F2A998EADF70F625F */,
-			84BD3D0C65879977E026D9A9 /* 84BD3D0C65879977E026D9A9 */,
-			246ED0D2BD1D33235D2BFF6C /* 246ED0D2BD1D33235D2BFF6C */,
-			7D33D9492BE6DC52F230B582 /* 7D33D9492BE6DC52F230B582 */,
-			5BF62D5F32C77B3E2C20ACFD /* 5BF62D5F32C77B3E2C20ACFD */,
-			6E550E08DAFC516BAD575DAF /* 6E550E08DAFC516BAD575DAF */,
-			DF0CBDCDDE0EE468325C863B /* DF0CBDCDDE0EE468325C863B */,
-			82E0B01159B09B9D2C690377 /* 82E0B01159B09B9D2C690377 */,
-			232A95C7D99C371A3FB4D6C8 /* 232A95C7D99C371A3FB4D6C8 */,
-			98F18BEC132E0558BF27B792 /* 98F18BEC132E0558BF27B792 */,
-			F635ABC2DE1E32C726E6861A /* F635ABC2DE1E32C726E6861A */,
-			5098DD3CB6A57977716F8E78 /* 5098DD3CB6A57977716F8E78 */,
-			B87EF9F2FBB14C7B4B6FD14A /* B87EF9F2FBB14C7B4B6FD14A */,
-			62DD2B2A146B30FC1666A265 /* 62DD2B2A146B30FC1666A265 */,
-			92BEC11FC8DD9F77F04CEF4F /* 92BEC11FC8DD9F77F04CEF4F */,
-			2B65BC3402FD3269056DFF7F /* 2B65BC3402FD3269056DFF7F */,
-			AD4B131A673D15859CC25D38 /* AD4B131A673D15859CC25D38 */,
-			A24FD4DA453ED7F871E3B548 /* A24FD4DA453ED7F871E3B548 */,
-			50462B0A78871C43A4E77B9B /* 50462B0A78871C43A4E77B9B */,
-			D231F2291A20553B6F352E9F /* D231F2291A20553B6F352E9F */,
-			931E0DDB1639A5531174CF32 /* 931E0DDB1639A5531174CF32 */,
-			679C32ADA037D5D79D192A25 /* 679C32ADA037D5D79D192A25 */,
-			5FD178779095D3207DDA9602 /* 5FD178779095D3207DDA9602 */,
-			924D895492CCEFFDF819E8EF /* 924D895492CCEFFDF819E8EF */,
-			A23A4B553335D12B0C078995 /* A23A4B553335D12B0C078995 */,
-			1CB34D4640ED9149922B3F46 /* 1CB34D4640ED9149922B3F46 */,
-			DAA08C7C942D437F4D186DB6 /* DAA08C7C942D437F4D186DB6 */,
-			FE9E4E390D38ABEBA2A2872B /* FE9E4E390D38ABEBA2A2872B */,
-			70399AFF00E668E0A8380B3D /* 70399AFF00E668E0A8380B3D */,
-			A237208B4D438763BC30B633 /* A237208B4D438763BC30B633 */,
-			A870777C0955E4956EAFCA52 /* A870777C0955E4956EAFCA52 */,
-			D9C83DAA5CA58B44EC554129 /* D9C83DAA5CA58B44EC554129 */,
-			DBF041637F69E6FAF31C49F7 /* DBF041637F69E6FAF31C49F7 */,
-			E85924BCE4D46E7424EC284B /* E85924BCE4D46E7424EC284B */,
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	D398B53A29660D5F2A6FD051 /* D398B53A29660D5F2A6FD051 */ = {
-		isa = PBXSourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-			50D1D3011755FDB7763A9A80 /* 50D1D3011755FDB7763A9A80 */,
-			13CB88A31BA3DBB41BBA3686 /* 13CB88A31BA3DBB41BBA3686 */,
-			013D61A70C1AF22B263E391A /* 013D61A70C1AF22B263E391A */,
-			88E1770D02B3D40EF1566F47 /* 88E1770D02B3D40EF1566F47 */,
-			C7673D98A5C5888376193C31 /* C7673D98A5C5888376193C31 */,
-			5989688F44F8AE746569FFB8 /* 5989688F44F8AE746569FFB8 */,
-			3914674CDC322EE925016E12 /* 3914674CDC322EE925016E12 */,
-			D170A7B277F4C85C902FD749 /* D170A7B277F4C85C902FD749 */,
-			8B78D281B81E67B1F43A3161 /* 8B78D281B81E67B1F43A3161 */,
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
-	D7ADA1B3F2BD4A23138F5A71 /* D7ADA1B3F2BD4A23138F5A71 */ = {
-		isa = PBXSourcesBuildPhase;
-		buildActionMask = 2147483647;
-		files = (
-			61C6D81024D3617BD61AB1C8 /* 61C6D81024D3617BD61AB1C8 */,
-			6C4221A9DB4B2FA497B426BA /* 6C4221A9DB4B2FA497B426BA */,
-			1A832DA7ACF5E9577DB5ECF8 /* 1A832DA7ACF5E9577DB5ECF8 */,
-			3323A447F4CE7D34C7F80946 /* 3323A447F4CE7D34C7F80946 */,
-			0E0009E1917D6448F609648C /* 0E0009E1917D6448F609648C */,
-			174ADA3EB2B832B4B928161E /* 174ADA3EB2B832B4B928161E */,
-			6B52D19EE1A24A6E56289CD2 /* 6B52D19EE1A24A6E56289CD2 */,
-			7CFC339001174BDEEDCD407E /* 7CFC339001174BDEEDCD407E */,
-			8A7BA831214CAE887B0437E1 /* 8A7BA831214CAE887B0437E1 */,
-			676A9A2AD306E936A4D5E7C1 /* 676A9A2AD306E936A4D5E7C1 */,
-			0D27E40F8EB385B980A249C9 /* 0D27E40F8EB385B980A249C9 */,
-			EA98837D17977FDF07F448F5 /* EA98837D17977FDF07F448F5 */,
-			CECA1D74EFFCEEE270B086DC /* CECA1D74EFFCEEE270B086DC */,
-			8AA0AB5412E4A5C724DB8D0A /* 8AA0AB5412E4A5C724DB8D0A */,
-			F75FAF8410131F408861706E /* F75FAF8410131F408861706E */,
-			1578E2645DDE9FF630F86870 /* 1578E2645DDE9FF630F86870 */,
-			8F2107E120FFE5D47C3098D2 /* 8F2107E120FFE5D47C3098D2 */,
-			437F83DF9CE86644C8F5A457 /* 437F83DF9CE86644C8F5A457 */,
-			5A5F5D4E74821605B69A648A /* 5A5F5D4E74821605B69A648A */,
-			5D67B2C11FB43761E5979CC4 /* 5D67B2C11FB43761E5979CC4 */,
-			6D076F78D9E8299B8DC5F9E0 /* 6D076F78D9E8299B8DC5F9E0 */,
-			671E289ADC376CB571A8FF1B /* 671E289ADC376CB571A8FF1B */,
-			808356CB94DC1A5EA501A606 /* 808356CB94DC1A5EA501A606 */,
-			2F2D0BFD9368388549531F52 /* 2F2D0BFD9368388549531F52 */,
-			78FC53C2575E66C3A18329CE /* 78FC53C2575E66C3A18329CE */,
-			2DB5559D34A7311F59623D69 /* 2DB5559D34A7311F59623D69 */,
-			0ACD8B40E9A9457A4BC272FA /* 0ACD8B40E9A9457A4BC272FA */,
-			F490CB5E664CFD7BC1D0DDC4 /* F490CB5E664CFD7BC1D0DDC4 */,
-			D553641DE1EC897E61632421 /* D553641DE1EC897E61632421 */,
-			0E01BDDD2FB92BAD7ED42E5C /* 0E01BDDD2FB92BAD7ED42E5C */,
-			1502EA48D8C6DCB048BC60FB /* 1502EA48D8C6DCB048BC60FB */,
-			75E5F429EBBEE8D03A74FD66 /* 75E5F429EBBEE8D03A74FD66 */,
-			688BA67F404AA9A6367F06BD /* 688BA67F404AA9A6367F06BD */,
-			2450760FDBBA95BA3831B679 /* 2450760FDBBA95BA3831B679 */,
-			E9E2596369EBFE703821D9D6 /* E9E2596369EBFE703821D9D6 */,
-			06EEC4E6AC4F52932B175794 /* 06EEC4E6AC4F52932B175794 */,
-			B3A48E969BF3D520CF9A89FB /* B3A48E969BF3D520CF9A89FB */,
-			83125204BC66FC1B6E241CE8 /* 83125204BC66FC1B6E241CE8 */,
-			7BD05F30F005B9FC84B735E8 /* 7BD05F30F005B9FC84B735E8 */,
-			DD92D548C385F21DE431F1E6 /* DD92D548C385F21DE431F1E6 */,
-			29A4D3320F9CB93A6CDF1715 /* 29A4D3320F9CB93A6CDF1715 */,
-			6D7CC1394A444868F8FBE0F1 /* 6D7CC1394A444868F8FBE0F1 */,
-			5BD62E81B0F33800CCE8C893 /* 5BD62E81B0F33800CCE8C893 */,
-			E4F5BB78841CF956AA3F9FF4 /* E4F5BB78841CF956AA3F9FF4 */,
-			A2A2B2D52E52A0038A70163C /* A2A2B2D52E52A0038A70163C */,
-			8B4C6717D22271144EDB9965 /* 8B4C6717D22271144EDB9965 */,
-			AC146A5743413D01DA1ED2CB /* AC146A5743413D01DA1ED2CB */,
-			DE329FEA4CF5EFB872CD11D0 /* DE329FEA4CF5EFB872CD11D0 */,
-			D96937041669DA5D4CFD772D /* D96937041669DA5D4CFD772D */,
-			B2F05911BF4FB1259E1783A2 /* B2F05911BF4FB1259E1783A2 */,
-			12808F75D4C835148295B24A /* 12808F75D4C835148295B24A */,
-			9D21360D80FEA5C4B9833ED1 /* 9D21360D80FEA5C4B9833ED1 */,
-			B680EBC7B2D746FA9F7D5674 /* B680EBC7B2D746FA9F7D5674 */,
-			9ED470394FCB26778124D2F8 /* 9ED470394FCB26778124D2F8 */,
-			75494F42FA48D6E4B7857029 /* 75494F42FA48D6E4B7857029 */,
-			1FCA59498704879B83EAD38D /* 1FCA59498704879B83EAD38D */,
-			EE70942A2C65E584BF0830B6 /* EE70942A2C65E584BF0830B6 */,
-			6135F5B5AA64C89E3D5BE3E1 /* 6135F5B5AA64C89E3D5BE3E1 */,
-			6D8A3D5F2985B28C9E886A81 /* 6D8A3D5F2985B28C9E886A81 */,
-			F8020BF51162D654C015B5C1 /* F8020BF51162D654C015B5C1 */,
-			F34814A681F8DF89DABE34ED /* F34814A681F8DF89DABE34ED */,
-			BC7C77518AE68CBA406DDDEE /* BC7C77518AE68CBA406DDDEE */,
-			EE2B5959CBE35813A255AFC1 /* EE2B5959CBE35813A255AFC1 */,
-			C0435261C99720AB8B4075FD /* C0435261C99720AB8B4075FD */,
-			E5D84FBAEC4E2364C7F69DA0 /* E5D84FBAEC4E2364C7F69DA0 */,
-			F799F1C8FD709366D6824FC0 /* F799F1C8FD709366D6824FC0 */,
-			A8BBF15A1D10D4E6660E7CB0 /* A8BBF15A1D10D4E6660E7CB0 */,
-			C4F73D55634F77916BBC03AB /* C4F73D55634F77916BBC03AB */,
-			E1C3ED4675E1F975DB11D883 /* E1C3ED4675E1F975DB11D883 */,
-			7615C7E382C1A48031244B7C /* 7615C7E382C1A48031244B7C */,
-			AED6A965AEBDDECE519EEBAA /* AED6A965AEBDDECE519EEBAA */,
-			6EBFF0AF40037B9FFAE3E6B7 /* 6EBFF0AF40037B9FFAE3E6B7 */,
-			C06D563FF64FB7F57ABD9FEE /* C06D563FF64FB7F57ABD9FEE */,
-			74D22ACEEFDDAD3D8F39C05B /* 74D22ACEEFDDAD3D8F39C05B */,
-			F5B002705E880FD7B9665789 /* F5B002705E880FD7B9665789 */,
-			FC0ECFBA7C849165D47FED3D /* FC0ECFBA7C849165D47FED3D */,
-			21D44ACFBB293C6063406191 /* 21D44ACFBB293C6063406191 */,
-		);
-		runOnlyForDeploymentPostprocessing = 0;
-	};
+		3AAB86C5C9B5DDB00C42E636 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1B6D1E68CC76889E5AA3CB0 /* SystemStatusWidget.swift in Sources */,
+				2F58374BC538E83D8FA37464 /* WidgetBundle.swift in Sources */,
+				6D29F5436FDE7B55BA906DB8 /* WidgetEntry.swift in Sources */,
+				646C714369ADF5CE149737BB /* WidgetSnapshotProvider.swift in Sources */,
+				6BF07364278C6F4849D7550D /* WidgetViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53464A062F91079030CB5111 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9181D3F2E4144AD21555D69A /* ExportDiagnosticsIntent.swift in Sources */,
+				2561CF35D994D212EB357D28 /* IntentService.swift in Sources */,
+				E8634A0F13AF86F0AFE776EA /* KWatchAppShortcuts.swift in Sources */,
+				E706FBF4648778F4C6ECC068 /* LiveIntentService.swift in Sources */,
+				35E405309D06912BA7744093 /* OpenDashboardIntent.swift in Sources */,
+				3CE6C79614048B0BA81FF980 /* PauseMonitoringIntent.swift in Sources */,
+				EA2EE665E0ADFC1D1F11490C /* QueryMetricIntent.swift in Sources */,
+				2B5CA7132C2503F3AD90CD94 /* ShowDiskUsageIntent.swift in Sources */,
+				34A7FA0DA0ABA6B75AEC15A5 /* ShowNetworkRateIntent.swift in Sources */,
+				519445697A18978EA40DDD7B /* ShowTopProcessesIntent.swift in Sources */,
+				FB19B45E6E3388A8B6D1AE91 /* StartMonitoringIntent.swift in Sources */,
+				CA84F21C88E3A1C440F5D9D2 /* StopMonitoringIntent.swift in Sources */,
+				C856D027BEF77083CA000664 /* StubIntentService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F40B9109412C43685D3A168 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				232249DA6EEDA55BD47C2877 /* KWatchLaunchTests.swift in Sources */,
+				A5AB75916264E486412AAA22 /* KWatchPurchaseJourneyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC8F6E0D036C74789FDC03B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78D285EAF6E5A7EF644B11E7 /* AlertEditorViewModelTests.swift in Sources */,
+				11F9889731F7A1EE2B513932 /* AlertRepositoryTests.swift in Sources */,
+				6FA21903C6110CB9FA34615B /* AlertsViewModelTests.swift in Sources */,
+				F1349F896A860FD26B75DABB /* AppContainerTests.swift in Sources */,
+				B46E338971DA587D7AB53B2A /* AppCoordinatorTests.swift in Sources */,
+				FC0F2E677D176FA706CA0A57 /* AppShortcutsIntegrationTests.swift in Sources */,
+				E6D9CC74A4AE9F929327AD01 /* AppShortcutsVerificationTests.swift in Sources */,
+				B7D5A4F501E44D451CE55D97 /* ControlWidgetTests.swift in Sources */,
+				4B05B1ACEBE829CABC92A734 /* CoreDataStackTests.swift in Sources */,
+				7FADEE0BCD6BF5BA2D0D915B /* DashboardViewModelTests.swift in Sources */,
+				014E6CEAAE22DE89D1269F8E /* HistoryViewModelTests.swift in Sources */,
+				ABDB884D0280EA8377E54A3D /* IntentParameterTests.swift in Sources */,
+				97830DAB320E599447AB0869 /* IntentTests.swift in Sources */,
+				51900B24FAA4125FDB3EBC44 /* InteractiveWidgetIntentTests.swift in Sources */,
+				B7E3F94554DA54684FEA79DD /* MenuBarIconThemeTests.swift in Sources */,
+				95CA48BDE9154C8047C4FB4C /* MenuBarViewModelTests.swift in Sources */,
+				1ECFFCBA9DB5C3F3C833FE1B /* MetricCardViewModelTests.swift in Sources */,
+				0BF87B2E8D456E9BE06CA893 /* MetricDetailViewModelTests.swift in Sources */,
+				70A359CFE4C146419E17B99C /* NotificationSchedulerTests.swift in Sources */,
+				4D6D10F869BCAC25473F211B /* OnboardingViewModelTests.swift in Sources */,
+				0EB50AD5C3DC86BAD80EEBD2 /* PaywallViewModelTermsTests.swift in Sources */,
+				6F9031299E6C1EC2DE48F6F0 /* PreferencesRepositoryTests.swift in Sources */,
+				D6F75F807E6B728D562DA8B3 /* ProcessesViewModelTests.swift in Sources */,
+				0CF3C1CBCA6AB0DB2ED2E27E /* QuickToggleBarTests.swift in Sources */,
+				F7105FEF776F6A47F4C9985B /* RepositoryTests.swift in Sources */,
+				DB5EA69536644EBCA0291A14 /* RestorePurchaseStubs.swift in Sources */,
+				8CD92E1F66E2CC73947D33C3 /* SendableBox.swift in Sources */,
+				5982223FF712DFD90CE9FAB5 /* SettingsViewModelRestoreTests.swift in Sources */,
+				9232C9C12EEC8B90642C45AD /* SettingsViewModelTests.swift in Sources */,
+				D9B2F8FA4BDE727E8E17B557 /* StoreManagerTests.swift in Sources */,
+				AA5B9680B37E9D773D667FA0 /* SubscriptionTermsTests.swift in Sources */,
+				99C5D80FFE38F88CFBB4845C /* WidgetReloadTriggerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DF36012F896386D3C78D2FB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84B6B26D60230077583C085C /* AboutView.swift in Sources */,
+				43B8463886A39BAFC143D6A0 /* AlertEditorView.swift in Sources */,
+				4401A9C9D9C6BAE2BEF0D2E5 /* AlertRepository.swift in Sources */,
+				1BCF665F885BCE9280D2C0A5 /* AlertsView.swift in Sources */,
+				B1BEBB3494809D4694780CD7 /* AlertsViewModel.swift in Sources */,
+				3470D1C6FFFF47ABC8475354 /* AppContainer.swift in Sources */,
+				C56042E97D200A428AA14EA9 /* AppCoordinator.swift in Sources */,
+				55CC11996009CD0FDDF3A8EA /* AppState.swift in Sources */,
+				4AEE281BD77DB16C50872F5C /* AppWindowRouter.swift in Sources */,
+				7212B8E1730EAD9663459060 /* AppearanceSettingsView.swift in Sources */,
+				7DDE41D21B8EB86237D3173C /* CompletePage.swift in Sources */,
+				EAB4AAFFCDF9E6E3A8F0EE27 /* CoreDataStack.swift in Sources */,
+				9EE7D9B1C3D4D03F23D380AC /* DashboardView.swift in Sources */,
+				38A4002EE66EE427CF8FC866 /* DashboardViewModel.swift in Sources */,
+				D32F332B668F780B6437FAC7 /* ExportDiagnosticsIntent.swift in Sources */,
+				EA84D85F05406DEF0CE42183 /* HistoryRepository.swift in Sources */,
+				8A29A38205C377A58132BB45 /* HistoryView.swift in Sources */,
+				19DC72691857A4502048D013 /* HistoryViewModel.swift in Sources */,
+				54BEA7DD76A63E164E005BF3 /* IntentService.swift in Sources */,
+				62EE0EB169EC3065AB4DFD0B /* KWatchAppShortcuts.swift in Sources */,
+				6FE086D021CB7AB21FA5D57D /* KWatchSpotlightIndexer.swift in Sources */,
+				E7F74F6F571A0854283F0EEB /* LiveAppContainer.swift in Sources */,
+				2CBEF6A1238EB93348276A9A /* LiveIntentService.swift in Sources */,
+				100913C200308DB70C248BAD /* ManagedObjects.swift in Sources */,
+				6D2944BD231860E5C6D9BF37 /* MenuBarCustomizePage.swift in Sources */,
+				C02FA851F48EAA32123DA140 /* MenuBarIconTheme.swift in Sources */,
+				0AD6F520C475EE6B0978CD56 /* MenuBarSettingsView.swift in Sources */,
+				1E6F2EFA53568BAC4C26311A /* MenuBarView.swift in Sources */,
+				7B7D9779D4DE540112080D19 /* MenuBarViewModel.swift in Sources */,
+				8DE0FF96D9133D61ABCE83D7 /* MetricCardView.swift in Sources */,
+				B5FE6C50175124305FFCC73A /* MetricCardViewModel.swift in Sources */,
+				88493EC617B32C70A8A75E66 /* MetricDetailView.swift in Sources */,
+				6CDDC0D60A91E97FFCB684A9 /* MetricDetailViewModel.swift in Sources */,
+				732C2F0417E24D4FBF83CA13 /* MetricMenuRow.swift in Sources */,
+				AF36D3426AAF1BC2AD5215B9 /* MetricSettingsView.swift in Sources */,
+				2D9537E75D6B90545EAC28DF /* MultiIconStatusItemController.swift in Sources */,
+				66550A2D334336DB28A45049 /* OnboardingView.swift in Sources */,
+				119196F7B3D2EB6CC95EB331 /* OnboardingViewModel.swift in Sources */,
+				62D036625F692B24F9F91F76 /* OpenDashboardIntent.swift in Sources */,
+				F9BCDC6C050C7ADD76981B26 /* PauseMonitoringIntent.swift in Sources */,
+				9E7346455B59D9B8A25FEC90 /* PaywallView.swift in Sources */,
+				27B5C0DEBDB4CF17E028C884 /* PaywallViewModel.swift in Sources */,
+				78A358A3BFDACE0B8BA8D991 /* PerMetricTabView.swift in Sources */,
+				24058B63A8D9D959BE986A7E /* PreferencesRepository.swift in Sources */,
+				7CA6DBB096B3545DEDB5F54D /* ProIntroPage.swift in Sources */,
+				06BBF6F8D96AF1CE41493F40 /* ProcessRowView.swift in Sources */,
+				3BD6500F23E976DEC49B71D5 /* ProcessesView.swift in Sources */,
+				6821C194B3305F74F11F26E6 /* ProcessesViewModel.swift in Sources */,
+				1D91E6CE48496582832BEFDF /* PurchaseButton.swift in Sources */,
+				565C9DDC51BCD1CA4BC45F6C /* PurchaseState.swift in Sources */,
+				3F51A4237C208C045CF3F893 /* QueryMetricIntent.swift in Sources */,
+				90AF531294AE9140B378D0BD /* QuickToggleBar.swift in Sources */,
+				8070EADC303B6EF3148F59DD /* SettingsView.swift in Sources */,
+				2BC401A7285F5AD82F710B4A /* SettingsViewModel.swift in Sources */,
+				51F5A867CD7B34FC57F17CDA /* ShowDiskUsageIntent.swift in Sources */,
+				F83EC33015FE8AB8C0CDE331 /* ShowNetworkRateIntent.swift in Sources */,
+				ADBE17A7CA2BB9E422121BB5 /* ShowTopProcessesIntent.swift in Sources */,
+				C59FA9D65A11470C32C91FE0 /* StartMonitoringIntent.swift in Sources */,
+				4FA8613AE596B18FB39D4468 /* StopMonitoringIntent.swift in Sources */,
+				56CCFBF969F66B2CFE8B4059 /* StoreKitClient.swift in Sources */,
+				A540035714E0AC520D72B8D6 /* StoreManager.swift in Sources */,
+				74CB0ECC02417DC12E7EAC3C /* StubIntentService.swift in Sources */,
+				33224A96C4CD79D16519A1BD /* SubscriptionTerms.swift in Sources */,
+				DEE423BABF1978758711399C /* TestAppContainer.swift in Sources */,
+				AB091163E41272F2CFC7631B /* TrendChart.swift in Sources */,
+				58877F61100AB420A3DBBFC1 /* WelcomePage.swift in Sources */,
+				4871C00612594ACC924D1DA6 /* kWatchApp.swift in Sources */,
+				A132C12BA4D792F34101F370 /* kWatchAppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-	1080EC1160D86FB1A0437978 /* kWatchWidget */ = {
-		isa = PBXTargetDependency;
-		name = kWatchWidget;
-		target = 0E760447DBF5C92EAE429848;
-		targetProxy = A224ED99DE95FF68A7FBE62D;
-	};
-	2B1F31556199259E31FD88A6 /* kWatchControlWidget */ = {
-		isa = PBXTargetDependency;
-		name = kWatchControlWidget;
-		target = 65EEE750073530D58467161C;
-		targetProxy = C8D58F73D9C40A91D5361984;
-	};
-	58F910C1F3C54930F80A893F /* kWatchWidget */ = {
-		isa = PBXTargetDependency;
-		name = kWatchWidget;
-		target = 0E760447DBF5C92EAE429848;
-		targetProxy = EE0BC38940A6DC77CE9D8F70;
-	};
-	644EF10CD79DF6ED03438275 /* kWatch */ = {
-		isa = PBXTargetDependency;
-		name = kWatch;
-		target = 0EEA7C819FA2C1B860563983;
-		targetProxy = 3DBD54FC5449A7EA29465702;
-	};
-	68D4FB61BEB350497827F7BB /* kWatchControlWidget */ = {
-		isa = PBXTargetDependency;
-		name = kWatchControlWidget;
-		target = 65EEE750073530D58467161C;
-		targetProxy = 21CFF3840A31CA42273B798F;
-	};
-	B8D243EA7E5A3995160721BD /* kWatchIntents */ = {
-		isa = PBXTargetDependency;
-		name = kWatchIntents;
-		target = A24AE00D850A572453BAC933;
-		targetProxy = 2DFC6E306D615E17DB05D8CE;
-	};
-	C13845957E96785DA490046A /* kWatchIntents */ = {
-		isa = PBXTargetDependency;
-		name = kWatchIntents;
-		target = A24AE00D850A572453BAC933;
-		targetProxy = D74C8E1A7421B7C3F492BC2C;
-	};
+		3F4809F474578508E3E6C861 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 34715473ABC605C7F3679679 /* kWatch */;
+			targetProxy = 3C333843BD9A2FB34A473D3D /* PBXContainerItemProxy */;
+		};
+		56315A1D9C5F13A5D3BFA98D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 34715473ABC605C7F3679679 /* kWatch */;
+			targetProxy = 87285EEBDD967C337E19D497 /* PBXContainerItemProxy */;
+		};
+		701C125BA52E6E4BD910374A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14C4329FBE5ACF3D107873F4 /* kWatchIntents */;
+			targetProxy = 52A9C966815731FFE943F557 /* PBXContainerItemProxy */;
+		};
+		920DB4E9E39B6A18DF52D268 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14C4329FBE5ACF3D107873F4 /* kWatchIntents */;
+			targetProxy = 2FC6234EE11A33493298E4E4 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-	327A485C172AB8BDAA4E2848 /* Release */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		BUNDLE_LOADER = "$(TEST_HOST)";
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.tests;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_VERSION = 5.0;
-		TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kWatch.app/Contents/MacOS/kWatch";
+		187121578473F989CF0B27C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.uitests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_TARGET_NAME = kWatch;
+			};
+			name = Debug;
 		};
-		name = Release;
-	};
-	3A75C3F04A5A46A06A715410 /* Debug */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		CODE_SIGNING_ALLOWED = NO;
-		CODE_SIGN_STYLE = Manual;
-		COMBINE_HIDPI_IMAGES = YES;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = Info.plist;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatch;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch;
-		INFOPLIST_KEY_CFBundleName = kWatch;
-		INFOPLIST_KEY_CFBundlePackageType = "APPL";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
-		INFOPLIST_KEY_NSHumanReadableCopyright = "";
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		1971CD058665649227CA40FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.uitests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_TARGET_NAME = kWatch;
+			};
+			name = Release;
 		};
-		name = Debug;
-	};
-	3F8D7C61364D6E91CEA539C5 /* Release */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		ALWAYS_SEARCH_USER_PATHS = NO;
-		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-		CLANG_ANALYZER_NONNULL = YES;
-		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-		CLANG_ENABLE_MODULES = YES;
-		CLANG_ENABLE_OBJC_ARC = YES;
-		COPY_PHASE_STRIP = NO;
-		DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-		ENABLE_NS_ASSERTIONS = NO;
-		ENABLE_STRICT_OBJC_MSGSEND = YES;
-		GCC_OPTIMIZATION_LEVEL = s;
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MTL_ENABLE_DEBUG_INFO = NO;
-		SDKROOT = macosx;
-		SWIFT_COMPILATION_MODE = wholemodule;
-		SWIFT_OPTIMIZATION_LEVEL = "-O";
-		SWIFT_STRICT_CONCURRENCY = complete;
-		SWIFT_VERSION = 5.0;
+		55B0C296254E30B343E39E15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = kWatchWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.widget;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
 		};
-		name = Release;
-	};
-	40AC8DB68C57EFEB661DB3D0 /* Release */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		CODE_SIGN_IDENTITY = "-";
-		CODE_SIGN_STYLE = Manual;
-		COMBINE_HIDPI_IMAGES = YES;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = Info.plist;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatch;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch;
-		INFOPLIST_KEY_CFBundleName = kWatch;
-		INFOPLIST_KEY_CFBundlePackageType = "APPL";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_LSMinimumSystemVersion = 13.0;
-		INFOPLIST_KEY_NSHumanReadableCopyright = "";
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		5AAF0BCDB532AC3A97DAB89F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
 		};
-		name = Release;
-	};
-	65D020E0F24C38EEE5DF94C4 /* Release */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		APPLICATION_EXTENSION_API_ONLY = YES;
-		CODE_SIGN_IDENTITY = "-";
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatchIntents;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.intents;
-		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.app-intents-extension;
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-			"@executable_path/../../../../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.intents;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		60B94AF581490B6E158D9D10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
 		};
-		name = Release;
-	};
-	7BE651AC12657E16937A8E23 /* Debug */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		APPLICATION_EXTENSION_API_ONLY = YES;
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = kWatchControlWidget/Info.plist;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatchControlWidget;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.controlwidget;
-		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-			"@executable_path/../../../../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.controlwidget;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		89F695C62E957BCB5001E131 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Intents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.intents;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
 		};
-		name = Debug;
-	};
-	7E1FBBBBDF2C6831C341A92D /* Debug */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		ALWAYS_SEARCH_USER_PATHS = NO;
-		ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-		CLANG_ANALYZER_NONNULL = YES;
-		CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-		CLANG_ENABLE_MODULES = YES;
-		CLANG_ENABLE_OBJC_ARC = YES;
-		COPY_PHASE_STRIP = NO;
-		DEBUG_INFORMATION_FORMAT = dwarf;
-		ENABLE_STRICT_OBJC_MSGSEND = YES;
-		ENABLE_TESTABILITY = YES;
-		GCC_DYNAMIC_NO_PIC = NO;
-		GCC_OPTIMIZATION_LEVEL = 0;
-		GCC_PREPROCESSOR_DEFINITIONS = (
-			"DEBUG=1",
-			"$(inherited)",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-		ONLY_ACTIVE_ARCH = YES;
-		SDKROOT = macosx;
-		SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG";
-		SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-		SWIFT_STRICT_CONCURRENCY = complete;
-		SWIFT_VERSION = 5.0;
+		AD8BE6EE6B2947FF3C154E59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kWatch.app/Contents/MacOS/kWatch";
+			};
+			name = Debug;
 		};
-		name = Debug;
-	};
-	8E49F43A56D207D9CACB92D7 /* Debug */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		BUNDLE_LOADER = "$(TEST_HOST)";
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.tests;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_VERSION = 5.0;
-		TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kWatch.app/Contents/MacOS/kWatch";
+		C0B998457741D3493FCDFB90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = kWatchWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.widget;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
 		};
-		name = Debug;
-	};
-	A1089EE7EB254562FF64D2F4 /* Debug */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		APPLICATION_EXTENSION_API_ONLY = YES;
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatchIntents;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.intents;
-		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.app-intents-extension;
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-			"@executable_path/../../../../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.intents;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		C327333459A0D0396CF47747 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LSUIElement = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch;
+				SDKROOT = macosx;
+			};
+			name = Debug;
 		};
-		name = Debug;
-	};
-	A7E3BA798290AD643D04264D /* Release */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		APPLICATION_EXTENSION_API_ONLY = YES;
-		CODE_SIGN_IDENTITY = "-";
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = kWatchWidget/Info.plist;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatchWidget;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.widget;
-		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-			"@executable_path/../../../../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.widget;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		C5EBBA7892E8F0A2E668C0DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Intents/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.intents;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
 		};
-		name = Release;
-	};
-	B399F305E40164444AF843A1 /* Release */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		APPLICATION_EXTENSION_API_ONLY = YES;
-		CODE_SIGN_IDENTITY = "-";
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = kWatchControlWidget/Info.plist;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatchControlWidget;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.controlwidget;
-		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-			"@executable_path/../../../../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.controlwidget;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		EEE440D7FDD9CC0E8B3486DD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/kWatch.app/Contents/MacOS/kWatch";
+			};
+			name = Release;
 		};
-		name = Release;
-	};
-	C263197CF18599117A3C372A /* Debug */ = {
-		isa = XCBuildConfiguration;
-		buildSettings = {
-		APPLICATION_EXTENSION_API_ONLY = YES;
-		CODE_SIGN_STYLE = Automatic;
-		CURRENT_PROJECT_VERSION = 1;
-		DEVELOPMENT_TEAM = "";
-		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = kWatchWidget/Info.plist;
-		INFOPLIST_KEY_CFBundleDisplayName = kWatchWidget;
-		INFOPLIST_KEY_CFBundleIdentifier = app.kraftly.kwatch.widget;
-		INFOPLIST_KEY_CFBundlePackageType = "XPC!";
-		INFOPLIST_KEY_CFBundleShortVersionString = "1.0";
-		INFOPLIST_KEY_CFBundleVersion = 1;
-		INFOPLIST_KEY_NSExtensionPointIdentifier = com.apple.widgetkit-extension;
-		LD_RUNPATH_SEARCH_PATHS = (
-			"$(inherited)",
-			"@executable_path/../Frameworks",
-			"@executable_path/../../../../Frameworks",
-		);
-		MACOSX_DEPLOYMENT_TARGET = 13.0;
-		MARKETING_VERSION = 1.0;
-		PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch.widget;
-		PRODUCT_NAME = "$(TARGET_NAME)";
-		SDKROOT = macosx;
-		SWIFT_EMIT_LOC_STRINGS = YES;
-		SWIFT_VERSION = 5.0;
+		F6FAE43399D71F0ED08F0E66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LSUIElement = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kraftly.kwatch;
+				SDKROOT = macosx;
+			};
+			name = Release;
 		};
-		name = Debug;
-	};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-	3FD6CBC4FF291B9367FDC53D /* 3FD6CBC4FF291B9367FDC53D */ = {
-		isa = XCConfigurationList;
-		buildConfigurations = (
-			8E49F43A56D207D9CACB92D7 /* Debug */,
-			327A485C172AB8BDAA4E2848 /* Release */,
-		);
-		defaultConfigurationIsVisible = 0;
-		defaultConfigurationName = Release;
-	};
-	42E13A23C6D16303C6D25BE4 /* 42E13A23C6D16303C6D25BE4 */ = {
-		isa = XCConfigurationList;
-		buildConfigurations = (
-			A1089EE7EB254562FF64D2F4 /* Debug */,
-			65D020E0F24C38EEE5DF94C4 /* Release */,
-		);
-		defaultConfigurationIsVisible = 0;
-		defaultConfigurationName = Release;
-	};
-	54697D4C03E36964B1FE8389 /* 54697D4C03E36964B1FE8389 */ = {
-		isa = XCConfigurationList;
-		buildConfigurations = (
-			C263197CF18599117A3C372A /* Debug */,
-			A7E3BA798290AD643D04264D /* Release */,
-		);
-		defaultConfigurationIsVisible = 0;
-		defaultConfigurationName = Release;
-	};
-	6080F8A7C5D6A84AD151124F /* 6080F8A7C5D6A84AD151124F */ = {
-		isa = XCConfigurationList;
-		buildConfigurations = (
-			3A75C3F04A5A46A06A715410 /* Debug */,
-			40AC8DB68C57EFEB661DB3D0 /* Release */,
-		);
-		defaultConfigurationIsVisible = 0;
-		defaultConfigurationName = Release;
-	};
-	7A7D141192D0A0B985E295E8 /* 7A7D141192D0A0B985E295E8 */ = {
-		isa = XCConfigurationList;
-		buildConfigurations = (
-			7BE651AC12657E16937A8E23 /* Debug */,
-			B399F305E40164444AF843A1 /* Release */,
-		);
-		defaultConfigurationIsVisible = 0;
-		defaultConfigurationName = Release;
-	};
-	CF35BBADA1B6673793B45974 /* CF35BBADA1B6673793B45974 */ = {
-		isa = XCConfigurationList;
-		buildConfigurations = (
-			7E1FBBBBDF2C6831C341A92D /* Debug */,
-			3F8D7C61364D6E91CEA539C5 /* Release */,
-		);
-		defaultConfigurationIsVisible = 0;
-		defaultConfigurationName = Release;
-	};
+		5945149CB5D3FB486410DF16 /* Build configuration list for PBXNativeTarget "kWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C327333459A0D0396CF47747 /* Debug */,
+				F6FAE43399D71F0ED08F0E66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		62C908247E2FB32DF84E0A1B /* Build configuration list for PBXProject "kWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5AAF0BCDB532AC3A97DAB89F /* Debug */,
+				60B94AF581490B6E158D9D10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		67A828403BD9EF8C55631BE7 /* Build configuration list for PBXNativeTarget "kWatchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD8BE6EE6B2947FF3C154E59 /* Debug */,
+				EEE440D7FDD9CC0E8B3486DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BDC089085F54F2D507ABBD7C /* Build configuration list for PBXNativeTarget "kWatchUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				187121578473F989CF0B27C8 /* Debug */,
+				1971CD058665649227CA40FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E6226CEDBA0885AFD91758CB /* Build configuration list for PBXNativeTarget "kWatchWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B0C296254E30B343E39E15 /* Debug */,
+				C0B998457741D3493FCDFB90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EA344434164830942C2E8CCD /* Build configuration list for PBXNativeTarget "kWatchIntents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89F695C62E957BCB5001E131 /* Debug */,
+				C5EBBA7892E8F0A2E668C0DD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-	0FF3C456B3FB47CBB23203A7 /* 0FF3C456B3FB47CBB23203A7 */ = {
-		isa = XCLocalSwiftPackageReference;
-		relativePath = ../kFoundation;
-	};
+		601F6B2009943954C4CBBBBE /* XCLocalSwiftPackageReference "../kFoundation" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../kFoundation;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-	2CA0D91CFF0FC30A61B2EBEC /* 2CA0D91CFF0FC30A61B2EBEC */ = {
-		isa = XCSwiftPackageProductDependency;
-		package = 0FF3C456B3FB47CBB23203A7;
-		productName = MetricsKit;
-	};
-	8FC8EFB927E635ABBEBD95C0 /* 8FC8EFB927E635ABBEBD95C0 */ = {
-		isa = XCSwiftPackageProductDependency;
-		package = 0FF3C456B3FB47CBB23203A7;
-		productName = DesignSystem;
-	};
+		0484436DB1D252FE9CCEB0A7 /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		0F89AFBE919DB7663EEB420E /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		1DE04B27EB0693146833FE34 /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		320F22E5BF2D0A630D958D57 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		602259067287812F73EB443F /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
+		646F994FB92D7004ACE01238 /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
+		7694C8CD9BED32D40DEA1E56 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		7FA09A6904FF7788767F21EC /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		A000FAFFF0C719BD02AEC564 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		A26D01887FD287FCF3716F16 /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
+		C4EB650C262F762C1921B15F /* MonitorCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MonitorCore;
+		};
+		D4EA8B9DB643BFB40A3ED3EE /* MetricsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MetricsKit;
+		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = 59601E391B529B07AE11313D /* Project object */;
+	rootObject = 1CA76644F30CC6AD3518AE8A /* Project object */;
 }

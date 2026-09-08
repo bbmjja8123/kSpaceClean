@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import AppCatalogCore
 
 /// Errors surfaced by `TrashMover` to the uninstall UI layer.
 ///

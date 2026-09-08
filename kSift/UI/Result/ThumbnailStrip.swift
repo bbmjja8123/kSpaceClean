@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 /// Horizontal scrolling thumbnail strip for perceptual / directory groups
 /// shown inline in result rows. Caps visible count to keep the row compact;

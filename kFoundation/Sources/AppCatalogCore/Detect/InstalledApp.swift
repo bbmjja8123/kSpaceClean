@@ -8,7 +8,7 @@ import AppKit
 /// Determined by ``AppCatalogService/classifySource(url:bundleID:)``. The source
 /// drives uninstall eligibility (system apps are protected) and residue strategy
 /// (Homebrew casks and Setapp apps are managed by their own package manager).
-enum AppSource: String, Codable, CaseIterable, Sendable {
+public enum AppSource: String, Codable, CaseIterable, Sendable {
     /// Shipped inside `/System/*` — protected, never uninstallable.
     case system
     /// `com.apple.*` bundle ID but living outside `/System`.
@@ -66,7 +66,7 @@ public enum ResidueRiskLevel: String, Codable, CaseIterable, Sendable {
     case dangerous
 
     /// Default checkbox state when the confirm sheet first opens.
-    var defaultSelected: Bool {
+    public var defaultSelected: Bool {
         switch self {
         case .recommended: return true
         case .optional, .caution, .dangerous: return false
@@ -74,7 +74,7 @@ public enum ResidueRiskLevel: String, Codable, CaseIterable, Sendable {
     }
 
     /// Human-readable section title shown above the residue list.
-    var sectionTitle: String {
+    public var sectionTitle: String {
         switch self {
         case .recommended: return "推荐清理"
         case .optional:    return "可选清理"
@@ -92,7 +92,7 @@ public enum ResidueRiskLevel: String, Codable, CaseIterable, Sendable {
     /// dangerous* each surfaced residue is, which is independent of the
     /// detection path. Keeping it on the enum means callers (detector,
     /// TrashMover, UninstallConfirmSheet, tests) all reach one mapping.
-    static func classify(type: ResidueType, isSystemLevel: Bool) -> ResidueRiskLevel {
+    public static func classify(type: ResidueType, isSystemLevel: Bool) -> ResidueRiskLevel {
         switch type {
         // 🟢 Cache-like: safe to delete, default ON
         case .caches, .httpStorage, .webKit, .log:
@@ -115,14 +115,14 @@ public enum ResidueRiskLevel: String, Codable, CaseIterable, Sendable {
 
 public struct ResidueFile: Identifiable, Codable, Sendable {
     public var id: String { url.path }
-    let url: URL
-    let type: ResidueType
-    let sizeBytes: Int64
-    let confidence: Double        // 0.0 ~ 1.0
-    let description: String
-    let isSystemLevel: Bool
-    let isProtected: Bool
-    let riskLevel: ResidueRiskLevel
+    public let url: URL
+    public let type: ResidueType
+    public let sizeBytes: Int64
+    public let confidence: Double        // 0.0 ~ 1.0
+    public let description: String
+    public let isSystemLevel: Bool
+    public let isProtected: Bool
+    public let riskLevel: ResidueRiskLevel
 
     public init(url: URL,
                 type: ResidueType,
@@ -142,53 +142,63 @@ public struct ResidueFile: Identifiable, Codable, Sendable {
         self.riskLevel = riskLevel ?? ResidueRiskLevel.classify(type: type, isSystemLevel: isSystemLevel)
     }
 
-    var sizeFormatted: String {
+    public var sizeFormatted: String {
         ByteCountFormatter.string(fromByteCount: sizeBytes, countStyle: .file)
     }
 }
 
 // MARK: - Startup Item
 
-enum StartupItemType: String, Codable, CaseIterable {
+public enum StartupItemType: String, Codable, CaseIterable {
     case loginItem
     case launchAgent
     case launchDaemon
     case prefPane
 }
 
-struct StartupItem: Identifiable, Codable, Sendable {
-    var id: String { url.path }
-    let name: String
-    let type: StartupItemType
-    let url: URL
-    let appURL: URL?
-    let enabled: Bool
-    let isProtected: Bool
+public struct StartupItem: Identifiable, Codable, Sendable {
+    public var id: String { url.path }
+    public let name: String
+    public let type: StartupItemType
+    public let url: URL
+    public let appURL: URL?
+    public let enabled: Bool
+    public let isProtected: Bool
+
+    public init(name: String, type: StartupItemType, url: URL,
+                appURL: URL? = nil, enabled: Bool, isProtected: Bool) {
+        self.name = name
+        self.type = type
+        self.url = url
+        self.appURL = appURL
+        self.enabled = enabled
+        self.isProtected = isProtected
+    }
 }
 
 // MARK: - Installed App
 
-struct InstalledApp: Identifiable, Hashable, @unchecked Sendable {
-    var id: String { bundleID }
-    let url: URL
-    let displayName: String
-    let bundleID: String
-    let version: String
-    let icon: NSImage
-    let sizeBytes: Int64
-    let source: AppSource
-    let isRunning: Bool
-    let lastUsedDate: Date?
+public struct InstalledApp: Identifiable, Hashable, @unchecked Sendable {
+    public var id: String { bundleID }
+    public let url: URL
+    public let displayName: String
+    public let bundleID: String
+    public let version: String
+    public let icon: NSImage
+    public let sizeBytes: Int64
+    public let source: AppSource
+    public let isRunning: Bool
+    public let lastUsedDate: Date?
     /// When the app bundle was created on disk, read from its
     /// `FileAttributeKey.creationDate`. Populated by ``AppCatalogService``
     /// from `FileManager` attributes; `nil` when the creation date cannot be
     /// read (missing bundle, sandbox denial, filesystem glitch). Drives the
     /// "最近安装" category filter and the "安装时间" sort option — the two
     /// surfaces that let users reason about freshly installed apps.
-    let installDate: Date?
-    var residues: [ResidueFile] = []
+    public let installDate: Date?
+    public var residues: [ResidueFile] = []
 
-    init(url: URL, displayName: String, bundleID: String, version: String, icon: NSImage = NSImage(), sizeBytes: Int64 = 0, source: AppSource = .unknown, isRunning: Bool = false, lastUsedDate: Date? = nil, installDate: Date? = nil, residues: [ResidueFile] = []) {
+    public init(url: URL, displayName: String, bundleID: String, version: String, icon: NSImage = NSImage(), sizeBytes: Int64 = 0, source: AppSource = .unknown, isRunning: Bool = false, lastUsedDate: Date? = nil, installDate: Date? = nil, residues: [ResidueFile] = []) {
         self.url = url
         self.displayName = displayName
         self.bundleID = bundleID
@@ -202,15 +212,15 @@ struct InstalledApp: Identifiable, Hashable, @unchecked Sendable {
         self.residues = residues
     }
 
-    var isProtected: Bool {
+    public var isProtected: Bool {
         Self.isBundleIDProtected(bundleID) || url.path.hasPrefix("/System/")
     }
 
-    var protectionReason: String? {
+    public var protectionReason: String? {
         isProtected ? "系统组件不可卸载" : nil
     }
 
-    var sizeFormatted: String {
+    public var sizeFormatted: String {
         ByteCountFormatter.string(fromByteCount: sizeBytes, countStyle: .file)
     }
 
@@ -230,6 +240,6 @@ struct InstalledApp: Identifiable, Hashable, @unchecked Sendable {
     }
 
     // MARK: Hashable
-    func hash(into hasher: inout Hasher) { hasher.combine(bundleID) }
-    static func == (lhs: InstalledApp, rhs: InstalledApp) -> Bool { lhs.bundleID == rhs.bundleID }
+    public func hash(into hasher: inout Hasher) { hasher.combine(bundleID) }
+    public static func == (lhs: InstalledApp, rhs: InstalledApp) -> Bool { lhs.bundleID == rhs.bundleID }
 }

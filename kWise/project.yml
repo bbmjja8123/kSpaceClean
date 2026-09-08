@@ -37,6 +37,17 @@ targets:
         ENTITLEMENTS_FILE: kWise.entitlements
     dependencies:
       - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: PowerScope
+      - package: kFoundation
+        product: CommonUtils
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: DesignSystem
     preBuildScripts:
       - name: "SwiftLint"
         script: "if which swiftlint >/dev/null; then swiftlint; fi"
@@ -57,6 +68,17 @@ targets:
         ENTITLEMENTS_FILE: kWiseWidget.entitlements
     dependencies:
       - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: PowerScope
+      - package: kFoundation
+        product: CommonUtils
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: DesignSystem
 
   kWiseFinder:
     type: app-extension
@@ -71,6 +93,17 @@ targets:
         ENTITLEMENTS_FILE: kWiseFinder.entitlements
     dependencies:
       - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: PowerScope
+      - package: kFoundation
+        product: CommonUtils
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: DesignSystem
 
   kWiseTests:
     type: bundle.unit-test

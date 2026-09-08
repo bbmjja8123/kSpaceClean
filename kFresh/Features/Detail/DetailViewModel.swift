@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import AppCatalogCore
 
 /// Backing state for the app-detail pane: the 5-step safety check, the
 /// residue scan lifecycle, and the uninstall eligibility decision.

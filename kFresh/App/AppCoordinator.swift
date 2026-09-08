@@ -1,4 +1,5 @@
 import SwiftUI
+import AppCatalogCore
 
 @MainActor
 class AppCoordinator: ObservableObject {

@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Read-only row for a recent uninstall record shown beneath the app list in
 /// the "recently uninstalled" section. Restore is owned by the History flow;

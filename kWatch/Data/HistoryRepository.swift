@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import MetricsKit
+import MonitorCore
 
 /// Persistence boundary for sampled metric history.
 public protocol HistoryRepositoryProtocol: Sendable {

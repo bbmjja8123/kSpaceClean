@@ -1,6 +1,7 @@
 import XCTest
 import CoreData
 import MetricsKit
+import MonitorCore
 @testable import kWatch
 
 final class RepositoryTests: XCTestCase {

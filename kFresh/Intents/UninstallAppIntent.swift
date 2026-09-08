@@ -1,4 +1,5 @@
 import AppIntents
+import AppCatalogCore
 
 enum IntentError: Swift.Error {
     case appNotFound

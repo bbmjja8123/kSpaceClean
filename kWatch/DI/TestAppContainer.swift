@@ -1,5 +1,6 @@
 import Foundation
 import MetricsKit
+import MonitorCore
 
 /// Test wiring. Stubs must not touch disk, StoreKit, IOKit, or App Group containers.
 @MainActor

@@ -1,4 +1,6 @@
 import SwiftUI
+import AppCatalogCore
+import DesignSystem
 
 /// Main page of kFresh: a `NavigationSplitView` with a category sidebar, a
 /// searchable / sortable app list, and the detail pane.

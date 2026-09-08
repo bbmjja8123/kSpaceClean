@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Shared layout for a single onboarding page.
 ///

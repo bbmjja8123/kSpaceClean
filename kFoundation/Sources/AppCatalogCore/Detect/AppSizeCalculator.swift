@@ -7,10 +7,10 @@ import Foundation
 /// rather than waiting for the slowest one. The returned dictionary is
 /// keyed by `InstalledApp.bundleID` so callers can merge the result into
 /// their existing list without rebuilding it.
-actor AppSizeCalculator {
+public actor AppSizeCalculator {
     private let catalogService: AppCatalogService
 
-    init(catalogService: AppCatalogService) {
+    public init(catalogService: AppCatalogService) {
         self.catalogService = catalogService
     }
 
@@ -20,7 +20,7 @@ actor AppSizeCalculator {
     /// - Returns: Dictionary keyed by `bundleID`, mapping to size in bytes.
     ///   Apps whose size could not be measured (sandbox denial, missing
     ///   bundle) contribute an entry of `0`.
-    func computeSizes(for apps: [InstalledApp]) async -> [String: Int64] {
+    public func computeSizes(for apps: [InstalledApp]) async -> [String: Int64] {
         await withTaskGroup(of: (String, Int64).self) { group in
             for app in apps {
                 group.addTask { [catalogService] in

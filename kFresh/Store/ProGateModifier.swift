@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Blurs Pro-locked content and overlays an unlock call-to-action that opens
 /// the paywall. Pass the app-wide ``StoreManager`` via ``View/proGate(store:)``.

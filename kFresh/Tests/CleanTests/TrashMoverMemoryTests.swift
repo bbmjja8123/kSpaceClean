@@ -1,5 +1,6 @@
 import XCTest
 import AppKit
+import AppCatalogCore
 @testable import kFresh
 
 /// Memory + resource baseline tests for the v1.x-E hardening layer

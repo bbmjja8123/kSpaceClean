@@ -1,4 +1,5 @@
 import Foundation
+import DetectionCore
 
 #if canImport(AppIntents)
 @preconcurrency import AppIntents
@@ -41,7 +42,7 @@ struct ScanDirectoryIntent: AppIntent {
             enableBuildArtifacts: base.enableBuildArtifacts
         )
 
-        let orchestrator = ScanOrchestrator()
+        let orchestrator = CleanupStack.makeScanOrchestrator()
         let controller = ScanController()
         let start = Date()
         let stream = await orchestrator.run(config: config, controller: controller)
@@ -94,7 +95,7 @@ struct CleanupDuplicatesIntent: AppIntent {
         }
         let matchingFiles = Self.filesToDelete(in: record.groups, category: category)
 
-        let manager = CleanupManager()
+        let manager = CleanupStack.makeCleanupManager()
         let result = try await manager.moveToTrash(matchingFiles, profileType: category.rawValue)
         return .result(value: matchingFiles.count - result.failures.count)
     }

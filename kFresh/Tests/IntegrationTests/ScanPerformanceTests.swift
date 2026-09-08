@@ -1,5 +1,6 @@
 import XCTest
 import os
+import AppCatalogCore
 @testable import kFresh
 
 /// Performance budget tests for the v1.x-E hardening layer (spec §5.2:

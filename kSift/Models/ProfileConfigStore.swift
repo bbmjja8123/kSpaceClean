@@ -1,4 +1,5 @@
 import Foundation
+import DetectionCore
 
 /// Single source of truth for persisting the user's scan configuration.
 ///

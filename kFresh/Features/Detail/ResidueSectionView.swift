@@ -1,4 +1,6 @@
 import SwiftUI
+import AppCatalogCore
+import DesignSystem
 
 /// Residue section of the app-detail pane: a header with scan progress and
 /// one row per detected residue file.

@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import MetricsKit
+import MonitorCore
 
 /// A persisted threshold rule for one metric.
 

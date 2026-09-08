@@ -494,7 +494,7 @@ public actor BackupManager {
     }
 
     /// Returns the lowercase hex SHA-256 of `data` for test fixtures.
-    static func sha256HexForTest(_ data: Data) -> String {
+    public static func sha256HexForTest(_ data: Data) -> String {
         sha256Hex(data)
     }
 
