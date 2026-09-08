@@ -1,13 +1,13 @@
 # Kraftly 4-Worktree 合并节奏
 
-> 本文件定义 4 个永久 worktree（kWise / kWatch / kSift / kFresh）如何向 `main` 合并的策略、节奏与冲突处理。
+> 本文件定义 4 个永久 worktree（kWise / kMonitor / kSift / kFresh）如何向 `main` 合并的策略、节奏与冲突处理。
 
 ## 1. 布局
 
 | App | 分支 | Worktree 路径 |
 |---|---|---|
 | kWise | `worktree-kwise-v1` | `/Users/torsys/Documents/aicoding/kWise` |
-| kWatch | `worktree-kwatch-v1` | `/Users/torsys/Documents/aicoding/kWatch` |
+| kMonitor | `worktree-kmonitor-v1` | `/Users/torsys/Documents/aicoding/kMonitor` |
 | kSift | `worktree-ksift-v1` | `/Users/torsys/Documents/aicoding/kSift` |
 | kFresh | `worktree-kfresh-v1` | `/Users/torsys/Documents/aicoding/kFresh` |
 
@@ -21,10 +21,10 @@
 
 | Worktree | 允许改动 | 禁止改动 |
 |---|---|---|
-| kWise/ | `kWise/` 全部 | `kWatch/`、`kSift/`、`kFresh/` |
-| kWatch/ | `kWatch/` 全部 | `kWise/`、`kSift/`、`kFresh/` |
-| kSift/ | `kSift/` 全部 | `kWise/`、`kWatch/`、`kFresh/` |
-| kFresh/ | `kFresh/` 全部 | `kWise/`、`kWatch/`、`kSift/` |
+| kWise/ | `kWise/` 全部 | `kMonitor/`、`kSift/`、`kFresh/` |
+| kMonitor/ | `kMonitor/` 全部 | `kWise/`、`kSift/`、`kFresh/` |
+| kSift/ | `kSift/` 全部 | `kWise/`、`kMonitor/`、`kFresh/` |
+| kFresh/ | `kFresh/` 全部 | `kWise/`、`kMonitor/`、`kSift/` |
 
 **例外 —— 共享区域（需特别协调）**：
 
@@ -63,7 +63,7 @@ git rev-parse --abbrev-ref HEAD  # 应输出 main
 # 4.3 如果发生冲突
 # 4.3.1 在主 worktree 解决冲突（编辑器 / git add / git commit）
 # 4.3.2 手动 push：git push origin main
-# 4.3.3 其他 worktree 拉取：cd ../kWatch && git pull origin main
+# 4.3.3 其他 worktree 拉取：cd ../kMonitor && git pull origin main
 ```
 
 合并成功后，工作流：
@@ -78,14 +78,14 @@ git rev-parse --abbrev-ref HEAD  # 应输出 main
 
 ```sh
 # 在改了 kFoundation 的 worktree
-cd ../kWatch
+cd ../kMonitor
 git add kFoundation/...
 git commit -m "feat(kFoundation): add MultiProgress component"
-git push origin worktree-kwatch-v1
+git push origin worktree-kmonitor-v1
 
 # 回到主 worktree 立刻合并（不等合并窗口）
 cd ../kSpaceClean
-./scripts/merge-app-to-main.sh kWatch
+./scripts/merge-app-to-main.sh kMonitor
 
 # 其他 worktree 拉取
 cd ../kWise && git pull origin main && swift build
@@ -151,7 +151,7 @@ git log --oneline -5                   # 确认 main 前进
 git worktree list                       # 5 行全在
 
 # 其他 worktree
-for d in kWise kWatch kSift kFresh; do
+for d in kWise kMonitor kSift kFresh; do
     (cd /Users/torsys/Documents/aicoding/$d && \
      echo "=== $d ===" && \
      git rev-parse --abbrev-ref HEAD && \

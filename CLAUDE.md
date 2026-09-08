@@ -14,12 +14,12 @@
 | App | Bundle ID | 主轴 | 定价 | 状态 |
 |---|---|---|---|---|
 | **kWise**（Mac 管家 / CMM 对标） | `app.kraftly.sclean` | 对标 CleanMyMac X：Smart Care + 启动项 + 隐私 + 磁盘健康 + 基础卸载/粉碎 | Free Trial 7 天 → $19.99/年 | 🔄 **v1.5 路线定稿** |
-| **kWatch**（菜单栏监控） | `app.kraftly.kwatch` | 平台集成 + Widget | 待设计 | 📋 Backlog |
+| **kMonitor**（菜单栏监控） | `app.kraftly.kmonitor` | 平台集成 + Widget | 待设计 | 📋 Backlog |
 | **kSift**（重复/大文件/粉碎） | `app.kraftly.ksift` | 极客 + AI（开发者场景） | $9.99 买断 | 📋 Spec 定稿 |
 | **kUninstall**（应用卸载） | `app.kraftly.kuninstall` | 平台集成 + 自动化 | 待设计 | 📋 Backlog |
 
 ### 1.3 品牌
-- 命名规范：所有 App 以 `k` 前缀开头（kWise, kWatch, kSift, kUninstall）
+- 命名规范：所有 App 以 `k` 前缀开头（kWise, kMonitor, kSift, kUninstall）
 - 统一品牌：**Kraftly**（App Store 元数据、官网、社交账号统一）
 - Slogan 候选：`Kraft — Cleaner Mac tools, made with care`
 - **历史改名**：原 `kSpaceClean` 已重命名为 `kWise`（2026-08-03 锁定）。bundle ID `app.kraftly.sclean` 保持不变以保留 App Store 历史评分、评论、内购项目。详见 §3.10。
@@ -40,7 +40,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 │   ├── DesignSystem/                # SwiftUI Tokens / 组件
 │   └── CommonUtils/
 ├── kWise/                     # App target
-├── kWatch/                          # App target
+├── kMonitor/                          # App target
 ├── kDupe/                           # App target
 ├── kUninstall/                      # App target
 ├── Tools/                           # 共享脚本（版本号/签名/归档）
@@ -55,7 +55,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 |---|---|---|---|
 | `DetectionCore` | kSift | 重复/大文件检测管线（字节级/APFS clone/感知哈希/构建产物/目录去重）、ScanOrchestrator、Vault、SelectionPlanner | FileScanner |
 | `AppCatalogCore` | kFresh | 应用目录扫描、残留检测（cask_rules.json 1141 条 + zh_app_mappings.json 为包资源）、Backup/Audit、FDA probe | CommonUtils, FileScanner |
-| `MonitorCore` | kWatch | SharedSnapshot/SnapshotWriter（App Group 契约）、MetricAlert、AlertEvaluator、诊断导出 | MetricsKit |
+| `MonitorCore` | kMonitor | SharedSnapshot/SnapshotWriter（App Group 契约）、MetricAlert、AlertEvaluator、诊断导出 | MetricsKit |
 
 **规则**：修改这三个 target 走 kFoundation 特殊路径（§5，--allow-kfoundation）；App 专属实现（Core Data 仓库、FDA 引导、Photos、支付）留在各自 App 目录；注入点：kSift `App/CleanupStack.swift`、kFresh `App/AppServices.swift`。
 
@@ -88,7 +88,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 | App | Sandbox | 需要的 TCC 权限 |
 |---|---|---|
 | kWise | ✅ | Full Disk Access + Automation |
-| kWatch | ✅ | 无（只读系统 API） |
+| kMonitor | ✅ | 无（只读系统 API） |
 | kDupe | ✅ | Full Disk Access + 用户授权目录 |
 | kUninstall | ✅ | Full Disk Access + Automation |
 
@@ -110,7 +110,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 - **bundle ID**：`app.kraftly.sclean`（不变，保留 App Store 历史）
 - **Slogan**：Smarter care for your Mac / 智能清理，焕然如新
 - **对标**：CleanMyMac X
-- **产品矩阵**：kWise 主 + kWatch / kSift / kUninstall 独立 App（双层矩阵，B1a）
+- **产品矩阵**：kWise 主 + kMonitor / kSift / kUninstall 独立 App（双层矩阵，B1a）
 
 ### 3.1 一句话定位
 让 Mac 回到"最佳状态"——一键智能清理 + 启动项 + 隐私 + 磁盘健康，对标 CleanMyMac X 的全能 Mac 管家。
@@ -118,7 +118,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 ### 3.2 目标用户
 - **主**：MacBook 256GB/512GB 用户，频繁弹"磁盘已满"告警
 - **次**：创意工作者（视频/摄影），需要定期清理临时文件
-- **不服务**：开发者（→kDupe）、极客玩家（→kDupe）、系统监控需求者（→kWatch）
+- **不服务**：开发者（→kDupe）、极客玩家（→kDupe）、系统监控需求者（→kMonitor）
 
 ### 3.3 核心差异化
 | 维度 | CleanMyMac X | DaisyDisk | kWise 差异点 |
@@ -229,11 +229,11 @@ kWise/
 
 ## 4. Backlog（待设计）
 
-### 4.1 kWatch（菜单栏监控）
+### 4.1 kMonitor（菜单栏监控）
 - **主轴**：平台集成 + Widget + Live Activities
 - **目标用户**：极客 / 设计师 / 视频创作者
 - **定价**：Free + $7.99 Pro 买断（vs iStat Menus $11.99）
-- **详细规格**：`docs/superpowers/specs/2026-07-26-kraftly-kwatch-design.md`
+- **详细规格**：`docs/superpowers/specs/2026-07-26-kraftly-kmonitor-design.md`
 - **状态**：✅ v1 设计定稿，待 writing-plans 拆解实施计划
 
 ### 4.2 kDupe（重复/大文件）
@@ -260,7 +260,7 @@ kWise/
 
 ### 5.2 Git 规范
 - 主分支：`main`（保护，仅 PR / 显式 merge 合并）
-- **4 个永久 worktree**：`kWise` / `kWatch` / `kSift` / `kFresh`，每个独占一个 App 目录
+- **4 个永久 worktree**：`kWise` / `kMonitor` / `kSift` / `kFresh`，每个独占一个 App 目录
   - 路径：`/Users/torsys/Documents/aicoding/<app>`（与主 worktree 同级）
   - 分支：`worktree-<app>-v1`（例如 `worktree-kwise-v1`）
   - 永久保留，禁止 `git worktree remove`
@@ -292,7 +292,7 @@ kWise/
 ### 6.3 外部参考
 - CleanMyMac X（订阅标杆）
 - DaisyDisk（视觉标杆）
-- iStat Menus（菜单栏监控标杆，kWatch 灵感）
+- iStat Menus（菜单栏监控标杆，kMonitor 灵感）
 - BuhoCleaner（华人独立开发标杆）
 - Apple Design Awards 2025（推荐方向）
 
@@ -310,7 +310,7 @@ kWise/
 - [x] 实施计划（writing-plans）
 - [x] **v1 全部 19 个 Task、39 个文件已创建（2026-07-25）**
 
-### kWatch v1 — Spec 定稿 ✅
+### kMonitor v1 — Spec 定稿 ✅
 - [x] 产品定位 + 定价（Freemium + $7.99 Pro 买断）
 - [x] 功能规格（4 Free + 3 Pro 指标 + 平台集成）
 - [x] 技术架构（Clean Architecture + actor + AsyncStream）

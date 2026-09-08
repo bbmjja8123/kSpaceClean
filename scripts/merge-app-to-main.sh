@@ -24,8 +24,8 @@ fi
 APP="$1"; shift
 
 case "$APP" in
-    kWise|kWatch|kSift|kFresh) ;;
-    *) echo "error: app must be one of: kWise | kWatch | kSift | kFresh" >&2; exit 65 ;;
+    kWise|kMonitor|kSift|kFresh) ;;
+    *) echo "error: app must be one of: kWise | kMonitor | kSift | kFresh" >&2; exit 65 ;;
 esac
 
 # bash 3.2 (macOS default) lacks ${VAR,,} lowercase expansion; use tr.
