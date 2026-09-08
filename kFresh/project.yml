@@ -27,6 +27,11 @@ targets:
       DEVELOPMENT_TEAM: ""
     dependencies:
       - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: DesignSystem
+      - package: kFoundation
+        product: CommonUtils
     preBuildScripts:
       - name: "SwiftLint"
         script: "if which swiftlint >/dev/null; then swiftlint; fi"
@@ -46,6 +51,11 @@ targets:
     dependencies:
       - target: kFresh
       - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: DesignSystem
+      - package: kFoundation
+        product: CommonUtils
 
   FinderSyncExtension:
     type: app-extension
@@ -59,4 +69,4 @@ targets:
 
 packages:
   kFoundation:
-    path: /Users/mengjianjun/Documents/ai/aicoding/macapp/kFoundation
+    path: ../kFoundation

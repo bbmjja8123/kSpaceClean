@@ -1,6 +1,7 @@
 import SwiftUI
 import MetricsKit
 import DesignSystem
+import MonitorCore
 
 /// The window-style content shown when the user clicks the kWatch status
 /// item. Lays out a header with the Pro capsule, the QuickToggleBar, the

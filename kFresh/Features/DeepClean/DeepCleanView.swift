@@ -1,4 +1,6 @@
 import SwiftUI
+import AppCatalogCore
+import DesignSystem
 
 /// Pro "深度清理" screen: scans `/Library/LaunchAgents`,
 /// `/Library/LaunchDaemons`, and `/Library/PreferencePanes` and lets the

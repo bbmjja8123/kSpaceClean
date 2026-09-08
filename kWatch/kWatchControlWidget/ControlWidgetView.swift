@@ -9,6 +9,7 @@
 
 import SwiftUI
 import WidgetKit
+import MonitorCore
 
 // MARK: - Entry View
 

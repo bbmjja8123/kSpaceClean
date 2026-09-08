@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import DetectionCore
 
 @objc(VaultItemEntity)
 public final class VaultItemEntity: NSManagedObject {

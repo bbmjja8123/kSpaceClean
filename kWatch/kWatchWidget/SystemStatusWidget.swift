@@ -10,6 +10,7 @@
 
 import SwiftUI
 import WidgetKit
+import MonitorCore
 
 /// The kWatch System Status widget.
 ///

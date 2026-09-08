@@ -64,7 +64,7 @@ final class BatchBuffer: @unchecked Sendable {
             do {
                 try ctx.save()
             } catch {
-                print("[BatchBuffer] save error: \(error)")
+                Log.scan.error("[BatchBuffer] save error: \(error)")
             }
         }
 

@@ -131,52 +131,55 @@ struct OnboardingPage3: View {
     }
 }
 
-// MARK: - Page 4: FDA Request
+// MARK: - Page 4: Home Folder Grant (PowerScope)
 
+/// PowerScope grant page — replaces the old Full Disk Access instructions.
+///
+/// MAS sandboxing makes FDA unobtainable; the honest ask is a one-time
+/// NSOpenPanel grant of the home folder, persisted as a security-scoped
+/// bookmark (see `PowerScope` in kFoundation).
 struct OnboardingPage4: View {
     @ObservedObject var coordinator: OnboardingCoordinator
+    @ObservedObject private var appScope = AppScope.shared
 
     var body: some View {
         VStack(spacing: AppSpacing.xxl) {
             Spacer()
 
-            Image(systemName: "folder.badge.questionmark")
+            Image(systemName: "folder.badge.checkmark")
                 .font(.system(size: 56))
-                .foregroundStyle(Color.warning)
+                .foregroundStyle(Color.brandPrimary)
 
             VStack(spacing: AppSpacing.sm) {
-                Text("需要完整磁盘访问权限")
+                Text("授权主目录访问")
                     .font(AppFont.largeTitle)
                     .foregroundColor(.textPrimary)
 
-                Text("kWise 需要 Full Disk Access 才能扫描所有文件")
+                Text("kWise 在沙箱内运行，需要你一次性授权主目录才能扫描缓存、日志与应用残留。文件不会被上传，扫描全部在本机完成。")
                     .font(AppFont.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
             }
             .padding(.horizontal, AppSpacing.xxxl)
 
-            // Instruction steps
-            VStack(alignment: .leading, spacing: AppSpacing.md) {
-                StepLabel(number: "1", text: "点击下方按钮打开系统设置")
-                StepLabel(number: "2", text: "进入「隐私与安全性」→「完全磁盘访问权限」")
-                StepLabel(number: "3", text: "找到 kWise 并开启开关")
-                StepLabel(number: "4", text: "返回本应用，点击「下一步」继续")
-            }
-            .padding(.horizontal, AppSpacing.xxl)
-
-            // Action buttons
             VStack(spacing: AppSpacing.md) {
                 Button {
-                    coordinator.openSystemSettings()
+                    Task { await appScope.grant() }
                 } label: {
-                    Label("打开系统设置", systemImage: "gear")
+                    Label(appScope.capability.level == .homeGranted ? "重新选择" : "授权主目录",
+                          systemImage: "checkmark.shield")
                         .frame(maxWidth: .infinity)
                         .font(AppFont.title3)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(.brandPrimary)
+                .tint(Color.brandPrimary)
                 .controlSize(.large)
+
+                if appScope.capability.level == .homeGranted {
+                    Label("已授权", systemImage: "checkmark.circle.fill")
+                        .foregroundStyle(Color.stateSuccess)
+                        .font(AppFont.callout)
+                }
 
                 Button("跳过此步骤", action: coordinator.skipFDA)
                     .buttonStyle(.plain)
@@ -189,7 +192,7 @@ struct OnboardingPage4: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bgPrimary)
+        .background(Color.bgCanvas)
     }
 }
 
@@ -270,39 +273,78 @@ struct OnboardingContainerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            TabView(selection: $coordinator.currentPage) {
-                OnboardingPage1().tag(0)
-                OnboardingPage2().tag(1)
-                OnboardingPage3().tag(2)
-                OnboardingPage4(coordinator: coordinator).tag(3)
-                OnboardingPage5(coordinator: coordinator).tag(4)
-            }
-
-            // Bottom navigation bar
-            if coordinator.currentPage < coordinator.totalPages - 1 {
-                Divider()
-                    .foregroundColor(.separatorColor)
-
-                HStack {
-                    Spacer()
-
-                    Button("下一步") {
-                        coordinator.next()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.brandPrimary)
-                    .controlSize(.large)
-                    .keyboardShortcut(.return, modifiers: [])
+            // UX 重构 Phase 1: a switch instead of a label-less TabView —
+            // the native tab strip rendered as an empty artifact strip.
+            ZStack {
+                switch coordinator.currentPage {
+                case 0: OnboardingPage1()
+                case 1: OnboardingPage2()
+                case 2: OnboardingPage3()
+                case 3: OnboardingPage4(coordinator: coordinator)
+                default: OnboardingPage5(coordinator: coordinator)
                 }
-                .padding(.horizontal, AppSpacing.xl)
-                .padding(.vertical, AppSpacing.md)
-                .background(Color.bgPrimary)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .animation(KFAnimation.easeInOut, value: coordinator.currentPage)
+            .transition(.opacity)
+
+            StepIndicatorView(count: coordinator.totalPages,
+                              current: coordinator.currentPage)
+                .padding(.vertical, AppSpacing.md)
+
+            Divider()
+                .foregroundColor(.separatorColor)
+
+            // Bottom navigation bar — unconditional; last page shows 完成.
+            HStack(spacing: AppSpacing.md) {
+                Button("上一步") {
+                    withAnimation(KFAnimation.easeInOut) { coordinator.back() }
+                }
+                .buttonStyle(.bordered)
+                .disabled(coordinator.currentPage == 0)
+
+                Spacer()
+
+                Text("第 \(coordinator.currentPage + 1) / \(coordinator.totalPages) 步")
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+
+                Button(coordinator.currentPage == coordinator.totalPages - 1 ? "完成" : "下一步") {
+                    withAnimation(KFAnimation.easeInOut) { coordinator.next() }
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.brandPrimary)
+                .controlSize(.large)
+                .keyboardShortcut(.return, modifiers: [])
+            }
+            .padding(.horizontal, AppSpacing.xl)
+            .padding(.vertical, AppSpacing.md)
+            .background(Color.bgPrimary)
         }
-        .frame(minWidth: 540, minHeight: 460)
+        .frame(minWidth: 540, minHeight: 500)
         .background(Color.bgPrimary)
         .onAppear {
             coordinator.onComplete = onComplete
+        }
+    }
+}
+
+// MARK: - Step Indicator
+
+/// 5 dots + current highlight, so the user always knows where they are
+/// (UX 重构 Phase 1 — fixes "不知道有几个步骤，当前处于哪个").
+struct StepIndicatorView: View {
+    let count: Int
+    let current: Int
+
+    var body: some View {
+        HStack(spacing: AppSpacing.sm) {
+            ForEach(0..<count, id: \.self) { index in
+                Capsule()
+                    .fill(index <= current ? Color.brandPrimary : Color.bgSecondary)
+                    .frame(width: index == current ? 24 : 8, height: 8)
+                    .animation(KFAnimation.easeInOut, value: current)
+            }
         }
     }
 }

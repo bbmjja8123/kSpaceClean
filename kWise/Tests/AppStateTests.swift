@@ -5,10 +5,10 @@ import XCTest
 final class AppStateTests: XCTestCase {
     func test_initialState() {
         let state = AppState()
-        XCTAssertEqual(state.navigation, .scan)
+        XCTAssertEqual(state.navigation, .smartCare)
         XCTAssertEqual(state.scanState, .idle)
-        XCTAssertTrue(state.rightPanelVisible)
-        XCTAssertEqual(state.rightPanelTab, .overview)
+        // UX 重构 Phase 1: the detail panel is auto-hidden until selected.
+        XCTAssertFalse(state.rightPanelVisible)
         XCTAssertNil(state.selectedCategory)
     }
 
@@ -36,12 +36,12 @@ final class AppStateTests: XCTestCase {
         XCTAssertFalse(state.rightPanelVisible)
     }
 
-    func test_rightPanelTab_change() {
+    func test_rightPanelVisible_toggle() {
         let state = AppState()
-        state.rightPanelTab = .results
-        XCTAssertEqual(state.rightPanelTab, .results)
-        state.rightPanelTab = .suggestions
-        XCTAssertEqual(state.rightPanelTab, .suggestions)
+        state.rightPanelVisible = true
+        XCTAssertTrue(state.rightPanelVisible)
+        state.rightPanelVisible = false
+        XCTAssertFalse(state.rightPanelVisible)
     }
 
     func test_selectedCategory() {
@@ -53,7 +53,19 @@ final class AppStateTests: XCTestCase {
     }
 
     func test_NavigationItem_allCases() {
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 4)
+        // v2.0 Phase 2: 11 original + 8 new (tools/spaceMap/monthlyReport/
+        // assistant/duplicates/largeOld/photoClean/maintenance) − galaxy.
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 18)
+    }
+
+    /// v2.0 Phase 2: the rail is fixed at six entries and never grows.
+    func test_NavigationItem_railItems() {
+        XCTAssertEqual(AppState.NavigationItem.railItems, [
+            .smartCare, .scan, .tools, .cleanup, .history, .settings
+        ])
+        for item in AppState.NavigationItem.railItems {
+            XCTAssertTrue(AppState.NavigationItem.allCases.contains(item))
+        }
     }
 
     func test_NavigationItem_tooltip_notEmpty() {

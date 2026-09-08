@@ -6,12 +6,16 @@ import CommonUtils
 // MARK: - App Uninstall View
 
 public struct AppUninstallView: View {
-    @StateObject private var viewModel = AppUninstallViewModel()
+    @StateObject private var viewModel: AppUninstallViewModel
     @State private var showConfirmDialog = false
     @State private var uninstallResult: (succeeded: [String], failed: [String])?
     @State private var isUninstalling = false
 
-    public init() {}
+    /// Injectable for the app root (graph engine + quota routing);
+    /// previews fall back to a default-constructed view model.
+    public init(viewModel: AppUninstallViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? AppUninstallViewModel())
+    }
 
     public var body: some View {
         VStack(spacing: 0) {

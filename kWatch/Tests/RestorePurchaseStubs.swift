@@ -3,6 +3,7 @@ import UserNotifications
 import StoreKit
 import MetricsKit
 import DesignSystem
+import MonitorCore
 @testable import kWatch
 
 // MARK: - StubPreferencesRepository

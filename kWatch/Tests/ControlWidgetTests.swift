@@ -1,4 +1,5 @@
 import XCTest
+import MonitorCore
 @testable import kWatch
 
 /// Tests for the Control Widget's shared data types.

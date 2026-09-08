@@ -28,7 +28,7 @@
 
 **例外 —— 共享区域（需特别协调）**：
 
-- `kFoundation/` —— 4 个 App 共用的 Swift 包
+- `kFoundation/` —— 4 个 App 共用的 Swift 包（含按 App 抽取的引擎 target：DetectionCore / AppCatalogCore / MonitorCore，改动一律走 §5 特殊路径）
 - `KraftlyWorkspace.xcworkspace` —— 顶层 workspace
 - 根目录 `CLAUDE.md` / `.gitignore` / `.github/` —— 横切配置
 

@@ -1,5 +1,6 @@
 import AppKit
 import Combine
+import MonitorCore
 
 /// Bridges AppKit lifecycle events to the shared app coordinator.
 @MainActor

@@ -142,10 +142,13 @@ def main():
         ("Core/Detect/AppCatalogService.swift", "Detect"),
         ("Core/Detect/AppSizeCalculator.swift", "Detect"),
         ("Core/Detect/ResidueDetector.swift", "Detect"),
+        ("Core/Detect/ResidueSmartSelector.swift", "Detect"),
         ("Core/Detect/BundleRuleStore.swift", "Detect"),
         ("Core/Detect/DirectorySizeCalculator.swift", "Detect"),
         ("Core/Rules/KFreshBundleRule.swift", "Rules"),
         ("Core/Rules/CaskParser.swift", "Rules"),
+        ("Core/Rules/ZhAppMapping.swift", "Rules"),
+        ("Core/Rules/MappingStore.swift", "Rules"),
         ("Core/Clean/TrashMover.swift", "Clean"),
         ("Core/Clean/ResidueScanner.swift", "Clean"),
         ("Core/Clean/AuditLogger.swift", "Clean"),
@@ -218,21 +221,26 @@ def main():
             "ResidueDetectorTests.swift",
             "AppSourceClassifierTests.swift",
             "DirectorySizeCalculatorTests.swift",
+            "ResidueSmartSelectorTests.swift",
         ],
         "RulesTests": [
             "CaskParserTests.swift",
             "BundleRuleStoreTests.swift",
+            "MappingStoreTests.swift",
         ],
         "CleanTests": [
             "TrashMoverTests.swift",
             "BackupManagerTests.swift",
             "ResidueScannerTests.swift",
             "AuditLoggerTests.swift",
+            "ResidueRiskLevelTests.swift",
+            "TrashMoverMemoryTests.swift",
         ],
         "OnboardingTests": [
             "FDAPermissionProbeTests.swift",
             "FDAGuideControllerTests.swift",
             "OnboardingRoutingTests.swift",
+            "AppCoordinatorNavigationTests.swift",
         ],
         "AppListTests": [
             "AppListViewModelTests.swift",
@@ -262,6 +270,7 @@ def main():
         "IntegrationTests": [
             "UninstallFlowTests.swift",
             "SandboxDegradationTests.swift",
+            "ScanPerformanceTests.swift",
         ],
         "UITests": [
             "OnboardingUITests.swift",
@@ -306,6 +315,7 @@ def main():
         ("Localizable.xcstrings", "Resources", "text.json.xcstrings"),
         ("PrivacyInfo.xcprivacy", "Resources", "text.plist.xml"),
         ("cask_rules.json", "Resources", "text.json"),
+        ("zh_app_mappings.json", "Resources", "text.json"),
     ]
 
     main_build_files = []

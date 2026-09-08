@@ -1,4 +1,5 @@
 import Foundation
+import AppCatalogCore
 
 @MainActor
 class SettingsViewModel: ObservableObject {

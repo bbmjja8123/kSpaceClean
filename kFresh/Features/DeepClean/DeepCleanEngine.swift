@@ -1,4 +1,5 @@
 import Foundation
+import AppCatalogCore
 
 // MARK: - System Clean Category
 

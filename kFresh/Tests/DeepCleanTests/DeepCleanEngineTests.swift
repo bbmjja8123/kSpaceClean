@@ -1,4 +1,5 @@
 import XCTest
+import AppCatalogCore
 @testable import kFresh
 
 /// Coverage for `DeepCleanEngine` — the Pro deep-clean scanner/deleter.

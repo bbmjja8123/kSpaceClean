@@ -3,9 +3,10 @@ import SwiftUI
 
 // MARK: - Widget Bundle
 
-struct KSpaceCleanWidgetBundle: WidgetBundle {
+@main
+struct kWiseWidgetBundle: WidgetBundle {
     var body: some Widget {
-        KSpaceCleanWidget()
+        kWiseDiskWidget()
     }
 }
 
@@ -13,206 +14,131 @@ struct KSpaceCleanWidgetBundle: WidgetBundle {
 
 struct DiskUsageEntry: TimelineEntry {
     let date: Date
-    let usedBytes: Int64
-    let totalBytes: Int64
-    let categoryBreakdown: [(String, Int64)]  // (categoryName, bytes)
+    let snapshot: WidgetSnapshot?
 }
 
 // MARK: - Provider
 
-struct Provider: TimelineProvider {
-    typealias Entry = DiskUsageEntry
+/// v2.0 Phase 6: reads the shared `WidgetSnapshot` JSON the app writes after
+/// scans and cleanups. No snapshot (or an unknown schema version) renders
+/// the neutral state — never fabricated numbers.
+struct DiskUsageProvider: TimelineProvider {
+    private let store = WidgetSnapshotStore()
+
+    private func currentEntry() -> DiskUsageEntry {
+        DiskUsageEntry(date: Date(), snapshot: store.read())
+    }
 
     func placeholder(in context: Context) -> DiskUsageEntry {
-        DiskUsageEntry(
-            date: Date(),
-            usedBytes: 128_000_000_000,
-            totalBytes: 256_000_000_000,
-            categoryBreakdown: [("System", 40_000_000_000), ("Apps", 30_000_000_000)]
-        )
+        DiskUsageEntry(date: Date(), snapshot: nil)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (DiskUsageEntry) -> Void) {
-        let entry = DiskUsageEntry(
-            date: Date(),
-            usedBytes: 128_000_000_000,
-            totalBytes: 256_000_000_000,
-            categoryBreakdown: [("System", 40_000_000_000), ("Apps", 30_000_000_000)]
-        )
-        completion(entry)
+        completion(currentEntry())
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<DiskUsageEntry>) -> Void) {
-        let entry = DiskUsageEntry(
-            date: Date(),
-            usedBytes: 128_000_000_000,
-            totalBytes: 256_000_000_000,
-            categoryBreakdown: [("System", 40_000_000_000), ("Apps", 30_000_000_000)]
-        )
-        let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(3600)))
-        completion(timeline)
+        let entry = currentEntry()
+        let next = Calendar.current.date(byAdding: .minute, value: 15, to: entry.date) ?? entry.date
+        completion(Timeline(entries: [entry], policy: .after(next)))
     }
 }
 
-// MARK: - Widget Views
+// MARK: - View
 
-struct SmallWidgetView: View {
+struct DiskUsageWidgetView: View {
     var entry: DiskUsageEntry
 
     var body: some View {
-        VStack(spacing: 8) {
-            Text("Disk Space")
-                .font(.caption)
-                .foregroundColor(.secondary)
-
-            ProgressRing(usedRatio: Double(entry.usedBytes) / Double(entry.totalBytes))
-                .frame(width: 60, height: 60)
-
-            Text("\(formatBytes(entry.usedBytes)) used")
-                .font(.caption2)
-                .foregroundColor(.secondary)
+        if let snapshot = entry.snapshot, let disk = snapshot.disk {
+            content(snapshot: snapshot, disk: disk)
+        } else {
+            neutralState
         }
-        .padding()
     }
 
-    private func formatBytes(_ bytes: Int64) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.countStyle = .file
-        return formatter.string(fromByteCount: bytes)
-    }
-}
-
-struct MediumWidgetView: View {
-    var entry: DiskUsageEntry
-
-    var body: some View {
-        HStack(spacing: 16) {
-            ProgressRing(usedRatio: Double(entry.usedBytes) / Double(entry.totalBytes))
-                .frame(width: 80, height: 80)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Mac Storage")
-                    .font(.headline)
-
-                DiskUsageBarView(usedBytes: entry.usedBytes, totalBytes: entry.totalBytes)
-
-                Text("\(formatBytes(entry.usedBytes)) used of \(formatBytes(entry.totalBytes))")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-
+    private var neutralState: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("kWise", systemImage: "sparkles")
+                .font(.headline)
             Spacer()
+            Text("打开 kWise 开始首次扫描")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
-        .padding()
+        .padding(4)
+        .widgetURL(URL(string: "kwise://smartcare"))
     }
 
-    private func formatBytes(_ bytes: Int64) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.countStyle = .file
-        return formatter.string(fromByteCount: bytes)
-    }
-}
-
-struct LargeWidgetView: View {
-    var entry: DiskUsageEntry
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+    private func content(snapshot: WidgetSnapshot, disk: WidgetSnapshot.DiskInfo) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Image(systemName: "externaldrive.fill")
-                    .foregroundColor(.brandPrimary)
-                Text("Storage Overview")
+                Label("kWise", systemImage: "sparkles")
                     .font(.headline)
-            }
-
-            HStack(spacing: 16) {
-                ProgressRing(usedRatio: Double(entry.usedBytes) / Double(entry.totalBytes))
-                    .frame(width: 70, height: 70)
-
-                VStack(alignment: .leading) {
-                    Text("\(formatBytes(entry.usedBytes))")
-                        .font(.title2).fontWeight(.bold)
-                    Text("used of \(formatBytes(entry.totalBytes))")
-                        .font(.caption).foregroundColor(.secondary)
+                Spacer()
+                if let streak = snapshot.streak, streak.currentStreak > 0 {
+                    Label("\(streak.currentStreak)", systemImage: "flame")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
                 }
             }
 
-            Divider()
+            Gauge(value: disk.usedFraction) {
+                Text("磁盘")
+            }
+            .gaugeStyle(.accessoryLinearCapacity)
+            .tint(disk.usedFraction > 0.9 ? .red : disk.usedFraction > 0.7 ? .orange : .blue)
 
-            ForEach(entry.categoryBreakdown.prefix(4), id: \.0) { category, bytes in
-                HStack {
-                    Text(category).font(.caption)
-                    Spacer()
-                    Text(formatBytes(bytes)).font(.caption).foregroundColor(.secondary)
+            HStack {
+                if let last = snapshot.lastCleanup {
+                    let formatted = ByteCountFormatter.string(fromByteCount: last.freedBytes, countStyle: .file)
+                    Text("上次清理 \(formatted)")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                } else if let forecast = snapshot.forecast, forecast.isReliable {
+                    Text("预计 \(forecast.daysToFull) 天后磁盘将满")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
                 }
+                Spacer()
+                // Interactive Smart Care button (App Intent, macOS 14).
+                Button(intent: RunSmartCareIntent()) {
+                    Label("清理", systemImage: "wand.and.stars")
+                        .font(.caption2)
+                }
+                .buttonStyle(.borderless)
             }
         }
-        .padding()
-    }
-
-    private func formatBytes(_ bytes: Int64) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.countStyle = .file
-        return formatter.string(fromByteCount: bytes)
+        .padding(4)
+        .widgetURL(URL(string: "kwise://smartcare"))
     }
 }
 
-// MARK: - Shared Components
+// MARK: - Widget
 
-struct ProgressRing: View {
-    let usedRatio: Double
-
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(Color.separatorColor.opacity(0.3), lineWidth: 8)
-            Circle()
-                .trim(from: 0, to: min(usedRatio, 1.0))
-                .stroke(
-                    AngularGradient(colors: [.brandPrimary, .brandAccent], center: .center),
-                    style: StrokeStyle(lineWidth: 8, lineCap: .round)
-                )
-                .rotationEffect(.degrees(-90))
-            Text("\(Int(usedRatio * 100))%")
-                .font(.caption2).fontWeight(.bold)
-        }
-    }
-}
-
-struct DiskUsageBarView: View {
-    let usedBytes: Int64
-    let totalBytes: Int64
-
-    var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(Color.separatorColor.opacity(0.3))
-                    .frame(height: 6)
-                Capsule()
-                    .fill(usedRatio > 0.9 ? Color.red : (usedRatio > 0.7 ? Color.yellow : Color.green))
-                    .frame(width: geo.size.width * min(usedRatio, 1.0), height: 6)
-            }
-        }
-        .frame(height: 6)
-    }
-
-    private var usedRatio: Double {
-        totalBytes > 0 ? Double(usedBytes) / Double(totalBytes) : 0
-    }
-}
-
-// MARK: - Widget Configuration
-
-struct KSpaceCleanWidget: Widget {
-    let kind: String = "app.kraftly.sclean.widget"
-
+/// Interactive (macOS 14+, widget target's deployment floor): tapping the
+/// Smart Care button runs `RunSmartCareIntent`, which deep-links through
+/// `AppCoordinator`. The whole widget surface also deep-links via `widgetURL`.
+struct kWiseDiskWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            SmallWidgetView(entry: entry)
+        StaticConfiguration(kind: "app.kraftly.sclean.widget", provider: DiskUsageProvider()) { entry in
+            DiskUsageWidgetView(entry: entry)
         }
-        .configurationDisplayName("Disk Usage")
-        .description("Check your Mac storage at a glance.")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .configurationDisplayName("磁盘占用")
+        .description("查看 Mac 存储占用、上次清理与连续打卡。点击即可运行 Smart Care。")
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
+}
+
+#Preview("Small", as: .systemSmall) {
+    kWiseDiskWidget()
+} timeline: {
+    DiskUsageEntry(
+        date: .now,
+        snapshot: WidgetSnapshot(
+            disk: .init(usedBytes: 380_000_000_000, totalBytes: 494_384_712_704),
+            lastCleanup: .init(freedBytes: 3_200_000_000, date: .now),
+            streak: .init(currentStreak: 3, longestStreak: 9)
+        )
+    )
 }

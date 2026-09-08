@@ -1,4 +1,7 @@
 import Foundation
+import AppKit
+import CommonUtils
+import AppCatalogCore
 
 // MARK: - Data Model
 
@@ -14,49 +17,71 @@ public struct UninstallAppEntry: Identifiable, Sendable {
     public var totalSize: Int64 { appSize + leftoverSize }
 }
 
-// MARK: - Scanner
+// MARK: - Scanner (AppCatalogCore adapter)
 
-/// Scans the system for installed `.app` bundles and locates their leftover files
-/// in common Library locations.
+/// App-uninstall scanner backed by the AppCatalogCore engine (kFresh's
+/// `AppCatalogService` four-source catalog + `ResidueDetector`'s 14 residue
+/// template families with confidence scoring).
 ///
-/// This class intentionally uses `@unchecked Sendable` because it wraps
-/// `FileManager` (which is not `Sendable` in Swift 5.8) for filesystem
-/// enumeration. All public methods are stateless — they produce new values
-/// on each call — so the class is safe to use across concurrency domains.
+/// The old in-app implementation used an 11-template path match against a
+/// hand-rolled `/Applications` walk; the engine swap adds the 1141-rule
+/// cask rule store, zh-Hans display-name mappings, Homebrew Caskroom and
+/// Setapp sources, and MAS-receipt source classification (which degrades
+/// gracefully under the App Sandbox).
+///
+/// Uninstallation itself stays on kWise's `CleanupEngine` (trash → restorable
+/// 30-day history → quota metering); kFresh's TrashMover is deliberately
+/// NOT adopted (it is Core-Data bound and assumes /Applications write
+/// access a MAS app cannot have).
 public final class AppUninstallScanner: @unchecked Sendable {
 
-    // MARK: - Public API
+    private let catalog = AppCatalogService()
+    private let residueDetector: ResidueDetector
 
-    /// Scans standard application directories and returns an array of entries
-    /// sorted by total (app + leftover) size descending.
-    public func scan() -> [UninstallAppEntry] {
-        let appURLs = findAppBundles()
-        let entries = appURLs.compactMap { url -> UninstallAppEntry? in
-            guard let bundle = Bundle(path: url.path) else { return nil }
-            let bundleID = bundle.bundleIdentifier ?? "unknown.\(url.deletingPathExtension().lastPathComponent)"
-            let appName = url.deletingPathExtension().lastPathComponent
+    public init() {
+        // Production initializer: loads the 1141-rule cask_rules.json from
+        // the AppCatalogCore package bundle (Bundle.module).
+        self.residueDetector = ResidueDetector(ruleStore: BundleRuleStore.loadFromBundledJSON())
+    }
 
-            let appSize = directorySize(url)
-            let leftovers = findLeftovers(bundleID: bundleID, appName: appName)
-            let leftoverSize = leftovers.reduce(0) { $0 + directorySize($1) }
+    // MARK: Public API
 
-            guard appSize > 0 else { return nil }
+    /// Scans installed apps via the catalog engine and locates their
+    /// leftover files via the residue engine. Sorted total-size descending.
+    public func scan() async -> [UninstallAppEntry] {
+        let apps = await catalog.scan()
 
-            return UninstallAppEntry(
-                appName: appName,
-                bundleID: bundleID,
-                appURL: url,
-                appSize: appSize,
-                leftoverURLs: leftovers,
-                leftoverSize: leftoverSize,
-                isSelected: true
+        var entries: [UninstallAppEntry] = []
+        for app in apps where app.source != .system && app.source != .appleBuiltIn {
+            guard app.sizeBytes > 0 else { continue }
+            let residues = await residueDetector.detectResidues(
+                bundleID: app.bundleID,
+                appName: app.displayName,
+                appURL: app.url
             )
+            // Keep only residues that actually exist and are NOT the app
+            // bundle itself; skip protected system locations.
+            let leftovers = residues
+                .filter { !$0.isProtected && !$0.isSystemLevel }
+                .map(\.url)
+                .filter { FileManager.default.fileExists(atPath: $0.path) }
+
+            entries.append(UninstallAppEntry(
+                appName: app.displayName,
+                bundleID: app.bundleID,
+                appURL: app.url,
+                appSize: app.sizeBytes,
+                leftoverURLs: leftovers,
+                leftoverSize: leftovers.reduce(0) { $0 + Self.sizeOf($1) }
+            ))
         }
         return entries.sorted { $0.totalSize > $1.totalSize }
     }
 
-    /// Moves the app bundle and all associated leftover files to the Trash.
-    /// - Throws: `TrashError` if any item could not be trashed.
+    /// Moves the app bundle and all associated leftover files to the Trash
+    /// via the shared engine path (the view model routes through
+    /// `CleanupEngine.cleanup(targets:)` — this direct API remains for
+    /// tests only).
     public func uninstall(entry: UninstallAppEntry) async throws {
         let allURLs = [entry.appURL] + entry.leftoverURLs
         var errors: [URL: Error] = [:]
@@ -76,82 +101,22 @@ public final class AppUninstallScanner: @unchecked Sendable {
         }
     }
 
-    // MARK: - Private Helpers
-
-    /// Returns the URLs of every `.app` bundle found in `/Applications`
-    /// and `~/Applications`.
-    private func findAppBundles() -> [URL] {
-        let fm = FileManager.default
-        let scanDirs = [
-            URL(fileURLWithPath: "/Applications", isDirectory: true),
-            URL(fileURLWithPath: NSHomeDirectory() + "/Applications", isDirectory: true),
-        ]
-
-        var results: [URL] = []
-        for dir in scanDirs {
-            guard let enumerator = fm.enumerator(
-                at: dir,
-                includingPropertiesForKeys: [.isApplicationKey, .isPackageKey],
-                options: [.skipsHiddenFiles, .skipsPackageDescendants]
-            ) else { continue }
-
-            for case let fileURL as URL in enumerator {
-                guard let values = try? fileURL.resourceValues(forKeys: [.isApplicationKey, .isPackageKey]),
-                      values.isApplication == true || values.isPackage == true
-                else { continue }
-
-                if fileURL.pathExtension.lowercased() == "app" {
-                    results.append(fileURL)
-                }
-            }
+    /// Recursive size of a file or directory (leftover sizing).
+    static func sizeOf(_ url: URL) -> Int64 {
+        var isDir: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) else { return 0 }
+        if !isDir.boolValue {
+            return (try? url.resourceValues(forKeys: [.fileSizeKey])).flatMap { $0.fileSize.map(Int64.init) } ?? 0
         }
-        return results
-    }
-
-    /// Locates leftover files/directories for a given app in common
-    /// Library locations.
-    private func findLeftovers(bundleID: String, appName: String) -> [URL] {
-        let library = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library")
-        let templates: [(String, String)] = [
-            ("Preferences", "\(bundleID).plist"),
-            ("Preferences", "\(appName).plist"),
-            ("Caches", bundleID),
-            ("Caches", appName),
-            ("Application Support", bundleID),
-            ("Application Support", appName),
-            ("Logs", bundleID),
-            ("Logs", appName),
-            ("Saved Application State", "\(bundleID).savedState"),
-            ("Containers", bundleID),
-            ("Group Containers", bundleID),
-        ]
-
-        var urls: [URL] = []
-        for (subdir, lastComponent) in templates {
-            let candidate = library
-                .appendingPathComponent(subdir, isDirectory: true)
-                .appendingPathComponent(lastComponent)
-            if FileManager.default.fileExists(atPath: candidate.path) {
-                urls.append(candidate)
-            }
-        }
-        return urls
-    }
-
-    /// Recursively sums the physical byte size of all files under `url`.
-    private func directorySize(_ url: URL) -> Int64 {
         guard let enumerator = FileManager.default.enumerator(
             at: url,
-            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey],
-            options: [.skipsHiddenFiles]
+            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey]
         ) else { return 0 }
-
         var total: Int64 = 0
         for case let fileURL as URL in enumerator {
             guard let values = try? fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey]),
                   values.isRegularFile == true,
-                  let size = values.fileSize
-            else { continue }
+                  let size = values.fileSize else { continue }
             total += Int64(size)
         }
         return total

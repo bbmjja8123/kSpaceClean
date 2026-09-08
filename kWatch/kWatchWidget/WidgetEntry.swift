@@ -9,6 +9,7 @@
 
 import Foundation
 import WidgetKit
+import MonitorCore
 
 /// State the widget renders. Distinguishes the three meaningful conditions
 /// a widget timeline can be in:

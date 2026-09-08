@@ -7,9 +7,15 @@ public final class AppCoordinator: ObservableObject, @unchecked Sendable {
     /// The single AppCoordinator the C-level Darwin-notify callback can
     /// reach. kSiftApp sets this in `onAppear`; the static lets the C
     /// function pointer route back to a Swift instance without capture.
-    /// `@unchecked Sendable` on the class above makes this mutable static
-    /// legal under strict concurrency — the race window is bounded to
-    /// startup (one write) and the C callback (one read).
+    ///
+    /// The static is `@MainActor`-isolated so the write (from
+    /// `startObservingFinderScanRequests`, invoked on the SwiftUI main
+    /// thread) and the read (from the C callback's `Task { @MainActor in }`
+    /// hop in `handleFinderScanRequestCallback`) serialize through the
+    /// actor. The class-level `@unchecked Sendable` is still required
+    /// because the non-static state can be touched from outside the actor
+    /// via `nonisolated` callers.
+    @MainActor
     public static var active: AppCoordinator?
 
     private static let finderSyncNotificationName: CFNotificationName =
@@ -52,6 +58,7 @@ public final class AppCoordinator: ObservableObject, @unchecked Sendable {
     /// pings when the user picks "Scan with kSift". The actual folder path
     /// is read from the shared App Group UserDefaults (the extension writes
     /// it before posting).
+    @MainActor
     public func startObservingFinderScanRequests() {
         let center = CFNotificationCenterGetDarwinNotifyCenter()
         Self.active = self

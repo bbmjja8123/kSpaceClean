@@ -3,6 +3,7 @@ import MetricsKit
 import Combine
 #if canImport(WidgetKit)
 import WidgetKit
+import MonitorCore
 #endif
 
 /// Owns the long-lived sampling and persistence work for one app launch.

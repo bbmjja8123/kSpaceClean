@@ -1,6 +1,7 @@
 import XCTest
 import AppKit
 import SwiftUI
+import AppCatalogCore
 @testable import kFresh
 
 /// Controller-level tests for ``UninstallConfirmSheet``. Verifies the sheet

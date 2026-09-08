@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Single-row rendering of a ``SystemCleanItem`` inside the
 /// ``SystemCleanGroupView`` list. Displays the item's display name, full

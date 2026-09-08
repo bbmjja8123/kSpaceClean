@@ -1,5 +1,6 @@
 import Foundation
 import MetricsKit
+import MonitorCore
 
 /// Production implementation of `IntentServiceProtocol`.
 ///

@@ -1,5 +1,6 @@
 import XCTest
 import MetricsKit
+import MonitorCore
 @testable import kWatch
 
 /// Tests for the per-metric alert editor's evaluation rules: the 5-minute

@@ -1,4 +1,5 @@
 import Foundation
+import DetectionCore
 
 /// Test-only `FileManager` that intercepts both `removeItem(at:)` and
 /// `trashItem(at:resultingItemURL:)` and reroutes the affected file into a

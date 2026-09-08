@@ -1,5 +1,6 @@
 import XCTest
 import MetricsKit
+import MonitorCore
 @testable import kWatch
 
 /// Tests for `InMemoryAlertRepository` — the in-process backend used by

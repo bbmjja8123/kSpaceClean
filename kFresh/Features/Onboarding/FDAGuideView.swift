@@ -1,4 +1,6 @@
 import SwiftUI
+import DesignSystem
+import AppCatalogCore
 
 /// Five-page first-launch onboarding, per `CLAUDE.md` §5.4.
 ///

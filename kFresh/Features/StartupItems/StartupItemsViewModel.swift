@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import AppCatalogCore
 
 /// View-model for the "启动项" tab. Drives the master list of
 /// ``StartupItem`` rows grouped by ``StartupItemType``, plus the toggle /

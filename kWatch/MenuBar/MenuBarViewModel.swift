@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import MetricsKit
 import DesignSystem
+import MonitorCore
 
 /// Drives the menu-bar surface: consumes the shared `MetricsAggregator`
 /// stream, exposes formatted display values, and persists the current

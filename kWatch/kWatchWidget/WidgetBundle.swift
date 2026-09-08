@@ -33,6 +33,7 @@
 
 import SwiftUI
 import WidgetKit
+import MonitorCore
 
 /// The `@main` bundle that the system loads when the widget is registered.
 ///

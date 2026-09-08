@@ -25,6 +25,23 @@ public final class AppUninstallViewModel: ObservableObject {
     }
 
     private let scanner = AppUninstallScanner()
+    /// Structured-API engine (v2.0 Phase 2). Uninstalls route through
+    /// `CleanupEngine.cleanup(targets:)` so every app removal lands in the
+    /// 30-day history, is restorable, and consumes free-tier quota. The app
+    /// root re-points this at the shared graph engine.
+    private(set) var engine: CleanupEngine
+    /// Invoked when a run leaves leftovers behind because the free quota
+    /// was exhausted — the root presents the paywall.
+    public var onQuotaExhausted: (() -> Void)?
+
+    public init(engine: CleanupEngine? = nil) {
+        self.engine = engine ?? CleanupEngine.standard()
+    }
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    public func useEngine(_ engine: CleanupEngine) {
+        self.engine = engine
+    }
 
     // MARK: - Scanning
 
@@ -34,10 +51,7 @@ public final class AppUninstallViewModel: ObservableObject {
         entries = []
 
         Task {
-            let result = await Task.detached {
-                self.scanner.scan()
-            }.value
-
+            let result = await self.scanner.scan()
             self.entries = self.sorted(result)
             self.isScanning = false
         }
@@ -118,9 +132,29 @@ public final class AppUninstallViewModel: ObservableObject {
         var failed: [String] = []
 
         for entry in targets {
+            // App bundle + every located leftover become one CleanupTarget
+            // set, so a single `CleanupEngine` run records restorable
+            // history rows and consumes quota (v2.0 Phase 2).
+            let urls = ([entry.appURL] + entry.leftoverURLs)
+                .filter { FileManager.default.fileExists(atPath: $0.path) }
+            let engineTargets = urls.map { url in
+                CleanupTarget(
+                    url: url,
+                    size: Self.sizeOf(url),
+                    risk: .caution,
+                    bundleID: entry.bundleID
+                )
+            }
             do {
-                try await scanner.uninstall(entry: entry)
-                succeeded.append(entry.appName)
+                let outcome = try await engine.cleanup(targets: engineTargets)
+                if outcome.failed.isEmpty {
+                    succeeded.append(entry.appName)
+                } else {
+                    failed.append(entry.appName)
+                }
+                if outcome.quotaExhausted {
+                    onQuotaExhausted?()
+                }
             } catch {
                 failed.append(entry.appName)
             }
@@ -132,5 +166,29 @@ public final class AppUninstallViewModel: ObservableObject {
         }
 
         return (succeeded, failed)
+    }
+
+    /// Recursive size used for the history rows (the scanner already
+    /// computed it, but per-URL sizes are needed here).
+    private static func sizeOf(_ url: URL) -> Int64 {
+        var isDir: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) else { return 0 }
+        if !isDir.boolValue {
+            return (try? url.resourceValues(forKeys: [.fileSizeKey])).flatMap { values in
+                values.fileSize.map(Int64.init)
+            } ?? 0
+        }
+        guard let enumerator = FileManager.default.enumerator(
+            at: url,
+            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey]
+        ) else { return 0 }
+        var total: Int64 = 0
+        for case let fileURL as URL in enumerator {
+            guard let values = try? fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey]),
+                  values.isRegularFile == true,
+                  let size = values.fileSize else { continue }
+            total += Int64(size)
+        }
+        return total
     }
 }
