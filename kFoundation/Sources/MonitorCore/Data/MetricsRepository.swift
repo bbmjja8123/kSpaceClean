@@ -6,7 +6,7 @@ public final class MetricsRepository: @unchecked Sendable {
     private let lock = NSLock()
     private var cachedLatest: MetricSnapshot?
     private let defaults: UserDefaults
-    private let latestKey = "kWatch.latestSnapshot"
+    private let latestKey = "kMonitor.latestSnapshot"
 
     public init(defaults: UserDefaults) {
         self.defaults = defaults
