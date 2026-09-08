@@ -51,10 +51,7 @@ public final class AppUninstallViewModel: ObservableObject {
         entries = []
 
         Task {
-            let result = await Task.detached {
-                self.scanner.scan()
-            }.value
-
+            let result = await self.scanner.scan()
             self.entries = self.sorted(result)
             self.isScanning = false
         }
