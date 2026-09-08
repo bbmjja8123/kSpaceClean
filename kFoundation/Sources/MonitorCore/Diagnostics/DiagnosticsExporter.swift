@@ -141,7 +141,7 @@ public final class DiagnosticsExporter: DiagnosticsExporting, @unchecked Sendabl
     public func export() async throws -> URL {
         let snapshots = await snapshotProvider()
         let document = await Self.buildDocument(snapshots: snapshots, now: now())
-        let filename = "kWatch-Diagnostics-\(dateFormat.string(from: now())).json"
+        let filename = "kMonitor-Diagnostics-\(dateFormat.string(from: now())).json"
         guard let destination = await panel.prompt(defaultFilename: filename) else {
             throw DiagnosticsExportFailure.userCancelled
         }

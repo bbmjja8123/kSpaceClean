@@ -14,6 +14,6 @@
       location = "group:kWise/kWise.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:kWatch/kWatch.xcodeproj">
+      location = "group:kMonitor/kMonitor.xcodeproj">
    </FileRef>
 </Workspace>
