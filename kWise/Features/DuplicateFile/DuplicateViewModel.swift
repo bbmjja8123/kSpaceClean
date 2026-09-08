@@ -1,38 +1,66 @@
 import Foundation
 import SwiftUI
+import DetectionCore
+import PowerScope
 
-// MARK: - DuplicateViewModel
+// MARK: - DuplicateViewModel (v2.3 Phase 2)
 
-/// Main actor-bound view model that drives the duplicate file scanning UI.
-///
-/// Manages scan lifecycle, user selection state, and delegates cleanup to
-/// ``TrashMover``.
+/// Main actor-bound view model driving the duplicate tool on the
+/// DetectionCore pipeline. Groups are `ToolboxGroup`s (engine identity +
+/// evidence + explainable selection preserved).
 @MainActor
-public final class DuplicateViewModel: ObservableObject {
+final class DuplicateViewModel: ObservableObject {
     // MARK: Published state
 
-    /// Duplicate groups discovered during the scan.
-    @Published public var groups: [DuplicateGroup] = []
+    @Published var groups: [ToolboxGroup] = []
+    @Published var isScanning = false
+    /// Fractional engine progress in [0, 1].
+    @Published var scanProgress: Double = 0
+    /// Files scanned so far (engine-reported).
+    @Published var filesScanned: Int = 0
+    /// Last warning from the engine (e.g. unreadable path), shown honestly.
+    @Published var lastWarning: String?
 
-    /// Whether a scan is currently running.
-    @Published public var isScanning = false
+    /// Root paths to scan. Defaults to PowerScope-probed readable dirs —
+    /// NEVER `NSHomeDirectory()`, which under the App Sandbox is the
+    /// container home (the pre-v2.3 bug that scanned nothing useful).
+    @Published var scanPaths: [URL] = DuplicateViewModel.defaultScanPaths()
 
-    /// Progress fraction in [0.0, 1.0] reported by the scanner.
-    @Published public var scanProgress: Double = 0
-
-    /// Root paths to scan. Defaults to the user's home directory.
-    @Published public var scanPaths: [URL] = [
-        URL(fileURLWithPath: NSHomeDirectory())
-    ]
+    /// Which copy to keep. Re-applies SelectionPlanner across all groups.
+    @Published var strategy: SelectionStrategy = .keepNewest {
+        didSet { reapplyStrategy() }
+    }
+    /// Similar-photo grouping aggressiveness (from Settings).
+    @Published var preset: SimilarityPreset = UserPreferences.load().similarityPreset
 
     // MARK: Private state
 
     private let scanner = DuplicateScanner()
-    /// Structured-API engine (v2.0 Phase 2): duplicate cleanup lands in the
-    /// 30-day history and consumes free-tier quota.
     private(set) var engine: CleanupEngine
-    public var onQuotaExhausted: (() -> Void)?
+    var onQuotaExhausted: (() -> Void)?
     private var scanTask: Task<Void, Never>?
+    private var controller: ScanController?
+
+    /// PowerScope-honest default roots: probed public dirs that we can
+    /// actually read, plus the home-scope favorites when home is granted.
+    static func defaultScanPaths(capability: ScopeCapability? = nil) -> [URL] {
+        var urls: [URL] = []
+        let cap = capability ?? AppScope.shared.capability
+        let home = FileManager.default.homeDirectoryForCurrentUser
+        let favorites = [
+            home.appendingPathComponent("Downloads", isDirectory: true),
+            home.appendingPathComponent("Desktop", isDirectory: true),
+            home.appendingPathComponent("Pictures", isDirectory: true),
+            home.appendingPathComponent("Documents", isDirectory: true),
+        ]
+        for url in favorites where cap.canRead(url) {
+            urls.append(url)
+        }
+        if urls.isEmpty {
+            urls = cap.readablePublicDirs.map { URL(fileURLWithPath: $0, isDirectory: true) }
+        }
+        return urls
+    }
 
     // MARK: Lifecycle
 
@@ -40,79 +68,63 @@ public final class DuplicateViewModel: ObservableObject {
         self.engine = engine ?? CleanupEngine.standard()
     }
 
-    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
-    public func useEngine(_ engine: CleanupEngine) {
+    func useEngine(_ engine: CleanupEngine) {
         self.engine = engine
     }
 
     deinit {
         scanTask?.cancel()
+        controller?.cancel()
     }
 
     // MARK: Scanning
 
-    /// Starts (or restarts) a full two-stage duplicate scan.
-    ///
-    /// Automatically cancels any in-flight scan, clears previous results, and
-    /// selects all but the newest file in every group found.
-    public func startScan() {
+    /// Starts (or restarts) the DetectionCore duplicate scan.
+    func startScan() {
         scanTask?.cancel()
+        controller?.cancel()
         groups = []
         isScanning = true
         scanProgress = 0
+        filesScanned = 0
+        lastWarning = nil
 
-        scanTask = Task { [weak self] in
-            guard let self else { return }
+        let paths = scanPaths
+        let preset = preset
+        let strategy = strategy
+        let controller = ScanController()
+        self.controller = controller
 
-            // Create a boxed continuation so we can pass it to the scanner.
-            final class Box {
-                var continuation: AsyncStream<Double>.Continuation?
-            }
-            let box = Box()
-            let progressStream = AsyncStream<Double> { continuation in
-                box.continuation = continuation
-            }
-
-            guard let progressContinuation = box.continuation else { return }
-
-            // Kick off the scanner
-            let resultStream = scanner.scan(
-                paths: scanPaths,
-                progress: progressContinuation
-            )
-
-            // Observe progress on a detached child so we don't block the stream.
-            let progressTask = Task { [weak self] in
-                for await value in progressStream {
-                    await MainActor.run { [weak self] in
-                        self?.scanProgress = value
-                    }
+        scanTask = Task { [weak self, scanner] in
+            let stream = scanner.scan(paths: paths, preset: preset, strategy: strategy)
+            for await event in stream {
+                guard let self else { return }
+                switch event {
+                case .progress(let progress):
+                    self.scanProgress = progress.progress
+                    self.filesScanned = progress.filesScanned
+                case .group(let engineGroup):
+                    let mapped = ToolboxGroup.map(engineGroup, strategy: strategy, scanRoots: paths)
+                    self.groups.append(mapped)
+                case .warning(let warning):
+                    self.lastWarning = warning.message
+                case .failed(let message):
+                    self.lastWarning = message
+                case .largeFiles, .completed:
+                    break
                 }
             }
-
-            // Collect duplicate groups as they arrive.
-            for await group in resultStream {
-                if Task.isCancelled { break }
-                // Auto-select all files except the newest one.
-                let autoSelected = autoSelectDuplicates(in: group)
-                await MainActor.run { [weak self] in
-                    self?.groups.append(autoSelected)
-                }
-            }
-
-            progressTask.cancel()
-
-            if !Task.isCancelled {
-                await MainActor.run { [weak self] in
-                    self?.isScanning = false
-                    self?.scanProgress = 1.0
-                }
+            await MainActor.run { [weak self] in
+                self?.isScanning = false
+                self?.scanProgress = 1.0
             }
         }
     }
 
-    /// Cancels the current scan if one is running.
-    public func cancelScan() {
+    /// Cancels the in-flight scan via the engine's ScanController; results
+    /// found so far stay on screen.
+    func cancelScan() {
+        controller?.cancel()
         scanTask?.cancel()
         scanTask = nil
         isScanning = false
@@ -120,25 +132,23 @@ public final class DuplicateViewModel: ObservableObject {
 
     // MARK: Computed properties
 
-    /// Total wasted space across all groups.
-    public var totalWasted: Int64 {
-        groups.reduce(0) { $0 + $1.totalWasted }
+    /// Honest reclaimable space: Σ per-group honestlyReclaimable
+    /// (clone sets report ~0 instead of the lying size × (n−1)).
+    var totalWasted: Int64 {
+        groups.reduce(0) { $0 + $1.honestlyReclaimable }
     }
 
-    /// Number of files currently selected for removal.
-    public var selectedCount: Int {
+    var selectedCount: Int {
         groups.reduce(0) { $0 + $1.files.filter(\.isSelected).count }
     }
 
-    /// Total size of all selected files.
-    public var selectedSize: Int64 {
+    var selectedSize: Int64 {
         groups.reduce(0) { $0 + $1.files.filter(\.isSelected).reduce(0) { $0 + $1.size } }
     }
 
     // MARK: Selection
 
-    /// Toggles the selection state of a single file.
-    public func toggleFile(_ id: UUID) {
+    func toggleFile(_ id: UUID) {
         for gi in groups.indices {
             for fi in groups[gi].files.indices where groups[gi].files[fi].id == id {
                 groups[gi].files[fi].isSelected.toggle()
@@ -147,8 +157,7 @@ public final class DuplicateViewModel: ObservableObject {
         }
     }
 
-    /// Toggles the selection state of every file in a group.
-    public func toggleGroup(_ id: UUID) {
+    func toggleGroup(_ id: UUID) {
         guard let gi = groups.firstIndex(where: { $0.id == id }) else { return }
         let allSelected = groups[gi].files.allSatisfy(\.isSelected)
         for fi in groups[gi].files.indices {
@@ -156,17 +165,8 @@ public final class DuplicateViewModel: ObservableObject {
         }
     }
 
-    /// Selects every file in every group (all duplicates selected).
-    public func selectAllDuplicates() {
-        for gi in groups.indices {
-            for fi in groups[gi].files.indices {
-                groups[gi].files[fi].isSelected = true
-            }
-        }
-    }
-
     /// Deselects every file in every group.
-    public func deselectAll() {
+    func deselectAll() {
         for gi in groups.indices {
             for fi in groups[gi].files.indices {
                 groups[gi].files[fi].isSelected = false
@@ -174,23 +174,26 @@ public final class DuplicateViewModel: ObservableObject {
         }
     }
 
-    /// Toggles the expanded/collapsed state of a group.
-    public func toggleExpanded(_ id: UUID) {
+    func toggleExpanded(_ id: UUID) {
         guard let gi = groups.firstIndex(where: { $0.id == id }) else { return }
         groups[gi].isExpanded.toggle()
     }
 
+    /// Re-applies the current selection strategy to every group: the keep
+    /// copy is unchecked and gets its explanation badge; removals pre-check.
+    func reapplyStrategy() {
+        let roots = scanPaths
+        for gi in groups.indices {
+            groups[gi].reapplying(strategy: strategy, scanRoots: roots)
+        }
+    }
+
     // MARK: Cleanup
 
-    /// Moves all currently-selected duplicate files to the Trash via the
-    /// shared cleanup engine (history + quota, v2.0 Phase 2).
-    ///
-    /// - Throws: Errors from the engine if the run could not complete.
-    public func cleanupSelected() async throws {
-        let selected = groups
-            .flatMap(\.files)
-            .filter(\.isSelected)
-
+    /// Moves all currently-selected files to the Trash via the shared
+    /// cleanup engine (30-day restorable history + free-tier quota).
+    func cleanupSelected() async throws {
+        let selected = groups.flatMap(\.files).filter(\.isSelected)
         guard !selected.isEmpty else { return }
 
         let targets = selected.map { file in
@@ -198,39 +201,19 @@ public final class DuplicateViewModel: ObservableObject {
         }
         let outcome = try await engine.cleanup(targets: targets)
 
-        // Remove successfully-trashed files from their groups.
         let trashedPaths = Set(outcome.succeeded.map(\.path))
         for gi in groups.indices.reversed() {
-            groups[gi].files.removeAll { trashedPaths.contains($0.path) }
+            groups[gi].files.removeAll { trashedPaths.contains($0.url.path) }
         }
-        // Remove empty groups.
         groups.removeAll { $0.files.isEmpty }
 
         if outcome.quotaExhausted {
             onQuotaExhausted?()
         }
-
-        // If any files failed, we could surface them, but for now just throw the first error.
         if let firstFailure = outcome.failed.first {
             throw TrashMover.MoveError.trashFailed(firstFailure.url,
                 NSError(domain: "CleanupEngine", code: 0))
         }
-    }
-
-    // MARK: Helpers
-
-    /// Returns a copy of `group` with every file selected **except** the one
-    /// with the most recent modification date.
-    private func autoSelectDuplicates(in group: DuplicateGroup) -> DuplicateGroup {
-        var updated = group
-        // Find the newest file so we keep it as the "original".
-        guard let newest = updated.files.max(by: { $0.modificationDate < $1.modificationDate }) else {
-            return updated
-        }
-        for fi in updated.files.indices {
-            updated.files[fi].isSelected = updated.files[fi].id != newest.id
-        }
-        return updated
     }
 }
 
