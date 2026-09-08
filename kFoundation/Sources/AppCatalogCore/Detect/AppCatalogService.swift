@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import CoreServices
 
 /// Discovers every app installed on this Mac and classifies where it came from.
 ///
@@ -109,6 +110,16 @@ public actor AppCatalogService {
     ///   - url: Location of the `.app` bundle.
     ///   - bundleID: The bundle identifier of the app.
     /// - Returns: The best-matching ``AppSource``, or ``AppSource/unknown``.
+    /// App-level "last used" date from Spotlight metadata. Returns nil
+    /// honestly when Spotlight has no record (fresh install, sandbox
+    /// denial, indexing off) — the UI shows "未知", never a guess.
+    public nonisolated static func lastUsedDate(at url: URL) -> Date? {
+        guard let item = MDItemCreateWithURL(kCFAllocatorDefault, url as CFURL),
+              let value = MDItemCopyAttribute(item, kMDItemLastUsedDate) as? Date
+        else { return nil }
+        return value
+    }
+
     public nonisolated static func classifySource(url: URL, bundleID: String) -> AppSource {
         let path = url.path
         if path.hasPrefix("/System/") { return .system }
@@ -225,7 +236,7 @@ public actor AppCatalogService {
             sizeBytes: 0,
             source: sourceOverride ?? Self.classifySource(url: url, bundleID: bundleID),
             isRunning: isRunning,
-            lastUsedDate: nil,
+            lastUsedDate: Self.lastUsedDate(at: url),
             installDate: installDate
         )
     }
