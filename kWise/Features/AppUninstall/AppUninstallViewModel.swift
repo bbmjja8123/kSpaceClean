@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import AppCatalogCore
 
 // MARK: - ViewModel
 
@@ -14,14 +15,51 @@ public final class AppUninstallViewModel: ObservableObject {
         case name
         case size
         case leftoverSize
+        case lastUsed
+        case installDate
 
         public var displayName: String {
             switch self {
             case .name: return "名称"
             case .size: return "总大小"
             case .leftoverSize: return "残留大小"
+            case .lastUsed: return "未使用优先"
+            case .installDate: return "最近安装"
             }
         }
+    }
+
+    /// Search by app name or bundle ID (v2.3 Phase 4).
+    @Published public var searchText: String = ""
+    /// Filter by catalog source (用户安装 / App Store / Homebrew / Setapp).
+    @Published public var sourceFilter: AppSource?
+
+    /// Filtered + sorted entries backing the list.
+    public var visibleEntries: [UninstallAppEntry] {
+        var items = entries
+        let query = searchText.trimmingCharacters(in: .whitespaces).lowercased()
+        if !query.isEmpty {
+            items = items.filter {
+                $0.appName.lowercased().contains(query)
+                    || $0.bundleID.lowercased().contains(query)
+            }
+        }
+        if let sourceFilter {
+            items = items.filter { $0.source == sourceFilter }
+        }
+        items = sorted(items)
+        // 未使用优先：lastUsed 旧者在前；未知排尾并显示「未知」。
+        if sortBy == .lastUsed {
+            items.sort { a, b in
+                switch (a.lastUsedDate, b.lastUsedDate) {
+                case let (l?, r?): return l < r
+                case (.some, .none): return true
+                case (.none, .some): return false
+                default: return a.appName < b.appName
+                }
+            }
+        }
+        return items
     }
 
     private let scanner = AppUninstallScanner()
@@ -117,6 +155,12 @@ public final class AppUninstallViewModel: ObservableObject {
             return sortAscending
                 ? items.sorted { $0.leftoverSize < $1.leftoverSize }
                 : items.sorted { $0.leftoverSize > $1.leftoverSize }
+        case .lastUsed:
+            return items  // handled by visibleEntries (unknown-last policy)
+        case .installDate:
+            return sortAscending
+                ? items.sorted { ($0.installDate ?? .distantPast) < ($1.installDate ?? .distantPast) }
+                : items.sorted { ($0.installDate ?? .distantPast) > ($1.installDate ?? .distantPast) }
         }
     }
 

@@ -15,6 +15,13 @@ public struct UninstallAppEntry: Identifiable, Sendable {
     public var leftoverSize: Int64
     public var isSelected: Bool = true
     public var totalSize: Int64 { appSize + leftoverSize }
+    // v2.3 Phase 4 — computed once at scan time (never in the render path).
+    public let lastUsedDate: Date?
+    public let installDate: Date?
+    public let isRunning: Bool
+    public let source: AppSource
+    /// Residue files with risk classification, for the tiered confirm sheet.
+    public let residues: [ResidueFile]
 }
 
 // MARK: - Scanner (AppCatalogCore adapter)
@@ -72,7 +79,12 @@ public final class AppUninstallScanner: @unchecked Sendable {
                 appURL: app.url,
                 appSize: app.sizeBytes,
                 leftoverURLs: leftovers,
-                leftoverSize: leftovers.reduce(0) { $0 + Self.sizeOf($1) }
+                leftoverSize: leftovers.reduce(0) { $0 + Self.sizeOf($1) },
+                lastUsedDate: app.lastUsedDate,
+                installDate: app.installDate,
+                isRunning: app.isRunning,
+                source: app.source,
+                residues: residues
             ))
         }
         return entries.sorted { $0.totalSize > $1.totalSize }

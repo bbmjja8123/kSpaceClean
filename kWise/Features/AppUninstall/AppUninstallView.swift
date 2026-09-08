@@ -2,6 +2,7 @@ import SwiftUI
 import AppKit
 import DesignSystem
 import CommonUtils
+import AppCatalogCore
 
 // MARK: - App Uninstall View
 
@@ -37,7 +38,11 @@ public struct AppUninstallView: View {
             Button("取消", role: .cancel) {}
         } message: {
             let size = FileSizeFormatter.string(from: viewModel.selectedSize)
-            Text("将 \(viewModel.selectedEntries.count) 个应用及其残留文件移入废纸篓，可回收 \(size) 空间。")
+            let running = viewModel.selectedEntries.filter(\.isRunning).count
+            let runningNote = running > 0
+                ? "⚠️ 有 \(running) 个应用正在运行，建议先退出再卸载。"
+                : ""
+            Text("将 \(viewModel.selectedEntries.count) 个应用及其残留文件移入废纸篓，可回收 \(size) 空间。残留会先备份 30 天，可从备份还原。\(runningNote)")
         }
         .alert("卸载结果", isPresented: Binding(
             get: { uninstallResult != nil },
@@ -63,6 +68,8 @@ public struct AppUninstallView: View {
 
             Spacer()
 
+            searchAndFilterBar
+
             sortPicker
 
             if viewModel.isScanning {
@@ -85,6 +92,32 @@ public struct AppUninstallView: View {
         }
         .padding(.horizontal, AppSpacing.lg)
         .padding(.vertical, AppSpacing.md)
+    }
+
+    private var searchAndFilterBar: some View {
+        HStack(spacing: AppSpacing.md) {
+            HStack(spacing: AppSpacing.xs) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 12))
+                    .foregroundColor(.textSecondary)
+                TextField("搜索应用或 Bundle ID", text: $viewModel.searchText)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(maxWidth: 240)
+                    .font(AppFont.callout)
+            }
+
+            Picker("来源", selection: $viewModel.sourceFilter) {
+                Text("全部来源").tag(AppSource?.none)
+                Text("用户安装").tag(AppSource?.some(.userInstalled))
+                Text("App Store").tag(AppSource?.some(.mas))
+                Text("Homebrew").tag(AppSource?.some(.homebrew))
+                Text("Setapp").tag(AppSource?.some(.setapp))
+            }
+            .pickerStyle(.menu)
+            .frame(width: 130)
+
+            sortPicker
+        }
     }
 
     private var sortPicker: some View {
@@ -139,7 +172,7 @@ public struct AppUninstallView: View {
     private var appList: some View {
         ScrollView {
             LazyVStack(spacing: AppSpacing.xs) {
-                ForEach(viewModel.entries) { entry in
+                ForEach(viewModel.visibleEntries) { entry in
                     AppRow(
                         entry: entry,
                         onToggle: { viewModel.toggleSelection(entry.id) }
@@ -208,6 +241,11 @@ public struct AppUninstallView: View {
     private func performUninstall() {
         isUninstalling = true
         Task {
+            let backupStore = UninstallBackupStore()
+            for entry in viewModel.selectedEntries where !entry.residues.isEmpty {
+                try? await backupStore.backupBeforeUninstall(entry: entry)
+            }
+            await backupStore.pruneExpired(days: 30)
             let result = await viewModel.uninstallSelected()
             uninstallResult = result
             isUninstalling = false
@@ -221,6 +259,16 @@ private struct AppRow: View {
     @State private var isExpanded = false
     let entry: UninstallAppEntry
     let onToggle: () -> Void
+
+    private func sourceBadge(_ source: AppSource) -> String {
+        switch source {
+        case .mas: return "App Store"
+        case .homebrew: return "Homebrew"
+        case .setapp: return "Setapp"
+        case .userInstalled: return "用户安装"
+        default: return ""
+        }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -239,15 +287,40 @@ private struct AppRow: View {
 
                 // App Info
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(entry.appName)
-                        .font(AppFont.body)
-                        .foregroundColor(.textPrimary)
-                        .lineLimit(1)
+                    HStack(spacing: AppSpacing.xs) {
+                        if entry.isRunning {
+                            Circle()
+                                .fill(Color.stateWarning)
+                                .frame(width: 7, height: 7)
+                                .help("应用正在运行，建议先退出")
+                        }
+                        Text(entry.appName)
+                            .font(AppFont.body)
+                            .foregroundColor(.textPrimary)
+                            .lineLimit(1)
+                        Text(sourceBadge(entry.source))
+                            .font(AppFont.caption)
+                            .foregroundColor(.textSecondary)
+                            .padding(.horizontal, 5)
+                            .background(Color.bgSecondary)
+                            .clipShape(Capsule())
+                    }
 
-                    Text(entry.bundleID)
-                        .font(AppFont.caption)
-                        .foregroundColor(.textSecondary)
-                        .lineLimit(1)
+                    HStack(spacing: AppSpacing.sm) {
+                        Text(entry.bundleID)
+                            .font(AppFont.caption)
+                            .foregroundColor(.textSecondary)
+                            .lineLimit(1)
+                        if let lastUsed = entry.lastUsedDate {
+                            Text("最近使用 \(lastUsed, style: .relative)")
+                                .font(AppFont.caption)
+                                .foregroundColor(.textSecondary)
+                        } else {
+                            Text("最近使用：未知")
+                                .font(AppFont.caption)
+                                .foregroundColor(.textSecondary)
+                        }
+                    }
                 }
 
                 Spacer()

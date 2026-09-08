@@ -31,7 +31,9 @@ final class AppUninstallEngineRoutingTests: XCTestCase {
                 appURL: appDir,
                 appSize: 1,
                 leftoverURLs: [leftover],
-                leftoverSize: 1
+                leftoverSize: 1,
+                lastUsedDate: nil, installDate: nil, isRunning: false,
+                source: .userInstalled, residues: []
             )
         ]
 
@@ -72,7 +74,9 @@ final class AppUninstallEngineRoutingTests: XCTestCase {
                 appURL: appDir,
                 appSize: 1_000,
                 leftoverURLs: [],
-                leftoverSize: 0
+                leftoverSize: 0,
+                lastUsedDate: nil, installDate: nil, isRunning: false,
+                source: .userInstalled, residues: []
             )
         ]
 
