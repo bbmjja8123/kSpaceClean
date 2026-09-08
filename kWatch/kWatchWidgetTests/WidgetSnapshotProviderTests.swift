@@ -10,6 +10,7 @@
 import Foundation
 import WidgetKit
 import XCTest
+import MonitorCore
 @testable import kWatchWidget
 
 final class WidgetSnapshotProviderTests: XCTestCase {

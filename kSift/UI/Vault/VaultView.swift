@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct VaultView: View {
     @StateObject private var viewModel = VaultViewModel()

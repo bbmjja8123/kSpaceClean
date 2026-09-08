@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 @MainActor
 public final class AppState: ObservableObject {
@@ -93,7 +94,7 @@ public final class AppState: ObservableObject {
         guard let session = lastCleanupSession else { return }
         lastCleanupSession = nil
         Task { @MainActor in
-            let manager = CleanupManager()
+            let manager = CleanupStack.makeCleanupManager()
             lastUndoFailures = await manager.restoreSession(session)
         }
     }

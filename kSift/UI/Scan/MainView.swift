@@ -1,6 +1,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 import DesignSystem
+import DetectionCore
 
 struct MainView: View {
     @EnvironmentObject var appState: AppState

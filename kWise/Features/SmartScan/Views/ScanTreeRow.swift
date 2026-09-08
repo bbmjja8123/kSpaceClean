@@ -219,10 +219,21 @@ struct ScanTreeRow: View, Equatable {
     ///   /Users/jane/Library/Caches/Google/Chrome/Default/Cache_Data/data_1
     ///     → "data_1 · Cache_Data/"
     public static func friendlyPath(for rawPath: String) -> String {
-        let url = URL(fileURLWithPath: rawPath)
-        let basename = url.lastPathComponent
-        let parent = url.deletingLastPathComponent().lastPathComponent
-        if parent.isEmpty { return basename }
+        let components = (rawPath as NSString).pathComponents
+        guard let basename = components.last, !basename.isEmpty, basename != "/" else {
+            return ""
+        }
+        guard components.count >= 3 else {
+            // "/file.txt" or "plain.db" — no meaningful parent label.
+            return basename
+        }
+        let parent = components[components.count - 2]
+        let grandparent = components[components.count - 3]
+        // Inside generated containers (e.g. Xcode DerivedData) the immediate
+        // per-project folder is noise — surface the stable container instead.
+        if parent != "DerivedData", grandparent == "DerivedData" {
+            return "\(basename) · DerivedData/"
+        }
         return "\(basename) · \(parent)/"
     }
 

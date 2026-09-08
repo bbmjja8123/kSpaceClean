@@ -1,5 +1,6 @@
 import XCTest
 import FileScanner
+import DetectionCore
 @testable import kSift
 
 /// End-to-end smoke test that exercises every detector in the pipeline

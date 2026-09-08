@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import AppCatalogCore
 
 /// Central registry of the app's long-lived services, injected into the view
 /// hierarchy as an environment object so every screen shares one catalog, one

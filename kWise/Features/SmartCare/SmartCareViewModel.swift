@@ -29,38 +29,62 @@ public final class SmartCareViewModel: ObservableObject {
         }
     }
 
-    public init(scanResultsViewModel: ScanResultsViewModel? = nil) {
+    init(scanResultsViewModel: ScanResultsViewModel? = nil) {
         let orch = SmartCareOrchestrator(scanResultsViewModel: scanResultsViewModel)
         self.orchestrator = orch
         // Seed state synchronously so SwiftUI has a non-optional initial value.
         self.state = orch.state
         orch.objectWillChange
             .receive(on: RunLoop.main)
-            .sink { [weak self] in self?.objectWillChange.send() }
+            .sink { [weak self] in
+                guard let self else { return }
+                // Forward the state VALUE, not just the invalidation — without
+                // this copy `state` stays at its seeded `.idle` forever and
+                // the hero UI never reflects scan/clean progress.
+                self.state = self.orchestrator.state
+                if case .done = self.state, self.orchestrator.lastRunQuotaExhausted {
+                    self.orchestrator.resetQuotaFlag()
+                    self.onQuotaExhausted?()
+                }
+                self.objectWillChange.send()
+            }
             .store(in: &cancellables)
     }
 
     private var cancellables: Set<AnyCancellable> = []
 
+    /// Invoked when the confirmed run hit the free-quota ceiling — the root
+    /// presents the paywall (never the view itself).
+    public var onQuotaExhausted: (() -> Void)?
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    func useEngine(_ engine: CleanupEngine) {
+        orchestrator.useEngine(engine)
+    }
+
     // MARK: - Intent
 
     /// Hero CTA. Triggers `Smart Care`: scan → auto-pick → confirm.
     public func runSmartCare() {
-        orch.start()
+        orchestrator.start()
+        state = orchestrator.state
     }
 
     /// User confirms the recommended picks. Cleans them up.
     public func confirm() {
-        orch.confirm()
+        orchestrator.confirm()
+        state = orchestrator.state
     }
 
     /// Re-arm for another run.
     public func reset() {
-        orch.reset()
+        orchestrator.reset()
+        state = orchestrator.state
     }
 
     /// Late-bind the scan view model after SwiftUI environment resolution.
-    public func attach(scanResultsViewModel: ScanResultsViewModel) {
-        orch.attach(scanResultsViewModel: scanResultsViewModel)
+    func attach(scanResultsViewModel: ScanResultsViewModel) {
+        orchestrator.attach(scanResultsViewModel: scanResultsViewModel)
+        state = orchestrator.state
     }
 }

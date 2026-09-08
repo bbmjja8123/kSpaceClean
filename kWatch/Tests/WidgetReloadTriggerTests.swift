@@ -1,5 +1,6 @@
 import XCTest
 import WidgetKit
+import MonitorCore
 @testable import kWatch
 
 /// Tests that the alert-fired path inside `AppCoordinator` triggers a widget

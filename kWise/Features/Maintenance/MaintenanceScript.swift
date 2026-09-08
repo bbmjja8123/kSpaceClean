@@ -1,11 +1,16 @@
 import Foundation
 
-/// System maintenance scripts that can be executed via CLI tools.
+/// System maintenance tasks (v2.0 Phase 2 — sandbox-safe redesign).
 ///
-/// Each case represents a safe, non-root maintenance operation available
-/// to sandboxed Mac App Store apps. All scripts use standard `Process`
-/// invocations against built-in macOS command-line tools.
-public enum MaintenanceScript: String, CaseIterable, Identifiable, Sendable {
+/// The previous implementation shelled out via `Process` to `/usr/bin/mdutil`,
+/// `killall`, `purge`, `atsutil`, `lsregister` — none of which can run inside
+/// the App Sandbox, so every "run" either failed silently or lied (a C-5
+/// violation). kWise is App Store-only and will not use privileged helpers,
+/// so each task is now **guidance-only**: kWise explains the task, hands the
+/// user a copy-paste Terminal command, and — where the target is inside the
+/// user's granted scope (`~/Library/Logs`) — offers a real, engine-backed
+/// action instead.
+public enum MaintenanceTask: String, CaseIterable, Identifiable, Sendable {
     /// Flush DNS cache to resolve domain resolution issues.
     case dnsFlush = "刷新 DNS 缓存"
     /// Rebuild Spotlight index to fix search anomalies.
@@ -16,8 +21,8 @@ public enum MaintenanceScript: String, CaseIterable, Identifiable, Sendable {
     case fontCacheRebuild = "重建字体缓存"
     /// Rebuild Launch Services database to fix "Open With" issues.
     case launchServicesRebuild = "重建 Launch Services"
-    /// Clear system log files to free disk space.
-    case systemLogClear = "清理系统日志"
+    /// Clear user log files to free disk space — engine-backed.
+    case userLogClear = "清理用户日志"
 
     public var id: String { rawValue }
 
@@ -34,12 +39,12 @@ public enum MaintenanceScript: String, CaseIterable, Identifiable, Sendable {
             return "textformat"
         case .launchServicesRebuild:
             return "gearshape.2"
-        case .systemLogClear:
+        case .userLogClear:
             return "doc.text.magnifyingglass"
         }
     }
 
-    /// Localized description of what this script does.
+    /// What this task does.
     public var detail: String {
         switch self {
         case .dnsFlush:
@@ -52,93 +57,39 @@ public enum MaintenanceScript: String, CaseIterable, Identifiable, Sendable {
             return "清除字体缓存，修复字体显示问题"
         case .launchServicesRebuild:
             return "重建应用注册信息，修复打开方式异常"
-        case .systemLogClear:
-            return "清理系统日志文件，释放磁盘空间"
+        case .userLogClear:
+            return "将用户日志移入废纸篓，释放磁盘空间（可回滚）"
         }
     }
 
-    /// Whether this script requires root privileges.
-    ///
-    /// All scripts return `false` for App Store safety. Commands that
-    /// normally benefit from `sudo` are either skipped or use the
-    /// non-elevated fallback.
-    public var requiresRoot: Bool { false }
-
-    /// Execute the maintenance script via the corresponding CLI tool.
-    ///
-    /// - Returns: A human-readable result string describing the outcome.
-    /// - Throws: If the underlying `Process` fails to launch (e.g., executable not found).
-    public func execute() async throws -> String {
+    /// Copy-paste command for Terminal. `nil` for engine-backed tasks.
+    public var terminalCommand: String? {
         switch self {
         case .dnsFlush:
-            try await Self.runProcess(executable: "/usr/bin/dscacheutil", arguments: ["-flushcache"])
-            try await Self.runProcess(executable: "/usr/bin/killall", arguments: ["-HUP", "mDNSResponder"])
-            return "DNS 缓存已刷新"
-
+            return "sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
         case .spotlightRebuild:
-            try await Self.runProcess(executable: "/usr/bin/mdutil", arguments: ["-E", "/"])
-            try await Self.runProcess(executable: "/usr/bin/mdutil", arguments: ["-i", "on", "/"])
-            return "Spotlight 索引已重建"
-
+            return "sudo mdutil -E /"
         case .memoryPurge:
-            try await Self.runProcess(executable: "/usr/sbin/purge", arguments: [])
-            return "内存已释放"
-
+            return "sudo purge"
         case .fontCacheRebuild:
-            try await Self.runProcess(executable: "/usr/bin/atsutil", arguments: ["databases", "-remove"])
-            // Skip the sudo variant for App Store safety (no root privilege).
-            return "字体缓存已重建"
-
+            return "sudo atsutil databases -remove && sudo atsutil server -shutdown && sudo atsutil server -ping"
         case .launchServicesRebuild:
-            let lsregister = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
-            try await Self.runProcess(executable: lsregister, arguments: [
-                "-kill", "-r",
-                "-domain", "local",
-                "-domain", "system",
-                "-domain", "user",
-            ])
-            return "Launch Services 已重建"
-
-        case .systemLogClear:
-            let home = NSHomeDirectory()
-            try await Self.runProcess(executable: "/bin/rm", arguments: ["-rf", "\(home)/Library/Logs/*.asl"])
-            // Remove log files older than 7 days from ~/Library/Logs/.
-            try await Self.runProcess(executable: "/usr/bin/find", arguments: [
-                "\(home)/Library/Logs", "-type", "f", "-mtime", "+7", "-delete",
-            ])
-            return "系统日志已清理"
+            return "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user"
+        case .userLogClear:
+            return nil  // Engine-backed — kWise does this itself.
         }
     }
 
-    // MARK: - Private Helpers
+    /// `true` when kWise performs this task itself inside the granted scope
+    /// (no Terminal needed). Only tasks under the user's own home qualify.
+    public var isEngineBacked: Bool {
+        self == .userLogClear
+    }
 
-    /// Launches a child process and waits for it to finish.
-    ///
-    /// Uses `Process` with a `terminationHandler` to bridge the synchronous
-    /// process lifecycle into Swift Concurrency without blocking the
-    /// cooperative thread pool.
-    ///
-    /// - Parameters:
-    ///   - executable: Absolute path to the executable.
-    ///   - arguments: Command-line arguments to pass.
-    /// - Throws: Rethrows `Process.run()` errors or `POSIXError` if the
-    ///           executable cannot be launched. Non-zero exit codes are
-    ///           tolerated since most maintenance commands degrade gracefully.
-    private static func runProcess(executable: String, arguments: [String]) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: executable)
-            process.arguments = arguments
-
-            process.terminationHandler = { _ in
-                continuation.resume()
-            }
-
-            do {
-                try process.run()
-            } catch {
-                continuation.resume(throwing: error)
-            }
-        }
+    /// Honest sandbox note shown on every card (C-5: no pretending).
+    public var sandboxNote: String {
+        isEngineBacked
+            ? "由 kWise 直接完成，移入废纸篓可回滚。"
+            : "出于 App Store 沙箱限制，此项需在终端中执行。"
     }
 }

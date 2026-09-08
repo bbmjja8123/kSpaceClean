@@ -1,4 +1,5 @@
 import XCTest
+import DetectionCore
 @testable import kSift
 
 final class ProfileConfigStoreTests: XCTestCase {

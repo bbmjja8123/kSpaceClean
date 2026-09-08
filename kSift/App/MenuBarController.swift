@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import DetectionCore
 
 /// Owns kSift's menu-bar status item and routes menu actions into the app.
 @MainActor

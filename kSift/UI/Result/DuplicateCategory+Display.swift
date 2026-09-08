@@ -1,4 +1,5 @@
 import SwiftUI
+import DetectionCore
 
 extension DuplicateCategory {
     var displayName: String {

@@ -1,6 +1,7 @@
 import XCTest
 import MetricsKit
 import DesignSystem
+import MonitorCore
 @testable import kWatch
 
 // MARK: - SettingsViewModelTests

@@ -1,4 +1,5 @@
 import Foundation
+import AppCatalogCore
 
 /// Actor that enumerates and mutates macOS startup items visible to the
 /// app — login items, launch agents, launch daemons, and pref panes (the

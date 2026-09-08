@@ -1,6 +1,7 @@
 import Foundation
 import MetricsKit
 import UserNotifications
+import MonitorCore
 
 /// Centralized dependency injection for the kWatch app.
 ///

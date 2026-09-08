@@ -1,4 +1,5 @@
 import Foundation
+import DetectionCore
 @testable import kSift
 
 // MARK: - Temp File Helpers

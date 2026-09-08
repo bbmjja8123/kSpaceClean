@@ -5,6 +5,7 @@ import AppKit
 import MetricsKit
 import StoreKit
 import UserNotifications
+import MonitorCore
 
 /// Drives the Settings window.
 ///
@@ -359,36 +360,5 @@ public final class NoopStoreManager: StoreManagerProtocol, @unchecked Sendable {
 
     public func finish(_ transaction: Transaction) async {
         _ = transaction
-    }
-}
-
-// MARK: - Diagnostics exporting
-
-/// Boundary so production code can inject a real archive builder while
-/// tests and the no-op container pass through `NoopDiagnosticsExporter`.
-public protocol DiagnosticsExporting: Sendable {
-    func export() async throws -> URL
-}
-
-/// Default exporter used when no real implementation is wired. Returns
-/// `nil` from the view model rather than throwing so the UI can simply
-/// fall through.
-public struct NoopDiagnosticsExporter: DiagnosticsExporting {
-    public init() {}
-
-    public func export() async throws -> URL {
-        throw DiagnosticsExporterError.notConfigured
-    }
-}
-
-/// Errors raised by `DiagnosticsExporting` implementations.
-public enum DiagnosticsExporterError: LocalizedError {
-    case notConfigured
-
-    public var errorDescription: String? {
-        switch self {
-        case .notConfigured:
-            return String(localized: "Diagnostics export is not configured in this build.")
-        }
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 struct SettingsView: View {
     @StateObject private var viewModel: SettingsViewModel

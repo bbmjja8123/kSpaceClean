@@ -155,6 +155,75 @@ final class ScanResultsViewModel: ObservableObject {
     /// the engine output when a scan completes.
     @Published var filters: ScanFilterOptions = .default
 
+    // MARK: - Master-detail state (UX 重构 Phase 2)
+
+    /// Category currently shown in the detail column. `nil` = first category.
+    @Published var focusedCategoryID: UUID?
+    /// Level-3 inline file lists currently expanded (row tap, not chevron).
+    @Published var expandedAppIDs: Set<UUID> = []
+    /// Rows where the user pressed "显示其余 N 项" — cap lifted for that row.
+    @Published var capLiftedIDs: Set<UUID> = []
+    /// Level-2 search field (matches appName / bundleID / title).
+    @Published var categoryQuery: String = ""
+    /// Row whose context the detail panel shows (Phase 3).
+    @Published var selectedNodeID: UUID?
+
+    /// O(1) node + parent lookups. NOT @Published: rebuilt inside the same
+    /// transaction as the snapshot write so no extra `objectWillChange`
+    /// fires (F4 contract), and reads never invalidate SwiftUI.
+    private(set) var nodeIndex: [UUID: any ScanTreeNode] = [:]
+    private(set) var parentIndex: [UUID: UUID] = [:]
+
+    /// Single DFS over `snapshot.categories`, run at scan completion and
+    /// filter re-apply (both already inside snapshot-write transactions).
+    func rebuildIndices() {
+        var nodes: [UUID: any ScanTreeNode] = [:]
+        var parents: [UUID: UUID] = [:]
+        func walk(_ node: any ScanTreeNode, parent: UUID?) {
+            nodes[node.id] = node
+            if let parent { parents[node.id] = parent }
+            for child in node.children { walk(child, parent: node.id) }
+        }
+        for category in snapshot.categories {
+            walk(category, parent: nil)
+        }
+        nodeIndex = nodes
+        parentIndex = parents
+    }
+
+    /// Live node resolution — detail panel reads state/size through this so
+    /// cascade changes never go stale.
+    func node(for id: UUID) -> (any ScanTreeNode)? { nodeIndex[id] }
+
+    /// Re-aggregates only the real ancestor chain of `id` (O(depth)) —
+    /// replaces the per-click `refreshAllParents` that did one DFS per
+    /// category (the second half of the two-whole-tree-walks-per-click bug).
+    func refreshAncestors(of id: UUID) {
+        var cursor = parentIndex[id]
+        while let currentID = cursor {
+            guard let current = nodeIndex[currentID] else { break }
+            current.refreshState()
+            cursor = parentIndex[currentID]
+        }
+    }
+
+    /// Incremental summary: recomputes one category's contribution and
+    /// adjusts the published totals by the delta — O(changed subtree)
+    /// instead of a full-tree walk on every checkbox tap.
+    func refreshSummary(forCategory categoryID: UUID) {
+        guard let category = nodeIndex[categoryID] as? ScanCategory else { return }
+        let selected = Self.collectSelected(in: category)
+        let previous = categoryContribution[categoryID] ?? (0, 0)
+        var working = snapshot
+        working.totalSelectedSize += selected.size - Int64(previous.size)
+        working.totalSelectedCount += selected.count - previous.count
+        categoryContribution[categoryID] = (selected.size, selected.count)
+        snapshot = working
+    }
+
+    /// Per-category selected (size, count) memo backing ``refreshSummary(forCategory:)``.
+    private var categoryContribution: [UUID: (size: Int64, count: Int)] = [:]
+
     /// Engine that drives real scans. The view model subscribes to its
     /// `@Published categories` array and folds them into its own state.
     /// `nil` in previews; supplied by `RootView` in production.
@@ -228,23 +297,30 @@ final class ScanResultsViewModel: ObservableObject {
 
     /// Flips the selection state of `node` and propagates the cascade.
     ///
-    /// The new state is `node.state == .on ? .off : .on` — `.mixed` rows
-    /// become `.on` on the first tap (intentional: users always start by
-    /// selecting, then refine downward).
-    ///
-    /// After the node's own `setState(_:)` runs the cascade downward,
-    /// ``refreshAllParents(of:)`` bubbles the change back up to any
-    /// intermediate `ScanCategory` / `ScanSubCategory` rows so the
-    /// tri-state checkboxes correctly reflect `.mixed` / `.on` / `.off`.
-    /// Finally ``updateSummary()`` rebuilds the bottom-bar counters.
+    /// UX 重构 Phase 2: the checkbox tap is now O(depth + changed subtree) —
+    /// `setState` cascades down, `refreshAncestors(of:)` bubbles up along
+    /// the `parentIndex` chain, and `refreshSummary(forCategory:)` applies
+    /// the delta to the totals. The old path did 2 full-tree DFS walks per
+    /// click (`refreshAllParents` × categories + `updateSummary`).
     ///
     /// - Parameter node: The tree node the user toggled.
     func toggleSelect(_ node: any ScanTreeNode) {
         let newState: CheckState = (node.state == .on) ? .off : .on
         node.setState(newState)
-        // Refresh parent states
-        refreshAllParents(of: node)
-        updateSummary()
+        refreshAncestors(of: node.id)
+        // The topmost ancestor is a category — refresh its contribution.
+        if var cursor = parentIndex[node.id] {
+            while let next = parentIndex[cursor] { cursor = next }
+            refreshSummary(forCategory: cursor)
+        } else if nodeIndex[node.id] is ScanCategory {
+            refreshSummary(forCategory: node.id)
+        }
+    }
+
+    /// Context the detail panel shows on row tap (Phase 3); selection is
+    /// left untouched — tap ≠ check.
+    func selectDetail(_ id: UUID?) {
+        selectedNodeID = id
     }
 
     // MARK: - Bulk selection (v1.5 Task 4)
@@ -336,69 +412,6 @@ final class ScanResultsViewModel: ObservableObject {
         }
     }
 
-    /// Re-aggregates every ancestor of `node` so the tri-state checkboxes
-    /// on parent rows reflect the latest child mutations.
-    ///
-    /// I1 fix: the previous implementation only refreshed the immediate
-    /// parent (one-level aggregation). We now walk the full ancestor
-    /// chain bottom-up so a leaf change in a deeply-nested tree still
-    /// bubbles correctly to the top-level category.
-    ///
-    /// - Parameter node: The node whose ancestors need refreshing.
-    func refreshAllParents(of node: any ScanTreeNode) {
-        for category in snapshot.categories {
-            Self.refreshAncestors(of: node.id, in: category)
-        }
-    }
-
-    /// Recursive helper — refreshes every node on the ancestor chain of
-    /// `targetID` inside `subtree`. O(n) per leaf change, but n is bounded
-    /// by the tree depth which is at most 4 in the v1 spec.
-    private static func refreshAncestors(of targetID: UUID, in subtree: any ScanTreeNode) {
-        if subtree.id == targetID { return }
-        // Refresh self if any direct child might have changed.
-        var anyChildChanged = false
-        for child in subtree.children {
-            if child.id == targetID { anyChildChanged = true; break }
-            if containsID(targetID, in: child) { anyChildChanged = true; break }
-        }
-        if anyChildChanged {
-            subtree.refreshState()
-            for child in subtree.children {
-                refreshAncestors(of: targetID, in: child)
-            }
-        }
-    }
-
-    /// Depth-first search for `targetID` inside `subtree`. Returns true as
-    /// soon as any node on the chain has the id.
-    private static func containsID(_ targetID: UUID, in subtree: any ScanTreeNode) -> Bool {
-        for child in subtree.children {
-            if child.id == targetID { return true }
-            if containsID(targetID, in: child) { return true }
-        }
-        return false
-    }
-
-    /// Depth-first search for the direct parent of the node identified
-    /// by `id` inside the subtree rooted at `node`.
-    ///
-    /// Returns `nil` when `id` is the root or is not present in the
-    /// subtree (which can happen if `categories` was reassigned mid-edit
-    /// and the old node is no longer reachable).
-    ///
-    /// - Parameters:
-    ///   - id: UUID of the node whose parent we want.
-    ///   - node: Root of the subtree to search.
-    /// - Returns: The parent `ScanTreeNode`, or `nil`.
-    private func findParent(of id: UUID, in node: any ScanTreeNode) -> (any ScanTreeNode)? {
-        for child in node.children {
-            if child.id == id { return node }
-            if let found = findParent(of: id, in: child) { return found }
-        }
-        return nil
-    }
-
     /// Populates ``categories`` with a small representative tree so the
     /// view renders meaningful content before the real scanner wires up.
     ///
@@ -434,6 +447,7 @@ final class ScanResultsViewModel: ObservableObject {
         var mock = snapshot
         mock.categories = [category]
         assign(snapshot: mock)
+        rebuildIndices()
     }
 
     /// Start a real scan against `rootPaths` using the bound ``engine``.
@@ -517,6 +531,19 @@ final class ScanResultsViewModel: ObservableObject {
         // Single write — one `objectWillChange` emission covers all five
         // logical state changes.
         snapshot = newSnapshot
+        // Rebuild the O(1) indices + per-category contribution memo in the
+        // same transaction (no extra objectWillChange — non-@Published).
+        rebuildIndices()
+        categoryContribution.removeAll()
+        for category in newSnapshot.categories {
+            let selected = Self.collectSelected(in: category)
+            categoryContribution[category.id] = (selected.size, selected.count)
+        }
+        // Reset the master-detail focus to the first (largest) category.
+        focusedCategoryID = nil
+        expandedAppIDs.removeAll()
+        capLiftedIDs.removeAll()
+        selectedNodeID = nil
     }
 
     /// Fire-and-forget scan trigger for SwiftUI button actions.
@@ -687,5 +714,113 @@ final class ScanResultsViewModel: ObservableObject {
             isRecommended: result.isRecommended,
             isHiddenByFilter: hidden
         )
+    }
+
+    // MARK: - Master-detail row suppliers (UX 重构 Phase 2)
+
+    /// Presentation caps for the master-detail lists. The old tree
+    /// materialized an entire expanded subtree in one layout pass — the
+    /// root cause of the multi-second 应用缓存 freeze. Suppliers return
+    /// only the capped slice; "显示其余 N 项" lifts the cap per row.
+    enum ScanListCap {
+        static let subcategories = 30
+        static let files = 20
+    }
+
+    /// One capped page of rows for a master-detail level.
+    struct ScanLevelPage {
+        /// Sorted size-descending, filtered, capped.
+        let nodes: [any ScanTreeNode]
+        /// What "显示其余 N 项（按大小）" advertises (0 when the cap isn't hit).
+        let remainingCount: Int
+    }
+
+    /// Level-2 rows for a category: one row per app bucket (bundleID-matched)
+    /// or pseudo-app folder, sorted by size descending, capped at
+    /// `ScanListCap.subcategories` unless the cap was lifted for this
+    /// category. `query` filters by appName / bundleID / title.
+    func visibleSubcategories(in category: ScanCategory) -> [any ScanTreeNode] {
+        let query = categoryQuery.trimmingCharacters(in: .whitespaces).lowercased()
+        let visible = category.subItems
+            .filter { showAllHidden ? true : !$0.isHiddenByFilter }
+            .filter { sub in
+                guard !query.isEmpty else { return true }
+                return sub.title.lowercased().contains(query)
+                    || (sub.appName?.lowercased().contains(query) ?? false)
+                    || (sub.bundleID?.lowercased().contains(query) ?? false)
+            }
+            .sorted { $0.totalSize > $1.totalSize }
+        guard !capLiftedIDs.contains(category.id), visible.count > ScanListCap.subcategories else {
+            return visible
+        }
+        return Array(visible.prefix(ScanListCap.subcategories))
+    }
+
+    /// Number of rows hidden behind the level-2 cap for `category`.
+    func remainingSubcategoryCount(in category: ScanCategory) -> Int {
+        let visible = category.subItems.filter { showAllHidden ? true : !$0.isHiddenByFilter }
+        guard !capLiftedIDs.contains(category.id) else { return 0 }
+        return max(0, visible.count - ScanListCap.subcategories)
+    }
+
+    /// Level-3 rows inside an app bucket: flatten actions' results plus
+    /// direct results, size-descending, capped at `ScanListCap.files`
+    /// unless lifted for this app row.
+    func visibleFiles(in sub: ScanSubCategory) -> [any ScanTreeNode] {
+        let leaves: [any ScanTreeNode] = sub.showAction
+            ? sub.actions.flatMap { $0.results.map { $0 as any ScanTreeNode } }
+            : sub.directResults.map { $0 as any ScanTreeNode }
+        let visible = leaves
+            .filter { showAllHidden ? true : !$0.isHiddenByFilter }
+            .sorted { $0.totalSize > $1.totalSize }
+        guard !capLiftedIDs.contains(sub.id), visible.count > ScanListCap.files else {
+            return visible
+        }
+        return Array(visible.prefix(ScanListCap.files))
+    }
+
+    /// Number of file rows hidden behind the level-3 cap for `sub`.
+    func remainingFileCount(in sub: ScanSubCategory) -> Int {
+        let leaves: [any ScanTreeNode] = sub.showAction
+            ? sub.actions.flatMap { $0.results.map { $0 as any ScanTreeNode } }
+            : sub.directResults.map { $0 as any ScanTreeNode }
+        let visible = leaves.filter { showAllHidden ? true : !$0.isHiddenByFilter }
+        guard !capLiftedIDs.contains(sub.id) else { return 0 }
+        return max(0, visible.count - ScanListCap.files)
+    }
+
+    /// The category currently shown in the detail column (first by size
+    /// when nothing focused).
+    var focusedCategory: ScanCategory? {
+        if let focusedCategoryID,
+           let category = nodeIndex[focusedCategoryID] as? ScanCategory {
+            return category
+        }
+        return snapshot.categories.sorted { $0.totalSize > $1.totalSize }.first
+    }
+
+    // MARK: - Cleanup bridge (UX 重构 Phase 2)
+
+    /// Every URL currently checked in the tree — the SummaryBar 清理 button
+    /// now cleans exactly this (previously it re-ran Smart Care and
+    /// ignored the user's selection).
+    func selectedURLs() -> [URL] {
+        snapshot.categories.flatMap { $0.collectSelected() }
+    }
+
+    /// Selected URL → scanned size, so the cleanup outcome can report
+    /// truthful freed bytes without a per-URL stat storm.
+    func selectedSizesByURL() -> [URL: Int64] {
+        var sizes: [URL: Int64] = [:]
+        func walk(_ node: any ScanTreeNode) {
+            if let result = node as? ScanResult, node.state == .checked {
+                sizes[result.url] = result.fileSize
+            }
+            if node.state != .unchecked {
+                for child in node.children { walk(child) }
+            }
+        }
+        for category in snapshot.categories { walk(category) }
+        return sizes
     }
 }

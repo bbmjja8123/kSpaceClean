@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import DetectionCore
 
 /// Core Data-backed vault storage, sharing the main kSift store.
 ///

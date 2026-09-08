@@ -33,7 +33,7 @@ public final class StoreManager: ObservableObject, StoreProtocol {
                 break
             }
         } catch {
-            print("Purchase failed: \(error)")
+            Log.store.error("Purchase failed: \(error)")
         }
     }
 

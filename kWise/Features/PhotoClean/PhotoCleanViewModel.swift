@@ -6,8 +6,19 @@ public final class PhotoCleanViewModel: ObservableObject {
     @Published public var isScanning = false
 
     private let scanner = PhotoCacheScanner()
+    /// Structured-API engine (v2.0 Phase 2): photo-cache cleanup lands in
+    /// the 30-day history and consumes free-tier quota.
+    private(set) var engine: CleanupEngine
+    public var onQuotaExhausted: (() -> Void)?
 
-    public init() {}
+    public init(engine: CleanupEngine? = nil) {
+        self.engine = engine ?? CleanupEngine.standard()
+    }
+
+    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
+    public func useEngine(_ engine: CleanupEngine) {
+        self.engine = engine
+    }
 
     // MARK: - Scan
 
@@ -69,6 +80,7 @@ public final class PhotoCleanViewModel: ObservableObject {
     // MARK: - Cleanup
 
     /// Trashes all selected items and removes them from the published list.
+    /// Routes through the shared cleanup engine (history + quota, v2.0).
     ///
     /// - Returns: The number of items that were successfully moved to Trash.
     @discardableResult
@@ -76,11 +88,20 @@ public final class PhotoCleanViewModel: ObservableObject {
         let toRemove = selectedItems
         guard !toRemove.isEmpty else { return 0 }
 
-        let count = await scanner.cleanup(items: toRemove)
+        let targets = toRemove.map { item in
+            CleanupTarget(url: item.url, size: item.estimatedSize, risk: .recommended)
+        }
+        var count = 0
+        if let outcome = try? await engine.cleanup(targets: targets) {
+            count = outcome.succeeded.count
+            if outcome.quotaExhausted {
+                onQuotaExhausted?()
+            }
+        }
 
         // Remove successfully-trashed items from the published list.
-        let trashedIDs = Set(toRemove.prefix(count).map { $0.id })
-        items.removeAll { trashedIDs.contains($0.id) }
+        let trashedURLs = Set(targets.prefix(count).map(\.url.path))
+        items.removeAll { trashedURLs.contains($0.url.path) }
 
         return count
     }

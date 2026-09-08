@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 /// Loads the recent-scan reassurance data for the idle dashboard.
 /// Repository injectable so previews/tests can stub it.

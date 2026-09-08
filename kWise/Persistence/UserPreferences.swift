@@ -1,6 +1,6 @@
 import Foundation
 
-public struct UserPreferences: Codable {
+public struct UserPreferences: Codable, Equatable {
     public var largeFileThreshold: Int64 = 100 * 1024 * 1024  // 100MB
     public var ignoredPaths: [String] = []
     public var aiClassificationEnabled: Bool = true
@@ -10,8 +10,16 @@ public struct UserPreferences: Codable {
     public var launchAtLogin: Bool = false
     public var showMenuBarDiskUsage: Bool = true
     public var scanSpeed: ScanSpeed = .medium
+    /// Post-cleanup local notification (v2.0 Phase 1 — the old Settings
+    /// toggle was `.constant(true)` with nothing behind it).
+    public var notifyAfterCleanup: Bool = false
+    /// Shredder overwrite passes (v2.0 Phase 5). 1 is the honest default on
+    /// SSD; 3 is the opt-in "HDD 模式".
+    public var shredPasses: Int = 1
+    /// Gates the assistant's semantic (NLEmbedding) layer (v2.0 Phase 8).
+    public var assistantEnabled: Bool = true
 
-    public enum CleanAction: String, Codable {
+    public enum CleanAction: String, Codable, Equatable {
         case trash, permanent
     }
 

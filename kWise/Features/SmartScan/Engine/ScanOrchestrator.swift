@@ -23,6 +23,7 @@
 
 import Foundation
 import FileScanner
+import PowerScope
 
 // MARK: - Category Definition
 
@@ -158,6 +159,23 @@ public actor ScanOrchestrator {
     private let riskClassifier: RiskClassifier
     private let bundleIDResolver: BundleIDResolver
     private let fileEnumerator: FileEnumerator
+    /// Power scope (Phase 1). When present, unreadable roots are skipped and
+    /// reported via ``scopeCoverage`` instead of silently yielding 0 results.
+    private let scope: (any PowerScopeProviding)?
+    /// Root paths skipped during the most recent scan because the current
+    /// scope cannot read them. Reset per scan.
+    private var lastRestrictedRoots: [String] = []
+
+    /// Honest coverage accounting for the most recent scan.
+    public func scopeCoverage(scannedBytes: Int64, scannedFiles: Int) -> ScopeCoverage {
+        ScopeCoverage(
+            scannedBytes: scannedBytes,
+            scannedFiles: scannedFiles,
+            skippedRegions: lastRestrictedRoots.map {
+                .init(id: $0, displayName: ($0 as NSString).lastPathComponent)
+            }
+        )
+    }
 
     // MARK: Mutable state
     private var categoriesScanned: Int = 0
@@ -218,12 +236,14 @@ public actor ScanOrchestrator {
         categoryDefinitions: [CategoryDefinition] = CategoryDefinition.defaults,
         riskClassifier: RiskClassifier = RiskClassifier(),
         bundleIDResolver: BundleIDResolver = BundleIDResolver(),
-        fileEnumerator: FileEnumerator = FileEnumerator()
+        fileEnumerator: FileEnumerator = FileEnumerator(),
+        scope: (any PowerScopeProviding)? = nil
     ) {
         self.categoryDefs = categoryDefinitions
         self.riskClassifier = riskClassifier
         self.bundleIDResolver = bundleIDResolver
         self.fileEnumerator = fileEnumerator
+        self.scope = scope
 
         // C6: kick off the JSON load eagerly. The init is synchronous but
         // `BundleIDResolver.load(from:)` is `async`; we fire-and-forget
@@ -287,6 +307,7 @@ public actor ScanOrchestrator {
 
         // Reset per-scan buffers.
         isCancelled = false
+        lastRestrictedRoots.removeAll(keepingCapacity: true)
         pendingCategoryEvents.removeAll(keepingCapacity: true)
         hasFinishedScan = false
         finalTerminalState = ScanProgress(
@@ -358,12 +379,13 @@ public actor ScanOrchestrator {
 
         await withTaskGroup(of: ScanOutcome.self) { group in
             for def in categoryDefs {
-                group.addTask { [riskClassifier, bundleIDResolver, fileEnumerator, weak self] in
+                group.addTask { [riskClassifier, bundleIDResolver, fileEnumerator, scope, weak self] in
                     await Self.scanCategory(
                         def,
                         classifier: riskClassifier,
                         resolver: bundleIDResolver,
                         enumerator: fileEnumerator,
+                        scope: scope,
                         onProgress: { delta in
                             guard let self else { return }
                             await self.recordProgress(delta, epoch: epoch)
@@ -380,6 +402,9 @@ public actor ScanOrchestrator {
                 completed += 1
                 if let err = outcome.error {
                     failedCategories.append("\(outcome.category.title): \(err)")
+                }
+                if !outcome.restrictedPaths.isEmpty {
+                    lastRestrictedRoots.append(contentsOf: outcome.restrictedPaths)
                 }
 
                 // C2: enqueue the per-category payload so `categoryStream()`
@@ -616,6 +641,8 @@ public actor ScanOrchestrator {
         let bytes: Int64
         let fileCount: Int
         let error: String?
+        /// Root paths skipped because the power scope cannot read them.
+        let restrictedPaths: [String]
     }
 
     /// Walks every path under `def.paths`, classifies each file's risk,
@@ -631,6 +658,7 @@ public actor ScanOrchestrator {
         classifier: RiskClassifier,
         resolver: BundleIDResolver,
         enumerator: FileEnumerator,
+        scope: (any PowerScopeProviding)?,
         onProgress: (ScanDelta) async -> Void
     ) async -> ScanOutcome {
         var subItems: [ScanSubCategory] = []
@@ -655,6 +683,13 @@ public actor ScanOrchestrator {
         var bucketBundleID: [String: String] = [:]
         var bucketAppName: [String: String] = [:]
 
+        var restrictedPaths: [String] = []
+
+        // Resolve the capability once per category; each root path is
+        // checked against it (plus a direct readability probe — the
+        // capability's probe may lag a mid-session grant).
+        let capability = await scope?.capability()
+
         for rootPath in def.paths {
             // Sandbox fix: `expandingTildeInPath` would expand `~` against
             // the container home under App Sandbox, making `~/Library/Caches`
@@ -663,6 +698,19 @@ public actor ScanOrchestrator {
             // before enumerating. `FileEnumerator` itself is shared with
             // kSift, so this stays here — orchestrator-level responsibility.
             let resolvedPath = UserPathResolver.expandTilde(rootPath)
+
+            // Phase 1 PowerScope gate: an unreadable root must surface as a
+            // skipped region, never as a silent zero-result walk.
+            let rootURL = URL(fileURLWithPath: resolvedPath)
+            let coveredByScope = await capability?.canRead(rootURL) ?? false
+            var isDir: ObjCBool = false
+            let readableNow = FileManager.default.fileExists(atPath: resolvedPath, isDirectory: &isDir)
+                && isDir.boolValue
+                && FileManager.default.isReadableFile(atPath: resolvedPath)
+            if scope != nil, !coveredByScope, !readableNow {
+                restrictedPaths.append(resolvedPath)
+                continue
+            }
 
             // F8: signpost marker around the FD-walk loop so an
             // Instruments run can attribute time to enumeration
@@ -797,7 +845,8 @@ public actor ScanOrchestrator {
             category: category,
             bytes: totalSize,
             fileCount: totalFiles,
-            error: nil
+            error: nil,
+            restrictedPaths: restrictedPaths
         )
     }
 

@@ -1,5 +1,6 @@
 import Foundation
 import MetricsKit
+import MonitorCore
 
 /// Production wiring. Constructs real adapters and aggregates them into a single container.
 ///

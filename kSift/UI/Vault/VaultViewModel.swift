@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import DetectionCore
 
 @MainActor
 final class VaultViewModel: ObservableObject {
@@ -11,7 +12,7 @@ final class VaultViewModel: ObservableObject {
 
     private let manager: VaultManager
 
-    init(manager: VaultManager = VaultManager()) {
+    init(manager: VaultManager = CleanupStack.makeVaultManager()) {
         self.manager = manager
     }
 

@@ -1,5 +1,6 @@
 import Foundation
 import UniformTypeIdentifiers
+import DetectionCore
 
 /// Pure value-mapping helpers shared by the Core Data repository and its tests.
 ///

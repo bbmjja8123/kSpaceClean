@@ -1,5 +1,6 @@
 import XCTest
 import AppKit
+import AppCatalogCore
 @testable import kFresh
 
 @MainActor

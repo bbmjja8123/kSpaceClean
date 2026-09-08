@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct ScanResultsView: View {
     let groups: [DuplicateGroup]

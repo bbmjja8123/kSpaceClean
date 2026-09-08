@@ -1,6 +1,7 @@
 import SwiftUI
 import MetricsKit
 import DesignSystem
+import MonitorCore
 
 /// Displays the list of threshold alerts with enable/disable toggles,
 /// add and delete actions, and a notification-permission banner.

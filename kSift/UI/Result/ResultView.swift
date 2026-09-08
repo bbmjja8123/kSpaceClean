@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct ResultView: View {
     @EnvironmentObject var appState: AppState
@@ -412,7 +413,7 @@ struct ResultView: View {
     }
 
     private func runCleanup() {
-        let manager = CleanupManager()
+        let manager = CleanupStack.makeCleanupManager()
         let bytes = viewModel.selectedBytes
         let stagedCount = viewModel.stagedFileCount
         Task {

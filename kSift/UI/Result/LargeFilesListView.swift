@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 /// The Large Files section of the results screen: every file at or above
 /// the configured threshold, sortable, multi-selectable, with the same
@@ -217,7 +218,7 @@ struct LargeFilesListView: View {
     private func deleteSelected() async {
         let toDelete = files.filter { selectedIds.contains($0.id) }
         guard !toDelete.isEmpty else { return }
-        let manager = CleanupManager()
+        let manager = CleanupStack.makeCleanupManager()
         do {
             let result = try await manager.moveToTrash(toDelete)
             appState.lastCleanupSession = result.session

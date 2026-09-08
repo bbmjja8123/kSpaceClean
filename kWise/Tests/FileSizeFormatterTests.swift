@@ -4,9 +4,9 @@ import CommonUtils
 
 final class FileSizeFormatterTests: XCTestCase {
     func test_stringFromBytes() {
-        XCTAssertEqual(FileSizeFormatter.string(from: 0), "Zero KB")
+        XCTAssertEqual(FileSizeFormatter.string(from: 0), "Zero kB")
         XCTAssertEqual(FileSizeFormatter.string(from: 500), "500 bytes")
-        XCTAssertTrue(FileSizeFormatter.string(from: 1024).contains("KB"))
+        XCTAssertTrue(FileSizeFormatter.string(from: 1024).contains("kB"))
     }
 
     func test_abbreviatedFromBytes() {

@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct RootView: View {
     @EnvironmentObject var appState: AppState

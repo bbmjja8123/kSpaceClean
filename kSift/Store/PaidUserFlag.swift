@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import DetectionCore
 
 /// Thread-safe mirror of `StoreManager.isPaidUser` so non-MainActor contexts
 /// (the `ScanOrchestrator` actor and the `IncrementalIndex` actor it owns)

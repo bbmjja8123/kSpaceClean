@@ -1,5 +1,6 @@
 import SwiftUI
 import DesignSystem
+import DetectionCore
 
 struct HistoryView: View {
     @StateObject private var viewModel = HistoryViewModel()

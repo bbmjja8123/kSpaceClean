@@ -1,5 +1,6 @@
 import StoreKit
 import SwiftUI
+import DesignSystem
 
 /// Pro purchase sheet: feature bullets, purchase/restore actions, and a
 /// graceful empty-products state with a retry affordance — no endless spinner.
