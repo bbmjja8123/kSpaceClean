@@ -260,12 +260,9 @@ kWise/
 
 ### 5.2 Git 规范
 - 主分支：`main`（保护，仅 PR / 显式 merge 合并）
-- **kWise 直接在 main 开发**（2026-09-08 起）：kWise 是主 App，其 worktree 已删除；主 worktree（kSpaceClean，main 分支）即 kWise 的开发现场
-- **3 个永久 worktree**：`kMonitor` / `kSift` / `kFresh`，每个独占一个 App 目录
-  - 路径：`/Users/torsys/Documents/aicoding/<app>`（与主 worktree 同级）
-  - 分支：`worktree-<app>-v1`（例如 `worktree-kmonitor-v1`）
-  - 永久保留，禁止 `git worktree remove`
-  - 边界严格：用 `scripts/commit-app.sh <app>` stage，跨 App 路径会被拒绝；kWise 的改动在主 worktree 直接 commit（仍建议用 `scripts/commit-app.sh kWise` 做 stage 边界检查）
+- **全部 App 直接在 main 开发**（2026-09-09 起）：4 个 worktree 全部删除，主 worktree（kSpaceClean，main 分支）是唯一开发现场；kFoundation 框架架构（§2.1.1）不受影响
+  - `scripts/commit-app.sh <app>` 仍用于 stage 边界检查（跨 App 路径拒绝、kFoundation 需 --allow-kfoundation）
+  - 多 App 改动的调用点修复在同一 commit 内完成（单 worktree 有全部 App 源码，可一次构建验证 4 个 target）
 - 开发分支：`feature/<app>-<feature>`、`fix/<app>-<bug>`（短期 feature 分支在对应 worktree 内使用）
 - 提交信息：`feat(kWise): add 3D galaxy renderer`
 - Merge 节奏：见 `docs/workflow/4-worktree-merge-cadence.md`（默认每周五 16:00 merge window）

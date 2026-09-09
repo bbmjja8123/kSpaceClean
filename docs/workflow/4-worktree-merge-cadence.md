@@ -4,12 +4,16 @@
 
 ## 1. 布局
 
-| App | 分支 | Worktree 路径 |
-|---|---|---|
-| kWise | `main`（直接开发） | `/Users/torsys/Documents/aicoding/kSpaceClean`（主 worktree） |
-| kMonitor | `worktree-kmonitor-v1` | `/Users/torsys/Documents/aicoding/kMonitor` |
-| kSift | `worktree-ksift-v1` | `/Users/torsys/Documents/aicoding/kSift` |
-| kFresh | `worktree-kfresh-v1` | `/Users/torsys/Documents/aicoding/kFresh` |
+## 1. 布局（2026-09-09 更新：worktree 已全部移除）
+
+**所有 App 直接在 main（主 worktree kSpaceClean）开发**。下表为历史记录：
+
+| App | 历史 Worktree 路径 |
+|---|---|
+| kWise | `/Users/torsys/Documents/aicoding/kWise`（已删除） |
+| kMonitor | （已删除） | `/Users/torsys/Documents/aicoding/kMonitor` |
+| kSift | （已删除） | `/Users/torsys/Documents/aicoding/kSift` |
+| kFresh | （已删除） | `/Users/torsys/Documents/aicoding/kFresh` |
 
 主 worktree：`/Users/torsys/Documents/aicoding/kSpaceClean`（在 `main` 上，用于跨 App 整合 / 合并触发 / 上架准备）。
 
