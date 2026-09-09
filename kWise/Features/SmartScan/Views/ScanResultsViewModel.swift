@@ -384,6 +384,16 @@ final class ScanResultsViewModel: ObservableObject {
         snapshot.totalSelectedCount = totalCount
     }
 
+    /// 默认选中策略 (v2.3)：推荐项自动勾选，谨慎/危险项保持未勾选。
+    /// 委托给各级节点的级联实现（ScanCategory/ScanSubCategory/ScanAction
+    /// 的 `setState(.checked)` 内部执行 `riskLevel.defaultChecked` 判定）。
+    static func applyDefaultSelection(to categories: [ScanCategory]) {
+        for category in categories {
+            category.setState(.checked)
+            category.refreshState()
+        }
+    }
+
     /// In-memory bottom-up walker — returns the sum of `selectedSize` over
     /// every node in the subtree whose state is `.on`, plus the count of
     /// selected URLs. I1 fix: replaces the per-URL `FileManager` lookup.
@@ -507,6 +517,12 @@ final class ScanResultsViewModel: ObservableObject {
         newSnapshot.categories = Self.annotateHidden(raw, options: filters)
         newSnapshot.isScanning = false
         newSnapshot.hasScanned = true
+
+        // v2.3 默认选中（对标 CleanMyMac 扫描完成即给出可清理建议）：
+        // 级联策略自动勾选 `.recommended` 项，`.caution`/`.dangerous`
+        // 保持未勾选等待用户显式选择（§8.5）。用户此前看到"选中 0 KB"
+        // 是因为扫描完成只建树、从未触发默认选择。
+        Self.applyDefaultSelection(to: newSnapshot.categories)
 
         // Post-scan FDA re-check: if the scan came back empty AND FDA is
         // missing, the empty result is an artifact of sandboxing (the walk
