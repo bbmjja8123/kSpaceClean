@@ -379,6 +379,10 @@ struct CleanupConfirmSheet: View {
     @ObservedObject var viewModel: ScanResultsViewModel
     @ObservedObject var cleanupViewModel: CleanupViewModel
     let onDismiss: () -> Void
+    /// 与运行中应用冲突的路径（Lemon 修复版警告流：引擎 .skip 策略会
+    /// 自动跳过这些文件，此处如实告知用户被跳过了什么）。
+    @State private var warnItems: [WarnItem] = []
+    @State private var warnChecked = false
 
     /// Risk breakdown over the checked leaves (single walk).
     private var riskCounts: (recommended: Int, caution: Int, dangerous: Int) {
@@ -405,6 +409,14 @@ struct CleanupConfirmSheet: View {
             Text("确认清理")
                 .font(Typography.largeTitle())
                 .foregroundStyle(Color.textPrimary)
+                .task {
+                    guard !warnChecked else { return }
+                    warnChecked = true
+                    let service = WarningDetectionService()
+                    warnItems = await service.detectWarnItems(for: viewModel.selectedURLs().map(\.path))
+                }
+                .font(Typography.largeTitle())
+                .foregroundStyle(Color.textPrimary)
 
             VStack(alignment: .leading, spacing: Spacing.sm) {
                 Text("\(viewModel.totalSelectedCount) 项 · \(formatBytes(viewModel.totalSelectedSize))")
@@ -429,12 +441,23 @@ struct CleanupConfirmSheet: View {
             }
 
             if let outcome = cleanupViewModel.lastOutcome {
-                HStack(spacing: Spacing.sm) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(Color.success)
-                    Text("已释放 \(formatBytes(outcome.freedBytes))")
-                        .font(Typography.largeBody())
-                        .foregroundStyle(Color.success)
+                VStack(alignment: .leading, spacing: Spacing.xs) {
+                    HStack(spacing: Spacing.sm) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(Color.success)
+                        // C-3：measuredBytes（真实卷释放量）优先于预测值。
+                        Text("已释放 \(formatBytes(outcome.measuredBytes ?? outcome.freedBytes))")
+                            .font(Typography.largeBody())
+                            .foregroundStyle(Color.success)
+                    }
+                    if outcome.measuredBytes == nil {
+                        Text("实际释放量以废纸篓清倒为准")
+                            .font(Typography.smallBody())
+                            .foregroundColor(.textSecondary)
+                    }
+                    Text("可在「历史」时间线中随时还原本次清理")
+                        .font(Typography.smallBody())
+                        .foregroundColor(.textSecondary)
                 }
             }
 

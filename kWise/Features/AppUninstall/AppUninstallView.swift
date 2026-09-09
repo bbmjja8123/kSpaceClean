@@ -246,6 +246,18 @@ public struct AppUninstallView: View {
                 try? await backupStore.backupBeforeUninstall(entry: entry)
             }
             await backupStore.pruneExpired(days: 30)
+            // 卸载联动 (v2.4)：残留中含 LaunchAgents 的 App 一并停用其启动项。
+            let toggler = StartupItemToggler(persistence: .shared)
+            for entry in viewModel.selectedEntries {
+                for url in entry.residues.map(\.url) where url.path.contains("LaunchAgents") {
+                    let plistEntry = LoginItemEntry(
+                        label: entry.bundleID, plistURL: url,
+                        programPath: nil, runAtLoad: true, keepAlive: false,
+                        scope: .user
+                    )
+                    _ = await toggler.disable(plistEntry)
+                }
+            }
             let result = await viewModel.uninstallSelected()
             uninstallResult = result
             isUninstalling = false
