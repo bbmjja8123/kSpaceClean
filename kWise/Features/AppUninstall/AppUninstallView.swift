@@ -300,6 +300,14 @@ private struct AppRow: View {
                 // App Info
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: AppSpacing.xs) {
+                        if entry.isOrphan {
+                            Text("应用已删除")
+                                .font(AppFont.caption)
+                                .foregroundColor(.warning)
+                                .padding(.horizontal, 5)
+                                .background(Color.warning.opacity(0.12))
+                                .clipShape(Capsule())
+                        }
                         if entry.isRunning {
                             Circle()
                                 .fill(Color.stateWarning)

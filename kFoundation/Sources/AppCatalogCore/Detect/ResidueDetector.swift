@@ -1,4 +1,5 @@
 import Foundation
+import AppKit
 
 /// Detects leftover files for an installed macOS application.
 ///
@@ -9,6 +10,59 @@ import Foundation
 /// All file system reads happen off the actor's executor; the actor only
 /// guarantees serialized access to its `ruleStore` reference.
 public actor ResidueDetector {
+
+    /// 孤儿残留扫描 (v2.4)：App 本体已不在 /Applications（用户手动删除、
+    /// 拖废纸篓未清残留），但 14 模板路径下仍有文件。返回按 App 分组的
+    /// 残留，供「卸载残留」分区展示。仅收录 confidence ≥ 0.85 的路径，
+    /// 防误报（C-5）。
+    public func detectOrphans(apps: [InstalledApp]) async -> [(app: InstalledApp, residues: [ResidueFile])] {
+        let installedBundleIDs = Set(apps.map(\.bundleID))
+        let installedNames = Set(apps.map(\.displayName))
+
+        var results: [(InstalledApp, [ResidueFile])] = []
+        for rule in await ruleStore?.allRules() ?? [] {
+            // 该 App 仍安装着 → 不是孤儿。
+            guard !installedBundleIDs.contains(rule.bundleID) else { continue }
+            // 规则目录都不存在 → 没有残留。
+            var orphanResidues: [ResidueFile] = []
+            for pathTemplate in rule.residuePaths {
+                let expanded = pathTemplate
+                    .replacingOccurrences(of: "~", with: NSHomeDirectory())
+                let url = URL(fileURLWithPath: expanded)
+                guard FileManager.default.fileExists(atPath: url.path) else { continue }
+                // 共享目录（bundleID 是通配的常见产品名）谨慎处理。
+                guard Self.looksAppSpecific(rule: rule, path: url) else { continue }
+                let size = DirectorySizeCalculator.size(of: url)
+                orphanResidues.append(ResidueFile(
+                    url: url, type: .preferences, sizeBytes: size,
+                    confidence: rule.confidence,
+                    description: "应用已删除但残留存在"
+                ))
+            }
+            if !orphanResidues.isEmpty {
+                let orphan = InstalledApp(
+                    url: URL(fileURLWithPath: "/Applications/\(rule.appName).app"),
+                    displayName: rule.appName, bundleID: rule.bundleID,
+                    version: "", icon: NSImage(), sizeBytes: 0,
+                    source: .unknown, isRunning: false,
+                    lastUsedDate: nil, installDate: nil
+                )
+                results.append((orphan, orphanResidues))
+            }
+        }
+        _ = installedNames
+        return results
+    }
+
+    /// 目录是否明显属于特定 App（bundleID 精确出现在路径中，或目录名
+    /// == appName），避免把 `~/Library/Caches` 这类共享目录判给孤儿。
+    nonisolated static func looksAppSpecific(rule: KFreshBundleRule, path: URL) -> Bool {
+        let pathString = path.path
+        if pathString.contains(rule.bundleID) { return true }
+        if path.lastPathComponent == rule.appName
+            || path.lastPathComponent == rule.bundleID { return true }
+        return false
+    }
     private let fileManager = FileManager.default
     private let home: URL
     private let ruleStore: BundleRuleStore?

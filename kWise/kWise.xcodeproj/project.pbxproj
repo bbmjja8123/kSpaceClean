@@ -37,6 +37,7 @@
 		21B6482644E75575B13AFC5E /* PrivacySurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD654474719DF98694E54CB5 /* PrivacySurface.swift */; };
 		220FC8CF72891C8F5FC26143 /* IndeterminateCheckboxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54AFB111A735F6DB4A8DB59 /* IndeterminateCheckboxTests.swift */; };
 		224BC0E1383BB9BA0163659C /* SpecializedScanners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3361C98265CBF174A74B88E4 /* SpecializedScanners.swift */; };
+		226DB72E474274BE6D7CA798 /* generate_project.py in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_043BC635-79A7-4EAB-8F98-C4B239A24E47" /* generate_project.py */; };
 		238342BB271904D7858F0FBB /* VolumeDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080EACB06EF6E726CA873E60 /* VolumeDiagnostics.swift */; };
 		242C67CBA4D87A125420B114 /* LoginItemServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B457792B0D24B215C64C6 /* LoginItemServiceTests.swift */; };
 		24BE5CB439EA48277FDB3600 /* CommonUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 797DB08C5DDCC84575594331 /* CommonUtils */; };
@@ -132,7 +133,6 @@
 		87DAA252805ABF8461205136 /* DuplicateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CE1B668FBECF1AC2580EC /* DuplicateView.swift */; };
 		88E6AF8390D0D14DCA1456DA /* AccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D0F9B52644A047F0B942D4 /* AccessibilityTests.swift */; };
 		8A33C19F76684E8A272A5CF1 /* SmartCareViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CD044FA600AEE25D0AF033 /* SmartCareViewModelTests.swift */; };
-		8C0D8F25AEDF7000AC8DDF82 /* AppStoreMetadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_FBDDE7A8-9164-4216-857E-04879526644B" /* AppStoreMetadata.plist */; };
 		8D080F858484A77EB2A09317 /* RuleClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4110D77F59B3EE62D1A7EF33 /* RuleClassifier.swift */; };
 		8E1D7183D32E725822E6FA1F /* SelectionPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F90767E5A01F5E6E243CE4 /* SelectionPolicy.swift */; };
 		8F61C9F129736E91C1A029AB /* SpaceMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E956C345A2C258AB9A90C45 /* SpaceMapViewModel.swift */; };
@@ -150,7 +150,6 @@
 		9CB8CF7557D26EB4B7A7C791 /* TrashMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693B588CB632BAEA160A80B1 /* TrashMover.swift */; };
 		9E0B5DD3CC68C52FFBF6522F /* CheckState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482DBE02B1A68030BD2606F2 /* CheckState.swift */; };
 		A0CCC5860935FE47E86D1F6C /* ScanAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7765B26E17C44E217D290FD /* ScanAction.swift */; };
-		A1A0AF41345B9D673E2D9910 /* kWise.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_73773782-5796-4486-AFBB-6D032B719953" /* kWise.xcodeproj */; };
 		A2DFD0D82E34681C26AE5BFA /* CleanupTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C8AA06FB86DC67DB7A9050 /* CleanupTypes.swift */; };
 		A2E176790B84B3CFC9C5C305 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25E5FCAFDA0422567779861 /* TestHelpers.swift */; };
 		A4000A7636904BDCC2B52F64 /* SpaceMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5EF4DCE53814B9F08D1B44 /* SpaceMapView.swift */; };
@@ -183,10 +182,12 @@
 		C2850E45A4725EE4BA27C39E /* ScanIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7B6F2AFF8D69392ED68E0 /* ScanIntent.swift */; };
 		C2A598A597D8F80148C06C0C /* RiskLevelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAD10BB074055BC71A90614 /* RiskLevelTests.swift */; };
 		C5D3E5A2F3EE9B7A5D52281C /* ScanRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F621922207097D8C0981D /* ScanRule.swift */; };
+		C73C4B6E3B3E73A167852120 /* AppStoreMetadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_95B27563-4577-4B3E-AED1-6C0858384DAA" /* AppStoreMetadata.plist */; };
 		C7613D109CCFB1328E264A7B /* SpaceSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CF10D08C47BC5F81E4E0C9 /* SpaceSegment.swift */; };
 		C89AF5AEB078A9D40FA6A993 /* IndeterminateCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7907AF7A59AD55B60272B6AF /* IndeterminateCheckbox.swift */; };
 		C9BC3B4AA071BF3538B5622B /* SMARTReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F4DB7C271CA58AB9119591 /* SMARTReader.swift */; };
 		CA091C91FE94DD31F2DA65C3 /* StartupItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FABED280B672247774216B3 /* StartupItemsView.swift */; };
+		CA3BB9C84EB74130EB890A98 /* kWise.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_AEB916EA-8B87-475D-B823-1D557D9CD4E0" /* kWise.xcodeproj */; };
 		CA41AC64B72726081CD2BD89 /* MonthlyReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0A9F77D58D62577F305921 /* MonthlyReport.swift */; };
 		CB744F5EEAEBDC7E9196F526 /* ScanCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65EFAE25C33C7A397628DEB /* ScanCategory.swift */; };
 		CDCD59AECF8D4F0639890C6B /* SmartCareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66193247A5CFC1350E95977E /* SmartCareViewModel.swift */; };
@@ -197,7 +198,6 @@
 		D0F092C971890287FAA67694 /* AppUninstallEngineRoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20375BFBE7EB03F93CE8D05D /* AppUninstallEngineRoutingTests.swift */; };
 		D11DF8D25C7A1F439A04F13C /* DuplicateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0A9875F96ACCD6B5EF30B /* DuplicateViewModel.swift */; };
 		D232C8C51879C0C95EAC2AFB /* CleanupRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253F7D4DC23A9342717A1C96 /* CleanupRecord.swift */; };
-		D3CECE6CDF49977E875D8FEB /* generate_project.py in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_F300B7A7-5098-4107-B31B-90E012EAA3DA" /* generate_project.py */; };
 		D4B6115D509B2A185FF959A0 /* DiskStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFCE8C78F0D445042D26B51 /* DiskStatusView.swift */; };
 		D53EC924760CFA6DCD710AD8 /* LargeOldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130D93910784701464058874 /* LargeOldViewModel.swift */; };
 		D5405433289323B170420FA6 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B673D75EB3705BCEA031D78 /* AppLogger.swift */; };
@@ -469,13 +469,13 @@
 		F8A0A9875F96ACCD6B5EF30B /* DuplicateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateViewModel.swift; sourceTree = "<group>"; };
 		FE15D65197A2C5BDAB8B8BC2 /* ScanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewModel.swift; sourceTree = "<group>"; };
 		FE6FC58769F82A2538E42781 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		"TEMP_107BFB3B-BFBD-4D55-953F-1A09208FA7D6" /* kWiseFinder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kWiseFinder.entitlements; sourceTree = "<group>"; };
-		"TEMP_3057577B-9C40-4D55-AA95-3D957B68A993" /* kWiseWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kWiseWidget.entitlements; sourceTree = "<group>"; };
-		"TEMP_3C2527A4-74D1-4439-806A-3B431B11F51A" /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		"TEMP_73773782-5796-4486-AFBB-6D032B719953" /* kWise.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = kWise.xcodeproj; sourceTree = "<group>"; };
-		"TEMP_83BDBEB4-8BAA-44EE-AB76-22D5D1DD6548" /* kWise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kWise.entitlements; sourceTree = "<group>"; };
-		"TEMP_F300B7A7-5098-4107-B31B-90E012EAA3DA" /* generate_project.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = generate_project.py; sourceTree = "<group>"; };
-		"TEMP_FBDDE7A8-9164-4216-857E-04879526644B" /* AppStoreMetadata.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = AppStoreMetadata.plist; sourceTree = "<group>"; };
+		"TEMP_043BC635-79A7-4EAB-8F98-C4B239A24E47" /* generate_project.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = generate_project.py; sourceTree = "<group>"; };
+		"TEMP_1B48E07F-B8DA-41FD-91D1-CAE63DA3C403" /* kWiseFinder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kWiseFinder.entitlements; sourceTree = "<group>"; };
+		"TEMP_24B16F38-8E69-4863-AA31-B74DE048A1BE" /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		"TEMP_336BCECF-9A8E-492B-BD8D-4D8A29B3C56D" /* kWiseWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kWiseWidget.entitlements; sourceTree = "<group>"; };
+		"TEMP_95B27563-4577-4B3E-AED1-6C0858384DAA" /* AppStoreMetadata.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = AppStoreMetadata.plist; sourceTree = "<group>"; };
+		"TEMP_AEB916EA-8B87-475D-B823-1D557D9CD4E0" /* kWise.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = kWise.xcodeproj; sourceTree = "<group>"; };
+		"TEMP_D0D69E19-23CB-49B2-9779-7C97CCCBB6E9" /* kWise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kWise.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1188,16 +1188,16 @@
 			path = DesignSystem;
 			sourceTree = "<group>";
 		};
-		"TEMP_4CFB87E6-7FA9-435F-B2A9-88D1AD3AEC1C" /* . */ = {
+		"TEMP_6644E392-12D7-4312-872F-58D3D6F36280" /* . */ = {
 			isa = PBXGroup;
 			children = (
-				"TEMP_3057577B-9C40-4D55-AA95-3D957B68A993" /* kWiseWidget.entitlements */,
-				"TEMP_107BFB3B-BFBD-4D55-953F-1A09208FA7D6" /* kWiseFinder.entitlements */,
-				"TEMP_73773782-5796-4486-AFBB-6D032B719953" /* kWise.xcodeproj */,
-				"TEMP_FBDDE7A8-9164-4216-857E-04879526644B" /* AppStoreMetadata.plist */,
-				"TEMP_83BDBEB4-8BAA-44EE-AB76-22D5D1DD6548" /* kWise.entitlements */,
-				"TEMP_F300B7A7-5098-4107-B31B-90E012EAA3DA" /* generate_project.py */,
-				"TEMP_3C2527A4-74D1-4439-806A-3B431B11F51A" /* Info.plist */,
+				"TEMP_336BCECF-9A8E-492B-BD8D-4D8A29B3C56D" /* kWiseWidget.entitlements */,
+				"TEMP_1B48E07F-B8DA-41FD-91D1-CAE63DA3C403" /* kWiseFinder.entitlements */,
+				"TEMP_AEB916EA-8B87-475D-B823-1D557D9CD4E0" /* kWise.xcodeproj */,
+				"TEMP_95B27563-4577-4B3E-AED1-6C0858384DAA" /* AppStoreMetadata.plist */,
+				"TEMP_D0D69E19-23CB-49B2-9779-7C97CCCBB6E9" /* kWise.entitlements */,
+				"TEMP_043BC635-79A7-4EAB-8F98-C4B239A24E47" /* generate_project.py */,
+				"TEMP_24B16F38-8E69-4863-AA31-B74DE048A1BE" /* Info.plist */,
 				9662B5D7AD752C1E4C53098E /* Core */,
 				4B54AB32BE71B746AC680347 /* App */,
 				7AF203765154B1AAD18A2A01 /* MenuBar */,
@@ -1392,14 +1392,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C0D8F25AEDF7000AC8DDF82 /* AppStoreMetadata.plist in Resources */,
+				C73C4B6E3B3E73A167852120 /* AppStoreMetadata.plist in Resources */,
 				F01D9D7959EA73036EDC2B84 /* Assets.xcassets in Resources */,
 				0B50278750294F08BDE01BCA /* Localizable.xcstrings in Resources */,
 				03A431083E738C1A487EDF19 /* PrivacyInfo.xcprivacy in Resources */,
 				30363518C4D135F4DEA2DA26 /* bundleIDMapping.json in Resources */,
 				E4102CCD45386053081F0DF7 /* com.kraftly.kspaceclean.trashmonitor.plist in Resources */,
-				D3CECE6CDF49977E875D8FEB /* generate_project.py in Resources */,
-				A1A0AF41345B9D673E2D9910 /* kWise.xcodeproj in Resources */,
+				226DB72E474274BE6D7CA798 /* generate_project.py in Resources */,
+				CA3BB9C84EB74130EB890A98 /* kWise.xcodeproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

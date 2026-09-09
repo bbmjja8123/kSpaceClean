@@ -14,7 +14,29 @@ public struct UninstallAppEntry: Identifiable, Sendable {
     public var leftoverURLs: [URL]
     public var leftoverSize: Int64
     public var isSelected: Bool = true
+    /// 孤儿残留（App 本体已不存在）— 默认不选，确认后才清理。
+    public var isOrphan: Bool
     public var totalSize: Int64 { appSize + leftoverSize }
+
+    public init(appName: String, bundleID: String, appURL: URL,
+                appSize: Int64, leftoverURLs: [URL], leftoverSize: Int64,
+                isSelected: Bool = true, isOrphan: Bool = false,
+                lastUsedDate: Date?, installDate: Date?, isRunning: Bool,
+                source: AppSource, residues: [ResidueFile]) {
+        self.appName = appName
+        self.bundleID = bundleID
+        self.appURL = appURL
+        self.appSize = appSize
+        self.leftoverURLs = leftoverURLs
+        self.leftoverSize = leftoverSize
+        self.isSelected = isSelected
+        self.isOrphan = isOrphan
+        self.lastUsedDate = lastUsedDate
+        self.installDate = installDate
+        self.isRunning = isRunning
+        self.source = source
+        self.residues = residues
+    }
     // v2.3 Phase 4 — computed once at scan time (never in the render path).
     public let lastUsedDate: Date?
     public let installDate: Date?
@@ -88,6 +110,29 @@ public final class AppUninstallScanner: @unchecked Sendable {
             ))
         }
         return entries.sorted { $0.totalSize > $1.totalSize }
+    }
+
+    /// 孤儿残留扫描 (v2.4)：App 已被手动删除但残留还在。返回按 App 分组
+    /// 的条目（isSelected 默认 false — 用户确认后才清理，谨慎对待）。
+    public func scanOrphans() async -> [UninstallAppEntry] {
+        let orphans = await residueDetector.detectOrphans(apps: await catalog.scan())
+        return orphans.map { app, residues in
+            let urls = residues.map(\.url).filter {
+                FileManager.default.fileExists(atPath: $0.path)
+            }
+            return UninstallAppEntry(
+                appName: app.displayName,
+                bundleID: app.bundleID,
+                appURL: app.url,
+                appSize: 0,
+                leftoverURLs: urls,
+                leftoverSize: urls.reduce(0) { $0 + Self.sizeOf($1) },
+                isOrphan: true,
+                lastUsedDate: nil, installDate: nil, isRunning: false,
+                source: .unknown, residues: residues
+            )
+        }
+        .sorted { $0.leftoverSize > $1.leftoverSize }
     }
 
     /// Moves the app bundle and all associated leftover files to the Trash

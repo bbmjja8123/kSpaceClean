@@ -89,7 +89,10 @@ public final class AppUninstallViewModel: ObservableObject {
         entries = []
 
         Task {
-            let result = await self.scanner.scan()
+            var result = await self.scanner.scan()
+            // 孤儿残留 (v2.4)：App 本体已删、残留仍在。默认不选。
+            let orphans = await self.scanner.scanOrphans()
+            result.append(contentsOf: orphans)
             self.entries = self.sorted(result)
             self.isScanning = false
         }
