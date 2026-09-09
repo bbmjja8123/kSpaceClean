@@ -105,6 +105,23 @@ public struct CategoryDefinition: Sendable, Identifiable, Hashable {
             paths: ["/private/var/log", "/Library/Logs",
                     "~/Library/Logs/DiagnosticReports"],
             riskLevel: .recommended
+        ),
+        // v2.4 — iOS 旧设备备份（对标 CMM "iOS device backups"，常占数 GB）
+        CategoryDefinition(
+            id: "ios.backup",
+            title: "iOS 设备备份",
+            tooltip: "iPhone/iPad 的本地备份，旧备份可安全移除",
+            paths: ["~/Library/Application Support/MobileSync/Backup"],
+            riskLevel: .caution
+        ),
+        // v2.4 — 废纸篓容量（对标 CMM "Empty Trash"）。清理语义为
+        // 永久清空（已在废纸篓内），CleanupEngine 特判 removeItem。
+        CategoryDefinition(
+            id: "trash",
+            title: "废纸篓",
+            tooltip: "废纸篓中的文件，清倒后不可恢复",
+            paths: ["~/.Trash"],
+            riskLevel: .recommended
         )
     ]
 }

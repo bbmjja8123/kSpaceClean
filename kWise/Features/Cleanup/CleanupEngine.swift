@@ -451,9 +451,15 @@ public actor CleanupEngine {
         // the outcome can report a real delta, not just the size prediction.
         let volumeBefore = Self.freeBytesOfVolume(for: recorded.first?.url ?? URL(fileURLWithPath: NSHomeDirectory()))
 
+        // 废纸篓内文件已在 Trash 中 — "再清理"语义是清倒（永久移除），
+        // trashItem 会失败，所以特判 removeItem。确认 Sheet 对这类目标
+        // 显示不可恢复警告（C-5）。
+        let trashPrefix = (NSHomeDirectory() as NSString).appendingPathComponent(".Trash")
+
         for target in recorded {
             do {
-                if config.moveToTrash {
+                let alreadyInTrash = target.url.standardizedFileURL.path.hasPrefix(trashPrefix)
+                if config.moveToTrash && !alreadyInTrash {
                     try FileManager.default.trashItem(at: target.url, resultingItemURL: nil)
                 } else {
                     try FileManager.default.removeItem(at: target.url)

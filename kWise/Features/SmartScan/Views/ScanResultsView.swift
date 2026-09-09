@@ -416,9 +416,16 @@ struct CleanupConfirmSheet: View {
                         .font(Typography.regularBody())
                         .foregroundStyle(Color.warning)
                 }
-                Text("所有项目将移入废纸篓，30 天内可随时还原。")
+                // 废纸篓来源的项已在 Trash 内 — 清倒不可恢复（C-5）。
+                let trashCount = viewModel.selectedURLs().filter {
+                    $0.standardizedFileURL.path.hasPrefix(
+                        (NSHomeDirectory() as NSString).appendingPathComponent(".Trash"))
+                }.count
+                Text(trashCount > 0
+                     ? "包含 \(trashCount) 项来自废纸篓，这部分清倒后不可恢复。"
+                     : "所有项目将移入废纸篓，30 天内可随时还原。")
                     .font(Typography.regularBody())
-                    .foregroundStyle(Color.textSecondary)
+                    .foregroundStyle(trashCount > 0 ? Color.warning : Color.textSecondary)
             }
 
             if let outcome = cleanupViewModel.lastOutcome {
