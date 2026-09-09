@@ -23,6 +23,9 @@ public enum AssistantIntent: Equatable {
     case startupItems
     case shredHelp
     case cleanupNow
+    case similarPhotos
+    case freeUpSpace
+    case restoreLastCleanup
 
     public enum FileKind: String, Equatable {
         case video, image, audio, document, archive
@@ -49,6 +52,9 @@ public struct AssistantIntentMatcher: Sendable {
         (.diskForecast, ["什么时候满", "将满", "预测", "磁盘趋势", "forecast", "disk full"]),
         (.shredHelp, ["粉碎", "彻底删除", "shred", "secure delete"]),
         (.cleanupNow, ["清理", "打扫", "clean up", "clean"]),
+        (.similarPhotos, ["相似照片", "重复照片", "截图", "similar photo", "screenshot"]),
+        (.freeUpSpace, ["腾出空间", "磁盘满了", "空间不足", "free up space", "disk full"]),
+        (.restoreLastCleanup, ["还原", "恢复上次", "撤销清理", "undo", "restore"]),
         (.categorySummary, ["哪里", "什么占了", "占了多少", "空间都去哪", "where is my space", "usage"]),
     ]
 
@@ -173,6 +179,24 @@ enum AssistantAnswerBuilder {
         case .cleanupNow:
             return AssistantAnswer(
                 headline: "点击首页 Smart Care 即可一键扫描并清理推荐项。",
+                cards: [],
+                suggestions: exampleQuestions
+            )
+        case .similarPhotos:
+            return AssistantAnswer(
+                headline: "工具箱 → 照片清理 → 相似照片：本机感知比对找出截图堆积与相似照片，每组至少保留一张。",
+                cards: [],
+                suggestions: exampleQuestions
+            )
+        case .freeUpSpace:
+            return AssistantAnswer(
+                headline: "三步腾空间：① Smart Care 清推荐项 ② 大文件找巨型文件 ③ 相似照片清截图。全部走废纸篓可还原。",
+                cards: [],
+                suggestions: exampleQuestions
+            )
+        case .restoreLastCleanup:
+            return AssistantAnswer(
+                headline: "「历史」时间线按清理批次分组，单次清理可整体回滚（30 天内）。",
                 cards: [],
                 suggestions: exampleQuestions
             )

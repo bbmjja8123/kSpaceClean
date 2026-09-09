@@ -151,6 +151,16 @@ struct LargeOldView: View {
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.vertical, AppSpacing.sm)
 
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: AppSpacing.xs) {
+                    chip(nil, label: "全部")
+                    ForEach(LargeOldViewModel.FileKindFilter.allCases) { kind in
+                        chip(kind, label: kind.displayName)
+                    }
+                }
+                .padding(.horizontal, AppSpacing.lg)
+            }
+
             Picker("显示方式", selection: $viewModel.displayMode) {
                 ForEach(LargeOldViewModel.DisplayMode.allCases, id: \.self) { mode in
                     Text(mode.rawValue).tag(mode)
@@ -164,7 +174,7 @@ struct LargeOldView: View {
                 LazyVStack(spacing: 2) {
                     switch viewModel.displayMode {
                     case .files:
-                        ForEach(viewModel.entries) { entry in
+                        ForEach(viewModel.filteredEntries) { entry in
                             fileRow(entry)
                         }
                     case .folders:
@@ -181,6 +191,22 @@ struct LargeOldView: View {
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.vertical, AppSpacing.md)
         }
+    }
+
+    private func chip(_ kind: LargeOldViewModel.FileKindFilter?, label: String) -> some View {
+        let isSelected = viewModel.typeFilter?.rawValue == kind?.rawValue || (kind == nil && viewModel.typeFilter == nil)
+        return Button {
+            viewModel.typeFilter = kind
+        } label: {
+            Text(label)
+                .font(AppFont.caption)
+                .foregroundColor(isSelected ? .white : .textSecondary)
+                .padding(.horizontal, AppSpacing.sm)
+                .padding(.vertical, 3)
+                .background(isSelected ? Color.brandPrimary : Color.bgSecondary)
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 
     private func folderRow(_ folder: LargeOldViewModel.FolderAggregate) -> some View {

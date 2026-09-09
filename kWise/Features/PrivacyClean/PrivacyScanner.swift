@@ -9,6 +9,8 @@ public struct PrivacyItem: Identifiable, Sendable {
     public let url: URL
     public let estimatedSize: Int64
     public var isSelected: Bool = true
+    /// 登录态文件（Cookie 等）— 清理会退出所有网站登录，默认不选（C-5）。
+    public var isLoginState: Bool = false
 
     public enum PrivacyCategory: String, Sendable, CaseIterable {
         case safari = "Safari"
@@ -123,7 +125,7 @@ public final class PrivacyScanner: Sendable {
         // Cookies.db
         let cookies = safari.appendingPathComponent("Cookies.db")
         appendIfExists(&items, url: cookies, name: "Cookie (Cookies.db)",
-                       category: .safari)
+                       category: .safari, isLoginState: true)
 
         // LocalStorage/
         let localStorage = safari.appendingPathComponent("LocalStorage")
@@ -156,7 +158,7 @@ public final class PrivacyScanner: Sendable {
             let cookies = profile.appendingPathComponent("Cookies")
             appendIfExists(&items, url: cookies,
                            name: "\(profile.lastPathComponent) Cookie",
-                           category: .chrome)
+                           category: .chrome, isLoginState: true)
 
             let cache = profile.appendingPathComponent("Cache")
             appendIfExists(&items, url: cache,
@@ -306,7 +308,8 @@ public final class PrivacyScanner: Sendable {
         _ items: inout [PrivacyItem],
         url: URL,
         name: String,
-        category: PrivacyItem.PrivacyCategory
+        category: PrivacyItem.PrivacyCategory,
+        isLoginState: Bool = false
     ) {
         guard fm.fileExists(atPath: url.path) || directoryExists(url) else { return }
         let size = directoryExists(url) ? directorySize(url) : fileSize(url)
@@ -314,7 +317,9 @@ public final class PrivacyScanner: Sendable {
             name: name,
             category: category,
             url: url,
-            estimatedSize: size
+            estimatedSize: size,
+            isSelected: !isLoginState,
+            isLoginState: isLoginState
         ))
     }
 

@@ -23,6 +23,39 @@ public final class LargeOldViewModel: ObservableObject {
     @Published public var sortAscending = false
     /// 文件列表 vs 文件夹聚合 (v2.3 Phase 5).
     @Published public var displayMode: DisplayMode = .files
+    /// 文件类型筛选 (v2.4)：nil = 全部。
+    @Published public var typeFilter: FileKindFilter?
+
+    public enum FileKindFilter: String, CaseIterable, Identifiable {
+        case video, audio, image, document, archive, diskImage
+        public var id: String { rawValue }
+        public var displayName: String {
+            switch self {
+            case .video: return "视频"
+            case .audio: return "音频"
+            case .image: return "图片"
+            case .document: return "文档"
+            case .archive: return "压缩包"
+            case .diskImage: return "镜像"
+            }
+        }
+        var extensions: Set<String> {
+            switch self {
+            case .video: return ["mp4", "mov", "mkv", "avi", "webm", "m4v", "wmv", "flv"]
+            case .audio: return ["mp3", "wav", "aac", "flac", "m4a", "ogg", "aiff"]
+            case .image: return ["png", "jpg", "jpeg", "heic", "gif", "tiff", "webp", "raw", "dng"]
+            case .document: return ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pages", "key", "numbers"]
+            case .archive: return ["zip", "tar", "gz", "bz2", "7z", "rar", "zst"]
+            case .diskImage: return ["dmg", "iso", "pkg"]
+            }
+        }
+    }
+
+    /// 类型过滤后的条目（files 模式渲染用）。
+    public var filteredEntries: [LargeOldFileEntry] {
+        guard let typeFilter else { return entries }
+        return entries.filter { typeFilter.extensions.contains($0.url.pathExtension.lowercased()) }
+    }
 
     public enum DisplayMode: String, CaseIterable {
         case files = "文件列表"

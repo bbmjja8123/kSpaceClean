@@ -208,6 +208,12 @@ public struct PrivacyView: View {
                     Text("已选 \(viewModel.selectedItems.count) 项")
                         .font(AppFont.callout)
                         .foregroundColor(.textPrimary)
+                    // C-5：登录态分级确认 — 选中 Cookie 时必须看到后果说明。
+                    if viewModel.selectedItems.contains(where: \.isLoginState) {
+                        Text("⚠️ 包含 Cookie，清理后将退出所有网站的登录状态")
+                            .font(AppFont.caption)
+                            .foregroundColor(.warning)
+                    }
                 }
 
                 HStack(spacing: AppSpacing.xs) {
