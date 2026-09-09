@@ -33,6 +33,76 @@ public final class AppGraph: ObservableObject {
     /// Weak — RootView owns the scan VM's lifetime.
     weak var assistantScanVM: ScanResultsViewModel?
 
+    // v2.5 Tab 化工具箱：每个工具一个常驻 VM（懒创建，Tab 切换不重建）。
+    private var toolVMCache: [String: AnyObject] = [:]
+
+    private func cached<T: AnyObject>(_ key: String, _ make: () -> T) -> T {
+        if let value = toolVMCache[key] as? T { return value }
+        let value = make()
+        toolVMCache[key] = value
+        return value
+    }
+
+    func appUninstallVM(onQuota: @escaping () -> Void) -> AppUninstallViewModel {
+        cached("appUninstall") {
+            let vm = AppUninstallViewModel(engine: cleanupEngine)
+            vm.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
+    func duplicatesVM(onQuota: @escaping () -> Void) -> DuplicateViewModel {
+        cached("duplicates") {
+            let vm = DuplicateViewModel(engine: cleanupEngine)
+            vm.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
+    func largeOldVM(onQuota: @escaping () -> Void) -> LargeOldViewModel {
+        cached("largeOld") {
+            let vm = LargeOldViewModel(engine: cleanupEngine)
+            vm.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
+    func photoCleanVM(onQuota: @escaping () -> Void) -> PhotoCleanViewModel {
+        cached("photoClean") {
+            let vm = PhotoCleanViewModel(engine: cleanupEngine)
+            vm.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
+    func photoSimilarityVM(onQuota: @escaping () -> Void) -> PhotoSimilarityViewModel {
+        cached("photoSimilarity") {
+            let vm = PhotoSimilarityViewModel(engine: cleanupEngine)
+            vm.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
+    func shredderVM() -> ShredderViewModel {
+        cached("shredder") { ShredderViewModel() }
+    }
+
+    func startupItemsVM() -> StartupItemsViewModel {
+        cached("startupItems") { StartupItemsViewModel() }
+    }
+
+    func maintenanceVM(onQuota: @escaping () -> Void) -> MaintenanceViewModel {
+        cached("maintenance") {
+            let vm = MaintenanceViewModel(engine: cleanupEngine)
+            vm.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
+    func assistantVM() -> AssistantViewModel {
+        cached("assistant") { AssistantViewModel() }
+    }
+
     // MARK: Shared instance for App Intents / widget intents
 
     /// Lightweight graph for extension processes. UI builds its own graph

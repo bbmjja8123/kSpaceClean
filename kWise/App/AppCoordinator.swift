@@ -51,10 +51,10 @@ public final class AppCoordinator: ObservableObject {
             navigate(to: .startupItems)
             return true
         case "uninstall":
-            navigate(to: .appUninstall)
+            openToolTab(.appUninstall)
             return true
         case "shred":
-            navigate(to: .shredder)
+            openToolTab(.shredder)
             return true
         case "tools":
             navigate(to: .tools)
@@ -69,16 +69,16 @@ public final class AppCoordinator: ObservableObject {
             navigate(to: .assistant)
             return true
         case "duplicates":
-            navigate(to: .duplicates)
+            openToolTab(.duplicates)
             return true
         case "largefiles":
-            navigate(to: .largeOld)
+            openToolTab(.largeOld)
             return true
         case "photoclean":
-            navigate(to: .photoClean)
+            openToolTab(.photoClean)
             return true
         case "maintenance":
-            navigate(to: .maintenance)
+            openToolTab(.maintenance)
             return true
         case "history":
             navigate(to: .history)
@@ -113,6 +113,12 @@ public final class AppCoordinator: ObservableObject {
     /// Navigate to a specific page.
     public func navigate(to item: AppState.NavigationItem) {
         appState?.navigation = item
+    }
+
+    /// 打开一个工具 Tab（v2.5）：已开激活、未开新建，然后导航。
+    /// 工具箱卡片与工具类 deep link 都走这里（导航唯一权威）。
+    public func openToolTab(_ item: AppState.NavigationItem) {
+        appState?.openToolTab(item)
     }
 
     /// Present the paywall sheet (free-tier gate — never ad hoc from views).

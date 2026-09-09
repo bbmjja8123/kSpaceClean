@@ -11,6 +11,9 @@ public final class AppState: ObservableObject {
     /// resolved live through `ScanResultsViewModel.node(for:)` so cascade
     /// changes never render stale values.
     @Published public var detailSelection: DetailSelection?
+    // v2.5 Tab 化工具箱：打开的工具各自持一个 Tab（状态常驻不丢失）。
+    @Published public private(set) var toolTabs: [ToolTab] = []
+    @Published public private(set) var activeToolTabID: UUID?
     @Published public var selectedCategory: FileCategory?
     @Published public var scanState: ScanState = .idle
 
@@ -57,6 +60,17 @@ public final class AppState: ObservableObject {
         /// reachable via deep links + `allCases`.
         public static var railItems: [NavigationItem] {
             [.smartCare, .scan, .tools, .cleanup, .history, .settings]
+        }
+
+        /// 工具箱九件套 —— 这些导航项以 Tab 方式打开（v2.5）。
+        public var isToolboxTool: Bool {
+            switch self {
+            case .appUninstall, .duplicates, .largeOld, .photoClean,
+                 .shredder, .startupItems, .spaceMap, .maintenance, .assistant:
+                return true
+            default:
+                return false
+            }
         }
 
         public var iconName: String {
@@ -106,10 +120,57 @@ public final class AppState: ObservableObject {
         }
     }
 
+    /// 一个打开的工具 Tab（工具箱根 Tab 固定存在，不入列）。
+    public struct ToolTab: Identifiable, Equatable {
+        public let id = UUID()
+        public let item: NavigationItem
+        public var title: String { item.tooltip }
+        public var icon: String { item.iconName }
+    }
+
     public enum ScanState: Equatable {
         case idle
         case scanning(Double)
         case completed
         case failed(String)
+    }
+
+    // MARK: - Tool tab lifecycle (v2.5)
+
+    /// 打开（或激活）一个工具 Tab；已开则激活既有 Tab（状态不重建）。
+    public func openToolTab(_ item: NavigationItem) {
+        guard item.isToolboxTool else {
+            navigation = item
+            return
+        }
+        if let existing = toolTabs.first(where: { $0.item == item }) {
+            activeToolTabID = existing.id
+        } else {
+            let tab = ToolTab(item: item)
+            toolTabs.append(tab)
+            activeToolTabID = tab.id
+        }
+        navigation = item
+    }
+
+    /// 点击某个 Tab 激活。
+    public func activateToolTab(_ id: UUID) {
+        guard let tab = toolTabs.first(where: { $0.id == id }) else { return }
+        activeToolTabID = id
+        navigation = tab.item
+    }
+
+    /// 关闭 Tab；关掉激活中的 Tab 时落到最后一个剩余 Tab，没有则回工具箱。
+    public func closeToolTab(_ id: UUID) {
+        let wasActive = activeToolTabID == id
+        toolTabs.removeAll { $0.id == id }
+        guard wasActive else { return }
+        if let last = toolTabs.last {
+            activeToolTabID = last.id
+            navigation = last.item
+        } else {
+            activeToolTabID = nil
+            navigation = .tools
+        }
     }
 }

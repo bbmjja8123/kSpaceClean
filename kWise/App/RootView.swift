@@ -56,9 +56,24 @@ struct RootView: View {
                         .padding(.leading, 8)
                         .padding(.vertical, 12)
 
-                    // Main content area (switches based on navigation)
-                    mainContent
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    VStack(spacing: 0) {
+                        // v2.5 Tab 化工具箱：有打开的 Tab 时顶部显示 Tab 行。
+                        if !appState.toolTabs.isEmpty {
+                            ToolTabBar(
+                                tabs: appState.toolTabs,
+                                activeToolTabID: appState.activeToolTabID,
+                                isToolPageActive: appState.navigation.isToolboxTool,
+                                onActivate: { appState.activateToolTab($0) },
+                                onClose: { appState.closeToolTab($0) },
+                                onToolbox: { appState.navigation = .tools }
+                            )
+                            Divider().background(Color.divider)
+                        }
+
+                        // Main content area (switches based on navigation)
+                        mainContent
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
 
                     // Selection detail panel (UX 重构 Phase 3): auto-hidden
                     // until a row is tapped; ⌘I toggles. No compensating
@@ -180,11 +195,11 @@ struct RootView: View {
         case .diskHealth:
             DiskHealthDetailView()  // Phase D Task 12 — wire disk health detail view
         case .startupItems:
-            StartupItemsView()
+            StartupItemsView(viewModel: graph.startupItemsVM())
         case .appUninstall:
             AppUninstallView(viewModel: makeAppUninstallViewModel())
         case .shredder:
-            ShredderView()
+            ShredderView(viewModel: graph.shredderVM())
         // v2.0 — toolbox + deep surfaces.
         case .tools:
             ToolboxView()
@@ -193,7 +208,7 @@ struct RootView: View {
         case .monthlyReport:
             MonthlyReportView()
         case .assistant:
-            AssistantView()
+            AssistantView(viewModel: graph.assistantVM())
         case .duplicates:
             DuplicateView(viewModel: makeDuplicateViewModel())
         case .largeOld:
@@ -210,43 +225,30 @@ struct RootView: View {
 
     // MARK: - Tool view-model factories
 
-    /// Tool VMs get the graph engine (quota + sinks) and route quota
-    /// exhaustion to the paywall. `@StateObject` keeps the first instance,
-    /// so re-rendering does not recreate scanners.
+    /// v2.5 Tab 化工具箱：VM 全部缓存在 AppGraph（每个工具一份常驻），
+    /// Tab 切换只换视图，工具内部状态（扫描结果/已选/进度）永不丢失。
     private func makeAppUninstallViewModel() -> AppUninstallViewModel {
-        let vm = AppUninstallViewModel(engine: graph.cleanupEngine)
-        vm.onQuotaExhausted = { coordinator.presentPaywall() }
-        return vm
+        graph.appUninstallVM { coordinator.presentPaywall() }
     }
 
     private func makeDuplicateViewModel() -> DuplicateViewModel {
-        let vm = DuplicateViewModel(engine: graph.cleanupEngine)
-        vm.onQuotaExhausted = { coordinator.presentPaywall() }
-        return vm
+        graph.duplicatesVM { coordinator.presentPaywall() }
     }
 
     private func makeLargeOldViewModel() -> LargeOldViewModel {
-        let vm = LargeOldViewModel(engine: graph.cleanupEngine)
-        vm.onQuotaExhausted = { coordinator.presentPaywall() }
-        return vm
+        graph.largeOldVM { coordinator.presentPaywall() }
     }
 
     private func makePhotoCleanViewModel() -> PhotoCleanViewModel {
-        let vm = PhotoCleanViewModel(engine: graph.cleanupEngine)
-        vm.onQuotaExhausted = { coordinator.presentPaywall() }
-        return vm
+        graph.photoCleanVM { coordinator.presentPaywall() }
     }
 
     private func makePhotoSimilarityViewModel() -> PhotoSimilarityViewModel {
-        let vm = PhotoSimilarityViewModel(engine: graph.cleanupEngine)
-        vm.onQuotaExhausted = { coordinator.presentPaywall() }
-        return vm
+        graph.photoSimilarityVM { coordinator.presentPaywall() }
     }
 
     private func makeMaintenanceViewModel() -> MaintenanceViewModel {
-        let vm = MaintenanceViewModel(engine: graph.cleanupEngine)
-        vm.onQuotaExhausted = { coordinator.presentPaywall() }
-        return vm
+        graph.maintenanceVM { coordinator.presentPaywall() }
     }
 
     // MARK: - Icon Rail

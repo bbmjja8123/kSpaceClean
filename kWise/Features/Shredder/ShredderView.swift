@@ -14,11 +14,10 @@ struct ShredderView: View {
     @State private var showConfirm = false
     @State private var isDropTargeted = false
 
-    init(scope: (any PowerScopeProviding)? = nil,
-         persistence: PersistenceController? = nil) {
-        _viewModel = StateObject(wrappedValue: ShredderViewModel(
-            scope: scope, persistence: persistence
-        ))
+    /// Injectable VM for the tabbed toolbox (state persists across tab
+    /// switches); previews fall back to a default-constructed VM.
+    init(viewModel: ShredderViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? ShredderViewModel())
     }
 
     var body: some View {

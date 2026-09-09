@@ -7,7 +7,11 @@ import DesignSystem
 
 struct AssistantView: View {
     @Environment(\.appGraph) private var injectedGraph
-    @StateObject private var viewModel = AssistantViewModel()
+    @StateObject private var viewModel: AssistantViewModel
+
+    init(viewModel: AssistantViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? AssistantViewModel())
+    }
 
     private var graph: AppGraph { injectedGraph ?? AppGraph.shared }
 

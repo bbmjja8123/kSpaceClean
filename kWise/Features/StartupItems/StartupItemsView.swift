@@ -12,12 +12,10 @@ struct StartupItemsView: View {
     @StateObject private var viewModel: StartupItemsViewModel
     @State private var pendingDisable: LoginItemEntry?
 
-    /// Injectable for the app root; previews use the shared scope.
-    init(scope: (any PowerScopeProviding)? = nil,
-         persistence: PersistenceController? = nil) {
-        _viewModel = StateObject(wrappedValue: StartupItemsViewModel(
-            scope: scope, persistence: persistence
-        ))
+    /// Injectable VM for the tabbed toolbox (state persists across tab
+    /// switches); previews fall back to a default-constructed VM.
+    init(viewModel: StartupItemsViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? StartupItemsViewModel())
     }
 
     var body: some View {

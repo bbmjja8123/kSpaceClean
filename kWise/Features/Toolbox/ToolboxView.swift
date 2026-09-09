@@ -10,6 +10,7 @@ import DesignSystem
 
 struct ToolboxView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var coordinator: AppCoordinator
 
     private let columns = [
         GridItem(.adaptive(minimum: 180), spacing: AppSpacing.md)
@@ -94,11 +95,12 @@ struct ToolboxCard: View {
     let destination: AppState.NavigationItem
 
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var coordinator: AppCoordinator
     @State private var isHovering = false
 
     var body: some View {
         Button {
-            appState.navigation = destination
+            coordinator.openToolTab(destination)
         } label: {
             VStack(alignment: .leading, spacing: AppSpacing.sm) {
                 Image(systemName: icon)
