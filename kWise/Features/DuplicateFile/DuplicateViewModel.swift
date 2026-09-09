@@ -64,8 +64,13 @@ final class DuplicateViewModel: ObservableObject {
 
     // MARK: Lifecycle
 
-    public init(engine: CleanupEngine? = nil) {
+    init(engine: CleanupEngine? = nil) {
         self.engine = engine ?? CleanupEngine.standard()
+        // 恢复上次扫描目录（仍是 PowerScope-honest——上次授权的目录本次
+        // 未必可读，startScan 前由 scanner 直接探测）。
+        if let saved = UserDefaults.standard.stringArray(forKey: "kwise.duplicate.scanPaths") {
+            scanPaths = saved.map { URL(fileURLWithPath: $0, isDirectory: true) }
+        }
     }
 
     func useEngine(_ engine: CleanupEngine) {
