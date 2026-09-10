@@ -21,6 +21,7 @@
 		0FF77AD1A92B5F6C99C534A5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09DD4C2BC02BE92185E9508 /* RootView.swift */; };
 		110E5B6AF36AC715016CD02E /* FileScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 7342A9B4F62C8ACFD27AFA27 /* FileScanner */; };
 		1281E8F8F170BF1D1C12E761 /* kWise.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_B81E5948-3220-4B19-8837-112938C8AA74" /* kWise.xcodeproj */; };
+		6D8F2B04E1A9C753B0F2D81E /* HealthSummaryBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7C91E4A2D60F58C8E1B27F /* HealthSummaryBuilderTests.swift */; };
 		12C0961796BA15314A516ADD /* ResidueExplainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E87AC1D676FD2861C89E2D4 /* ResidueExplainerTests.swift */; };
 		130BAF57F7035B3FD26D5800 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F73D181054E1D7F80259B0 /* FinderSync.swift */; };
 		13B7218F3145A9C50F7416BC /* PerfSignpost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3F4EE03AE771A7EF815FC /* PerfSignpost.swift */; };
@@ -200,6 +201,7 @@
 		CB744F5EEAEBDC7E9196F526 /* ScanCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65EFAE25C33C7A397628DEB /* ScanCategory.swift */; };
 		CDCD59AECF8D4F0639890C6B /* SmartCareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66193247A5CFC1350E95977E /* SmartCareViewModel.swift */; };
 		CE290781BB7E0D1609A46D54 /* SmartCareOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857FD3356CB0CEF75DF763DE /* SmartCareOrchestrator.swift */; };
+		4A1B9C3E52D7F806B2E1C47A /* HealthSummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E7A15D84F2B60A1E4C39B /* HealthSummaryBuilder.swift */; };
 		CE2D2F466CCA573DD0251282 /* AppUninstallScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC1AA6F007EF725E71AA5DF /* AppUninstallScanner.swift */; };
 		CE946E49888269649DA06AB4 /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B265321625E77EB9DD59F9 /* Accessibility.swift */; };
 		CF148AF4E9FD537D670C1A52 /* KWThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54725AB1DDB896AEA05BD45C /* KWThumbnailView.swift */; };
@@ -348,6 +350,7 @@
 		59B4DD389342E3E728CEF84A /* AppStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateTests.swift; sourceTree = "<group>"; };
 		5B227F4894EE5FF83B5FDEE7 /* ScanProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanProgressView.swift; sourceTree = "<group>"; };
 		5D356F1DC591D723647C169E /* MaintenanceScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceScript.swift; sourceTree = "<group>"; };
+		3B7C91E4A2D60F58C8E1B27F /* HealthSummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSummaryBuilderTests.swift; sourceTree = "<group>"; };
 		5E87AC1D676FD2861C89E2D4 /* ResidueExplainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidueExplainerTests.swift; sourceTree = "<group>"; };
 		5F70985E5F2BF1EE27BA42BD /* MetricKitReceiverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricKitReceiverTests.swift; sourceTree = "<group>"; };
 		6214483DCF8197D027F3B5E8 /* CleanupEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanupEngine.swift; sourceTree = "<group>"; };
@@ -405,6 +408,7 @@
 		98AA7140A811B0AC6CBD5500 /* CleanupContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanupContentView.swift; sourceTree = "<group>"; };
 		9AD9B857A68D1BDCC22CB268 /* WidgetSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshotTests.swift; sourceTree = "<group>"; };
 		9C55209253E32F49C94EF307 /* AppUninstallDragResetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUninstallDragResetTests.swift; sourceTree = "<group>"; };
+		9C3E7A15D84F2B60A1E4C39B /* HealthSummaryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthSummaryBuilder.swift; sourceTree = "<group>"; };
 		9CC1AA6F007EF725E71AA5DF /* AppUninstallScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUninstallScanner.swift; sourceTree = "<group>"; };
 		9DAD10BB074055BC71A90614 /* RiskLevelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskLevelTests.swift; sourceTree = "<group>"; };
 		9DFD101D74AC7726BE19D556 /* StartupItemsScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupItemsScanner.swift; sourceTree = "<group>"; };
@@ -834,6 +838,7 @@
 			isa = PBXGroup;
 			children = (
 				9CC1AA6F007EF725E71AA5DF /* AppUninstallScanner.swift */,
+				9C3E7A15D84F2B60A1E4C39B /* HealthSummaryBuilder.swift */,
 				EF85426B4576B8D611CC4311 /* AppUninstallView.swift */,
 				808B66022C2ED52BD16320EC /* AppUninstallViewModel.swift */,
 				5095F91D457B56C1F853F6C6 /* ResidueExplainer.swift */,
@@ -936,6 +941,7 @@
 				27B6D08B612D2C8C21DE19F8 /* Phase7CreativeTests.swift */,
 				183894FCF220D37F3E7C0C50 /* PhaseAComponentSnapshotTests.swift */,
 				8EFCE034ECA2BF1AE2322035 /* PhotoSimilarityScannerTests.swift */,
+				3B7C91E4A2D60F58C8E1B27F /* HealthSummaryBuilderTests.swift */,
 				5E87AC1D676FD2861C89E2D4 /* ResidueExplainerTests.swift */,
 				A1E483B462BE17FF95E81178 /* ResidueGroupingEngineTests.swift */,
 				2D3E0A12392DF67304D7E118 /* RiskBadgeTests.swift */,
@@ -1464,6 +1470,7 @@
 				93DB1B472E797F0AD005E28B /* AppScope.swift in Sources */,
 				77BDD89115A2FA3C4AD7EEFB /* AppState.swift in Sources */,
 				CE2D2F466CCA573DD0251282 /* AppUninstallScanner.swift in Sources */,
+				4A1B9C3E52D7F806B2E1C47A /* HealthSummaryBuilder.swift in Sources */,
 				7FE903DDE29431154CE07C2B /* AppUninstallView.swift in Sources */,
 				6B4295C40F10C59B1B65A11B /* AppUninstallViewModel.swift in Sources */,
 				F600E6A736C8D39E6B9D5FB9 /* Assistant.swift in Sources */,
@@ -1652,6 +1659,7 @@
 				7DDB27EBBA89FA6B9EEA5E5B /* Phase7CreativeTests.swift in Sources */,
 				3D2A7996D9AE8699C878D91C /* PhaseAComponentSnapshotTests.swift in Sources */,
 				277E57B83838BB18532D6BAA /* PhotoSimilarityScannerTests.swift in Sources */,
+				6D8F2B04E1A9C753B0F2D81E /* HealthSummaryBuilderTests.swift in Sources */,
 				12C0961796BA15314A516ADD /* ResidueExplainerTests.swift in Sources */,
 				1DBEEF2EA6DEC00423D57043 /* ResidueGroupingEngineTests.swift in Sources */,
 				60153DCEAFE2B81900B3A352 /* RiskBadgeTests.swift in Sources */,
