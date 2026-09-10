@@ -25,12 +25,16 @@ public final class DuplicateScanner: @unchecked Sendable {
     /// - Returns: The engine's `ScanEvent` stream, forwarded verbatim.
     public func scan(paths: [URL],
                      preset: SimilarityPreset,
-                     strategy: SelectionStrategy) -> AsyncStream<DetectionCore.ScanEvent> {
+                     strategy: SelectionStrategy,
+                     minFileSize: Int64 = 1_048_576,
+                     exclusions: [String] = [],
+                     enablePerceptual: Bool = true) -> AsyncStream<DetectionCore.ScanEvent> {
         let orchestrator = DetectionCore.ScanOrchestrator(
-            perceptualDetector: DetectionCore.PerceptualDetector(
-                maximumHammingDistance: preset.maximumHammingDistance,
-                visionDistanceThreshold: preset.visionDistanceThreshold
-            ),
+            perceptualDetector: enablePerceptual
+                ? DetectionCore.PerceptualDetector(
+                    maximumHammingDistance: preset.maximumHammingDistance,
+                    visionDistanceThreshold: preset.visionDistanceThreshold)
+                : nil,
             largeFileDetector: nil,
             similarVideoDetector: nil,
             repository: NullDuplicateRepository()
@@ -38,9 +42,9 @@ public final class DuplicateScanner: @unchecked Sendable {
         let config = DetectionCore.ProfileConfig(
             type: .custom,
             customDirectories: paths.map(\.path),
-            exclusions: [],
-            minFileSize: 1_048_576,   // 1 MB floor — sub-MB dupes are noise
-            enablePerceptualScan: true,
+            exclusions: exclusions,
+            minFileSize: minFileSize,
+            enablePerceptualScan: enablePerceptual,
             enableBuildArtifacts: false,
             selectionStrategy: strategy,
             similarityPreset: preset,

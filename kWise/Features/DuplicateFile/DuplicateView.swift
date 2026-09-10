@@ -63,6 +63,17 @@ struct DuplicateView: View {
                 }
             }
 
+            // 场景预设 (v2.6 W1)。
+            Picker("场景", selection: $viewModel.scenario) {
+                ForEach(DuplicateViewModel.Scenario.allCases) { scenario in
+                    Text(scenario.rawValue).tag(scenario)
+                }
+            }
+            .pickerStyle(.menu)
+            .frame(maxWidth: 110)
+            .disabled(viewModel.isScanning)
+            .help("按场景调整扫描参数：照片库启用视觉相似，文档按字节比较")
+
             // Keep strategy — 5 engine strategies with localized titles.
             Picker("保留策略", selection: $viewModel.strategy) {
                 ForEach(SelectionStrategy.allCases, id: \.self) { strategy in
@@ -136,26 +147,151 @@ struct DuplicateView: View {
 
     // MARK: - Content Area
 
+    @State private var selectedGroupID: UUID?
+
     private var contentArea: some View {
         VStack(spacing: 0) {
             if viewModel.isScanning {
                 scanningProgress
             }
 
-            ScrollView {
-                LazyVStack(spacing: AppSpacing.sm) {
-                    ForEach($viewModel.groups) { $group in
-                        groupSection($group)
+            if viewModel.groups.isEmpty {
+                EmptyStateView(
+                    icon: "checkmark.seal",
+                    title: "没有发现重复文件",
+                    subtitle: "当前目录很干净。"
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                // v2.6 W1 主从式双栏：左组列表 / 右组详情+大图对比。
+                HStack(spacing: 0) {
+                    // 左列：组列表。
+                    ScrollView {
+                        LazyVStack(spacing: AppSpacing.xs) {
+                            ForEach(viewModel.groups) { group in
+                                groupListRow(group)
+                            }
+                        }
+                        .padding(AppSpacing.sm)
                     }
+                    .frame(width: 250)
+                    .background(Color.bgSecondary.opacity(0.4))
+
+                    Divider()
+
+                    // 右列：选中组详情。
+                    groupDetail
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .padding(.horizontal, AppSpacing.lg)
-                .padding(.vertical, AppSpacing.sm)
             }
 
             summaryBar
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.vertical, AppSpacing.md)
         }
+    }
+
+    /// 左列行：徽标 + 名称 + 数量 + 可释放量。
+    private func groupListRow(_ group: ToolboxGroup) -> some View {
+        let isSelected = selectedGroupID == group.id || (selectedGroupID == nil && group.id == viewModel.groups.first?.id)
+        return Button {
+            selectedGroupID = group.id
+        } label: {
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                Text(commonName(for: group))
+                    .font(AppFont.callout)
+                    .foregroundColor(.textPrimary)
+                    .lineLimit(1)
+                HStack(spacing: AppSpacing.xs) {
+                    Text(group.evidenceSummary)
+                        .font(AppFont.caption)
+                        .foregroundColor(.brandPrimary)
+                    Spacer()
+                    Text(FileSizeFormatter.abbreviated(from: group.honestlyReclaimable))
+                        .font(AppFont.caption)
+                        .foregroundColor(.danger)
+                }
+            }
+            .padding(AppSpacing.sm)
+            .background(isSelected ? Color.brandPrimary.opacity(0.15) : Color.clear)
+            .clipShape(RoundedRectangle(cornerRadius: AppRadius.sm))
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// 右列：选中组的文件明细（含大缩略图对比）。
+    @ViewBuilder
+    private var groupDetail: some View {
+        let group = selectedGroup ?? viewModel.groups.first
+        if let group {
+            ScrollView {
+                VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                    HStack {
+                        Text(group.evidenceSummary)
+                            .font(AppFont.title3)
+                            .foregroundColor(.textPrimary)
+                        Spacer()
+                        Text("可释放 \(FileSizeFormatter.abbreviated(from: group.honestlyReclaimable))")
+                            .font(AppFont.monoDigit)
+                            .foregroundColor(.danger)
+                    }
+                    ForEach(group.files) { file in
+                        HStack(spacing: AppSpacing.sm) {
+                            Toggle("", isOn: Binding(
+                                get: { file.isSelected },
+                                set: { _ in viewModel.toggleFile(file.id) }
+                            ))
+                            .toggleStyle(.checkbox)
+                            .labelsHidden()
+
+                            KWThumbnailView(url: file.url, size: 80)
+
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(file.url.lastPathComponent)
+                                    .font(AppFont.callout)
+                                    .foregroundColor(.textPrimary)
+                                    .lineLimit(1)
+                                Text(Self.abbreviatePath(file.url.path))
+                                    .font(AppFont.caption)
+                                    .foregroundColor(.textSecondary)
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+                                    .help(file.url.path)
+                                if let reason = file.reason {
+                                    Text(reason)
+                                        .font(AppFont.caption)
+                                        .foregroundColor(.success)
+                                }
+                            }
+                            Spacer()
+                            Button {
+                                previewURL = file.url
+                            } label: {
+                                Image(systemName: "eye")
+                                    .foregroundColor(.brandPrimary)
+                            }
+                            .buttonStyle(.borderless)
+                            .help("QuickLook 预览")
+                            Text(FileSizeFormatter.abbreviated(from: file.size))
+                                .font(AppFont.monoDigit)
+                                .foregroundColor(.textSecondary)
+                                .frame(minWidth: 60, alignment: .trailing)
+                        }
+                        .padding(AppSpacing.sm)
+                        .background(Color.bgSecondary)
+                        .clipShape(RoundedRectangle(cornerRadius: AppRadius.sm))
+                    }
+                }
+                .padding(AppSpacing.lg)
+            }
+        } else {
+            EmptyStateView(icon: "doc.on.doc", title: "选择一组", subtitle: "左侧选择重复组查看详情。")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private var selectedGroup: ToolboxGroup? {
+        viewModel.groups.first { $0.id == selectedGroupID } ?? viewModel.groups.first
     }
 
     // MARK: - Scanning Progress
@@ -378,6 +514,13 @@ struct DuplicateView: View {
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
+
+                    Button("导出报告") {
+                        _ = DuplicateReportExporter.export(groups: viewModel.groups)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .disabled(viewModel.groups.isEmpty)
 
                     Button("Clean Up (\(viewModel.selectedCount))") {
                         Task { try? await viewModel.cleanupSelected() }

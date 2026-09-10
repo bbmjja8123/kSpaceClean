@@ -31,7 +31,40 @@ final class DuplicateViewModel: ObservableObject {
         didSet { reapplyStrategy() }
     }
     /// Similar-photo grouping aggressiveness (from Settings).
-    @Published var preset: SimilarityPreset = UserPreferences.load().similarityPreset
+    @Published var preset: SimilarityPreset
+    /// 场景预设 (v2.6 W1)：照片库 / 文档 / 开发目录。
+    @Published var scenario: Scenario = .general
+
+    enum Scenario: String, CaseIterable, Identifiable {
+        case general = "通用"
+        case photos = "照片库"
+        case documents = "文档"
+        case developer = "开发目录"
+
+        var id: String { rawValue }
+        var minFileSize: Int64 {
+            switch self {
+            case .general: return 1_048_576
+            case .photos: return 128 * 1024      // 照片阈值更低
+            case .documents: return 256 * 1024
+            case .developer: return 1_048_576
+            }
+        }
+        var enablePerceptual: Bool {
+            switch self {
+            case .photos: return true
+            case .general: return true
+            case .documents: return false   // 文档重复按字节比较更准
+            case .developer: return false   // 开发目录按构建产物思路，另行处理
+            }
+        }
+        var exclusions: [String] {
+            switch self {
+            case .developer: return ["node_modules", ".git", "DerivedData"]
+            default: return []
+            }
+        }
+    }
 
     // MARK: Private state
 
@@ -71,6 +104,7 @@ final class DuplicateViewModel: ObservableObject {
         if let saved = UserDefaults.standard.stringArray(forKey: "kwise.duplicate.scanPaths") {
             scanPaths = saved.map { URL(fileURLWithPath: $0, isDirectory: true) }
         }
+        self.preset = UserPreferences.load().similarityPreset
     }
 
     func useEngine(_ engine: CleanupEngine) {
@@ -95,13 +129,19 @@ final class DuplicateViewModel: ObservableObject {
         lastWarning = nil
 
         let paths = scanPaths
-        let preset = preset
+        let activePreset = scenario == .photos ? preset : .strict
+        let scenarioConfig = scenario
         let strategy = strategy
         let controller = ScanController()
         self.controller = controller
 
         scanTask = Task { [weak self, scanner] in
-            let stream = scanner.scan(paths: paths, preset: preset, strategy: strategy)
+            let stream = scanner.scan(
+                paths: paths, preset: activePreset, strategy: strategy,
+                minFileSize: scenarioConfig.minFileSize,
+                exclusions: scenarioConfig.exclusions,
+                enablePerceptual: scenarioConfig.enablePerceptual
+            )
             for await event in stream {
                 guard let self else { return }
                 switch event {
