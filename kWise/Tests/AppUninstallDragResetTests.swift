@@ -273,4 +273,61 @@ final class UninstallSelectionSemanticsTests: XCTestCase {
         XCTAssertTrue(vm.selectedResiduePaths.isEmpty, "重扫必须清空面板勾选态")
         XCTAssertTrue(vm.groupedResidues.isEmpty, "重扫必须清空分组缓存")
     }
+
+    // MARK: - 提交范围残留项数（审查 M-e）
+
+    func testSelectedCommitResidueCountMatchesSubmissionScope() throws {
+        // 孤儿条目 2 个残留：无勾选 → 计 2 项（不是 1 个条目）；
+        // 显式只勾 r1 → 计 1 项。口径与 uninstallSelected 提交范围一致。
+        let (entry, r1, _, dir) = try makeTwoResidueEntry(
+            name: "Ghost", bundleID: "com.test.count", isOrphan: true)
+        defer { cleanupTempDir(dir) }
+
+        let vm = AppUninstallViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true)))
+        vm.entries = [entry]
+
+        XCTAssertEqual(vm.selectedCommitResidueCount, 2,
+                       "无勾选 → 整条目全部残留项数（M-e：不得报条目数 1）")
+
+        vm.toggleResidue(entryID: entry.id, path: r1.path)
+        XCTAssertEqual(vm.selectedCommitResidueCount, 1,
+                       "显式勾选 → 仅勾选的残留项数")
+        XCTAssertEqual(vm.selectedPickedResidueCount, 1)
+    }
+
+    // MARK: - 分组写回守卫（审查 M-d）
+
+    /// 分组计算期间条目被移除（重扫 / 卸载）→ 结果不得写回陈旧 UUID key，
+    /// in-flight 标记必须释放。用慢速 embedding provider 拉长计算窗口，
+    /// 保证移除发生在写回之前（确定性竞态注入）。
+    func testGroupWritebackSkipsEntryRemovedMidFlight() async throws {
+        let original = ResidueGroupingEngine.systemEmbeddingProvider
+        ResidueGroupingEngine.systemEmbeddingProvider = {
+            Thread.sleep(forTimeInterval: 0.2)
+            return nil
+        }
+        defer { ResidueGroupingEngine.systemEmbeddingProvider = original }
+
+        let (entry, _, _, dir) = try makeTwoResidueEntry(
+            name: "Vanish", bundleID: "com.test.vanish")
+        defer { cleanupTempDir(dir) }
+
+        let vm = AppUninstallViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true)))
+        vm.entries = [entry]
+        vm.selectedEntryID = entry.id
+        _ = vm.groupedResiduesForSelectedEntry()   // 派发后台分组
+
+        vm.entries = []   // 分组仍在后台计算 → 条目已移除
+
+        try await Task.sleep(nanoseconds: 700_000_000)   // > 0.2s 注入窗口
+
+        XCTAssertTrue(vm.groupedResidues.isEmpty,
+                      "entry 已移除 → 不得写回陈旧分组缓存（M-d）")
+        XCTAssertFalse(vm.groupingInFlight.contains(entry.id),
+                       "in-flight 标记必须释放，否则该 key 永久卡在计算中")
+        XCTAssertFalse(vm.groupingDegraded,
+                       "未写回时降级标志也不得翻转")
+    }
 }

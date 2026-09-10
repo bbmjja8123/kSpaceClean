@@ -38,7 +38,9 @@ public final class StartupItemsViewModel: ObservableObject {
             var hints: [UUID: String] = [:]
             let mappings = await store?.allMappings() ?? []
             for entry in result.user + result.system {
-                if let hint = Self.inferUsage(label: entry.label, mappings: mappings) {
+                // 用途推断走共享 API（ResidueExplainer.ownerHint）：与卸载
+                // 残留解释同一条规则表，避免两处规则漂移。
+                if let hint = ResidueExplainer.ownerHint(forLabel: entry.label, mappings: mappings) {
                     hints[entry.id] = hint
                 }
             }
@@ -67,25 +69,6 @@ public final class StartupItemsViewModel: ObservableObject {
                 : "恢复失败 — 项目可能已被清出废纸篓"
             startScan()
         }
-    }
-
-    /// 「这是 XX 的后台助手」——label 精简后模糊匹配 zh 映射。
-    static func inferUsage(label: String, mappings: [ZhAppMapping]) -> String? {
-        let cleaned = label
-            .replacingOccurrences(of: "com.", with: "")
-            .replacingOccurrences(of: "update", with: "")
-            .replacingOccurrences(of: "agent", with: "")
-            .replacingOccurrences(of: "helper", with: "")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !cleaned.isEmpty else { return nil }
-        guard !cleaned.isEmpty else { return nil }
-        for mapping in mappings {
-            if cleaned.lowercased().contains(mapping.bundleID.replacingOccurrences(of: "com.", with: "").lowercased())
-                || mapping.bundleID.lowercased().contains(cleaned.lowercased()) {
-                return "这是「\(mapping.displayName)」的后台助手"
-            }
-        }
-        return nil
     }
 
     public func clearMessage(for id: UUID) {

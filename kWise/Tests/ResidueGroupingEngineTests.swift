@@ -164,4 +164,29 @@ final class ResidueGroupingEngineTests: XCTestCase {
     func testEmptyInputYieldsEmptyOutput() {
         XCTAssertTrue(ResidueGroupingEngine.group([], embedding: nil).isEmpty)
     }
+
+    // MARK: - 性能守卫（Task 6 Step 1）
+
+    /// 面板骨架阈值 50ms 的前提是分组本身必须快。规则遍是纯内存计算，
+    /// 大输入（一次卸载含数千残留的极端场景）仍须远低于秒级 —— 预算取
+    /// 宽松的 1s 守住"不许退化成阻塞扫描"的底线，具体毫秒数交给 UI 层
+    /// 50ms 骨架兜底，避免 CI 机器抖动造成 flake。
+    func testGroupingLargeInputStaysUnderBudget() {
+        ResidueGroupingEngine.systemEmbeddingProvider = { nil }
+        let types: [ResidueType] = [.preferences, .caches, .appSupport,
+                                    .webKit, .launchAgent, .savedState,
+                                    .appleScript, .log]
+        let input = (0..<2000).map { i in
+            residue(types[i % types.count],
+                    "/Users/x/Library/Bulk/app\(i % 7)/file\(i)")
+        }
+
+        let start = Date()
+        let groups = ResidueGroupingEngine.group(input, embedding: nil)
+        let elapsed = Date().timeIntervalSince(start)
+
+        XCTAssertEqual(groups.reduce(0) { $0 + $1.residues.count }, input.count)
+        XCTAssertLessThan(elapsed, 1.0,
+                          "2000 条残留的规则遍必须 < 1s（实际 \(elapsed)s）")
+    }
 }

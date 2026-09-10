@@ -75,7 +75,9 @@ final class NewCopyAuditTests: XCTestCase {
         "Features/PhotoClean/PhotoCleanView.swift",
         "Features/PhotoClean/PhotoSimilarityScanner.swift",
         "Features/AppUninstall/UninstallBackupStore.swift",
-        "Features/StartupItems/StartupItemsView.swift",
+        "Features/AppUninstall/ResidueGroupingEngine.swift",
+        "Features/AppUninstall/ResidueExplainer.swift",
+        "Features/AppUninstall/AppUninstallDetailPanel.swift",
     ]
 
     private static let bannedPhrases = [
@@ -114,5 +116,45 @@ final class NewCopyAuditTests: XCTestCase {
                                 encoding: .utf8)
         XCTAssertTrue(source.contains("对 SSD 已足够"),
                       "The 1-pass-is-enough-on-SSD note is mandatory copy")
+    }
+}
+
+/// v2.6 卸载详情面板 copy 审计（Task 6 Step 3）。C-1：界面只显示
+/// 友好路径，raw path 仅允许出现在 tooltip（`.help`）与勾选逻辑 key 中。
+final class UninstallCopyAuditTests: XCTestCase {
+
+    private var panelSource: String {
+        get throws {
+            let root = URL(fileURLWithPath: #filePath)
+                .deletingLastPathComponent() // Tests/
+                .deletingLastPathComponent() // kWise/
+            return try String(contentsOf:
+                root.appendingPathComponent("Features/AppUninstall/AppUninstallDetailPanel.swift"),
+                encoding: .utf8)
+        }
+    }
+
+    func testDetailPanelShowsFriendlyPath() throws {
+        XCTAssertTrue(try panelSource.contains("ScanTreeRow.friendlyPath(for:"),
+                      "残留行展示必须走 ScanTreeRow.friendlyPath（C-1）")
+    }
+
+    /// raw path 不得直接进入任何 `Text(...)` 展示 —— 唯一合法出口是
+    /// `.help(residue.url.path)` tooltip。`Text(ScanTreeRow.friendlyPath(
+    /// for: ...))` 属于友好路径展示，不算 raw 泄漏。
+    func testDetailPanelRawPathIsTooltipOnly() throws {
+        let source = try panelSource
+        XCTAssertTrue(source.contains(".help(residue.url.path)"),
+                      "raw path 必须保留为 tooltip")
+
+        let offending = source.components(separatedBy: .newlines).filter { line in
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            guard trimmed.hasPrefix("//") == false else { return false }
+            return line.contains("Text(")
+                && line.contains(".url.path")
+                && !line.contains("friendlyPath")
+        }
+        XCTAssertTrue(offending.isEmpty,
+                      "C-1: raw path 不得进入 Text 展示（仅 .help tooltip 允许）: \(offending)")
     }
 }

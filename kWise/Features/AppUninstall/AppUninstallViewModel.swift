@@ -157,7 +157,9 @@ public final class AppUninstallViewModel: ObservableObject {
     /// 分组计算进行中的条目（防重复派发 + 「分析中…」骨架数据源）。
     @Published public private(set) var isGrouping = false
 
-    private var groupingInFlight: Set<UUID> = []
+    /// getter 对 @testable 开放（M-d 写回守卫测试需要断言标记释放），
+    /// 变更仍收敛在 VM 内部。
+    private(set) var groupingInFlight: Set<UUID> = []
 
     /// 面板当前条目（`selectedEntryID` 失效后自动回 nil → 面板空态）。
     public var selectedEntry: UninstallAppEntry? {
@@ -215,6 +217,14 @@ public final class AppUninstallViewModel: ObservableObject {
             let degraded = (embedding == nil)
             let groups = ResidueGroupingEngine.group(residues, embedding: embedding)
             await MainActor.run {
+                // 审查 M-d：分组计算期间该条目可能已被重扫 / 卸载移除。
+                // entry 不存在时不写回 —— 否则陈旧 UUID key 滞留且无法从
+                // UI 清除（仅释放 in-flight 标记，让面板回到空态）。
+                guard self.entries.contains(where: { $0.id == entryID }) else {
+                    self.groupingInFlight.remove(entryID)
+                    self.isGrouping = !self.groupingInFlight.isEmpty
+                    return
+                }
                 self.groupedResidues[entryID] = groups
                 self.groupingDegraded = degraded
                 self.groupingInFlight.remove(entryID)
@@ -279,6 +289,22 @@ public final class AppUninstallViewModel: ObservableObject {
     public var selectedPickedResidueCount: Int {
         selectedEntries.reduce(0) { count, entry in
             count + (selectedResiduePaths[entry.id]?.count ?? 0)
+        }
+    }
+
+    /// 待卸载条目在**提交范围内**的残留项总数（审查 M-e）：
+    /// - 条目有显式勾选 → 勾选的残留项数；
+    /// - 无勾选 → 该条目全部残留项数（整 App 语义）。
+    /// 孤儿「清理残留」弹窗的「将 N 项残留移入废纸篓」用它而不是
+    /// `selectedEntries.count` —— 后者是条目数，标作「项」会让用户把
+    /// 条目数误读成残留文件数（孤儿条目动辄数十个残留文件）。
+    public var selectedCommitResidueCount: Int {
+        selectedEntries.reduce(0) { count, entry in
+            let picked = selectedResiduePaths[entry.id] ?? []
+            if !picked.isEmpty {
+                return count + entry.residues.filter { picked.contains($0.url.path) }.count
+            }
+            return count + entry.leftoverURLs.count
         }
     }
 

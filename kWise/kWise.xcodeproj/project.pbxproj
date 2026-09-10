@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00D9D7663DC0FB558ADF7FC5 /* kWise.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_A5FD5D73-7BAD-40C8-A3E8-4E3F9D44F293" /* kWise.xcodeproj */; };
 		01AC8F2187D07A46C283763F /* ToolboxGroupModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BEF5AB55683243616942641 /* ToolboxGroupModels.swift */; };
 		025D8EE3AC4B5584A7BFFC55 /* AppScanRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4B41F123E899EA595180AE /* AppScanRules.swift */; };
 		03A431083E738C1A487EDF19 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D59D98885220D05C4ACD5C95 /* PrivacyInfo.xcprivacy */; };
@@ -33,7 +34,6 @@
 		1DBEEF2EA6DEC00423D57043 /* ResidueGroupingEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E483B462BE17FF95E81178 /* ResidueGroupingEngineTests.swift */; };
 		1E6256A4909CBD4A9E8B8122 /* SegmentBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A8B1968956EDCF4920942 /* SegmentBuilderTests.swift */; };
 		1E6D3B5AF02C875B783F7379 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F46265C2A0738D42A71278 /* SettingsView.swift */; };
-		1F13AF31EA63D92686A40156 /* generate_project.py in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_94ABA088-15E8-496D-BDF5-743257EA465A" /* generate_project.py */; };
 		1FA175DB95881036B5D02CD1 /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED53F7D8C1101A46EF4CF60C /* MenuBarManager.swift */; };
 		1FD622754441F5DF2F3A77F9 /* MetricKitReceiverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F70985E5F2BF1EE27BA42BD /* MetricKitReceiverTests.swift */; };
 		208F466BA7BF0FCAE095CD85 /* TrashMoverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B292AFFC5E7CDDA2D8455 /* TrashMoverTests.swift */; };
@@ -99,6 +99,7 @@
 		5C6AB0841510D64A7601A290 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE88330E8C7BAC14A2F69F4A /* WidgetSnapshot.swift */; };
 		5CCAC913BAE0AC42D2302491 /* ScanProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE6EFB812B2CC71AF4BF786 /* ScanProgress.swift */; };
 		5D79E227DC75947680636696 /* DetailPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2B293E271EC85AA443E676 /* DetailPanelView.swift */; };
+		5DAA7E6055E47230C8255249 /* generate_project.py in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_888331E0-4C06-418C-AC11-E59B842FF1D1" /* generate_project.py */; };
 		5DBB425F54204315FBDA1887 /* PrivacyScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0B8C8C9771DD200C32A2F3 /* PrivacyScanner.swift */; };
 		5E3ADDD81691E43F097DACB6 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536CFDC5ECC616DFBF40D2B /* ScanResult.swift */; };
 		5E9771E6BD9F2F7A3D445AE3 /* MaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A703EFDB1E13E0CE4032088B /* MaintenanceView.swift */; };
@@ -117,6 +118,7 @@
 		6F3655BBE708A70A9C082A0F /* CommonUtils in Frameworks */ = {isa = PBXBuildFile; productRef = A09251F9F625CE15E924FF5E /* CommonUtils */; };
 		6F56216EB89DDB887516294A /* ScanTreeFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9397BCDDA6E2BF0E5A92F22 /* ScanTreeFilterTests.swift */; };
 		6FF4474B77B9191C46733135 /* WidgetSnapshotSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6E0704D290E8C2F8EA156F /* WidgetSnapshotSink.swift */; };
+		701298D2EFED7D7A0BEFAAC2 /* AppStoreMetadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_3D0FC485-8C40-4CC3-A226-E9166009BBF9" /* AppStoreMetadata.plist */; };
 		70A39F5223CD9F0AE9F8AEB2 /* StoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDED3D870B393B732756DF7F /* StoreProtocol.swift */; };
 		70F5EFDB05F039026D3F0D3A /* CleanupNotificationSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66A99AA6AFA864D6BABF0A8 /* CleanupNotificationSink.swift */; };
 		714AE9788227C254B9CF4735 /* PrivacyOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57803A4529F4192532942594 /* PrivacyOverviewView.swift */; };
@@ -125,7 +127,6 @@
 		73DCDABC6065314F4BED1D8E /* HealthSummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7140D976BAFB189269120D95 /* HealthSummaryBuilder.swift */; };
 		7408533D012E8C1B1316DE7E /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D27A711F1D7CFD55B366C9E /* PrivacyView.swift */; };
 		75A7C16DCA0483F3718C1748 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689C61AAE41AA76B3E5372BC /* AppCoordinator.swift */; };
-		772CAB26B48EB989841ED7A8 /* AppStoreMetadata.plist in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_B3507EA7-EDD6-4DCE-AD77-0ADBD8CE1159" /* AppStoreMetadata.plist */; };
 		77BDD89115A2FA3C4AD7EEFB /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6FC58769F82A2538E42781 /* AppState.swift */; };
 		7AB859913AF45E45569D72FA /* WarningDetectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11A00BA113B219AAE1BA9A /* WarningDetectionService.swift */; };
 		7AC4F8AD8E0949C3ADB628A5 /* AppStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B4DD389342E3E728CEF84A /* AppStateTests.swift */; };
@@ -209,7 +210,6 @@
 		D0F092C971890287FAA67694 /* AppUninstallEngineRoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20375BFBE7EB03F93CE8D05D /* AppUninstallEngineRoutingTests.swift */; };
 		D11DF8D25C7A1F439A04F13C /* DuplicateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0A9875F96ACCD6B5EF30B /* DuplicateViewModel.swift */; };
 		D232C8C51879C0C95EAC2AFB /* CleanupRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253F7D4DC23A9342717A1C96 /* CleanupRecord.swift */; };
-		D455AA54F0F4B396AD160E7A /* kWise.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = "TEMP_7CDFA19E-41C6-4B51-8262-BFB6723F5E41" /* kWise.xcodeproj */; };
 		D4B6115D509B2A185FF959A0 /* DiskStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFCE8C78F0D445042D26B51 /* DiskStatusView.swift */; };
 		D53EC924760CFA6DCD710AD8 /* LargeOldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130D93910784701464058874 /* LargeOldViewModel.swift */; };
 		D5405433289323B170420FA6 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B673D75EB3705BCEA031D78 /* AppLogger.swift */; };
@@ -493,9 +493,9 @@
 		F8A0A9875F96ACCD6B5EF30B /* DuplicateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateViewModel.swift; sourceTree = "<group>"; };
 		FE15D65197A2C5BDAB8B8BC2 /* ScanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewModel.swift; sourceTree = "<group>"; };
 		FE6FC58769F82A2538E42781 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		"TEMP_7CDFA19E-41C6-4B51-8262-BFB6723F5E41" /* kWise.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = kWise.xcodeproj; sourceTree = "<group>"; };
-		"TEMP_94ABA088-15E8-496D-BDF5-743257EA465A" /* generate_project.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = generate_project.py; sourceTree = "<group>"; };
-		"TEMP_B3507EA7-EDD6-4DCE-AD77-0ADBD8CE1159" /* AppStoreMetadata.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = AppStoreMetadata.plist; sourceTree = "<group>"; };
+		"TEMP_3D0FC485-8C40-4CC3-A226-E9166009BBF9" /* AppStoreMetadata.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = AppStoreMetadata.plist; sourceTree = "<group>"; };
+		"TEMP_888331E0-4C06-418C-AC11-E59B842FF1D1" /* generate_project.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = generate_project.py; sourceTree = "<group>"; };
+		"TEMP_A5FD5D73-7BAD-40C8-A3E8-4E3F9D44F293" /* kWise.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = kWise.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -733,17 +733,17 @@
 			path = FinderExtension;
 			sourceTree = "<group>";
 		};
-		3A5DD8633052E00500B27B67 /* Recovered References */ = {
+		3A5DD86F3053151B00B27B67 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				"TEMP_B3507EA7-EDD6-4DCE-AD77-0ADBD8CE1159" /* AppStoreMetadata.plist */,
-				"TEMP_94ABA088-15E8-496D-BDF5-743257EA465A" /* generate_project.py */,
-				"TEMP_7CDFA19E-41C6-4B51-8262-BFB6723F5E41" /* kWise.xcodeproj */,
+				"TEMP_3D0FC485-8C40-4CC3-A226-E9166009BBF9" /* AppStoreMetadata.plist */,
+				"TEMP_888331E0-4C06-418C-AC11-E59B842FF1D1" /* generate_project.py */,
+				"TEMP_A5FD5D73-7BAD-40C8-A3E8-4E3F9D44F293" /* kWise.xcodeproj */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		3A5DD8643052E00500B27B67 /* Products */ = {
+		3A5DD8703053151B00B27B67 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
@@ -1038,7 +1038,7 @@
 				1AE15101175FC039E67694FE /* UITests */,
 				FB06B728FFEBFF048CBD26FD /* Widgets */,
 				4C2ACEC1E38300835C5ED95C /* Products */,
-				3A5DD8633052E00500B27B67 /* Recovered References */,
+				3A5DD86F3053151B00B27B67 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1402,8 +1402,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 3A5DD8643052E00500B27B67 /* Products */;
-					ProjectRef = "TEMP_7CDFA19E-41C6-4B51-8262-BFB6723F5E41" /* kWise.xcodeproj */;
+					ProductGroup = 3A5DD8703053151B00B27B67 /* Products */;
+					ProjectRef = "TEMP_A5FD5D73-7BAD-40C8-A3E8-4E3F9D44F293" /* kWise.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1422,14 +1422,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				772CAB26B48EB989841ED7A8 /* AppStoreMetadata.plist in Resources */,
+				701298D2EFED7D7A0BEFAAC2 /* AppStoreMetadata.plist in Resources */,
 				F01D9D7959EA73036EDC2B84 /* Assets.xcassets in Resources */,
 				0B50278750294F08BDE01BCA /* Localizable.xcstrings in Resources */,
 				03A431083E738C1A487EDF19 /* PrivacyInfo.xcprivacy in Resources */,
 				30363518C4D135F4DEA2DA26 /* bundleIDMapping.json in Resources */,
 				E4102CCD45386053081F0DF7 /* com.kraftly.kspaceclean.trashmonitor.plist in Resources */,
-				1F13AF31EA63D92686A40156 /* generate_project.py in Resources */,
-				D455AA54F0F4B396AD160E7A /* kWise.xcodeproj in Resources */,
+				5DAA7E6055E47230C8255249 /* generate_project.py in Resources */,
+				00D9D7663DC0FB558ADF7FC5 /* kWise.xcodeproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -319,8 +319,12 @@ public struct AppUninstallView: View {
     }
 
     private var confirmButtonTitle: String {
+        if allSelectedAreOrphans {
+            // 审查 M-e：孤儿语境的「N 项」指残留文件项数（提交范围），
+            // 不是所选条目数 —— 条目数会严重低估实际清理规模。
+            return "清理残留 (\(viewModel.selectedCommitResidueCount) 项残留)"
+        }
         let count = viewModel.selectedEntries.count
-        if allSelectedAreOrphans { return "清理残留 (\(count) 项)" }
         if isDetailModeConfirm { return "卸载 (\(count) 个应用，部分残留)" }
         return "卸载 (\(count) 个应用)"
     }
@@ -331,7 +335,8 @@ public struct AppUninstallView: View {
         let backupNote = "残留会先备份 30 天，可从备份还原。"
 
         if allSelectedAreOrphans {
-            return "将 \(viewModel.selectedEntries.count) 项应用残留移入废纸篓，可回收 \(size) 空间。\(backupNote)"
+            // 审查 M-e：N = 提交范围内的残留项数（与按钮标题同口径）。
+            return "将 \(viewModel.selectedCommitResidueCount) 项残留文件移入废纸篓，可回收 \(size) 空间。\(backupNote)"
         }
 
         if isDetailModeConfirm {

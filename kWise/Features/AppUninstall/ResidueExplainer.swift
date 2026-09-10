@@ -51,7 +51,6 @@ enum ResidueExplainer {
             return "日志文件，通常可安全删除"
         case .appleScript:
             return "自动化脚本，删除后相关自动化操作失效"
-            return "日志文件，通常可安全删除"
         default:
             break
         }
@@ -67,7 +66,7 @@ enum ResidueExplainer {
     }
 
     /// 归属推断共享 API：label 反查 zh 映射 → 「这是 XX 的后台助手」。
-    /// 与 StartupItemsViewModel.inferUsage 保持同一规则（后续迁移点）。
+    /// StartupItemsViewModel 的启动项用途推断与本模块共用此实现。
     ///
     /// 清洗后长度 < 3 的 label 直接返回 `nil`，避免超短字符串（如单字符
     /// 残片）在 bundle ID 包含判断中产生误报。
