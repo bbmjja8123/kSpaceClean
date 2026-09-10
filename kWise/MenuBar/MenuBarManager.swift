@@ -9,6 +9,8 @@ import AppKit
 /// same `CleanupEventSink` stream as the quota ledger.
 @MainActor
 public final class MenuBarManager: NSObject, ObservableObject, CleanupEventSink {
+    /// 全局唯一实例 — 退出守卫需要停 timer（v2.6）。
+    static var shared: MenuBarManager?
     private var statusItem: NSStatusItem?
     /// Background timer that refreshes the menu-bar status item every
     /// ≤10s — drives C-8 (menu bar live number). Invalidated on `setup()`
@@ -31,6 +33,7 @@ public final class MenuBarManager: NSObject, ObservableObject, CleanupEventSink 
     @Published public private(set) var lastCleanupSummary: String = "暂无清理记录"
 
     public func setup() {
+        MenuBarManager.shared = self
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem?.button?.action = #selector(toggleMenu)
         statusItem?.button?.target = self
@@ -80,6 +83,12 @@ public final class MenuBarManager: NSObject, ObservableObject, CleanupEventSink 
     /// Re-read the boot volume's used/total bytes from the system and pipe
     /// them into ``updateDiskUsage(used:total:)``. Runs on the main actor
     /// because the menu-bar item's button touches AppKit.
+    /// 退出守卫：停掉刷新 timer，避免拆除期间回调。
+    func stopRefreshTimer() {
+        refreshTimer?.invalidate()
+        refreshTimer = nil
+    }
+
     private func refreshDiskUsage() {
         let homeURL = URL(fileURLWithPath: NSHomeDirectory())
         guard let values = try? homeURL.resourceValues(

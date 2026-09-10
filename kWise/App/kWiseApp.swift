@@ -3,6 +3,7 @@ import CoreData
 
 @main
 struct kWiseApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var appState = AppState()
     @StateObject private var coordinator = AppCoordinator()
     /// Single DI root (v2.0 Phase 1). Everything process-wide — cleanup
