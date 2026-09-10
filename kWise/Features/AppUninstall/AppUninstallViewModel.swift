@@ -147,7 +147,7 @@ public final class AppUninstallViewModel: ObservableObject {
 
     /// NLEmbedding 解析后仍为 nil → 面板显示降级提示行
     /// （未知路径全落 other，规则遍结果仍可信）。与分组结果同步发布。
-    public private(set) var groupingDegraded = false
+    @Published public private(set) var groupingDegraded = false
 
     /// 分组计算进行中的条目（防重复派发 + 「分析中…」骨架数据源）。
     @Published public private(set) var isGrouping = false
@@ -160,10 +160,12 @@ public final class AppUninstallViewModel: ObservableObject {
         return entries.first { $0.id == selectedEntryID }
     }
 
-    /// 面板里是否出现过任何显式残留勾选（spec §7 提交语义消歧）：
-    /// 有 → 提交 App 本体 + 仅选中的残留；无 → 整 App 语义（本体 + 全部残留）。
-    /// 全局判定而非按选中条目 —— 勾选状态按条目隔离，任一条目出现过
-    /// 显式勾选即进入明细模式，清空后回退整 App 语义。
+    /// 面板里是否出现过任何显式残留勾选（仅用于确认弹窗文案切换，
+    /// 例如「明细模式」提示行）。**不参与提交语义** —— `uninstallSelected`
+    /// 按条目读取 `selectedResiduePaths[entry.id]`（该条目无勾选 → 回退
+    /// 整 App 全量残留），绝不消费本全局 flag：勾选按条目隔离，任一
+    /// 条目的勾选若经全局判定外溢到其他条目的提交范围，属于明确禁止
+    /// 的跨条目语义污染（Task 5 审查裁定，见 UninstallSelectionSemanticsTests）。
     public var hasExplicitResidueSelection: Bool {
         selectedResiduePaths.contains { !$0.value.isEmpty }
     }
@@ -296,10 +298,24 @@ public final class AppUninstallViewModel: ObservableObject {
         var failed: [String] = []
 
         for entry in targets {
-            // App bundle + every located leftover become one CleanupTarget
-            // set, so a single `CleanupEngine` run records restorable
-            // history rows and consumes quota (v2.0 Phase 2).
-            let urls = ([entry.appURL] + entry.leftoverURLs)
+            // spec §7 提交语义（按条目消歧）：该条目在面板里出现过显式
+            // 勾选（`selectedResiduePaths[entry.id]` 非空）→ 只提交勾选的
+            // 残留；无勾选 / 已全部清空 → 整 App 语义（全部残留）。
+            // 注意：这里绝不读全局 `hasExplicitResidueSelection` —— 勾选
+            // 按条目隔离，其他条目的勾选不得影响本条目的提交范围。
+            let explicit = selectedResiduePaths[entry.id]
+            let residueURLs: [URL]
+            if let explicit, !explicit.isEmpty {
+                residueURLs = entry.leftoverURLs.filter { explicit.contains($0.path) }
+            } else {
+                residueURLs = entry.leftoverURLs
+            }
+            // App bundle + resolved leftovers become one CleanupTarget set,
+            // so a single `CleanupEngine` run records restorable history rows
+            // and consumes quota (v2.0 Phase 2). 孤儿条目（App 本体已不存在，
+            // 「清理残留」入口）只提交残留 —— 即使 appURL 路径恰好仍存在。
+            let appURLs = entry.isOrphan ? [] : [entry.appURL]
+            let urls = (appURLs + residueURLs)
                 .filter { FileManager.default.fileExists(atPath: $0.path) }
             let engineTargets = urls.map { url in
                 CleanupTarget(
@@ -324,9 +340,17 @@ public final class AppUninstallViewModel: ObservableObject {
             }
         }
 
-        // Remove successfully uninstalled entries from the list.
-        entries.removeAll { entry in
-            succeeded.contains(entry.appName)
+        // Remove successfully uninstalled entries from the list, together
+        // with their per-entry panel state (residue picks + grouping cache)
+        // — otherwise stale UUID keys accumulate for entries that no longer
+        // exist and can never be cleared from the UI.
+        let succeededNames = Set(succeeded)
+        let removedIDs = Set(entries.filter { succeededNames.contains($0.appName) }.map(\.id))
+        entries.removeAll { succeededNames.contains($0.appName) }
+        for id in removedIDs {
+            selectedResiduePaths.removeValue(forKey: id)
+            groupedResidues.removeValue(forKey: id)
+            groupingInFlight.remove(id)
         }
 
         // 已卸载条目不再持有面板选中态（详情面板回落到空态）。

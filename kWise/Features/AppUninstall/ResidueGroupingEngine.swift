@@ -123,7 +123,7 @@ enum ResidueGroupingEngine {
         case .preferences: return .preferences
         case .caches: return .caches
         case .appSupport, .groupContainer, .container: return .appData
-        case .webKit, .cookie: return .webData
+        case .webKit, .cookie, .httpStorage: return .webData
         case .launchAgent, .launchDaemon, .startupItem: return .launchAgents
         case .plugin, .prefPane: return .plugins
         case .savedState: return .savedState

@@ -18,6 +18,11 @@ struct AppUninstallDetailPanel: View {
     /// 由宿主视图接线（确认弹窗 / 配额路由仍归 AppUninstallView 所有）。
     var onUninstall: ((UninstallAppEntry) -> Void)? = nil
 
+    /// 孤儿条目「清理残留」专用接线：与「卸载」分开，宿主弹**独立的
+    /// 残留确认弹窗**（文案为「清理残留 (N MB)」，不显示「卸载 N 个应用」，
+    /// 且提交时不含 App 本体）。
+    var onCleanupResidues: ((UninstallAppEntry) -> Void)? = nil
+
     /// 分组 >50ms 才亮骨架：快速路径（纯规则命中）不闪加载态。
     @State private var showGroupingSkeleton = false
 
@@ -50,7 +55,8 @@ struct AppUninstallDetailPanel: View {
             }
 
             Divider()
-            DetailActionBar(entry: entry, viewModel: viewModel, onUninstall: onUninstall)
+            DetailActionBar(entry: entry, viewModel: viewModel,
+                            onUninstall: onUninstall, onCleanupResidues: onCleanupResidues)
         }
     }
 
@@ -203,9 +209,20 @@ private struct ResidueGroupCard: View {
 
     @State private var isExpanded = true
 
-    /// Reset 只清 preferences/caches/httpStorage/savedState —— 对应分组
-    /// kinds 在组卡上直接标注「Reset 会清理此组」（spec §7）。
-    private static let resettableKinds: Set<ResidueGroupKind> = [.preferences, .caches, .savedState]
+    /// Reset 清理范围以 scanner 的 `resettableTypes` 为同一口径
+    /// （preferences / caches / httpStorage / savedState）。组卡 badge
+    /// 按「组内全部残留类型都可 Reset」逐条判定而非按分组 kind 判定：
+    /// 网页数据组可能同时含 httpStorage（可 Reset）与 webKit/cookie
+    /// （不可 Reset），kind 级判定会把后者误标（Task 5 审查裁定）。
+    private static let resettableTypes: Set<ResidueType> = [
+        .preferences, .caches, .httpStorage, .savedState,
+    ]
+
+    private var isResettableGroup: Bool {
+        !group.residues.isEmpty && group.residues.allSatisfy {
+            Self.resettableTypes.contains($0.type)
+        }
+    }
 
     private var selectedPaths: Set<String> {
         viewModel.selectedResiduePaths[entry.id] ?? []
@@ -259,7 +276,7 @@ private struct ResidueGroupCard: View {
                                 .font(AppFont.caption)
                                 .foregroundColor(.textSecondary)
 
-                            if Self.resettableKinds.contains(group.kind) {
+                            if isResettableGroup {
                                 Text("Reset 会清理此组")
                                     .font(AppFont.caption)
                                     .foregroundColor(.brandSecondary)
@@ -389,6 +406,10 @@ private struct DetailActionBar: View {
     let entry: UninstallAppEntry
     @ObservedObject var viewModel: AppUninstallViewModel
     var onUninstall: ((UninstallAppEntry) -> Void)?
+    /// 孤儿条目专属回调 —— 不得复用 `onUninstall`：孤儿没有 App 本体，
+    /// 走卸载弹窗会出现「卸载 (1 个应用)」却无可卸载本体的文案错位
+    /// （Task 5 审查裁定）。
+    var onCleanupResidues: ((UninstallAppEntry) -> Void)? = nil
 
     var body: some View {
         HStack(spacing: AppSpacing.md) {
@@ -400,9 +421,10 @@ private struct DetailActionBar: View {
             Spacer()
 
             if entry.isOrphan {
-                // 孤儿：无可卸载本体，仅清理残留（选中语义由宿主闭包处理）。
+                // 孤儿：无可卸载本体，仅清理残留 —— 走宿主的独立残留
+                // 确认弹窗（「清理残留 (N MB)」），语义与「卸载」分开。
                 Button("清理残留") {
-                    onUninstall?(entry)
+                    onCleanupResidues?(entry)
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.danger)

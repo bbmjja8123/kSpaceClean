@@ -12,6 +12,10 @@ public struct AppUninstallView: View {
     @State private var uninstallResult: (succeeded: [String], failed: [String])?
     @State private var isUninstalling = false
 
+    /// 孤儿条目「清理残留」待确认项（独立于卸载确认弹窗 —— 孤儿没有
+    /// App 本体，文案与提交范围都必须与「卸载」分开）。
+    @State private var residueCleanupEntry: UninstallAppEntry?
+
     /// Injectable for the app root (graph engine + quota routing);
     /// previews fall back to a default-constructed view model.
     public init(viewModel: AppUninstallViewModel? = nil) {
@@ -60,6 +64,17 @@ public struct AppUninstallView: View {
                 Text(summary)
             }
         }
+    }
+
+    /// 孤儿清理规模：面板有显式勾选 → 只算勾选的残留；否则整条目残留。
+    private var residueCleanupSize: Int64 {
+        guard let entry = residueCleanupEntry else { return 0 }
+        if let explicit = viewModel.selectedResiduePaths[entry.id], !explicit.isEmpty {
+            return entry.residues
+                .filter { explicit.contains($0.url.path) }
+                .reduce(0) { $0 + $1.sizeBytes }
+        }
+        return entry.leftoverSize
     }
 
     // MARK: - Header
@@ -165,13 +180,39 @@ public struct AppUninstallView: View {
                 appList
                     .frame(width: 260)
                 Divider()
-                AppUninstallDetailPanel(viewModel: viewModel) { entry in
-                    // 面板「卸载」= 只选中该条目后走同一确认弹窗。
-                    viewModel.deselectAll()
-                    viewModel.toggleSelection(entry.id)
-                    showConfirmDialog = true
+                AppUninstallDetailPanel(
+                    viewModel: viewModel,
+                    onUninstall: { entry in
+                        // 面板「卸载」= 只选中该条目后走卸载确认弹窗。
+                        viewModel.deselectAll()
+                        viewModel.toggleSelection(entry.id)
+                        showConfirmDialog = true
+                    },
+                    onCleanupResidues: { entry in
+                        // 孤儿「清理残留」= 独立的残留确认弹窗（文案
+                        // 「清理残留 (N MB)」），提交时不含 App 本体。
+                        residueCleanupEntry = entry
+                    }
+                )
+            }
+            // 孤儿条目「清理残留」确认弹窗（与卸载弹窗分别挂在不同视图，
+            // 避免 confirmationDialog 同视图竞争 present）。
+            .confirmationDialog(
+                "确认清理残留",
+                isPresented: Binding(
+                    get: { residueCleanupEntry != nil },
+                    set: { if !$0 { residueCleanupEntry = nil } }
+                ),
+                titleVisibility: .visible
+            ) {
+                Button("清理残留 (\(FileSizeFormatter.string(from: residueCleanupSize)))") {
+                    performResidueCleanup()
                 }
-                .padding(.leading, 0)
+                .keyboardShortcut(.defaultAction)
+                Button("取消", role: .cancel) {}
+            } message: {
+                let size = FileSizeFormatter.string(from: residueCleanupSize)
+                Text("将 \(residueCleanupEntry?.appName ?? "") 的残留文件移入废纸篓，可回收 \(size) 空间。残留会先备份 30 天，可从备份还原。")
             }
         }
     }
@@ -258,6 +299,17 @@ public struct AppUninstallView: View {
     }
 
     // MARK: - Actions
+
+    /// 孤儿条目「清理残留」确认后：只选中该条目走既有卸载管线。
+    /// 提交范围由 VM 按 `isOrphan` 收敛为仅残留（appURL 不进 CleanupTarget），
+    /// 备份 / 启动项停用 / 历史 / 配额与正常卸载同一管线。
+    private func performResidueCleanup() {
+        guard let entry = residueCleanupEntry else { return }
+        residueCleanupEntry = nil
+        viewModel.deselectAll()
+        viewModel.toggleSelection(entry.id)
+        performUninstall()
+    }
 
     private func performUninstall() {
         isUninstalling = true

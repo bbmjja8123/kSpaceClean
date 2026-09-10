@@ -149,6 +149,18 @@ final class ResidueGroupingEngineTests: XCTestCase {
         }
     }
 
+    /// `.httpStorage` 在 scanner 的 resettableTypes 内，规则遍必须落
+    /// `.webData`（而不是掉进 embedding/other 丢掉组卡语义）。
+    func testHTTPStorageMapsToWebData() {
+        ResidueGroupingEngine.systemEmbeddingProvider = { nil }
+        let groups = ResidueGroupingEngine.group([
+            residue(.httpStorage, "/Users/x/Library/HTTPStorages/com.a"),
+        ], embedding: nil)
+        XCTAssertEqual(groups.count, 1)
+        XCTAssertEqual(groups.first?.kind, .webData)
+        XCTAssertEqual(groups.first?.residues.count, 1)
+    }
+
     func testEmptyInputYieldsEmptyOutput() {
         XCTAssertTrue(ResidueGroupingEngine.group([], embedding: nil).isEmpty)
     }
