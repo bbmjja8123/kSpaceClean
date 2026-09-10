@@ -14,6 +14,8 @@ struct SpaceMapView: View {
     @State private var hoveredSegmentID: UUID?
 
     @State private var showFolderPicker = false
+    /// hover 扇区的信息（footer 显示详情，v2.6 R2-4）。
+    @State private var hoveredInfo: String?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -158,9 +160,14 @@ struct SpaceMapView: View {
         .contentShape(Rectangle())
         .onContinuousHover { phase in
             if case .active(let location) = phase {
-                hoveredSegmentID = hitTestSunburst(location, canvasSide: size)?.id
+                let segment = hitTestSunburst(location, canvasSide: size)
+                hoveredSegmentID = segment?.id
+                hoveredInfo = segment.map {
+                    "\($0.title) · \(Self.formatBytes($0.size)) · \($0.kind)"
+                }
             } else {
                 hoveredSegmentID = nil
+                hoveredInfo = nil
             }
         }
         .onTapGesture { location in
@@ -246,15 +253,21 @@ struct SpaceMapView: View {
 
     // MARK: - Colors (token-driven — no raw hex)
 
+    /// DaisyDisk 式按文件类型着色 (v2.6 R2-4)：同环内不同类型一眼可辨。
     private func color(for segment: SpaceSegment, hovered: Bool) -> Color {
         if segment.node.state == .checked { return .success }
         if segment.isCollapsedBucket { return Color.textSecondary.opacity(0.25) }
         let base: Color
-        switch segment.risk {
-        case .dangerous, .caution:
-            base = .warning
+        switch segment.kind {
+        case "图片": base = Color(red: 0.62, green: 0.4, blue: 0.9)      // 紫
+        case "视频": base = Color(red: 0.25, green: 0.55, blue: 0.95)   // 蓝
+        case "音频": base = .orange
+        case "文档": base = Color(red: 0.45, green: 0.78, blue: 0.55)   // 绿
+        case "压缩包": base = .brown
+        case "镜像": base = .pink
         default:
-            base = .brandPrimary
+            base = segment.risk == .dangerous || segment.risk == .caution
+                ? .warning : .brandPrimary
         }
         let depthOpacity = [0.85, 0.65, 0.45][min(segment.depth, 2)]
         return base.opacity(hovered ? min(1, depthOpacity + 0.2) : depthOpacity)

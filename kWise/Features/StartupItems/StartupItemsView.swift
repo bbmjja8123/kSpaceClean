@@ -25,7 +25,9 @@ struct StartupItemsView: View {
             content
         }
         .background(Color.bgPrimary)
-        .onAppear { viewModel.startScan() }
+        .onAppear {
+            viewModel.startScan()
+        }
         .confirmationDialog(
             "停用启动项？",
             isPresented: Binding(

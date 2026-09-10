@@ -2,6 +2,7 @@
 import Foundation
 import Combine
 import PowerScope
+import AppCatalogCore
 
 /// Drives the 启动项 surface (M2, v2.0 Phase 5).
 @MainActor
@@ -9,6 +10,8 @@ public final class StartupItemsViewModel: ObservableObject {
     @Published public private(set) var userItems: [LoginItemEntry] = []
     @Published public private(set) var systemItems: [LoginItemEntry] = []
     @Published public private(set) var malformedItems: [LaunchPlistParser.MalformedItem] = []
+    /// Agent 用途推断 (v2.6 R2-4)：label → 已知产品名描述。
+    @Published public private(set) var usageHints: [UUID: String] = [:]
     @Published public private(set) var isScanning = false
     /// Row-local operation feedback (`entryID` → message).
     @Published public private(set) var messages: [UUID: String] = [:]
@@ -30,6 +33,16 @@ public final class StartupItemsViewModel: ObservableObject {
             userItems = result.user
             systemItems = result.system
             malformedItems = result.malformed
+            // 用途推断：label 去常见后缀后反查 zh 映射表（219 条）。
+            let store = MappingStore.loadFromBundledJSON()
+            var hints: [UUID: String] = [:]
+            let mappings = await store?.allMappings() ?? []
+            for entry in result.user + result.system {
+                if let hint = Self.inferUsage(label: entry.label, mappings: mappings) {
+                    hints[entry.id] = hint
+                }
+            }
+            usageHints = hints
             isScanning = false
         }
     }
@@ -54,6 +67,25 @@ public final class StartupItemsViewModel: ObservableObject {
                 : "恢复失败 — 项目可能已被清出废纸篓"
             startScan()
         }
+    }
+
+    /// 「这是 XX 的后台助手」——label 精简后模糊匹配 zh 映射。
+    static func inferUsage(label: String, mappings: [ZhAppMapping]) -> String? {
+        let cleaned = label
+            .replacingOccurrences(of: "com.", with: "")
+            .replacingOccurrences(of: "update", with: "")
+            .replacingOccurrences(of: "agent", with: "")
+            .replacingOccurrences(of: "helper", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleaned.isEmpty else { return nil }
+        guard !cleaned.isEmpty else { return nil }
+        for mapping in mappings {
+            if cleaned.lowercased().contains(mapping.bundleID.replacingOccurrences(of: "com.", with: "").lowercased())
+                || mapping.bundleID.lowercased().contains(cleaned.lowercased()) {
+                return "这是「\(mapping.displayName)」的后台助手"
+            }
+        }
+        return nil
     }
 
     public func clearMessage(for id: UUID) {

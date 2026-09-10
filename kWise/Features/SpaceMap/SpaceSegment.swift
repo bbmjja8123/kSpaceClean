@@ -29,6 +29,43 @@ public struct SpaceSegment: Identifiable, Equatable {
     /// Node backing this segment (reference semantics — selection toggles
     /// propagate to the results tree).
     public let node: any ScanTreeNode
+    /// 文件类型大类 (v2.6 R2-4) — 着色依据。空串 = 未分类。
+    public let kind: String
+
+    public init(id: UUID, title: String, size: Int64, depth: Int,
+                startAngle: Double, endAngle: Double, risk: RiskLevel,
+                isCollapsedBucket: Bool, hasChildren: Bool, node: any ScanTreeNode) {
+        // 由文件扩展名推断类型大类（DaisyDisk 式着色依据）。
+        let ext = node is CollapsedBucketNode ? "" : Self.kindOf(node)
+        self.kind = Self.categoryName(for: ext)
+        self.id = id
+        self.title = title
+        self.size = size
+        self.depth = depth
+        self.startAngle = startAngle
+        self.endAngle = endAngle
+        self.risk = risk
+        self.isCollapsedBucket = isCollapsedBucket
+        self.hasChildren = hasChildren
+        self.node = node
+    }
+
+    static func kindOf(_ node: any ScanTreeNode) -> String {
+        if let result = node as? ScanResult { return result.url.pathExtension.lowercased() }
+        return ""
+    }
+
+    static func categoryName(for ext: String) -> String {
+        switch ext {
+        case "png", "jpg", "jpeg", "heic", "gif", "tiff", "webp", "raw", "dng": return "图片"
+        case "mp4", "mov", "mkv", "avi", "webm", "m4v": return "视频"
+        case "mp3", "wav", "aac", "flac", "m4a": return "音频"
+        case "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pages": return "文档"
+        case "zip", "tar", "gz", "7z", "rar": return "压缩包"
+        case "dmg", "iso", "pkg": return "镜像"
+        default: return "其他"
+        }
+    }
 
     public static func == (lhs: SpaceSegment, rhs: SpaceSegment) -> Bool {
         lhs.id == rhs.id && lhs.startAngle == rhs.startAngle && lhs.endAngle == rhs.endAngle
