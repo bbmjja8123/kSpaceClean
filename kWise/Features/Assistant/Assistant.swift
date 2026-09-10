@@ -106,12 +106,19 @@ public struct AssistantAnswer: Equatable {
         public let title: String
         public let detail: String
         public let nodeID: UUID?
+        /// 一键执行 (v2.6 W9)：卡片底部按钮 → 打开对应工具 Tab。
+        public let actionTitle: String?
+        public let actionDestination: AppState.NavigationItem?
 
-        public init(title: String, detail: String, nodeID: UUID? = nil) {
+        public init(title: String, detail: String, nodeID: UUID? = nil,
+                    actionTitle: String? = nil,
+                    actionDestination: AppState.NavigationItem? = nil) {
             self.id = UUID()
             self.title = title
             self.detail = detail
             self.nodeID = nodeID
+            self.actionTitle = actionTitle
+            self.actionDestination = actionDestination
         }
 
         public static func == (lhs: Card, rhs: Card) -> Bool { lhs.id == rhs.id }
@@ -155,25 +162,29 @@ enum AssistantAnswerBuilder {
         case .duplicates:
             return AssistantAnswer(
                 headline: "重复文件清理在工具箱中，扫描后会智能保留最新原件。",
-                cards: [],
+                cards: [AssistantAnswer.Card(title: "打开重复文件工具", detail: "字节级 + APFS 克隆 + 视觉相似",
+                                             actionTitle: "去清理", actionDestination: .duplicates)],
                 suggestions: exampleQuestions
             )
         case .appLeftovers:
             return AssistantAnswer(
                 headline: "应用卸载会同时清除缓存、日志等残留文件，全部可回滚。",
-                cards: [],
+                cards: [AssistantAnswer.Card(title: "打开应用卸载", detail: "1141 条规则识别残留，可备份 30 天",
+                                             actionTitle: "去卸载", actionDestination: .appUninstall)],
                 suggestions: exampleQuestions
             )
         case .startupItems:
             return AssistantAnswer(
                 headline: "启动项管理支持停用用户级启动代理，随时可在时间线恢复。",
-                cards: [],
+                cards: [AssistantAnswer.Card(title: "打开启动项管理", detail: "停用/恢复登录启动代理",
+                                             actionTitle: "去管理", actionDestination: .startupItems)],
                 suggestions: exampleQuestions
             )
         case .shredHelp:
             return AssistantAnswer(
                 headline: "文件粉碎先覆写内容（SSD 一次覆写已足够），再随机化文件名并移入废纸篓。",
-                cards: [],
+                cards: [AssistantAnswer.Card(title: "打开文件粉碎", detail: "覆写 + 校验 + 改名，支持拖放",
+                                             actionTitle: "去粉碎", actionDestination: .shredder)],
                 suggestions: exampleQuestions
             )
         case .cleanupNow:
@@ -185,7 +196,8 @@ enum AssistantAnswerBuilder {
         case .similarPhotos:
             return AssistantAnswer(
                 headline: "工具箱 → 照片清理 → 相似照片：本机感知比对找出截图堆积与相似照片，每组至少保留一张。",
-                cards: [],
+                cards: [AssistantAnswer.Card(title: "打开照片清理", detail: "感知哈希找出相似照片，本机比对不联网",
+                                             actionTitle: "去清理", actionDestination: .photoClean)],
                 suggestions: exampleQuestions
             )
         case .freeUpSpace:

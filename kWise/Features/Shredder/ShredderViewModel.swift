@@ -9,6 +9,8 @@ import PowerScope
 public final class ShredderViewModel: ObservableObject {
     @Published public private(set) var isShredding = false
     @Published public private(set) var progressText: String = ""
+    /// 环形进度 [0,1]（按已完成文件数）。
+    @Published public private(set) var progressFraction: Double = 0
     @Published public private(set) var completedMessage: String?
     /// Files staged for shredding (picked or dropped).
     @Published public private(set) var stagedURLs: [URL] = []
@@ -95,6 +97,9 @@ public final class ShredderViewModel: ObservableObject {
     }
 
     private func absorb(_ progress: ShredProgress, total: Int) {
+        progressFraction = total > 0
+            ? Double(min(progress.completedFiles, total)) / Double(total)
+            : 0
         switch progress.phase {
         case .overwriting(let pass):
             progressText = "正在覆写（第 \(pass) 遍）：\(progress.currentURL.lastPathComponent)"
@@ -108,6 +113,7 @@ public final class ShredderViewModel: ObservableObject {
             completedMessage = "已完成粉碎 \(total) 个文件"
             stagedURLs.removeAll()
             progressText = ""
+            progressFraction = 1.0
             refreshHistory()
         case .failed(let message):
             completedMessage = message

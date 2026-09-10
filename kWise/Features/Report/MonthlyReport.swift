@@ -28,6 +28,14 @@ public struct MonthlyReport: Equatable {
     public let topCategories: [TopCategory]
     public let currentStreak: Int
     public let forecast: DiskForecastEngine.ForecastResult
+    /// 本月最大 5 个已清理项 (v2.6 R2-5) — 每项可跳转大文件工具深挖。
+    public let topCleanedFiles: [CleanedFile]
+}
+
+public struct CleanedFile: Equatable, Identifiable {
+    public let name: String
+    public let size: Int64
+    public var id: String { name }
 }
 
 public enum ReportGenerator {
@@ -73,6 +81,11 @@ public enum ReportGenerator {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy 年 M 月"
 
+        let topFiles: [CleanedFile] = recent
+            .sorted { $0.size > $1.size }
+            .prefix(5)
+            .map { CleanedFile(name: URL(fileURLWithPath: $0.path ?? "").lastPathComponent, size: $0.size) }
+
         return MonthlyReport(
             periodLabel: formatter.string(from: now),
             totalFreedBytes: recent.reduce(Int64(0)) { $0 + $1.size },
@@ -80,7 +93,8 @@ public enum ReportGenerator {
             weekly: buckets,
             topCategories: top,
             currentStreak: streak.currentStreak,
-            forecast: DiskForecastEngine.forecast(samples: samples, now: now, calendar: calendar)
+            forecast: DiskForecastEngine.forecast(samples: samples, now: now, calendar: calendar),
+            topCleanedFiles: topFiles
         )
     }
 
@@ -150,6 +164,7 @@ struct MonthlyReportView: View {
                     heroStats(report)
                     weeklyChart(report)
                     topCategories(report)
+                    topFiles(report)
                     forecastCard(report)
                 } else if viewModel.isLoading {
                     LoadingStateView(title: "正在生成报告")
@@ -225,6 +240,43 @@ struct MonthlyReportView: View {
         .padding(AppSpacing.md)
         .background(Color.bgSecondary)
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+    }
+
+    /// 本月清理的 Top5 大文件 + 「去处理」跳大文件工具 (v2.6 R2-5)。
+    @ViewBuilder
+    private func topFiles(_ report: MonthlyReport) -> some View {
+        if !report.topCleanedFiles.isEmpty {
+            VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                Text("本月清理的大文件 Top 5")
+                    .font(AppFont.title3)
+                    .foregroundColor(.textPrimary)
+                ForEach(report.topCleanedFiles) { file in
+                    HStack {
+                        Image(systemName: "doc")
+                            .foregroundColor(.brandPrimary)
+                        Text(file.name)
+                            .font(AppFont.body)
+                            .foregroundColor(.textPrimary)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                        Spacer()
+                        Text(SmartCareHeroView.formatBytes(file.size))
+                            .font(AppFont.monoDigit)
+                            .foregroundColor(.textSecondary)
+                    }
+                }
+                Button {
+                    appState.navigation = .largeOld
+                } label: {
+                    Label("去大文件工具继续深挖", systemImage: "arrow.up.left.and.arrow.down.right")
+                        .font(AppFont.callout)
+                }
+                .buttonStyle(.bordered)
+            }
+            .padding(AppSpacing.md)
+            .background(Color.bgSecondary)
+            .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+        }
     }
 
     @ViewBuilder

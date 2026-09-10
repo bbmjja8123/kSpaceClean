@@ -173,7 +173,17 @@ struct ShredderView: View {
         VStack(spacing: AppSpacing.sm) {
             if !viewModel.progressText.isEmpty {
                 HStack(spacing: AppSpacing.sm) {
-                    ProgressView().controlSize(.small)
+                    // v2.6 R2-5：环形进度 + pass 计数（复用 DesignSystem ProgressRing）。
+                    ZStack {
+                        Circle()
+                            .stroke(Color.bgSecondary, lineWidth: 4)
+                        Circle()
+                            .trim(from: 0, to: viewModel.progressFraction)
+                            .stroke(Color.brandPrimary, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                            .rotationEffect(.degrees(-90))
+                            .animation(KFAnimation.easeInOut, value: viewModel.progressFraction)
+                    }
+                    .frame(width: 22, height: 22)
                     Text(viewModel.progressText)
                         .font(AppFont.caption)
                         .foregroundStyle(Color.textSecondary)
