@@ -49,6 +49,60 @@ final class PhotoSimilarityViewModel: ObservableObject {
 
     // MARK: - Scan
 
+    /// 保留策略 (v2.6 W4)：默认最新，可切换最高分辨率。
+    @Published var keepStrategy: SelectionStrategy = .keepNewest
+
+    /// 截图专项 (v2.6 W4)：只扫 Screenshots 目录、30 天前截图预勾选清理。
+    func startScreenshotQuickClean() {
+        let screenshots = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Pictures/Screenshots", isDirectory: true)
+        guard AppScope.shared.capability.canRead(screenshots) else {
+            statusMessage = "当前授权范围无法读取截图目录"
+            return
+        }
+        isScanning = true
+        groups = []
+        scanProgress = 0
+        statusMessage = nil
+
+        let config = PhotoSimilarityConfig(
+            directories: [screenshots],
+            preset: .strict,
+            minFileSize: 32 * 1024
+        )
+        let controller = DetectionCore.ScanController()
+        self.controller = controller
+
+        let cutoff = Date().addingTimeInterval(-30 * 86_400)
+        scanTask = Task { [weak self, scanner] in
+            let found = await scanner.scan(config: config, controller: controller) { fraction, file in
+                Task { @MainActor [weak self] in
+                    self?.scanProgress = fraction
+                    self?.currentFile = file
+                }
+            }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                // 映射 + keepNewest，然后预勾选 30 天前的旧截图（每组至少留一张）。
+                self.groups = found.map {
+                    ToolboxGroup.map($0, strategy: .keepNewest, scanRoots: config.directories)
+                }
+                for gi in self.groups.indices {
+                    for fi in self.groups[gi].files.indices {
+                        let file = self.groups[gi].files[fi]
+                        self.groups[gi].files[fi].isSelected =
+                            file.modificationDate < cutoff && fi != 0
+                    }
+                }
+                self.isScanning = false
+                self.scanProgress = 1.0
+                self.statusMessage = self.groups.isEmpty
+                    ? "近 30 天没有需要清理的旧截图。"
+                    : "已预选 30 天前的旧截图，每组保留最新一张。请确认后清理。"
+            }
+        }
+    }
+
     func startScan() {
         guard !isScanning else { return }
         let dirs = candidateDirectories
@@ -86,6 +140,15 @@ final class PhotoSimilarityViewModel: ObservableObject {
                     self.statusMessage = "未发现相似的 photos — 这些目录很干净。"
                 }
             }
+        }
+    }
+
+    /// 切换保留策略：对全部组重跑 SelectionPlanner。
+    func reapplyKeepStrategy(_ strategy: SelectionStrategy) {
+        keepStrategy = strategy
+        let roots = candidateDirectories
+        for gi in groups.indices {
+            groups[gi].reapplying(strategy: strategy, scanRoots: roots)
         }
     }
 

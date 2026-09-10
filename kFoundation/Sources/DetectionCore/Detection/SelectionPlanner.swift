@@ -19,6 +19,9 @@ public enum SelectionStrategy: String, CaseIterable, Sendable, Codable {
     /// Prefer a copy that lives inside one of the scan roots (e.g. keep
     /// the file in `~/Projects` over one in `~/Downloads`).
     case keepInsideScanRoot
+    /// Keep the copy with the highest pixel resolution — for photo groups
+    /// where the biggest FILE is not always the best-looking image.
+    case keepHighestResolution
     /// For directory duplicates: keep the copy in the lexicographically
     /// first sibling folder so the canonical directory survives.
     case keepDirectoryCanonical
@@ -35,6 +38,8 @@ public enum SelectionStrategy: String, CaseIterable, Sendable, Codable {
             return NSLocalizedString("Keep Inside Scan Folder", comment: "Selection strategy title")
         case .keepDirectoryCanonical:
             return NSLocalizedString("Keep Canonical Folder", comment: "Selection strategy title")
+        case .keepHighestResolution:
+            return NSLocalizedString("Keep Highest Resolution", comment: "Selection strategy title")
         }
     }
 
@@ -50,6 +55,8 @@ public enum SelectionStrategy: String, CaseIterable, Sendable, Codable {
             return NSLocalizedString("Prefers the copy inside the scanned folder, removing stray copies elsewhere.", comment: "Selection strategy help")
         case .keepDirectoryCanonical:
             return NSLocalizedString("Keeps copies in the alphabetically first folder so the canonical directory survives.", comment: "Selection strategy help")
+        case .keepHighestResolution:
+            return NSLocalizedString("Keeps the copy with the highest pixel resolution.", comment: "Selection strategy help")
         }
     }
 }
@@ -64,6 +71,7 @@ public enum SelectionReason: String, Sendable, Equatable, Codable {
     case canonicalFolder
     case onlyFile
     case duplicateOfKept
+    case highestResolution
 
     public var explanation: String {
         switch self {
@@ -81,6 +89,8 @@ public enum SelectionReason: String, Sendable, Equatable, Codable {
             return NSLocalizedString("Kept — the only copy in this group", comment: "Selection reason explanation")
         case .duplicateOfKept:
             return NSLocalizedString("Marked for removal — duplicate of the kept copy", comment: "Selection reason explanation")
+        case .highestResolution:
+            return NSLocalizedString("Kept — highest resolution", comment: "Selection reason explanation")
         }
     }
 }
@@ -147,6 +157,9 @@ public enum SelectionPlanner {
         case .keepShortestPath:
             keep = pick(files, primary: { $0.url.pathComponents.count }, descending: false)
             reasons[keep.id] = .shortestPath
+        case .keepHighestResolution:
+            keep = pick(files, primary: { $0.pixelWidth * $0.pixelHeight }, descending: true)
+            reasons[keep.id] = .highestResolution
         case .keepInsideScanRoot:
             if let inside = pickInsideScanRoot(files, scanRoots: scanRoots) {
                 keep = inside

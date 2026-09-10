@@ -101,6 +101,15 @@ struct PhotoCleanView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.brandPrimary)
+
+                // 截图专项 (v2.6 W4)：一键清 30 天前旧截图。
+                Button {
+                    similarityVM.startScreenshotQuickClean()
+                } label: {
+                    Label("清理 30 天前的旧截图", systemImage: "camera.on.rectangle")
+                        .font(AppFont.callout)
+                }
+                .buttonStyle(.bordered)
             }
             if let message = similarityVM.statusMessage {
                 Text(message)
@@ -137,6 +146,21 @@ struct PhotoCleanView: View {
 
     private var similarityResults: some View {
         VStack(spacing: 0) {
+            HStack {
+                Picker("保留", selection: Binding(
+                    get: { similarityVM.keepStrategy },
+                    set: { similarityVM.reapplyKeepStrategy($0) }
+                )) {
+                    Text("保留最新").tag(SelectionStrategy.keepNewest)
+                    Text("保留最高分辨率").tag(SelectionStrategy.keepHighestResolution)
+                }
+                .pickerStyle(.segmented)
+                .frame(maxWidth: 320)
+                Spacer()
+            }
+            .padding(.horizontal, AppSpacing.lg)
+            .padding(.vertical, AppSpacing.xs)
+
             ScrollView {
                 LazyVStack(spacing: AppSpacing.md) {
                     ForEach(similarityVM.groups) { group in

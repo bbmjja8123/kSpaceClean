@@ -1,4 +1,5 @@
 import Foundation
+import ImageIO
 import UniformTypeIdentifiers
 
 public enum DuplicateCategory: String, Sendable, Codable, CaseIterable {
@@ -129,6 +130,10 @@ public struct FileItem: Sendable, Identifiable, Codable {
     /// instead of the Trash/Vault. Not persisted to Core Data — after a
     /// restore it degrades gracefully to Finder semantics.
     public let photosLocalIdentifier: String?
+    /// 图像像素尺寸 (v2.6 W4) — keep-highest-resolution 策略依据。
+    /// 非图像文件为 0。
+    public var pixelWidth: Int = 0
+    public var pixelHeight: Int = 0
 
     public init(
         id: UUID,
@@ -142,7 +147,9 @@ public struct FileItem: Sendable, Identifiable, Codable {
         isAPFSClone: Bool = false,
         physicalSize: Int64? = nil,
         fileType: UTType? = nil,
-        photosLocalIdentifier: String? = nil
+        photosLocalIdentifier: String? = nil,
+        pixelWidth: Int = 0,
+        pixelHeight: Int = 0
     ) {
         self.id = id
         self.url = url
@@ -156,6 +163,8 @@ public struct FileItem: Sendable, Identifiable, Codable {
         self.physicalSize = physicalSize
         self.fileType = fileType
         self.photosLocalIdentifier = photosLocalIdentifier
+        self.pixelWidth = pixelWidth
+        self.pixelHeight = pixelHeight
     }
 
     /// Loads light metadata (size, dates, physicalSize, fileType) for a URL
@@ -175,6 +184,13 @@ public struct FileItem: Sendable, Identifiable, Codable {
         ]), values.isRegularFile == true else {
             return nil
         }
+        // 图像像素尺寸 (v2.6 W4)：keepHighestResolution 策略依据。
+        var pixelW = 0, pixelH = 0
+        if let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+           let props = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
+            pixelW = props[kCGImagePropertyPixelWidth] as? Int ?? 0
+            pixelH = props[kCGImagePropertyPixelHeight] as? Int ?? 0
+        }
         return FileItem(
             id: UUID(),
             url: url,
@@ -182,7 +198,9 @@ public struct FileItem: Sendable, Identifiable, Codable {
             modificationDate: values.contentModificationDate ?? .distantPast,
             creationDate: values.creationDate,
             physicalSize: values.totalFileAllocatedSize.map(Int64.init),
-            fileType: UTType(filenameExtension: url.pathExtension)
+            fileType: UTType(filenameExtension: url.pathExtension),
+            pixelWidth: pixelW,
+            pixelHeight: pixelH
         )
     }
 }
