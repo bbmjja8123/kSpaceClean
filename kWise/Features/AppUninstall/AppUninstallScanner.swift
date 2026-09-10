@@ -135,6 +135,53 @@ public final class AppUninstallScanner: @unchecked Sendable {
         .sorted { $0.leftoverSize > $1.leftoverSize }
     }
 
+    /// 拖入 .app 即扫 (v2.6)：为拖入的 App 构建完整条目（含残留与
+    /// 使用信息），高置信度残留预选。
+    public func scanDraggedApp(at appURL: URL) async -> UninstallAppEntry? {
+        guard appURL.pathExtension.lowercased() == "app" else { return nil }
+        let bundle = Bundle(url: appURL)
+        let bundleID = bundle?.bundleIdentifier
+            ?? "unknown.\(appURL.deletingPathExtension().lastPathComponent)"
+        let appName = appURL.deletingPathExtension().lastPathComponent
+        let residues = await residueDetector.detectResidues(
+            bundleID: bundleID, appName: appName, appURL: appURL
+        )
+        let usable = residues.filter { !$0.isProtected && !$0.isSystemLevel }
+            .filter { FileManager.default.fileExists(atPath: $0.url.path) }
+        let installDate = (try? appURL.resourceValues(forKeys: [.creationDateKey]))?.creationDate
+        return UninstallAppEntry(
+            appName: appName,
+            bundleID: bundleID,
+            appURL: appURL,
+            appSize: Self.sizeOf(appURL),
+            leftoverURLs: usable.map(\.url),
+            leftoverSize: usable.reduce(0) { $0 + Self.sizeOf($1.url) },
+            isSelected: true,
+            isOrphan: false,
+            lastUsedDate: AppCatalogService.lastUsedDate(at: appURL),
+            installDate: installDate,
+            isRunning: false,
+            source: .userInstalled,
+            residues: residues
+        )
+    }
+
+    /// App Reset (v2.6, CMM 功能)：保留 App 本体，只清偏好与缓存类残留
+    /// （Preferences/Caches/HTTPStorage/Saved State），Logs/Cookies 等
+    /// 含用户数据的不动。
+    public func reset(entry: UninstallAppEntry) async throws {
+        let resettableTypes: Set<ResidueType> = [.preferences, .caches, .httpStorage, .savedState]
+        let resetURLs = entry.residues
+            .filter { resettableTypes.contains($0.type) && !$0.isProtected }
+            .map(\.url)
+            .filter { FileManager.default.fileExists(atPath: $0.path) }
+        guard !resetURLs.isEmpty else { return }
+        for url in resetURLs {
+            var resultingURL: NSURL?
+            try FileManager.default.trashItem(at: url, resultingItemURL: &resultingURL)
+        }
+    }
+
     /// Moves the app bundle and all associated leftover files to the Trash
     /// via the shared engine path (the view model routes through
     /// `CleanupEngine.cleanup(targets:)` — this direct API remains for

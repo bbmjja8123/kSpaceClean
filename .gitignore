@@ -9,3 +9,9 @@ Packages/
 __pycache__/
 .claude/
 .superpowers/brainstorm/
+
+# XcodeGen/Xcode 26 regen + IDE state (not project content)
+kFoundation/.swiftpm/
+kFresh/kFresh.xcodeproj/xcuserdata/
+kMonitor/kMonitor.xcodeproj/xcuserdata/
+kSift/kSift.xcodeproj/xcuserdata/

@@ -42,7 +42,11 @@ public struct AppUninstallView: View {
             let runningNote = running > 0
                 ? "⚠️ 有 \(running) 个应用正在运行，建议先退出再卸载。"
                 : ""
-            Text("将 \(viewModel.selectedEntries.count) 个应用及其残留文件移入废纸篓，可回收 \(size) 空间。残留会先备份 30 天，可从备份还原。\(runningNote)")
+            let sharedNote = viewModel.selectedEntries.compactMap {
+                viewModel.sharedComponentWarning(for: $0)
+            }.joined(separator: "\n")
+            let sharedBlock = sharedNote.isEmpty ? "" : "\n\(sharedNote)"
+            Text("将 \(viewModel.selectedEntries.count) 个应用及其残留文件移入废纸篓，可回收 \(size) 空间。残留会先备份 30 天，可从备份还原。\(runningNote)\(sharedBlock)")
         }
         .alert("卸载结果", isPresented: Binding(
             get: { uninstallResult != nil },
@@ -175,7 +179,10 @@ public struct AppUninstallView: View {
                 ForEach(viewModel.visibleEntries) { entry in
                     AppRow(
                         entry: entry,
-                        onToggle: { viewModel.toggleSelection(entry.id) }
+                        onToggle: { viewModel.toggleSelection(entry.id) },
+                        onReset: {
+                            Task { try? await viewModel.resetApp(entry) }
+                        }
                     )
                     .padding(.horizontal, AppSpacing.lg)
                 }
@@ -271,6 +278,7 @@ private struct AppRow: View {
     @State private var isExpanded = false
     let entry: UninstallAppEntry
     let onToggle: () -> Void
+    var onReset: (() -> Void)? = nil
 
     private func sourceBadge(_ source: AppSource) -> String {
         switch source {
@@ -398,6 +406,13 @@ private struct AppRow: View {
                     NSWorkspace.shared.activateFileViewerSelecting([entry.appURL])
                 } label: {
                     Label("在Finder中显示", systemImage: "folder")
+                }
+                if let onReset {
+                    Button {
+                        onReset()
+                    } label: {
+                        Label("App Reset（保留应用，清偏好与缓存）", systemImage: "arrow.counterclockwise")
+                    }
                 }
             }
 

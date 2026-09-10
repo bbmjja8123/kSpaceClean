@@ -31,6 +31,42 @@ public final class AppUninstallViewModel: ObservableObject {
 
     /// Search by app name or bundle ID (v2.3 Phase 4).
     @Published public var searchText: String = ""
+
+    /// 拖入 .app 即扫 (v2.6, AppCleaner 标志交互)：检测交给 scanner，
+    /// 已在列表中则激活既有条目。
+    public func importDraggedApp(at appURL: URL) async {
+        guard appURL.pathExtension.lowercased() == "app" else { return }
+        if let existing = entries.first(where: {
+            $0.appURL.standardizedFileURL == appURL.standardizedFileURL
+        }) {
+            entries = entries.map { $0.appURL == appURL ? existing : $0 }
+            return
+        }
+        isScanning = true
+        let entry = await scanner.scanDraggedApp(at: appURL)
+        if let entry {
+            entries.append(entry)
+        }
+        isScanning = false
+    }
+
+    /// 共享组件警告 (v2.6, Lemon 负分思想)：残留路径与其他已安装 App 的
+    /// 路径共享同一父目录 → 该目录可能是公共组件，删除影响别家。
+    func sharedComponentWarning(for entry: UninstallAppEntry) -> String? {
+        let otherDirs = Set(entries.filter { $0.bundleID != entry.bundleID }
+            .flatMap { $0.residues.map { $0.url.deletingLastPathComponent().path } })
+        let shared = entry.residues.filter {
+            otherDirs.contains($0.url.deletingLastPathComponent().path)
+        }
+        guard !shared.isEmpty else { return nil }
+        let names = shared.prefix(3).map { $0.url.lastPathComponent }.joined(separator: "、")
+        return "\(shared.count) 个残留位于与其他应用共享的目录（\(names)…），删除可能影响其他应用。"
+    }
+
+    /// App Reset (v2.6)：保留 App，清偏好/缓存。
+    public func resetApp(_ entry: UninstallAppEntry) async throws {
+        try await scanner.reset(entry: entry)
+    }
     /// Filter by catalog source (用户安装 / App Store / Homebrew / Setapp).
     @Published public var sourceFilter: AppSource?
 
