@@ -8,6 +8,7 @@ import AppCatalogCore
 enum ResidueGroupKind: String, CaseIterable {
     case preferences, caches, appData, webData, launchAgents, plugins, savedState, other
 
+    /// 分组展示名（本地化键与中文 copy 一并维护，见 Localizable.xcstrings）。
     var title: String {
         switch self {
         case .preferences: return "偏好设置"
@@ -21,6 +22,7 @@ enum ResidueGroupKind: String, CaseIterable {
         }
     }
 
+    /// SF Symbol 名，用于分组行首图标。
     var icon: String {
         switch self {
         case .preferences: return "gearshape"
@@ -59,12 +61,26 @@ enum ResidueGroupingEngine {
 
     private static let embeddingCache = NSCache<NSString, NSArray>()
 
-    /// 主入口：规则遍 + embedding 遍。`embedding` 可注入 mock（测试），
-    /// nil 时尝试系统 zh/en 词向量，均不可用则全落 other。
+    /// 系统 embedding 提供器。生产路径尝试 zh → en 词向量；
+    /// 测试可临时替换（如 `{ nil }`）以强制"解析后仍 nil"的真降级分支。
+    /// 测试须在 tearDown 恢复原值。
+    static var systemEmbeddingProvider: @Sendable () -> NLEmbedding? = {
+        NLEmbedding.wordEmbedding(for: .simplifiedChinese)
+            ?? NLEmbedding.wordEmbedding(for: .english)
+    }
+
+    /// 解析 embedding：注入非 nil 直接用；nil 时走 ``systemEmbeddingProvider``。
+    static func resolveEmbedding(_ injected: NLEmbedding?) -> NLEmbedding? {
+        injected ?? systemEmbeddingProvider()
+    }
+
+    /// 主入口：规则遍 + embedding 遍。`embedding` 可注入 mock（测试）；
+    /// 解析后仍为 nil（真"不可用"）→ 规则未覆盖的全落 other，绝不丢文件。
     static func group(_ residues: [ResidueFile],
                       embedding: NLEmbedding?) -> [ResidueGroup] {
-        let effective = embedding ?? NLEmbedding.wordEmbedding(for: .simplifiedChinese)
-            ?? NLEmbedding.wordEmbedding(for: .english)
+        let lookup: ((String) -> [Double]?)? = resolveEmbedding(embedding).map { embedding in
+            { Self.vector(for: $0, embedding: embedding) }
+        }
 
         var buckets: [ResidueGroupKind: [ResidueFile]] = [:]
         var unknowns: [ResidueFile] = []
@@ -78,20 +94,17 @@ enum ResidueGroupingEngine {
         }
 
         // embedding 遍：未知路径按组件词向量与锚点余弦相似度归组；
-        // 未命中或 embedding 不可用 → 全落 other（诚实降级，绝不丢文件）。
-        if let embedding = effective {
-            for residue in unknowns {
-                if let kind = bestEmbeddingMatch(for: residue.url.path, embedding: embedding) {
-                    buckets[kind, default: []].append(residue)
-                } else {
-                    buckets[.other, default: []].append(residue)
-                }
-            }
-        } else {
-            buckets[.other, default: []].append(contentsOf: unknowns)
+        // 未命中或 embedding 不可用 → 全落 other（诚实降级）。
+        for residue in unknowns {
+            let kind = lookup.flatMap { bestEmbeddingMatch(for: residue.url.path, vectorLookup: $0) }
+            buckets[kind ?? .other, default: []].append(residue)
         }
 
-        return ResidueGroupKind.allCases.compactMap { kind in
+        return buildGroups(from: buckets)
+    }
+
+    private static func buildGroups(from buckets: [ResidueGroupKind: [ResidueFile]]) -> [ResidueGroup] {
+        ResidueGroupKind.allCases.compactMap { kind in
             guard let items = buckets[kind], !items.isEmpty else { return nil }
             return ResidueGroup(kind: kind, residues: items)
         }
@@ -112,8 +125,10 @@ enum ResidueGroupingEngine {
     }
 
     /// 路径组件词 → 平均向量 vs 类目锚点平均向量，取最高余弦且 ≥0.45。
-    private static func bestEmbeddingMatch(for path: String,
-                                           embedding: NLEmbedding) -> ResidueGroupKind? {
+    /// `vectorLookup` 注入（真 NLEmbedding 由 ``vector(for:embedding:)`` 包装），
+    /// 纯函数、可离线测试命中归组 / 低于阈值 / 混合维度三种走向。
+    static func bestEmbeddingMatch(for path: String,
+                                   vectorLookup: (String) -> [Double]?) -> ResidueGroupKind? {
         let components = path
             .split(whereSeparator: { "/-_ .".contains($0) })
             .map(String.init)
@@ -125,7 +140,7 @@ enum ResidueGroupingEngine {
         for kind in ResidueGroupKind.allCases where !kind.anchorWords.isEmpty {
             guard let score = averageCosine(components: components,
                                             anchors: kind.anchorWords,
-                                            embedding: embedding) else { continue }
+                                            vectorLookup: vectorLookup) else { continue }
             if score >= threshold, score > (best?.score ?? -1) {
                 best = (kind, score)
             }
@@ -133,28 +148,42 @@ enum ResidueGroupingEngine {
         return best?.kind
     }
 
-    private static func averageCosine(components: [String],
-                                      anchors: [String],
-                                      embedding: NLEmbedding) -> Double? {
-        let componentVectors = components.compactMap { vector(for: $0, embedding: embedding) }
-        let anchorVectors = anchors.compactMap { vector(for: $0, embedding: embedding) }
+    /// 组件质心 vs 锚点质心的余弦相似度。任一侧无向量或出现混合维度
+    /// （不同 embedding 串缓存等异常）→ nil，宁可放弃归组也不给垃圾值。
+    static func averageCosine(components: [String],
+                              anchors: [String],
+                              vectorLookup: (String) -> [Double]?) -> Double? {
+        let componentVectors = components.compactMap(vectorLookup)
+        let anchorVectors = anchors.compactMap(vectorLookup)
         guard !componentVectors.isEmpty, !anchorVectors.isEmpty else { return nil }
+        let dim = componentVectors[0].count
+        guard componentVectors.allSatisfy({ $0.count == dim }),
+              anchorVectors.allSatisfy({ $0.count == dim }) else { return nil }
 
         let componentCentroid = centroid(of: componentVectors)
         let anchorCentroid = centroid(of: anchorVectors)
-        let dot = zip(componentCentroid, anchorCentroid).reduce(0.0) { $0 + $1.0 * $1.1 }
-        let magA = (componentCentroid.reduce(0.0) { $0 + $1 * $1 }).squareRoot()
-        let magB = (anchorCentroid.reduce(0.0) { $0 + $1 * $1 }).squareRoot()
+        return cosineSimilarity(componentCentroid, anchorCentroid)
+    }
+
+    /// 两个等长向量的余弦相似度；零向量或维度不一致 → nil。
+    static func cosineSimilarity(_ a: [Double], _ b: [Double]) -> Double? {
+        guard a.count == b.count else { return nil }
+        let dot = zip(a, b).reduce(0.0) { $0 + $1.0 * $1.1 }
+        let magA = (a.reduce(0.0) { $0 + $1 * $1 }).squareRoot()
+        let magB = (b.reduce(0.0) { $0 + $1 * $1 }).squareRoot()
         guard magA > 0, magB > 0 else { return nil }
         return dot / (magA * magB)
     }
 
     private static func vector(for word: String, embedding: NLEmbedding) -> [Double]? {
-        let key = "\(word)" as NSString
+        let lowered = word.lowercased()
+        // 缓存 key 带 embedding 身份前缀（zh/en/mock 词向量互不串缓存），
+        // 且与查询词同用小写，避免 "Cache" 写入 / "cache" 查询的命中失败。
+        let key = "\(ObjectIdentifier(embedding).hashValue)|\(lowered)" as NSString
         if let cached = embeddingCache.object(forKey: key) as? [Double] {
             return cached
         }
-        guard let vector = embedding.vector(for: word.lowercased()) else { return nil }
+        guard let vector = embedding.vector(for: lowered) else { return nil }
         embeddingCache.setObject(vector as NSArray, forKey: key)
         return vector
     }
