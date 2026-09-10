@@ -220,4 +220,57 @@ final class UninstallSelectionSemanticsTests: XCTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: residue.path),
                        "孤儿条目的残留应被清理")
     }
+
+    // MARK: - 确认弹窗口径（审查 I-1 / M-2）
+
+    func testSelectedCommitSizeMatchesSubmissionScope() throws {
+        // selectedCommitSize 必须与 uninstallSelected 的提交范围同口径：
+        // 无勾选 = 本体 + 全部残留；明细模式 = 本体 + 仅勾选残留。
+        let (entry, r1, _, dir) = try makeTwoResidueEntry(name: "Size", bundleID: "com.test.size")
+        defer { cleanupTempDir(dir) }
+
+        let vm = AppUninstallViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true)))
+        vm.entries = [entry]
+
+        XCTAssertEqual(vm.selectedSize, 102, "selectedSize 仍为全量口径（appSize + 全部残留）")
+        XCTAssertEqual(vm.selectedCommitSize, 102, "无勾选 → 整 App 语义 = 本体 100 + 残留 2")
+
+        vm.toggleResidue(entryID: entry.id, path: r1.path)
+        XCTAssertEqual(vm.selectedCommitSize, 101, "明细模式 = 本体 100 + 仅勾选的 r1")
+        XCTAssertEqual(vm.selectedPickedResidueCount, 1)
+    }
+
+    func testSelectedCommitSizeExcludesOrphanAppBody() {
+        // 孤儿条目只提交残留 → 可回收空间不含 appSize（审查 M-2）。
+        let vm = AppUninstallViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true)))
+        vm.entries = [
+            UninstallAppEntry(
+                appName: "Ghost", bundleID: "com.test.ghost.size",
+                appURL: URL(fileURLWithPath: "/Applications/Ghost.app"),
+                appSize: 100, leftoverURLs: [], leftoverSize: 7,
+                isOrphan: true,
+                lastUsedDate: nil, installDate: nil, isRunning: false,
+                source: .userInstalled, residues: []
+            )
+        ]
+        XCTAssertEqual(vm.selectedSize, 107, "selectedSize 仍为全量口径")
+        XCTAssertEqual(vm.selectedCommitSize, 7, "孤儿 = 仅残留")
+    }
+
+    // MARK: - 重扫清理陈旧键（审查 M-3）
+
+    func testStartScanClearsStalePanelState() {
+        let vm = AppUninstallViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true)))
+        let id = UUID()
+        vm.toggleResidue(entryID: id, path: "/a")
+        vm.selectedResiduePaths[id] = ["x"]  // 确保非空
+
+        vm.startScan()
+
+        XCTAssertTrue(vm.selectedResiduePaths.isEmpty, "重扫必须清空面板勾选态")
+        XCTAssertTrue(vm.groupedResidues.isEmpty, "重扫必须清空分组缓存")
+    }
 }

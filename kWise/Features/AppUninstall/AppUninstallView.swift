@@ -31,26 +31,17 @@ public struct AppUninstallView: View {
         }
         .frame(minWidth: 680, minHeight: 420)
         .confirmationDialog(
-            "确认卸载",
+            confirmDialogTitle,
             isPresented: $showConfirmDialog,
             titleVisibility: .visible
         ) {
-            Button("卸载 (\(viewModel.selectedEntries.count) 个应用)") {
+            Button(confirmButtonTitle) {
                 performUninstall()
             }
             .keyboardShortcut(.defaultAction)
             Button("取消", role: .cancel) {}
         } message: {
-            let size = FileSizeFormatter.string(from: viewModel.selectedSize)
-            let running = viewModel.selectedEntries.filter(\.isRunning).count
-            let runningNote = running > 0
-                ? "⚠️ 有 \(running) 个应用正在运行，建议先退出再卸载。"
-                : ""
-            let sharedNote = viewModel.selectedEntries.compactMap {
-                viewModel.sharedComponentWarning(for: $0)
-            }.joined(separator: "\n")
-            let sharedBlock = sharedNote.isEmpty ? "" : "\n\(sharedNote)"
-            Text("将 \(viewModel.selectedEntries.count) 个应用及其残留文件移入废纸篓，可回收 \(size) 空间。残留会先备份 30 天，可从备份还原。\(runningNote)\(sharedBlock)")
+            Text(confirmMessage)
         }
         .alert("卸载结果", isPresented: Binding(
             get: { uninstallResult != nil },
@@ -270,14 +261,18 @@ public struct AppUninstallView: View {
                         .font(AppFont.callout)
                         .foregroundColor(.textPrimary)
 
-                    Text("可回收 \(FileSizeFormatter.string(from: viewModel.selectedSize))")
+                    // 与确认弹窗同口径：按实际提交范围（明细/孤儿语义）计。
+                    Text("可回收 \(FileSizeFormatter.string(from: viewModel.selectedCommitSize))")
                         .font(AppFont.callout)
                         .foregroundColor(.brandPrimary)
 
                     Button {
                         showConfirmDialog = true
                     } label: {
-                        Text("卸载 (\(viewModel.selectedEntries.count))")
+                        // 全孤儿选择 → 语义是清理残留，不是卸载（审查 M-2）。
+                        Text(allSelectedAreOrphans
+                             ? "清理残留 (\(viewModel.selectedEntries.count))"
+                             : "卸载 (\(viewModel.selectedEntries.count))")
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.danger)
@@ -296,6 +291,62 @@ public struct AppUninstallView: View {
             .padding(.horizontal, AppSpacing.lg)
             .padding(.vertical, AppSpacing.md)
         }
+    }
+
+    // MARK: - Confirm Dialog Copy（与提交范围同口径）
+
+    /// 待卸载条目是否全部为孤儿（列表勾选孤儿 → 弹窗语义是「清理残留」
+    /// 而非「卸载」—— 孤儿没有 App 本体可卸载，审查 M-2）。
+    private var allSelectedAreOrphans: Bool {
+        !viewModel.selectedEntries.isEmpty
+            && viewModel.selectedEntries.allSatisfy(\.isOrphan)
+    }
+
+    /// 明细模式（审查 I-1）：面板条目出现过显式残留勾选（全局 flag 仅作
+    /// 文案门槛）且该条目仍在待卸载列表 → 弹窗按提交范围显示。提交范围
+    /// 本身仍由 VM 按条目解析（`selectedCommitSize` / `uninstallSelected`）。
+    private var isDetailModeConfirm: Bool {
+        viewModel.hasExplicitResidueSelection
+            && viewModel.selectedEntries.contains { $0.id == viewModel.selectedEntryID }
+    }
+
+    private var confirmDialogTitle: String {
+        if allSelectedAreOrphans { return "确认清理残留" }
+        if isDetailModeConfirm {
+            return "卸载 (\(viewModel.selectedEntries.count) 个应用，部分残留)"
+        }
+        return "确认卸载"
+    }
+
+    private var confirmButtonTitle: String {
+        let count = viewModel.selectedEntries.count
+        if allSelectedAreOrphans { return "清理残留 (\(count) 项)" }
+        if isDetailModeConfirm { return "卸载 (\(count) 个应用，部分残留)" }
+        return "卸载 (\(count) 个应用)"
+    }
+
+    private var confirmMessage: String {
+        // 可回收空间 = 实际提交范围（本体 + 勾选/全部残留；孤儿仅残留）。
+        let size = FileSizeFormatter.string(from: viewModel.selectedCommitSize)
+        let backupNote = "残留会先备份 30 天，可从备份还原。"
+
+        if allSelectedAreOrphans {
+            return "将 \(viewModel.selectedEntries.count) 项应用残留移入废纸篓，可回收 \(size) 空间。\(backupNote)"
+        }
+
+        if isDetailModeConfirm {
+            return "将 \(viewModel.selectedEntries.count) 个应用移入废纸篓，仅清理勾选的 \(viewModel.selectedPickedResidueCount) 项残留，可回收 \(size) 空间。\(backupNote)"
+        }
+
+        let running = viewModel.selectedEntries.filter(\.isRunning).count
+        let runningNote = running > 0
+            ? "⚠️ 有 \(running) 个应用正在运行，建议先退出再卸载。"
+            : ""
+        let sharedNote = viewModel.selectedEntries.compactMap {
+            viewModel.sharedComponentWarning(for: $0)
+        }.joined(separator: "\n")
+        let sharedBlock = sharedNote.isEmpty ? "" : "\n\(sharedNote)"
+        return "将 \(viewModel.selectedEntries.count) 个应用及其残留文件移入废纸篓，可回收 \(size) 空间。\(backupNote)\(runningNote)\(sharedBlock)"
     }
 
     // MARK: - Actions

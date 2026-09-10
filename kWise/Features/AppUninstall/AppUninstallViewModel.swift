@@ -123,6 +123,11 @@ public final class AppUninstallViewModel: ObservableObject {
         guard !isScanning else { return }
         isScanning = true
         entries = []
+        // 重扫后旧条目 UUID 全部失效 → 面板勾选态与分组缓存一并清空，
+        // 否则陈旧 key 永久累积且无法从 UI 清除（审查 M-3）。
+        selectedResiduePaths = [:]
+        groupedResidues = [:]
+        groupingInFlight.removeAll()
 
         Task {
             var result = await self.scanner.scan()
@@ -160,12 +165,14 @@ public final class AppUninstallViewModel: ObservableObject {
         return entries.first { $0.id == selectedEntryID }
     }
 
-    /// 面板里是否出现过任何显式残留勾选（仅用于确认弹窗文案切换，
-    /// 例如「明细模式」提示行）。**不参与提交语义** —— `uninstallSelected`
-    /// 按条目读取 `selectedResiduePaths[entry.id]`（该条目无勾选 → 回退
-    /// 整 App 全量残留），绝不消费本全局 flag：勾选按条目隔离，任一
-    /// 条目的勾选若经全局判定外溢到其他条目的提交范围，属于明确禁止
-    /// 的跨条目语义污染（Task 5 审查裁定，见 UninstallSelectionSemanticsTests）。
+    /// 面板里是否出现过任何显式残留勾选。**唯一消费者是确认弹窗的
+    /// 文案切换门槛**（明细模式 → 标题「卸载 (N 个应用，部分残留)」+
+    /// message「仅清理勾选的 N 项残留」）；**不参与提交语义** ——
+    /// `uninstallSelected` 与 `selectedCommitSize` 均按条目读取
+    /// `selectedResiduePaths[entry.id]`（该条目无勾选 → 回退整 App
+    /// 全量残留），勾选按条目隔离，任一条目的勾选若经全局判定外溢
+    /// 到其他条目的提交范围，属于明确禁止的跨条目语义污染
+    /// （Task 5 审查裁定，见 UninstallSelectionSemanticsTests）。
     public var hasExplicitResidueSelection: Bool {
         selectedResiduePaths.contains { !$0.value.isEmpty }
     }
@@ -244,6 +251,35 @@ public final class AppUninstallViewModel: ObservableObject {
     /// Total reclaimable space from all selected entries.
     public var selectedSize: Int64 {
         selectedEntries.reduce(0) { $0 + $1.totalSize }
+    }
+
+    /// 确认弹窗可回收空间 = **实际提交范围**（与 `uninstallSelected`
+    /// 的 per-entry 解析同口径，spec §7 消歧）：
+    /// - 条目有显式残留勾选 → 本体 + 仅勾选残留的 sizeBytes；
+    /// - 无勾选 → 本体 + 全部残留（整 App 语义）；
+    /// - 孤儿条目 → 仅残留（本体不进提交范围）。
+    ///
+    /// 与 `selectedSize`（appSize + 全部 leftoverSize）的区别即 I-1：
+    /// 明细模式下弹窗若仍按全量计算，会承诺超出实际提交的空间。
+    public var selectedCommitSize: Int64 {
+        selectedEntries.reduce(0) { total, entry in
+            let picked = selectedResiduePaths[entry.id] ?? []
+            if !picked.isEmpty {
+                let pickedSize = entry.residues
+                    .filter { picked.contains($0.url.path) }
+                    .reduce(0) { $0 + $1.sizeBytes }
+                return total + (entry.isOrphan ? 0 : entry.appSize) + pickedSize
+            }
+            return total + (entry.isOrphan ? entry.leftoverSize : entry.totalSize)
+        }
+    }
+
+    /// 待卸载条目中显式勾选的残留项数（明细模式弹窗「仅清理勾选的
+    /// N 项残留」的数据源；孤儿条目的勾选同样计入）。
+    public var selectedPickedResidueCount: Int {
+        selectedEntries.reduce(0) { count, entry in
+            count + (selectedResiduePaths[entry.id]?.count ?? 0)
+        }
     }
 
     /// Number of entries that have at least one leftover file.
