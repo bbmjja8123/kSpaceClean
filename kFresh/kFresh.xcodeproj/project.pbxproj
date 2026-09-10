@@ -148,7 +148,7 @@
 		2DBC65F20AED95CB94E19D9B /* DeepCleanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepCleanView.swift; sourceTree = "<group>"; };
 		2E0F3CECEAAD21958294F398 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		2FAA3677DC5C2C1551295FCB /* kFresh.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = kFresh.xcodeproj; sourceTree = "<group>"; };
-		3097AACAF5D590882B1D36FB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3097AACAF5D590882B1D36FB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3220FDCF090F42117C65163B /* StartupItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupItemsViewModel.swift; sourceTree = "<group>"; };
 		357887B69B6705726999A143 /* fetch_cask_rules.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = fetch_cask_rules.sh; sourceTree = "<group>"; };
 		3A5E08E1ED459B6A0A8CF981 /* kFoundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kFoundation; path = ../kFoundation; sourceTree = SOURCE_ROOT; };
@@ -213,7 +213,7 @@
 		D0385DC43A7C38F193F6BCB5 /* AppDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailView.swift; sourceTree = "<group>"; };
 		D100A051F4F09FAF735B41E2 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		D1D5C13B9851C107D295B7E4 /* OnboardingRoutingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRoutingTests.swift; sourceTree = "<group>"; };
-		D4F97FF37D8BCEA85582C8E1 /* Configuration.storekit */ = {isa = PBXFileReference; path = Configuration.storekit; sourceTree = "<group>"; };
+		D4F97FF37D8BCEA85582C8E1 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		D52D9B472451BDBD6505CBA7 /* Kraftly.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Kraftly.xcworkspace; sourceTree = "<group>"; };
 		D62D879A8DB363FE915733C3 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		D950F52ADAAF1A18527BD988 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -358,6 +358,11 @@
 			path = Clean;
 			sourceTree = "<group>";
 		};
+		3A5DD8443052874D00B27B67 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		3FC4B141B8199AFD9A3B7F1C /* FinderExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,16 +383,6 @@
 				2FAA3677DC5C2C1551295FCB /* kFresh.xcodeproj */,
 				3CCCD40246B7263AFBCB7AAF /* kFreshDebug.entitlements */,
 				D52D9B472451BDBD6505CBA7 /* Kraftly.xcworkspace */,
-				F34AB12170FB7139D79A4696 /* App */,
-				D50474218CA8F9E66E7C02F5 /* Core */,
-				EEDC5B21C5A80F7F4F45AE31 /* Data */,
-				E44B176892D6B8100246EA50 /* Features */,
-				3FC4B141B8199AFD9A3B7F1C /* FinderExtension */,
-				12DFD0715BD2953DCABB4021 /* Intents */,
-				2874BED6A21D48909379A969 /* MenuBar */,
-				5EFFE2A5E6D085447AFAECAC /* Resources */,
-				B4BE23D65F9B189632246EAB /* Store */,
-				5AF7CB6FA63B56AA795481EB /* Widgets */,
 			);
 			name = kFresh;
 			path = .;
@@ -767,6 +762,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 062F8484B279F2B7AEF5726C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3A5DD8443052874D00B27B67 /* Products */;
+					ProjectRef = 2FAA3677DC5C2C1551295FCB /* kFresh.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				7E7CF38591D555B2829E7B45 /* kFresh */,

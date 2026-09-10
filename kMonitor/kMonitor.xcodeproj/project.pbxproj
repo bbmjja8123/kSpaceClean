@@ -259,7 +259,7 @@
 		7D0A7ABFA7B4970717E529C0 /* WidgetViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetViews.swift; sourceTree = "<group>"; };
 		82AAC130A42320AF4A32DD4A /* IntentParameterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentParameterTests.swift; sourceTree = "<group>"; };
 		84459328BDF4E0702C0F5B83 /* MetricCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricCardView.swift; sourceTree = "<group>"; };
-		87C603992918B99175A1CC8C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		87C603992918B99175A1CC8C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8987E368E7044BAA2CB1C599 /* kMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kMonitor.entitlements; sourceTree = "<group>"; };
 		8A72132ADC175B2911789244 /* OpenDashboardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenDashboardIntent.swift; sourceTree = "<group>"; };
 		8A8C82B6EC6DADBB974EF4A7 /* AppWindowRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWindowRouter.swift; sourceTree = "<group>"; };
@@ -279,7 +279,7 @@
 		AF1010711C30CD298BD496D7 /* AppShortcutsIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppShortcutsIntegrationTests.swift; sourceTree = "<group>"; };
 		AFD6E6F5EA23C67F578F24D4 /* StartMonitoringIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMonitoringIntent.swift; sourceTree = "<group>"; };
 		B1B009E5B312AA2363BFE2E8 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
-		B22F99CF82A2FC099E538598 /* StoreKitTestConfiguration.storekit */ = {isa = PBXFileReference; path = StoreKitTestConfiguration.storekit; sourceTree = "<group>"; };
+		B22F99CF82A2FC099E538598 /* StoreKitTestConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKitTestConfiguration.storekit; sourceTree = "<group>"; };
 		B265FE899B04A5FF45FBFB0D /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		B2AA598A608BA32CD627304A /* AlertsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModelTests.swift; sourceTree = "<group>"; };
 		B363F26F34745A85E6B07E34 /* HistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepository.swift; sourceTree = "<group>"; };
@@ -458,25 +458,14 @@
 				754C3AA716BF76E132072346 /* Info.plist */,
 				8987E368E7044BAA2CB1C599 /* kMonitor.entitlements */,
 				55680A9AC4E14F7316C11C99 /* kMonitor.xcodeproj */,
-				DDBA23DAFF530F96AF6E6008 /* .github */,
-				070EB263D1E4E804FFB1BEC7 /* Alerts */,
-				272C4C8E3505F1112A851F8B /* App */,
-				9AF6A0A205C35E91EE2BB8C2 /* Dashboard */,
-				E9E94197E244B30A4ADF9B29 /* Data */,
-				550AC5C876CC528EE8C2D2C0 /* DI */,
-				56B70D8953438B92A2A44730 /* History */,
-				DD6F6FAB25FC2054FBEA50ED /* Integrations */,
-				2E77A921DB2C4F11E27F79A9 /* Intents */,
-				E34E4FE6004ADFBB2DD2F106 /* MenuBar */,
-				41AA525C3F4C495751C7275A /* Onboarding */,
-				80AD25B8AB24B4798914D1D8 /* Processes */,
-				C5A375ACE57BFF67D273FD80 /* Resources */,
-				19B9182D6C8CDFE793C27CED /* Settings */,
-				C44F8D80657C5659F641BD16 /* State */,
-				239482A019CF96C06049F99E /* Store */,
 			);
 			name = kMonitor;
 			path = .;
+			sourceTree = "<group>";
+		};
+		3A5DD8463052874D00B27B67 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
 			sourceTree = "<group>";
 		};
 		41AA525C3F4C495751C7275A /* Onboarding */ = {
@@ -837,6 +826,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B0D550253F8D546809E7BA8F /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3A5DD8463052874D00B27B67 /* Products */;
+					ProjectRef = 55680A9AC4E14F7316C11C99 /* kMonitor.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9E63C8A36E1AD92E2D65C5BB /* kMonitor */,
