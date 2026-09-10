@@ -5,7 +5,7 @@ import Foundation
 import NaturalLanguage
 import AppCatalogCore
 
-enum ResidueGroupKind: String, CaseIterable {
+public enum ResidueGroupKind: String, CaseIterable {
     case preferences, caches, appData, webData, launchAgents, plugins, savedState, other
 
     /// 分组展示名（本地化键与中文 copy 一并维护，见 Localizable.xcstrings）。
@@ -51,10 +51,17 @@ enum ResidueGroupKind: String, CaseIterable {
     }
 }
 
-struct ResidueGroup: Identifiable {
-    let kind: ResidueGroupKind
-    let residues: [ResidueFile]
-    var id: ResidueGroupKind { kind }
+/// 一个语义分组的产物（kind + 组内残留）。public 供 ViewModel 的
+/// 面板分组 API 跨文件暴露（详情面板 / 测试同模块使用）。
+public struct ResidueGroup: Identifiable {
+    public let kind: ResidueGroupKind
+    public let residues: [ResidueFile]
+    public var id: ResidueGroupKind { kind }
+
+    public init(kind: ResidueGroupKind, residues: [ResidueFile]) {
+        self.kind = kind
+        self.residues = residues
+    }
 }
 
 enum ResidueGroupingEngine {

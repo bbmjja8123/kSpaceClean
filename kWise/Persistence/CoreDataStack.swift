@@ -60,8 +60,15 @@ public final class CoreDataStack: ObservableObject {
 
     public var viewContext: NSManagedObjectContext { container.viewContext }
 
-    private init(isTestEnvironment: Bool = false) {
+    private init(isTestEnvironment: Bool? = nil) {
+        // Test host (kWiseTests) launches the real app binary — it must
+        // never touch the user's real App Group store. On this machine the
+        // unsigned test host wedges inside sqlite `guarded_open_np` on that
+        // path ("test runner hung before establishing connection", root
+        // cause identical to the kSift fix — see project memory). Under
+        // XCTest, isolate the store in-memory instead.
         self.isTestEnvironment = isTestEnvironment
+            ?? (ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil)
     }
 
     public static func createTestInstance() -> CoreDataStack {

@@ -103,7 +103,15 @@ public struct WidgetSnapshotStore: Sendable {
     /// - Parameter fileURL: injectable for tests; production resolves the
     ///   App Group container (`group.app.kraftly.sclean`).
     public init(fileURL: URL? = nil) {
-        if let fileURL {
+        // Test host runs the real app binary — it must never touch the App
+        // Group container. The unsigned test host wedges inside `open` on
+        // that path on this machine (same root cause as the CoreDataStack
+        // XCTest guard; see project memory). Degrade to "no feed".
+        let runningTests = fileURL == nil
+            && ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+        if runningTests {
+            self.fileURL = nil
+        } else if let fileURL {
             self.fileURL = fileURL
         } else if let container = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: "group.app.kraftly.sclean"

@@ -134,6 +134,87 @@ public final class AppUninstallViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Detail Panel (v2.6 Task 4)
+
+    /// 双栏右侧面板当前展示的条目（AppRow 点击设置）。
+    @Published public var selectedEntryID: UUID?
+
+    /// 面板内残留勾选状态，按条目隔离（key = entry id，value = 勾选的残留路径）。
+    @Published public var selectedResiduePaths: [UUID: Set<String>] = [:]
+
+    /// 分组惰性缓存（key = entry id）。分组在后台线程计算、主线程发布。
+    @Published public private(set) var groupedResidues: [UUID: [ResidueGroup]] = [:]
+
+    /// NLEmbedding 解析后仍为 nil → 面板显示降级提示行
+    /// （未知路径全落 other，规则遍结果仍可信）。与分组结果同步发布。
+    public private(set) var groupingDegraded = false
+
+    /// 分组计算进行中的条目（防重复派发 + 「分析中…」骨架数据源）。
+    @Published public private(set) var isGrouping = false
+
+    private var groupingInFlight: Set<UUID> = []
+
+    /// 面板当前条目（`selectedEntryID` 失效后自动回 nil → 面板空态）。
+    public var selectedEntry: UninstallAppEntry? {
+        guard let selectedEntryID else { return nil }
+        return entries.first { $0.id == selectedEntryID }
+    }
+
+    /// 面板里是否出现过任何显式残留勾选（spec §7 提交语义消歧）：
+    /// 有 → 提交 App 本体 + 仅选中的残留；无 → 整 App 语义（本体 + 全部残留）。
+    /// 全局判定而非按选中条目 —— 勾选状态按条目隔离，任一条目出现过
+    /// 显式勾选即进入明细模式，清空后回退整 App 语义。
+    public var hasExplicitResidueSelection: Bool {
+        selectedResiduePaths.contains { !$0.value.isEmpty }
+    }
+
+    /// 面板残留行勾选切换（按条目隔离，互不影响其他条目）。
+    public func toggleResidue(entryID: UUID, path: String) {
+        var set = selectedResiduePaths[entryID] ?? []
+        if set.contains(path) { set.remove(path) } else { set.insert(path) }
+        selectedResiduePaths[entryID] = set
+    }
+
+    /// 组级级联勾选：组内全部残留一起选中 / 取消（单项仍可反调）。
+    public func setGroupSelection(entryID: UUID, residues: [ResidueFile], selected: Bool) {
+        let paths = Set(residues.map { $0.url.path })
+        var set = selectedResiduePaths[entryID] ?? []
+        if selected { set.formUnion(paths) } else { set.subtract(paths) }
+        selectedResiduePaths[entryID] = set
+    }
+
+    /// 选中条目的分组（惰性计算：命中缓存直接返回；否则后台分组 +
+    /// 主线程发布）。未命中时返回 nil，面板显示「分析中…」骨架。
+    ///
+    /// 分组引擎为同步纯计算（NSCache 线程安全），放在 detached Task
+    /// 中避免阻塞主线程；结果经 `MainActor.run` 发布以满足
+    /// SWIFT_STRICT_CONCURRENCY=complete。
+    public func groupedResiduesForSelectedEntry() -> [ResidueGroup]? {
+        guard let entry = selectedEntry else { return nil }
+        if let cached = groupedResidues[entry.id] { return cached }
+        guard !groupingInFlight.contains(entry.id) else { return nil }
+        groupingInFlight.insert(entry.id)
+
+        let residues = entry.residues
+        let entryID = entry.id
+        // 本方法在 body 求值期间被调用 —— `@Published` 变更必须推迟到
+        // 下一 runloop 发布，否则触发 "Publishing changes from within
+        // view updates" 运行时警告。
+        Task { @MainActor in self.isGrouping = true }
+        Task.detached(priority: .userInitiated) {
+            let embedding = ResidueGroupingEngine.resolveEmbedding(nil)
+            let degraded = (embedding == nil)
+            let groups = ResidueGroupingEngine.group(residues, embedding: embedding)
+            await MainActor.run {
+                self.groupedResidues[entryID] = groups
+                self.groupingDegraded = degraded
+                self.groupingInFlight.remove(entryID)
+                self.isGrouping = !self.groupingInFlight.isEmpty
+            }
+        }
+        return nil
+    }
+
     // MARK: - Selection
 
     public func toggleSelection(_ id: UUID) {
@@ -246,6 +327,11 @@ public final class AppUninstallViewModel: ObservableObject {
         // Remove successfully uninstalled entries from the list.
         entries.removeAll { entry in
             succeeded.contains(entry.appName)
+        }
+
+        // 已卸载条目不再持有面板选中态（详情面板回落到空态）。
+        if let selectedEntryID, !entries.contains(where: { $0.id == selectedEntryID }) {
+            self.selectedEntryID = nil
         }
 
         return (succeeded, failed)

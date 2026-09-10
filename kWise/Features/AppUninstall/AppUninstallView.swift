@@ -160,7 +160,19 @@ public struct AppUninstallView: View {
         if viewModel.entries.isEmpty && !viewModel.isScanning {
             emptyState
         } else {
-            appList
+            // 双栏（v2.6 Task 4）：左 260pt 列表 + 右详情面板。
+            HStack(spacing: 0) {
+                appList
+                    .frame(width: 260)
+                Divider()
+                AppUninstallDetailPanel(viewModel: viewModel) { entry in
+                    // 面板「卸载」= 只选中该条目后走同一确认弹窗。
+                    viewModel.deselectAll()
+                    viewModel.toggleSelection(entry.id)
+                    showConfirmDialog = true
+                }
+                .padding(.leading, 0)
+            }
         }
     }
 
@@ -179,12 +191,14 @@ public struct AppUninstallView: View {
                 ForEach(viewModel.visibleEntries) { entry in
                     AppRow(
                         entry: entry,
+                        isSelectedRow: viewModel.selectedEntryID == entry.id,
                         onToggle: { viewModel.toggleSelection(entry.id) },
                         onReset: {
                             Task { try? await viewModel.resetApp(entry) }
-                        }
+                        },
+                        onSelect: { viewModel.selectedEntryID = entry.id }
                     )
-                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.horizontal, AppSpacing.sm)
                 }
             }
             .padding(.vertical, AppSpacing.sm)
@@ -277,8 +291,12 @@ public struct AppUninstallView: View {
 private struct AppRow: View {
     @State private var isExpanded = false
     let entry: UninstallAppEntry
+    /// 双栏选中高亮（右侧详情面板展示该条目时为 true）。
+    var isSelectedRow: Bool = false
     let onToggle: () -> Void
     var onReset: (() -> Void)? = nil
+    /// 点击行 → 打开右侧详情面板（行内展开保留为只读快览）。
+    var onSelect: (() -> Void)? = nil
 
     private func sourceBadge(_ source: AppSource) -> String {
         switch source {
@@ -399,8 +417,14 @@ private struct AppRow: View {
             }
             .padding(.vertical, AppSpacing.sm)
             .padding(.horizontal, AppSpacing.sm)
-            .background(Color.bgSecondary.opacity(0.3))
+            .background(
+                isSelectedRow
+                    ? Color.brandPrimary.opacity(0.15)
+                    : Color.bgSecondary.opacity(0.3)
+            )
             .cornerRadius(AppSpacing.sm)
+            .contentShape(Rectangle())
+            .onTapGesture { onSelect?() }
             .contextMenu {
                 Button {
                     NSWorkspace.shared.activateFileViewerSelecting([entry.appURL])

@@ -58,6 +58,28 @@ final class AppUninstallDragResetTests: XCTestCase {
         XCTAssertNil(warning)
     }
 
+    // MARK: - Detail Panel VM (Task 4)
+
+    func testResidueSelectionIsIsolatedPerEntry() {
+        let vm = AppUninstallViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true)))
+        let idA = UUID()
+        vm.toggleResidue(entryID: idA, path: "/a")
+        let idB = UUID()
+        vm.toggleResidue(entryID: idB, path: "/b")
+        XCTAssertEqual(vm.selectedResiduePaths[idA], Set(["/a"]))
+        XCTAssertEqual(vm.selectedResiduePaths[idB], Set(["/b"]))
+    }
+
+    func testHasExplicitResidueSelection() {
+        let vm = AppUninstallViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true)))
+        XCTAssertFalse(vm.hasExplicitResidueSelection)
+        let id = UUID()
+        vm.toggleResidue(entryID: id, path: "/a")
+        XCTAssertTrue(vm.hasExplicitResidueSelection)
+    }
+
     @MainActor
     func testResetOnlyTouchesResettableTypes() async throws {
         // Reset：preferences 可清；launchAgent 类型不可清（由 scanner
