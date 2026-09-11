@@ -212,11 +212,76 @@ final class DuplicateViewModel: ObservableObject {
         }
     }
 
+    /// Selects every file in every group (all duplicates selected).
+    func selectAllDuplicates() {
+        for gi in groups.indices {
+            for fi in groups[gi].files.indices {
+                groups[gi].files[fi].isSelected = true
+            }
+        }
+    }
+
     /// Deselects every file in every group.
     func deselectAll() {
         for gi in groups.indices {
             for fi in groups[gi].files.indices {
                 groups[gi].files[fi].isSelected = false
+            }
+        }
+    }
+
+    /// 文件夹级级联 (v2.6 重复文件第二轮)：把 `folderURL` 前缀下该组的
+    /// 全部文件设为选中/取消（普通 checkbox 级联语义；其他文件夹的
+    /// 保留件不受影响）。
+    func selectFolder(in groupID: UUID, folderURL: URL, selected: Bool) {
+        guard let gi = groups.firstIndex(where: { $0.id == groupID }) else { return }
+        let prefix = folderURL.standardizedFileURL.path + "/"
+        for fi in groups[gi].files.indices {
+            let filePath = groups[gi].files[fi].url.standardizedFileURL.path
+            if filePath.hasPrefix(prefix) {
+                groups[gi].files[fi].isSelected = selected
+            }
+        }
+    }
+
+    /// 「清理较旧文件夹」快捷动作：保留件所在文件夹不动，其余文件夹
+    /// 整体勾选（比逐文件勾选快一个量级，AppCleaner/Gemini 批量心智）。
+    func cleanupOlderFolders(in groupID: UUID) {
+        guard let gi = groups.firstIndex(where: { $0.id == groupID }),
+              let keep = groups[gi].files.first(where: { !$0.isSelected }) else { return }
+        let keepFolder = keep.url.deletingLastPathComponent().standardizedFileURL.path
+        for fi in groups[gi].files.indices {
+            let fileFolder = groups[gi].files[fi].url.deletingLastPathComponent().standardizedFileURL.path
+            if fileFolder != keepFolder {
+                groups[gi].files[fi].isSelected = true
+            }
+        }
+    }
+
+    /// 本次会话累计真实释放字节（summaryBar「本次会话」统计的数据源，
+    /// 清理成功后由 ``cleanupSelected()`` 累加）。
+    @Published private(set) var sessionFreed: Int64 = 0
+
+    /// 文件夹关系描述缓存（按组）。
+    @Published private(set) var folderRelationships: [UUID: String] = [:]
+
+    func recordSessionFreed(_ bytes: Int64) {
+        sessionFreed += bytes
+    }
+
+    /// 文件夹组的关系描述（异步）：NLEmbedding 主题标注 + 更新时间差，
+    /// embedding 不可用时由 describer 内部降级为确定性描述。
+    func buildFolderRelationships(for groupID: UUID) {
+        guard let gi = groups.firstIndex(where: { $0.id == groupID }),
+              folderRelationships[groupID] == nil else { return }
+        let urls = groups[gi].files.map(\.url)
+        Task.detached(priority: .userInitiated) { [weak self] in
+            let newest = urls.compactMap {
+                (try? $0.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+            }.max()
+            let description = DuplicateFolderDescriber.describe(fileURLs: urls, newestDate: newest)
+            await MainActor.run { [weak self] in
+                self?.folderRelationships[groupID] = description
             }
         }
     }
@@ -247,6 +312,10 @@ final class DuplicateViewModel: ObservableObject {
             CleanupTarget(url: file.url, size: file.size, risk: .caution)
         }
         let outcome = try await engine.cleanup(targets: targets)
+
+        // 会话累计 + 完成横幅数据源（此前从未赋值，横幅永不出现）。
+        recordSessionFreed(outcome.measuredBytes ?? outcome.freedBytes)
+        lastCleanupOutcome = outcome
 
         let trashedPaths = Set(outcome.succeeded.map(\.path))
         for gi in groups.indices.reversed() {

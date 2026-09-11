@@ -260,6 +260,92 @@ struct DuplicateView: View {
     private var groupDetail: some View {
         let group = selectedGroup ?? viewModel.groups.first
         if let group {
+            if group.category == .directoryDedup {
+                folderPairDetail(group)
+            } else {
+                fileDetail(group)
+            }
+        } else {
+            EmptyStateView(icon: "doc.on.doc", title: "选择一组", subtitle: "左侧选择重复组查看详情。")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    /// 目录级重复组：文件夹卡（AI 关系描述 + 整夹清理）。
+    private func folderPairDetail(_ group: ToolboxGroup) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                HStack {
+                    Text(group.evidenceSummary)
+                        .font(AppFont.title3)
+                        .foregroundColor(.textPrimary)
+                    Spacer()
+                    Text("可释放 \(FileSizeFormatter.abbreviated(from: group.honestlyReclaimable))")
+                        .font(AppFont.monoDigit)
+                        .foregroundColor(.danger)
+                }
+                // AI 关系描述 (v2.6)：主题标注 + 更新时间差。
+                if let relationship = viewModel.folderRelationships[group.id] {
+                    Label(relationship, systemImage: "sparkles")
+                        .font(AppFont.callout)
+                        .foregroundColor(.brandPrimary)
+                        .padding(AppSpacing.sm)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.brandPrimary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: AppRadius.sm))
+                }
+                // 文件夹行：图标 + 路径 + 大小 + 整夹清理。
+                ForEach(group.files) { folder in
+                    HStack(spacing: AppSpacing.sm) {
+                        Toggle("", isOn: Binding(
+                            get: { group.files.filter {
+                                $0.url.deletingLastPathComponent().standardizedFileURL.path
+                                    == folder.url.standardizedFileURL.path
+                            }.allSatisfy(\.isSelected) },
+                            set: { selected in
+                                viewModel.selectFolder(in: group.id, folderURL: folder.url, selected: selected)
+                            }
+                        ))
+                        .toggleStyle(.checkbox)
+                        .labelsHidden()
+
+                        Image(systemName: "folder.fill")
+                            .foregroundColor(.brandPrimary)
+
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(Self.abbreviatePath(folder.url.path))
+                                .font(AppFont.callout)
+                                .foregroundColor(.textPrimary)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                                .help(folder.url.path)
+                            Text("内容 100% 相同的文件夹")
+                                .font(AppFont.caption)
+                                .foregroundColor(.textSecondary)
+                        }
+                        Spacer()
+                        Text(FileSizeFormatter.abbreviated(from: folder.size))
+                            .font(AppFont.monoDigit)
+                            .foregroundColor(.textSecondary)
+                    }
+                    .padding(AppSpacing.sm)
+                    .background(Color.bgSecondary)
+                    .clipShape(RoundedRectangle(cornerRadius: AppRadius.sm))
+                }
+                Button("清理较旧文件夹") {
+                    viewModel.cleanupOlderFolders(in: group.id)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
+            .padding(AppSpacing.lg)
+        }
+        .onAppear { viewModel.buildFolderRelationships(for: group.id) }
+    }
+
+    /// 非目录级组的文件明细（原有路径）。
+    @ViewBuilder
+    private func fileDetail(_ group: ToolboxGroup) -> some View {
             ScrollView {
                 VStack(alignment: .leading, spacing: AppSpacing.sm) {
                     // 大图并排对比 (v2.6 W1 收尾)：组内前两张并排 240pt。
@@ -330,10 +416,6 @@ struct DuplicateView: View {
                 }
                 .padding(AppSpacing.lg)
             }
-        } else {
-            EmptyStateView(icon: "doc.on.doc", title: "选择一组", subtitle: "左侧选择重复组查看详情。")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
     }
 
     private var selectedGroup: ToolboxGroup? {
@@ -549,6 +631,11 @@ struct DuplicateView: View {
                     .frame(height: 16)
                 statLabel("Selected", value: "\(viewModel.selectedCount)")
                 statLabel("Size", value: FileSizeFormatter.abbreviated(from: viewModel.selectedSize))
+                if viewModel.sessionFreed > 0 {
+                    Divider()
+                        .frame(height: 16)
+                    statLabel("本次会话", value: FileSizeFormatter.abbreviated(from: viewModel.sessionFreed))
+                }
             }
 
             Spacer()
