@@ -8,7 +8,7 @@ import AppCatalogCore
 public enum ResidueGroupKind: String, CaseIterable {
     case preferences, caches, appData, webData, launchAgents, plugins, savedState, other
 
-    /// 分组展示名（本地化键与中文 copy 一并维护，见 Localizable.xcstrings）。
+    /// 分组展示名（硬编码中文，本地化在全局 pass 统一处理，见 CLAUDE.md backlog）。
     var title: String {
         switch self {
         case .preferences: return "偏好设置"
@@ -66,7 +66,12 @@ public struct ResidueGroup: Identifiable {
 
 enum ResidueGroupingEngine {
 
-    private static let embeddingCache = NSCache<NSString, NSArray>()
+    /// 词向量缓存（spec §3.2：countLimit = 2000 封顶，防止长会话无界增长）。
+    private static let embeddingCache: NSCache<NSString, NSArray> = {
+        let cache = NSCache<NSString, NSArray>()
+        cache.countLimit = 2000
+        return cache
+    }()
 
     /// 系统 embedding 提供器。生产路径尝试 zh → en 词向量；
     /// 测试可临时替换（如 `{ nil }`）以强制"解析后仍 nil"的真降级分支。

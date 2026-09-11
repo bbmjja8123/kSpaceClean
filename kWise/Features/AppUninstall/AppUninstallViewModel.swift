@@ -202,7 +202,14 @@ public final class AppUninstallViewModel: ObservableObject {
     /// SWIFT_STRICT_CONCURRENCY=complete。
     public func groupedResiduesForSelectedEntry() -> [ResidueGroup]? {
         guard let entry = selectedEntry else { return nil }
-        if let cached = groupedResidues[entry.id] { return cached }
+        if let cached = groupedResidues[entry.id] {
+            // 终审 I-1（spec §8）：扫描后残留路径可能已被用户 / 系统外部删除，
+            // 分组缓存里陈旧的 path 若照原样渲染，用户勾选一个不存在的文件、
+            // 弹窗也照计其体量。返回缓存前对每组按 fileExists 过滤；整组消失
+            // 则整组隐藏。uninstallSelected 本就按 fileExists 过滤提交，这里
+            // 只是让面板 / 弹窗与实际提交范围同口径。
+            return Self.filterExistingGroups(cached)
+        }
         guard !groupingInFlight.contains(entry.id) else { return nil }
         groupingInFlight.insert(entry.id)
 
@@ -232,6 +239,18 @@ public final class AppUninstallViewModel: ObservableObject {
             }
         }
         return nil
+    }
+
+    /// 终审 I-1：过滤掉磁盘上已不存在的残留（整组消失 → 整组隐藏）。
+    private static func filterExistingGroups(_ groups: [ResidueGroup]) -> [ResidueGroup] {
+        groups.compactMap { group in
+            let existing = group.residues.filter {
+                FileManager.default.fileExists(atPath: $0.url.path)
+            }
+            return existing.isEmpty
+                ? nil
+                : ResidueGroup(kind: group.kind, residues: existing)
+        }
     }
 
     // MARK: - Selection
@@ -271,16 +290,26 @@ public final class AppUninstallViewModel: ObservableObject {
     ///
     /// 与 `selectedSize`（appSize + 全部 leftoverSize）的区别即 I-1：
     /// 明细模式下弹窗若仍按全量计算，会承诺超出实际提交的空间。
+    /// - 已消失的残留（扫描后被外部删除）不计入 —— 与 `uninstallSelected`
+    ///   的 `fileExists` 过滤同口径（终审 I-1）。
     public var selectedCommitSize: Int64 {
         selectedEntries.reduce(0) { total, entry in
             let picked = selectedResiduePaths[entry.id] ?? []
             if !picked.isEmpty {
                 let pickedSize = entry.residues
                     .filter { picked.contains($0.url.path) }
+                    .filter { FileManager.default.fileExists(atPath: $0.url.path) }
                     .reduce(0) { $0 + $1.sizeBytes }
                 return total + (entry.isOrphan ? 0 : entry.appSize) + pickedSize
             }
-            return total + (entry.isOrphan ? entry.leftoverSize : entry.totalSize)
+            // 整 App 语义：从 scanner 聚合的 leftoverSize 中扣除已消失残留
+            // 的体量（residues 与 leftoverURLs 一一对应；列表为空时无项可扣，
+            // 保持原口径）。
+            let vanishedSize = entry.residues
+                .filter { !FileManager.default.fileExists(atPath: $0.url.path) }
+                .reduce(0) { $0 + $1.sizeBytes }
+            let leftover = max(0, entry.leftoverSize - vanishedSize)
+            return total + (entry.isOrphan ? leftover : entry.appSize + leftover)
         }
     }
 
