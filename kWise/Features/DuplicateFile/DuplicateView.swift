@@ -12,6 +12,8 @@ struct DuplicateView: View {
     @ObservedObject var viewModel: DuplicateViewModel
     @State private var showFolderPicker = false
     @State private var previewURL: URL?
+    /// 清理完成横幅（freed bytes，KFAnimation 弹入）。
+    @State private var completedOutcome: CleanupOutcome?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,6 +21,10 @@ struct DuplicateView: View {
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.top, AppSpacing.md)
                 .padding(.bottom, AppSpacing.sm)
+
+            if let outcome = completedOutcome {
+                completionBanner(outcome)
+            }
 
             if let warning = viewModel.lastWarning {
                 warningBar(warning)
@@ -116,6 +122,36 @@ struct DuplicateView: View {
             return first.path.replacingOccurrences(of: NSHomeDirectory(), with: "~")
         }
         return "\(first.lastPathComponent) +\(viewModel.scanPaths.count - 1)"
+    }
+
+    /// 清理完成横幅 (v2.6 W1 收尾)：真实释放字节 + KFAnimation 弹入。
+    private func completionBanner(_ outcome: CleanupOutcome) -> some View {
+        HStack(spacing: AppSpacing.sm) {
+            Image(systemName: "checkmark.seal.fill")
+                .foregroundColor(.success)
+                .font(.system(size: 20))
+            VStack(alignment: .leading, spacing: 1) {
+                Text("清理完成，释放 \(FileSizeFormatter.abbreviated(from: outcome.measuredBytes ?? outcome.freedBytes))")
+                    .font(AppFont.callout)
+                    .foregroundColor(.textPrimary)
+                Text("可在「历史」时间线随时还原")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
+            Spacer()
+            Button {
+                self.completedOutcome = nil
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.textSecondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(AppSpacing.sm)
+        .background(Color.success.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
+        .transition(.move(edge: .top).combined(with: .opacity))
     }
 
     // MARK: - Warning Bar (honest scope/engine notices)
@@ -226,6 +262,16 @@ struct DuplicateView: View {
         if let group {
             ScrollView {
                 VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                    // 大图并排对比 (v2.6 W1 收尾)：组内前两张并排 240pt。
+                    if group.files.count >= 2 {
+                        HStack(spacing: AppSpacing.sm) {
+                            ForEach(Array(group.files.prefix(2))) { file in
+                                KWThumbnailView(url: file.url, size: 240)
+                                    .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
                     HStack {
                         Text(group.evidenceSummary)
                             .font(AppFont.title3)
@@ -523,7 +569,10 @@ struct DuplicateView: View {
                     .disabled(viewModel.groups.isEmpty)
 
                     Button("Clean Up (\(viewModel.selectedCount))") {
-                        Task { try? await viewModel.cleanupSelected() }
+                        Task {
+                            try? await viewModel.cleanupSelected()
+                            completedOutcome = viewModel.lastCleanupOutcome
+                        }
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.small)

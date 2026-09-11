@@ -71,6 +71,8 @@ final class DuplicateViewModel: ObservableObject {
     private let scanner = DuplicateScanner()
     private(set) var engine: CleanupEngine
     var onQuotaExhausted: (() -> Void)?
+    /// 最近一次清理的引擎结果 (v2.6 W1 收尾)——完成横幅的数据源。
+    @Published private(set) var lastCleanupOutcome: CleanupOutcome?
     private var scanTask: Task<Void, Never>?
     private var controller: ScanController?
 

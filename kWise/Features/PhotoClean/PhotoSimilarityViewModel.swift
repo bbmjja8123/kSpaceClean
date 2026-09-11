@@ -178,6 +178,15 @@ final class PhotoSimilarityViewModel: ObservableObject {
         }
     }
 
+    /// A/B 互换 (v2.6 W4 收尾)：把保留权交给 `newKeepID`，原保留件与
+    /// 其他件全部标记为待清理——组内恰好保留一张，语义不变。
+    func swapKeep(in groupID: UUID, to newKeepID: UUID) {
+        guard let gi = groups.firstIndex(where: { $0.id == groupID }) else { return }
+        for fi in groups[gi].files.indices {
+            groups[gi].files[fi].isSelected = groups[gi].files[fi].id != newKeepID
+        }
+    }
+
     /// 组内至少保留一张 — 全选被拒绝并给出诚实提示（C-5）。
     func selectAllInGroup(_ id: UUID) {
         guard let gi = groups.firstIndex(where: { $0.id == id }) else { return }

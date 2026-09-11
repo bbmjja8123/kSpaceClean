@@ -168,6 +168,7 @@ struct PhotoCleanView: View {
                             group: group,
                             toggleFile: { similarityVM.toggleFile($0) },
                             toggleGroup: { similarityVM.toggleGroup($0) },
+                            swapKeep: { gid, fid in similarityVM.swapKeep(in: gid, to: fid) },
                             preview: { previewURL = $0 }
                         )
                     }
@@ -359,6 +360,7 @@ private struct PhotoSimilarityGroupCard: View {
     let group: ToolboxGroup
     let toggleFile: (UUID) -> Void
     let toggleGroup: (UUID) -> Void
+    let swapKeep: (UUID, UUID) -> Void
     let preview: (URL) -> Void
 
     var body: some View {
@@ -393,9 +395,11 @@ private struct PhotoSimilarityGroupCard: View {
                 .padding(.top, AppSpacing.md)
 
                 // Thumbnail grid — at least one photo per group stays.
+                // A/B 互换 (v2.6 W4 收尾)：点未保留缩略图的星标 → 互换保留。
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: AppSpacing.sm) {
                         ForEach(group.files) { file in
+                            let isKept = !file.isSelected
                             VStack(spacing: AppSpacing.xs) {
                                 Button {
                                     toggleFile(file.id)
@@ -411,6 +415,16 @@ private struct PhotoSimilarityGroupCard: View {
                                     }
                                 }
                                 .buttonStyle(.plain)
+                                // A/B 互换：非保留件的星标 → 设为保留原件。
+                                Button {
+                                    swapKeep(group.id, file.id)
+                                } label: {
+                                    Label(isKept ? "保留中" : "设为保留", systemImage: isKept ? "crown.fill" : "crown")
+                                        .font(AppFont.caption)
+                                        .foregroundColor(isKept ? .brandPrimary : .textSecondary)
+                                }
+                                .buttonStyle(.plain)
+                                .disabled(isKept)
                                 Text(FileSizeFormatter.abbreviated(from: file.size))
                                     .font(AppFont.caption)
                                     .foregroundColor(.textSecondary)
