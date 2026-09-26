@@ -377,43 +377,85 @@ public actor BackupManager {
         }
     }
 
-    /// Removes every bundleID directory under `rootURL` whose
-    /// `creationDate` is older than `days` days. Returns the count
-    /// removed. Versioned `v<N>/` subdirectories move with their parent,
-    /// so removing the bundle directory is sufficient.
+    /// Removes every backup under `rootURL` that is older than `days` days.
+    /// Returns the count of directories removed.
     ///
-    /// - Parameter days: Age cutoff in days; directories older than this
-    ///   are removed.
-    /// - Returns: Number of bundleID directories removed.
+    /// Expiry is evaluated **per versioned `v<N>/` directory**, not per
+    /// bundleID directory: the bundle directory is created once at the
+    /// first backup and never ages, so pruning it as a unit would delete a
+    /// backup taken yesterday along with one taken 40 days ago. Each
+    /// version expires on its own; a bundle directory is removed only once
+    /// it holds no versions left (and legacy/empty bundle directories
+    /// without versioned children fall back to the directory's own age).
+    ///
+    /// - Parameter days: Age cutoff in days; backups older than this are
+    ///   removed.
+    /// - Returns: Number of directories removed (expired versions plus any
+    ///   emptied bundle directories).
     public func cleanupExpired(olderThanDays days: Int) async -> Int {
         let contents: [URL]
         do {
             contents = try fileManager.contentsOfDirectory(at: rootURL,
-                                                           includingPropertiesForKeys: [.creationDateKey])
+                                                           includingPropertiesForKeys: [.creationDateKey,
+                                                                                         .contentModificationDateKey])
         } catch {
             print("BackupManager.cleanupExpired: failed to list \(rootURL.path): \(error)")
             return 0
         }
         let cutoff = Date().addingTimeInterval(-Double(days) * 86400)
         var removed = 0
-        for url in contents {
-            let attrs: [FileAttributeKey: Any]
-            do {
-                attrs = try fileManager.attributesOfItem(atPath: url.path)
-            } catch {
-                print("BackupManager.cleanupExpired: failed to inspect \(url.path): \(error)")
+        for bundleDir in contents {
+            let versions = listVersionedDirectories(in: bundleDir)
+            if versions.isEmpty {
+                // No versioned children (legacy or empty layout) — age the
+                // bundle directory itself so it does not linger forever.
+                if isExpired(bundleDir, cutoff: cutoff) {
+                    removed += removeIfPossible(bundleDir)
+                }
                 continue
             }
-            guard let creationDate = attrs[.creationDate] as? Date,
-                  creationDate < cutoff else { continue }
-            do {
-                try fileManager.removeItem(at: url)
-                removed += 1
-            } catch {
-                print("BackupManager.cleanupExpired: failed to remove \(url.path): \(error)")
+            for version in versions where isExpired(version, cutoff: cutoff) {
+                removed += removeIfPossible(version)
+            }
+            // Drop the bundle directory only once every version is gone.
+            if listVersionedDirectories(in: bundleDir).isEmpty {
+                removed += removeIfPossible(bundleDir)
             }
         }
         return removed
+    }
+
+    /// Whether `url` is older than `cutoff`, judged by its earliest recorded
+    /// timestamp.
+    ///
+    /// Birth time is the authoritative "when was this backup taken" signal.
+    /// The modification date only ever moves forward, so it can make a
+    /// backup look older but never younger — and it covers filesystems that
+    /// report no birth time at all. Using the earliest of the two keeps
+    /// expiry honest on both.
+    private func isExpired(_ url: URL, cutoff: Date) -> Bool {
+        guard let attrs = try? fileManager.attributesOfItem(atPath: url.path) else {
+            print("BackupManager.cleanupExpired: failed to inspect \(url.path)")
+            return false
+        }
+        let timestamps = [attrs[.creationDate] as? Date, attrs[.modificationDate] as? Date]
+            .compactMap { $0 }
+        guard let oldest = timestamps.min() else { return false }
+        return oldest < cutoff
+    }
+
+    /// Best-effort removal returning `1` when the item was deleted, `0` when
+    /// it could not be (already gone counts as deleted only if `removeItem`
+    /// succeeds; failures are logged and skipped so one locked directory
+    /// cannot abort the rest of the sweep).
+    private func removeIfPossible(_ url: URL) -> Int {
+        do {
+            try fileManager.removeItem(at: url)
+            return 1
+        } catch {
+            print("BackupManager.cleanupExpired: failed to remove \(url.path): \(error)")
+            return 0
+        }
     }
 
     // MARK: - Verify

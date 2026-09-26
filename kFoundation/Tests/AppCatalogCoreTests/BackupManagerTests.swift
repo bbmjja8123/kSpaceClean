@@ -104,6 +104,43 @@ final class BackupManagerTests: XCTestCase {
         XCTAssertFalse(FileManager.default.fileExists(atPath: oldBundle.path))
     }
 
+    // MARK: - Brief test 3b: expiry is per-version, not per-bundle
+
+    /// The bundle directory is created once at the first backup and never
+    /// ages, so a per-bundle TTL would delete a backup taken yesterday as
+    /// soon as the FIRST version turned 30 days old. Each `v<N>/` must
+    /// expire on its own age; the bundle directory survives while any
+    /// version does.
+    func testCleanupExpiredKeepsRecentVersionsOfAnOldBundle() async throws {
+        let sourceFile = tempDir.appendingPathComponent("source.plist")
+        try Data("test".utf8).write(to: sourceFile)
+        let residue = ResidueFile(url: sourceFile, type: .preferences, sizeBytes: 4,
+                                  confidence: 0.9, description: "test",
+                                  isSystemLevel: false, isProtected: false)
+
+        let backupRoot = tempDir.appendingPathComponent("backups")
+        let manager = BackupManager(rootURL: backupRoot)
+        let oldVersion = try await manager.backup(residues: [residue], bundleID: "com.example.mixed")
+        let freshVersion = try await manager.backup(residues: [residue], bundleID: "com.example.mixed")
+        XCTAssertNotEqual(oldVersion.path, freshVersion.path, "Backups must land in distinct v<N> dirs")
+
+        // Age only the first version past the cutoff.
+        try FileManager.default.setAttributes(
+            [.creationDate: Date().addingTimeInterval(-40 * 86_400),
+             .modificationDate: Date().addingTimeInterval(-40 * 86_400)],
+            ofItemAtPath: oldVersion.path
+        )
+
+        let removed = await manager.cleanupExpired(olderThanDays: 30)
+
+        XCTAssertGreaterThanOrEqual(removed, 1, "The stale v1 must be pruned")
+        XCTAssertFalse(FileManager.default.fileExists(atPath: oldVersion.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: freshVersion.path),
+                      "A recent backup must survive an expired sibling")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: oldVersion.deletingLastPathComponent().path),
+                      "The bundle directory must survive while a version remains")
+    }
+
     // MARK: - Brief test 4: verify returns true for an intact backup
 
     /// `verify` reads the manifest, re-hashes every file, and compares

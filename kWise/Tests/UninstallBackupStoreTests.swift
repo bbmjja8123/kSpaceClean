@@ -15,6 +15,10 @@ final class UninstallBackupStoreTests: XCTestCase {
         super.setUp()
         root = FileManager.default.temporaryDirectory
             .appendingPathComponent("uninstall-backup-\(UUID().uuidString)", isDirectory: true)
+        // The root must exist before fixtures write into it — `makeEntry`
+        // used to `try?` the writes, silently producing residues that were
+        // never on disk and failing every assertion downstream.
+        try? FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         store = UninstallBackupStore(rootURL: root)
     }
 
@@ -23,10 +27,10 @@ final class UninstallBackupStoreTests: XCTestCase {
         super.tearDown()
     }
 
-    private func makeEntry(residues: Int = 2) -> UninstallAppEntry {
-        let files = (0..<residues).map { i -> URL in
+    private func makeEntry(residues: Int = 2) throws -> UninstallAppEntry {
+        let files = try (0..<residues).map { i -> URL in
             let url = root.appendingPathComponent("residue-\(i).plist")
-            try? Data("pref-data-\(i)".utf8).write(to: url)
+            try Data("pref-data-\(i)".utf8).write(to: url)
             return url
         }
         let residueFiles = files.enumerated().map { i, url in
@@ -43,7 +47,7 @@ final class UninstallBackupStoreTests: XCTestCase {
     }
 
     func testBackupCreatesVersionedDirectoryUnderKWiseRoot() async throws {
-        let entry = makeEntry()
+        let entry = try makeEntry()
         let backupURL = try await store.backupBeforeUninstall(entry: entry)
 
         XCTAssertTrue(backupURL.path.contains("com.test.backup"), "Backup lives under the bundleID dir")
@@ -79,7 +83,7 @@ final class UninstallBackupStoreTests: XCTestCase {
     }
 
     func testRestoreLatestRestoresDeletedResidue() async throws {
-        let entry = makeEntry()
+        let entry = try makeEntry()
         let residueURL = entry.residues[0].url
         _ = try await store.backupBeforeUninstall(entry: entry)
 
@@ -102,7 +106,7 @@ final class UninstallBackupStoreTests: XCTestCase {
     }
 
     func testPruneExpiredRemovesOldBackups() async throws {
-        let entry = makeEntry()
+        let entry = try makeEntry()
         let backupURL = try await store.backupBeforeUninstall(entry: entry)
         // Backdate the directory's modification date beyond 30 days.
         try FileManager.default.setAttributes(

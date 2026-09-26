@@ -61,8 +61,12 @@ public enum StreakLogic {
             state.totalFreedBytes += freedBytes
             return
         }
-        let yesterday = Self.shift(state.lastCleanupDay, days: -1, calendar: calendar)
-        if state.lastCleanupDay != nil, day == yesterday {
+        // Consecutive means "the day before *this* cleanup" equals the last
+        // cleanup day — not the other way round (the pre-fix code compared
+        // `day` against the day before `lastCleanupDay`, so a forward-moving
+        // streak could never reach 2).
+        let previousDay = Self.shift(day, days: -1, calendar: calendar)
+        if state.lastCleanupDay != nil, previousDay == state.lastCleanupDay {
             state.currentStreak += 1
         } else {
             state.currentStreak = 1
