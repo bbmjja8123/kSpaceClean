@@ -379,7 +379,10 @@ kWise/
 ### kWise 收尾债清理 ✅ (2026-09-26)
 - [x] **已知红测试修复** — 2 个生产 bug：① `StreakLogic.recordCleanup` 连日判断方向反了（streak 永远到不了 2，streak.3/7/30 成就全废）② `BackupManager.cleanupExpired` 按 bundleID 目录整体过期 → 40 天前的 v1 会连坐删掉昨天的 v2（改为按 `v<N>/` 版本独立计龄 + 回归守卫）；1 个测试基建 bug（`UninstallBackupStoreTests.setUp` 未建 root，`try?` 吞掉 fixture 写失败）
 - [x] **本地化补齐** — Localizable.xcstrings 224 keys × 3 语全齐（补 508 个 string unit，既有译文 0 改写）；新增 `LocalizationCompletenessTests` 守卫空译文回潮
-- [x] **全量测试基线** — xcodebuild test-runner 挂起问题已随重启消失，可正常跑全量
+- [x] **全量测试基线** — xcodebuild test-runner 挂起问题已随重启消失，可正常跑全量。基线 **518 tests / 502 pass / 16 fail**（kWiseTests，2026-09-26）。16 个失败均为**存量红**，与本轮改动零文件重叠，且多在 test-runner 挂起期间从未跑过：
+  - **空间地图簇 ×7**（SegmentBuilder 3 断言 + 4 force-unwrap 崩溃）—— 根因是**测试夹具**：`makeTree()` 不传 `totalSize`，`ScanCategory.totalSize` 默认 0，`rebuild()` 的 `filter { totalSize > 0 }` 把整棵树滤空 → `segments.first!` 崩溃。该过滤自 546d8dc 建文件即存在，故这些用例从未绿过
+  - **其余 ×9** —— DefaultSelection ×2（勾选级联状态）、FileShredder ×2（guardrail + 覆写阶段）、MaintenanceGuidance ×1（源码扫描发现 `/usr/bin/` 引用）、PhotoSimilarity ×1（3 张同图分组）、AssistantIntent ×1（diskForecast 匹配）、AppUninstall 路由 ×1（配额耗尽回调）、ScanMasterDetail ×1（三级态）
+  - ⚠️ SegmentBuilder 的 4 次崩溃令 runner 反复重启，全量跑了约 7 小时；修掉夹具后应大幅缩短
 
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
