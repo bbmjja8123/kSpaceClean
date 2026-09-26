@@ -361,7 +361,7 @@ kWise/
 - [x] **Phase 6 Widget + Intents** — kWise/Shared/WidgetFeed 双 target（WidgetSnapshot 原子写 App Group + schemaVersion 守卫）；Widget 真实数据 + 交互清理按钮（Button(intent:) → kwise://smartcare）；Intents 回 target（Shortcuts 恢复）
 - [x] **Phase 7 创意三件套** — Core Data 轻量迁移（runID/actionKind/restoredAt）+ 时间线（按 run 分组、整体回滚）；月报（DiskSampleStore 环形采样 + OLS 预测，r²<0.5 → 波动较大）；StreakStore/9 成就/StreakSink → widget streak
 - [x] **Phase 8 助手 + Onboarding + 本地化** — AssistantIntentMatcher（zh/en 模板表，零网络，audit 测试禁 URLSession）+ 答案卡片；Onboarding 首启（welcome → PowerScope → tour）；xcstrings 30 → 51 keys（nav.* 三语）；NewCopyAuditTests（scareware 禁语 + 粉碎诚实文案）
-- [x] **测试** — Phase 1/2/3/4/5/6/7/8 各模块新增 ~90 用例；⚠️ xcodebuild test-runner 挂起（环境 wedge，2026-09-05 已知，重启后跑全量）
+- [x] **测试** — Phase 1/2/3/4/5/6/7/8 各模块新增 ~90 用例；xcodebuild test-runner 曾于 2026-09-05 挂起（环境 wedge），已随重启恢复 — 见「收尾债清理」全量基线
 
 ### kWise v2.1 — 精品级 UX 重构 ✅ (2026-09-07)
 > 用户手动验收后判定的 4 个硬伤全部修复。4 commits on `worktree-kwise-v1`。
@@ -370,14 +370,26 @@ kWise/
 - [x] **Phase 3 详情面板** — DetailPanelView（app/category/file 三态，活解析不陈旧，C-1 raw path 仅 tooltip）；点行自动出现、无选中自动隐藏
 - [x] **Phase 4 垂直预算** — PreScan 筛选控件滚动 + CTA 钉底（最小窗口不再裁切）；未扫描跳过 64pt header；400×500 卡死回归守卫测试
 
+### kWise 工具箱深度打磨 — 三轮 ✅ (2026-09-08 → 2026-09-12)
+> 全部在 main 直接开发（worktree 制度已退役）。~35 commits。
+- [x] **工具箱 round-2**（9/8–9/10）— DetectionCore→toolbox 结果映射（可解释选择）；QuickLook 三件套抽到组件层；重复工具重接 ScanOrchestrator（策略/reason/缩略图/honest clones）；照片清理重做为双 Tab（相似照片网格 + 遗留缓存）；`kMDItemLastUsedDate` → InstalledApp.lastUsedDate；tabbed toolbox（每工具一个可关持久 tab）；卸载 round-2（拖入 .app 扫描 / App Reset / 共享组件告警 / 残留备份）；孤儿残留扫描 + 扫描路径记忆（AppCatalogCore + DetectionCore，Lemon 过滤规则）；大文件类型 chip、Cookie 登出告警、+3 assistant intents；启动项双栏 + 使用提示；空间地图类型着色 + hover 卡；粉碎环形进度；月报 Top5 大文件；AppDelegate 退出崩溃守卫
+- [x] **卸载 AI 深度优化**（9/10–9/11，spec + 6-task plan 全落地）— ResidueExplainer（确定性白话解释 + ownerHint 提为共享 API）；ResidueGroupingEngine（规则遍 + NLEmbedding 兜底，可注入 provider）；HealthSummaryBuilder（可解释残留分级，50MB 绝对阈值优先）；AppUninstallDetailPanel（健康卡 + AI 分组 + 解释列表）；勾选语义统一（显式残留选择优先，整应用兜底）
+- [x] **UX 收尾**（9/11–9/12）— W1 重复文件组内并排大图对比 + 清理完成横幅（measuredBytes 优先）；W4 照片 A/B 保留互换（组内恰保留一张语义不变）；DuplicateFolderDescriber 真语义标注（原 topicLabel 为死代码）+ 会话累计；确认面板文案与实际 commit 范围对齐；消失路径过滤；缓存 countLimit
+
+### kWise 收尾债清理 ✅ (2026-09-26)
+- [x] **已知红测试修复** — 2 个生产 bug：① `StreakLogic.recordCleanup` 连日判断方向反了（streak 永远到不了 2，streak.3/7/30 成就全废）② `BackupManager.cleanupExpired` 按 bundleID 目录整体过期 → 40 天前的 v1 会连坐删掉昨天的 v2（改为按 `v<N>/` 版本独立计龄 + 回归守卫）；1 个测试基建 bug（`UninstallBackupStoreTests.setUp` 未建 root，`try?` 吞掉 fixture 写失败）
+- [x] **本地化补齐** — Localizable.xcstrings 224 keys × 3 语全齐（补 508 个 string unit，既有译文 0 改写）；新增 `LocalizationCompletenessTests` 守卫空译文回潮
+- [x] **全量测试基线** — xcodebuild test-runner 挂起问题已随重启消失，可正常跑全量
+
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
 - [ ] kUninstall 设计 — 应用卸载
-- [ ] kWise v2.0 后续 — CreateML 文本分类器（本地路径语料）· 月报通知深链 · 定时自动清理 · 存量 UI 本地化补齐（v2.0 新文案三语已完成，老界面仍硬编码中文）
+- [ ] kWise v2.0 后续 — CreateML 文本分类器（本地路径语料）· 月报通知深链 · 定时自动清理
 - [ ] kWise v2 — 3D 磁盘星系图（已被 2D 空间地图替代交付；Metal 重启需 Product 拍板）
+- [ ] kWise 发布决策 — TestFlight / App Store 元数据 / 提审节奏（M1–M6 上架门槛功能已齐，待 Product 拍板）
 
 > ⚠️ **现阶段不要写实现代码**。所有设计待汇总到 spec 文档并通过后，再通过 writing-plans 技能拆解为可执行任务。
 
 ---
 
-最后更新：2026-09-07（kWise v2.0 竞品超越冲刺 8 phases / 9 commits；待重启后全量 test）
+最后更新：2026-09-26（工具箱三轮 + 卸载 AI + 收尾债：红测试修复 / 本地化补齐 / 全量测试基线）
