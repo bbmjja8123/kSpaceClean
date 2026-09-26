@@ -162,7 +162,23 @@ final class FileShredderTests: XCTestCase {
         XCTAssertFalse(FileShredder.guardrailsPass(for: URL(fileURLWithPath: "/System/Library/test")))
         XCTAssertFalse(FileShredder.guardrailsPass(for: URL(fileURLWithPath: "/Library/Fonts/x.ttf")))
         XCTAssertFalse(FileShredder.guardrailsPass(for: URL(fileURLWithPath: "/usr/bin/yes")))
+    }
 
+    /// Regression: `/etc` and `/tmp` are symlinks into `/private`, so a
+    /// prefix list naming only the aliases let the real spellings straight
+    /// through the guardrail. Paths must be judged after symlink resolution.
+    func testGuardrailsRejectPrivateSpellingsOfSystemPaths() {
+        for path in ["/private/etc/hosts", "/private/tmp/x", "/private/var/db/y",
+                     "/etc/hosts", "/tmp/x", "/var/db/y"] {
+            XCTAssertFalse(FileShredder.guardrailsPass(for: URL(fileURLWithPath: path)),
+                           "\(path) is a system location and must be refused")
+        }
+    }
+
+    /// The per-user temp area is ordinary user scratch, not system state —
+    /// shredding a file the user dragged in is legitimate, and tests place
+    /// fixtures there.
+    func testGuardrailsAllowUserTempArea() {
         let userFile = FileManager.default.temporaryDirectory
             .appendingPathComponent("ok-\(UUID().uuidString).txt")
         XCTAssertTrue(FileShredder.guardrailsPass(for: userFile),

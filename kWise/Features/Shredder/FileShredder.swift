@@ -159,6 +159,13 @@ public actor FileShredder {
     /// of this contract — it is checked separately before destructive work,
     /// so a path is judged by *where* it points, not by whether it is there
     /// yet.
+    ///
+    /// A path is judged under **both** its raw and symlink-resolved spellings
+    /// and must survive both: `/etc` and `/private/etc` are the same
+    /// directory, so matching only one spelling lets the other walk straight
+    /// past the guardrail. `resolvingSymlinksInPath()` does not reliably
+    /// expand `/var` on every macOS version, so both forms are tested rather
+    /// than trusting the resolved one.
     nonisolated static func guardrailsPass(for url: URL) -> Bool {
         var isDir: ObjCBool = false
         if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir),
@@ -166,10 +173,28 @@ public actor FileShredder {
             return false
         }
 
-        let path = url.standardizedFileURL.path
-        let forbidden = ["/System", "/Library", "/usr", "/bin", "/sbin", "/etc", "/private/var"]
+        return isAllowed(shredPath: url.standardizedFileURL.path)
+            && isAllowed(shredPath: url.resolvingSymlinksInPath().standardizedFileURL.path)
+    }
+
+    /// One spelling of a candidate path. `true` = this spelling is safe.
+    private nonisolated static func isAllowed(shredPath path: String) -> Bool {
+        // The per-user temp area is ordinary user scratch — kWise legitimately
+        // shreds files dragged out of a workflow, and both spellings of it
+        // (`/var/folders/…`, `/private/var/folders/…`) must stay open. Every
+        // other `/var` entry is system state.
+        let userTempPrefixes = ["/var/folders", "/private/var/folders"]
+        for prefix in userTempPrefixes where path == prefix || path.hasPrefix(prefix + "/") {
+            return true
+        }
+
+        let forbidden = [
+            "/System", "/Library", "/usr", "/bin", "/sbin",
+            "/etc", "/private/etc",
+            "/tmp", "/private/tmp",
+            "/var", "/private/var",
+        ]
         for prefix in forbidden where path == prefix || path.hasPrefix(prefix + "/") {
-            // /private/var covers /tmp; user files never live there.
             return false
         }
         return true
