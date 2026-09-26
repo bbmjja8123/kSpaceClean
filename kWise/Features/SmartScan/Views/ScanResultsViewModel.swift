@@ -348,8 +348,10 @@ final class ScanResultsViewModel: ObservableObject {
     }
 
     /// Recursive helper for ``invertSelection()`` — flips `state` only on
-    /// leaf rows (rows with no children); internal rows get a later
-    /// `refreshState()` pass.
+    /// leaf rows (rows with no children). Internal rows re-aggregate on the
+    /// way back up, so every level reflects the flipped leaves (a single
+    /// top-level `refreshState()` would leave sub-category and action rows
+    /// holding stale states).
     private func invertLeaves(in node: any ScanTreeNode) {
         if node.children.isEmpty {
             let flipped: CheckState = (node.state == .on) ? .off : .on
@@ -358,6 +360,7 @@ final class ScanResultsViewModel: ObservableObject {
             for child in node.children {
                 invertLeaves(in: child)
             }
+            node.refreshState()
         }
     }
 
@@ -387,11 +390,24 @@ final class ScanResultsViewModel: ObservableObject {
     /// 默认选中策略 (v2.3)：推荐项自动勾选，谨慎/危险项保持未勾选。
     /// 委托给各级节点的级联实现（ScanCategory/ScanSubCategory/ScanAction
     /// 的 `setState(.checked)` 内部执行 `riskLevel.defaultChecked` 判定）。
+    ///
+    /// 之后必须自底向上重聚合：`setState` 只向下传播、不回写自身状态
+    /// （见 `ScanTreeNode` 契约），所以中间层还停在强制值，顶层会读到陈旧
+    /// 子状态。整树重聚合后父行才显示真实的 `.mixed`，`selectedSize` 也才
+    /// 会累加到每一层。
     static func applyDefaultSelection(to categories: [ScanCategory]) {
         for category in categories {
             category.setState(.checked)
-            category.refreshState()
+            refreshSubtree(category)
         }
+    }
+
+    /// Bottom-up re-aggregation of `node` and its whole subtree: children
+    /// first, then `node.refreshState()`. Leaves their own state alone and
+    /// recomputes internal rows' tri-state + `selectedSize`.
+    static func refreshSubtree(_ node: any ScanTreeNode) {
+        for child in node.children { refreshSubtree(child) }
+        node.refreshState()
     }
 
     /// In-memory bottom-up walker — returns the sum of `selectedSize` over
@@ -407,14 +423,22 @@ final class ScanResultsViewModel: ObservableObject {
     /// Recursive helper that only descends through children when the
     /// parent is in a non-off state, so we avoid walking unchecked
     /// subtrees.
+    ///
+    /// A checked *internal* row must still descend: `setState` deliberately
+    /// leaves risky descendants OFF (the C4 rule), so summing only
+    /// `node.selectedSize` would count rows that were never actually
+    /// selected — and for bulk passes that never re-aggregated the tree it
+    /// reported 0 KB outright. Summing the checked leaves is exact and stays
+    /// in-memory, so the I1 "zero syscalls per tap" guarantee holds.
     private static func walk(_ node: any ScanTreeNode, size: inout Int64, count: inout Int) {
         switch node.state {
         case .checked:
-            size += node.selectedSize
-            // Selected URL count is 1 for leaves (a `ScanResult` row), more
-            // for sub-trees; we approximate via `node.children.count + 1` so
-            // the bottom-bar count reads "0 项" on a fully-unchecked tree.
-            count += max(1, node.children.count + 1)
+            if node.children.isEmpty {
+                size += node.selectedSize
+                count += 1
+            } else {
+                for child in node.children { walk(child, size: &size, count: &count) }
+            }
         case .mixed:
             for child in node.children { walk(child, size: &size, count: &count) }
         case .unchecked:

@@ -81,17 +81,13 @@ public final class ScanCategory: ScanTreeNode, @unchecked Sendable {
         }
     }
 
-    /// Aggregate child states into the parent row. Categories with no
-    /// children keep their last assigned state (the row stays in whatever
-    /// the most recent user interaction left it).
+    /// Aggregate child states and selected bytes into the parent row.
+    /// Categories with no children keep their last assigned state (the row
+    /// stays in whatever the most recent user interaction left it).
     public func refreshState() {
-        let states = subItems.map(\.state)
-        let total = states.count
-        guard total > 0 else { return }
-        let onCount = states.filter { $0 == .on }.count
-        if onCount == total { state = .on }
-        else if onCount == 0 { state = .off }
-        else { state = .mixed }
+        guard !subItems.isEmpty else { return }
+        selectedSize = subItems.reduce(0) { $0 + $1.selectedSize }
+        state = CheckState.aggregate(subItems.map(\.state))
     }
 
     /// Flatten every selected URL from the entire subtree.

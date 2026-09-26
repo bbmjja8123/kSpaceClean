@@ -418,13 +418,18 @@ public final class AppUninstallViewModel: ObservableObject {
             }
             do {
                 let outcome = try await engine.cleanup(targets: engineTargets)
-                if outcome.failed.isEmpty {
+                if outcome.quotaExhausted {
+                    onQuotaExhausted?()
+                    // A quota refusal is not an uninstall. The engine files
+                    // blocked targets under `skippedForQuota` (nothing was
+                    // deleted and nothing errored), so `failed.isEmpty` alone
+                    // would report the app as removed while it is still on
+                    // disk — and the paywall would never open.
+                    failed.append(entry.appName)
+                } else if outcome.failed.isEmpty {
                     succeeded.append(entry.appName)
                 } else {
                     failed.append(entry.appName)
-                }
-                if outcome.quotaExhausted {
-                    onQuotaExhausted?()
                 }
             } catch {
                 failed.append(entry.appName)

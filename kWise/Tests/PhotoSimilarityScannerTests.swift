@@ -60,7 +60,15 @@ final class PhotoSimilarityScannerTests: XCTestCase {
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: dir) }
 
-        // 3 visually identical PNGs (solid color) + 1 different size.
+        // 3 visually identical PNGs (solid color).
+        //
+        // The fixture must opt out of `minFileSize` (default 128 KB — see
+        // `PhotoSimilarityConfig`): a solid 64×64 PNG is a few hundred bytes
+        // and would be filtered out during enumeration, so the scan saw zero
+        // candidates and returned no groups. Padding the images with noise to
+        // clear the threshold would change their perceptual hashes, so the
+        // threshold is lowered here instead — this test exercises grouping,
+        // not the size cutoff.
         let image = NSImage(size: NSSize(width: 64, height: 64))
         image.lockFocus()
         NSColor.systemBlue.setFill()
@@ -77,7 +85,8 @@ final class PhotoSimilarityScannerTests: XCTestCase {
 
         let scanner = PhotoSimilarityScanner()
         let controller = DetectionCore.ScanController()
-        let config = PhotoSimilarityConfig(directories: [dir], preset: .strict)
+        var config = PhotoSimilarityConfig(directories: [dir], preset: .strict)
+        config.minFileSize = 1
         let groups = await scanner.scan(config: config, controller: controller) { _, _ in }
 
         XCTAssertEqual(groups.count, 1, "3 identical images must form one group")

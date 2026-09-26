@@ -135,18 +135,25 @@ final class ScanMasterDetailViewModelTests: XCTestCase {
         }
 
         // Full recompute must agree with the incremental result.
+        //
+        // The reference walk mirrors the summary contract: a checked
+        // *internal* row descends (C4 leaves risky descendants unchecked, and
+        // bulk passes may never have re-aggregated `selectedSize`), so the
+        // exact total is the sum of checked leaves.
         var expectedSize: Int64 = 0
         var expectedCount = 0
         for category in vm.categories {
-            let selected = vm.selectedURLs().count // sanity non-zero path
-            _ = selected
             var size: Int64 = 0
             var count = 0
             func walk(_ node: any ScanTreeNode) {
                 switch node.state {
                 case .checked:
-                    size += node.selectedSize
-                    count += max(1, node.children.count + 1)
+                    if node.children.isEmpty {
+                        size += node.selectedSize
+                        count += 1
+                    } else {
+                        for child in node.children { walk(child) }
+                    }
                 case .mixed:
                     for child in node.children { walk(child) }
                 case .unchecked:
@@ -174,6 +181,21 @@ final class ScanMasterDetailViewModelTests: XCTestCase {
         vm.refreshAncestors(of: leaf.id)
         XCTAssertEqual(vm.categories[0].state, .mixed, "One checked leaf → category shows mixed")
         XCTAssertEqual(vm.categories[0].subItems[0].state, .mixed)
+    }
+
+    /// Regression: `selectAll()` only cascades `setState` and never
+    /// re-aggregated `selectedSize`, and the summary walker used to add a
+    /// checked node's own `selectedSize` without descending — so 全选 left
+    /// the summary bar reading 0 KB while the tree showed everything checked.
+    @MainActor
+    func testSelectAllReportsNonZeroSummary() {
+        let vm = makeViewModel()
+        vm.selectAll()
+
+        XCTAssertGreaterThan(vm.totalSelectedSize, 0,
+                             "全选后汇总栏不可能显示 0 KB")
+        XCTAssertEqual(vm.totalSelectedCount, 40 * 30,
+                       "Summary count must cover every leaf")
     }
 
     // MARK: - Cleanup bridge

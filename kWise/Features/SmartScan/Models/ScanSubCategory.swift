@@ -122,17 +122,12 @@ public final class ScanSubCategory: ScanTreeNode, @unchecked Sendable {
         }
     }
 
-    /// Aggregate child states into the parent row.
+    /// Aggregate child states and selected bytes into the parent row.
     public func refreshState() {
-        let states = showAction
-            ? actions.map(\.state)
-            : directResults.map(\.state)
-        let total = states.count
-        guard total > 0 else { return }
-        let onCount = states.filter { $0 == .on }.count
-        if onCount == total { state = .on }
-        else if onCount == 0 { state = .off }
-        else { state = .mixed }
+        let children: [any ScanTreeNode] = self.children
+        guard !children.isEmpty else { return }
+        selectedSize = children.reduce(0) { $0 + $1.selectedSize }
+        state = CheckState.aggregate(children.map(\.state))
     }
 
     /// Flatten every selected URL from the appropriate child array.

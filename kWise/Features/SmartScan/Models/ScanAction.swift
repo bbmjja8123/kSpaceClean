@@ -112,14 +112,15 @@ public final class ScanAction: ScanTreeNode, @unchecked Sendable {
         }
     }
 
-    /// Aggregate result states into the parent row.
+    /// Aggregate result states and selected bytes into the parent row.
+    ///
+    /// `selectedSize` must roll up here too: the summary walker adds a
+    /// checked node's `selectedSize` and does not descend, so an unaggregated
+    /// action row would report 0 bytes for a fully selected subtree.
     public func refreshState() {
-        let total = results.count
-        guard total > 0 else { return }
-        let onCount = results.filter { $0.state == .on }.count
-        if onCount == total { state = .on }
-        else if onCount == 0 { state = .off }
-        else { state = .mixed }
+        guard !results.isEmpty else { return }
+        selectedSize = results.reduce(0) { $0 + $1.selectedSize }
+        state = CheckState.aggregate(results.map(\.state))
     }
 
     /// Flatten every selected URL from each result, filtering to those

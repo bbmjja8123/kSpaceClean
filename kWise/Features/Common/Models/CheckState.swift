@@ -17,4 +17,19 @@ public enum CheckState: Sendable, Equatable {
         if selectedCount == total { return .checked }
         return .mixed
     }
+
+    /// Rolls child states up into a parent row's tri-state.
+    ///
+    /// A single `.mixed` child forces the parent to `.mixed` — the pre-fix
+    /// per-node logic only counted `.on` children, so one checked leaf under
+    /// an otherwise unchecked subtree read as "nothing selected" and the
+    /// ancestor chain never showed the tri-state dash. Shared by
+    /// `ScanCategory` / `ScanSubCategory` / `ScanAction` so the three
+    /// `refreshState()` implementations cannot drift apart again.
+    public static func aggregate(_ states: [CheckState]) -> CheckState {
+        guard !states.isEmpty else { return .unchecked }
+        if states.contains(.mixed) { return .mixed }
+        let onCount = states.filter { $0 == .on }.count
+        return from(selected: true, total: states.count, selectedCount: onCount)
+    }
 }

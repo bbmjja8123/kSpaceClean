@@ -21,13 +21,83 @@ final class MaintenanceGuidanceTests: XCTestCase {
             .map { dir + "/" + $0 }
     }
 
+    /// Strips Swift comments so the audit reads *code* only.
+    ///
+    /// The module header legitimately documents the pre-sandbox
+    /// implementation ("shelled out via `Process` to `/usr/bin/mdutil`…"),
+    /// and a raw `contains("/usr/bin/")` over the whole file flags that
+    /// history instead of a real spawn. Dropping `//` line comments and
+    /// `/* … */` blocks (nested-aware, string-literal-aware enough for this
+    /// module's sources) keeps the audit pointed at executable text.
+    private func codeOnly(_ source: String) -> String {
+        var out = ""
+        var index = source.startIndex
+        var inLineComment = false
+        var inBlockComment = false
+        var blockDepth = 0
+        var inString = false
+
+        while index < source.endIndex {
+            let ch = source[index]
+            let next = source.index(after: index)
+
+            if inLineComment {
+                if ch == "\n" { inLineComment = false; out.append(ch) }
+                index = next
+                continue
+            }
+            if inBlockComment {
+                if ch == "/", next < source.endIndex, source[next] == "*" {
+                    blockDepth += 1
+                    index = source.index(after: next)
+                    continue
+                }
+                if ch == "*", next < source.endIndex, source[next] == "/" {
+                    blockDepth -= 1
+                    inBlockComment = blockDepth > 0
+                    index = source.index(after: next)
+                    continue
+                }
+                if ch == "\n" { out.append(ch) }
+                index = next
+                continue
+            }
+            if inString {
+                out.append(ch)
+                if ch == "\\" { // keep escaped quotes from closing the literal
+                    if next < source.endIndex { out.append(source[next]) }
+                    index = source.index(after: next)
+                    continue
+                }
+                if ch == "\"" { inString = false }
+                index = next
+                continue
+            }
+            if ch == "/", next < source.endIndex, source[next] == "/" {
+                inLineComment = true
+                index = source.index(after: next)
+                continue
+            }
+            if ch == "/", next < source.endIndex, source[next] == "*" {
+                inBlockComment = true
+                blockDepth = 1
+                index = source.index(after: next)
+                continue
+            }
+            if ch == "\"" { inString = true }
+            out.append(ch)
+            index = next
+        }
+        return out
+    }
+
     /// No `Process` invocations may remain in the maintenance module —
     /// they cannot work sandboxed, so any residual spawn is a lie (C-5).
     func test_noProcessUsageInMaintenanceModule() throws {
         let files = maintenanceSourceFiles
         XCTAssertFalse(files.isEmpty, "Maintenance source directory must be readable from the test bundle")
         for file in files {
-            let source = try String(contentsOfFile: file, encoding: .utf8)
+            let source = codeOnly(try String(contentsOfFile: file, encoding: .utf8))
             XCTAssertFalse(
                 source.contains("Process()"),
                 "\(file) must not spawn child processes — sandbox forbids it"

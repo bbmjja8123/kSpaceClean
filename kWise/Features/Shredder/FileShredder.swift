@@ -98,33 +98,38 @@ public actor FileShredder {
                     // Write history BEFORE the destructive work.
                     await self.recordHistory(for: url)
 
+                    // Tracks wherever the file ends up (renames change the
+                    // path) so the trash step targets an existing item.
+                    var currentURL = url
+
                     do {
                         for pass in 1...plan.passes {
                             continuation.yield(ShredProgress(
-                                currentURL: url, completedFiles: completed,
+                                currentURL: currentURL, completedFiles: completed,
                                 totalFiles: urls.count, phase: .overwriting(pass: pass)))
-                            try await Self.overwrite(url: url)
+                            try await Self.overwrite(url: currentURL)
                         }
 
                         if plan.verify {
                             continuation.yield(ShredProgress(
-                                currentURL: url, completedFiles: completed,
+                                currentURL: currentURL, completedFiles: completed,
                                 totalFiles: urls.count, phase: .verifying))
-                            try await Self.verifyAllZero(url: url)
+                            try await Self.verifyAllZero(url: currentURL)
                         }
 
                         if plan.randomizeRenames > 0 {
                             continuation.yield(ShredProgress(
-                                currentURL: url, completedFiles: completed,
+                                currentURL: currentURL, completedFiles: completed,
                                 totalFiles: urls.count, phase: .renaming))
-                            try Self.randomizeRenames(of: url, count: plan.randomizeRenames)
+                            currentURL = try Self.randomizeRenames(of: currentURL,
+                                                                   count: plan.randomizeRenames)
                         }
 
                         continuation.yield(ShredProgress(
-                            currentURL: url, completedFiles: completed,
+                            currentURL: currentURL, completedFiles: completed,
                             totalFiles: urls.count, phase: .trashing))
                         var resulting: NSURL?
-                        try FileManager.default.trashItem(at: url, resultingItemURL: &resulting)
+                        try FileManager.default.trashItem(at: currentURL, resultingItemURL: &resulting)
                     } catch {
                         failures.append(url.lastPathComponent)
                     }
@@ -149,11 +154,17 @@ public actor FileShredder {
     /// Hard preconditions: regular file, inside a scope kWise may read,
     /// never a system location. Anything suspicious is refused — content
     /// destruction must never be a guess.
+    /// Static path-safety only: a directory is never a shred target, and a
+    /// system location is never allowed. Existence is deliberately NOT part
+    /// of this contract — it is checked separately before destructive work,
+    /// so a path is judged by *where* it points, not by whether it is there
+    /// yet.
     nonisolated static func guardrailsPass(for url: URL) -> Bool {
         var isDir: ObjCBool = false
-        guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir),
-              !isDir.boolValue
-        else { return false }
+        if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir),
+           isDir.boolValue {
+            return false
+        }
 
         let path = url.standardizedFileURL.path
         let forbidden = ["/System", "/Library", "/usr", "/bin", "/sbin", "/etc", "/private/var"]
@@ -196,7 +207,13 @@ public actor FileShredder {
         }
     }
 
-    private static func randomizeRenames(of url: URL, count: Int) throws {
+    /// Renames the file `count` times so its on-disk name no longer hints at
+    /// the content. Returns the **final** URL — the caller must dispose of
+    /// that path, not the pre-rename one. (Discarding it used to make
+    /// `trashItem` hit ENOENT every time: the shred reported failure and the
+    /// overwritten file was left behind under its random name.)
+    @discardableResult
+    private static func randomizeRenames(of url: URL, count: Int) throws -> URL {
         var current = url
         for _ in 0..<count {
             let newName = current.deletingLastPathComponent()
@@ -204,6 +221,7 @@ public actor FileShredder {
             try FileManager.default.moveItem(at: current, to: newName)
             current = newName
         }
+        return current
     }
 
     // MARK: - History

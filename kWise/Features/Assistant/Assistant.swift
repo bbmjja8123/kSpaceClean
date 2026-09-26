@@ -49,7 +49,12 @@ public struct AssistantIntentMatcher: Sendable {
         (.duplicates, ["重复", "duplicate", "dupe"]),
         (.appLeftovers, ["残留", "卸载", "leftover", "uninstall"]),
         (.startupItems, ["启动项", "登录项", "startup", "login item"]),
-        (.diskForecast, ["什么时候满", "将满", "预测", "磁盘趋势", "forecast", "disk full"]),
+        // Time-phrased fill-up questions ("什么时候会满" / "何时满") are the
+        // forecast intent. These stay compound on purpose: a bare "满" or
+        // "占满" would steal `.freeUpSpace`'s "磁盘满了" / "磁盘占满了", which
+        // is a cleanup request, not a forecast question.
+        (.diskForecast, ["什么时候满", "什么时候会满", "何时满", "何时会满", "多久满",
+                         "将满", "预测", "磁盘趋势", "forecast", "disk full"]),
         (.shredHelp, ["粉碎", "彻底删除", "shred", "secure delete"]),
         (.cleanupNow, ["清理", "打扫", "clean up", "clean"]),
         (.similarPhotos, ["相似照片", "重复照片", "截图", "similar photo", "screenshot"]),
