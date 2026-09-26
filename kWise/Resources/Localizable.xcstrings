@@ -1,1790 +1,5173 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "· %@" : {
-
-    },
-    "%@" : {
-
-    },
-    "%@ · %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ · %2$@"
+  "sourceLanguage": "en",
+  "strings": {
+    "%@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
           }
         }
       }
     },
-    "%@ (%@) - PID %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ (%2$@) - PID %3$@"
+    "%@ (%@) - PID %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ (%2$@) - PID %3$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@（%@）- PID %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (%@) - PID %@"
           }
         }
       }
     },
-    "%@ files" : {
-
-    },
-    "%@ 个文件" : {
-
-    },
-    "%@ 个有残留文件" : {
-
-    },
-    "%@ 字节" : {
-
-    },
-    "%@ 字节 · %@ 项" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ 字节 · %2$@ 项"
+    "%@ files": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ files"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 個のファイル"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 个文件"
           }
         }
       }
     },
-    "%@ 张 · 可释放约 %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ 张 · 可释放约 %2$@"
+    "%@ · %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %@"
           }
         }
       }
     },
-    "%@ 项" : {
-
-    },
-    "%@ 项 · %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ 项 · %2$@"
+    "%@ 个文件": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ files"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 個のファイル"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 个文件"
           }
         }
       }
     },
-    "⚠️ 包含 Cookie，清理后将退出所有网站的登录状态" : {
-
-    },
-    "1 GB" : {
-
-    },
-    "7 天" : {
-
-    },
-    "7 天免费试用 · 之后 ¥98/年" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7-Day Free Trial · ¥98/year"
+    "%@ 个有残留文件": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ with leftover files"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7日間無料トライアル · その後 ¥2,400/年"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 件に残留ファイル"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7 天免费试用 · 之后 ¥98/年"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 个有残留文件"
           }
         }
       }
     },
-    "30 天" : {
-
-    },
-    "30+ days" : {
-
-    },
-    "50 MB" : {
-
-    },
-    "90 天" : {
-
-    },
-    "90+ days" : {
-
-    },
-    "100 MB" : {
-
-    },
-    "100% 本地处理，零数据上报" : {
-
-    },
-    "180+ days" : {
-
-    },
-    "500 MB" : {
-
-    },
-    "AI 智能分类" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI Classification"
+    "%@ 字节": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bytes"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI分類"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ バイト"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 智能分类"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 字节"
           }
         }
       }
     },
-    "Any" : {
-
-    },
-    "App Store" : {
-
-    },
-    "Finder 可将 30 天内移入废纸篓的文件放回原位置" : {
-
-    },
-    "Homebrew" : {
-
-    },
-    "kWise 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按应用归组展示。" : {
-
-    },
-    "kWise 只列出它能实际处理的项目；其余项会直接带你去系统设置。" : {
-
-    },
-    "kWise 可以扫描家目录下的缓存、日志与应用残留。" : {
-
-    },
-    "kWise 在沙箱内运行，需要你一次性授权主目录才能扫描缓存、日志与应用残留。文件不会被上传，扫描全部在本机完成。" : {
-
-    },
-    "Mac 健康月报" : {
-
-    },
-    "menu.lastCleanup %@" : {
-      "comment" : "Menu bar last-cleanup row; %@ = formatted freed bytes",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last cleanup: %@"
+    "%@ 字节 · %@ 项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ 字节 · %2$@ 项"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "前回のクリーンアップ: %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ バイト · %@ 件"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "最近清理: %@"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 字节 · %@ 项"
           }
         }
       }
     },
-    "nav.appUninstall" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Uninstall"
+    "%@ 张 · 可释放约 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ 张 · 可释放约 %2$@"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アプリ削除"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 枚 · 約 %@ 解放可能"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "应用卸载"
-          }
-        }
-      }
-    },
-    "nav.assistant" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cleanup Assistant"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クリーンアップアシスタント"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清理助手"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 张 · 可释放约 %@"
           }
         }
       }
     },
-    "nav.cleanup" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clean"
+    "%@ 项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ items"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クリーンアップ"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 件"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清理"
-          }
-        }
-      }
-    },
-    "nav.diskHealth" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disk Health"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ディスクの健康状態"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "磁盘健康"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 项"
           }
         }
       }
     },
-    "nav.duplicates" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duplicates"
+    "%@ 项 · %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ 项 · %2$@"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重複ファイル"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 件 · %@"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重复文件"
-          }
-        }
-      }
-    },
-    "nav.history" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "History"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "履歴"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "历史"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 项 · %@"
           }
         }
       }
     },
-    "nav.largeOld" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Large Files"
+    "1 GB": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 GB"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "大きなファイル"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 GB"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "大文件"
-          }
-        }
-      }
-    },
-    "nav.maintenance" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Maintenance"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "メンテナンス"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "系统维护"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 GB"
           }
         }
       }
     },
-    "nav.monthlyReport" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Health Report"
+    "100 MB": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100 MB"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "健康レポート"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100 MB"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "健康月报"
-          }
-        }
-      }
-    },
-    "nav.photoClean" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photo Cleanup"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "写真クリーンアップ"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "照片清理"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100 MB"
           }
         }
       }
     },
-    "nav.privacy" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy"
+    "100% 本地处理，零数据上报": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Processed 100% on-device. Zero data collection."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プライバシー"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて本機で処理。データ収集は一切ありません。"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "隐私"
-          }
-        }
-      }
-    },
-    "nav.scan" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スキャン"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "扫描"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100% 本地处理，零数据上报"
           }
         }
       }
     },
-    "nav.settings" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+    "180+ days": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "180+ days"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "設定"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "180日以上"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "设置"
-          }
-        }
-      }
-    },
-    "nav.shredder" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "File Shredder"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ファイルシュレッダー"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "文件粉碎"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "180+ 天"
           }
         }
       }
     },
-    "nav.smartCare" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Care"
+    "30 天": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 days"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スマートケア"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30日"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "智能清理"
-          }
-        }
-      }
-    },
-    "nav.spaceMap" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Space Map"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スペースマップ"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "空间地图"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 天"
           }
         }
       }
     },
-    "nav.startupItems" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Startup Items"
+    "30+ days": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30+ days"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "起動項目"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30日以上"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "启动项"
-          }
-        }
-      }
-    },
-    "nav.tools" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toolbox"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ツールボックス"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "工具箱"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30+ 天"
           }
         }
       }
     },
-    "of" : {
-
-    },
-    "S.M.A.R.T. %@ · %@" : {
-      "comment" : "M4 card summary format",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "S.M.A.R.T. %@ · %@"
+    "50 MB": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "50 MB"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "S.M.A.R.T. %@ · %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "50 MB"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "S.M.A.R.T. %@ · %@"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "50 MB"
           }
         }
       }
     },
-    "S.M.A.R.T. 状态" : {
-
-    },
-    "Scanning... %@ files" : {
-
-    },
-    "Setapp" : {
-
-    },
-    "Smart Care" : {
-
-    },
-    "一键扫描 · 智能清理 · 焕然如新" : {
-      "comment" : "M1 Smart Care hero subtitle",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan · Pick · Clean in one tap"
+    "500 MB": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "500 MB"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スキャン · 選定 · 清理をワンタップで"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "500 MB"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "一键扫描 · 智能清理 · 焕然如新"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "500 MB"
           }
         }
       }
     },
-    "一键清理" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clean Up"
+    "7 天": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 days"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ワンクリック清掃"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7日"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "一键清理"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 天"
           }
         }
       }
     },
-    "不限" : {
-
-    },
-    "严格（仅几乎相同）" : {
-
-    },
-    "也可以先运行一次智能扫描，地图将展示全部分类。" : {
-
-    },
-    "仅容器访问" : {
-
-    },
-    "以下启动配置存在异常，可能已失效" : {
-
-    },
-    "保留最新" : {
-
-    },
-    "保留最高分辨率" : {
-
-    },
-    "修复常见系统问题。受沙箱限制的任务提供可直接粘贴到终端的命令。" : {
-
-    },
-    "免费版每 30 天可清理 1 GB，订阅后不限量。" : {
-
-    },
-    "全选" : {
-      "comment" : "M1 全选 button",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select All"
+    "7 天免费试用 · 之后 ¥98/年": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7-Day Free Trial · ¥98/year"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "すべて選択"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7日間無料トライアル · その後 ¥2,400/年"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "全选"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 天免费试用 · 之后 ¥98/年"
           }
         }
       }
     },
-    "全部来源" : {
-
-    },
-    "全部还原" : {
-
-    },
-    "共 %@" : {
-
-    },
-    "共 %@ 个应用" : {
-
-    },
-    "共 %@ 项 · %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "共 %1$@ 项 · %2$@"
+    "90 天": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90 days"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90日"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90 天"
           }
         }
       }
     },
-    "最小文件大小：%@" : {
-
-    },
-    "最近使用 %@" : {
-
-    },
-    "最近使用：未知" : {
-
-    },
-    "最近粉碎记录" : {
-
-    },
-    "冲突路径 %@ 个 · 共 %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "冲突路径 %1$@ 个 · 共 %2$@"
+    "90+ days": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90+ days"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90日以上"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90+ 天"
           }
         }
       }
     },
-    "准备就绪" : {
-
-    },
-    "准备扫描" : {
-
-    },
-    "包含 %@ 项注意 / %@ 项危险，请确认。" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "包含 %1$@ 项注意 / %2$@ 项危险，请确认。"
+    "AI 智能分类": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Classification"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI分類"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI 智能分类"
           }
         }
       }
     },
-    "包含危险项或运行中应用的文件。请确认已保存工作。" : {
-
-    },
-    "包含注意项：清理后可能需要重新登录或重建缓存。" : {
-
-    },
-    "占用最多" : {
-
-    },
-    "危险操作" : {
-
-    },
-    "卷诊断" : {
-
-    },
-    "卸载 (%@)" : {
-
-    },
-    "历史" : {
-
-    },
-    "反选" : {
-      "comment" : "M1 反选 button",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invert"
+    "Any": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Any"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "反転"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定なし"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "反选"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不限"
           }
         }
       }
     },
-    "发现 %@ 项可清理" : {
-
-    },
-    "可回收 %@" : {
-
-    },
-    "可在「历史」时间线中随时还原本次清理" : {
-
-    },
-    "可释放 %@" : {
-
-    },
-    "启动项" : {
-
-    },
-    "实际释放量以废纸篓清倒为准" : {
-
-    },
-    "宽松（找出更多）" : {
-
-    },
-    "将 %@ 个应用及其残留文件移入废纸篓，可回收 %@ 空间。残留会先备份 30 天，可从备份还原。%@%@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "将 %1$@ 个应用及其残留文件移入废纸篓，可回收 %2$@ 空间。残留会先备份 30 天，可从备份还原。%3$@%4$@"
+    "App Store": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store"
           }
         }
       }
     },
-    "将清理选中的推荐项和可选项，文件将移入废纸篓。" : {
-
-    },
-    "尚无历史记录" : {
-
-    },
-    "尚无清理记录" : {
-
-    },
-    "工具箱" : {
-
-    },
-    "已授权主目录" : {
-
-    },
-    "已用 %@" : {
-
-    },
-    "已用 %@ / %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ used / %@"
+    "Finder 可将 30 天内移入废纸篓的文件放回原位置": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finder can put files trashed within 30 days back where they came from."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 使用中 / %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finder は 30 日以内にゴミ箱へ移動したファイルを元の場所に戻せます。"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已用 %@ / %@"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finder 可将 30 天内移入废纸篓的文件放回原位置"
           }
         }
       }
     },
-    "已订阅" : {
-
-    },
-    "已选 %@" : {
-
-    },
-    "已选 %@ 个" : {
-
-    },
-    "已选 %@ 张 · 可释放约 %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "已选 %1$@ 张 · 可释放约 %2$@"
+    "Homebrew": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Homebrew"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Homebrew"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Homebrew"
           }
         }
       }
     },
-    "已选 %@ 项" : {
-
-    },
-    "已释放 %@" : {
-
-    },
-    "应用卸载" : {
-
-    },
-    "应用已删除" : {
-
-    },
-    "应用本体" : {
-
-    },
-    "开始扫描" : {
-      "comment" : "Button: start scanning",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start Scan"
+    "Mac 健康月报": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac Health Report"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スキャン開始"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 健康レポート"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "开始扫描"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 健康月报"
           }
         }
       }
     },
-    "开始首次扫描" : {
-
-    },
-    "异常" : {
-      "comment" : "M4 danger grade",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Warning"
+    "S.M.A.R.T. %@ · %@": {
+      "comment": "M4 card summary format",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. %@ · %@"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "異常"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. %@ · %@"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "异常"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. %@ · %@"
           }
         }
       }
     },
-    "异常项" : {
-
-    },
-    "快速扫描" : {
-      "comment" : "Button: quick scan",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick Scan"
+    "S.M.A.R.T. 状态": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. Status"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クイックスキャン"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. ステータス"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "快速扫描"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S.M.A.R.T. 状态"
           }
         }
       }
     },
-    "您的扫描和清理记录将显示在这里" : {
-
-    },
-    "所有扫描、分类和 AI 分析均在您的设备本地完成。\n我们不会收集、上传或分享任何个人数据。" : {
-
-    },
-    "打开系统设置" : {
-      "comment" : "C-5 FDA prompt CTA",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open System Settings"
+    "Scanning... %@ files": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning... %@ files"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "システム設定を開く"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン中... %@ 個のファイル"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "打开系统设置"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描中... %@ 个文件"
           }
         }
       }
     },
-    "扫描 %@ 个照片目录，找出截图堆积与相似照片。比对完全在本机完成。" : {
-
-    },
-    "扫描中..." : {
-
-    },
-    "扫描中…" : {
-      "comment" : "M1 Smart Care scanning state",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scanning…"
+    "Setapp": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setapp"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スキャン中…"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setapp"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "扫描中…"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setapp"
           }
         }
       }
     },
-    "扫描历史" : {
-
-    },
-    "扫描并清理后，此处将显示清理历史，支持回滚" : {
-
-    },
-    "扫描照片缓存" : {
-
-    },
-    "扫描结果" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan Results"
+    "Smart Care": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Care"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スキャン結果"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スマートケア"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "扫描结果"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "智能清理"
           }
         }
       }
     },
-    "按当前趋势，预计约 %@ 天后磁盘占满。建议提前清理大文件。" : {
-
-    },
-    "授权主目录后，kWise 才能发现可清理的缓存与残留。" : {
-
-    },
-    "授权主目录后，kWise 才能发现并清理大部分垃圾文件。" : {
-
-    },
-    "授权主目录访问" : {
-
-    },
-    "授权后开始 Smart Care" : {
-
-    },
-    "排序:" : {
-
-    },
-    "数据全部在本机生成 · 磁盘采样来自使用 kWise 期间" : {
-
-    },
-    "文件粉碎" : {
-
-    },
-    "无限清理" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlimited Cleaning"
+    "kWise 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按应用归组展示。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise scans system caches, app caches, logs and leftover files, then groups the results by app."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "無制限清掃"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise はシステムキャッシュ、アプリキャッシュ、ログ、残留ファイルをスキャンし、アプリごとに結果をまとめて表示します。"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "无限清理"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按应用归组展示。"
           }
         }
       }
     },
-    "显示其余 %@ 项（按大小）" : {
-
-    },
-    "智能清理" : {
-      "comment" : "M1 Smart Care hero title",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Care"
+    "kWise 只列出它能实际处理的项目；其余项会直接带你去系统设置。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise only lists items it can actually handle; the rest take you straight to System Settings."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart Care"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise は実際に処理できる項目のみを表示します。それ以外はシステム設定へご案内します。"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "智能清理"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise 只列出它能实际处理的项目；其余项会直接带你去系统设置。"
           }
         }
       }
     },
-    "智能磁盘清理，让您的 Mac 存储空间回到\"足够\"" : {
-
-    },
-    "暂无明显的占满趋势（近期波动较大）。" : {
-
-    },
-    "更快,更干净" : {
-
-    },
-    "未能完成" : {
-
-    },
-    "未选择任何应用" : {
-
-    },
-    "本月清理的大文件 Top 5" : {
-
-    },
-    "本机智能匹配 · 不联网 · 不上传任何数据" : {
-
-    },
-    "本次已释放 %@" : {
-      "comment" : "Notification body; %@ = formatted freed bytes",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Freed %@"
+    "kWise 可以扫描家目录下的缓存、日志与应用残留。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise can scan your home folder for caches, logs and app leftovers."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@を解放しました"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise はホームフォルダ内のキャッシュ、ログ、アプリの残留ファイルをスキャンできます。"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "本次已释放 %@"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise 可以扫描家目录下的缓存、日志与应用残留。"
           }
         }
       }
     },
-    "权限概览" : {
-      "comment" : "M3 TCC overview title",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Permissions"
+    "kWise 在沙箱内运行，需要你一次性授权主目录才能扫描缓存、日志与应用残留。文件不会被上传，扫描全部在本机完成。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise runs in a sandbox and needs a one-time grant for your home folder to scan caches, logs and app leftovers. Nothing is uploaded — scanning happens entirely on this Mac."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アプリの権限"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise はサンドボックス内で動作するため、キャッシュ・ログ・アプリの残留ファイルをスキャンするにはホームフォルダへの一回限りの許可が必要です。ファイルがアップロードされることはなく、スキャンはすべて本機で完結します。"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "权限概览"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWise 在沙箱内运行，需要你一次性授权主目录才能扫描缓存、日志与应用残留。文件不会被上传，扫描全部在本机完成。"
           }
         }
       }
     },
-    "构成" : {
-
-    },
-    "查找相似照片" : {
-
-    },
-    "标准" : {
-
-    },
-    "样本不足 — 继续使用 kWise 几天后即可生成预测。" : {
-
-    },
-    "核心功能" : {
-
-    },
-    "桌面 Widget + Shortcuts" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desktop Widget + Shortcuts"
+    "menu.lastCleanup %@": {
+      "comment": "Menu bar last-cleanup row; %@ = formatted freed bytes",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last cleanup: %@"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "デスクトップWidget + Shortcuts"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "前回のクリーンアップ: %@"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "桌面 Widget + Shortcuts"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近清理: %@"
           }
         }
       }
     },
-    "检查 Photos.app 缓存、iPhoto 图库、iOS 备份与照片流临时文件" : {
-
-    },
-    "检测到 %@ 个运行中应用涉及您选择的清理项" : {
-
-    },
-    "正在扫描照片缓存..." : {
-
-    },
-    "正在扫描隐私数据..." : {
-
-    },
-    "正在选择可清理项…" : {
-      "comment" : "M1 Smart Care recommending state",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Picking what to clean…"
+    "nav.appUninstall": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Uninstall"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クリーン対象を選定中…"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ削除"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "正在选择可清理项…"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用卸载"
           }
         }
       }
     },
-    "正常" : {
-      "comment" : "M4 healthy grade (matches existing 健康 grade where used)",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Healthy"
+    "nav.assistant": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Assistant"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "正常"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップアシスタント"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "正常"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理助手"
           }
         }
       }
     },
-    "此操作将永久删除文件，不可通过废纸篓恢复！" : {
-
-    },
-    "残留" : {
-
-    },
-    "残留文件 (%@)" : {
-
-    },
-    "每周释放" : {
-
-    },
-    "每次清理归为一条记录，可整体回滚到清理前状态" : {
-
-    },
-    "注意" : {
-      "comment" : "M4 caution grade",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Attention"
+    "nav.cleanup": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "注意"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "注意"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理"
           }
         }
       }
     },
-    "浏览器历史、Cookie、缓存、系统日志" : {
-
-    },
-    "清 理" : {
-
-    },
-    "清理" : {
-
-    },
-    "清理中..." : {
-
-    },
-    "清理中…" : {
-      "comment" : "M1 Smart Care cleaning state",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cleaning…"
+    "nav.diskHealth": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk Health"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クリーン中…"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスクの健康状態"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清理中…"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘健康"
           }
         }
       }
     },
-    "清理最多" : {
-
-    },
-    "清理助手" : {
-
-    },
-    "清理历史" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cleanup History"
+    "nav.duplicates": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplicates"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清掃履歴"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重複ファイル"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清理历史"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重复文件"
           }
         }
       }
     },
-    "清理完成" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cleanup Complete"
+    "nav.history": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "クリーンアップ完了"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清理完成"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史"
           }
         }
       }
     },
-    "清理时间线" : {
-
-    },
-    "点击下钻 · ⌘点击选中待清理" : {
-
-    },
-    "照片缓存" : {
-
-    },
-    "环形图" : {
-
-    },
-    "现在开始您的第一次扫描，发现可清理的空间" : {
-
-    },
-    "用户安装" : {
-
-    },
-    "矩形图" : {
-
-    },
-    "确认清理" : {
-
-    },
-    "磁盘健康" : {
-      "comment" : "M4 Disk Health module title",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disk Health"
+    "nav.largeOld": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large Files"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ディスクヘルス"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大きなファイル"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "磁盘健康"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大文件"
           }
         }
       }
     },
-    "磁盘将满预测" : {
-
-    },
-    "磁盘空间" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disk Space"
+    "nav.maintenance": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintenance"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ディスク容量"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メンテナンス"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "磁盘空间"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统维护"
           }
         }
       }
     },
-    "第 %@ / %@ 步" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "第 %1$@ / %2$@ 步"
+    "nav.monthlyReport": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health Report"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "健康レポート"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "健康月报"
           }
         }
       }
     },
-    "管理登录时自动启动的代理与守护项" : {
-
-    },
-    "系统维护" : {
-
-    },
-    "覆写文件内容后移入废纸篓，确保敏感文件无法恢复" : {
-
-    },
-    "解锁全部 kWise 功能" : {
-
-    },
-    "设置" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+    "nav.photoClean": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo Cleanup"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "設定"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真クリーンアップ"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "设置"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片清理"
           }
         }
       }
     },
-    "试试这样问：" : {
-
-    },
-    "该项涉及应用配置或个人数据，清理前请确认对应应用未在运行。" : {
-
-    },
-    "该项目的启动配置将移入废纸篓，可随时在 kWise 中恢复。" : {
-
-    },
-    "运行中..." : {
-
-    },
-    "还原中…" : {
-
-    },
-    "还原清理项" : {
-
-    },
-    "这些副本是 APFS 克隆，删除几乎不会释放实际空间" : {
-
-    },
-    "这些操作不可逆。请输入 DELETE 以确认。" : {
-
-    },
-    "选择要可视化的文件夹" : {
-
-    },
-    "释放了 %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ freed"
+    "nav.privacy": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 解放済み"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシー"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "释放了 %@"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私"
           }
         }
       }
     },
-    "隐私" : {
-      "comment" : "M3 隐私 module title",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy"
+    "nav.scan": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プライバシー"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "隐私"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描"
           }
         }
       }
     },
-    "隐私概览" : {
-
-    },
-    "隐私清理" : {
-
-    },
-    "隐私至上" : {
-
-    },
-    "需手动处理" : {
-
-    },
-    "需要你的授权" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Authorization Required"
+    "nav.settings": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "認証が必要です"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "需要你的授权"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置"
           }
         }
       }
     },
-    "需要完整磁盘访问" : {
-      "comment" : "C-5 FDA prompt title",
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full Disk Access required"
+    "nav.shredder": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File Shredder"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フルディスクアクセスが必要"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルシュレッダー"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "需要完整磁盘访问"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件粉碎"
           }
         }
       }
     },
-    "项目已移入废纸篓，30 天内可在历史中还原。" : {
-
+    "nav.smartCare": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Care"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スマートケア"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "智能清理"
+          }
+        }
+      }
     },
-    "预计释放 %@（移入废纸篓，可随时还原）" : {
-
+    "nav.spaceMap": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space Map"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スペースマップ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空间地图"
+          }
+        }
+      }
     },
-    "内容 100% 相同的文件夹" : {
-
+    "nav.startupItems": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Startup Items"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起動項目"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启动项"
+          }
+        }
+      }
     },
-    "清理较旧文件夹" : {
-
+    "nav.tools": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toolbox"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ツールボックス"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "工具箱"
+          }
+        }
+      }
     },
-    "选择一组" : {
-
+    "of": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "of"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/"
+          }
+        }
+      }
     },
-    "左侧选择重复组查看详情。" : {
-
+    "· %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "· %@"
+          }
+        }
+      }
     },
-    "本次会话" : {
-
+    "⚠️ 包含 Cookie，清理后将退出所有网站的登录状态": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Contains cookies — cleaning will sign you out of every website."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Cookie が含まれます。クリーンアップするとすべてのサイトからログアウトします。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ 包含 Cookie，清理后将退出所有网站的登录状态"
+          }
+        }
+      }
     },
-    "这看起来是「%@」相关的备份副本——其中一个已经 %lld 天没有更新，像是同一项目的旧备份" : {
-
+    "一键扫描 · 智能清理 · 焕然如新": {
+      "comment": "M1 Smart Care hero subtitle",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan · Pick · Clean in one tap"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン · 選定 · 清理をワンタップで"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一键扫描 · 智能清理 · 焕然如新"
+          }
+        }
+      }
     },
-    "这看起来是「%@」相关的备份副本——像是同一项目的两次备份" : {
-
+    "一键清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean Up"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ワンクリック清掃"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一键清理"
+          }
+        }
+      }
     },
-    "两个文件夹内容完全相同——其中一个已经 %lld 天没有更新，像是同一项目的旧备份" : {
-
+    "不限": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Any"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定なし"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不限"
+          }
+        }
+      }
     },
-    "两个文件夹内容完全相同——像是同一项目的两次备份" : {
-
+    "两个文件夹内容完全相同——像是同一项目的两次备份": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These two folders are byte-identical — likely two backups of the same project."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 つのフォルダの内容は完全に同一です。同じプロジェクトの 2 回分のバックアップと思われます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "两个文件夹内容完全相同——像是同一项目的两次备份"
+          }
+        }
+      }
+    },
+    "两个文件夹内容完全相同——其中一个已经 %lld 天没有更新，像是同一项目的旧备份": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These two folders are byte-identical — one hasn't changed in %lld days, so it looks like an older backup of the same project."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 つのフォルダの内容は完全に同一です。一方は %lld 日間更新されておらず、同じプロジェクトの古いバックアップと思われます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "两个文件夹内容完全相同——其中一个已经 %lld 天没有更新，像是同一项目的旧备份"
+          }
+        }
+      }
+    },
+    "严格（仅几乎相同）": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strict (near-identical only)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "厳密（ほぼ同一のみ）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "严格（仅几乎相同）"
+          }
+        }
+      }
+    },
+    "也可以先运行一次智能扫描，地图将展示全部分类。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can also run a Smart Care scan first — the map will then show every category."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先にスマートケアのスキャンを実行すると、マップにすべてのカテゴリが表示されます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "也可以先运行一次智能扫描，地图将展示全部分类。"
+          }
+        }
+      }
+    },
+    "仅容器访问": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Container access only"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コンテナへのアクセスのみ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅容器访问"
+          }
+        }
+      }
+    },
+    "以下启动配置存在异常，可能已失效": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These startup entries look broken and may no longer work."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "次の起動設定は異常があり、無効になっている可能性があります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以下启动配置存在异常，可能已失效"
+          }
+        }
+      }
+    },
+    "保留最新": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep newest"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最新を保持"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留最新"
+          }
+        }
+      }
+    },
+    "保留最高分辨率": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep highest resolution"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最高解像度を保持"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留最高分辨率"
+          }
+        }
+      }
+    },
+    "修复常见系统问题。受沙箱限制的任务提供可直接粘贴到终端的命令。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fix common system problems. For tasks the sandbox blocks, kWise gives you a command to paste into Terminal."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "よくあるシステムの問題を修復します。サンドボックスで制限される作業には、ターミナルに貼り付けられるコマンドを提示します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修复常见系统问题。受沙箱限制的任务提供可直接粘贴到终端的命令。"
+          }
+        }
+      }
+    },
+    "免费版每 30 天可清理 1 GB，订阅后不限量。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The free version cleans up to 1 GB every 30 days. Subscribe for unlimited cleaning."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料版は 30 日ごとに 1 GB までクリーンアップできます。購読すると無制限になります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免费版每 30 天可清理 1 GB，订阅后不限量。"
+          }
+        }
+      }
+    },
+    "全选": {
+      "comment": "M1 全选 button",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて選択"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全选"
+          }
+        }
+      }
+    },
+    "全部来源": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All sources"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべての取得元"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部来源"
+          }
+        }
+      }
+    },
+    "全部还原": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore all"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて復元"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部还原"
+          }
+        }
+      }
+    },
+    "共 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ total"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "計 %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共 %@"
+          }
+        }
+      }
+    },
+    "共 %@ 个应用": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ apps total"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "計 %@ 個のアプリ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共 %@ 个应用"
+          }
+        }
+      }
+    },
+    "共 %@ 项 · %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "共 %1$@ 项 · %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "計 %@ 件 · %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共 %@ 项 · %@"
+          }
+        }
+      }
+    },
+    "内容 100% 相同的文件夹": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folders with 100% identical contents"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内容が 100% 同一のフォルダ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内容 100% 相同的文件夹"
+          }
+        }
+      }
+    },
+    "冲突路径 %@ 个 · 共 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "冲突路径 %1$@ 个 · 共 %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パス衝突 %@ 件 · 計 %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "冲突路径 %@ 个 · 共 %@"
+          }
+        }
+      }
+    },
+    "准备就绪": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "準備完了"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "准备就绪"
+          }
+        }
+      }
+    },
+    "准备扫描": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready to scan"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンの準備ができました"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "准备扫描"
+          }
+        }
+      }
+    },
+    "包含 %@ 项注意 / %@ 项危险，请确认。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "包含 %1$@ 项注意 / %2$@ 项危险，请确认。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注意 %@ 件 / 危険 %@ 件を含みます。ご確認ください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "包含 %@ 项注意 / %@ 项危险，请确认。"
+          }
+        }
+      }
+    },
+    "包含危险项或运行中应用的文件。请确认已保存工作。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contains dangerous items or files from running apps. Make sure your work is saved."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "危険な項目または実行中アプリのファイルが含まれます。作業内容を保存してから実行してください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "包含危险项或运行中应用的文件。请确认已保存工作。"
+          }
+        }
+      }
+    },
+    "包含注意项：清理后可能需要重新登录或重建缓存。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contains items that need attention: you may have to sign in again or rebuild caches afterwards."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注意が必要な項目が含まれます。クリーンアップ後に再ログインやキャッシュの再構築が必要になる場合があります。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "包含注意项：清理后可能需要重新登录或重建缓存。"
+          }
+        }
+      }
+    },
+    "占用最多": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Takes up the most"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最多の容量を使用"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "占用最多"
+          }
+        }
+      }
+    },
+    "危险操作": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dangerous action"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "危険な操作"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "危险操作"
+          }
+        }
+      }
+    },
+    "卷诊断": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volume Diagnostics"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ボリューム診断"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "卷诊断"
+          }
+        }
+      }
+    },
+    "卸载 (%@)": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uninstall (%@)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アンインストール（%@）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "卸载 (%@)"
+          }
+        }
+      }
+    },
+    "历史": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史"
+          }
+        }
+      }
+    },
+    "反选": {
+      "comment": "M1 反选 button",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invert"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "反転"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "反选"
+          }
+        }
+      }
+    },
+    "发现 %@ 项可清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ items ready to clean"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ可能な項目が %@ 件見つかりました"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发现 %@ 项可清理"
+          }
+        }
+      }
+    },
+    "可回收 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ reclaimable"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を再利用可能"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可回收 %@"
+          }
+        }
+      }
+    },
+    "可在「历史」时间线中随时还原本次清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can undo this cleanup any time from the History timeline."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このクリーンアップはいつでも履歴タイムラインから元に戻せます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可在「历史」时间线中随时还原本次清理"
+          }
+        }
+      }
+    },
+    "可释放 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ can be freed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を解放できます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可释放 %@"
+          }
+        }
+      }
+    },
+    "启动项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Startup Items"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起動項目"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启动项"
+          }
+        }
+      }
+    },
+    "实际释放量以废纸篓清倒为准": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actual space is freed when the Trash is emptied."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実際に解放される容量はゴミ箱を空にした時点の値です。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "实际释放量以废纸篓清倒为准"
+          }
+        }
+      }
+    },
+    "宽松（找出更多）": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loose (finds more)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "緩め（より多く検出）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "宽松（找出更多）"
+          }
+        }
+      }
+    },
+    "将 %@ 个应用及其残留文件移入废纸篓，可回收 %@ 空间。残留会先备份 30 天，可从备份还原。%@%@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "将 %1$@ 个应用及其残留文件移入废纸篓，可回收 %2$@ 空间。残留会先备份 30 天，可从备份还原。%3$@%4$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 個のアプリとその残留ファイルをゴミ箱へ移動し、%@ の容量を再利用できます。残留は 30 日間バックアップされ、バックアップから復元できます。%@%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将 %@ 个应用及其残留文件移入废纸篓，可回收 %@ 空间。残留会先备份 30 天，可从备份还原。%@%@"
+          }
+        }
+      }
+    },
+    "将清理选中的推荐项和可选项，文件将移入废纸篓。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleans the selected recommended and optional items. Files go to the Trash."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択した推奨項目と任意項目をクリーンアップします。ファイルはゴミ箱へ移動します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将清理选中的推荐项和可选项，文件将移入废纸篓。"
+          }
+        }
+      }
+    },
+    "尚无历史记录": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No history yet"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴はまだありません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚无历史记录"
+          }
+        }
+      }
+    },
+    "尚无清理记录": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No cleanups yet"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップの記録はまだありません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚无清理记录"
+          }
+        }
+      }
+    },
+    "工具箱": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toolbox"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ツールボックス"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "工具箱"
+          }
+        }
+      }
+    },
+    "左侧选择重复组查看详情。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a duplicate group on the left to see details."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "左側で重複グループを選択すると詳細が表示されます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "左侧选择重复组查看详情。"
+          }
+        }
+      }
+    },
+    "已授权主目录": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home folder authorized"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホームフォルダの許可済み"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已授权主目录"
+          }
+        }
+      }
+    },
+    "已用 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ used"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 使用中"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已用 %@"
+          }
+        }
+      }
+    },
+    "已用 %@ / %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ used / %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 使用中 / %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已用 %@ / %@"
+          }
+        }
+      }
+    },
+    "已订阅": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscribed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "購読中"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已订阅"
+          }
+        }
+      }
+    },
+    "已选 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ selected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 選択中"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %@"
+          }
+        }
+      }
+    },
+    "已选 %@ 个": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ selected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 個選択中"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %@ 个"
+          }
+        }
+      }
+    },
+    "已选 %@ 张 · 可释放约 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "已选 %1$@ 张 · 可释放约 %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 枚選択中 · 約 %@ 解放可能"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %@ 张 · 可释放约 %@"
+          }
+        }
+      }
+    },
+    "已选 %@ 项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ items selected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 件選択中"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %@ 项"
+          }
+        }
+      }
+    },
+    "已释放 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freed %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を解放しました"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已释放 %@"
+          }
+        }
+      }
+    },
+    "应用卸载": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Uninstall"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ削除"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用卸载"
+          }
+        }
+      }
+    },
+    "应用已删除": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App deleted"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリは削除されました"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用已删除"
+          }
+        }
+      }
+    },
+    "应用本体": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App itself"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ本体"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用本体"
+          }
+        }
+      }
+    },
+    "开始扫描": {
+      "comment": "Button: start scanning",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Scan"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン開始"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始扫描"
+          }
+        }
+      }
+    },
+    "开始首次扫描": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run your first scan"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最初のスキャンを開始"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始首次扫描"
+          }
+        }
+      }
+    },
+    "异常": {
+      "comment": "M4 danger grade",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warning"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "異常"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "异常"
+          }
+        }
+      }
+    },
+    "异常项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Problem items"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "異常のある項目"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "异常项"
+          }
+        }
+      }
+    },
+    "快速扫描": {
+      "comment": "Button: quick scan",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick Scan"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クイックスキャン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速扫描"
+          }
+        }
+      }
+    },
+    "您的扫描和清理记录将显示在这里": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your scan and cleanup records will appear here"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンとクリーンアップの記録がここに表示されます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "您的扫描和清理记录将显示在这里"
+          }
+        }
+      }
+    },
+    "所有扫描、分类和 AI 分析均在您的设备本地完成。\n我们不会收集、上传或分享任何个人数据。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All scanning, classification and AI analysis run locally on your device.\nWe never collect, upload or share any personal data."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてのスキャン、分類、AI 分析はお使いのデバイス上でローカルに実行されます。\n個人データを収集・アップロード・共有することは一切ありません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有扫描、分类和 AI 分析均在您的设备本地完成。\n我们不会收集、上传或分享任何个人数据。"
+          }
+        }
+      }
+    },
+    "打开系统设置": {
+      "comment": "C-5 FDA prompt CTA",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open System Settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム設定を開く"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开系统设置"
+          }
+        }
+      }
+    },
+    "扫描 %@ 个照片目录，找出截图堆积与相似照片。比对完全在本机完成。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scans %@ photo folders for piled-up screenshots and similar photos. Comparison runs entirely on this Mac."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 個の写真フォルダをスキャンし、たまりがちなスクリーンショットや類似写真を検出します。比較はすべて本機で完結します。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描 %@ 个照片目录，找出截图堆积与相似照片。比对完全在本机完成。"
+          }
+        }
+      }
+    },
+    "扫描中...": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン中..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描中..."
+          }
+        }
+      }
+    },
+    "扫描中…": {
+      "comment": "M1 Smart Care scanning state",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン中…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描中…"
+          }
+        }
+      }
+    },
+    "扫描历史": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan History"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン履歴"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描历史"
+          }
+        }
+      }
+    },
+    "扫描并清理后，此处将显示清理历史，支持回滚": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Once you scan and clean, your cleanup history appears here and can be rolled back"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンしてクリーンアップすると、ここに履歴が表示され、元に戻すこともできます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描并清理后，此处将显示清理历史，支持回滚"
+          }
+        }
+      }
+    },
+    "扫描照片缓存": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan photo caches"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真キャッシュをスキャン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描照片缓存"
+          }
+        }
+      }
+    },
+    "扫描结果": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Results"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン結果"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描结果"
+          }
+        }
+      }
+    },
+    "按当前趋势，预计约 %@ 天后磁盘占满。建议提前清理大文件。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "At the current rate your disk fills up in about %@ days. Consider cleaning large files early."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在のペースでは約 %@ 日でディスクがいっぱいになります。早めに大きなファイルをクリーンアップすることをおすすめします。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按当前趋势，预计约 %@ 天后磁盘占满。建议提前清理大文件。"
+          }
+        }
+      }
+    },
+    "授权主目录后，kWise 才能发现可清理的缓存与残留。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorize your home folder so kWise can find caches and leftovers to clean."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホームフォルダを許可すると、kWise がクリーンアップ可能なキャッシュや残留ファイルを見つけられます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权主目录后，kWise 才能发现可清理的缓存与残留。"
+          }
+        }
+      }
+    },
+    "授权主目录后，kWise 才能发现并清理大部分垃圾文件。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorize your home folder so kWise can find and clean most junk files."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホームフォルダを許可すると、kWise がほとんどの不要ファイルを検出してクリーンアップできます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权主目录后，kWise 才能发现并清理大部分垃圾文件。"
+          }
+        }
+      }
+    },
+    "授权主目录访问": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorize home folder access"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホームフォルダへのアクセスを許可"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权主目录访问"
+          }
+        }
+      }
+    },
+    "授权后开始 Smart Care": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Smart Care after authorizing"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "許可後にスマートケアを開始"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权后开始 Smart Care"
+          }
+        }
+      }
+    },
+    "排序:": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sort:"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "並べ替え:"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "排序:"
+          }
+        }
+      }
+    },
+    "数据全部在本机生成 · 磁盘采样来自使用 kWise 期间": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All data generated on this Mac · disk samples collected while you use kWise"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "データはすべて本機で生成 · ディスクのサンプルは kWise の使用中に収集"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "数据全部在本机生成 · 磁盘采样来自使用 kWise 期间"
+          }
+        }
+      }
+    },
+    "文件粉碎": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File Shredder"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルシュレッダー"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件粉碎"
+          }
+        }
+      }
+    },
+    "无限清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited Cleaning"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無制限清掃"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无限清理"
+          }
+        }
+      }
+    },
+    "显示其余 %@ 项（按大小）": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show %@ more (by size)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残り %@ 件を表示（サイズ順）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示其余 %@ 项（按大小）"
+          }
+        }
+      }
+    },
+    "智能清理": {
+      "comment": "M1 Smart Care hero title",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Care"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Care"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "智能清理"
+          }
+        }
+      }
+    },
+    "智能磁盘清理，让您的 Mac 存储空间回到\"足够\"": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart disk cleaning that brings your Mac's storage back to \"enough\""
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スマートなディスククリーンアップで、Mac のストレージを「十分」な状態に戻します"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "智能磁盘清理，让您的 Mac 存储空间回到\"足够\""
+          }
+        }
+      }
+    },
+    "暂无明显的占满趋势（近期波动较大）。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No clear trend toward filling up (recent usage fluctuates a lot)."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "明確な逼迫傾向はありません（最近の使用量は変動が大きい状態です）。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无明显的占满趋势（近期波动较大）。"
+          }
+        }
+      }
+    },
+    "更快,更干净": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faster, cleaner"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "より速く、よりきれいに"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更快,更干净"
+          }
+        }
+      }
+    },
+    "最小文件大小：%@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minimum file size: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最小ファイルサイズ：%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最小文件大小：%@"
+          }
+        }
+      }
+    },
+    "最近使用 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last used %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最終使用 %@ 前"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近使用 %@"
+          }
+        }
+      }
+    },
+    "最近使用：未知": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last used: unknown"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最終使用：不明"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近使用：未知"
+          }
+        }
+      }
+    },
+    "最近粉碎记录": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent shredding history"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近のシュレッダー処理履歴"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近粉碎记录"
+          }
+        }
+      }
+    },
+    "未能完成": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't complete"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了できませんでした"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未能完成"
+          }
+        }
+      }
+    },
+    "未选择任何应用": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No apps selected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリが選択されていません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未选择任何应用"
+          }
+        }
+      }
+    },
+    "本月清理的大文件 Top 5": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Top 5 large files cleaned this month"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今月クリーンアップした大きなファイル Top 5"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本月清理的大文件 Top 5"
+          }
+        }
+      }
+    },
+    "本机智能匹配 · 不联网 · 不上传任何数据": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On-device matching · no network · nothing uploaded"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本機でのスマート照合 · ネットワーク不使用 · データのアップロードなし"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本机智能匹配 · 不联网 · 不上传任何数据"
+          }
+        }
+      }
+    },
+    "本次会话": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This session"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このセッション"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次会话"
+          }
+        }
+      }
+    },
+    "本次已释放 %@": {
+      "comment": "Notification body; %@ = formatted freed bytes",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freed %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@を解放しました"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次已释放 %@"
+          }
+        }
+      }
+    },
+    "权限概览": {
+      "comment": "M3 TCC overview title",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Permissions"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリの権限"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "权限概览"
+          }
+        }
+      }
+    },
+    "构成": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Composition"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内訳"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "构成"
+          }
+        }
+      }
+    },
+    "查找相似照片": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find similar photos"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "類似写真を探す"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查找相似照片"
+          }
+        }
+      }
+    },
+    "标准": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "標準"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标准"
+          }
+        }
+      }
+    },
+    "样本不足 — 继续使用 kWise 几天后即可生成预测。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough samples — keep using kWise for a few days to get a forecast."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サンプルが不足しています。数日間 kWise を使い続けると予測を生成できます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "样本不足 — 继续使用 kWise 几天后即可生成预测。"
+          }
+        }
+      }
+    },
+    "核心功能": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Core features"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "主な機能"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "核心功能"
+          }
+        }
+      }
+    },
+    "桌面 Widget + Shortcuts": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desktop Widget + Shortcuts"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デスクトップWidget + Shortcuts"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "桌面 Widget + Shortcuts"
+          }
+        }
+      }
+    },
+    "检查 Photos.app 缓存、iPhoto 图库、iOS 备份与照片流临时文件": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checks Photos.app caches, iPhoto libraries, iOS backups and Photo Stream temp files"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos.app のキャッシュ、iPhoto ライブラリ、iOS バックアップ、フォトストリームの一時ファイルを確認します"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "检查 Photos.app 缓存、iPhoto 图库、iOS 备份与照片流临时文件"
+          }
+        }
+      }
+    },
+    "检测到 %@ 个运行中应用涉及您选择的清理项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ running apps are involved in the items you selected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択した項目には実行中のアプリが %@ 件関わっています"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "检测到 %@ 个运行中应用涉及您选择的清理项"
+          }
+        }
+      }
+    },
+    "正在扫描照片缓存...": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning photo caches..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真キャッシュをスキャン中..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在扫描照片缓存..."
+          }
+        }
+      }
+    },
+    "正在扫描隐私数据...": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning privacy data..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシーデータをスキャン中..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在扫描隐私数据..."
+          }
+        }
+      }
+    },
+    "正在选择可清理项…": {
+      "comment": "M1 Smart Care recommending state",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Picking what to clean…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーン対象を選定中…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在选择可清理项…"
+          }
+        }
+      }
+    },
+    "正常": {
+      "comment": "M4 healthy grade (matches existing 健康 grade where used)",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Healthy"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正常"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正常"
+          }
+        }
+      }
+    },
+    "此操作将永久删除文件，不可通过废纸篓恢复！": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This permanently deletes files — they cannot be recovered from the Trash!"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この操作でファイルは完全に削除され、ゴミ箱から復元できません！"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此操作将永久删除文件，不可通过废纸篓恢复！"
+          }
+        }
+      }
+    },
+    "残留": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leftovers"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残留ファイル"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残留"
+          }
+        }
+      }
+    },
+    "残留文件 (%@)": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leftover files (%@)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残留ファイル（%@）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残留文件 (%@)"
+          }
+        }
+      }
+    },
+    "每周释放": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freed per week"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "週ごとの解放量"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每周释放"
+          }
+        }
+      }
+    },
+    "每次清理归为一条记录，可整体回滚到清理前状态": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each cleanup is one record you can roll back entirely"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップごとに 1 件の記録となり、まとめて元に戻せます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每次清理归为一条记录，可整体回滚到清理前状态"
+          }
+        }
+      }
+    },
+    "注意": {
+      "comment": "M4 caution grade",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attention"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注意"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "注意"
+          }
+        }
+      }
+    },
+    "浏览器历史、Cookie、缓存、系统日志": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser history, cookies, caches, system logs"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ブラウザの履歴、Cookie、キャッシュ、システムログ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浏览器历史、Cookie、缓存、系统日志"
+          }
+        }
+      }
+    },
+    "清 理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清 理"
+          }
+        }
+      }
+    },
+    "清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理"
+          }
+        }
+      }
+    },
+    "清理中...": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleaning..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ中..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理中..."
+          }
+        }
+      }
+    },
+    "清理中…": {
+      "comment": "M1 Smart Care cleaning state",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleaning…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーン中…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理中…"
+          }
+        }
+      }
+    },
+    "清理助手": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Assistant"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップアシスタント"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理助手"
+          }
+        }
+      }
+    },
+    "清理历史": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup History"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清掃履歴"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理历史"
+          }
+        }
+      }
+    },
+    "清理完成": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Complete"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ完了"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理完成"
+          }
+        }
+      }
+    },
+    "清理时间线": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Timeline"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップのタイムライン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理时间线"
+          }
+        }
+      }
+    },
+    "清理最多": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleaned the most"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最多のクリーンアップ実績"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理最多"
+          }
+        }
+      }
+    },
+    "清理较旧文件夹": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clean the older folder"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "古いフォルダをクリーンアップ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理较旧文件夹"
+          }
+        }
+      }
+    },
+    "点击下钻 · ⌘点击选中待清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to drill down · ⌘-click to select for cleaning"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリックで詳細へ · ⌘クリックでクリーンアップ対象を選択"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点击下钻 · ⌘点击选中待清理"
+          }
+        }
+      }
+    },
+    "照片缓存": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo caches"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真キャッシュ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片缓存"
+          }
+        }
+      }
+    },
+    "环形图": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ring chart"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リングチャート"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "环形图"
+          }
+        }
+      }
+    },
+    "现在开始您的第一次扫描，发现可清理的空间": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run your first scan to discover space you can clean"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最初のスキャンを実行して、クリーンアップ可能な容量を見つけましょう"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "现在开始您的第一次扫描，发现可清理的空间"
+          }
+        }
+      }
+    },
+    "用户安装": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "User-installed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ユーザーがインストール"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用户安装"
+          }
+        }
+      }
+    },
+    "矩形图": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Treemap"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ツリーマップ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "矩形图"
+          }
+        }
+      }
+    },
+    "确认清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm cleanup"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップを確認"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认清理"
+          }
+        }
+      }
+    },
+    "磁盘健康": {
+      "comment": "M4 Disk Health module title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk Health"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスクヘルス"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘健康"
+          }
+        }
+      }
+    },
+    "磁盘将满预测": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk fill-up forecast"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスク逼迫の予測"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘将满预测"
+          }
+        }
+      }
+    },
+    "磁盘空间": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk Space"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスク容量"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘空间"
+          }
+        }
+      }
+    },
+    "第 %@ / %@ 步": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "第 %1$@ / %2$@ 步"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ステップ %@ / %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第 %@ / %@ 步"
+          }
+        }
+      }
+    },
+    "管理登录时自动启动的代理与守护项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage agents and daemons that start automatically at login"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログイン時に自動起動するエージェントとデーモンを管理します"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理登录时自动启动的代理与守护项"
+          }
+        }
+      }
+    },
+    "系统维护": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintenance"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メンテナンス"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统维护"
+          }
+        }
+      }
+    },
+    "覆写文件内容后移入废纸篓，确保敏感文件无法恢复": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overwrites file contents before moving to the Trash, so sensitive files can't be recovered"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱へ移動する前にファイル内容を上書きし、機密ファイルを復元できなくします"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "覆写文件内容后移入废纸篓，确保敏感文件无法恢复"
+          }
+        }
+      }
+    },
+    "解锁全部 kWise 功能": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock every kWise feature"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべての kWise 機能を解放"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁全部 kWise 功能"
+          }
+        }
+      }
+    },
+    "设置": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置"
+          }
+        }
+      }
+    },
+    "试试这样问：": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try asking:"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このような質問を試してください："
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "试试这样问："
+          }
+        }
+      }
+    },
+    "该项涉及应用配置或个人数据，清理前请确认对应应用未在运行。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This item touches app settings or personal data — make sure the app isn't running before cleaning."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この項目はアプリの設定や個人データに関わります。クリーンアップ前に該当アプリが起動していないことを確認してください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "该项涉及应用配置或个人数据，清理前请确认对应应用未在运行。"
+          }
+        }
+      }
+    },
+    "该项目的启动配置将移入废纸篓，可随时在 kWise 中恢复。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This item's startup entry goes to the Trash and can be restored from kWise any time."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この項目の起動設定はゴミ箱へ移動し、いつでも kWise から復元できます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "该项目的启动配置将移入废纸篓，可随时在 kWise 中恢复。"
+          }
+        }
+      }
+    },
+    "运行中...": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実行中..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "运行中..."
+          }
+        }
+      }
+    },
+    "还原中…": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restoring…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "復元中…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还原中…"
+          }
+        }
+      }
+    },
+    "还原清理项": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore cleaned items"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップした項目を復元"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还原清理项"
+          }
+        }
+      }
+    },
+    "这些副本是 APFS 克隆，删除几乎不会释放实际空间": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These copies are APFS clones — deleting them frees almost no real space"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これらのコピーは APFS クローンです。削除しても実際の容量はほとんど解放されません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这些副本是 APFS 克隆，删除几乎不会释放实际空间"
+          }
+        }
+      }
+    },
+    "这些操作不可逆。请输入 DELETE 以确认。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These actions are irreversible. Type DELETE to confirm."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これらの操作は取り消せません。確認のため DELETE と入力してください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这些操作不可逆。请输入 DELETE 以确认。"
+          }
+        }
+      }
+    },
+    "这看起来是「%@」相关的备份副本——像是同一项目的两次备份": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This looks like a backup copy related to \"%@\" — likely two backups of the same project"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これは「%@」に関連するバックアップコピーのようです。同じプロジェクトの 2 回分のバックアップと思われます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这看起来是「%@」相关的备份副本——像是同一项目的两次备份"
+          }
+        }
+      }
+    },
+    "这看起来是「%@」相关的备份副本——其中一个已经 %lld 天没有更新，像是同一项目的旧备份": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This looks like a backup copy related to \"%@\" — one hasn't changed in %lld days, so it seems to be an older backup of the same project"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これは「%@」に関連するバックアップコピーのようです。一方は %lld 日間更新されておらず、同じプロジェクトの古いバックアップと思われます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这看起来是「%@」相关的备份副本——其中一个已经 %lld 天没有更新，像是同一项目的旧备份"
+          }
+        }
+      }
+    },
+    "选择一组": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a group"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "グループを選択"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择一组"
+          }
+        }
+      }
+    },
+    "选择要可视化的文件夹": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a folder to visualize"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可視化するフォルダを選択"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择要可视化的文件夹"
+          }
+        }
+      }
+    },
+    "释放了 %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ freed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 解放済み"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "释放了 %@"
+          }
+        }
+      }
+    },
+    "隐私": {
+      "comment": "M3 隐私 module title",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシー"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私"
+          }
+        }
+      }
+    },
+    "隐私概览": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Overview"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシー概要"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私概览"
+          }
+        }
+      }
+    },
+    "隐私清理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Cleanup"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシークリーンアップ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私清理"
+          }
+        }
+      }
+    },
+    "隐私至上": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy first"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシーを最優先"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私至上"
+          }
+        }
+      }
+    },
+    "需手动处理": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs manual steps"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手動での対応が必要"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需手动处理"
+          }
+        }
+      }
+    },
+    "需要你的授权": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorization Required"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "認証が必要です"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要你的授权"
+          }
+        }
+      }
+    },
+    "需要完整磁盘访问": {
+      "comment": "C-5 FDA prompt title",
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Disk Access required"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フルディスクアクセスが必要"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要完整磁盘访问"
+          }
+        }
+      }
+    },
+    "项目已移入废纸篓，30 天内可在历史中还原。": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Items moved to the Trash — you can restore them from History within 30 days."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "項目はゴミ箱へ移動しました。30 日以内なら履歴から復元できます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "项目已移入废纸篓，30 天内可在历史中还原。"
+          }
+        }
+      }
+    },
+    "预计释放 %@（移入废纸篓，可随时还原）": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ to be freed (moved to the Trash, restorable any time)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "約 %@ の解放が見込まれます（ゴミ箱へ移動し、いつでも復元可能）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预计释放 %@（移入废纸篓，可随时还原）"
+          }
+        }
+      }
     }
   },
-  "version" : "1.1"
+  "version": "1.1"
 }
