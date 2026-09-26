@@ -376,13 +376,19 @@ kWise/
 - [x] **卸载 AI 深度优化**（9/10–9/11，spec + 6-task plan 全落地）— ResidueExplainer（确定性白话解释 + ownerHint 提为共享 API）；ResidueGroupingEngine（规则遍 + NLEmbedding 兜底，可注入 provider）；HealthSummaryBuilder（可解释残留分级，50MB 绝对阈值优先）；AppUninstallDetailPanel（健康卡 + AI 分组 + 解释列表）；勾选语义统一（显式残留选择优先，整应用兜底）
 - [x] **UX 收尾**（9/11–9/12）— W1 重复文件组内并排大图对比 + 清理完成横幅（measuredBytes 优先）；W4 照片 A/B 保留互换（组内恰保留一张语义不变）；DuplicateFolderDescriber 真语义标注（原 topicLabel 为死代码）+ 会话累计；确认面板文案与实际 commit 范围对齐；消失路径过滤；缓存 countLimit
 
-### kWise 收尾债清理 ✅ (2026-09-26)
+### kWise 收尾债清理 ✅ (2026-09-26 → 2026-09-27)
 - [x] **已知红测试修复** — 2 个生产 bug：① `StreakLogic.recordCleanup` 连日判断方向反了（streak 永远到不了 2，streak.3/7/30 成就全废）② `BackupManager.cleanupExpired` 按 bundleID 目录整体过期 → 40 天前的 v1 会连坐删掉昨天的 v2（改为按 `v<N>/` 版本独立计龄 + 回归守卫）；1 个测试基建 bug（`UninstallBackupStoreTests.setUp` 未建 root，`try?` 吞掉 fixture 写失败）
 - [x] **本地化补齐** — Localizable.xcstrings 224 keys × 3 语全齐（补 508 个 string unit，既有译文 0 改写）；新增 `LocalizationCompletenessTests` 守卫空译文回潮
-- [x] **全量测试基线** — xcodebuild test-runner 挂起问题已随重启消失，可正常跑全量。基线 **518 tests / 502 pass / 16 fail**（kWiseTests，2026-09-26）。16 个失败均为**存量红**，与本轮改动零文件重叠，且多在 test-runner 挂起期间从未跑过：
-  - **空间地图簇 ×7**（SegmentBuilder 3 断言 + 4 force-unwrap 崩溃）—— 根因是**测试夹具**：`makeTree()` 不传 `totalSize`，`ScanCategory.totalSize` 默认 0，`rebuild()` 的 `filter { totalSize > 0 }` 把整棵树滤空 → `segments.first!` 崩溃。该过滤自 546d8dc 建文件即存在，故这些用例从未绿过
-  - **其余 ×9** —— DefaultSelection ×2（勾选级联状态）、FileShredder ×2（guardrail + 覆写阶段）、MaintenanceGuidance ×1（源码扫描发现 `/usr/bin/` 引用）、PhotoSimilarity ×1（3 张同图分组）、AssistantIntent ×1（diskForecast 匹配）、AppUninstall 路由 ×1（配额耗尽回调）、ScanMasterDetail ×1（三级态）
-  - ⚠️ SegmentBuilder 的 4 次崩溃令 runner 反复重启，全量跑了约 7 小时；修掉夹具后应大幅缩短
+- [x] **存量红清理（16 个 → 0）** —— 其中 **7 个是真产品 bug**：
+  - 空间地图「独立文件夹模式」整页空白（`bindFolderRoot` 漏填 `totalSize`，被 `filter{totalSize>0}` 滤空）
+  - 文件粉碎从未真正处置文件（`randomizeRenames` 改名后最终路径被丢弃，`trashItem` 用原路径必 ENOENT → 报失败且覆写文件以随机名残留）
+  - 卸载配额被拒却报成功（引擎记入 `skippedForQuota`，`uninstallSelected` 只看 `failed.isEmpty` → 用户以为已卸载，Paywall 不弹）
+  - 全选后汇总栏显示 0 KB（`walk` 对 `.checked` 节点不下钻，而 `selectAll` 不回聚合）
+  - 三级 `refreshState` 把 `.mixed` 子级算成「未选」，一个勾选叶子传不上三级态
+  - 粉碎器 guardrail 放行系统路径的真实拼写（`/etc`→`/private/etc` 是符号链接，裸前缀匹配可绕过；`/private/tmp` 原本不在禁区）
+  - 助手「什么时候会满」匹配不上模板（复合词缺口）
+  - 另 4 个为测试夹具/契约问题（夹具漏填 `totalSize`、工厂函数当 provider、审计扫到注释、`minFileSize` 滤空夹具）
+- [x] **全量测试基线** — test-runner 挂起已随重启消失。**最终基线 522 tests / 0 failures**（kWiseTests，2026-09-27，耗时约 21 分钟）。对比清理前 518/502/16 且因 4 次崩溃导致 runner 反复重启跑了约 7 小时
 
 ### Backlog（待设计）
 - [ ] kDupe 设计 — 重复/大文件
