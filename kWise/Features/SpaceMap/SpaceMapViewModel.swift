@@ -113,9 +113,13 @@ public final class SpaceMapViewModel: ObservableObject {
             }
         }
 
+        // `totalSize` is stored, not derived — omitting it leaves the root at
+        // 0 and `rebuild()`'s `filter { $0.totalSize > 0 }` drops the whole
+        // forest, so folder mode rendered an empty map.
         let rootCategory = ScanCategory(
             categoryID: "folder.map",
             title: url.lastPathComponent,
+            totalSize: subs.reduce(0) { $0 + $1.totalSize },
             subItems: subs
         )
         folderRoots = [rootCategory]
