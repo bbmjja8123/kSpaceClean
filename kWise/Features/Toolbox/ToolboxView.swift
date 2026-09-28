@@ -67,6 +67,12 @@ struct ToolboxView: View {
                         destination: .spaceMap
                     )
                     ToolboxCard(
+                        icon: "magnifyingglass.circle",
+                        title: "归因透视",
+                        subtitle: "你的空间去哪了",
+                        destination: .attribution
+                    )
+                    ToolboxCard(
                         icon: "wrench.and.screwdriver",
                         title: "系统维护",
                         subtitle: "维护任务与引导",

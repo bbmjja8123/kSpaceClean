@@ -55,7 +55,8 @@ final class AppStateTests: XCTestCase {
     func test_NavigationItem_allCases() {
         // v2.0 Phase 2: 11 original + 8 new (tools/spaceMap/monthlyReport/
         // assistant/duplicates/largeOld/photoClean/maintenance) − galaxy.
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 18)
+        // P0 Task 9 adds `.attribution` (toolbox deep surface).
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 19)
     }
 
     /// v2.0 Phase 2: the rail is fixed at six entries and never grows.

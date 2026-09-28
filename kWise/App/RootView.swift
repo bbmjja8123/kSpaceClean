@@ -35,6 +35,10 @@ struct RootView: View {
     @StateObject private var spaceMapViewModel = SpaceMapViewModel(
         rootsProvider: { [] }
     )
+    /// 归因透视（P0 Task 9）— 与空间地图共用同一棵扫描树，服务只读不清理。
+    @StateObject private var attributionPreviewViewModel = AttributionPreviewViewModel(
+        service: .live()
+    )
     /// First-launch onboarding (v2.0 Phase 8) — welcome → PowerScope grant
     /// → menu bar & widget tour. Never re-shown once completed.
     @AppStorage("onboarding.completed.v1") private var onboardingCompleted = false
@@ -137,6 +141,9 @@ struct RootView: View {
             // 空间地图 renders the scan tree — rebind the roots provider now
             // that scanResultsViewModel exists (init-time capture would be nil).
             spaceMapViewModel.rebindRoots { scanResultsViewModel.categories }
+            // 归因透视 reads the same live scan results（init-time capture 不可用，
+            // 同 rebindRoots 的晚绑定模式）。
+            attributionPreviewViewModel.rebindCategories { scanResultsViewModel.categories }
             // 清理助手 reads the live scan results for data-backed answers.
             graph.assistantScanVM = scanResultsViewModel
             // Menu bar quick actions (C-8, v2.0 Phase 3): route through the
@@ -220,6 +227,8 @@ struct RootView: View {
             )
         case .maintenance:
             MaintenanceView(viewModel: makeMaintenanceViewModel())
+        case .attribution:
+            AttributionPreviewView(viewModel: attributionPreviewViewModel)
         }
     }
 

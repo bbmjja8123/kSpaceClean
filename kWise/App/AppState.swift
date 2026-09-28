@@ -54,6 +54,8 @@ public final class AppState: ObservableObject {
         case largeOld = "largeOld"
         case photoClean = "photoClean"
         case maintenance = "maintenance"
+        // P0 归因引擎（Klaris Task 9）— 工具箱深面，纯描述（零清理动作）。
+        case attribution = "attribution"
 
         /// Fixed icon-rail order (v2.0 Phase 2). The rail no longer grows
         /// with every module — deep surfaces live in the toolbox and are
@@ -66,7 +68,8 @@ public final class AppState: ObservableObject {
         public var isToolboxTool: Bool {
             switch self {
             case .appUninstall, .duplicates, .largeOld, .photoClean,
-                 .shredder, .startupItems, .spaceMap, .maintenance, .assistant:
+                 .shredder, .startupItems, .spaceMap, .maintenance, .assistant,
+                 .attribution:
                 return true
             default:
                 return false
@@ -93,6 +96,7 @@ public final class AppState: ObservableObject {
             case .largeOld: return "arrow.up.left.and.arrow.down.right"
             case .photoClean: return "photo.on.rectangle"
             case .maintenance: return "wrench.and.screwdriver"
+            case .attribution: return "magnifyingglass.circle"
             }
         }
 
@@ -116,6 +120,7 @@ public final class AppState: ObservableObject {
             case .largeOld: return String(localized: "nav.largeOld")
             case .photoClean: return String(localized: "nav.photoClean")
             case .maintenance: return String(localized: "nav.maintenance")
+            case .attribution: return String(localized: "nav.attribution")
             }
         }
     }
