@@ -23,12 +23,17 @@
 
 import Foundation
 
-enum UserPathResolver {
+/// Sandbox-safe real-user path resolution.
+///
+/// `public` so it can appear as a default argument value on public APIs
+/// (e.g. `AttributionService.live(home:)`) — default arguments are evaluated
+/// at the call site and therefore see only public symbols.
+public enum UserPathResolver {
     /// The real user home directory, resolved via libc rather than
     /// `NSHomeDirectory()` (which returns the sandbox container path in an
     /// App Sandbox build). Falls back to `NSHomeDirectory()` if the passwd
     /// lookup fails.
-    static func realHomeDirectory() -> String {
+    public static func realHomeDirectory() -> String {
         if let pw = getpwuid(getuid()), let dir = pw.pointee.pw_dir {
             let home = String(cString: dir)
             if !home.isEmpty { return home }

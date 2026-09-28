@@ -38,13 +38,19 @@ public struct AttributionService: Sendable {
     }
 
     /// 生产装配：语料来自 App 包。语料缺失 → 空语料（一切进拒答，诚实降级）。
-    public static func live() -> AttributionService {
+    ///
+    /// `home` 默认走 `UserPathResolver.realHomeDirectory()`（真实用户家目录），
+    /// 绝不能用 `NSHomeDirectory()` —— 沙箱下它返回容器路径，而扫描结果携带的
+    /// 是真实家目录路径，两者对不上则所有 `~/Library/...` 语料 glob 永不命中
+    /// （final review C1：live() 语料整体失效的根因）。
+    /// 参数化 `home` 仅为测试接缝；生产调用点保持无参 `live()`。
+    public static func live(home: String = UserPathResolver.realHomeDirectory()) -> AttributionService {
         let corpus = Bundle.main.url(forResource: "attribution_rules", withExtension: "json")
             .flatMap { try? Data(contentsOf: $0) }
             .flatMap { try? AttributionRuleCorpus.load(from: $0) }
             ?? AttributionRuleCorpus(schemaVersion: 1, rules: [])
         return AttributionService(engine: AttributionRuleEngine(
-            corpus: corpus, homeDirectory: NSHomeDirectory()))
+            corpus: corpus, homeDirectory: home))
     }
 
     public func attribute(categories: [ScanCategory]) async -> AttributionReport {
@@ -58,6 +64,12 @@ public struct AttributionService: Sendable {
         var refused: [SpaceAttribution] = []
         var unattributedBytes: Int64 = 0
         for attribution in engine.attribute(results: results) {
+            // final review M4（L1 路由陷阱）：下面的 `default:` 分支假设引擎只产出
+            // `.certain` / `.refused`。L1/L2（阈值归因，产出 `.probable`）接线后，
+            // 这里的隐式假设必须由该实现显式接管 —— 在此 fail loud，禁止 L1 实现者
+            // 无意间把 `.probable` 静默吞进阈值路由（spec §4.5）。
+            precondition(attribution.confidence != .probable,
+                         "L1/L2 routing not wired yet — see spec §4.5")
             switch (attribution.confidence, attribution.reclaim) {
             case (.certain, .uncertain):
                 refused.append(attribution)

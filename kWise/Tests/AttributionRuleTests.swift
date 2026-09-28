@@ -96,6 +96,63 @@ extension AttributionRuleTests {
             XCTAssertLessThan(index, genericIndex,
                               "\(specific) 必须排在通配规则之前，否则永不被命中")
         }
+        try assertRulesReachableFromScanRoots(corpus)
+    }
+
+    // MARK: 可达性审计（final review I2）
+
+    /// P0 文件树只走 `CategoryDefinition.defaults` 的 8 个类目根。语料里任何一条
+    /// 规则的 glob 前缀若与这些根完全不相交，就是永不被命中的死规则。
+    ///
+    /// 判定口径：对每条规则取 `/**` 之前的前缀（`~` 按 fixture home 展开），
+    /// 与任一扫描根逐段比对 —— 共享的**前导路径段**必须 ≥ 3 段
+    /// （即至少共同落到 `~/Library/<具名子目录>` 这一级）。
+    /// 仅共享 `~/Library` 一级（2 段）不算可达，否则 ~/Library 下任意目录都会过检。
+    ///
+    /// 已知松边：`xcode.device-support`（iOS DeviceSupport）与扫描根只共享到
+    /// `~/Library/Developer/Xcode` 祖先，严格子树口径下其实也不可达；本审计按
+    /// 「祖先级可达」放行，P1 收紧扫描根或黑盒分解接线时应一并收紧此处。
+    static let unreachableRuleExemptions = [
+        "ai.models-intelligence",   // /System/Library/AssetsV2/... —— 卷层引导规则
+        "imessage.attachments",     // ~/Library/Messages/... —— 卷层引导规则
+    ]
+    // 卷层引导规则 —— 文件树不可达，P1 经黑盒分解接线；豁免必须显式。
+
+    private func assertRulesReachableFromScanRoots(_ corpus: AttributionRuleCorpus) throws {
+        let fixtureHome = "/Users/fixture"
+        // 与 ScanOrchestrator.CategoryDefinition.defaults 的 8 类目根保持一致。
+        let scanRoots = CategoryDefinition.defaults.flatMap(\.paths)
+            .map { PathGlobMatcher.expandTilde($0, home: fixtureHome) }
+        XCTAssertGreaterThanOrEqual(scanRoots.count, 10,
+                                    "扫描根清单必须随 CategoryDefinition.defaults 演进同步更新")
+
+        func segments(_ path: String) -> [String] {
+            path.split(separator: "/").map(String.init)
+        }
+        func sharedLeadingSegments(_ a: [String], _ b: [String]) -> Int {
+            var count = 0
+            while count < a.count, count < b.count,
+                  a[count].lowercased() == b[count].lowercased() {
+                count += 1
+            }
+            return count
+        }
+
+        for rule in corpus.rules {
+            guard let glob = rule.match.pathGlob else { continue }
+            let prefix = glob.hasSuffix("/**")
+                ? String(glob.dropLast(3))
+                : glob
+            let rulePrefix = PathGlobMatcher.expandTilde(prefix, home: fixtureHome)
+            let best = scanRoots.map {
+                sharedLeadingSegments(segments(rulePrefix), segments($0))
+            }.max() ?? 0
+            if best < 3 {
+                XCTAssertTrue(Self.unreachableRuleExemptions.contains(rule.id),
+                              "规则 \(rule.id)（\(prefix)）与全部扫描根不相交，永远无法命中 —— "
+                                + "要么修正 glob，要么显式加入 unreachableRuleExemptions 豁免")
+            }
+        }
     }
 
     func testEveryRuleCopyIsTrilingual() throws {

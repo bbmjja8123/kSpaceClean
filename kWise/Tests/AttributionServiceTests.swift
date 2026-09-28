@@ -103,4 +103,27 @@ final class AttributionServiceTests: XCTestCase {
         ])
         XCTAssertEqual(report.blackBox.visibleBytes, 8, "action.results 与 directResults 都要走到")
     }
+
+    // MARK: live() 装配（final review C1）
+
+    /// C1 根因回归：live() 曾把 `NSHomeDirectory()`（沙箱容器路径）喂给引擎，
+    /// 而扫描结果携带真实家目录路径 —— 所有 `~/Library/...` 语料 glob 永不命中，
+    /// 生产语料整体沦为死规则。此处钉住：注入的 home 必须一路接进引擎的 glob 展开，
+    /// 使真实家目录形态的扫描路径能命中语料规则。
+    func testLiveWiresHomeIntoEngine() {
+        let service = AttributionService.live(home: "/Users/x")
+        XCTAssertEqual(service.engine.homeDirectory, "/Users/x",
+                       "live(home:) 必须把 home 原样接入引擎（不得回落到 NSHomeDirectory）")
+
+        XCTAssertFalse(service.engine.corpus.rules.isEmpty,
+                       "attribution_rules.json 必须打进 App bundle，live() 不得空语料降级")
+
+        // 端到端：真实家目录形态的路径（/Users/x/Library/Caches/...）经 live 语料的
+        // caches.app-generic（~/Library/Caches/**）命中 —— home 接错时必不命中。
+        let hit = service.engine.attribute(results: [
+            result("/Users/x/Library/Caches/SomeApp/cache.bin", bytes: 4096),
+        ])
+        XCTAssertEqual(hit.first?.ruleID, "caches.app-generic",
+                       "真实家目录路径必须能命中语料的 caches 通配规则")
+    }
 }

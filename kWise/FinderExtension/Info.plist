@@ -3,8 +3,8 @@
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleDisplayName</key><string>kWise Finder</string>
-    <key>CFBundleName</key><string>kWiseFinder</string>
+    <key>CFBundleDisplayName</key><string>Klaris Finder</string>
+    <key>CFBundleName</key><string>KlarisFinder</string>
     <key>CFBundlePackageType</key><string>XPC!</string>
     <key>NSExtension</key>
     <dict>

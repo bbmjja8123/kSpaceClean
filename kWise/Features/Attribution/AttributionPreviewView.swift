@@ -50,7 +50,7 @@ struct AttributionPreviewView: View {
     var body: some View {
         List {
             if let report = viewModel.report {
-                blackBoxCard(report.blackBox)
+                blackBoxCard(report)
                 if report.snapshots == nil {
                     Text("attr.blackbox.unreadable")
                         .font(AppFont.callout)
@@ -61,14 +61,18 @@ struct AttributionPreviewView: View {
                         attributionRow(item)
                     }
                 }
-                Section(header: Text(String(
-                    format: String(localized: String.LocalizationValue("attr.refused.title")),
-                    viewModel.refusedItems.count))) {
-                    Text("attr.refused.banner")
-                        .font(AppFont.callout)
-                        .foregroundStyle(Color.textSecondary)
-                    ForEach(viewModel.refusedItems) { item in
-                        attributionRow(item)
+                // final review M6：清单为空时整段折叠 —— 「（0 项）」的空 header
+                // 与「这些项判断不了」横幅在无内容时都是噪音，且与事实不符。
+                if !viewModel.refusedItems.isEmpty {
+                    Section(header: Text(String(
+                        format: String(localized: String.LocalizationValue("attr.refused.title")),
+                        viewModel.refusedItems.count))) {
+                        Text("attr.refused.banner")
+                            .font(AppFont.callout)
+                            .foregroundStyle(Color.textSecondary)
+                        ForEach(viewModel.refusedItems) { item in
+                            attributionRow(item)
+                        }
                     }
                 }
                 if let corpus = rulesCorpus {
@@ -107,23 +111,37 @@ struct AttributionPreviewView: View {
         Task { await viewModel.refresh() }
     }
 
+    /// final review I1：诚实化重写。旧卡「黑盒空间（快照与系统保留）」是错误归类 ——
+    /// 扫描树只覆盖 8 个清理类目根，残差 ≈ 全部普通用户数据（文档/照片/应用/系统区域），
+    /// 把它叫「快照与系统保留」是对用户数据的误导。新卡只陈述事实：
+    /// 这部分空间在本次扫描范围之外、不是垃圾；快照数与未匹配小项在 >0 时如实补充。
     @ViewBuilder
-    private func blackBoxCard(_ breakdown: BlackBoxBreakdown) -> some View {
-        Section(header: Text("attr.blackbox.title")) {
+    private func blackBoxCard(_ report: AttributionReport) -> some View {
+        let breakdown = report.blackBox
+        Section(header: Text("attr.blackbox.uncovered.title")) {
             switch breakdown.status {
             case .reconciled:
                 Text(String(
-                    format: String(localized: String.LocalizationValue("attr.blackbox.residual")),
+                    format: String(localized: String.LocalizationValue("attr.blackbox.uncovered.body")),
                     FileSizeFormatter.abbreviated(from: breakdown.residualBytes)))
+                if report.unattributedBytes > 0 {
+                    Text(String(
+                        format: String(localized: String.LocalizationValue("attr.blackbox.unattributed")),
+                        FileSizeFormatter.abbreviated(from: report.unattributedBytes)))
+                        .font(AppFont.callout)
+                        .foregroundStyle(Color.textSecondary)
+                }
                 if breakdown.snapshotCount > 0 {
                     Text(String(
                         format: String(localized: String.LocalizationValue("attr.blackbox.snapshots")),
                         breakdown.snapshotCount))
+                        .font(AppFont.callout)
+                        .foregroundStyle(Color.textSecondary)
                 }
             case .negativeResidual:
-                Text(String(
-                    format: String(localized: String.LocalizationValue("attr.blackbox.residual")),
-                    FileSizeFormatter.abbreviated(from: 0)))
+                // final review I3：残差为负说明口径对不上（如 purgeable 重复计入），
+                // 此时没有任何可信数字 —— 诚实承认数据不足，绝不伪造「约 0 B」。
+                Text("attr.blackbox.insufficient")
             case .insufficientData:
                 Text("attr.blackbox.insufficient")
             }

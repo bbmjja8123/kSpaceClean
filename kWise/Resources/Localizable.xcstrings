@@ -876,6 +876,75 @@
         }
       }
     },
+    "attr.blackbox.unattributed": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Small unmatched items within it total %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其中未匹配小项合计 %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このうち未一致の小項目の合計は %@"
+          }
+        }
+      }
+    },
+    "attr.blackbox.uncovered.body": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ lies outside this scan's coverage (your documents, photos, apps and system areas) — not junk."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "约 %@ 在本次扫描范围之外（你的文档、照片、应用与系统区域）——不是垃圾"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "約 %@ はこのスキャンの範囲外です（書類・写真・アプリ・システム領域）——ゴミではありません"
+          }
+        }
+      }
+    },
+    "attr.blackbox.uncovered.title": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space outside this scan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描未覆盖的空间"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン範囲外の領域"
+          }
+        }
+      }
+    },
     "attr.blackbox.unreadable": {
       "extractionState": "stale",
       "localizations": {

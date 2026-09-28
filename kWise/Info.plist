@@ -3,8 +3,8 @@
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key><string>kWise</string>
-    <key>CFBundleDisplayName</key><string>kWise</string>
+    <key>CFBundleName</key><string>Klaris</string>
+    <key>CFBundleDisplayName</key><string>Klaris</string>
     <key>CFBundleIdentifier</key><string>app.kraftly.klaris</string>
     <key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
     <key>CFBundleShortVersionString</key><string>$(MARKETING_VERSION)</string>
@@ -26,6 +26,6 @@
     <key>NSHumanReadableCopyright</key>
     <string>Copyright © 2026 Kraftly. All rights reserved.</string>
     <key>NSAppleEventsUsageDescription</key>
-    <string>kWise needs Automation permission to help manage Trash and other applications.</string>
+    <string>Klaris needs Automation permission to help manage Trash and other applications.</string>
 </dict>
 </plist>
