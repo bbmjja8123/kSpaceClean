@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Name</key>
+		<string>com.apple.TimeMachine.2026-09-20-031544.local</string>
+		<key>XID</key>
+		<integer>1234567</integer>
+		<key>Ref</key>
+		<integer>89</integer>
+		<key>Note</key>
+		<string>THIS SNAPSHOT IS NOT PURGEABLE</string>
+		<key>CreationDate</key>
+		<date>2026-09-19T19:15:44Z</date>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>com.apple.TimeMachine.2026-09-21-041002.local</string>
+		<key>XID</key>
+		<integer>1234568</integer>
+		<key>Ref</key>
+		<integer>90</integer>
+	</dict>
+</array>
+</plist>
