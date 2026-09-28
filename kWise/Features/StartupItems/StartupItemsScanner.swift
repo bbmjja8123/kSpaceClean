@@ -253,7 +253,7 @@ public actor TrashSnapshotStore {
     public init(directory: URL? = nil) {
         let dir = directory ?? FileManager.default.urls(
             for: .applicationSupportDirectory, in: .userDomainMask
-        ).first!.appendingPathComponent("app.kraftly.sclean", isDirectory: true)
+        ).first!.appendingPathComponent("app.kraftly.klaris", isDirectory: true)
         self.fileURL = dir.appendingPathComponent("startup-item-snapshots.json")
         if let data = try? Data(contentsOf: fileURL),
            let stored = try? JSONDecoder().decode([String: TrashSnapshot].self, from: data) {

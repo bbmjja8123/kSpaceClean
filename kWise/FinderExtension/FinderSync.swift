@@ -30,7 +30,7 @@ final class FinderSync: FIFinderSync {
 
         let path = firstURL.path
         let encodedPath = path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? path
-        guard let url = URL(string: "kspaceclean://scan?path=\(encodedPath)") else { return }
+        guard let url = URL(string: "klaris://scan?path=\(encodedPath)") else { return }
         NSWorkspace.shared.open(url)
     }
 }

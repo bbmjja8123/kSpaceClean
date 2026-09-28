@@ -20,7 +20,7 @@ final class MetricKitReceiverTests: XCTestCase {
 
     func testWritesCrashPayloadToDisk() throws {
         let payload = MetricKitReceiver.CrashPayload(
-            bundleID: "app.kraftly.sclean",
+            bundleID: "app.kraftly.klaris",
             version: "1.0",
             build: "1",
             timestamp: Date(),
@@ -34,14 +34,14 @@ final class MetricKitReceiverTests: XCTestCase {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let decoded = try decoder.decode(MetricKitReceiver.CrashPayload.self, from: data)
-        XCTAssertEqual(decoded.bundleID, "app.kraftly.sclean")
+        XCTAssertEqual(decoded.bundleID, "app.kraftly.klaris")
         XCTAssertEqual(decoded.terminationReason, "EXC_BAD_ACCESS")
     }
 
     func testFileNameIncludesTimestamp() throws {
         let date = Date(timeIntervalSince1970: 1_700_000_000)
         let payload = MetricKitReceiver.CrashPayload(
-            bundleID: "app.kraftly.sclean",
+            bundleID: "app.kraftly.klaris",
             version: "1.0",
             build: "1",
             timestamp: date,
@@ -60,7 +60,7 @@ final class MetricKitReceiverTests: XCTestCase {
     func testPayloadRoundTripPreservesAllFields() throws {
         let timestamp = Date(timeIntervalSince1970: 1_700_000_123)
         let payload = MetricKitReceiver.CrashPayload(
-            bundleID: "app.kraftly.sclean",
+            bundleID: "app.kraftly.klaris",
             version: "1.2.3",
             build: "456",
             timestamp: timestamp,

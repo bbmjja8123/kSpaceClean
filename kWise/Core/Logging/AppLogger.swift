@@ -18,7 +18,7 @@ public struct AppLogger: Sendable {
 
     public init(_ category: Category) {
         self.category = category
-        self.logger = Logger(subsystem: "app.kraftly.sclean", category: category.rawValue)
+        self.logger = Logger(subsystem: "app.kraftly.klaris", category: category.rawValue)
     }
 
     public func debug(_ message: String) {
@@ -46,7 +46,7 @@ public struct AppLogger: Sendable {
 
     /// Interval signposter (Instruments: Points of Interest).
     public func signposter() -> OSSignposter {
-        OSSignposter(subsystem: "app.kraftly.sclean", category: category.rawValue)
+        OSSignposter(subsystem: "app.kraftly.klaris", category: category.rawValue)
     }
 }
 

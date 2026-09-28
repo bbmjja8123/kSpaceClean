@@ -48,6 +48,6 @@ public struct UserPreferences: Codable, Equatable {
 
     private static var preferencesURL: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-            .appendingPathComponent("app.kraftly.sclean/preferences.json")
+            .appendingPathComponent("app.kraftly.klaris/preferences.json")
     }
 }

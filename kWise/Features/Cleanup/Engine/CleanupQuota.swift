@@ -34,7 +34,7 @@ public struct FreeQuotaStore: Sendable {
 
     public let defaults: UserDefaults?
 
-    /// - Parameter defaults: pass an App Group suite (`group.app.kraftly.sclean`);
+    /// - Parameter defaults: pass an App Group suite (`group.app.kraftly.klaris`);
     ///   `nil` defaults are tolerated (tests, extensions without the group) and
     ///   degrade to "nothing recorded".
     public init(defaults: UserDefaults?) {
@@ -43,7 +43,7 @@ public struct FreeQuotaStore: Sendable {
 
     /// App Group defaults for production use.
     public static func standard() -> FreeQuotaStore {
-        FreeQuotaStore(defaults: UserDefaults(suiteName: "group.app.kraftly.sclean"))
+        FreeQuotaStore(defaults: UserDefaults(suiteName: "group.app.kraftly.klaris"))
     }
 
     /// Current period key, e.g. `"2026-09"`.

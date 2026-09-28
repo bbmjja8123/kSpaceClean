@@ -5,7 +5,7 @@
 <dict>
     <key>com.apple.security.app-sandbox</key><true/>
     <key>com.apple.security.application-groups</key>
-    <array><string>group.app.kraftly.sclean</string></array>
+    <array><string>group.app.kraftly.klaris</string></array>
     <key>com.apple.security.network.client</key><false/>
 </dict>
 </plist>

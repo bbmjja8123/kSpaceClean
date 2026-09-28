@@ -6,7 +6,7 @@
 //
 // Markers appear in Instruments' "Points of Interest" lane and in the
 // time-profiler template when recorded with `--include-pointers` or
-// `--time-limit`. The subsystem is `app.kraftly.sclean`; the category
+// `--time-limit`. The subsystem is `app.kraftly.klaris`; the category
 // is `perf` (mirrors the Apple sample code).
 //
 // We use the C `os_signpost` API directly because the higher-level
@@ -20,7 +20,7 @@ import os.log
 ///
 /// Markers appear in Instruments' "Points of Interest" lane and in the
 /// time-profiler template when recorded with `--include-pointers` or
-/// `--time-limit`. The subsystem is `app.kraftly.sclean`; the
+/// `--time-limit`. The subsystem is `app.kraftly.klaris`; the
 /// category is `perf` (mirrors the Apple sample code).
 ///
 /// `OSLog` is documented thread-safe by Apple; we declare the storage
@@ -34,7 +34,7 @@ enum PerfSignpost {
     /// immutable, so concurrent reads are safe from any isolation
     /// domain (background scan workers, the @MainActor view model).
     static let log = OSLog(
-        subsystem: "app.kraftly.sclean",
+        subsystem: "app.kraftly.klaris",
         category: "perf"
     )
 }

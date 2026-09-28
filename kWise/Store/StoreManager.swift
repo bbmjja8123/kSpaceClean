@@ -5,7 +5,7 @@ public final class StoreManager: ObservableObject, StoreProtocol {
     @Published public var isSubscribed = false
     @Published public var isEligibleForTrial = true
 
-    private let productID = "app.kraftly.sclean.subscription.yearly"
+    private let productID = "app.kraftly.klaris.subscription.yearly"
 
     public init() {}
 

@@ -28,7 +28,7 @@ public struct StreakState: Codable, Equatable, Sendable {
 public struct StreakStore: Sendable {
     public let defaults: UserDefaults?
 
-    public init(defaults: UserDefaults? = UserDefaults(suiteName: "group.app.kraftly.sclean")) {
+    public init(defaults: UserDefaults? = UserDefaults(suiteName: "group.app.kraftly.klaris")) {
         self.defaults = defaults
     }
 

@@ -35,7 +35,7 @@ public struct DiskSampleStore: Sendable {
         } else {
             let dir = FileManager.default.urls(
                 for: .applicationSupportDirectory, in: .userDomainMask
-            ).first?.appendingPathComponent("app.kraftly.sclean", isDirectory: true)
+            ).first?.appendingPathComponent("app.kraftly.klaris", isDirectory: true)
             self.fileURL = dir?.appendingPathComponent("usage-samples.json")
         }
     }

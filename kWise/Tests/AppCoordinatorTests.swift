@@ -6,7 +6,7 @@ final class AppCoordinatorTests: XCTestCase {
     func test_handleDeepLink_scan_setsNavigation() {
         let appState = AppState()
         let coordinator = AppCoordinator(appState: appState)
-        let url = URL(string: "kspaceclean://scan")!
+        let url = URL(string: "klaris://scan")!
         let result = coordinator.handleDeepLink(url)
         XCTAssertTrue(result)
         XCTAssertEqual(appState.navigation, .scan)
@@ -15,7 +15,7 @@ final class AppCoordinatorTests: XCTestCase {
     func test_handleDeepLink_unknownHost_returnsFalse() {
         let appState = AppState()
         let coordinator = AppCoordinator(appState: appState)
-        let url = URL(string: "kspaceclean://unknown")!
+        let url = URL(string: "klaris://unknown")!
         let result = coordinator.handleDeepLink(url)
         XCTAssertFalse(result)
     }
@@ -31,7 +31,7 @@ final class AppCoordinatorTests: XCTestCase {
     func test_handleDeepLink_noHost_returnsFalse() {
         let appState = AppState()
         let coordinator = AppCoordinator(appState: appState)
-        let url = URL(string: "kspaceclean://")!
+        let url = URL(string: "klaris://")!
         let result = coordinator.handleDeepLink(url)
         XCTAssertFalse(result)
     }
@@ -50,7 +50,7 @@ final class AppCoordinatorTests: XCTestCase {
 
     func test_handleDeepLink_withNilAppState_returnsTrue() {
         let coordinator = AppCoordinator(appState: nil)
-        let url = URL(string: "kspaceclean://scan")!
+        let url = URL(string: "klaris://scan")!
         let result = coordinator.handleDeepLink(url)
         XCTAssertTrue(result)
     }

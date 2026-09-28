@@ -19,6 +19,7 @@ targets:
   kWise:
     type: application
     platform: macOS
+    productName: Klaris
     sources:
       - path: .
         excludes:
@@ -31,9 +32,10 @@ targets:
           - "FinderExtension/**"  # separate Finder Sync appex target
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris
         INFOPLIST_FILE: Info.plist
-        PRODUCT_NAME: kWise
+        PRODUCT_NAME: Klaris
+        PRODUCT_MODULE_NAME: kWise
         ENTITLEMENTS_FILE: kWise.entitlements
     dependencies:
       - package: kFoundation
@@ -62,7 +64,7 @@ targets:
       - Shared            # WidgetSnapshot feed + RunSmartCareIntent (dual-target)
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.widget
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris.widget
         PRODUCT_NAME: kWiseWidget
         INFOPLIST_FILE: Widgets/Info.plist
         ENTITLEMENTS_FILE: kWiseWidget.entitlements
@@ -87,7 +89,7 @@ targets:
       - FinderExtension
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.finder
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris.finder
         PRODUCT_NAME: kWiseFinder
         INFOPLIST_FILE: FinderExtension/Info.plist
         ENTITLEMENTS_FILE: kWiseFinder.entitlements
@@ -112,7 +114,7 @@ targets:
       - Tests
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.tests
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris.tests
         GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - target: kWise
@@ -125,7 +127,7 @@ targets:
       - path: UITests
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.sclean.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris.uitests
         GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - target: kWise

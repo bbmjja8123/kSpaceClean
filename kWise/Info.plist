@@ -5,7 +5,7 @@
 <dict>
     <key>CFBundleName</key><string>kWise</string>
     <key>CFBundleDisplayName</key><string>kWise</string>
-    <key>CFBundleIdentifier</key><string>app.kraftly.sclean</string>
+    <key>CFBundleIdentifier</key><string>app.kraftly.klaris</string>
     <key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
     <key>CFBundleShortVersionString</key><string>$(MARKETING_VERSION)</string>
     <key>CFBundlePackageType</key><string>APPL</string>
@@ -13,18 +13,10 @@
     <array>
         <dict>
             <key>CFBundleURLName</key>
-            <string>app.kraftly.sclean</string>
+            <string>app.kraftly.klaris</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>kwise</string>
-            </array>
-        </dict>
-        <dict>
-            <key>CFBundleURLName</key>
-            <string>app.kraftly.sclean.legacy</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>kspaceclean</string>
+                <string>klaris</string>
             </array>
         </dict>
     </array>

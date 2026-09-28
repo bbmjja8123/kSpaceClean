@@ -4,7 +4,7 @@
 //
 // Why this exists:
 // * In an App Sandbox build, `NSHomeDirectory()` returns the *container*
-//   path (`~/Library/Containers/app.kraftly.sclean/Data`), and Foundation's
+//   path (`~/Library/Containers/app.kraftly.klaris/Data`), and Foundation's
 //   `(path as NSString).expandingTildeInPath` expands `~` against that
 //   container home. So a category path like `~/Library/Caches` silently
 //   points at the container, the walk finds nothing (or only the app's own

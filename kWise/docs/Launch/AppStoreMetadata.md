@@ -16,7 +16,7 @@ The Smarter Mac Disk Cleaner
 賢い Mac ディスククリーナー
 
 ## Bundle ID
-app.kraftly.sclean
+app.kraftly.klaris
 
 ## SKU
 kraftly-sclean-v1-001

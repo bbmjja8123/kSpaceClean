@@ -101,7 +101,7 @@ public struct WidgetSnapshotStore: Sendable {
     public let fileURL: URL?
 
     /// - Parameter fileURL: injectable for tests; production resolves the
-    ///   App Group container (`group.app.kraftly.sclean`).
+    ///   App Group container (`group.app.kraftly.klaris`).
     public init(fileURL: URL? = nil) {
         // Test host runs the real app binary — it must never touch the App
         // Group container. The unsigned test host wedges inside `open` on
@@ -114,7 +114,7 @@ public struct WidgetSnapshotStore: Sendable {
         } else if let fileURL {
             self.fileURL = fileURL
         } else if let container = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: "group.app.kraftly.sclean"
+            forSecurityApplicationGroupIdentifier: "group.app.kraftly.klaris"
         ) {
             self.fileURL = container.appendingPathComponent("widget-snapshot.json")
         } else {

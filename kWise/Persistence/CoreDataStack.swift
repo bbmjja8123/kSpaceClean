@@ -24,7 +24,7 @@ public final class CoreDataStack: ObservableObject {
             // Production: use app group container if available, fall back to Application Support
             let storeURL: URL? = {
                 if let groupURL = FileManager.default
-                    .containerURL(forSecurityApplicationGroupIdentifier: "group.app.kraftly.sclean") {
+                    .containerURL(forSecurityApplicationGroupIdentifier: "group.app.kraftly.klaris") {
                     return groupURL.appendingPathComponent("\(modelName).sqlite")
                 }
                 // Fallback when not sandboxed (e.g. Debug / no code signing)

@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-               BuildableName = "kWise.app"
+               BuildableName = "Klaris.app"
                BlueprintName = "kWise"
                ReferencedContainer = "container:kWise.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-            BuildableName = "kWise.app"
+            BuildableName = "Klaris.app"
             BlueprintName = "kWise"
             ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>
@@ -69,7 +69,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-            BuildableName = "kWise.app"
+            BuildableName = "Klaris.app"
             BlueprintName = "kWise"
             ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>
@@ -88,7 +88,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2F2A0D561BB536B568F3CA64"
-            BuildableName = "kWise.app"
+            BuildableName = "Klaris.app"
             BlueprintName = "kWise"
             ReferencedContainer = "container:kWise.xcodeproj">
          </BuildableReference>

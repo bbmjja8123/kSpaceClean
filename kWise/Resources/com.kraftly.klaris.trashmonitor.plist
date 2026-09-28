@@ -4,7 +4,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.kraftly.kspaceclean.trashmonitor</string>
+    <string>com.kraftly.klaris.trashmonitor</string>
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/security</string>

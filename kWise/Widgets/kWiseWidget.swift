@@ -67,7 +67,7 @@ struct DiskUsageWidgetView: View {
                 .foregroundStyle(.secondary)
         }
         .padding(4)
-        .widgetURL(URL(string: "kwise://smartcare"))
+        .widgetURL(URL(string: "klaris://smartcare"))
     }
 
     private func content(snapshot: WidgetSnapshot, disk: WidgetSnapshot.DiskInfo) -> some View {
@@ -110,7 +110,7 @@ struct DiskUsageWidgetView: View {
             }
         }
         .padding(4)
-        .widgetURL(URL(string: "kwise://smartcare"))
+        .widgetURL(URL(string: "klaris://smartcare"))
     }
 }
 
@@ -121,7 +121,7 @@ struct DiskUsageWidgetView: View {
 /// `AppCoordinator`. The whole widget surface also deep-links via `widgetURL`.
 struct kWiseDiskWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "app.kraftly.sclean.widget", provider: DiskUsageProvider()) { entry in
+        StaticConfiguration(kind: "app.kraftly.klaris.widget", provider: DiskUsageProvider()) { entry in
             DiskUsageWidgetView(entry: entry)
         }
         .configurationDisplayName("磁盘占用")

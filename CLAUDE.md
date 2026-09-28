@@ -13,7 +13,7 @@
 
 | App | Bundle ID | 主轴 | 定价 | 状态 |
 |---|---|---|---|---|
-| **kWise**（Mac 管家 / CMM 对标） | `app.kraftly.sclean` | 对标 CleanMyMac X：Smart Care + 启动项 + 隐私 + 磁盘健康 + 基础卸载/粉碎 | Free Trial 7 天 → $19.99/年 | 🔄 **v1.5 路线定稿** |
+| **kWise**（Mac 管家 / CMM 对标） | `app.kraftly.klaris` | 对标 CleanMyMac X：Smart Care + 启动项 + 隐私 + 磁盘健康 + 基础卸载/粉碎 | Free Trial 7 天 → $19.99/年 | 🔄 **v1.5 路线定稿** |
 | **kMonitor**（菜单栏监控） | `app.kraftly.kmonitor` | 平台集成 + Widget | 待设计 | 📋 Backlog |
 | **kSift**（重复/大文件/粉碎） | `app.kraftly.ksift` | 极客 + AI（开发者场景） | $9.99 买断 | 📋 Spec 定稿 |
 | **kUninstall**（应用卸载） | `app.kraftly.kuninstall` | 平台集成 + 自动化 | 待设计 | 📋 Backlog |
@@ -22,7 +22,7 @@
 - 命名规范：所有 App 以 `k` 前缀开头（kWise, kMonitor, kSift, kUninstall）
 - 统一品牌：**Kraftly**（App Store 元数据、官网、社交账号统一）
 - Slogan 候选：`Kraft — Cleaner Mac tools, made with care`
-- **历史改名**：原 `kSpaceClean` 已重命名为 `kWise`（2026-08-03 锁定）。bundle ID `app.kraftly.sclean` 保持不变以保留 App Store 历史评分、评论、内购项目。详见 §3.10。
+- **历史改名**：原 `kSpaceClean` 已重命名为 `kWise`（2026-08-03 锁定）；2026-09-28 P0 归因改造时 bundle ID 再次迁移为 `app.kraftly.klaris`（App 从未上架，无历史评分/内购需保留，App Group 同步迁至 `group.app.kraftly.klaris`，深链统一为 `klaris://`）。详见 §3.0。
 
 ---
 
@@ -106,8 +106,8 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 
 ### 3.0 命名与定位
 
-- **产品名**：kWise（CN: 智洁）
-- **bundle ID**：`app.kraftly.sclean`（不变，保留 App Store 历史）
+- **产品名**：Klaris（CN: 明澈）—— Xcode target/模块名仍为 `kWise`（2026-09-28 P0 已迁移，PRODUCT_NAME=Klaris）
+- **bundle ID**：`app.kraftly.klaris`（2026-09-28 P0 迁移；App Group `group.app.kraftly.klaris`，深链 `klaris://`）
 - **Slogan**：Smarter care for your Mac / 智能清理，焕然如新
 - **对标**：CleanMyMac X
 - **产品矩阵**：kWise 主 + kMonitor / kSift / kUninstall 独立 App（双层矩阵，B1a）
@@ -358,7 +358,7 @@ kWise/
 - [x] **Phase 3 CTA + 菜单栏** — Smart Care hero CTA 全流程状态机 + containerOnly 授权卡；DiskHealthCard 上首页；菜单栏 quickClean/quickScan/openSettings 实现 + 真实「最近清理」行（CleanupEventSink）
 - [x] **Phase 4 空间地图 2D** — SegmentBuilder（2π 守恒/小项折叠）+ Canvas sunburst/treemap + 下钻/面包屑 + ⌘选中映射 ScanTreeNode（删 .galaxy）
 - [x] **Phase 5 M2 + M6** — 启动项：PowerScope 扫描 + 用户级 trash/restore 开关 + 系统级「需手动处理」引导；粉碎：护栏 → 1-pass 覆写（SSD 诚实文案）→ 校验 → 3 次改名 → trash 处置 + DELETE 确认
-- [x] **Phase 6 Widget + Intents** — kWise/Shared/WidgetFeed 双 target（WidgetSnapshot 原子写 App Group + schemaVersion 守卫）；Widget 真实数据 + 交互清理按钮（Button(intent:) → kwise://smartcare）；Intents 回 target（Shortcuts 恢复）
+- [x] **Phase 6 Widget + Intents** — kWise/Shared/WidgetFeed 双 target（WidgetSnapshot 原子写 App Group + schemaVersion 守卫）；Widget 真实数据 + 交互清理按钮（Button(intent:) → klaris://smartcare）；Intents 回 target（Shortcuts 恢复）
 - [x] **Phase 7 创意三件套** — Core Data 轻量迁移（runID/actionKind/restoredAt）+ 时间线（按 run 分组、整体回滚）；月报（DiskSampleStore 环形采样 + OLS 预测，r²<0.5 → 波动较大）；StreakStore/9 成就/StreakSink → widget streak
 - [x] **Phase 8 助手 + Onboarding + 本地化** — AssistantIntentMatcher（zh/en 模板表，零网络，audit 测试禁 URLSession）+ 答案卡片；Onboarding 首启（welcome → PowerScope → tour）；xcstrings 30 → 51 keys（nav.* 三语）；NewCopyAuditTests（scareware 禁语 + 粉碎诚实文案）
 - [x] **测试** — Phase 1/2/3/4/5/6/7/8 各模块新增 ~90 用例；xcodebuild test-runner 曾于 2026-09-05 挂起（环境 wedge），已随重启恢复 — 见「收尾债清理」全量基线

@@ -21,15 +21,15 @@ public final class AppCoordinator: ObservableObject {
         self.appState = appState
     }
 
-    // MARK: - Deep links (kwise:// primary, kspaceclean:// alias)
+    // MARK: - Deep links (klaris://)
 
     /// Handle an incoming deep link URL. Returns `true` when handled.
     @discardableResult
     public func handleDeepLink(_ url: URL) -> Bool {
         guard let scheme = url.scheme,
-              scheme == "kwise" || scheme == "kspaceclean"
+              scheme == "klaris"
         else { return false }
-        // kwise://scan → host "scan"
+        // klaris://scan → host "scan"
         guard let host = url.host else { return false }
 
         switch host {
@@ -91,7 +91,7 @@ public final class AppCoordinator: ObservableObject {
         }
     }
 
-    /// `kwise://clean?path=/some/file` — the Finder extension's context-menu
+    /// `klaris://clean?path=/some/file` — the Finder extension's context-menu
     /// deep link. The `path` parameter was historically ignored; it now
     /// pre-seeds the cleanup surface with that file (v2.0 Phase 2).
     private func handleCleanLink(_ url: URL) -> Bool {
