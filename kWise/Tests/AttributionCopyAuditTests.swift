@@ -38,21 +38,46 @@ final class AttributionCopyAuditTests: XCTestCase {
 
     /// 「不敢判」必须在三种语言里都是退让措辞 —— 这是拒答清单的诚信底线。
     func testUncertainCopyHedgesInAllLanguages() throws {
+        let unit = try XCTUnwrap(try catalogLocalizations()["attr.reclaim.uncertain"])
+        XCTAssertTrue(try XCTUnwrap(unit["zh-Hans"]?.stringUnit?.value).contains("不敢判"))
+        XCTAssertTrue(try XCTUnwrap(unit["en"]?.stringUnit?.value).contains("Can't judge"))
+        XCTAssertTrue(try XCTUnwrap(unit["ja"]?.stringUnit?.value).contains("判定できない"))
+    }
+
+    /// 本模块 55 个 `attr.*` 条目的文案不在源码字面里（AttributionCopy.swift 只解析 key），
+    /// 而在 xcstrings 的 `localizations` 值里 —— 禁语扫描必须覆盖文案实际所在处，
+    /// 否则恐吓短语以本地化值出现时将完全绕过源码扫描（review r1 修复的盲点）。
+    func testNoScarewareInCatalogValues() throws {
+        let localizations = try catalogLocalizations()
+        XCTAssertGreaterThanOrEqual(
+            localizations.filter { $0.key.hasPrefix("attr.") }.count, 55,
+            "attr.* 条目数守卫：catalog 形状变化时不得静默漏扫")
+        for (key, langs) in localizations {
+            for (lang, unit) in langs {
+                guard let value = unit.stringUnit?.value else { continue }
+                for phrase in Self.bannedPhrases {
+                    XCTAssertFalse(value.contains(phrase),
+                                   "\(key) [\(lang)] 含禁语「\(phrase)」")
+                }
+            }
+        }
+    }
+
+    // 实测 catalog 每条 value 是 { extractionState?, comment?, localizations }，
+    // 不能直接当 [String: Unit] 解（brief 原码在此红）——只取 localizations，
+    // 忽略同级元数据键（对 brief 逐字版的披露偏差）。
+    private struct Catalog: Decodable { let strings: [String: Entry] }
+    private struct Entry: Decodable { let localizations: [String: Unit]? }
+    private struct Unit: Decodable { struct SU: Decodable { let value: String? }; let stringUnit: SU? }
+
+    /// key → 语言 → stringUnit（解析一次，供 hedge 断言与全量禁语扫描共用）。
+    private func catalogLocalizations() throws -> [String: [String: Unit]] {
         let url = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .appendingPathComponent("Resources/Localizable.xcstrings")
-        // 实测 catalog 每条 value 是 { extractionState?, comment?, localizations }，
-        // 不能直接当 [String: Unit] 解（brief 原码在此红）——只取 localizations，
-        // 忽略同级元数据键（对唯一披露的偏差）。
-        struct Catalog: Decodable { let strings: [String: Entry] }
-        struct Entry: Decodable { let localizations: [String: Unit]? }
-        struct Unit: Decodable { struct SU: Decodable { let value: String? }; let stringUnit: SU? }
         let catalog = try JSONDecoder().decode(Catalog.self,
                                                from: Data(contentsOf: url))
-        let unit = try XCTUnwrap(catalog.strings["attr.reclaim.uncertain"]?.localizations)
-        XCTAssertTrue(try XCTUnwrap(unit["zh-Hans"]?.stringUnit?.value).contains("不敢判"))
-        XCTAssertTrue(try XCTUnwrap(unit["en"]?.stringUnit?.value).contains("Can't judge"))
-        XCTAssertTrue(try XCTUnwrap(unit["ja"]?.stringUnit?.value).contains("判定できない"))
+        return catalog.strings.compactMapValues { $0.localizations }
     }
 }
