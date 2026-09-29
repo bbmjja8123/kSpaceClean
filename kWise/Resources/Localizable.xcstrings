@@ -1290,6 +1290,29 @@
         }
       }
     },
+    "attr.confidence.probable": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probable (on-device model)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "推測（端末内モデル）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "推测（本地模型）"
+          }
+        }
+      }
+    },
     "attr.ev.lastModified": {
       "extractionState": "stale",
       "localizations": {

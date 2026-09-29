@@ -25,16 +25,21 @@ public struct AttributionService: Sendable {
     public let volumeReader: VolumeLayerReader?
     public let rootURL: URL
     public let volumeUsedBytesProvider: @Sendable () -> Int64?
+    /// L1 语义归因（spec §4.5 第二层）：仅对引擎拒答（`.refused`）项做句向量推测。
+    /// 默认 `nil` = 不升级（P0 行为不变）；`live()` 注入真实现。
+    public let semanticProvider: SemanticAttributionProviding?
 
     public init(engine: AttributionRuleEngine,
                 volumeReader: VolumeLayerReader? = VolumeLayerReader(),
                 rootURL: URL = URL(fileURLWithPath: "/"),
                 volumeUsedBytesProvider: @escaping @Sendable () -> Int64?
-                    = { AttributionService.systemVolumeUsedBytes() }) {
+                    = { AttributionService.systemVolumeUsedBytes() },
+                semanticProvider: SemanticAttributionProviding? = nil) {
         self.engine = engine
         self.volumeReader = volumeReader
         self.rootURL = rootURL
         self.volumeUsedBytesProvider = volumeUsedBytesProvider
+        self.semanticProvider = semanticProvider
     }
 
     /// 生产装配：语料来自 App 包。语料缺失 → 空语料（一切进拒答，诚实降级）。
@@ -50,7 +55,8 @@ public struct AttributionService: Sendable {
             .flatMap { try? AttributionRuleCorpus.load(from: $0) }
             ?? AttributionRuleCorpus(schemaVersion: 1, rules: [])
         return AttributionService(engine: AttributionRuleEngine(
-            corpus: corpus, homeDirectory: home))
+            corpus: corpus, homeDirectory: home),
+            semanticProvider: SentenceEmbeddingAttributionProvider())
     }
 
     public func attribute(categories: [ScanCategory]) async -> AttributionReport {
@@ -68,6 +74,8 @@ public struct AttributionService: Sendable {
             // `.certain` / `.refused`。L1/L2（阈值归因，产出 `.probable`）接线后，
             // 这里的隐式假设必须由该实现显式接管 —— 在此 fail loud，禁止 L1 实现者
             // 无意间把 `.probable` 静默吞进阈值路由（spec §4.5）。
+            // （本 precondition 只对 engine 直接输出生效；service 自己在下方管道
+            // 产生的 `.probable` 升级项发生在此检查之后，不受它约束。）
             precondition(attribution.confidence != .probable,
                          "L1/L2 routing not wired yet — see spec §4.5")
             switch (attribution.confidence, attribution.reclaim) {
@@ -81,6 +89,24 @@ public struct AttributionService: Sendable {
                 } else {
                     unattributedBytes += attribution.bytes
                 }
+            }
+        }
+
+        // L1 语义升级（spec §4.5）：仅对 L0 拒答项；推测不改 reclaim、不进 items。
+        // R3（binding）：升级项仍留在 refused 清单 —— 推测不等于建议。
+        // 规则命中但「不敢判」的项（confidence == .certain / reclaim == .uncertain）
+        // 虽同在 refused，也绝不过 provider（来源必须保持 .rule 可引用）。
+        if let semanticProvider {
+            refused = refused.map { item in
+                guard item.confidence == .refused,
+                      let path = item.paths.first,
+                      let cause = semanticProvider.probableCause(for: path)
+                else { return item }
+                return SpaceAttribution(
+                    scope: item.scope, paths: item.paths, bytes: item.bytes,
+                    owner: item.owner, cause: cause, reclaim: item.reclaim,
+                    confidence: .probable, source: .nlEmbedding, ruleID: nil,
+                    evidence: item.evidence, lastModified: item.lastModified)
             }
         }
 
