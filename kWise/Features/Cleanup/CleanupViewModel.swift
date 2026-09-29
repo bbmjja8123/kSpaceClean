@@ -118,21 +118,33 @@ public final class CleanupViewModel: ObservableObject {
         return CleanupRehearsal.build(targets: targets, attributions: attributionLookup?() ?? [])
     }
 
-    /// 执行段（P1 T4）：只消费 ``pendingTargets`` —— **确认只执行预演过的
-    /// 清单**。空 = 直接返回：绝不把「上次 targets」或 `urlsToCleanup`
-    /// 当成兜底重新执行。
+    /// 执行段（P1 T4；r1 修订）：执行集合**以传入的 `confirmedTargets` 为准**
+    /// （预演 sheet 上用户取消勾选的子集绝不执行）；未传时回退到
+    /// ``pendingTargets``（其语义为「上次预演的全部项」）。空集合 = 直接
+    /// 返回：绝不把「上次 targets」或 `urlsToCleanup` 当成兜底重新执行。
     ///
-    /// - Parameter sizes: 保留参数（与 ``cleanupNow(sizes:)`` 签名同型，
-    ///   便于调用方平移）；执行大小以预演暂存的 target 为准，本参数不参与。
-    public func executeConfirmedCleanup(sizes: [URL: Int64]?) async {
-        guard !pendingTargets.isEmpty else { return }
+    /// 双击守卫（r1 Important 3）：`@MainActor` 保证进入时同步执行 ——
+    /// 先捕获执行集合并立即清空 ``pendingTargets``、置位 ``isCleaning``，
+    /// 在途期间的第二次调用（以及执行完成后的重放）都拿不到任何清单。
+    ///
+    /// - Parameters:
+    ///   - sizes: 保留参数（与 ``cleanupNow(sizes:)`` 签名同型，便于调用方
+    ///     平移）；执行大小以 target 自带 size 为准，本参数不参与。
+    ///   - confirmedTargets: 预演 sheet 确认后传出的勾选子集（nil = 未接
+    ///     预演 UI 的兼容路径，用暂存的全量）。
+    public func executeConfirmedCleanup(sizes: [URL: Int64]? = nil,
+                                        confirmedTargets: [CleanupTarget]? = nil) async {
+        guard !isCleaning else { return }
+        let toRun = confirmedTargets ?? pendingTargets
+        pendingTargets = []
+        guard !toRun.isEmpty else { return }
         isCleaning = true
         defer {
             isCleaning = false
             Task { await self.refreshHistory() }
         }
         do {
-            let outcome = try await engine.cleanup(targets: pendingTargets)
+            let outcome = try await engine.cleanup(targets: toRun)
             self.lastOutcome = outcome
             // Best-effort conversion into the legacy TrashResult shape so the
             // history list view keeps rendering through the existing
@@ -157,8 +169,7 @@ public final class CleanupViewModel: ObservableObject {
             // Phase B Task 5: best-effort; UI shows the error via `lastResult`.
             self.lastResult = nil
         }
-        // 执行完成即作废暂存 —— 预演 sheet 关闭/执行后都不可重放同一清单。
-        pendingTargets = []
+        // （暂存在进入时已同步清空 —— 双击/重放都拿不到清单。）
     }
 
     public func refreshHistory() async {

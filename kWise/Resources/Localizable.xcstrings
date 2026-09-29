@@ -2228,7 +2228,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "共 %@ · 确认 %lld / 项（全部 %lld 项）"
+            "value": "共 %@ · 确认 %lld / %lld 项"
           }
         }
       }

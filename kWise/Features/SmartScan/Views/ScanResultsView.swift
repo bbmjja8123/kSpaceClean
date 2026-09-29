@@ -106,17 +106,24 @@ struct ScanResultsView: View {
             // P1 T4 两段式：确认面板（第一段）→ 预演清单（第二段人签）。
             // 同一呈现节点按状态换内容，关闭即作废。
             if let payload = rehearsalPayload {
-                CleanupRehearsalSheet(items: payload.items) {
-                    Task {
-                        await cleanupViewModel.executeConfirmedCleanup(sizes: nil)
+                CleanupRehearsalSheet(
+                    items: payload.items,
+                    onConfirm: { confirmed in
+                        // r1 fix（Critical 1）：确认只执行 sheet 上仍然勾选的子集。
+                        Task {
+                            await cleanupViewModel.executeConfirmedCleanup(
+                                sizes: nil, confirmedTargets: confirmed)
+                            rehearsalPayload = nil
+                            showCleanupConfirm = false
+                        }
+                    },
+                    onCancel: {
+                        // 取消预演 = 作废（VM 的 pendingTargets 会在下一次
+                        // makeRehearsal 覆盖，这里清掉本地面板状态即可）。
                         rehearsalPayload = nil
-                        showCleanupConfirm = false
-                    }
-                } onCancel: {
-                    // 取消预演 = 作废（VM 的 pendingTargets 会在下一次
-                    // makeRehearsal 覆盖，这里清掉本地面板状态即可）。
-                    rehearsalPayload = nil
-                }
+                    },
+                    isExecuting: cleanupViewModel.isCleaning
+                )
                 .frame(width: 560, height: 480)
             } else {
                 CleanupConfirmSheet(

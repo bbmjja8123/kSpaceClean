@@ -192,8 +192,10 @@ struct AttributionPreviewView: View {
 
 extension SpaceAttribution {
     /// 行内展开的理由链尾行：规则 note（xcstrings key 装配）。
+    /// r1 fix（P1 T4 review）：key 必须先拼接再构造 LocalizationValue ——
+    /// 插值写法会把 key 变成 "attr.notes.%@"，查表必失配而渲染裸 key。
     var notesText: String {
         guard let ruleID else { return "" }
-        return String(localized: String.LocalizationValue("attr.notes.\(ruleID)"))
+        return String(localized: String.LocalizationValue("attr.notes." + ruleID))
     }
 }

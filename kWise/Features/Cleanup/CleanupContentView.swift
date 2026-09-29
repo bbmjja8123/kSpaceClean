@@ -42,15 +42,22 @@ struct CleanupContentView: View {
         // P1 T4 二次人签：确认弹窗只负责预演，真正的执行在预演 sheet 的
         // 「确认执行」按钮里（executeConfirmedCleanup 消费 pendingTargets）。
         .sheet(item: $rehearsalPayload) { payload in
-            CleanupRehearsalSheet(items: payload.items) {
-                Task {
-                    await viewModel.executeConfirmedCleanup(sizes: nil)
+            CleanupRehearsalSheet(
+                items: payload.items,
+                onConfirm: { confirmed in
+                    // r1 fix（Critical 1）：确认只执行 sheet 上仍然勾选的子集。
+                    Task {
+                        await viewModel.executeConfirmedCleanup(
+                            sizes: nil, confirmedTargets: confirmed)
+                        rehearsalPayload = nil
+                    }
+                },
+                onCancel: {
+                    // 取消 = 作废；下一次确认会重新预演覆盖 pendingTargets。
                     rehearsalPayload = nil
-                }
-            } onCancel: {
-                // 取消 = 作废；下一次确认会重新预演覆盖 pendingTargets。
-                rehearsalPayload = nil
-            }
+                },
+                isExecuting: viewModel.isCleaning
+            )
         }
         .confirmationDialog(
             "确认清理",

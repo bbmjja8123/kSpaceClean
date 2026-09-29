@@ -54,11 +54,7 @@ final class CleanupViewModelRehearsalTests: XCTestCase {
 
     /// 预演项必须带归因（来自 attributionLookup），缺席时诚实为 nil。
     func testRehearsalCarriesAttributionFromLookup() async {
-        let attr = SpaceAttribution(
-            scope: .fileTree, paths: [], bytes: 1, owner: .system, cause: .cache,
-            reclaim: .recycles(expectedDays: 3), confidence: .certain,
-            source: .rule, ruleID: "caches.app-generic", evidence: [], lastModified: nil)
-        let (vm, root) = makeVM(attributions: [attr])
+        let (vm, root) = makeVM(attributions: [])
         let a = root.appendingPathComponent("a.bin")
         try? Data("x".utf8).write(to: a)
 
@@ -73,5 +69,63 @@ final class CleanupViewModelRehearsalTests: XCTestCase {
         XCTAssertEqual(items.count, 1)
         XCTAssertEqual(items[0].attribution?.ruleID, "caches.app-generic")
         XCTAssertEqual(items[0].target.size, 1, "预演 target 的大小来自 sizes 入参")
+    }
+
+    // MARK: - r1 review fixes
+
+    /// r1 Critical 1 —— 排除侧契约：sheet 上取消勾选的行**绝不执行**。
+    /// 预演 2 项，确认只传 a 的 target（模拟 sheet 的 exempt 交互）→
+    /// b 必须原样保留。
+    func testConfirmCarriesOnlyConfirmedSubset() async {
+        let (vm, root) = makeVM(attributions: [])
+        let a = root.appendingPathComponent("a.bin")
+        let b = root.appendingPathComponent("b.bin")
+        try? Data("x".utf8).write(to: a)
+        try? Data("y".utf8).write(to: b)
+
+        let items = await vm.makeRehearsal(sizes: [a: 1, b: 2], urls: [a, b])
+        XCTAssertEqual(items.count, 2)
+        // 用户在 CleanupRehearsalSheet 里取消勾选 b —— onConfirm 只带 a。
+        let confirmed = items.filter { $0.target.url != b }.map(\.target)
+        XCTAssertEqual(confirmed.count, 1)
+
+        await vm.executeConfirmedCleanup(sizes: nil, confirmedTargets: confirmed)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: a.path), "勾选项被清理")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: b.path),
+                      "取消勾选的行绝不能被删除（r1 Critical 1）")
+        XCTAssertTrue(vm.pendingTargets.isEmpty, "执行后暂存作废，不可重放")
+    }
+
+    /// r1 Important 2 —— notes 行必须本地化解析，而不是渲染裸 key。
+    /// 插值写法会查 `attr.notes.%@`（不存在）→ 返回裸 key；拼接写法查
+    /// `attr.notes.<ruleID>`（xcstrings 在）。测试宿主语言环境不可控，
+    /// 故断言「≠ 裸 key 字符串」且不带 key 前缀（coordinator 裁定形式）。
+    func testNotesLineResolvesLocalizedNotBareKey() {
+        let resolved = String(localized: String.LocalizationValue(
+            "attr.notes." + "caches.app-generic"))
+        XCTAssertNotEqual(resolved, "attr.notes.caches.app-generic",
+                          "拼接 key 必须命中 xcstrings 译文，而非渲染裸 key")
+        XCTAssertFalse(resolved.hasPrefix("attr.notes."),
+                       "解析结果不得带 key 前缀（裸 key 查表失配的特征）")
+        XCTAssertFalse(resolved.isEmpty)
+    }
+
+    /// r1 Important 3 —— 双击/重放守卫：执行后暂存已清空，第二次调用
+    /// 是 no-op（不产生新 outcome、不改变上次结果）。
+    func testSecondExecuteAfterRunIsNoOp() async {
+        let (vm, root) = makeVM(attributions: [])
+        let a = root.appendingPathComponent("a.bin")
+        try? Data("x".utf8).write(to: a)
+        _ = await vm.makeRehearsal(sizes: [a: 1], urls: [a])
+
+        await vm.executeConfirmedCleanup(sizes: nil)
+        let firstSucceeded = vm.lastOutcome?.succeeded ?? []
+        XCTAssertEqual(firstSucceeded, [a])
+
+        // 第二次（重复点击/重放）：pendingTargets 已在首次进入时清空。
+        await vm.executeConfirmedCleanup(sizes: nil)
+        XCTAssertEqual(vm.lastOutcome?.succeeded ?? [], firstSucceeded,
+                       "第二次执行必须是 no-op，结果不变")
+        XCTAssertTrue(vm.pendingTargets.isEmpty)
     }
 }
