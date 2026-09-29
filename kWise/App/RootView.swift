@@ -35,8 +35,9 @@ struct RootView: View {
     @StateObject private var spaceMapViewModel = SpaceMapViewModel(
         rootsProvider: { [] }
     )
-    /// 归因透视（P0 Task 9）— 与空间地图共用同一棵扫描树，服务只读不清理。
-    @StateObject private var attributionPreviewViewModel = AttributionPreviewViewModel(
+    /// 空间解剖（P1 T5 新首屏）— 与空间地图共用同一棵扫描树，服务只读不清理；
+    /// 页内零清理动作，唯一回收入口是「安全快捷回收」按钮（跳 Smart Care）。
+    @StateObject private var anatomyViewModel = AnatomyViewModel(
         service: .live()
     )
     /// First-launch onboarding (v2.0 Phase 8) — welcome → PowerScope grant
@@ -141,14 +142,13 @@ struct RootView: View {
             // 空间地图 renders the scan tree — rebind the roots provider now
             // that scanResultsViewModel exists (init-time capture would be nil).
             spaceMapViewModel.rebindRoots { scanResultsViewModel.categories }
-            // 归因透视 reads the same live scan results（init-time capture 不可用，
+            // 空间解剖 reads the same live scan results（init-time capture 不可用，
             // 同 rebindRoots 的晚绑定模式）。
-            attributionPreviewViewModel.rebindCategories { scanResultsViewModel.categories }
+            anatomyViewModel.rebindCategories { scanResultsViewModel.categories }
             // P1 T4 — 清理预演的归因晚绑定：预演 sheet 逐项「为什么可以回收」
-            // 读这份 report。TODO(P1-T5): T5 把预览 VM 换成 anatomy VM 时，
-            // 这一行同步改为 anatomy VM 的 report。
+            // 读这份 report（T5 起数据源是解剖视图的 anatomy VM）。
             cleanupViewModel.attributionLookup = {
-                attributionPreviewViewModel.report?.items ?? []
+                anatomyViewModel.report?.items ?? []
             }
             // 清理助手 reads the live scan results for data-backed answers.
             graph.assistantScanVM = scanResultsViewModel
@@ -196,16 +196,12 @@ struct RootView: View {
             TimelineView()
         case .settings:
             SettingsView()
-        // P1 T1 — provisional surface so the new rail head compiles before
-        // the anatomy view exists. Task 5 replaces this branch; keeping the
-        // Smart Care hero here is deliberately *not* misleading (it is the
-        // same surface `klaris://smartcare` deep links now land on).
-        // TODO(P1-T5): anatomy view replaces this provisional branch.
+        // P1 T5 — 解剖视图首屏（spec §1.1 英雄）:「你的 N GB，去哪了」。
+        // 页内零清理动作；「安全快捷回收」是唯一回收入口，跳 Smart Care 次级页。
         case .anatomy:
-            SmartCareHeroView(
-                viewModel: smartCareViewModel,
-                diskHealthViewModel: diskHealthViewModel
-            )
+            AnatomyView(viewModel: anatomyViewModel) {
+                appState.navigation = .smartCare
+            }
         // v1.5 stage B — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
         // Real module views land in Phase B Task 3+ / Phase C Task 7+ / Phase D Task 11+.
         case .smartCare:
@@ -243,8 +239,13 @@ struct RootView: View {
             )
         case .maintenance:
             MaintenanceView(viewModel: makeMaintenanceViewModel())
+        // P0 验证面已退役（P1 T5）：`.attribution` 不再有独立视图 —— 工具箱
+        // 卡片与一切入口都已指向 `.anatomy`。这个 case 仅因枚举未删而保留，
+        // 路由到同一解剖面，绝不渲染已删除的 preview。
         case .attribution:
-            AttributionPreviewView(viewModel: attributionPreviewViewModel)
+            AnatomyView(viewModel: anatomyViewModel) {
+                appState.navigation = .smartCare
+            }
         }
     }
 

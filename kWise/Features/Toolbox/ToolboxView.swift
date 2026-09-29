@@ -66,11 +66,12 @@ struct ToolboxView: View {
                         subtitle: "可视化磁盘占用",
                         destination: .spaceMap
                     )
+                    // P1 T5：P0 验证面（.attribution）退役 —— 卡片直达解剖首屏。
                     ToolboxCard(
                         icon: "magnifyingglass.circle",
                         title: "归因透视",
                         subtitle: "你的空间去哪了",
-                        destination: .attribution
+                        destination: .anatomy
                     )
                     ToolboxCard(
                         icon: "wrench.and.screwdriver",
