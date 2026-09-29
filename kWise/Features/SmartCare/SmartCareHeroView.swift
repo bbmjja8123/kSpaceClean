@@ -2,25 +2,27 @@ import SwiftUI
 import DesignSystem
 import PowerScope
 
-/// Hybrid UI first screen (v1.5 hero + v2.0 Phase 3 wiring).
+/// 「安全快捷回收」次级页（P1 T6 降级 — spec §3.1）。
 ///
-/// Renders the home surface: a hero card driving the Smart Care 3-step
-/// flow (scan → recommend → confirm → clean) + a module grid. The hero
-/// CTA used to be `Button(action: {})` — it now runs the orchestrator
-/// end-to-end and honestly surfaces the scope state (container-only users
-/// see a grant card, never an empty scan).
+/// 首屏已让位给解剖视图（P1 T5）；本页从导航枢纽收缩为单卡次级页：
+/// 只保留 Smart Care 3 步流（scan → recommend → confirm → clean）的
+/// 状态机卡片 + 一行诚实说明。不再渲染模块网格、不再承担页面跳转 ——
+/// 入口只剩解剖视图的「安全快捷回收」按钮、菜单栏 quickClean 与扫描
+/// 结果页内嵌面板。container-only 用户看到的是授权卡（controller
+/// ruling R1），绝不是一次空跑。
 ///
 /// - C-2 (SHOULD): hero CTA occupies ≤30% of available vertical area.
 struct SmartCareHeroView: View {
-    @EnvironmentObject var appState: AppState
     @ObservedObject var viewModel: SmartCareViewModel
-    @ObservedObject var diskHealthViewModel: DiskHealthViewModel
     @ObservedObject private var appScope = AppScope.shared
 
     var body: some View {
         VStack(spacing: AppSpacing.lg) {
             heroCard
-            moduleGrid
+            Text("attr.safeclean.subtitle")
+                .font(AppFont.caption)
+                .foregroundStyle(Color.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
             Spacer(minLength: 0)
         }
         .padding(AppSpacing.lg)
@@ -47,7 +49,7 @@ struct SmartCareHeroView: View {
                 .font(.system(size: 32))
                 .foregroundStyle(Color.brandAccent)
             VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                Text("授权后开始 Smart Care")
+                Text("授权后开始安全快捷回收")
                     .font(AppFont.title2)
                     .foregroundStyle(Color.textPrimary)
                 Text("授权主目录后，kWise 才能发现可清理的缓存与残留。")
@@ -101,12 +103,10 @@ struct SmartCareHeroView: View {
                     .font(.system(size: 32))
                     .foregroundStyle(Color.brandPrimary)
                 VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                    Text("Smart Care")
+                    Text("nav.smartCare")
                         .font(AppFont.title2)
                         .foregroundStyle(Color.textPrimary)
-                    Text("一键扫描 · 智能清理 · 焕然如新")
-                        .font(AppFont.caption)
-                        .foregroundStyle(Color.textSecondary)
+                    Spacer(minLength: 0)
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -127,7 +127,7 @@ struct SmartCareHeroView: View {
                     .controlSize(.small)
             }
             VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                Text("Smart Care")
+                Text("nav.smartCare")
                     .font(AppFont.title2)
                     .foregroundStyle(Color.textPrimary)
                 Text(phase)
@@ -203,66 +203,6 @@ struct SmartCareHeroView: View {
         }
     }
 
-    // MARK: - Module grid
-
-    /// Module grid — Disk Health card (live grade) + Privacy + Assistant + Settings.
-    private var moduleGrid: some View {
-        HStack(spacing: AppSpacing.md) {
-            DiskHealthCard(viewModel: diskHealthViewModel) {
-                appState.navigation = .diskHealth
-            }
-            moduleCard(
-                icon: "lock.shield",
-                title: "隐私",
-                subtitle: "浏览器 · 权限",
-                destination: .privacy
-            )
-            moduleCard(
-                icon: "sparkles",
-                title: "清理助手",
-                subtitle: "问一句就找到",
-                destination: .assistant
-            )
-            moduleCard(
-                icon: "gear",
-                title: "设置",
-                subtitle: "",
-                destination: .settings
-            )
-        }
-    }
-
-    private func moduleCard(
-        icon: String,
-        title: String,
-        subtitle: String,
-        destination: AppState.NavigationItem
-    ) -> some View {
-        Button {
-            appState.navigation = destination
-        } label: {
-            VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                Image(systemName: icon)
-                    .font(.system(size: 28))
-                    .foregroundStyle(Color.brandPrimary)
-                Spacer(minLength: 0)
-                Text(title)
-                    .font(AppFont.title3)
-                    .foregroundStyle(Color.textPrimary)
-                if !subtitle.isEmpty {
-                    Text(subtitle)
-                        .font(AppFont.caption)
-                        .foregroundStyle(Color.textSecondary)
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(AppSpacing.md)
-            .background(Color.bgSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
-        }
-        .buttonStyle(.plain)
-    }
-
     // MARK: - Helpers
 
     /// C-3 freed-bytes formatting — one shared formatter so the hero, the
@@ -274,11 +214,7 @@ struct SmartCareHeroView: View {
 
 #if DEBUG
 #Preview {
-    SmartCareHeroView(
-        viewModel: SmartCareViewModel(),
-        diskHealthViewModel: DiskHealthViewModel()
-    )
-    .environmentObject(AppState())
-    .frame(width: 700, height: 500)
+    SmartCareHeroView(viewModel: SmartCareViewModel())
+        .frame(width: 700, height: 500)
 }
 #endif

@@ -29,8 +29,6 @@ struct RootView: View {
     // 3-step state machine. Attach lazily once `scanResultsViewModel`
     // is reachable (see `.onAppear` below).
     @StateObject private var smartCareViewModel = SmartCareViewModel()
-    /// Live disk-health grade shown on the home grid card (v2.0 Phase 3).
-    @StateObject private var diskHealthViewModel = DiskHealthViewModel()
     /// 空间地图 (v2.0 Phase 4) — renders the same tree the results view owns.
     @StateObject private var spaceMapViewModel = SpaceMapViewModel(
         rootsProvider: { [] }
@@ -202,13 +200,10 @@ struct RootView: View {
             AnatomyView(viewModel: anatomyViewModel) {
                 appState.navigation = .smartCare
             }
-        // v1.5 stage B — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
-        // Real module views land in Phase B Task 3+ / Phase C Task 7+ / Phase D Task 11+.
+        // P1 T6 — smartCare 降级为「安全快捷回收」次级页（spec §3.1）：
+        // 单卡状态机 + 诚实说明行；不再充当导航枢纽。
         case .smartCare:
-            SmartCareHeroView(
-                viewModel: smartCareViewModel,
-                diskHealthViewModel: diskHealthViewModel
-            )
+            SmartCareHeroView(viewModel: smartCareViewModel)
         case .privacy:
             PrivacyView()  // Phase C Task 7 — wire PrivacyView into nav
         case .diskHealth:

@@ -2417,6 +2417,30 @@
         }
       }
     },
+    "attr.safeclean.subtitle": {
+      "extractionState": "stale",
+      "comment": "P1 T6 — honest scope line on the safe-quick-clean page",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only auto-rebuildable caches — restorable from History for 30 days."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動再生成されるキャッシュのみ。30 日間は履歴から復元できます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只处理可自动重建的缓存类项目，30 天内可从历史还原。"
+          }
+        }
+      }
+    },
     "kWise 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按应用归组展示。": {
       "extractionState": "stale",
       "localizations": {
@@ -2903,23 +2927,24 @@
     },
     "nav.smartCare": {
       "extractionState": "stale",
+      "comment": "P1 T6 — demoted secondary page title (rail/tooltip/hero)",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Smart Care"
+            "value": "Safe Quick Clean"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "スマートケア"
+            "value": "安全なクイッククリーン"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "智能清理"
+            "value": "安全快捷回收"
           }
         }
       }
@@ -3058,29 +3083,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "⚠️ 包含 Cookie，清理后将退出所有网站的登录状态"
-          }
-        }
-      }
-    },
-    "一键扫描 · 智能清理 · 焕然如新": {
-      "comment": "M1 Smart Care hero subtitle",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan · Pick · Clean in one tap"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "スキャン · 選定 · 清理をワンタップで"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "一键扫描 · 智能清理 · 焕然如新"
           }
         }
       }
@@ -4816,25 +4818,25 @@
         }
       }
     },
-    "授权后开始 Smart Care": {
+    "授权后开始安全快捷回收": {
       "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Start Smart Care after authorizing"
+            "value": "Start Safe Quick Clean after authorizing"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "許可後にスマートケアを開始"
+            "value": "許可後にセーフクイッククリーンを開始"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "授权后开始 Smart Care"
+            "value": "授权后开始安全快捷回收"
           }
         }
       }
