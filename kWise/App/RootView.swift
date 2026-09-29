@@ -190,6 +190,16 @@ struct RootView: View {
             TimelineView()
         case .settings:
             SettingsView()
+        // P1 T1 — provisional surface so the new rail head compiles before
+        // the anatomy view exists. Task 5 replaces this branch; keeping the
+        // Smart Care hero here is deliberately *not* misleading (it is the
+        // same surface `klaris://smartcare` deep links now land on).
+        // TODO(P1-T5): anatomy view replaces this provisional branch.
+        case .anatomy:
+            SmartCareHeroView(
+                viewModel: smartCareViewModel,
+                diskHealthViewModel: diskHealthViewModel
+            )
         // v1.5 stage B — see `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md`.
         // Real module views land in Phase B Task 3+ / Phase C Task 7+ / Phase D Task 11+.
         case .smartCare:

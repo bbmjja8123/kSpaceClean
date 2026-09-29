@@ -36,6 +36,18 @@ final class AppCoordinatorTests: XCTestCase {
         XCTAssertFalse(result)
     }
 
+    /// P1 T1: SmartCare 降级后 `klaris://smartcare`（Widget 一键清理按钮、
+    /// 通知深链）应落在解剖首屏，而不是已下线的 Smart Care 页（R1）。
+    func test_handleDeepLink_smartCare_opensAnatomy() {
+        let appState = AppState()
+        let coordinator = AppCoordinator(appState: appState)
+        let url = URL(string: "klaris://smartcare")!
+        let result = coordinator.handleDeepLink(url)
+        XCTAssertTrue(result)
+        XCTAssertEqual(appState.navigation, .anatomy,
+                       "SmartCare 降级：深链与 Widget 按钮应落在解剖首屏（R1）")
+    }
+
     func test_navigate() {
         let appState = AppState()
         let coordinator = AppCoordinator(appState: appState)

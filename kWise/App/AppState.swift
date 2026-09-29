@@ -3,7 +3,9 @@ import DesignSystem
 
 @MainActor
 public final class AppState: ObservableObject {
-    @Published public var navigation: NavigationItem = .smartCare  // v1.5: home is the Smart Care surface (Q1 Hybrid UI)
+    // P1 T1: SmartCare 降级为深链面（klaris://smartcare / Widget 按钮）——
+    // 首屏让位给空间解剖（Klaris "explainable storage" 主轴）。
+    @Published public var navigation: NavigationItem = .anatomy
     /// Selection detail panel (UX 重构 Phase 1/3): auto-hidden until a row
     /// is selected; ⌘I toggles it manually.
     @Published public var rightPanelVisible = false
@@ -37,6 +39,8 @@ public final class AppState: ObservableObject {
         case cleanup = "cleanup"
         case history = "history"
         case settings = "settings"
+        // P1（Klaris）— 空间解剖首屏：解释"空间去哪儿了"（归因 → T5 视图）。
+        case anatomy = "anatomy"
         case smartCare = "smartCare"
         case privacy = "privacy"
         case diskHealth = "diskHealth"
@@ -61,7 +65,7 @@ public final class AppState: ObservableObject {
         /// with every module — deep surfaces live in the toolbox and are
         /// reachable via deep links + `allCases`.
         public static var railItems: [NavigationItem] {
-            [.smartCare, .scan, .tools, .cleanup, .history, .settings]
+            [.anatomy, .scan, .tools, .cleanup, .history, .settings]
         }
 
         /// 工具箱九件套 —— 这些导航项以 Tab 方式打开（v2.5）。
@@ -82,6 +86,7 @@ public final class AppState: ObservableObject {
             case .cleanup: return "trash"
             case .history: return "clock"
             case .settings: return "gear"
+            case .anatomy: return "scale.3d"
             case .smartCare: return "wand.and.stars"
             case .privacy: return "lock.shield"
             case .diskHealth: return "internaldrive"
@@ -106,6 +111,7 @@ public final class AppState: ObservableObject {
             case .cleanup: return String(localized: "nav.cleanup")
             case .history: return String(localized: "nav.history")
             case .settings: return String(localized: "nav.settings")
+            case .anatomy: return String(localized: "nav.anatomy")
             case .smartCare: return String(localized: "nav.smartCare")
             case .privacy: return String(localized: "nav.privacy")
             case .diskHealth: return String(localized: "nav.diskHealth")

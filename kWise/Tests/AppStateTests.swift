@@ -5,7 +5,8 @@ import XCTest
 final class AppStateTests: XCTestCase {
     func test_initialState() {
         let state = AppState()
-        XCTAssertEqual(state.navigation, .smartCare)
+        // P1 T1: SmartCare 降级为深链面 — 首屏让位给空间解剖（spec §3.1）。
+        XCTAssertEqual(state.navigation, .anatomy)
         XCTAssertEqual(state.scanState, .idle)
         // UX 重构 Phase 1: the detail panel is auto-hidden until selected.
         XCTAssertFalse(state.rightPanelVisible)
@@ -56,17 +57,28 @@ final class AppStateTests: XCTestCase {
         // v2.0 Phase 2: 11 original + 8 new (tools/spaceMap/monthlyReport/
         // assistant/duplicates/largeOld/photoClean/maintenance) − galaxy.
         // P0 Task 9 adds `.attribution` (toolbox deep surface).
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 19)
+        // P1 T1 adds `.anatomy` (rail head; SmartCare retired to deep link).
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 20)
     }
 
     /// v2.0 Phase 2: the rail is fixed at six entries and never grows.
+    /// P1 T1: `.anatomy` takes the rail head; `.smartCare` leaves the rail.
     func test_NavigationItem_railItems() {
         XCTAssertEqual(AppState.NavigationItem.railItems, [
-            .smartCare, .scan, .tools, .cleanup, .history, .settings
+            .anatomy, .scan, .tools, .cleanup, .history, .settings
         ])
         for item in AppState.NavigationItem.railItems {
             XCTAssertTrue(AppState.NavigationItem.allCases.contains(item))
         }
+    }
+
+    /// P1 T1: anatomy is the rail head; smartCare survives only as a deep
+    /// link / Widget target (spec §3.1 — SmartCare 降级).
+    func testAnatomyIsRailHeadAndSmartCareRetired() {
+        XCTAssertEqual(AppState.NavigationItem.railItems.first, .anatomy)
+        XCTAssertFalse(AppState.NavigationItem.railItems.contains(.smartCare),
+                       "SmartCare 降级后不再占 rail 位（spec §3.1）")
+        XCTAssertEqual(AppState.NavigationItem.railItems.count, 6)
     }
 
     func test_NavigationItem_tooltip_notEmpty() {

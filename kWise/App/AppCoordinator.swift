@@ -39,7 +39,9 @@ public final class AppCoordinator: ObservableObject {
         case "clean":
             return handleCleanLink(url)
         case "smartcare":
-            navigate(to: .smartCare)
+            // P1 T1: SmartCare 降级 — 深链与 Widget 一键清理按钮落在解剖
+            // 首屏（R1），其快捷回收入口由 T5/T6 在 anatomy 视图内承接。
+            navigate(to: .anatomy)
             return true
         case "privacy":
             navigate(to: .privacy)

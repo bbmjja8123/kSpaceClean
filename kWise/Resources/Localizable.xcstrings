@@ -2280,6 +2280,29 @@
         }
       }
     },
+    "nav.anatomy": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage Anatomy"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ストレージ解析"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空间解剖"
+          }
+        }
+      }
+    },
     "nav.attribution": {
       "extractionState": "stale",
       "localizations": {
