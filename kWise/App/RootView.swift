@@ -144,6 +144,12 @@ struct RootView: View {
             // 归因透视 reads the same live scan results（init-time capture 不可用，
             // 同 rebindRoots 的晚绑定模式）。
             attributionPreviewViewModel.rebindCategories { scanResultsViewModel.categories }
+            // P1 T4 — 清理预演的归因晚绑定：预演 sheet 逐项「为什么可以回收」
+            // 读这份 report。TODO(P1-T5): T5 把预览 VM 换成 anatomy VM 时，
+            // 这一行同步改为 anatomy VM 的 report。
+            cleanupViewModel.attributionLookup = {
+                attributionPreviewViewModel.report?.items ?? []
+            }
             // 清理助手 reads the live scan results for data-backed answers.
             graph.assistantScanVM = scanResultsViewModel
             // Menu bar quick actions (C-8, v2.0 Phase 3): route through the

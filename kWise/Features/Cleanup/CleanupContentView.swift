@@ -9,6 +9,8 @@ struct CleanupContentView: View {
     @State private var showConfirmation = false
     @State private var confirmationLevel: CleanupConfirmationLevel = .low
     @State private var deleteConfirmed = false
+    /// P1 T4 预演层 —— 确认弹窗点「确认清理」后先预演，二次人签才执行。
+    @State private var rehearsalPayload: RehearsalSheetPayload?
 
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.lg) {
@@ -35,6 +37,19 @@ struct CleanupContentView: View {
                 emptyState
             } else {
                 historyList
+            }
+        }
+        // P1 T4 二次人签：确认弹窗只负责预演，真正的执行在预演 sheet 的
+        // 「确认执行」按钮里（executeConfirmedCleanup 消费 pendingTargets）。
+        .sheet(item: $rehearsalPayload) { payload in
+            CleanupRehearsalSheet(items: payload.items) {
+                Task {
+                    await viewModel.executeConfirmedCleanup(sizes: nil)
+                    rehearsalPayload = nil
+                }
+            } onCancel: {
+                // 取消 = 作废；下一次确认会重新预演覆盖 pendingTargets。
+                rehearsalPayload = nil
             }
         }
         .confirmationDialog(
@@ -108,12 +123,14 @@ struct CleanupContentView: View {
     }
 
     private func performCleanup() {
-        // v1.5 Phase B Task 5 wiring — dispatch the confirmation dialog's
-        // accept action to the view-model's structured `cleanupNow()`, which
-        // builds `CleanupTarget`s from `urlsToCleanup`, invokes the real
-        // `CleanupEngine.cleanup(targets:)`, and records history through the
-        // existing 30-day retention pipeline.
-        Task { await viewModel.cleanupNow() }
+        // P1 T4 两段式第一段 —— 预演：把确认弹窗背后的清单（`urlsToCleanup`）
+        // 显式传入 makeRehearsal（不依赖外部状态的静默 no-op 老坑不再复制），
+        // 暂存 pendingTargets 并呈现逐项预演 sheet；真正执行走预演 sheet 的
+        // onConfirm（`executeConfirmedCleanup`），历史/回滚/配额管线不变。
+        Task {
+            let items = await viewModel.makeRehearsal(sizes: nil, urls: viewModel.urlsToCleanup)
+            rehearsalPayload = RehearsalSheetPayload(items: items)
+        }
     }
 }
 

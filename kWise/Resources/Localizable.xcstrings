@@ -1313,6 +1313,29 @@
         }
       }
     },
+    "attr.confidence.probable.reason": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On-device model suggests: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "端末内モデルの推測：%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本地模型推测：%@"
+          }
+        }
+      }
+    },
     "attr.ev.lastModified": {
       "extractionState": "stale",
       "localizations": {
@@ -2072,6 +2095,144 @@
         }
       }
     },
+    "attr.rehearsal.banner": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything below moves to the Trash — uncheck any line; nothing runs until you confirm."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以下はゴミ箱へ移動される全内容です。項目ごとに解除でき、確認後に実行されます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以下是将要移入废纸篓的全部内容，可逐项取消勾选；确认后才执行。"
+          }
+        }
+      }
+    },
+    "attr.rehearsal.cancel": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        }
+      }
+    },
+    "attr.rehearsal.confirm": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm & Run"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確認して実行"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认执行"
+          }
+        }
+      }
+    },
+    "attr.rehearsal.noReason": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No attribution info — manually selected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "帰属情報なし — 手動で選択した項目"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无归因信息——这是你手动勾选的项"
+          }
+        }
+      }
+    },
+    "attr.rehearsal.title": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup Rehearsal"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ プレビュー"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理预演"
+          }
+        }
+      }
+    },
+    "attr.rehearsal.total": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ total · %lld of %lld items confirmed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "合計 %@ · %lld / %lld 件を確認"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共 %@ · 确认 %lld / 项（全部 %lld 项）"
+          }
+        }
+      }
+    },
     "attr.rules.count": {
       "extractionState": "stale",
       "localizations": {
@@ -2257,6 +2418,29 @@
         }
       }
     },
+    "nav.anatomy": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage Anatomy"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ストレージ解析"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空间解剖"
+          }
+        }
+      }
+    },
     "nav.appUninstall": {
       "extractionState": "stale",
       "localizations": {
@@ -2299,29 +2483,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "清理助手"
-          }
-        }
-      }
-    },
-    "nav.anatomy": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Storage Anatomy"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ストレージ解析"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "空间解剖"
           }
         }
       }

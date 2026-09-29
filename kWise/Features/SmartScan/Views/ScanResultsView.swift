@@ -50,6 +50,10 @@ struct ScanResultsView: View {
     /// the SummaryBar 清理 CTA runs the checked URLs through it.
     @ObservedObject var cleanupViewModel: CleanupViewModel
     @State private var showCleanupConfirm = false
+    /// P1 T4 预演层：非 nil 时确认 sheet 的呈现节点切换为预演清单。
+    /// 单一呈现节点内换内容 —— 不依赖嵌套 sheet（macOS 13 兼容），
+    /// 且外层 sheet 一关闭预演即作废（红线：不缓存跨面板）。
+    @State private var rehearsalPayload: RehearsalSheetPayload?
 
     /// Builds the full screen as a vertical stack of header / divider /
     /// scrollable tree / divider / summary bar.
@@ -98,11 +102,33 @@ struct ScanResultsView: View {
             SummaryBar(viewModel: viewModel, onClean: { showCleanupConfirm = true })
         }
         .background(Color.bgCanvas)
-        .sheet(isPresented: $showCleanupConfirm) {
-            CleanupConfirmSheet(viewModel: viewModel, cleanupViewModel: cleanupViewModel) {
-                showCleanupConfirm = false
+        .sheet(isPresented: $showCleanupConfirm, onDismiss: { rehearsalPayload = nil }) {
+            // P1 T4 两段式：确认面板（第一段）→ 预演清单（第二段人签）。
+            // 同一呈现节点按状态换内容，关闭即作废。
+            if let payload = rehearsalPayload {
+                CleanupRehearsalSheet(items: payload.items) {
+                    Task {
+                        await cleanupViewModel.executeConfirmedCleanup(sizes: nil)
+                        rehearsalPayload = nil
+                        showCleanupConfirm = false
+                    }
+                } onCancel: {
+                    // 取消预演 = 作废（VM 的 pendingTargets 会在下一次
+                    // makeRehearsal 覆盖，这里清掉本地面板状态即可）。
+                    rehearsalPayload = nil
+                }
+                .frame(width: 560, height: 480)
+            } else {
+                CleanupConfirmSheet(
+                    viewModel: viewModel,
+                    cleanupViewModel: cleanupViewModel,
+                    onDismiss: { showCleanupConfirm = false },
+                    onRehearse: { items in
+                        rehearsalPayload = RehearsalSheetPayload(items: items)
+                    }
+                )
+                .frame(width: 440, height: 320)
             }
-            .frame(width: 440, height: 320)
         }
     }
 
@@ -379,6 +405,10 @@ struct CleanupConfirmSheet: View {
     @ObservedObject var viewModel: ScanResultsViewModel
     @ObservedObject var cleanupViewModel: CleanupViewModel
     let onDismiss: () -> Void
+    /// P1 T4：确认按钮不再直接执行 —— 先预演（makeRehearsal 暂存
+    /// pendingTargets），由父层呈现 ``CleanupRehearsalSheet`` 做最后
+    /// 人签；确认按钮的 onConfirm 才走 ``executeConfirmedCleanup``。
+    let onRehearse: ([RehearsalItem]) -> Void
     /// 与运行中应用冲突的路径（Lemon 修复版警告流：引擎 .skip 策略会
     /// 自动跳过这些文件，此处如实告知用户被跳过了什么）。
     @State private var warnItems: [WarnItem] = []
@@ -473,9 +503,15 @@ struct CleanupConfirmSheet: View {
                     .buttonStyle(.bordered)
                 Spacer()
                 Button("确认清理") {
+                    // P1 T4：两段式第一段 —— 预演并弹出逐项清单。
+                    // URLs 显式传入（不依赖 urlsToCleanup 外部状态）；
+                    // 仍保留 urlsToCleanup 同步以兼容旧文案/其他读取方。
                     Task {
                         cleanupViewModel.urlsToCleanup = viewModel.selectedURLs()
-                        await cleanupViewModel.cleanupNow(sizes: viewModel.selectedSizesByURL())
+                        let items = await cleanupViewModel.makeRehearsal(
+                            sizes: viewModel.selectedSizesByURL(),
+                            urls: viewModel.selectedURLs())
+                        onRehearse(items)
                     }
                 }
                 .buttonStyle(.borderedProminent)
