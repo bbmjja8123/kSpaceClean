@@ -7,13 +7,13 @@
 ## 1. 项目总览
 
 ### 1.1 目标
-打造 **4 款精品 Mac App**，独立开发者运营，全球 + 中国 App Store 同步上架，通过订阅 + 买断盈利，并争取苹果编辑推荐。
+打造 **4 款精品 Mac App**，独立开发者运营，全球 + 中国 App Store 同步上架，通过免费层 + 买断盈利，并争取苹果编辑推荐。
 
 ### 1.2 4 款 App 一览
 
 | App | Bundle ID | 主轴 | 定价 | 状态 |
 |---|---|---|---|---|
-| **kWise**（Mac 管家 / CMM 对标） | `app.kraftly.klaris` | 对标 CleanMyMac X：Smart Care + 启动项 + 隐私 + 磁盘健康 + 基础卸载/粉碎 | Free Trial 7 天 → $19.99/年 | 🔄 **v1.5 路线定稿** |
+| **kWise**（Mac 管家 / CMM 对标） | `app.kraftly.klaris` | 空间解剖首屏 + 预演式清理 + 启动项 + 隐私 + 磁盘健康 + 基础卸载/粉碎 | 免费（扫描+归因+拒答清单）+ $9.90 买断 | 🔄 **Klaris P1 信任解剖完成** |
 | **kMonitor**（菜单栏监控） | `app.kraftly.kmonitor` | 平台集成 + Widget | 待设计 | 📋 Backlog |
 | **kSift**（重复/大文件/粉碎） | `app.kraftly.ksift` | 极客 + AI（开发者场景） | $9.99 买断 | 📋 Spec 定稿 |
 | **kUninstall**（应用卸载） | `app.kraftly.kuninstall` | 平台集成 + 自动化 | 待设计 | 📋 Backlog |
@@ -57,7 +57,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 | `AppCatalogCore` | kFresh | 应用目录扫描、残留检测（cask_rules.json 1141 条 + zh_app_mappings.json 为包资源）、Backup/Audit、FDA probe | CommonUtils, FileScanner |
 | `MonitorCore` | kMonitor | SharedSnapshot/SnapshotWriter（App Group 契约）、MetricAlert、AlertEvaluator、诊断导出 | MetricsKit |
 
-**规则**：修改这三个 target 走 kFoundation 特殊路径（§5，--allow-kfoundation）；App 专属实现（Core Data 仓库、FDA 引导、Photos、支付）留在各自 App 目录；注入点：kSift `App/CleanupStack.swift`、kFresh `App/AppServices.swift`。
+**规则**：修改这三个 target 走 kFoundation 特殊路径（§5，--allow-kfoundation）；App 专属实现（Core Data 仓库、PowerScope 授权引导、Photos、支付）留在各自 App 目录；注入点：kSift `App/CleanupStack.swift`、kFresh `App/AppServices.swift`。
 
 ### 2.2 关键技术决策
 - **语言**：Swift 5.9+
@@ -66,8 +66,8 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 - **编译目标**：macOS 14 SDK（用 `#available` 包裹高版本 API）
 - **持久化**：Core Data（统一）+ Codable + FileManager（轻量场景）
 - **并发**：Swift Concurrency（async/await + TaskGroup）
-- **图形**：Metal + SceneKit（3D 磁盘星系图）
-- **AI**：CoreML（本地 embedding / 分类器）
+- **图形**：SwiftUI Canvas（2D 空间地图 sunburst / treemap，无 Metal）
+- **AI**：NLEmbedding（端上语义归因，零网络）+ 本机规则引擎（无 CoreML 模型、无云服务）
 - **分发**：**仅 Mac App Store**（不做 DMG / 官网 / Notarized）
 
 ### 2.3 能力降级策略
@@ -102,7 +102,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 
 ## 3. kWise 详细设计（v1.5 路线定稿）
 
-> **v1 → v1.5 演进**：原 kSpaceClean v1（2026-07-25 定稿）已重命名为 kWise，对标 CleanMyMac X。v1 已完成模块（4 级扫描树 / 150+ 应用缓存规则 / FDA 引导 / Widget / Shortcuts 等）全部继承。v1.5 新增 6 个模块作为 App Store 上架硬门槛。详细 roadmap 见 `docs/superpowers/specs/2026-08-03-kwise-cmm-parity-roadmap.md`。
+> **v1 → v1.5 演进**：原 kSpaceClean v1（2026-07-25 定稿）已重命名为 kWise，对标 CleanMyMac X。v1 已完成模块（扫描树 / 应用缓存规则 / Widget / Shortcuts 等）大部分继承——其中旧 FDA 引导已由 PowerScope 主目录授权替代（P1）、旧规则引擎已删除（P1 T9）。v1.5 新增 6 个模块作为 App Store 上架硬门槛。详细 roadmap 见 `docs/superpowers/specs/2026-08-03-kwise-cmm-parity-roadmap.md`。
 
 ### 3.0 命名与定位
 
@@ -123,11 +123,11 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 ### 3.3 核心差异化
 | 维度 | CleanMyMac X | DaisyDisk | kWise 差异点 |
 |---|---|---|---|
-| 主界面 | 模块拼盘 | 磁盘可视化 | **3D 磁盘星系图（Metal 渲染）** |
-| 智能分类 | 规则匹配 | 无 | **CoreML 本地 AI 自动分类** |
-| 扫描速度 | 中等 | 慢 | **Apple Silicon 神经引擎加速 perceptual hash** |
+| 主界面 | 模块拼盘 | 磁盘可视化 | **2D 空间地图（Canvas sunburst/treemap）+ 空间解剖首屏（归因解释"空间去哪儿了"）** |
+| 智能分类 | 规则匹配 | 无 | **本机规则归因（attribution_rules.json）+ NLEmbedding 端上语义推测（probable 档），零网络、无云模型** |
+| 扫描速度 | 中等 | 慢 | **单引擎 ScanOrchestrator 流式扫描（实时合成 + ETA）** |
 | 隐私 | 上报统计 | 本地 | **零网络上报，所有计算在本地** |
-| 一键清理 | ✅ | ❌ | ✅ + Interactive Widget 一键清理（macOS 14+） |
+| 一键清理 | ✅ | ❌ | ✅ **两段预演式清理**（预演与执行逐项一致、每项给原因、可逐项豁免）+ 废纸篓回滚 + Interactive Widget 入口（macOS 14+） |
 | App Store 集成 | ✅ | ❌ | ✅ + Shortcuts 集成 |
 
 ### 3.4 v1.5 完整功能（首发即包含全部）
@@ -136,58 +136,61 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 
 | 模块 | v1.5 内容 | 状态 |
 |---|---|---|
-| 4 级扫描树 | 实时合成 + ETA + 应用级粒度（150+ App 规则） | ✅ 继承 v1 |
-| 智能扫描引擎 | 系统缓存 / 应用残留 / 大文件 / 重复文件 | ✅ 继承 v1 |
-| CoreML AI 分类 | 本地 embedding 分组（图片/视频/文档/缓存/开发文件） | ✅ 继承 v1 |
-| 一键清理 | 移入废纸篓 + 30 天清理历史可回滚 | ✅ 继承 v1 |
-| 🆕 **Smart Care** | 一键智能清理（扫描→展示→一键确认清理） | 🔴 v1.5 新增 |
-| 🆕 **启动项管理** | login items / launch agents / daemons | 🔴 v1.5 新增 |
-| 🆕 **隐私清理** | 浏览器历史 / 应用权限概览 | 🔴 v1.5 新增 |
-| 🆕 **磁盘健康卡片** | S.M.A.R.T. 状态 + 卷诊断 | 🔴 v1.5 新增 |
-| 🆕 **应用卸载（基础）** | CMM X parity 级别 | 🔴 v1.5 新增 |
-| 🆕 **文件粉碎（基础）** | CMM X parity 级别 | 🔴 v1.5 新增 |
-| FDA 引导 | 教育性 Full Disk Access 引导流程 | ✅ 继承 v1 |
-| 菜单栏图标 | 显示已用空间 + 一键扫描入口 | ✅ 继承 v1 |
-| 桌面 Widget | 基础版（13）+ Interactive 版（14+） | ✅ 继承 v1 |
-| Shortcuts App Intents | 扫描 / 清理缓存 / 显示大文件 | ✅ 继承 v1 |
-| Live Activities | macOS 14+，清理进度长任务显示 | ✅ 继承 v1 |
-| Finder 扩展 | 右键"用 kWise 扫描" | ✅ 继承 v1 |
-| Spotlight 集成 | 搜"Mac 空间"出现操作 | ✅ 继承 v1 |
-| 本地化 | 英文 + 简体中文 + 日文 | ✅ 继承 v1 |
+| 流式扫描（ScanOrchestrator） | 实时合成 + ETA + 应用级粒度（单引擎，旧规则引擎已删） | ✅ |
+| 工具箱清理工具 | 系统缓存 / 应用残留（卸载） / 大文件 / 重复文件 / 照片 | ✅ |
+| 🆕 **空间解剖 + 归因** | 本机规则归因（attribution_rules.json）+ NLEmbedding 端上语义推测（probable 档，可解释、零网络） | 🔴 P1 新增 |
+| 一键清理 | **两段预演式清理**（预演=执行逐项一致、每项给原因、拒答清单）+ 移入废纸篓 + 30 天清理历史可回滚 | ✅（P1 重做） |
+| **Smart Care** | safe-quick-clean 次级页（P1 降级，深链 `klaris://smartcare` 可直达） | 🔄 P1 降级 |
+| 🆕 **启动项管理** | login items / launch agents / daemons | ✅ 已交付 |
+| 🆕 **隐私清理** | 浏览器历史 / 应用权限概览 | ✅ 已交付 |
+| 🆕 **磁盘健康卡片** | S.M.A.R.T. 状态 + 卷诊断 | ✅ 已交付 |
+| 🆕 **应用卸载（基础）** | CMM X parity 级别 | ✅ 已交付 |
+| 🆕 **文件粉碎（基础）** | CMM X parity 级别 | ✅ 已交付 |
+| PowerScope 主目录授权 | 主目录书签授权引导（替代旧 FDA 引导，见 kFoundation PowerScope） | ✅ |
+| 菜单栏图标 | 显示已用空间 + 一键扫描入口 | ✅ |
+| 桌面 Widget | 基础版（13）+ Interactive 版（14+） | ✅ |
+| Shortcuts App Intents | 扫描等（走 ScanOrchestrator 单引擎） | ✅ |
+| Finder 扩展 | 右键"用 kWise 扫描" | ✅ |
+| Live Activities / Spotlight | 已删除（v2.0 Phase 1 清理死面） | ❌ 已删 |
+| 本地化 | 英文 + 简体中文 + 日文 | ✅ |
+| 助手问答 | 节点级问答内嵌详情面板（AssistantNodePanel，聊天框已退役） | 🔄 P1 改造 |
 
 ### 3.5 kWise 内部模块
 ```
 kWise/
 ├── App/
 │   ├── kWiseApp.swift                # @main
-│   ├── RootView.swift                # NavigationSplitView
+│   ├── RootView.swift                # NavigationSplitView（rail 首项 = .anatomy）
 │   └── AppCoordinator.swift
 ├── Features/
-│   ├── DiskGalaxy/                   # 3D 磁盘星系可视化（差异化核心）
-│   ├── SmartScan/                    # 扫描引擎 + CoreML 分类
-│   ├── Cleanup/                      # 清理动作 + 废纸篓
-│   └── Onboarding/                   # FDA 引导
-├── Widgets/                          # 基础 + Interactive 双版本
-├── Intents/                          # App Intents / Shortcuts
+│   ├── Attribution/                  # 空间解剖 + 归因（规则 + NLEmbedding L1，差异化核心）
+│   ├── SmartScan/                    # ScanOrchestrator 单引擎 + IntentScanAdapter
+│   ├── Cleanup/                      # 两段预演（CleanupRehearsal）+ 引擎 + buyout gate
+│   ├── SpaceMap/                     # 2D 空间地图（Canvas sunburst/treemap）
+│   └── Onboarding/                   # PowerScope 主目录授权引导
+├── Store/                            # StoreManager（$9.90 非消耗买断）+ PaywallView
+├── Shared/WidgetFeed/                # Widget 快照 + 交互清理（双 target）
+├── Intents/                          # App Intents / Shortcuts（走 ScanOrchestrator）
 ├── FinderExtension/                  # 右键菜单扩展
 ├── Resources/
-│   ├── Models/                       # .mlmodel 文件
+│   ├── attribution_rules.json        # 本机归因规则
 │   └── Assets.xcassets
 └── Info.plist
 ```
 
 ### 3.6 盈利设计
-- **价格**：Free Trial 7 天 → **$19.99/年**（无买断）
-- **免费层**：扫描功能可用，清理额度限制 1GB，超出引导订阅
-- **地区定价**：美 $19.99 / 欧 €19.99 / 中 ¥98 / 日 ¥2,400
-- **内购 SKU**：Auto-Renewable Subscription（年付）
+- **价格**：**免费（扫描 + 归因 + 拒答清单永久免费）+ $9.90 买断**（解锁回收执行；无订阅、无试用）
+- **付费门槛**：未购买时清理是**拒答**（所选目标全部跳过 → 弹 Paywall），不做额度截断（1 GiB/月配额已于 P1 T7 退役）
+- **地区定价**：美 $9.90 / 中 ¥68
+- **内购 SKU**：`app.kraftly.klaris.buyout`（Non-Consumable 买断）
 
 ### 3.7 ASO 关键词（美区主目标）
 - **主关键词**：`mac cleaner`、`disk cleaner`、`storage cleaner`、`clean my mac`、`mac storage`
-- **辅关键词**：`cache cleaner`、`system junk`、`free up space`、`apple silicon cleaner`、`metal renderer`
+- **辅关键词**：`cache cleaner`、`system junk`、`free up space`、`apple silicon cleaner`
 - **避坑**：不使用 CleanMyMac 商标名（App Store 拒）
 
 ### 3.8 上架时间表（独立开发者）
+> ⚠️ 下表为 v1 时期的历史规划记录，交付现状以 §3.4 功能表与 §7 进度为准（3D 星系图 / Spotlight / Live Activities 未交付或已删）。
 | 阶段 | 周次 | 交付 |
 |---|---|---|
 | 0 | W1-W2 | kFoundation 骨架 + 权限层 + 2D 扫描原型 |
@@ -219,7 +222,7 @@ kWise/
 | M5 | **应用卸载（基础版）** | 由 kUninstall 集成 |
 | M6 | **文件粉碎（基础版）** | 由 kSift 集成 |
 
-**强烈建议（非阻塞）：** 定时自动清理 / 3D 磁盘星系图 / CoreML 本地 AI 分类。
+**强烈建议（非阻塞）：** 定时自动清理 / 空间地图与解剖联动 / L2 语义归因（均列入 P2）。
 
 **功能范围待 grill：** UI 重做方案 / Smart Care 具体行为 / 启动项 UI 位置 / 隐私权限数据源 / 基础 vs 深度卸载切分线。
 
@@ -264,7 +267,7 @@ kWise/
   - `scripts/commit-app.sh <app>` 仍用于 stage 边界检查（跨 App 路径拒绝、kFoundation 需 --allow-kfoundation）
   - 多 App 改动的调用点修复在同一 commit 内完成（单 worktree 有全部 App 源码，可一次构建验证 4 个 target）
 - 开发分支：`feature/<app>-<feature>`、`fix/<app>-<bug>`（短期 feature 分支在对应 worktree 内使用）
-- 提交信息：`feat(kWise): add 3D galaxy renderer`
+- 提交信息：`feat(kWise): add anatomy hero view`
 - Merge 节奏：见 `docs/workflow/4-worktree-merge-cadence.md`（默认每周五 16:00 merge window）
 
 ### 5.3 安全与隐私
@@ -390,10 +393,20 @@ kWise/
   - 另 4 个为测试夹具/契约问题（夹具漏填 `totalSize`、工厂函数当 provider、审计扫到注释、`minFileSize` 滤空夹具）
 - [x] **全量测试基线** — test-runner 挂起已随重启消失。**最终基线 522 tests / 0 failures**（kWiseTests，2026-09-27，耗时约 21 分钟）。对比清理前 518/502/16 且因 4 次崩溃导致 runner 反复重启跑了约 7 小时
 
+### Klaris P1 — 信任解剖改造 ✅ (2026-09-28 → 2026-09-30)
+> 10 任务 + 2 修复轮，11 commits（`5a2ce3b..0a54d3c`）。spec：`.superpowers/sdd/2026-09-29-klaris-p1-trust-anatomy/`。P0（2026-09-28 bundle 迁移 `app.kraftly.klaris` + 归因数据层）已先行落地。
+- [x] **T1 空间解剖成为 rail 首屏** — rail 固定 `[.anatomy, .scan, .tools, .cleanup, .history, .settings]`；smartCare 退为深链直达
+- [x] **T2 L1 语义归因** — NLEmbedding sentence embedding probable 档接入归因服务管道（零网络）
+- [x] **T3+T4 两段预演式清理** — 预演与执行 1:1 契约测试 + 每项可解释原因 + 逐项豁免 + 无归因行诚实标注；修复轮：确认只带确认集 + 本地化备注 + 双击守卫
+- [x] **T5 解剖首屏视图** — cause 分组 + 置信徽章 + L1 区块（原预览面退役）
+- [x] **T6 Smart Care 降级** — safe-quick-clean 次级页，首屏让位空间解剖
+- [x] **T7 配额退役** — 1 GiB/月截断 → $9.90 非消耗买断（`app.kraftly.klaris.buyout`）；未购买 = 拒答（全跳过 → Paywall）；修复轮：启动时 entitlement 刷新 + 购买成功态
+- [x] **T8 助手聊天框退役** — 问答内嵌 DetailPanel（AssistantNodePanel 节点级问答）
+- [x] **T9 双引擎合一** — 旧规则引擎 + AIClassifier/RuleClassifier 死代码删除（~4,600 行）；Intents 走 ScanOrchestrator
+- [x] **T10 文档诚实化** — 本文件假卖点修正 + 全量测试基线（见下）
+- [x] **测试基线** — **579 tests / 0 failures**（`xcodebuild test -workspace KraftlyWorkspace.xcworkspace -scheme kWise`，2026-09-30，全量单跑 ~7 分钟未触发 wedge）
+
 ### Backlog（待设计）
-- [ ] kDupe 设计 — 重复/大文件
-- [ ] kUninstall 设计 — 应用卸载
-- [ ] kWise v2.0 后续 — CreateML 文本分类器（本地路径语料）· 月报通知深链 · 定时自动清理
 - [ ] kWise v2 — 3D 磁盘星系图（已被 2D 空间地图替代交付；Metal 重启需 Product 拍板）
 - [ ] kWise 发布决策 — TestFlight / App Store 元数据 / 提审节奏（M1–M6 上架门槛功能已齐，待 Product 拍板）
 
@@ -401,4 +414,4 @@ kWise/
 
 ---
 
-最后更新：2026-09-26（工具箱三轮 + 卸载 AI + 收尾债：红测试修复 / 本地化补齐 / 全量测试基线）
+最后更新：2026-09-30（Klaris P1 信任解剖 10 任务 + 2 修复轮收尾；CLAUDE.md 诚实化——真实能力表述、买断定价、P1 进度）
