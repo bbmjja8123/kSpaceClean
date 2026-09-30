@@ -242,6 +242,10 @@ public actor CleanupEngine {
                 // because the streaming surface takes bare URLs.
                 var quotaSkippedCount = 0
                 if let remaining = await self.quota?.remainingFreeBytes() {
+                    // P1 T7 fix r1: the production checker only ever returns
+                    // 0 (refusal) or nil (purchased), so this intermediate-
+                    // budget greedy branch is unreachable in production —
+                    // retained to support future non-buyout quota semantics.
                     let budget = max(0, remaining)
                     var used: Int64 = 0
                     var kept: Set<String> = []
@@ -414,6 +418,9 @@ public actor CleanupEngine {
         var toClean2 = toClean
         var quotaSkipped: [URL] = []
         if let remaining = await quota?.remainingFreeBytes() {
+            // P1 T7 fix r1: production only ever feeds 0 (refusal) or nil
+            // (purchased); the intermediate-budget truncation below is kept
+            // for future non-buyout quota semantics.
             let budget = max(0, remaining)
             var used: Int64 = 0
             var kept: [CleanupTarget] = []

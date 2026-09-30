@@ -30,6 +30,9 @@ targets:
           - "scripts/**"
           - "Widgets/**"          # separate widget appex target
           - "FinderExtension/**"  # separate Finder Sync appex target
+          - "Configuration/**"    # .storekit is dev-only — in project, not bundled (fix r1)
+      - path: Configuration
+        buildPhase: none
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris

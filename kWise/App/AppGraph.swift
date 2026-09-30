@@ -123,8 +123,9 @@ public final class AppGraph: ObservableObject {
         let menuBarManager = menuBar ?? MenuBarManager()
         self.menuBarManager = menuBarManager
         // P1 T7 — the buyout is the gate. `hasPurchased` is MainActor-
-        // isolated; hop back for the read. Entitlements are refreshed on
-        // launch / purchase / restore, so a plain property read is enough.
+        // isolated; hop back for the read. The launch refresh below (fix r1)
+        // re-derives ownership from StoreKit before the first cleanup, so a
+        // plain property read here is enough.
         self.quotaChecker = CleanupQuotaChecker { [storeManager] in
             await MainActor.run { storeManager.hasPurchased }
         }
@@ -141,6 +142,22 @@ public final class AppGraph: ObservableObject {
             quota: quotaChecker,
             sinks: eventSinks
         )
+        // Fix r1 — re-derive ownership once per launch. The retired quota
+        // closure used to call `checkSubscription()` before every cleanup
+        // (self-healing stale state); without this launch refresh a
+        // purchased user who relaunched the app was refused and shown the
+        // paywall on their first cleanup.
+        Task { await Self.refreshEntitlementsAtLaunch(storeManager) }
+    }
+
+    // MARK: Launch entitlement refresh
+
+    /// One-shot ownership re-derivation, fired from `init` at launch (and
+    /// therefore also for `AppGraph.shared` in App Intents / widget intent
+    /// processes). Extracted as a static hook so the launch behavior is
+    /// lockable in tests without constructing the full graph.
+    static func refreshEntitlementsAtLaunch(_ store: StoreProtocol) async {
+        await store.checkSubscription()
     }
 
     // MARK: Service factories

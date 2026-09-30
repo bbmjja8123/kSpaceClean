@@ -9,39 +9,47 @@ import DesignSystem
 /// subscription. Copy rules: no "unlimited cleaning / free tier = 1 GB"
 /// (the 1 GB quota is retired, R5) and no fabricated AI/CoreML claims.
 /// The free tier keeps scanning, attribution and the refusal list forever.
+///
+/// Fix r1 — the sheet is the only conversion surface, so a confirmed
+/// purchase must not dead-end: the CTA flips to an 「已解锁」 row and the
+/// sheet dismisses itself (`.onChange(of: store.hasPurchased)`).
 struct PaywallView: View {
     @ObservedObject var store: StoreManager
+    @StateObject private var success = PaywallSuccessModel()
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         GlassPanel {
             VStack(spacing: AppSpacing.xl) {
-                Image(systemName: "lock.open.fill")
+                Image(systemName: success.unlocked ? "checkmark.circle.fill" : "lock.open.fill")
                     .font(.system(size: 48))
-                    .foregroundColor(.brandAccent)
+                    .foregroundColor(success.unlocked ? .success : .brandAccent)
 
-                Text(String(localized: "pw.buyout.title"))
+                Text(String(localized: success.unlocked ? "pw.buyout.unlocked" : "pw.buyout.title"))
                     .font(AppFont.title2)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
 
-                Text(String(localized: "pw.buyout.pitch"))
-                    .font(AppFont.caption)
-                    .foregroundColor(.textSecondary)
-                    .multilineTextAlignment(.center)
+                if !success.unlocked {
+                    Text(String(localized: "pw.buyout.pitch"))
+                        .font(AppFont.caption)
+                        .foregroundColor(.textSecondary)
+                        .multilineTextAlignment(.center)
 
-                FeatureList(items: [
-                    (String(localized: "pw.buyout.feature.actions"),
-                     String(localized: "pw.buyout.feature.actions.sub")),
-                    (String(localized: "pw.buyout.feature.quickclean"),
-                     String(localized: "pw.buyout.feature.quickclean.sub")),
-                ])
+                    FeatureList(items: [
+                        (String(localized: "pw.buyout.feature.actions"),
+                         String(localized: "pw.buyout.feature.actions.sub")),
+                        (String(localized: "pw.buyout.feature.quickclean"),
+                         String(localized: "pw.buyout.feature.quickclean.sub")),
+                    ])
 
-                Button(String(localized: "pw.buyout.cta")) {
-                    Task { await store.purchase() }
+                    Button(String(localized: "pw.buyout.cta")) {
+                        Task { await store.purchase() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.brandPrimary)
+                    .controlSize(.large)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.brandPrimary)
-                .controlSize(.large)
 
                 Text(String(localized: "pw.buyout.freeTier"))
                     .font(AppFont.caption)
@@ -55,8 +63,35 @@ struct PaywallView: View {
                 .foregroundColor(.textSecondary)
             }
             .padding(AppSpacing.xxl)
+            .animation(.easeInOut(duration: 0.2), value: success.unlocked)
         }
         .frame(width: 400)
+        .onChange(of: store.hasPurchased) { purchased in
+            guard purchased else { return }
+            success.purchaseConfirmed()
+            Task { [dismiss] in
+                try? await Task.sleep(nanoseconds: PaywallSuccessModel.dismissDelayNanoseconds)
+                dismiss()
+            }
+        }
+    }
+}
+
+/// Success state for the buyout conversion surface (fix r1). Extracted so
+/// the flip-to-unlocked + auto-dismiss behavior is lockable in tests
+/// without any StoreKit call.
+@MainActor
+final class PaywallSuccessModel: ObservableObject {
+    /// `true` once the observed store's ownership flips — swaps the CTA for
+    /// the unlocked row.
+    @Published var unlocked = false
+
+    /// How long the unlocked row stays visible before the sheet dismisses
+    /// itself. Non-zero so the user actually sees the confirmation.
+    static let dismissDelayNanoseconds: UInt64 = 900_000_000
+
+    func purchaseConfirmed() {
+        unlocked = true
     }
 }
 

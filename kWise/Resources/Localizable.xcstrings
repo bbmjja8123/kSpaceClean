@@ -7064,6 +7064,30 @@
           }
         }
       }
+    },
+    "pw.buyout.unlocked": {
+      "extractionState": "manual",
+      "comment": "P1 T7 fix r1 — purchase success row (auto-dismisses shortly after)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlocked — thank you"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解除済み · ありがとうございます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已解锁 · 感谢支持"
+          }
+        }
+      }
     }
   },
   "version": "1.1"

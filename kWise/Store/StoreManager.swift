@@ -15,20 +15,42 @@ public final class StoreManager: ObservableObject, StoreProtocol {
     /// can pin the identifier against the .storekit configuration.
     public static let productID = "app.kraftly.klaris.buyout"
 
-    public init() {}
+    /// ProductIDs of the currently active (verified, non-revoked)
+    /// entitlements. Injectable so tests can drive `checkSubscription()`
+    /// without any StoreKit/network call.
+    private let entitlements: @Sendable () async -> [String]
 
-    /// Re-derive ownership from StoreKit's current entitlements. Also the
-    /// restore path (`AppStore.sync()` refreshes `currentEntitlements`).
-    public func checkSubscription() async {
+    /// Default reader: StoreKit's current entitlements, filtered to verified
+    /// non-revoked transactions.
+    private static func liveEntitlements() async -> [String] {
+        var ids: [String] = []
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result,
-               transaction.productID == Self.productID,
                transaction.revocationDate == nil {
-                hasPurchased = true
-                return
+                ids.append(transaction.productID)
             }
         }
-        hasPurchased = false
+        return ids
+    }
+
+    public convenience init() {
+        self.init(entitlements: StoreManager.liveEntitlements)
+    }
+
+    /// Test seam — internal so production callers keep the parameterless
+    /// StoreKit-backed init.
+    init(entitlements: @escaping @Sendable () async -> [String]) {
+        self.entitlements = entitlements
+    }
+
+    /// Re-derive ownership from the active entitlements. Called once per
+    /// launch (`AppGraph` wires it — fix r1: previously only purchase /
+    /// restore / Settings re-derived it, so a purchased user who relaunched
+    /// the app was refused and shown the paywall until they visited
+    /// Settings). Also the restore path (`AppStore.sync()` refreshes
+    /// `currentEntitlements`).
+    public func checkSubscription() async {
+        hasPurchased = await entitlements().contains(Self.productID)
     }
 
     public func purchase() async {
