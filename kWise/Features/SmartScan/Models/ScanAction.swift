@@ -3,9 +3,8 @@ import Foundation
 
 /// Categorizes the type of cleanup a `ScanAction` performs.
 ///
-/// Used by the cleanup engine to pick the right `CleanActionExecutor`
-/// (see `Cleanup/CleanActionExecutors.swift`) and to drive localized
-/// labels in the UI. Mirrors the legacy Lemon action taxonomy.
+/// Drives localized labels in the UI and carries provenance into the
+/// cleanup history rows. Mirrors the legacy Lemon action taxonomy.
 public enum ScanActionType: String, Sendable {
     /// Generic cache files (regenerated automatically).
     case cache = "cache"

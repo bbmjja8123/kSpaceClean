@@ -7,7 +7,7 @@ import Foundation
 /// category → sub-category → action → result cascade. Concrete types live
 /// in their own files (`ScanCategory`, `ScanSubCategory`, `ScanAction`,
 /// `ScanResult`). The tree powers the results UI in `ScanResultsView` and
-/// the cascading selection policy implemented in `ScanViewModel`.
+/// the cascading selection policy implemented in `ScanResultsViewModel`.
 ///
 /// All nodes are value-equivalent by `id` — `Hashable`/`Equatable` collapse
 /// to UUID comparison so the SwiftUI `OutlineGroup` can diff the tree by

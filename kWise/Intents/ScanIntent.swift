@@ -2,6 +2,10 @@ import AppIntents
 import SwiftUI
 
 // MARK: - Scan Intent
+//
+// P1 T9 — 双引擎退役：三个 AppIntents 全部改走 `IntentScanAdapter`
+// （v3 `ScanOrchestrator` 链）。旧规则引擎 + Core Data 管线与
+// 硬编码 `Set<Int>` subCategoryID 映射已删除（R4）。
 
 struct ScanIntent: AppIntent {
     static let title: LocalizedStringResource = "Scan Mac Storage"
@@ -12,122 +16,38 @@ struct ScanIntent: AppIntent {
 
     static let openAppWhenRun: Bool = true
 
-    static var parameterSummary: some ParameterSummary {
-        Summary("Scan for \(\.$scanType)")
-    }
-
-    @Parameter(title: "Scan Type", default: ScanType.quick)
-    var scanType: ScanType
-
-    enum ScanType: String, AppEnum {
-        case quick
-        case full
-
-        static var typeDisplayRepresentation: TypeDisplayRepresentation = "Scan Type"
-        static var caseDisplayRepresentations: [ScanType: DisplayRepresentation] = [
-            .quick: "Quick Scan",
-            .full: "Full Scan"
-        ]
-    }
-
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<Int> {
-        let vm = ScanViewModel()
-        vm.startScan()
-
-        // Wait for scan to complete
-        while !vm.scanDidComplete {
-            try await Task.sleep(nanoseconds: 100_000_000)
-        }
-
-        return .result(value: vm.scanResults.count)
+        let summary = await IntentScanAdapter.scanSummary(scope: AppScope.shared)
+        return .result(value: summary.categories)
     }
 }
 
 // MARK: - Clean Cache Intent
+//
+// 语义（诚实化）：不再按硬编码 subCategoryID 过滤——改为跑一次新扫描后
+// 收敛「推荐级（可安全默认勾选）」的叶子，交给 `CleanupEngine.cleanup
+// (targets:)` 移入废纸篓（历史/回滚/事件 sink 全部走引擎）。
 
 struct CleanCacheIntent: AppIntent {
     static let title: LocalizedStringResource = "Clean System Cache"
     static let description: IntentDescription = IntentDescription(
-        "Clear system caches and temporary files.",
+        "Scan for safe-to-clean files and move them to the Trash.",
         categoryName: "Cleaning"
     )
 
     static let openAppWhenRun: Bool = true
 
-    static var parameterSummary: some ParameterSummary {
-        Summary("Clean \(\.$target)")
-    }
-
-    @Parameter(title: "Target", default: CacheTarget.all)
-    var target: CacheTarget
-
-    enum CacheTarget: String, AppEnum {
-        case all
-        case userCache
-        case systemCache
-
-        static var typeDisplayRepresentation: TypeDisplayRepresentation = "Cache Target"
-        static var caseDisplayRepresentations: [CacheTarget: DisplayRepresentation] = [
-            .all: "All Cache",
-            .userCache: "User Cache",
-            .systemCache: "System Cache"
-        ]
-    }
-
-    /// SubCategory IDs that correspond to cache-type files in the scan engine.
-    private static let allCacheSubCategoryIDs: Set<Int> = [
-        1,  // 系统缓存
-        3,  // 应用缓存
-        5,  // 音频缓存
-        6,  // 视频缓存
-        7,  // 其他缓存
-        14, // 应用缓存(聊天)
-        15, // 输入法缓存
-        16, // 音乐缓存
-        17, // 视频缓存
-        18, // 设计工具缓存
-    ]
-
-    private static let userCacheSubCategoryIDs: Set<Int> = [
-        3, 5, 6, 7, 14, 15, 16, 17, 18,
-    ]
-
-    private static let systemCacheSubCategoryIDs: Set<Int> = [1]
-
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<Int> {
-        // Run a scan first to populate CoreData with cache file entries
-        let scanVM = ScanViewModel()
-        scanVM.startScan()
-        while !scanVM.scanDidComplete {
-            try await Task.sleep(nanoseconds: 100_000_000)
-        }
+        let (targets, _) = await IntentScanAdapter.recommendedPickTargets(scope: AppScope.shared)
+        guard !targets.isEmpty else { return .result(value: 0) }
 
-        // Determine which sub-categories to clean based on the target parameter
-        let targetIDs: Set<Int>
-        switch target {
-        case .all:
-            targetIDs = Self.allCacheSubCategoryIDs
-        case .userCache:
-            targetIDs = Self.userCacheSubCategoryIDs
-        case .systemCache:
-            targetIDs = Self.systemCacheSubCategoryIDs
-        }
-
-        let cacheFiles = scanVM.scanResults.filter { targetIDs.contains(Int($0.subCategoryID)) }
-        let urls = cacheFiles.compactMap { $0.path }.map { URL(fileURLWithPath: $0) }
-
-        guard !urls.isEmpty else { return .result(value: 0) }
-
-        // Move matched files to Trash via the cleanup engine
-        let cleanupEngine = CleanupEngine.standard()
-        var totalFreed: Int64 = 0
-        for await progress in cleanupEngine.cleanup(urls: urls, warnHandling: .skip) {
-            totalFreed = progress.processedBytes
-        }
-
-        return .result(value: Int(totalFreed))
+        // Shared process-wide graph engine so history, the menu-bar
+        // "最近清理" row, and the other event sinks stay in sync.
+        let engine = AppGraph.shared.cleanupEngine
+        let outcome = try await engine.cleanup(targets: targets)
+        return .result(value: Int(outcome.freedBytes))
     }
 }
 
@@ -147,32 +67,11 @@ struct ShowLargeFilesIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<[IntentFile]> {
-        let ctx = CoreDataStack.shared.viewContext
-        ctx.refreshAllObjects()
-
-        let fetch = FileEntry.fetchRequest()
-        fetch.predicate = NSPredicate(format: "size >= %lld", Int64(minimumSize) * 1_000_000)
-        fetch.sortDescriptors = [NSSortDescriptor(key: "size", ascending: false)]
-        fetch.fetchLimit = 100
-
-        var entries = (try? ctx.fetch(fetch)) ?? []
-
-        // If no scan data exists yet, run a scan first
-        if entries.isEmpty {
-            let vm = ScanViewModel()
-            vm.startScan()
-            while !vm.scanDidComplete {
-                try await Task.sleep(nanoseconds: 100_000_000)
-            }
-
-            ctx.refreshAllObjects()
-            entries = (try? ctx.fetch(fetch)) ?? []
-        }
-
-        let files = entries.compactMap { entry -> IntentFile? in
-            guard let path = entry.path else { return nil }
-            return IntentFile(fileURL: URL(fileURLWithPath: path))
-        }
+        let threshold = Int64(minimumSize) * 1_000_000
+        let results = await IntentScanAdapter.largestFiles(scope: AppScope.shared, limit: 100)
+        let files = results
+            .filter { $0.fileSize >= threshold }
+            .map { IntentFile(fileURL: $0.url) }
         return .result(value: files)
     }
 }

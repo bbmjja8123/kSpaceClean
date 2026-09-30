@@ -17,11 +17,11 @@ struct RootView: View {
     // survives navigation switches (e.g. user starts a scan, navigates
     // away, comes back — the categories tree is still there).
     //
-    // C3: this is now the *only* scan model the root owns. The legacy
-    // `ScanViewModel` used to be wired to the toolbar button and the
-    // ⌘N / ⌘R shortcuts while the rendered `ScanResultsView` observed this
-    // model, so every user-initiated scan ran a pipeline nothing on screen
-    // was watching. All three triggers now route here.
+    // C3: this is now the *only* scan model the root owns. All scan
+    // triggers (toolbar-era buttons, ⌘N / ⌘R, menu-bar quick scan) route
+    // here so every user-initiated scan runs a pipeline the screen is
+    // actually watching. (P1 T9: the legacy rule-driven engine was
+    // retired — the AppIntents now share this same orchestrator chain.)
     @StateObject private var scanResultsViewModel = ScanResultsViewModel(
         engine: ScanEngine(orchestrator: ScanOrchestrator(scope: AppScope.shared.scope))
     )
@@ -38,6 +38,9 @@ struct RootView: View {
     @StateObject private var anatomyViewModel = AnatomyViewModel(
         service: .live()
     )
+    /// 磁盘健康（P1 T9 — T6 遗留条件）：DiskHealthCard 的新渲染位在解剖页，
+    /// VM 与卡片在此持有、点击进入 `.diskHealth` 详情页。
+    @StateObject private var diskHealthViewModel = DiskHealthViewModel()
     /// First-launch onboarding (v2.0 Phase 8) — welcome → PowerScope grant
     /// → menu bar & widget tour. Never re-shown once completed.
     @AppStorage("onboarding.completed.v1") private var onboardingCompleted = false
@@ -195,9 +198,16 @@ struct RootView: View {
         // P1 T5 — 解剖视图首屏（spec §1.1 英雄）:「你的 N GB，去哪了」。
         // 页内零清理动作；「安全快捷回收」是唯一回收入口，跳 Smart Care 次级页。
         case .anatomy:
-            AnatomyView(viewModel: anatomyViewModel) {
-                appState.navigation = .smartCare
-            }
+            AnatomyView(
+                viewModel: anatomyViewModel,
+                diskHealthViewModel: diskHealthViewModel,
+                onQuickClean: {
+                    appState.navigation = .smartCare
+                },
+                onOpenDiskHealth: {
+                    appState.navigation = .diskHealth
+                }
+            )
         // P1 T6 — smartCare 降级为「安全快捷回收」次级页（spec §3.1）：
         // 单卡状态机 + 诚实说明行；不再充当导航枢纽。
         case .smartCare:

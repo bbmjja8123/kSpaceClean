@@ -21,12 +21,10 @@
 //   drain a `Task.yield()` call — when the previous frame took > 16ms the
 //   next emission is delayed to 33ms.
 //
-// Distinction from the legacy `ScanEngine.swift` (one directory up):
-// * The legacy engine drives the v2 RuleClassifier + BatchBuffer → Core Data
-//   pipeline; that file still backs `ScanViewModel.startScan()` today.
-// * This wrapper drives the v3 4-level tree the orchestrator produces and
-//   will replace the legacy engine once `ScanViewModel` is migrated (Task B5+).
-//   Keeping them side-by-side during the migration is intentional.
+// Migration note (P1 T9): the legacy rule-driven engine
+// (LegacyScanEngine + ScanViewModel + Core Data BatchBuffer) has
+// been retired. This wrapper is now the only `ScanEngine` — the
+// AppIntents consume the same chain via `IntentScanAdapter`.
 
 import Foundation
 import Combine

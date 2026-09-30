@@ -4,8 +4,8 @@
 //
 // The C2 brief specified an `actor CleanupEngine` at `Features/Cleanup/Engine/`.
 // The existing implementation already lives at `Features/Cleanup/CleanupEngine.swift`
-// as a `@MainActor ObservableObject` and is wired into three call sites
-// (`ScanIntent`, `ScanViewModel`, `AllFilesTabView`). Rather than create a parallel
+// as a `@MainActor ObservableObject` and was wired into the early scan/cleanup
+// call sites. Rather than create a parallel
 // implementation, this file *replaces* the existing one in place: the new actor
 // preserves the existing public surface (`cleanup(urls:skipWarnItems:) -> AsyncStream<CleanupProgress>`)
 // so no caller needs to change, and adds the C2 surface on top
@@ -43,8 +43,8 @@ public struct WarnItem: Sendable, Identifiable {
 
 /// Progress event emitted by the streaming `cleanup(urls:skipWarnItems:)` API.
 ///
-/// Kept as a public type because `ScanViewModel`, `ScanIntent`, and
-/// `AllFilesTabView` consume it directly.
+/// Kept as a public type because the streaming cleanup surface still
+/// consumes it directly.
 public struct CleanupProgress: Sendable {
     public enum State: Sendable {
         case idle
@@ -114,8 +114,8 @@ public struct CleanupResult: Sendable {
 /// ## Migration
 /// Replaces the previous `@MainActor ObservableObject` engine. The
 /// `CleanupEngine()` initializer and `cleanup(urls:skipWarnItems:)` streaming
-/// method are preserved verbatim so `ScanIntent`, `ScanViewModel`, and
-/// `AllFilesTabView` continue to work without any change. New code should
+/// method are preserved verbatim so the original call sites continue to
+/// work without any change. New code should
 /// prefer the structured `cleanup(targets:config:)` API because it carries
 /// risk level + bundle attribution into the history table.
 public actor CleanupEngine {

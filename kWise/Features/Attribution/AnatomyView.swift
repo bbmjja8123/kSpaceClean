@@ -69,17 +69,32 @@ public final class AnatomyViewModel: ObservableObject {
 
 public struct AnatomyView: View {
     @StateObject private var viewModel: AnatomyViewModel
+    @ObservedObject private var diskHealthViewModel: DiskHealthViewModel
     @State private var rulesCorpus: AttributionRuleCorpus?
     private let onQuickClean: () -> Void
+    private let onOpenDiskHealth: () -> Void
 
-    init(viewModel: AnatomyViewModel, onQuickClean: @escaping () -> Void) {
+    init(viewModel: AnatomyViewModel,
+         diskHealthViewModel: DiskHealthViewModel,
+         onQuickClean: @escaping () -> Void,
+         onOpenDiskHealth: @escaping () -> Void) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.diskHealthViewModel = diskHealthViewModel
         self.onQuickClean = onQuickClean
+        self.onOpenDiskHealth = onOpenDiskHealth
     }
 
     public var body: some View {
         List {
             heroHeader
+            // P1 T9 — T6 遗留条件：DiskHealthCard 此前的唯一渲染位
+            // （旧工具箱模块网格）已随 smartCare 降级删除；解剖视图的
+            // 英雄头本就呈现卷状态，磁盘健康卡是这里的自然邻居。
+            // 点击进入 DiskHealthDetailView。
+            Section {
+                DiskHealthCard(viewModel: diskHealthViewModel, onOpen: onOpenDiskHealth)
+                    .frame(height: 120)
+            }
             if let report = viewModel.report {
                 uncoveredCard(report)
                 ForEach(viewModel.groupedSections) { section in
@@ -108,7 +123,10 @@ public struct AnatomyView: View {
             }
             .disabled(viewModel.isLoading)
         }
-        .task { loadCorpusAndRefresh() }
+        .task {
+            loadCorpusAndRefresh()
+            await diskHealthViewModel.refresh()
+        }
     }
 
     private func loadCorpusAndRefresh() {

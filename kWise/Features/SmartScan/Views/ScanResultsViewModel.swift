@@ -50,8 +50,8 @@ public struct ScanFilterOptions: Equatable, Sendable {
 /// `ScanResultsViewModel` owns the canonical tree of scan results, the
 /// set of expanded node ids, and the aggregate selection summary shown
 /// in the bottom bar. It is the single source of truth for the tree UI;
-/// sibling models (e.g. the legacy `Features/SmartScan/ScanViewModel.swift`
-/// that drives `ScanResultsTreeView`) are not consulted from this view.
+/// the AppIntents reach the same engine chain through `IntentScanAdapter`
+/// rather than holding a second view model.
 ///
 /// The model is annotated `@MainActor` so all `@Published` mutations and
 /// `ScanTreeNode.setState(_:)` side-effects happen on the same isolation

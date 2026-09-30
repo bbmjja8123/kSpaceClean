@@ -5,8 +5,8 @@ import Foundation
 ///
 /// Extends `ScanActionType` with two scanner-specific cases that only
 /// appear at the leaf level: `snapshot` (Time Machine local snapshots)
-/// and `keychain` (certificate / password artifacts). Drives the
-/// appropriate `CleanActionExecutor` in the cleanup engine.
+/// and `keychain` (certificate / password artifacts). Carried into the
+/// cleanup history for provenance.
 public enum CleanType: String, Sendable {
     case cache = "cache"
     case log = "log"

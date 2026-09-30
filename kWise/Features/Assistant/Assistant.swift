@@ -4,8 +4,8 @@
 //
 // Three deterministic layers:
 //   1. Intent matching — keyword/regex template table over zh-Hans/en/ja.
-//   2. Semantic disambiguation — optional `NLEmbedding` (macOS 14+) gated
-//      behind prefs.assistantEnabled; falls back silently to layer 1.
+//   2. Semantic disambiguation — optional `NLEmbedding` (macOS 14+);
+//      falls back silently to layer 1 when unavailable.
 //   3. Answer building — cards + executable actions routed through the
 //      SAME selection/cleanup path as the manual UI (never bypassing risk
 //      policy or the free-tier quota).

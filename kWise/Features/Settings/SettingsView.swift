@@ -52,11 +52,6 @@ struct SettingsView: View {
                         Text("500 MB").tag(Int64(500_000_000))
                         Text("1 GB").tag(Int64(1_000_000_000))
                     }
-                    // C-5 honesty: there is no CoreML model in the bundle —
-                    // classification is the local rule engine. The old
-                    // "AI 分类启用" label was a lie.
-                    Toggle("智能推荐（本机规则）", isOn: $prefs.aiClassificationEnabled)
-
                     Picker("相似照片灵敏度", selection: $prefs.similarityPresetRaw) {
                         Text("严格（仅几乎相同）").tag(SimilarityPreset.strict.rawValue)
                         Text("标准").tag(SimilarityPreset.normal.rawValue)

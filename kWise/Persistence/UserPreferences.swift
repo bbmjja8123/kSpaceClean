@@ -4,7 +4,6 @@ import DetectionCore
 public struct UserPreferences: Codable, Equatable {
     public var largeFileThreshold: Int64 = 100 * 1024 * 1024  // 100MB
     public var ignoredPaths: [String] = []
-    public var aiClassificationEnabled: Bool = true
     public var defaultCleanAction: CleanAction = .trash
     public var confirmHighRisk: Bool = true
     public var historyRetentionDays: Int = 30
@@ -17,8 +16,6 @@ public struct UserPreferences: Codable, Equatable {
     /// Shredder overwrite passes (v2.0 Phase 5). 1 is the honest default on
     /// SSD; 3 is the opt-in "HDD 模式".
     public var shredPasses: Int = 1
-    /// Gates the assistant's semantic (NLEmbedding) layer (v2.0 Phase 8).
-    public var assistantEnabled: Bool = true
     /// Similar-photo grouping aggressiveness raw value (v2.3 Phase 3).
     /// Optional + computed accessor: absent in pre-v2.3 JSON → decodes nil
     /// → `.normal`, instead of throwing and resetting every preference.

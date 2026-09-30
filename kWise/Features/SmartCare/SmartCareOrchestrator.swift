@@ -39,7 +39,8 @@ public enum SmartCareState: Equatable {
 /// * Delegates actual scanning to an injected ``ScanResultsViewModel`` (which
 ///   in turn owns the lower-level `ScanEngine`).
 /// * Recommended-pick algorithm: filters the engine's leaf entries to
-///   `ScanResult.isRecommended == true` (set by `ScanRule`).
+///   risk levels that are default-checked (`.recommended`) — the same
+///   single-source traversal the AppIntents use (`IntentScanAdapter`).
 ///
 /// Follow-up tasks hook ``confirm()`` into `CleanupEngine.cleanup(targets:)`
 /// (Task 5) and wire `SmartCareHeroView`'s CTA (Task 4).
@@ -158,18 +159,14 @@ final class SmartCareOrchestrator: ObservableObject {
     }
 
     /// Recommended-pick algorithm: every category → subcategory → action →
-    /// leaf entry whose `isRecommended` flag is set.
+    /// leaf entry whose risk level is default-checked. Delegates to
+    /// `IntentScanAdapter.recommendedEntries` — the single-source traversal
+    /// shared with the AppIntents (P1 T9 双引擎退役).
+    ///
+    /// C4 note: the gate is `riskLevel.defaultChecked` (not the legacy
+    /// `isRecommended` flag), so a leaf whose flag and risk level disagree
+    /// (e.g. a dangerous file carrying a recommended flag) is never picked.
     private func computeRecommendedPicks(scanVM: ScanResultsViewModel) -> [ScanResult] {
-        var picks: [ScanResult] = []
-        for category in scanVM.categories {
-            for sub in category.subItems {
-                for action in sub.actions {
-                    for entry in action.results where entry.isRecommended {
-                        picks.append(entry)
-                    }
-                }
-            }
-        }
-        return picks
+        IntentScanAdapter.recommendedEntries(in: scanVM.categories)
     }
 }

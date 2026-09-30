@@ -9,10 +9,10 @@ import Foundation
 /// the colored risk badge.
 ///
 /// Concurrency: `final class` with mutable `state`/`selectedSize` because
-/// `ScanViewModel` mutates these on the main actor and `@unchecked
-/// Sendable` is the project's documented escape hatch for the tree
-/// (see `ScanViewModel` notes). All mutations are expected to happen on a
-/// single isolation domain.
+/// the view models (`ScanResultsViewModel`) mutate these on the main actor
+/// and `@unchecked Sendable` is the project's documented escape hatch for
+/// the tree. All mutations are expected to happen on a single isolation
+/// domain.
 public final class ScanCategory: ScanTreeNode, @unchecked Sendable {
     public let id: UUID
     /// Stable identifier (e.g. `"system.cache"`, `"app.cache"`).

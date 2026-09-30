@@ -1,7 +1,7 @@
 // kWise/Features/DetailPanel/DetailPanelView.swift
 //
-// 选中详情面板 (UX 重构 Phase 3) — replaces the three dead legacy tabs
-// (概览/结果树/建议, all rendering a ScanViewModel that never scanned).
+// 选中详情面板 (UX 重构 Phase 3) — replaced the three dead legacy tabs
+// (概览/结果树/建议, which rendered an unscanned legacy view model).
 // Shows live context for the selected row: resolves the node through
 // `ScanResultsViewModel.node(for:)` on every render, so cascade/selection
 // changes can never go stale. Raw paths stay tooltip-only (C-1).
