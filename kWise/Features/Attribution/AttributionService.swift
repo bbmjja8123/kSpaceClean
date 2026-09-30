@@ -15,6 +15,12 @@ public struct AttributionReport: Sendable {
     /// nil = 卷层不可读（spec §7 降级：明示，禁止 [] 冒充）。
     public let snapshots: [APFSSnapshot]?
     public let generatedAt: Date
+
+    /// 预演归因 lookup 用的全量清单（P1 final F3a）：certain 项 + 拒答/推测项。
+    /// 清理预演按路径匹配逐项解释「为什么可以回收」——只供 `items` 会让
+    /// sheet 的 probable 分支哑火、refused 项显示成「无归因信息」；推测项与
+    /// 拒答项各有诚实行（probable → 「可能」措辞，refused → 「不敢判」）。
+    public var allAttributions: [SpaceAttribution] { items + refused }
 }
 
 public struct AttributionService: Sendable {

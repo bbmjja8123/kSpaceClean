@@ -247,22 +247,33 @@ public actor CleanupEngine {
                     // budget greedy branch is unreachable in production —
                     // retained to support future non-buyout quota semantics.
                     let budget = max(0, remaining)
-                    var used: Int64 = 0
-                    var kept: Set<String> = []
-                    let sized = urlsToProcess.map { url -> (URL, Int64) in
-                        let size = (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize)
-                            .flatMap { Int64($0) } ?? 0
-                        return (url, size)
-                    }
-                    for (url, size) in sized.sorted(by: { $0.1 > $1.1 }) {
-                        if used + size <= budget {
-                            used += size
-                            kept.insert(url.path)
-                        } else {
-                            quotaSkippedCount += 1
+                    if budget == 0 {
+                        // P1 final (M4): remaining == 0 is the R5 refusal
+                        // (unpurchased) — refuse unconditionally. The greedy
+                        // `used + size <= budget` comparison below would let
+                        // size-0 targets through (stat-failure scenario), so
+                        // an unpurchased user could trash real files with no
+                        // paywall signal.
+                        quotaSkippedCount = urlsToProcess.count
+                        urlsToProcess = []
+                    } else {
+                        var used: Int64 = 0
+                        var kept: Set<String> = []
+                        let sized = urlsToProcess.map { url -> (URL, Int64) in
+                            let size = (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize)
+                                .flatMap { Int64($0) } ?? 0
+                            return (url, size)
                         }
+                        for (url, size) in sized.sorted(by: { $0.1 > $1.1 }) {
+                            if used + size <= budget {
+                                used += size
+                                kept.insert(url.path)
+                            } else {
+                                quotaSkippedCount += 1
+                            }
+                        }
+                        urlsToProcess = urlsToProcess.filter { kept.contains($0.path) }
                     }
-                    urlsToProcess = urlsToProcess.filter { kept.contains($0.path) }
                 }
 
                 // Concurrent deletion — 12 tasks per batch.
@@ -422,21 +433,32 @@ public actor CleanupEngine {
             // (purchased); the intermediate-budget truncation below is kept
             // for future non-buyout quota semantics.
             let budget = max(0, remaining)
-            var used: Int64 = 0
-            var kept: [CleanupTarget] = []
-            var dropped: [URL] = []
-            for target in toClean.sorted(by: { $0.size > $1.size }) {
-                if used + target.size <= budget {
-                    used += target.size
-                    kept.append(target)
-                } else {
-                    dropped.append(target.url)
+            if budget == 0 {
+                // P1 final (M4): remaining == 0 is the R5 refusal
+                // (unpurchased) — refuse unconditionally. The greedy
+                // `used + target.size <= budget` comparison below would let
+                // size-0 targets through (stat-failure scenario), so an
+                // unpurchased user could trash real files with no paywall
+                // signal.
+                quotaSkipped = toClean.map(\.url)
+                toClean2 = []
+            } else {
+                var used: Int64 = 0
+                var kept: [CleanupTarget] = []
+                var dropped: [URL] = []
+                for target in toClean.sorted(by: { $0.size > $1.size }) {
+                    if used + target.size <= budget {
+                        used += target.size
+                        kept.append(target)
+                    } else {
+                        dropped.append(target.url)
+                    }
                 }
+                // Keep the user's original selection order for what we clean.
+                let keptPaths = Set(kept.map(\.url.path))
+                toClean2 = toClean.filter { keptPaths.contains($0.url.path) }
+                quotaSkipped = dropped
             }
-            // Keep the user's original selection order for what we clean.
-            let keptPaths = Set(kept.map(\.url.path))
-            toClean2 = toClean.filter { keptPaths.contains($0.url.path) }
-            quotaSkipped = dropped
         }
         let toCleanFinal = toClean2
 

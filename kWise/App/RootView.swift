@@ -148,8 +148,11 @@ struct RootView: View {
             anatomyViewModel.rebindCategories { scanResultsViewModel.categories }
             // P1 T4 — 清理预演的归因晚绑定：预演 sheet 逐项「为什么可以回收」
             // 读这份 report（T5 起数据源是解剖视图的 anatomy VM）。
+            // P1 final (F3a)：供 `allAttributions`（certain + refused/probable）
+            // ——只供 `items` 时 sheet 的 probable 分支哑火、未访问解剖页就清理
+            // 的用户拿不到任何归因。
             cleanupViewModel.attributionLookup = {
-                anatomyViewModel.report?.items ?? []
+                anatomyViewModel.report?.allAttributions ?? []
             }
             // Menu bar quick actions (C-8, v2.0 Phase 3): route through the
             // coordinator — the menu never mutates appState directly.
@@ -170,6 +173,16 @@ struct RootView: View {
             if !onboardingCompleted {
                 showOnboarding = true
             }
+        }
+        // P1 final (F3b)：扫描结束即重跑归因 —— anatomyViewModel.report 是
+        // 上一棵扫描树的快照；若只在 AnatomyView 出现时刷新（.task），用户
+        // 新扫描后不访问解剖页就去清理，预演拿到的是陈旧（或空）归因。
+        // `isScanning` true→false 转换是最小可靠信号：所有扫描入口
+        // （⌘N/⌘R、菜单栏 quickScan、Smart Care 引导）都收敛到
+        // scanResultsViewModel.startScan()。
+        .onChange(of: scanResultsViewModel.isScanning) { scanning in
+            guard !scanning else { return }
+            Task { await anatomyViewModel.refresh() }
         }
     }
 

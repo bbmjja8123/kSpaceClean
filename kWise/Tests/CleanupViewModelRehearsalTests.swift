@@ -128,4 +128,41 @@ final class CleanupViewModelRehearsalTests: XCTestCase {
                        "第二次执行必须是 no-op，结果不变")
         XCTAssertTrue(vm.pendingTargets.isEmpty)
     }
+
+    /// P1 final (F3a) —— RootView 的 lookup 供 `report.allAttributions`
+    /// （certain + refused/probable 全量）。旧实现只供 `report.items`：
+    /// probable 分支哑火、refused 项显示成「无归因信息」。本测试钉：
+    /// probable 归因必须随 lookup 到达预演项。
+    func testRehearsalCarriesProbableFromFullReportLookup() async {
+        let (vm, root) = makeVM(attributions: [])
+        let certainURL = root.appendingPathComponent("c.bin")
+        let probableURL = root.appendingPathComponent("p.bin")
+        try? Data("x".utf8).write(to: certainURL)
+        try? Data("y".utf8).write(to: probableURL)
+
+        let certain = SpaceAttribution(
+            scope: .fileTree, paths: [certainURL.path], bytes: 1, owner: .system,
+            cause: .cache, reclaim: .recycles(expectedDays: 3), confidence: .certain,
+            source: .rule, ruleID: "caches.app-generic", evidence: [], lastModified: nil)
+        let probable = SpaceAttribution(
+            scope: .fileTree, paths: [probableURL.path], bytes: 1, owner: .unknown,
+            cause: .unknown, reclaim: .uncertain, confidence: .probable,
+            source: .nlEmbedding, ruleID: nil, evidence: [], lastModified: nil)
+        let report = AttributionReport(
+            items: [certain], refused: [probable], unattributedBytes: 0,
+            blackBox: BlackBoxBreakdown(usedBytes: 2, visibleBytes: 2,
+                                        residualBytes: 0, snapshotCount: 1,
+                                        status: .reconciled),
+            snapshots: nil, generatedAt: Date())
+        XCTAssertEqual(report.allAttributions.count, 2,
+                       "allAttributions = items + refused（F3a 扩面的载体）")
+        vm.attributionLookup = { report.allAttributions }
+
+        let items = await vm.makeRehearsal(sizes: [certainURL: 1, probableURL: 1],
+                                           urls: [certainURL, probableURL])
+        XCTAssertEqual(items.first { $0.target.url == certainURL }?.attribution?.ruleID,
+                       "caches.app-generic")
+        XCTAssertEqual(items.first { $0.target.url == probableURL }?.attribution?.confidence,
+                       .probable, "probable 归因必须到达预演（旧 lookup 只供 items，此分支哑火）")
+    }
 }

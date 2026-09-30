@@ -73,7 +73,12 @@ struct CleanupContentView: View {
                 Button("警告：含危险项，确认清理") { performCleanup() }
                 Button("取消", role: .cancel) { }
             case .irreversible:
-                Button("永久删除（不可恢复！）", role: .destructive) { performCleanup() }
+                // P1 final (F2)：引擎动作是把文件移入废纸篓（30 天内可在历史
+                // 中还原）——旧文案谎称文件就此消失、无法找回，且与预演 sheet
+                // 的「移入废纸篓…可还原」横幅自相矛盾。保留危险项警示，去掉
+                // 永久性谎称。粉碎器不经过此弹窗（ShredderView 有自己的
+                // DELETE 确认流程），故此处没有任何真正不可逆的动作。
+                Button("危险项清理（移入废纸篓）", role: .destructive) { performCleanup() }
                 Button("取消", role: .cancel) { }
             }
         } message: {
@@ -85,7 +90,7 @@ struct CleanupContentView: View {
             case .high:
                 Text("包含危险项或运行中应用的文件。请确认已保存工作。")
             case .irreversible:
-                Text("此操作将永久删除文件，不可通过废纸篓恢复！")
+                Text("将移入废纸篓（30 天内可在历史中还原）；含危险项，请确认")
             }
         }
     }

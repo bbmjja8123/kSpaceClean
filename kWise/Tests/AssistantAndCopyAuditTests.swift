@@ -99,6 +99,9 @@ final class NewCopyAuditTests: XCTestCase {
         "Features/AppUninstall/ResidueGroupingEngine.swift",
         "Features/AppUninstall/ResidueExplainer.swift",
         "Features/AppUninstall/AppUninstallDetailPanel.swift",
+        // P1 final (F1)：onboarding 是「信任契约」的第一块面板——虚假的
+        // CoreML 承诺绝不允许在这里复活。
+        "Features/Onboarding/OnboardingPages.swift",
     ]
 
     private static let bannedPhrases = [
@@ -137,6 +140,24 @@ final class NewCopyAuditTests: XCTestCase {
                                 encoding: .utf8)
         XCTAssertTrue(source.contains("对 SSD 已足够"),
                       "The 1-pass-is-enough-on-SSD note is mandatory copy")
+    }
+
+    /// P1 final (F1) — onboarding 不得虚构 CoreML 分类能力：实际实现是
+    /// 本机规则归因 + 端上语义推测（零网络）。措辞升级时禁止把「AI 智能分类 /
+    /// CoreML」类夸大叙事带回来。
+    func testOnboardingCopyIsHonestAboutAttribution() throws {
+        let root = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+        let source = try String(contentsOf:
+            root.appendingPathComponent("Features/Onboarding/OnboardingPages.swift"),
+            encoding: .utf8)
+        for overclaim in ["AI 智能分类", "CoreML", "精准分类"] {
+            XCTAssertFalse(source.contains(overclaim),
+                           "onboarding 不得虚构能力：\(overclaim)")
+        }
+        XCTAssertTrue(source.contains("本机规则归因"),
+                      "归因能力必须按真实实现描述（本机规则归因）")
     }
 }
 

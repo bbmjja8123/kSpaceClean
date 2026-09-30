@@ -78,8 +78,8 @@ struct OnboardingPage2: View {
                 )
                 FeatureRow(
                     icon: "brain",
-                    title: "AI 智能分类",
-                    description: "CoreML 本地 AI 自动识别文件类型，精准分类"
+                    title: "智能归因",
+                    description: "本机规则归因 + 端上语义推测（零网络，数据不出机）"
                 )
                 FeatureRow(
                     icon: "trash",
@@ -117,7 +117,7 @@ struct OnboardingPage3: View {
                     .foregroundColor(.textSecondary)
             }
 
-            Text("所有扫描、分类和 AI 分析均在您的设备本地完成。\n我们不会收集、上传或分享任何个人数据。")
+            Text("所有扫描、归因与推测均在本机完成。\n我们不会收集、上传或分享任何个人数据。")
                 .font(AppFont.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)

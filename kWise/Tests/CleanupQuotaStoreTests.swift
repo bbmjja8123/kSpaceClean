@@ -71,6 +71,38 @@ final class CleanupEngineQuotaTests: XCTestCase {
         XCTAssertTrue(outcome.quotaExhausted)
     }
 
+    /// P1 final (M4) — size-0 target (stat-failure scenario) must NOT slip
+    /// through the 0-budget gate: the old `used + size <= budget` greedy
+    /// comparison kept it (`0 + 0 <= 0`), so an unpurchased user could trash
+    /// real files with no paywall signal.
+    func testZeroBudgetSkipsSizeZeroTarget() async throws {
+        let file = try makeFile(sizeBytes: 4)
+
+        let engine = makeEngine(quota: StubQuota(remaining: 0))
+        let outcome = try await engine.cleanup(targets: [
+            CleanupTarget(url: file, size: 0, risk: .recommended)
+        ])
+
+        XCTAssertTrue(outcome.succeeded.isEmpty, "Unpurchased: a size-0 target must not be cleaned")
+        XCTAssertEqual(outcome.skippedForQuota, [file], "size-0 target must count as quota-skipped")
+        XCTAssertTrue(outcome.quotaExhausted)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: file.path),
+                      "The file must be left untouched")
+    }
+
+    /// P1 final (M4) — the streaming surface carries a copy of the same
+    /// greedy loop; the 0-budget hard gate must apply there too.
+    func testStreamingZeroBudgetLeavesFilesBehind() async throws {
+        let file = try makeFile(sizeBytes: 4)
+
+        let engine = makeEngine(quota: StubQuota(remaining: 0))
+        for await _ in engine.cleanup(urls: [file], warnHandling: .skip) {
+            // Drain the stream; the assertion is on filesystem state.
+        }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: file.path),
+                      "Streaming path: unpurchased (0 budget) must not clean the file")
+    }
+
     /// Purchased user: nil remaining → no ceiling, everything cleans.
     func testPurchasedUserHasNoQuotaCeiling() async throws {
         let small = try makeFile(sizeBytes: 100)
