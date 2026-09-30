@@ -24,10 +24,11 @@ public final class AppGraph: ObservableObject {
     public let cleanupEngine: CleanupEngine
     public let storeManager: StoreManager
     public let menuBarManager: MenuBarManager
-    /// Free-tier quota gate — read by `CleanupEngine` before every run.
+    /// Buyout gate — read by `CleanupEngine` before every run. Purchased →
+    /// unlimited; unpurchased → refusal (R5), which surfaces the paywall.
     public let quotaChecker: CleanupQuotaChecking
-    /// Observers fanned out after each cleanup (quota ledger today; streaks,
-    /// monthly report and widget snapshot join in later phases).
+    /// Observers fanned out after each cleanup (menu bar, notification,
+    /// widget snapshot, streaks, monthly report).
     public let eventSinks: [CleanupEventSink]
     /// Live scan results the assistant reads for data-backed answers.
     /// Weak — RootView owns the scan VM's lifetime.
@@ -121,16 +122,15 @@ public final class AppGraph: ObservableObject {
         // join the fan-out before the engine exists.
         let menuBarManager = menuBar ?? MenuBarManager()
         self.menuBarManager = menuBarManager
+        // P1 T7 — the buyout is the gate. `hasPurchased` is MainActor-
+        // isolated; hop back for the read. Entitlements are refreshed on
+        // launch / purchase / restore, so a plain property read is enough.
         self.quotaChecker = CleanupQuotaChecker { [storeManager] in
-            await storeManager.checkSubscription()
-            // `isSubscribed` is MainActor-isolated; hop back for the read.
-            return await MainActor.run { storeManager.isSubscribed }
+            await MainActor.run { storeManager.hasPurchased }
         }
-        let quotaLedger = FreeQuotaStore.standard()
         // The menu bar observes the same event stream (C-8 "最近清理" row);
         // the widget snapshot feed + streak ledger update the same way.
         self.eventSinks = [
-            QuotaRecordSink(store: quotaLedger),
             CleanupNotificationSink(),
             menuBarManager,
             WidgetSnapshotSink(),

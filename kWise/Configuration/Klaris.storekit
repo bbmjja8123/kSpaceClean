@@ -1,0 +1,43 @@
+{
+  "identifier" : "D6A0C1E2-3B47-4E8F-9A5D-2C1B0F7E9A31",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "9.90",
+      "familyShareable" : false,
+      "internalID" : "6F4E9B2A-1C38-4D57-B0A9-8E7C2D5F1B64",
+      "localizations" : [
+        {
+          "description" : "Unlock every reclamation action in Klaris. Buy once — no subscription.",
+          "displayName" : "Klaris Unlock",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "解锁 Klaris 全部回收能力。一次买断，无订阅。",
+          "displayName" : "Klaris 解锁",
+          "locale" : "zh_CN"
+        }
+      ],
+      "productID" : "app.kraftly.klaris.buyout",
+      "referenceName" : "Klaris Buyout",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

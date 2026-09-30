@@ -143,6 +143,8 @@ schemes:
         kWise: all
     run:
       config: Debug
+      # P1 T7 — local purchase testing against the non-consumable buyout.
+      storeKitConfiguration: Configuration/Klaris.storekit
     test:
       config: Debug
       targets:

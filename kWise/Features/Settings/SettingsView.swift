@@ -68,7 +68,7 @@ struct SettingsView: View {
                     }
                 }
 
-                Section("订阅") {
+                Section("解锁") {
                     subscriptionRow
                 }
             }
@@ -118,31 +118,25 @@ struct SettingsView: View {
         )
     }
 
-    // MARK: - Subscription (single StoreManager)
+    // MARK: - Buyout unlock (single StoreManager)
 
     @ViewBuilder
     private var subscriptionRow: some View {
         let store = graph.storeManager
         LabeledContent {
-            if store.isSubscribed {
-                Text("已订阅")
+            if store.hasPurchased {
+                Text("已解锁")
                     .foregroundColor(.success)
             } else {
-                Button("管理订阅") {
-                    openSubscriptionManagement()
+                Button("恢复购买") {
+                    Task { await store.restorePurchases() }
                 }
             }
         } label: {
-            Text(store.isSubscribed ? "当前: Pro" : "当前: 免费版")
-            Text("免费版每 30 天可清理 1 GB，订阅后不限量。")
+            Text(store.hasPurchased ? "当前: 买断版" : "当前: 免费版")
+            Text("扫描、归因、拒答清单永久免费；回收动作一次买断解锁。")
                 .font(AppFont.caption)
                 .foregroundColor(.textSecondary)
-        }
-    }
-
-    private func openSubscriptionManagement() {
-        if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
-            NSWorkspace.shared.open(url)
         }
     }
 

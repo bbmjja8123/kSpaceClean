@@ -6848,6 +6848,222 @@
           }
         }
       }
+    },
+    "pw.buyout.title": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock every reclamation action"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべての回収機能を解放"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁全部回收能力"
+          }
+        }
+      }
+    },
+    "pw.buyout.pitch": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-time purchase ¥68 ($9.90) · no subscription · scanning and attribution stay free · data never leaves your Mac"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切り ¥68（$9.90）· サブスクなし · スキャンと判定は永続無料 · データは端末から出ません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一次买断 ¥68（$9.90）· 无订阅 · 扫描与归因永远免费 · 数据不出机"
+          }
+        }
+      }
+    },
+    "pw.buyout.feature.actions": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every reclamation action"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべての回収アクション"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部回收动作"
+          }
+        }
+      }
+    },
+    "pw.buyout.feature.actions.sub": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buy once, yours for good"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切りでずっと使える"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一次买断，长期可用"
+          }
+        }
+      }
+    },
+    "pw.buyout.feature.quickclean": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe Quick Clean"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全なクイッククリーン"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全快捷回收"
+          }
+        }
+      }
+    },
+    "pw.buyout.feature.quickclean.sub": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-rebuildable caches, reclaimed with care"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動再生成されるキャッシュを安全に"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动重建的缓存可放心回收"
+          }
+        }
+      }
+    },
+    "pw.buyout.cta": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock with a one-time purchase"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切りで解放"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一次买断解锁"
+          }
+        }
+      }
+    },
+    "pw.buyout.freeTier": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free tier: scanning, attribution and the refusal list stay free forever"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無料層：スキャン・判定・拒否リストは永続的に無料"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免费层：扫描、归因、拒答清单永久免费"
+          }
+        }
+      }
+    },
+    "pw.buyout.restore": {
+      "extractionState": "manual",
+      "comment": "P1 T7 — buyout paywall (non-consumable $9.90 / ¥68)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Purchases"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "購入を復元"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恢复购买"
+          }
+        }
+      }
     }
   },
   "version": "1.1"
