@@ -67,9 +67,8 @@ public final class AppCoordinator: ObservableObject {
         case "report", "monthlyreport":
             navigate(to: .monthlyReport)
             return true
-        case "assistant":
-            navigate(to: .assistant)
-            return true
+        // P1 T8: klaris://assistant 随聊天框退役（问答内嵌 DetailPanel，
+        // 无独立导航面）。未知 host 走 default → false。
         case "duplicates":
             openToolTab(.duplicates)
             return true

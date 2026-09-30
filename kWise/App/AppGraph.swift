@@ -30,10 +30,6 @@ public final class AppGraph: ObservableObject {
     /// Observers fanned out after each cleanup (menu bar, notification,
     /// widget snapshot, streaks, monthly report).
     public let eventSinks: [CleanupEventSink]
-    /// Live scan results the assistant reads for data-backed answers.
-    /// Weak — RootView owns the scan VM's lifetime.
-    weak var assistantScanVM: ScanResultsViewModel?
-
     // v2.5 Tab 化工具箱：每个工具一个常驻 VM（懒创建，Tab 切换不重建）。
     private var toolVMCache: [String: AnyObject] = [:]
 
@@ -100,9 +96,8 @@ public final class AppGraph: ObservableObject {
         }
     }
 
-    func assistantVM() -> AssistantViewModel {
-        cached("assistant") { AssistantViewModel() }
-    }
+    // P1 T8: assistantVM() 已随聊天框退役删除——问答由 DetailPanel 内嵌的
+    // AssistantNodePanelModel 承接（自带 matcher/builder，无共享状态）。
 
     // MARK: Shared instance for App Intents / widget intents
 

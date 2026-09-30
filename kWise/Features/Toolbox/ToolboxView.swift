@@ -79,12 +79,8 @@ struct ToolboxView: View {
                         subtitle: "维护任务与引导",
                         destination: .maintenance
                     )
-                    ToolboxCard(
-                        icon: "sparkles",
-                        title: "清理助手",
-                        subtitle: "问一句，找到该删的",
-                        destination: .assistant
-                    )
+                    // P1 T8: 「清理助手」卡已退役 —— 问答内嵌在扫描结果的
+                    // 详情面板（AssistantNodePanel），不再有独立导航面。
                 }
             }
             .padding(AppSpacing.lg)

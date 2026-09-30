@@ -35,6 +35,26 @@ final class AssistantIntentMatcherTests: XCTestCase {
         XCTAssertNil(matcher.match("hello world what is love"))
     }
 
+    /// P1 T8 — 聊天框退役，问答内嵌到 DetailPanel（AssistantNodePanelModel）。
+    /// 没有自由输入 → 建议问题集就是全部入口：每条必须命中 matcher 模板表
+    /// （建议集与模板表脱节 = UI 给出永远答不了的问题）；无关输入必须诚实拒答。
+    @MainActor
+    func testNodePanelAnswersFromMatcherWithoutChatInput() {
+        // 节点问答不走自由输入——建议问题集必须命中 matcher 表。
+        let panel = AssistantNodePanelModel(scanResultsProvider: { nil })
+        for question in AssistantNodePanelModel.suggestedQuestions {
+            if let intent = AssistantIntentMatcher().match(question) {
+                // builder 在 scanVM 为 nil 时的诚实行为：要么 nil 要么无数据答案卡。
+                _ = panel.answer(question: question)
+                _ = intent
+            } else {
+                XCTFail("建议问题 \(question) 必须能被 matcher 命中——建议集与模板表脱节")
+            }
+        }
+        XCTAssertNil(panel.answer(question: "今天天气怎么样"),
+                     "无关输入必须诚实拒答")
+    }
+
     /// The assistant is a zero-network surface — a URLSession reference in
     /// its source is a compliance bug.
     func testAssistantModuleHasNoNetworking() throws {
@@ -69,7 +89,8 @@ final class NewCopyAuditTests: XCTestCase {
         "Features/Shredder/FileShredder.swift",
         "Features/History/TimelineView.swift",
         "Features/Report/MonthlyReport.swift",
-        "Features/Assistant/AssistantView.swift",
+        // P1 T8: AssistantView.swift 退役；问答内嵌面板继承审计位。
+        "Features/Assistant/AssistantNodePanel.swift",
         "Features/SpaceMap/SpaceMapView.swift",
         "Features/SmartCare/SmartCareHeroView.swift",
         "Features/PhotoClean/PhotoCleanView.swift",

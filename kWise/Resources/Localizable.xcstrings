@@ -2603,52 +2603,6 @@
         }
       }
     },
-    "nav.assistant": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cleanup Assistant"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "クリーンアップアシスタント"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "清理助手"
-          }
-        }
-      }
-    },
-    "nav.attribution": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Attribution"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "帰属の内訳"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "归因透视"
-          }
-        }
-      }
-    },
     "nav.cleanup": {
       "extractionState": "stale",
       "localizations": {
@@ -7085,6 +7039,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "已解锁 · 感谢支持"
+          }
+        }
+      }
+    },
+    "assistant.node.header": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About this item — try asking:"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この項目について、こう聞いてみて："
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关于这项空间，试试这样问："
+          }
+        }
+      }
+    },
+    "assistant.node.refusal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I can't answer that — try one of the suggested questions."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これは答えられません — 下の候補から選んでください。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个问题我答不了 — 试试下面的建议问题。"
           }
         }
       }

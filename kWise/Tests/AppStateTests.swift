@@ -56,9 +56,11 @@ final class AppStateTests: XCTestCase {
     func test_NavigationItem_allCases() {
         // v2.0 Phase 2: 11 original + 8 new (tools/spaceMap/monthlyReport/
         // assistant/duplicates/largeOld/photoClean/maintenance) − galaxy.
-        // P0 Task 9 adds `.attribution` (toolbox deep surface).
+        // P0 Task 9 added `.attribution` (toolbox deep surface).
         // P1 T1 adds `.anatomy` (rail head; SmartCare retired to deep link).
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 20)
+        // P1 T8 retires `.assistant` (Q&A embedded in DetailPanel) and the
+        // dormant `.attribution` residue case (P1 T5 routed it to `.anatomy`).
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 18)
     }
 
     /// v2.0 Phase 2: the rail is fixed at six entries and never grows.

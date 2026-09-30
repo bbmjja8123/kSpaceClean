@@ -12,6 +12,16 @@ import DesignSystem
 struct DetailPanelView: View {
     @EnvironmentObject var appState: AppState
     @ObservedObject var viewModel: ScanResultsViewModel
+    // P1 T8 — 节点问答：聊天框退役后，建议问题 + 答案卡内嵌到详情面板尾部。
+    // 弱持有 scan VM：面板生命周期短于 RootView 的扫描 VM，不得延长它。
+    @StateObject private var nodePanel: AssistantNodePanelModel
+
+    init(viewModel: ScanResultsViewModel) {
+        _viewModel = ObservedObject(wrappedValue: viewModel)
+        _nodePanel = StateObject(wrappedValue: AssistantNodePanelModel(
+            scanResultsProvider: { [weak viewModel] in viewModel }
+        ))
+    }
 
     var body: some View {
         Group {
@@ -40,10 +50,12 @@ struct DetailPanelView: View {
                 case .app:
                     if let sub = node as? ScanSubCategory {
                         appBody(sub)
+                        nodePanelSection
                     }
                 case .file:
                     if let result = node as? ScanResult {
                         fileBody(result)
+                        nodePanelSection
                     }
                 }
             }
@@ -181,6 +193,17 @@ struct DetailPanelView: View {
                     .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
             }
         }
+    }
+
+    // MARK: - Node Q&A (P1 T8)
+
+    /// 建议问答区：仅 file / app 详情尾部出现（category 概览不提供）。
+    private var nodePanelSection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            Divider()
+            AssistantNodePanelView(model: nodePanel)
+        }
+        .padding(.top, AppSpacing.xs)
     }
 
     // MARK: - Helpers

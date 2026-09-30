@@ -53,13 +53,13 @@ public final class AppState: ObservableObject {
         case tools = "tools"
         case spaceMap = "spaceMap"
         case monthlyReport = "monthlyReport"
-        case assistant = "assistant"
         case duplicates = "duplicates"
         case largeOld = "largeOld"
         case photoClean = "photoClean"
         case maintenance = "maintenance"
-        // P0 归因引擎（Klaris Task 9）— 工具箱深面，纯描述（零清理动作）。
-        case attribution = "attribution"
+        // P1 T8: `.assistant` 退役（问答内嵌 DetailPanel，AssistantNodePanel）。
+        // P0 的 `.attribution` 验证面也已在 P1 T5 退役（工具箱卡直达 `.anatomy`），
+        // 枚举残留一并清除。
 
         /// Fixed icon-rail order (v2.0 Phase 2). The rail no longer grows
         /// with every module — deep surfaces live in the toolbox and are
@@ -68,12 +68,11 @@ public final class AppState: ObservableObject {
             [.anatomy, .scan, .tools, .cleanup, .history, .settings]
         }
 
-        /// 工具箱九件套 —— 这些导航项以 Tab 方式打开（v2.5）。
+        /// 工具箱八件套 —— 这些导航项以 Tab 方式打开（v2.5）。
         public var isToolboxTool: Bool {
             switch self {
             case .appUninstall, .duplicates, .largeOld, .photoClean,
-                 .shredder, .startupItems, .spaceMap, .maintenance, .assistant,
-                 .attribution:
+                 .shredder, .startupItems, .spaceMap, .maintenance:
                 return true
             default:
                 return false
@@ -96,12 +95,10 @@ public final class AppState: ObservableObject {
             case .tools: return "square.grid.2x2"
             case .spaceMap: return "circle.hexagongrid.circle"
             case .monthlyReport: return "chart.bar.doc.horizontal"
-            case .assistant: return "sparkles"
             case .duplicates: return "doc.on.doc"
             case .largeOld: return "arrow.up.left.and.arrow.down.right"
             case .photoClean: return "photo.on.rectangle"
             case .maintenance: return "wrench.and.screwdriver"
-            case .attribution: return "magnifyingglass.circle"
             }
         }
 
@@ -121,12 +118,10 @@ public final class AppState: ObservableObject {
             case .tools: return String(localized: "nav.tools")
             case .spaceMap: return String(localized: "nav.spaceMap")
             case .monthlyReport: return String(localized: "nav.monthlyReport")
-            case .assistant: return String(localized: "nav.assistant")
             case .duplicates: return String(localized: "nav.duplicates")
             case .largeOld: return String(localized: "nav.largeOld")
             case .photoClean: return String(localized: "nav.photoClean")
             case .maintenance: return String(localized: "nav.maintenance")
-            case .attribution: return String(localized: "nav.attribution")
             }
         }
     }

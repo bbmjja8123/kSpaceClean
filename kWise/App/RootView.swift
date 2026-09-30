@@ -148,8 +148,6 @@ struct RootView: View {
             cleanupViewModel.attributionLookup = {
                 anatomyViewModel.report?.items ?? []
             }
-            // 清理助手 reads the live scan results for data-backed answers.
-            graph.assistantScanVM = scanResultsViewModel
             // Menu bar quick actions (C-8, v2.0 Phase 3): route through the
             // coordinator — the menu never mutates appState directly.
             graph.menuBarManager.onQuickScan = {
@@ -221,8 +219,6 @@ struct RootView: View {
             SpaceMapView(viewModel: spaceMapViewModel)
         case .monthlyReport:
             MonthlyReportView()
-        case .assistant:
-            AssistantView(viewModel: graph.assistantVM())
         case .duplicates:
             DuplicateView(viewModel: makeDuplicateViewModel())
         case .largeOld:
@@ -234,13 +230,8 @@ struct RootView: View {
             )
         case .maintenance:
             MaintenanceView(viewModel: makeMaintenanceViewModel())
-        // P0 验证面已退役（P1 T5）：`.attribution` 不再有独立视图 —— 工具箱
-        // 卡片与一切入口都已指向 `.anatomy`。这个 case 仅因枚举未删而保留，
-        // 路由到同一解剖面，绝不渲染已删除的 preview。
-        case .attribution:
-            AnatomyView(viewModel: anatomyViewModel) {
-                appState.navigation = .smartCare
-            }
+        // P1 T5/T8：`.attribution` 验证面与 `.assistant` 聊天框均已退役 ——
+        // 枚举 case 已删，工具箱卡片直达 `.anatomy`，问答内嵌 DetailPanel。
         }
     }
 

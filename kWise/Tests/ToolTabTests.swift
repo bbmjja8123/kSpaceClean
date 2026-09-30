@@ -66,10 +66,10 @@ final class ToolTabTests: XCTestCase {
         XCTAssertEqual(state.navigation, .scan)
     }
 
-    func testAllNineToolsAreToolboxTools() {
+    func testAllEightToolsAreToolboxTools() {
         let expected: [AppState.NavigationItem] = [
             .appUninstall, .duplicates, .largeOld, .photoClean,
-            .shredder, .startupItems, .spaceMap, .maintenance, .assistant,
+            .shredder, .startupItems, .spaceMap, .maintenance,
         ]
         for item in expected {
             XCTAssertTrue(item.isToolboxTool, "\(item) 应以 Tab 打开")

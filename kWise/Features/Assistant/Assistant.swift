@@ -193,8 +193,10 @@ enum AssistantAnswerBuilder {
                 suggestions: exampleQuestions
             )
         case .cleanupNow:
+            // P1 T5/T6 后的事实口径：首页是空间解剖页，唯一回收入口是页内
+            // 「安全快捷回收」按钮（Smart Care 已降级为次级页）。
             return AssistantAnswer(
-                headline: "点击首页 Smart Care 即可一键扫描并清理推荐项。",
+                headline: "点击首屏的「安全快捷回收」按钮，即可扫描并清理推荐项。",
                 cards: [],
                 suggestions: exampleQuestions
             )
@@ -207,7 +209,7 @@ enum AssistantAnswerBuilder {
             )
         case .freeUpSpace:
             return AssistantAnswer(
-                headline: "三步腾空间：① Smart Care 清推荐项 ② 大文件找巨型文件 ③ 相似照片清截图。全部走废纸篓可还原。",
+                headline: "三步腾空间：① 首屏「安全快捷回收」清推荐项 ② 大文件找巨型文件 ③ 相似照片清截图。全部走废纸篓可还原。",
                 cards: [],
                 suggestions: exampleQuestions
             )
@@ -302,42 +304,10 @@ enum AssistantAnswerBuilder {
     }
 }
 
-// MARK: - ViewModel
+// MARK: - ViewModel (retired)
 
-@MainActor
-final class AssistantViewModel: ObservableObject {
-    @Published private(set) var answer: AssistantAnswer?
-    @Published var draft: String = ""
+// The chat-era `AssistantViewModel` (draft field + `respond(to:)`) was
+// removed with AssistantView in P1 T8; the detail panel's
+// `AssistantNodePanelModel` (AssistantNodePanel.swift) now owns the
+// question → matcher → builder flow without a free-text input.
 
-    private let matcher = AssistantIntentMatcher()
-
-    init() {}
-
-    func ask() {
-        let utterance = draft.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !utterance.isEmpty else { return }
-        answer = respond(to: utterance)
-        draft = ""
-    }
-
-    /// Live scan results provider (wired to AppGraph by AssistantView).
-    var scanResultsProvider: (() -> ScanResultsViewModel?)?
-
-    /// Pure-ish entry point for tests.
-    func respond(to utterance: String) -> AssistantAnswer {
-        guard let intent = matcher.match(utterance) else {
-            return AssistantAnswer(
-                headline: "这个问题我还不懂 — 试试下面的示例问题？",
-                cards: [],
-                suggestions: AssistantAnswerBuilder.exampleQuestions
-            )
-        }
-        let scanVM = scanResultsProvider?()
-        return AssistantAnswerBuilder.build(intent: intent, scanVM: scanVM)
-    }
-
-    func askSuggestion(_ text: String) {
-        draft = text
-        ask()
-    }
-}
