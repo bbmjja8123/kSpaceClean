@@ -9,11 +9,19 @@ import PowerScope
 
 // MARK: - Config
 
-struct PhotoSimilarityConfig: Sendable {
-    var directories: [URL]
-    var preset: SimilarityPreset
+public struct PhotoSimilarityConfig: Sendable {
+    public var directories: [URL]
+    public var preset: SimilarityPreset
     /// Photos below this size rarely matter for cleanup.
-    var minFileSize: Int64 = 128 * 1024
+    public var minFileSize: Int64 = 128 * 1024
+
+    public init(directories: [URL],
+                preset: SimilarityPreset,
+                minFileSize: Int64 = 128 * 1024) {
+        self.directories = directories
+        self.preset = preset
+        self.minFileSize = minFileSize
+    }
 }
 
 // MARK: - Scanner
@@ -21,7 +29,7 @@ struct PhotoSimilarityConfig: Sendable {
 /// Finds visually similar photos (screenshots piles, burst leftovers,
 /// re-downloads) by running the DetectionCore perceptual pipeline over
 /// candidate directories the current scope can actually read.
-final class PhotoSimilarityScanner: @unchecked Sendable {
+public final class PhotoSimilarityScanner: @unchecked Sendable {
 
     /// Candidate photo directories inside the granted home scope, filtered
     /// by `capability.canRead` — container-only users get an empty list and
@@ -39,7 +47,10 @@ final class PhotoSimilarityScanner: @unchecked Sendable {
 
     private let walker = FileWalker()
 
-    func scan(config: PhotoSimilarityConfig,
+    /// public：作为 CanvasScanCoordinator public init 的默认实参。
+    public init() {}
+
+    public func scan(config: PhotoSimilarityConfig,
               controller: ScanController,
               progress: @escaping @Sendable (Double, String?) -> Void) async -> [DetectionCore.DuplicateGroup] {
         guard !config.directories.isEmpty else { return [] }

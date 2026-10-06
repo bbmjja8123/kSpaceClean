@@ -1,0 +1,198 @@
+// kWise/Features/Anatomy/CanvasScanCoordinator.swift
+//
+// 画布扇出扫描（P2 T2，spec §5 扫描即动作）：
+//   归因（已有 AsyncStream）→ 重复 → 照片 → 大文件。
+// 每段完成即把组推上画布（增量产出，画布不清空）；检测器为 nil
+// （未授权 / 已关闭）时对应段跳过 —— 不出空组。
+//
+// 三个检测器与归因服务都包 protocol seam（DuplicateScanning /
+// PhotoScanning / LargeFileScanning / AttributionScanning），测试注入
+// mock（CanvasScanCoordinatorTests 零文件系统触达），生产包真实现。
+import Foundation
+import DetectionCore
+import Combine
+
+// MARK: - Scanner seams
+
+/// 归因服务 seam（AttributionService 为 struct，直接贴合其唯一入口）。
+public protocol AttributionScanning: Sendable {
+    func attribute(categories: [ScanCategory]) async -> AttributionReport
+}
+
+extension AttributionService: AttributionScanning {}
+
+/// 重复检测 seam —— 贴合 `DuplicateScanner.scan` 真实签名
+/// （DetectionCore ScanOrchestrator 的 ScanEvent 流）。
+public protocol DuplicateScanning: Sendable {
+    func scan(paths: [URL],
+              preset: SimilarityPreset,
+              strategy: SelectionStrategy,
+              minFileSize: Int64,
+              exclusions: [String],
+              enablePerceptual: Bool) -> AsyncStream<DetectionCore.ScanEvent>
+}
+
+extension DuplicateScanner: DuplicateScanning {}
+
+/// 相似照片检测 seam —— 贴合 `PhotoSimilarityScanner.scan` 真实签名
+/// （PhotoSimilarityConfig + ScanController + progress 回调）。
+public protocol PhotoScanning: Sendable {
+    func scan(config: PhotoSimilarityConfig,
+              controller: ScanController,
+              progress: @escaping @Sendable (Double, String?) -> Void)
+        async -> [DetectionCore.DuplicateGroup]
+}
+
+extension PhotoSimilarityScanner: PhotoScanning {}
+
+/// 大/旧文件检测 seam —— 贴合 `LargeOldScanner.scan` 真实签名
+/// （AsyncStream<LargeOldFileEntry>）。
+public protocol LargeFileScanning: Sendable {
+    func scan(config: LargeOldScanConfig) -> AsyncStream<LargeOldFileEntry>
+}
+
+extension LargeOldScanner: LargeFileScanning {}
+
+// MARK: - Scope & Report
+
+/// 一次画布扫描的输入范围：归因吃扫描树分类，检测器吃各自授权根目录。
+public struct CanvasScanScope: Sendable {
+    public var categories: [ScanCategory]
+    public var duplicateRoots: [URL]
+    public var photoDirectories: [URL]
+    public var largeFileRoots: [URL]
+    public var selectionStrategy: SelectionStrategy
+    public var preset: SimilarityPreset
+
+    public init(categories: [ScanCategory],
+                duplicateRoots: [URL],
+                photoDirectories: [URL],
+                largeFileRoots: [URL],
+                selectionStrategy: SelectionStrategy = .keepNewest,
+                preset: SimilarityPreset = .normal) {
+        self.categories = categories
+        self.duplicateRoots = duplicateRoots
+        self.photoDirectories = photoDirectories
+        self.largeFileRoots = largeFileRoots
+        self.selectionStrategy = selectionStrategy
+        self.preset = preset
+    }
+}
+
+/// 画布扫描报告 —— `groups` 按扇出完成顺序排列（画布即完成顺序）。
+public struct CanvasReport: Sendable {
+    public let groups: [CanvasGroup]
+    /// 黑盒残差（P0）：nil 仅在归因未运行时出现 —— 生产路径恒非 nil。
+    public let uncovered: BlackBoxBreakdown?
+    /// nil = 卷层不可读（P1 契约：明示降级，禁止 [] 冒充）。
+    public let snapshots: [APFSSnapshot]?
+    public let generatedAt: Date
+
+    public init(groups: [CanvasGroup],
+                uncovered: BlackBoxBreakdown?,
+                snapshots: [APFSSnapshot]?,
+                generatedAt: Date) {
+        self.groups = groups
+        self.uncovered = uncovered
+        self.snapshots = snapshots
+        self.generatedAt = generatedAt
+    }
+}
+
+// MARK: - Coordinator
+
+@MainActor
+public final class CanvasScanCoordinator: ObservableObject {
+
+    /// 增量产出的组（每组完成即追加，顺序 = 扇出完成顺序）。
+    @Published public private(set) var groups: [CanvasGroup] = []
+    /// 「我不敢判的」虚线卡数据（不占 CanvasGroup，画布单独渲染）。
+    @Published public private(set) var uncertainCard: UncertainCard?
+    @Published public private(set) var isRunning = false
+
+    private let attributionService: any AttributionScanning
+    private let duplicateScanner: (any DuplicateScanning)?
+    private let photoScanner: (any PhotoScanning)?
+    private let largeFileScanner: (any LargeFileScanning)?
+
+    /// 重复检测下限沿用 v2.3 工具默认（1 MiB）—— 画布不重复暴露该旋钮。
+    static let duplicateMinFileSize: Int64 = 1_048_576
+
+    public init(attributionService: any AttributionScanning = AttributionService.live(),
+                duplicateScanner: (any DuplicateScanning)? = DuplicateScanner(),
+                photoScanner: (any PhotoScanning)? = PhotoSimilarityScanner(),
+                largeFileScanner: (any LargeFileScanning)? = LargeOldScanner()) {
+        self.attributionService = attributionService
+        self.duplicateScanner = duplicateScanner
+        self.photoScanner = photoScanner
+        self.largeFileScanner = largeFileScanner
+    }
+
+    /// 扇出顺序：归因 → 重复 → 照片 → 大文件。
+    public func runScan(scope: CanvasScanScope) async -> CanvasReport {
+        groups = []
+        uncertainCard = nil
+        isRunning = true
+        defer { isRunning = false }
+
+        // 1. 归因（组随流产出，cause 组间已按 totalBytes 降序）。
+        let report = await attributionService.attribute(categories: scope.categories)
+        uncertainCard = CanvasGroupAssembler.uncertainCard(from: report.refused)
+        groups.append(contentsOf: CanvasGroupAssembler.assembleCauseGroups(from: report.items))
+
+        // 2. 重复文件。
+        if let duplicateScanner {
+            var engineGroups: [DetectionCore.DuplicateGroup] = []
+            for await event in duplicateScanner.scan(
+                paths: scope.duplicateRoots,
+                preset: scope.preset,
+                strategy: scope.selectionStrategy,
+                minFileSize: Self.duplicateMinFileSize,
+                exclusions: [],
+                enablePerceptual: true) {
+                if case .group(let engineGroup) = event {
+                    engineGroups.append(engineGroup)
+                }
+            }
+            let mapped = engineGroups.map {
+                ToolboxGroup.map($0, strategy: scope.selectionStrategy,
+                                 scanRoots: scope.duplicateRoots)
+            }
+            if let group = CanvasGroupAssembler.assembleDuplicates(from: mapped) {
+                groups.append(group)
+            }
+        }
+
+        // 3. 相似照片。
+        if let photoScanner {
+            let photoGroups = await photoScanner.scan(
+                config: PhotoSimilarityConfig(directories: scope.photoDirectories,
+                                              preset: scope.preset),
+                controller: ScanController()) { _, _ in }
+            let mapped = photoGroups.map {
+                ToolboxGroup.map($0, strategy: scope.selectionStrategy,
+                                 scanRoots: scope.photoDirectories)
+            }
+            if let group = CanvasGroupAssembler.assemblePhotos(from: mapped) {
+                groups.append(group)
+            }
+        }
+
+        // 4. 大/旧文件。
+        if let largeFileScanner {
+            var entries: [LargeOldFileEntry] = []
+            for await entry in largeFileScanner.scan(
+                config: LargeOldScanConfig(scanPaths: scope.largeFileRoots)) {
+                entries.append(entry)
+            }
+            if let group = CanvasGroupAssembler.assembleLargeFiles(from: entries) {
+                groups.append(group)
+            }
+        }
+
+        return CanvasReport(groups: groups,
+                            uncovered: report.blackBox,
+                            snapshots: report.snapshots,
+                            generatedAt: Date())
+    }
+}
