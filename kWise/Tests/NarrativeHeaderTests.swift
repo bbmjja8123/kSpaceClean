@@ -72,6 +72,9 @@ final class NarrativeHeaderTests: XCTestCase {
                       "周聚合应为 12.4 GB，实际: \(header.headline)")
         XCTAssertTrue(header.headline.contains("GB"))
         XCTAssertTrue(header.headline.contains("回收"))
+        // fix r1: 文案严格对应 trailing-7-day 窗口（不再叫「这周」）。
+        XCTAssertTrue(header.headline.contains("最近 7 天"),
+                      "实际: \(header.headline)")
         XCTAssertFalse(header.headline.contains("99"),
                        "7 天窗口外的清理不得计入周聚合")
     }
@@ -83,7 +86,7 @@ final class NarrativeHeaderTests: XCTestCase {
             records: [], samples: [], streak: StreakState()
         )
 
-        XCTAssertEqual(header.headline, "这周还没有清理记录",
+        XCTAssertEqual(header.headline, "最近 7 天还没有清理记录",
                        "空历史必须诚实说「还没有」，不得虚构回收量")
         XCTAssertFalse(header.headline.contains("GB"))
     }
@@ -135,6 +138,40 @@ final class NarrativeHeaderTests: XCTestCase {
         )
 
         XCTAssertTrue(header.sub.contains("持平"), "实际: \(header.sub)")
+    }
+
+    /// fix r1 — 亚百分比不夸大：0.6% 的变轻不得被四舍五入成「轻 1%」。
+    func testSubFlatBandCoversSubPercentDelta() {
+        let now = Date()
+        let header = NarrativeHeaderModel.build(
+            records: [],
+            samples: [
+                sample(-8, used: 100_000_000_000, from: now),
+                sample(0, used: 99_400_000_000, from: now), // -0.6%
+            ],
+            streak: StreakState(),
+            now: now
+        )
+
+        XCTAssertTrue(header.sub.contains("持平"),
+                      "亚百分比（0.6%）应读作基本持平，实际: \(header.sub)")
+        XCTAssertFalse(header.sub.contains("轻"), "实际: \(header.sub)")
+    }
+
+    /// fix r1 — 边界：满 1% 的变轻才用「轻」的措辞。
+    func testSubReportsOnePercentLighterAtBandEdge() {
+        let now = Date()
+        let header = NarrativeHeaderModel.build(
+            records: [],
+            samples: [
+                sample(-8, used: 100_000_000_000, from: now),
+                sample(0, used: 99_000_000_000, from: now), // -1.0%
+            ],
+            streak: StreakState(),
+            now: now
+        )
+
+        XCTAssertTrue(header.sub.contains("轻 1%"), "实际: \(header.sub)")
     }
 
     func testSubIsHonestWhenSamplesInsufficient() {
@@ -203,10 +240,33 @@ final class NarrativeHeaderTests: XCTestCase {
         let viewModel = TimelineViewModel(persistence: persistence)
         viewModel.refresh(environment: NarrativeEnvironment(samples: [], streak: StreakState()))
 
-        XCTAssertEqual(viewModel.narrative.headline, "这周还没有清理记录")
+        XCTAssertEqual(viewModel.narrative.headline, "最近 7 天还没有清理记录")
         XCTAssertNil(viewModel.narrative.streakLine)
         XCTAssertNotNil(viewModel.monthly)
         XCTAssertTrue(viewModel.events.isEmpty)
+    }
+
+    // MARK: - live 环境每次访问重读（fix r1 Important 1）
+
+    /// `live` 不得是进程生命周期冻结快照：同一 store 两次 makeLive 之间
+    /// 落一个新样本，第二次必须可见（`.live` 走同一构造路径，另加一次
+    /// 机会性采样）。
+    func testLiveEnvironmentReloadsPerAccess() throws {
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("narrative-live-\(UUID().uuidString).json")
+        defer { try? FileManager.default.removeItem(at: url) }
+        let store = DiskSampleStore(fileURL: url)
+        let streakStore = StreakStore(defaults: nil)
+
+        let first = NarrativeEnvironment.makeLive(store: store, streakStore: streakStore)
+        XCTAssertTrue(first.samples.isEmpty, "空 store 的第一次快照应为空")
+
+        store.upsert(usedBytes: 100_000_000, totalBytes: 500_000_000)
+
+        let second = NarrativeEnvironment.makeLive(store: store, streakStore: streakStore)
+        XCTAssertEqual(second.samples.count, 1,
+                       "同一 store 的第二次访问必须看到新样本（live 不得冻结）")
+        XCTAssertEqual(second.samples.first?.usedBytes, 100_000_000)
     }
 
     // MARK: - 月报退役（nav.monthlyReport 全残为零）

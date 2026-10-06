@@ -1,7 +1,7 @@
 // kWise/Features/History/NarrativeHeader.swift
 //
 // 历史叙事头 (P2 T7) — the history page opens with a sentence, not a
-// dashboard: 「这周你回收了 12.4 GB」+「磁盘比上周轻 6%」+「打卡 5 天 🔥」.
+// dashboard: 「最近 7 天你回收了 12.4 GB」+「磁盘比上周轻 6%」+「打卡 5 天 🔥」.
 //
 // Honesty rules (C-5): an empty week says so; a heavier disk is reported as
 // heavier; missing disk samples are admitted instead of inventing a
@@ -52,9 +52,9 @@ public enum NarrativeHeaderModel {
 
         guard weekFreed > 0 else {
             // 空历史诚实零 — 不虚构回收量。
-            return "这周还没有清理记录"
+            return "最近 7 天还没有清理记录"
         }
-        return "这周你回收了 \(SmartCareHeroView.formatBytes(weekFreed))"
+        return "最近 7 天你回收了 \(SmartCareHeroView.formatBytes(weekFreed))"
     }
 
     // MARK: - Sub（磁盘比上周轻/重 X%）
@@ -82,13 +82,15 @@ public enum NarrativeHeaderModel {
             return "磁盘采样不足，暂无法与上周比较"
         }
 
-        // Round to a whole percent — sub-percent deltas read as noise.
-        let deltaPercent = Int(((Double(latest.usedBytes - weekAgo.usedBytes)
-                                 / Double(weekAgo.usedBytes)) * 100).rounded())
+        // Band on the *unrounded* ratio (fix r1): a 0.6% delta must not be
+        // inflated into「轻 1%」by rounding — sub-1% is 基本持平. Only deltas
+        // of a full percent or more earn the 轻重 wording.
+        let ratio = Double(latest.usedBytes - weekAgo.usedBytes) / Double(weekAgo.usedBytes)
+        let deltaPercent = Int((ratio * 100).rounded())
 
-        if deltaPercent <= -1 {
+        if ratio <= -0.01 {
             return "磁盘比上周轻 \(-deltaPercent)%"
-        } else if deltaPercent >= 1 {
+        } else if ratio >= 0.01 {
             // 变重也如实报告 — 粉饰等于撒谎（C-5）。
             return "磁盘比上周重 \(deltaPercent)%"
         }
@@ -120,9 +122,24 @@ public struct NarrativeEnvironment: Sendable {
         self.streak = streak
     }
 
-    /// Production default — local ring file + App-Group streak ledger.
-    public static let live = NarrativeEnvironment(
-        samples: DiskSampleStore().load(),
-        streak: StreakStore().load()
-    )
+    /// Production default — a *fresh* snapshot per access: the ring file and
+    /// the App-Group ledger are re-read every time, so a mid-session cleanup
+    /// is visible on the very next `refresh()` (fix r1 Important 1 — a
+    /// `static let` would freeze the header for the whole process life).
+    /// Each access also takes one opportunistic disk sample (the retired
+    /// monthly report's usage moment; last-write-wins per day).
+    public static var live: NarrativeEnvironment {
+        DiskUsageSampler().sample()
+        return makeLive()
+    }
+
+    /// Pure read path used by `live` — injectable so tests can pin the
+    /// per-access reload semantics against a temporary store.
+    public static func makeLive(store: DiskSampleStore = DiskSampleStore(),
+                                streakStore: StreakStore = StreakStore()) -> NarrativeEnvironment {
+        NarrativeEnvironment(
+            samples: store.load(),
+            streak: streakStore.load()
+        )
+    }
 }
