@@ -145,6 +145,9 @@ final class NewCopyAuditTests: XCTestCase {
     /// P1 final (F1) — onboarding 不得虚构 CoreML 分类能力：实际实现是
     /// 本机规则归因 + 端上语义推测（零网络）。措辞升级时禁止把「AI 智能分类 /
     /// CoreML」类夸大叙事带回来。
+    ///
+    /// P2 T8 — 5→3 页收敛追加：授权能力与诚实承诺必须在合并页存活，旧
+    /// 独立页类型（Page4 授权页 / Page5 就绪页）零残留。
     func testOnboardingCopyIsHonestAboutAttribution() throws {
         let root = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
@@ -158,6 +161,18 @@ final class NewCopyAuditTests: XCTestCase {
         }
         XCTAssertTrue(source.contains("本机规则归因"),
                       "归因能力必须按真实实现描述（本机规则归因）")
+        XCTAssertTrue(source.contains("零数据上报"), "隐私承诺必须保留")
+        XCTAssertTrue(source.contains("智能扫描"), "三类承诺之一：智能扫描")
+        XCTAssertTrue(source.contains("一键清理"), "三类承诺之一：一键清理")
+        // 授权路径在合并页存活（P0 验收手册的三屏路径）。
+        XCTAssertTrue(source.contains("授权主目录"), "合并页必须保留授权入口")
+        XCTAssertTrue(source.contains("已授权"), "授权成功反馈必须保留")
+        XCTAssertTrue(source.contains("跳过此步骤"), "跳过授权的出口必须保留")
+        XCTAssertTrue(source.contains("appScope.grant"),
+                      "授权动作必须真实接线（PowerScope grant）")
+        // 旧 5 页独立类型零残留。
+        XCTAssertFalse(source.contains("OnboardingPage4"), "独立授权页类型应已合并删除")
+        XCTAssertFalse(source.contains("OnboardingPage5"), "独立就绪页类型应已合并删除")
     }
 }
 

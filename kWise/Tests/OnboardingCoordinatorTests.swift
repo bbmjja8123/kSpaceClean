@@ -1,6 +1,7 @@
 // kWise/Tests/OnboardingCoordinatorTests.swift
 //
 // UX 重构 Phase 1 — onboarding step navigation: next/back/skip boundaries.
+// P2 T8 — 5→3 页收敛：欢迎 / 扫描承诺+主目录授权（合并页）/ 完成即扫。
 import XCTest
 @testable import kWise
 
@@ -10,7 +11,7 @@ final class OnboardingCoordinatorTests: XCTestCase {
     func testInitialState() {
         let coordinator = OnboardingCoordinator()
         XCTAssertEqual(coordinator.currentPage, 0)
-        XCTAssertEqual(coordinator.totalPages, 5)
+        XCTAssertEqual(coordinator.totalPages, 3)
     }
 
     func testNextAdvancesAndCompletes() {
@@ -18,10 +19,10 @@ final class OnboardingCoordinatorTests: XCTestCase {
         var completed = false
         coordinator.onComplete = { completed = true }
 
-        for _ in 0..<4 {
+        for _ in 0..<2 {
             coordinator.next()
         }
-        XCTAssertEqual(coordinator.currentPage, 4)
+        XCTAssertEqual(coordinator.currentPage, 2)
         XCTAssertFalse(completed, "Completing fires only on the last page's next()")
 
         coordinator.next()
@@ -39,9 +40,9 @@ final class OnboardingCoordinatorTests: XCTestCase {
         XCTAssertEqual(coordinator.currentPage, 1)
     }
 
-    func testSkipLandsOnLastPage() {
+    func testSkipGrantLandsOnLastPage() {
         let coordinator = OnboardingCoordinator()
-        coordinator.skipFDA()
+        coordinator.skipGrant()
         XCTAssertEqual(coordinator.currentPage, coordinator.totalPages - 1)
     }
 }

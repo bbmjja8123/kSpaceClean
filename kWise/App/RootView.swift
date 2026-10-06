@@ -76,8 +76,8 @@ struct RootView: View {
         case executing
         case none
     }
-    /// First-launch onboarding (v2.0 Phase 8) — welcome → PowerScope grant
-    /// → menu bar & widget tour. Never re-shown once completed.
+    /// First-launch onboarding (v2.0 Phase 8; P2 T8 收敛为 3 页) — welcome →
+    /// 扫描承诺+主目录授权合并页 → 完成即扫. Never re-shown once completed.
     @AppStorage("onboarding.completed.v1") private var onboardingCompleted = false
     @State private var showOnboarding = false
 
@@ -165,6 +165,13 @@ struct RootView: View {
                     OnboardingContainerView {
                         onboardingCompleted = true
                         showOnboarding = false
+                        // P2 T8 — 完成即扫：Onboarding 收口后自动跑一次主画布
+                        // 扫描（onAppear 已 bindCoordinator，startScan 守卫完备）。
+                        // FirstScanGate 的 UserDefaults flag 钉住「恰一次」：
+                        // onboarding 标记被重置的场景也不会二次自动扫描。
+                        if FirstScanGate.shouldAutoScan() {
+                            anatomyViewModel.startScan()
+                        }
                     }
                 }
         )

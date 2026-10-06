@@ -31,7 +31,7 @@ struct OnboardingPage1: View {
     }
 }
 
-// MARK: - Page 2: Core Features
+// MARK: - Feature Row
 
 private struct FeatureRow: View {
     let icon: String
@@ -61,98 +61,88 @@ private struct FeatureRow: View {
     }
 }
 
-struct OnboardingPage2: View {
-    var body: some View {
-        VStack(spacing: AppSpacing.xxl) {
-            Spacer()
-
-            Text("核心功能")
-                .font(AppFont.largeTitle)
-                .foregroundColor(.textPrimary)
-
-            VStack(spacing: AppSpacing.xl) {
-                FeatureRow(
-                    icon: "magnifyingglass",
-                    title: "智能扫描",
-                    description: "快速扫描系统缓存、应用残留与可清理文件"
-                )
-                FeatureRow(
-                    icon: "brain",
-                    title: "智能归因",
-                    description: "本机规则归因 + 端上语义推测（零网络，数据不出机）"
-                )
-                FeatureRow(
-                    icon: "trash",
-                    title: "一键清理",
-                    description: "智能清理系统缓存、应用残留与临时文件"
-                )
-            }
-            .padding(.horizontal, AppSpacing.xxl)
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bgPrimary)
-    }
-}
-
-// MARK: - Page 3: Privacy Promise
-
-struct OnboardingPage3: View {
-    var body: some View {
-        VStack(spacing: AppSpacing.xxl) {
-            Spacer()
-
-            Image(systemName: "lock.shield")
-                .font(.system(size: 64))
-                .foregroundStyle(Color.success)
-
-            VStack(spacing: AppSpacing.sm) {
-                Text("隐私至上")
-                    .font(AppFont.largeTitle)
-                    .foregroundColor(.textPrimary)
-
-                Text("100% 本地处理，零数据上报")
-                    .font(AppFont.title3)
-                    .foregroundColor(.textSecondary)
-            }
-
-            Text("所有扫描、归因与推测均在本机完成。\n我们不会收集、上传或分享任何个人数据。")
-                .font(AppFont.body)
-                .foregroundColor(.textSecondary)
-                .multilineTextAlignment(.center)
-                .lineSpacing(4)
-                .padding(.horizontal, AppSpacing.xxxl)
-
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bgPrimary)
-    }
-}
-
-// MARK: - Page 4: Home Folder Grant (PowerScope)
+// MARK: - Page 2: Scan Promises + Home Folder Grant (merged)
+//
+// P2 T8 5→3 页收敛：原「核心功能」页、「隐私承诺」页与「主目录授权」页
+// 合并为一页 —— 扫描开始前把三件事一次说清楚：
+// 1. 三类承诺：智能扫描 / 智能归因（本机规则归因，零网络）/ 一键清理；
+// 2. 隐私承诺：所有计算在本机完成，零数据上报；
+// 3. 授权：一次性主目录授权（PowerScope security-scoped bookmark，见
+//    kFoundation `PowerScope`），可跳过 —— 跳过后扫描在 container-only
+//    范围内仍可运行，能清理的组会变少（诚实降级，不空跑）。
 
 /// PowerScope grant page — replaces the old Full Disk Access instructions.
 ///
 /// MAS sandboxing makes FDA unobtainable; the honest ask is a one-time
 /// NSOpenPanel grant of the home folder, persisted as a security-scoped
 /// bookmark (see `PowerScope` in kFoundation).
-struct OnboardingPage4: View {
+struct OnboardingPage2: View {
     @ObservedObject var coordinator: OnboardingCoordinator
     @ObservedObject private var appScope = AppScope.shared
 
     var body: some View {
-        VStack(spacing: AppSpacing.xxl) {
-            Spacer()
+        ScrollView {
+            VStack(spacing: AppSpacing.lg) {
+                VStack(spacing: AppSpacing.sm) {
+                    Text("扫描前，先把承诺说清楚")
+                        .font(AppFont.largeTitle)
+                        .foregroundColor(.textPrimary)
+                }
+                .padding(.top, AppSpacing.xl)
 
+                VStack(spacing: AppSpacing.xs) {
+                    FeatureRow(
+                        icon: "magnifyingglass",
+                        title: "智能扫描",
+                        description: "快速扫描系统缓存、应用残留与可清理文件"
+                    )
+                    FeatureRow(
+                        icon: "brain",
+                        title: "智能归因",
+                        description: "本机规则归因 + 端上语义推测（零网络，数据不出机）"
+                    )
+                    FeatureRow(
+                        icon: "trash",
+                        title: "一键清理",
+                        description: "智能清理系统缓存、应用残留与临时文件"
+                    )
+                }
+                .padding(.horizontal, AppSpacing.xxl)
+
+                HStack(spacing: AppSpacing.md) {
+                    Image(systemName: "lock.shield")
+                        .font(.title3)
+                        .foregroundStyle(Color.success)
+                    Text("所有扫描与归因均在本机完成，零数据上报。")
+                        .font(AppFont.callout)
+                        .foregroundColor(.textSecondary)
+                    Spacer()
+                }
+                .padding(.horizontal, AppSpacing.xxl)
+
+                Divider()
+                    .padding(.horizontal, AppSpacing.xxl)
+
+                grantBlock
+                    .padding(.horizontal, AppSpacing.xxl)
+                    .padding(.bottom, AppSpacing.xl)
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .background(Color.bgCanvas)
+    }
+
+    // MARK: Grant block（原独立授权页迁入）
+
+    private var grantBlock: some View {
+        VStack(spacing: AppSpacing.md) {
             Image(systemName: "folder.badge.checkmark")
-                .font(.system(size: 56))
+                .font(.system(size: 44))
                 .foregroundStyle(Color.brandPrimary)
 
-            VStack(spacing: AppSpacing.sm) {
+            VStack(spacing: AppSpacing.xs) {
                 Text("授权主目录访问")
-                    .font(AppFont.largeTitle)
+                    .font(AppFont.title3)
                     .foregroundColor(.textPrimary)
 
                 Text("kWise 在沙箱内运行，需要你一次性授权主目录才能扫描缓存、日志与应用残留。文件不会被上传，扫描全部在本机完成。")
@@ -160,69 +150,41 @@ struct OnboardingPage4: View {
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
             }
-            .padding(.horizontal, AppSpacing.xxxl)
 
-            VStack(spacing: AppSpacing.md) {
-                Button {
-                    Task { await appScope.grant() }
-                } label: {
-                    Label(appScope.capability.level == .homeGranted ? "重新选择" : "授权主目录",
-                          systemImage: "checkmark.shield")
-                        .frame(maxWidth: .infinity)
-                        .font(AppFont.title3)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(Color.brandPrimary)
-                .controlSize(.large)
-
-                if appScope.capability.level == .homeGranted {
-                    Label("已授权", systemImage: "checkmark.circle.fill")
-                        .foregroundStyle(Color.stateSuccess)
-                        .font(AppFont.callout)
-                }
-
-                Button("跳过此步骤", action: coordinator.skipFDA)
-                    .buttonStyle(.plain)
-                    .font(AppFont.callout)
-                    .foregroundColor(.textSecondary)
-                    .underline()
+            Button {
+                Task { await appScope.grant() }
+            } label: {
+                Label(appScope.capability.level == .homeGranted ? "重新选择" : "授权主目录",
+                      systemImage: "checkmark.shield")
+                    .frame(maxWidth: .infinity)
+                    .font(AppFont.title3)
             }
-            .padding(.horizontal, AppSpacing.xxl)
+            .buttonStyle(.borderedProminent)
+            .tint(Color.brandPrimary)
+            .controlSize(.large)
 
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bgCanvas)
-    }
-}
+            if appScope.capability.level == .homeGranted {
+                Label("已授权", systemImage: "checkmark.circle.fill")
+                    .foregroundStyle(Color.stateSuccess)
+                    .font(AppFont.callout)
+            }
 
-/// A small helper view for rendering numbered instruction steps.
-private struct StepLabel: View {
-    let number: String
-    let text: String
-
-    var body: some View {
-        HStack(spacing: AppSpacing.md) {
-            Text(number)
+            Button("跳过此步骤", action: coordinator.skipGrant)
+                .buttonStyle(.plain)
                 .font(AppFont.callout)
-                .foregroundColor(.brandPrimary)
-                .fontWeight(.bold)
-                .frame(width: 22, height: 22)
-                .background(
-                    Circle()
-                        .stroke(Color.brandPrimary, lineWidth: 1.5)
-                )
-
-            Text(text)
-                .font(AppFont.body)
-                .foregroundColor(.textPrimary)
+                .foregroundColor(.textSecondary)
+                .underline()
         }
     }
 }
 
-// MARK: - Page 5: Ready to Scan
+// MARK: - Page 3: Ready to Scan
+//
+// 完成即扫（P2 T8）：本页收尾的「开始首次扫描」/「完成」都会走
+// coordinator.next() → onComplete → RootView 经 FirstScanGate 触发一次
+// anatomyViewModel.startScan() —— 扫描在主画布 hero 上进行，用户落地即见进度。
 
-struct OnboardingPage5: View {
+struct OnboardingPage3: View {
     @ObservedObject var coordinator: OnboardingCoordinator
 
     var body: some View {
@@ -238,7 +200,7 @@ struct OnboardingPage5: View {
                     .font(AppFont.largeTitle)
                     .foregroundColor(.textPrimary)
 
-                Text("现在开始您的第一次扫描，发现可清理的空间")
+                Text("完成后立即开始第一次扫描，发现可清理的空间")
                     .font(AppFont.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
@@ -278,10 +240,8 @@ struct OnboardingContainerView: View {
             ZStack {
                 switch coordinator.currentPage {
                 case 0: OnboardingPage1()
-                case 1: OnboardingPage2()
-                case 2: OnboardingPage3()
-                case 3: OnboardingPage4(coordinator: coordinator)
-                default: OnboardingPage5(coordinator: coordinator)
+                case 1: OnboardingPage2(coordinator: coordinator)
+                default: OnboardingPage3(coordinator: coordinator)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -331,7 +291,7 @@ struct OnboardingContainerView: View {
 
 // MARK: - Step Indicator
 
-/// 5 dots + current highlight, so the user always knows where they are
+/// 3 dots + current highlight, so the user always knows where they are
 /// (UX 重构 Phase 1 — fixes "不知道有几个步骤，当前处于哪个").
 struct StepIndicatorView: View {
     let count: Int
