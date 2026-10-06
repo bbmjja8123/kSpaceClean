@@ -1,18 +1,24 @@
 // kWise/Features/Attribution/AnatomyView.swift
 //
-// 解剖视图（spec §1.1 新首屏英雄）：「你的 NNN GB，去哪了」。
-// 结构：英雄头（卷用量）→ 扫描未覆盖卡（P0 黑盒卡的诚实版）→ 按原因分组的
-// 归因区（组内条目理由展开 + 置信度徽章）→ 推测区（L1）→ 拒答区 → 规则清单。
-// 红线：本页没有任何清理动作——回收入口只有「安全快捷回收」（跳 SmartCare
-// 次级页）与扫描页的预演流。
-// 本文件整体替换并退役 P0 验证面 AttributionPreviewView（其已验证的诚实卡、
-// 证据链渲染与拒答双源逻辑迁移至此，非复制——差异：英雄头 + 快捷回收按钮 +
-// 原因分组 + 置信度徽章）。
+// 主画布（P2 T3 重构，spec §3 解剖画布）：「你的 NNN GB，去哪了」。
+// 结构（自上而下）：hero（idle=标题+构成条+按钮行；scanning=进度条+当前路径
+// +取消，两态切换见 AnatomyScanState.swift 的 ScanPhase）→ DiskHealthCard →
+// 扫描未覆盖卡（P0 黑盒卡的诚实版）→ CanvasGroupCard 动态组列表（找到才出现，
+// 扫描中 opacity(0.4) 不清空）→ 系统状态条（T5 前静态占位）→ 拒答虚线卡
+// （refused+probable）→ 规则链接。
+// 红线：本页没有任何清理动作——组头「就地清理」只触发注入的回调（T5 接
+// 预演链），hero「安全快捷回收」跳 Smart Care 次级页；扫描入口是 startScan
+// （扇出 coordinator）。
+// P0/P1 诚实渲染契约原样保留：空参数 lastModified 行隐藏、ruleID==nil 无
+// notes、snapshots==nil → unreadable 行、.negativeResidual → insufficient。
 import SwiftUI
 import DesignSystem
 import CommonUtils
+import Combine
 
 /// 一个原因分组：组内条目按 bytes 降序，组间按 totalBytes 降序（VM 保证）。
+/// （P2 T3 起主画布渲染改走 CanvasGroup/CanvasReport；本类型保留供
+/// `groupedSections` 的既有测试契约与归因叙事使用。）
 public struct AnatomySection: Identifiable, Equatable {
     public let id: AttributionCause
     public let title: String
@@ -25,8 +31,30 @@ public final class AnatomyViewModel: ObservableObject {
     @Published public private(set) var report: AttributionReport?
     @Published public private(set) var isLoading = false
 
+    // MARK: 主画布扫描态（P2 T3 —— 实现/动作见 AnatomyScanState.swift 扩展）
+
+    /// 最近一次画布扇出扫描的完成态报告（nil = 尚未完成过一次扇出扫描）。
+    /// 读取 public、写入 module 内（AnatomyScanState.swift 的扩展方法）。
+    @Published public internal(set) var canvasReport: CanvasReport?
+    /// hero 扫描进度态（idle / scanning(progress, path) / done）。
+    @Published public internal(set) var scanPhase: AnatomyViewModel.ScanPhase = .idle
+    /// 画布扇出协调器（bindCoordinator 晚绑定）。
+    var canvasCoordinator: CanvasScanCoordinator?
+    /// 扫描范围覆盖（rebindScope 注入；nil = 走 defaultScope）。
+    var canvasScopeProvider: (() -> CanvasScanScope)?
+    /// 进行中的扇出 Task（startScan/cancelScan 操纵）。
+    var canvasScanTask: Task<Void, Never>?
+    /// coordinator 增量组/进度订阅。
+    var canvasCancellables: Set<AnyCancellable> = []
+    /// bindScanViewModel 的引擎进度/完成订阅（独立订阅集，重复 bind 不互扰）。
+    var scanVMBindCancellables: Set<AnyCancellable> = []
+    /// 引擎扫描镜像中（hero 进度条数据源 = ScanResultsViewModel.$progress）。
+    var engineScanMirrored = false
+
     private let service: AttributionService
-    private var categoriesProvider: (() -> [ScanCategory])?
+    /// internal：AnatomyScanState.swift 的扩展（runCanvasScan 完成后的
+    /// 归因刷新）需要读取 provider。
+    var categoriesProvider: (() -> [ScanCategory])?
 
     public init(service: AttributionService) { self.service = service }
 
@@ -65,54 +93,65 @@ public final class AnatomyViewModel: ObservableObject {
         (report?.refused ?? []).filter { $0.confidence != .probable }
             .sorted { $0.bytes > $1.bytes }
     }
+
+    /// report.refused → 虚线卡数据 —— `coordinator.uncertainCard` 被扫描重置
+    /// 为 nil 时的回退（画布不清空契约：上次结果保留变灰）。
+    var reportUncertainCard: UncertainCard? {
+        guard let report else { return nil }
+        return CanvasGroupAssembler.uncertainCard(from: report.refused)
+    }
 }
 
 public struct AnatomyView: View {
     @StateObject private var viewModel: AnatomyViewModel
     @ObservedObject private var diskHealthViewModel: DiskHealthViewModel
+    /// 扇出协调器（增量组/诊断/虚线卡的 @Published 来源）。
+    @ObservedObject private var coordinator: CanvasScanCoordinator
     @State private var rulesCorpus: AttributionRuleCorpus?
     private let onQuickClean: () -> Void
     private let onOpenDiskHealth: () -> Void
+    /// 组头「就地清理」回调 —— T5 接组过滤预演链；本任务注入空实现
+    /// （视图零清理动作，Global Constraints）。
+    private let onGroupAction: (CanvasGroup) -> Void
 
     init(viewModel: AnatomyViewModel,
+         coordinator: CanvasScanCoordinator,
          diskHealthViewModel: DiskHealthViewModel,
          onQuickClean: @escaping () -> Void,
-         onOpenDiskHealth: @escaping () -> Void) {
+         onOpenDiskHealth: @escaping () -> Void,
+         onGroupAction: @escaping (CanvasGroup) -> Void = { _ in }) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.coordinator = coordinator
         self.diskHealthViewModel = diskHealthViewModel
         self.onQuickClean = onQuickClean
         self.onOpenDiskHealth = onOpenDiskHealth
+        self.onGroupAction = onGroupAction
     }
 
     public var body: some View {
         List {
-            heroHeader
+            heroSection
             // P1 T9 — T6 遗留条件：DiskHealthCard 此前的唯一渲染位
-            // （旧工具箱模块网格）已随 smartCare 降级删除；解剖视图的
+            // （旧工具箱模块网格）已随 smartCare 降级删除；主画布的
             // 英雄头本就呈现卷状态，磁盘健康卡是这里的自然邻居。
             // 点击进入 DiskHealthDetailView。
             Section {
                 DiskHealthCard(viewModel: diskHealthViewModel, onOpen: onOpenDiskHealth)
                     .frame(height: 120)
             }
+            diagnosticsSection
             if let report = viewModel.report {
                 uncoveredCard(report)
-                ForEach(viewModel.groupedSections) { section in
-                    Section(header: Text(String(
-                        format: String(localized: String.LocalizationValue("attr.anatomy.section")),
-                        section.title, FileSizeFormatter.abbreviated(from: section.totalBytes)))) {
-                        ForEach(section.items.prefix(20)) { item in
-                            anatomyRow(item)
-                        }
-                    }
-                }
-                probableSection
-                refusedSection
-                rulesLink
             } else {
-                Text("attr.preview.empty")
-                    .foregroundStyle(Color.textSecondary)
+                Section {
+                    Text("attr.preview.empty")
+                        .foregroundStyle(Color.textSecondary)
+                }
             }
+            groupsSection
+            systemStatusSection
+            uncertainSection
+            rulesLink
         }
         .navigationTitle(Text("nav.anatomy"))
         .toolbar {
@@ -139,27 +178,130 @@ public struct AnatomyView: View {
         Task { await viewModel.refresh() }
     }
 
-    // MARK: - 英雄头
+    // MARK: - 英雄头（idle ↔ scanning 两态，spec §3.1 / §5）
 
-    private var heroHeader: some View {
+    @ViewBuilder
+    private var heroSection: some View {
         Section {
-            VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                if let used = viewModel.usedBytes {
-                    Text(String(
-                        format: String(localized: String.LocalizationValue("attr.anatomy.hero")),
-                        FileSizeFormatter.abbreviated(from: used)))
-                        .font(AppFont.title2)
-                }
-                Text("attr.anatomy.hero.subtitle")
-                    .font(AppFont.callout)
-                    .foregroundStyle(Color.textSecondary)
-                // 唯一的回收入口：跳 Smart Care 次级页。本页本身零清理动作。
+            if viewModel.scanPhase.isScanning {
+                scanningHero
+            } else {
+                idleHero
+            }
+        }
+    }
+
+    /// idle 态：标题 + 副行 + 构成条 + 按钮行（快捷回收 · 「+」菜单占位 · 重新扫描）。
+    private var idleHero: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+            if let used = viewModel.usedBytes {
+                Text(String(
+                    format: String(localized: String.LocalizationValue("attr.anatomy.hero")),
+                    FileSizeFormatter.abbreviated(from: used)))
+                    .font(AppFont.title2)
+            }
+            Text("attr.anatomy.hero.subtitle")
+                .font(AppFont.callout)
+                .foregroundStyle(Color.textSecondary)
+            compositionBar
+            HStack(spacing: AppSpacing.sm) {
+                // 唯一的回收入口：跳 Smart Care 次级页（T5 起改走预演链）。
+                // 本页本身零清理动作。
                 Button(action: onQuickClean) {
-                    Text("attr.anatomy.safeClean")
+                    Text(quickCleanTitle)
+                }
+                .buttonStyle(.borderedProminent)
+                // 「+」菜单占位 —— P2 T4 接 CanvasPlusMenu（粉碎窗/规则/维护）。
+                Image(systemName: "plus.circle")
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.textSecondary)
+                    .help(String(localized: String.LocalizationValue("canvas.hero.plusMenu.help")))
+                Button {
+                    viewModel.startScan()
+                } label: {
+                    Text("canvas.hero.rescan")
                 }
                 .buttonStyle(.bordered)
             }
-            .padding(.vertical, AppSpacing.xs)
+        }
+        .padding(.vertical, AppSpacing.xs)
+    }
+
+    /// 「安全快捷回收 · 预计 X」——估算只累计绿徽（✓ 可回收）条目的诚实字节；
+    /// 无可回收字节时退回纯「安全快捷回收」文案（不显示「预计 0 B」）。
+    private var quickCleanTitle: String {
+        let estimate = viewModel.quickCleanEstimate
+        guard estimate > 0 else {
+            return String(localized: String.LocalizationValue("attr.anatomy.safeClean"))
+        }
+        return String(format: String(localized: String.LocalizationValue("canvas.hero.quickClean")),
+                      FileSizeFormatter.abbreviated(from: estimate))
+    }
+
+    /// 构成条（spec §3.1）：按组着色、按 totalBytes 配比的分段条 —— 画布即地图。
+    @ViewBuilder
+    private var compositionBar: some View {
+        let slices = viewModel.compositionSlices
+        if !slices.isEmpty {
+            HStack(spacing: 1) {
+                ForEach(slices) { slice in
+                    Capsule()
+                        .fill(slice.color)
+                        .frame(height: 6)
+                        .layoutPriority(max(slice.fraction, 0.01))
+                }
+            }
+        }
+    }
+
+    /// 扫描中态：进度条 + 当前路径 + 取消（spec §5）。progress 为 0（扇出
+    /// 尚未产出第一组）时用不确定样式 —— 绝不显示静止的「0%」假象。
+    private var scanningHero: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+            Text("canvas.scan.progress.title")
+                .font(AppFont.title2)
+            if case .scanning(let progress, let path) = viewModel.scanPhase {
+                if progress > 0 {
+                    ProgressView(value: min(max(progress, 0), 1))
+                } else {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Text(path.isEmpty
+                     ? String(localized: String.LocalizationValue("canvas.scan.preparing"))
+                     : path)
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+                    .lineLimit(1)
+                    .truncationMode(.head)
+                    .help(path)
+            }
+            Button {
+                viewModel.cancelScan()
+            } label: {
+                Text("canvas.scan.cancel")
+            }
+            .buttonStyle(.bordered)
+        }
+        .padding(.vertical, AppSpacing.xs)
+    }
+
+    // MARK: - 扫描降级态行（T2 fix r1 诊断通道）
+
+    @ViewBuilder
+    private var diagnosticsSection: some View {
+        if !coordinator.scanDiagnostics.isEmpty {
+            Section(header: Text("canvas.diagnostic.title")) {
+                ForEach(Array(coordinator.scanDiagnostics.enumerated()), id: \.offset) { _, message in
+                    HStack(spacing: AppSpacing.xs) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .foregroundStyle(Color.warning)
+                        Text(message)
+                            .font(AppFont.callout)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                }
+            }
         }
     }
 
@@ -199,6 +341,70 @@ public struct AnatomyView: View {
                 Text("attr.blackbox.unreadable")
                     .font(AppFont.callout)
                     .foregroundStyle(Color.textSecondary)
+            }
+        }
+    }
+
+    // MARK: - 动态组卡列表（找到才出现；扫描中变灰不清空，spec §5）
+
+    @ViewBuilder
+    private var groupsSection: some View {
+        let groups = viewModel.displayGroups
+        if !groups.isEmpty {
+            Section {
+                ForEach(Array(groups.enumerated()), id: \.element.id) { index, group in
+                    // 默认展开前 2 组（spec §3.4）；全量条目走 T6 下钻页。
+                    CanvasGroupCard(group: group,
+                                    initiallyExpanded: index < 2,
+                                    onRehearse: onGroupAction)
+                }
+                .opacity(viewModel.scanPhase.isScanning ? 0.4 : 1)
+                .disabled(viewModel.scanPhase.isScanning)
+            }
+        }
+    }
+
+    // MARK: - 系统状态条（spec §3.5 —— T5 前静态占位，不显示假数据）
+
+    private var systemStatusSection: some View {
+        Section {
+            HStack(spacing: AppSpacing.xs) {
+                Image(systemName: "switch.2")
+                    .foregroundStyle(Color.textSecondary)
+                Text("canvas.systemStatus.placeholder")
+                    .font(AppFont.callout)
+                    .foregroundStyle(Color.textSecondary)
+            }
+        }
+    }
+
+    // MARK: - 拒答虚线卡（refused + probable，spec §3.6）
+
+    @ViewBuilder
+    private var uncertainSection: some View {
+        // T2 的 coordinator.uncertainCard 优先；扫描开始时它被重置为 nil，
+        // 此时回退 report 派生 —— 上一次结果保留，不清空。
+        let card = coordinator.uncertainCard ?? viewModel.reportUncertainCard
+        if let card {
+            Section {
+                VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                    Text(String(
+                        format: String(localized: String.LocalizationValue("attr.refused.title")),
+                        card.items.count))
+                        .font(AppFont.title3)
+                    Text("attr.refused.banner")
+                        .font(AppFont.callout)
+                        .foregroundStyle(Color.textSecondary)
+                    ForEach(card.items) { item in
+                        anatomyRow(item)
+                    }
+                }
+                .padding(AppSpacing.md)
+                .overlay(
+                    RoundedRectangle(cornerRadius: AppRadius.xl)
+                        .strokeBorder(Color.separatorColor.opacity(0.8),
+                                      style: StrokeStyle(lineWidth: 1, dash: [4]))
+                )
             }
         }
     }
@@ -263,40 +469,6 @@ public struct AnatomyView: View {
                 .foregroundStyle(Color.textSecondary)
         case .refused:
             EmptyView()
-        }
-    }
-
-    // MARK: - 推测区（L1）与拒答区
-
-    /// L1 推测项：来源是本机模型（非规则），措辞用「可能」；依然不给清理建议。
-    private var probableSection: some View {
-        Group {
-            if !viewModel.probableItems.isEmpty {
-                Section(header: Text("attr.confidence.probable")) {
-                    ForEach(viewModel.probableItems) { item in
-                        anatomyRow(item)
-                    }
-                }
-            }
-        }
-    }
-
-    private var refusedSection: some View {
-        Group {
-            // 清单为空时整段折叠 —— 空 header 与「判断不了」横幅在无内容时
-            // 都是噪音，且与事实不符（P0 T9 契约，迁移保持）。
-            if !viewModel.refusedItems.isEmpty {
-                Section(header: Text(String(
-                    format: String(localized: String.LocalizationValue("attr.refused.title")),
-                    viewModel.refusedItems.count))) {
-                    Text("attr.refused.banner")
-                        .font(AppFont.callout)
-                        .foregroundStyle(Color.textSecondary)
-                    ForEach(viewModel.refusedItems) { item in
-                        anatomyRow(item)
-                    }
-                }
-            }
         }
     }
 

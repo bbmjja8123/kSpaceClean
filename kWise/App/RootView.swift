@@ -38,6 +38,9 @@ struct RootView: View {
     @StateObject private var anatomyViewModel = AnatomyViewModel(
         service: .live()
     )
+    /// 主画布扇出协调器（P2 T3）— hero「重新扫描」的引擎（归因 → 重复 →
+    /// 照片 → 大文件），增量组/诊断/虚线卡经 @Published 直接上画布。
+    @StateObject private var canvasCoordinator = CanvasScanCoordinator()
     /// 磁盘健康（P1 T9 — T6 遗留条件）：DiskHealthCard 的新渲染位在解剖页，
     /// VM 与卡片在此持有、点击进入 `.diskHealth` 详情页。
     @StateObject private var diskHealthViewModel = DiskHealthViewModel()
@@ -146,6 +149,10 @@ struct RootView: View {
             // 空间解剖 reads the same live scan results（init-time capture 不可用，
             // 同 rebindRoots 的晚绑定模式）。
             anatomyViewModel.rebindCategories { scanResultsViewModel.categories }
+            // P2 T3 — 主画布：扇出协调器注入 + 扫描页 VM 绑定（isScanning
+            // true→false → 归因刷新，P1 修复波机制自下方 .onChange 迁入 VM）。
+            anatomyViewModel.bindCoordinator(canvasCoordinator)
+            anatomyViewModel.bindScanViewModel(scanResultsViewModel)
             // P1 T4 — 清理预演的归因晚绑定：预演 sheet 逐项「为什么可以回收」
             // 读这份 report（T5 起数据源是解剖视图的 anatomy VM）。
             // P1 final (F3a)：供 `allAttributions`（certain + refused/probable）
@@ -174,16 +181,9 @@ struct RootView: View {
                 showOnboarding = true
             }
         }
-        // P1 final (F3b)：扫描结束即重跑归因 —— anatomyViewModel.report 是
-        // 上一棵扫描树的快照；若只在 AnatomyView 出现时刷新（.task），用户
-        // 新扫描后不访问解剖页就去清理，预演拿到的是陈旧（或空）归因。
-        // `isScanning` true→false 转换是最小可靠信号：所有扫描入口
-        // （⌘N/⌘R、菜单栏 quickScan、Smart Care 引导）都收敛到
-        // scanResultsViewModel.startScan()。
-        .onChange(of: scanResultsViewModel.isScanning) { scanning in
-            guard !scanning else { return }
-            Task { await anatomyViewModel.refresh() }
-        }
+        // P1 final (F3b)：扫描结束即重跑归因 —— 该机制自 P2 T3 起由
+        // anatomyViewModel.bindScanViewModel 的 Combine 订阅承担（isScanning
+        // true→false → refresh），RootView 不再挂 .onChange。
     }
 
     // MARK: - Background
@@ -208,17 +208,22 @@ struct RootView: View {
             TimelineView()
         case .settings:
             SettingsView()
-        // P1 T5 — 解剖视图首屏（spec §1.1 英雄）:「你的 N GB，去哪了」。
-        // 页内零清理动作；「安全快捷回收」是唯一回收入口，跳 Smart Care 次级页。
+        // P1 T5 — 解剖视图首屏 → P2 T3 主画布（spec §3）:「你的 N GB，去哪了」。
+        // 页内零清理动作；「安全快捷回收」跳 Smart Care 次级页（T5 起改预演链），
+        // 组头「就地清理」回调 T5 接组过滤预演 —— 现注入空实现。
         case .anatomy:
             AnatomyView(
                 viewModel: anatomyViewModel,
+                coordinator: canvasCoordinator,
                 diskHealthViewModel: diskHealthViewModel,
                 onQuickClean: {
                     appState.navigation = .smartCare
                 },
                 onOpenDiskHealth: {
                     appState.navigation = .diskHealth
+                },
+                onGroupAction: { _ in
+                    // P2 T5 接统一预演链（makeRehearsal + CleanupRehearsalSheet）。
                 }
             )
         // P1 T6 — smartCare 降级为「安全快捷回收」次级页（spec §3.1）：

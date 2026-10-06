@@ -130,6 +130,12 @@ final class ScanResultsViewModel: ObservableObject {
     var categories: [ScanCategory] { snapshot.categories }
     /// Backward-compatible read-only accessor — see ``categories``.
     var isScanning: Bool { snapshot.isScanning }
+    /// P2 T3 — hero 进度态的 Combine 订阅入口（`snapshot` 是 private，外部
+    /// 无法 `$snapshot`；AnatomyViewModel.bindScanViewModel 据此观察
+    /// isScanning 上升/下降沿：镜像进度 / 触发归因刷新，P1 修复波机制）。
+    var isScanningPublisher: AnyPublisher<Bool, Never> {
+        $snapshot.map(\.isScanning).eraseToAnyPublisher()
+    }
     /// Backward-compatible read-only accessor — see ``categories``.
     var hasScanned: Bool { snapshot.hasScanned }
     /// Backward-compatible read-only accessor — see ``categories``.
