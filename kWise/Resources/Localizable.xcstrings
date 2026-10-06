@@ -7224,6 +7224,29 @@
           }
         }
       }
+    },
+    "canvas.diagnostic.scanInProgress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A scan is already running — this request was ignored"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンが既に実行中のため、この要求は無視されました"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描已在进行中，本次请求已忽略"
+          }
+        }
+      }
     }
   },
   "version": "1.1"

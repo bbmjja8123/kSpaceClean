@@ -77,7 +77,9 @@ public enum GroupAction: Equatable, Sendable {
     case none
 }
 
-/// 画布上的一个动态组。
+/// 画布上的一个动态组。`entries` 保留**全量**去重条目 —— `CanvasReport` 是
+/// 唯一载荷，T6 下钻必须能看到全部条目；展示层截断由 `truncatedCount` +
+/// `displayEntryLimit` 在组卡渲染（T3）时进行。
 public struct CanvasGroup: Identifiable, Equatable, Sendable {
     public let id: GroupKind
     public let icon: String
@@ -86,6 +88,14 @@ public struct CanvasGroup: Identifiable, Equatable, Sendable {
     public let totalBytes: Int64
     public let entries: [CanvasEntry]
     public let action: GroupAction
+
+    /// 组卡（T3）展示的条目数上限 —— 截断发生在展示层，不在数据层。
+    public static let displayEntryLimit = 20
+
+    /// 超出组卡展示上限的条目数（组卡显示「还有 N 项」；≤ 上限时为 0）。
+    public var truncatedCount: Int {
+        max(0, entries.count - Self.displayEntryLimit)
+    }
 }
 
 /// 「我不敢判的」虚线卡数据 —— 从 refused 派生，不占 CanvasGroup。
@@ -101,14 +111,12 @@ public struct UncertainCard: Identifiable, Equatable, Sendable {
 /// 不启扫描即可测（CanvasGroupTests 不触碰文件系统）。
 public enum CanvasGroupAssembler {
 
-    /// 条目数量上限 —— 画布组卡只展示头部条目，全量进下钻页。
-    static let maxEntriesPerGroup = 20
-
     // MARK: 核心组装
 
     /// 条目 → 组。条目为空或字节为 0 → nil（空组不出现）。
     /// `title` / `subtitle` / `action` 缺省时由 kind 派生；`totalBytes`
     /// 缺省时取条目合计（检测组显式传入诚实回收字节）。
+    /// 条目**不截断**（fix r1：截断移展示层 `CanvasGroup.displayEntryLimit`）。
     public static func assemble(kind: GroupKind,
                                 icon: String,
                                 title: String? = nil,
@@ -125,7 +133,7 @@ public enum CanvasGroupAssembler {
             title: title ?? defaultTitle(kind),
             subtitle: subtitle ?? defaultSubtitle(kind),
             totalBytes: bytes,
-            entries: Array(deduped.prefix(maxEntriesPerGroup)),
+            entries: deduped,
             action: action ?? defaultAction(kind))
     }
 
@@ -164,6 +172,11 @@ public enum CanvasGroupAssembler {
             .sorted { $0.totalBytes > $1.totalBytes }
     }
 
+    /// 单条归因 → 画布条目。
+    /// 注：多路径归因（paths.count > 1，语料聚合规则可产出）在此只取
+    /// `paths.first` 做代表 —— 条目字节取 `item.bytes`（全路径合计），不
+    /// under-count 字节，仅展示面收窄到首路径；其余路径进 T6 下钻的
+    /// 「同组路径」呈现。若未来下钻需要逐路径拆分，在此扩展而非改聚合。
     private static func causeEntry(from item: SpaceAttribution) -> CanvasEntry? {
         guard let path = item.paths.first else { return nil }
         return CanvasEntry(

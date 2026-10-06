@@ -51,10 +51,15 @@ private final class MockDuplicateScanner: DuplicateScanning, @unchecked Sendable
     let recorder: CallRecorder
     let gate: Gate?
     private let size: Int64
-    init(recorder: CallRecorder, size: Int64 = 100, gate: Gate? = nil) {
+    private let failureMessage: String?
+    private let warningMessage: String?
+    init(recorder: CallRecorder, size: Int64 = 100, gate: Gate? = nil,
+         failureMessage: String? = nil, warningMessage: String? = nil) {
         self.recorder = recorder
         self.gate = gate
         self.size = size
+        self.failureMessage = failureMessage
+        self.warningMessage = warningMessage
     }
     func scan(paths: [URL], preset: SimilarityPreset, strategy: SelectionStrategy,
               minFileSize: Int64, exclusions: [String],
@@ -63,8 +68,18 @@ private final class MockDuplicateScanner: DuplicateScanning, @unchecked Sendable
             Task {
                 await self.gate?.wait()
                 self.recorder.record("duplicates")
-                // size == 0 模拟「检测器跑了但一无所获」。
-                guard self.size > 0 else {
+                // size == 0 且无 failure/warning 模拟「检测器跑了但一无所获」。
+                guard self.size > 0 || self.failureMessage != nil
+                        || self.warningMessage != nil else {
+                    continuation.finish()
+                    return
+                }
+                if let warning = self.warningMessage {
+                    continuation.yield(.warning(DetectionCore.ScanWarning(
+                        message: warning, phase: .enumerating)))
+                }
+                if let failure = self.failureMessage {
+                    continuation.yield(.failed(failure))
                     continuation.finish()
                     return
                 }
@@ -189,9 +204,10 @@ final class CanvasScanCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(recorder.calls, ["attribution", "duplicates", "photos", "largeFiles"],
                        "扇出顺序：归因 → 重复 → 照片 → 大文件（spec §5）")
+        // 报告按 totalBytes 降序（fix r1 ③）；增量填充顺序见 incremental 测试。
         XCTAssertEqual(report.groups.map(\.id),
-                       [.cause(.cache), .duplicates, .similarPhotos, .largeFiles],
-                       "每组完成即产出，顺序即完成顺序")
+                       [.largeFiles, .cause(.cache), .similarPhotos, .duplicates],
+                       "报告组按 totalBytes 降序（1000/400/200/100）")
     }
 
     // MARK: 增量产出
@@ -232,8 +248,8 @@ final class CanvasScanCoordinatorTests: XCTestCase {
             ]))
         let report = await coordinator.runScan(scope: scope())
 
-        XCTAssertEqual(report.groups.map(\.id), [.cause(.cache), .duplicates, .largeFiles],
-                       "photo 检测器为 nil → 该组跳过，不出空组")
+        XCTAssertEqual(report.groups.map(\.id), [.largeFiles, .cause(.cache), .duplicates],
+                       "photo 检测器为 nil → 该组跳过，不出空组（报告按字节降序）")
     }
 
     func testAllDetectorsNilYieldsAttributionGroupsOnly() async {
@@ -290,5 +306,59 @@ final class CanvasScanCoordinatorTests: XCTestCase {
                        "拒答项不占 CanvasGroup")
         XCTAssertEqual(coordinator.uncertainCard?.totalBytes, 900_000_000,
                        "「我不敢判的」派生为虚线卡数据")
+    }
+
+    // MARK: 诊断通道（fix r1）
+
+    func testFailedEventSurfacesInDiagnostics() async {
+        let coordinator = makeCoordinator(
+            report: attributionReport(items: []),
+            duplicate: MockDuplicateScanner(recorder: recorder, size: 0,
+                                            failureMessage: "engine exploded mid-walk"),
+            photo: nil, large: nil)
+        let report = await coordinator.runScan(scope: scope())
+
+        XCTAssertTrue(report.groups.isEmpty, "管线失败 → 该组不出现")
+        XCTAssertEqual(coordinator.scanDiagnostics, ["engine exploded mid-walk"],
+                       ".failed 不再被静默丢弃 —— T3 可显示降级态文案")
+    }
+
+    func testWarningEventSurfacesInDiagnostics() async {
+        let coordinator = makeCoordinator(
+            report: attributionReport(items: []),
+            duplicate: MockDuplicateScanner(recorder: recorder, size: 0,
+                                            warningMessage: "unreadable path skipped"),
+            photo: nil, large: nil)
+        _ = await coordinator.runScan(scope: scope())
+
+        XCTAssertEqual(coordinator.scanDiagnostics, ["unreadable path skipped"],
+                       ".warning 同样进诊断通道（诚实降级）")
+    }
+
+    func testReentrantRunScanIsIgnoredWithDiagnostic() async {
+        let gate = Gate()
+        let coordinator = makeCoordinator(
+            report: attributionReport(items: [causeItem(bytes: 400)]),
+            duplicate: MockDuplicateScanner(recorder: recorder, size: 100, gate: gate),
+            photo: nil, large: nil)
+
+        let first = Task { await coordinator.runScan(scope: scope()) }
+        // 等 first 进入 duplicate 段（gate 挂起中）。
+        let deadline = Date().addingTimeInterval(5)
+        while coordinator.groups.isEmpty && Date() < deadline {
+            try? await Task.sleep(nanoseconds: 20_000_000)
+        }
+        XCTAssertTrue(coordinator.isRunning)
+
+        // 重入：直接 return 并记诊断，不打断进行中的扫描。
+        let second = await coordinator.runScan(scope: scope())
+        XCTAssertTrue(coordinator.scanDiagnostics.contains { !$0.isEmpty },
+                      "重入被记录为诊断信息")
+        XCTAssertEqual(second.groups.map(\.id), [.cause(.cache)],
+                       "重入返回当前（增量）状态，不重新清空画布")
+
+        await gate.open()
+        _ = await first.value
+        XCTAssertFalse(coordinator.isRunning)
     }
 }

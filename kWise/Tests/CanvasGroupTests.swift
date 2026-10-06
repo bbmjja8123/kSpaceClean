@@ -175,4 +175,31 @@ final class CanvasGroupTests: XCTestCase {
     func testLargeFilesEmptyBecomesNil() {
         XCTAssertNil(CanvasGroupAssembler.assembleLargeFiles(from: []))
     }
+
+    // MARK: 全量条目 + truncatedCount（fix r1：截断移展示层）
+
+    func testFullEntriesRetainedWithTruncatedCount() {
+        // 30 条目（无 target → 以 id 兜底去重键，互不合并）。
+        let entries = (0..<30).map { i in
+            CanvasEntry(title: "f\(i)", bytes: Int64(100 + i), badge: .recyclable)
+        }
+        let group = CanvasGroupAssembler.assemble(
+            kind: .largeFiles, icon: "externaldrive", entries: entries)
+
+        XCTAssertNotNil(group)
+        XCTAssertEqual(group?.entries.count, 30,
+                       "数据层保留全量条目 —— T6 下钻必须能看到 21+ 条目")
+        XCTAssertEqual(group?.truncatedCount, 10,
+                       "组卡展示层（prefix 20）之外还有 10 条")
+        XCTAssertEqual(group?.totalBytes, entries.reduce(Int64(0)) { $0 + $1.bytes })
+    }
+
+    func testTruncatedCountZeroAtOrBelowDisplayLimit() {
+        let entries = (0..<20).map { i in
+            CanvasEntry(title: "f\(i)", bytes: 1, badge: .recyclable)
+        }
+        let group = CanvasGroupAssembler.assemble(
+            kind: .duplicates, icon: "doc.on.doc", entries: entries)
+        XCTAssertEqual(group?.truncatedCount, 0, "恰在展示上限内 → 不显示「还有 N 项」")
+    }
 }

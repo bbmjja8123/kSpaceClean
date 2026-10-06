@@ -109,6 +109,9 @@ public final class CanvasScanCoordinator: ObservableObject {
     /// 「我不敢判的」虚线卡数据（不占 CanvasGroup，画布单独渲染）。
     @Published public private(set) var uncertainCard: UncertainCard?
     @Published public private(set) var isRunning = false
+    /// 扫描诊断（检测器 `.failed` / `.warning` / 重入提示）—— T3 据此显示
+    /// 降级态文案。管线中途失败时对应组消失，但**绝不静默**（fix r1）。
+    @Published public private(set) var scanDiagnostics: [String] = []
 
     private let attributionService: any AttributionScanning
     private let duplicateScanner: (any DuplicateScanning)?
@@ -129,9 +132,18 @@ public final class CanvasScanCoordinator: ObservableObject {
     }
 
     /// 扇出顺序：归因 → 重复 → 照片 → 大文件。
+    /// 重入守卫（fix r1 ④）：扫描进行中再次调用 → 直接 return 当前增量
+    /// 状态并记诊断，不打断进行中的扫描。
     public func runScan(scope: CanvasScanScope) async -> CanvasReport {
+        if isRunning {
+            scanDiagnostics.append(String(
+                localized: String.LocalizationValue("canvas.diagnostic.scanInProgress")))
+            return CanvasReport(groups: groups,
+                                uncovered: nil, snapshots: nil, generatedAt: Date())
+        }
         groups = []
         uncertainCard = nil
+        scanDiagnostics = []
         isRunning = true
         defer { isRunning = false }
 
@@ -140,7 +152,7 @@ public final class CanvasScanCoordinator: ObservableObject {
         uncertainCard = CanvasGroupAssembler.uncertainCard(from: report.refused)
         groups.append(contentsOf: CanvasGroupAssembler.assembleCauseGroups(from: report.items))
 
-        // 2. 重复文件。
+        // 2. 重复文件。`.failed` / `.warning` 进诊断通道（fix r1：禁止静默丢弃）。
         if let duplicateScanner {
             var engineGroups: [DetectionCore.DuplicateGroup] = []
             for await event in duplicateScanner.scan(
@@ -150,8 +162,15 @@ public final class CanvasScanCoordinator: ObservableObject {
                 minFileSize: Self.duplicateMinFileSize,
                 exclusions: [],
                 enablePerceptual: true) {
-                if case .group(let engineGroup) = event {
+                switch event {
+                case .group(let engineGroup):
                     engineGroups.append(engineGroup)
+                case .failed(let message):
+                    scanDiagnostics.append(message)
+                case .warning(let warning):
+                    scanDiagnostics.append(warning.message)
+                case .progress, .largeFiles, .completed:
+                    break
                 }
             }
             let mapped = engineGroups.map {
@@ -190,7 +209,9 @@ public final class CanvasScanCoordinator: ObservableObject {
             }
         }
 
-        return CanvasReport(groups: groups,
+        // 报告按 totalBytes 降序（fix r1 ③）；增量填充顺序见 `groups`
+        // published 属性 —— 画布在扫描期间仍按完成顺序逐组出现。
+        return CanvasReport(groups: groups.sorted { $0.totalBytes > $1.totalBytes },
                             uncovered: report.blackBox,
                             snapshots: report.snapshots,
                             generatedAt: Date())
