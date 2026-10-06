@@ -9,7 +9,9 @@
 // 红线：本页没有任何清理动作——组头「就地清理」与 hero「安全快捷回收」
 // 都只触发注入的回调（P2 T5 R-统一：RootView 把两者接进统一预演链 ——
 // 组头 = 组过滤预演、hero = 推荐项预演，均由根部 CleanupRehearsalSheet
-// 呈现）；扫描入口是 startScan（扇出 coordinator）。
+// 呈现）；扫描入口是 startScan（扇出 coordinator）。P2 T6：组卡点击区
+// 进下钻页（GroupDrillDownView），下钻的「预演并清理」同样只回调勾选集
+// （onDrillDownRehearse → 根部统一预演 sheet），本页仍零清理动作。
 // P0/P1 诚实渲染契约原样保留：空参数 lastModified 行隐藏、ruleID==nil 无
 // notes、snapshots==nil → unreadable 行、.negativeResidual → insufficient。
 import SwiftUI
@@ -56,12 +58,27 @@ public final class AnatomyViewModel: ObservableObject {
     /// internal：AnatomyScanState.swift 的扩展（runCanvasScan 完成后的
     /// 归因刷新）需要读取 provider。
     var categoriesProvider: (() -> [ScanCategory])?
+    /// T6 下钻 —— cause 树切片的归因引擎透出（GroupDrillDownSource 消费；
+    /// 纯内存展开，不触文件系统）。
+    var attributionEngine: AttributionRuleEngine { service.engine }
+    /// T6 下钻 —— 节点问答（AssistantNodePanel）的数据源（RootView onAppear
+    /// 晚绑定，同 rebindCategories 模式）。
+    var scanResultsProvider: (() -> ScanResultsViewModel?)?
+    /// T6 下钻 —— 勾选态 VM 缓存（GroupKind → VM）：面包屑返回后再进同一组
+    /// 取回同一份实例，勾选原样保留。新扫描写 canvasReport 时整体作废
+    /// （AnatomyScanState.runCanvasScan）。
+    var drillDownModels: [GroupKind: GroupDrillDownModel] = [:]
 
     public init(service: AttributionService) { self.service = service }
 
     /// RootView 在 onAppear 注入（沿用 spaceMapViewModel.rebindRoots 模式）。
     public func rebindCategories(_ provider: @escaping () -> [ScanCategory]) {
         categoriesProvider = provider
+    }
+
+    /// RootView 在 onAppear 注入（T6 下钻页节点问答的数据源，同晚绑定模式）。
+    func rebindScanResults(_ provider: @escaping () -> ScanResultsViewModel?) {
+        scanResultsProvider = provider
     }
 
     public func refresh() async {
@@ -122,8 +139,22 @@ public struct AnatomyView: View {
     /// RootView 据此把快捷回收管线一并作废 —— 否则取消后管线照样落
     /// `.confirming`，模态预演 sheet 会在用户明确取消后弹出。
     private let onScanCancelled: () -> Void
+    /// 下钻页底部「预演并清理」（P2 T6）—— 勾选集 targets → 根部统一预演
+    /// sheet（与组头就地清理同一张 sheet、同一条 CleanupViewModel 链）。
+    /// 参数：组名（sheet 语境副行）+ 勾选集 targets。
+    private let onDrillDownRehearse: (String, [CleanupTarget]) -> Void
+    /// 打开的下钻页（T6）：nil = 画布；非 nil = 下钻页替换画布区。
+    /// 本 App 无 NavigationStack（导航全走 appState 切换），下钻用本地
+    /// 页面切换实现「推入 → 面包屑返回」，勾选态由 VM 缓存跨页面保留。
+    @State private var drillDown: DrillDownDestination?
     /// 归因规则 sheet（「+」菜单 rules 项；规则链接行的同一 corpus）。
     @State private var showRulesSheet = false
+
+    /// 下钻目的地：组 + 打开时刻计算的条目切片（cause 组 = 树切片）。
+    private struct DrillDownDestination: Equatable {
+        let group: CanvasGroup
+        let entries: [CanvasEntry]
+    }
 
     init(viewModel: AnatomyViewModel,
          coordinator: CanvasScanCoordinator,
@@ -133,7 +164,8 @@ public struct AnatomyView: View {
          onGroupAction: @escaping (CanvasGroup) -> Void = { _ in },
          onOpenShredder: @escaping () -> Void = {},
          onSpaceMapLegacy: @escaping () -> Void = {},
-         onScanCancelled: @escaping () -> Void = {}) {
+         onScanCancelled: @escaping () -> Void = {},
+         onDrillDownRehearse: @escaping (String, [CleanupTarget]) -> Void = { _, _ in }) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.coordinator = coordinator
         self.diskHealthViewModel = diskHealthViewModel
@@ -143,9 +175,27 @@ public struct AnatomyView: View {
         self.onOpenShredder = onOpenShredder
         self.onSpaceMapLegacy = onSpaceMapLegacy
         self.onScanCancelled = onScanCancelled
+        self.onDrillDownRehearse = onDrillDownRehearse
     }
 
     public var body: some View {
+        if let drillDown {
+            GroupDrillDownView(
+                group: drillDown.group,
+                entries: drillDown.entries,
+                onRehearse: { targets in
+                    onDrillDownRehearse(drillDown.group.title, targets)
+                },
+                onBack: { self.drillDown = nil },
+                scanResultsProvider: viewModel.scanResultsProvider ?? { nil },
+                selectionModel: viewModel.drillDownModel(
+                    for: drillDown.group, entries: drillDown.entries))
+        } else {
+            canvasBody
+        }
+    }
+
+    private var canvasBody: some View {
         List {
             heroSection
             // P1 T9 — T6 遗留条件：DiskHealthCard 此前的唯一渲染位
@@ -395,11 +445,29 @@ public struct AnatomyView: View {
                     CanvasGroupCard(group: group,
                                     initiallyExpanded: index < 2,
                                     onRehearse: onGroupAction)
+                    // 组卡点击区 → 下钻页（T6，spec §6）：整卡点击打开，但
+                    // 组头「就地清理」与展开箭头是独立 Button —— 自吃点击、
+                    // 不触发导航（按钮优先级高于外层 tap 手势）。
+                        .contentShape(Rectangle())
+                        .onTapGesture { openDrillDown(group) }
                 }
                 .opacity(viewModel.scanPhase.isScanning ? 0.4 : 1)
                 .disabled(viewModel.scanPhase.isScanning)
             }
         }
+    }
+
+    // MARK: - 下钻打开（T6，spec §6 数据切片）
+
+    /// 组卡点击 → 计算下钻条目（cause 组从扫描树按 cause 切片，detection 组
+    /// 直接用 CanvasEntry）→ 页面切换进下钻。切片在打开时刻算一次并随目的地
+    /// 暂存，避免下钻期间每次 body 求值都重跑归因映射。
+    private func openDrillDown(_ group: CanvasGroup) {
+        let entries = GroupDrillDownSource.entries(
+            for: group,
+            categories: viewModel.categoriesProvider?() ?? [],
+            engine: viewModel.attributionEngine)
+        drillDown = DrillDownDestination(group: group, entries: entries)
     }
 
     // MARK: - 系统状态条（spec §3.5 —— T5 前静态占位，不显示假数据）

@@ -32,12 +32,18 @@ final class AssistantNodePanelModel: ObservableObject {
     @Published private(set) var answer: AssistantAnswer?
     /// True when the last question got the honest refusal (no matcher hit).
     @Published private(set) var refused = false
+    /// 建议问题集（P2 T6 参数化）：默认即 `suggestedQuestions`（DetailPanel
+    /// 行为不变）；复用方（如 T6 下钻页）可注入自己的问题集 —— 注入集同样
+    /// 必须命中 matcher 模板表，否则就是给出永远答不了的问题。
+    let questions: [String]
 
     private let matcher = AssistantIntentMatcher()
     private let scanResultsProvider: () -> ScanResultsViewModel?
 
-    init(scanResultsProvider: @escaping () -> ScanResultsViewModel?) {
+    init(scanResultsProvider: @escaping () -> ScanResultsViewModel?,
+         questions: [String] = AssistantNodePanelModel.suggestedQuestions) {
         self.scanResultsProvider = scanResultsProvider
+        self.questions = questions
     }
 
     /// `nil` = honest "这个问题我答不了" (no fabricated answer, C-5).
@@ -68,7 +74,7 @@ struct AssistantNodePanelView: View {
                 .foregroundStyle(Color.textSecondary)
 
             VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                ForEach(AssistantNodePanelModel.suggestedQuestions, id: \.self) { question in
+                ForEach(model.questions, id: \.self) { question in
                     Button {
                         model.answer(question: question)
                     } label: {

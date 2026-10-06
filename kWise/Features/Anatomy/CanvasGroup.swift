@@ -177,7 +177,9 @@ public enum CanvasGroupAssembler {
     /// `paths.first` 做代表 —— 条目字节取 `item.bytes`（全路径合计），不
     /// under-count 字节，仅展示面收窄到首路径；其余路径进 T6 下钻的
     /// 「同组路径」呈现。若未来下钻需要逐路径拆分，在此扩展而非改聚合。
-    private static func causeEntry(from item: SpaceAttribution) -> CanvasEntry? {
+    /// （internal：T6 下钻页的树切片复用同一映射 —— `GroupDrillDownSource`
+    /// 对 cause 组按 cause 过滤后逐条走这里，保证与组卡条目完全同源。）
+    static func causeEntry(from item: SpaceAttribution) -> CanvasEntry? {
         guard let path = item.paths.first else { return nil }
         return CanvasEntry(
             id: item.id,
@@ -323,7 +325,8 @@ public enum CanvasGroupAssembler {
 
     /// 同一路径只保留字节更大的一条（uniquingKeysWith）。无 target 的条目
     /// 以自身 id 兜底键，永不被合并。
-    private static func deduplicate(entries: [CanvasEntry]) -> [CanvasEntry] {
+    /// （internal：T6 下钻页的 cause 树切片复用同一去重 + 降序规则。）
+    static func deduplicate(entries: [CanvasEntry]) -> [CanvasEntry] {
         let keyed = entries.map { entry in
             (entry.target?.url.path ?? entry.id.uuidString, entry)
         }

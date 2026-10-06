@@ -240,6 +240,8 @@ struct RootView: View {
             // 空间解剖 reads the same live scan results（init-time capture 不可用，
             // 同 rebindRoots 的晚绑定模式）。
             anatomyViewModel.rebindCategories { scanResultsViewModel.categories }
+            // P2 T6 — 下钻页节点问答的数据源（AssistantNodePanel 复用组件）。
+            anatomyViewModel.rebindScanResults { [weak scanResultsViewModel] in scanResultsViewModel }
             // P2 T3 — 主画布：扇出协调器注入 + 扫描页 VM 绑定（isScanning
             // true→false → 归因刷新，P1 修复波机制自下方 .onChange 迁入 VM）。
             anatomyViewModel.bindCoordinator(canvasCoordinator)
@@ -345,6 +347,11 @@ struct RootView: View {
                         quickCleanStage = .none
                         smartCareViewModel.reset()
                     }
+                },
+                onDrillDownRehearse: { context, targets in
+                    // P2 T6 — 下钻「预演并清理」：勾选集 targets 直入同一条
+                    // 预演链，sheet 以组名为语境（与组头就地清理同源）。
+                    presentDrillDownRehearsal(targets: targets, context: context)
                 }
             )
         // P1 T6 — smartCare 降级为「安全快捷回收」次级页（spec §3.1）：
@@ -396,6 +403,18 @@ struct RootView: View {
         Task {
             let items = await cleanupViewModel.makeRehearsal(targets: targets)
             rehearsalPayload = RehearsalSheetPayload(items: items, context: group.title)
+        }
+    }
+
+    /// 下钻页「预演并清理」（P2 T6）→ 勾选集预演：勾选集 targets 直入
+    /// `makeRehearsal(targets:)`（risk/bundleID/categoryID 原样保留），sheet
+    /// 以下钻组名为语境；确认执行复用统一链 `executeConfirmedCleanup`。
+    /// 勾选集为空时按钮已禁用，此守卫纯防御。
+    private func presentDrillDownRehearsal(targets: [CleanupTarget], context: String) {
+        guard !targets.isEmpty else { return }
+        Task {
+            let items = await cleanupViewModel.makeRehearsal(targets: targets)
+            rehearsalPayload = RehearsalSheetPayload(items: items, context: context)
         }
     }
 

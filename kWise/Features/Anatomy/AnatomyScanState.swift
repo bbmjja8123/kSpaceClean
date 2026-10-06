@@ -143,6 +143,9 @@ extension AnatomyViewModel {
         // 的报告才写 canvasReport。
         guard !coordinator.isRunning else { return }
         canvasReport = report
+        // T6：新扫描 = 新事实 —— 下钻勾选态缓存整体作废（旧组已不存在，
+        // 带着旧勾选进新下钻页是陈旧承诺）。扫描期间下钻不可达（画布禁用）。
+        drillDownModels.removeAll()
         scanPhase = .done
         // 归因刷新：coordinator 不回传原始归因清单，而预演 sheet 的
         // attributionLookup（P1 final F3a）依赖 report.allAttributions。
