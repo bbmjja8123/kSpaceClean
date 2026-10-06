@@ -184,18 +184,50 @@ final class AnatomyScanStateTests: XCTestCase {
         let enteredScanning = await waitUntil { vm.scanPhase.isScanning }
         XCTAssertTrue(enteredScanning, "扇出扫描中 hero 应处于进度态")
 
-        // 上一次结果保留（不清空）——渲染层据此变灰。displayGroups = 旧报告
-        // 的组 + 协调器已增量产出的新归因组（同 cause 各一份：旧 400 / 新 300）。
-        XCTAssertEqual(vm.displayGroups.first?.id, .cause(.cache),
-                       "扫描中上一次结果保留（spec §5：淡出但不清空）")
-        XCTAssertGreaterThanOrEqual(vm.displayGroups.count, 2,
-                                    "协调器增量组与旧报告并存")
+        // 上一次结果保留（不清空）——渲染层据此变灰。fix r1 ②：同 kind 的
+        // 旧组被增量新组**替换**（新扫描的组就是最新事实），ForEach id 恒唯一。
+        let ids = vm.displayGroups.map(\.id)
+        XCTAssertEqual(Set(ids).count, ids.count,
+                       "扫描中并存组的 GroupKind 不得重复（ForEach identity 契约）")
+        let causeGroup = vm.displayGroups.first { $0.id == .cause(.cache) }
+        XCTAssertEqual(causeGroup?.totalBytes, 300,
+                       "同 kind 并存时增量新组获胜（300 新 > 400 旧）")
 
         await gate.open()
         await task.value
         XCTAssertEqual(vm.scanPhase, .done)
         XCTAssertEqual(vm.canvasReport?.groups.map(\.id), [.cause(.cache), .duplicates],
                        "新一轮报告刷新画布（300 归因 > 200 重复，降序）")
+    }
+
+    /// fix r1 ② — 增量替换的另一半：旧报告独有的组（新扫描尚未产出的 kind）
+    /// 在扫描中仍保留（不清空契约）。
+    func testDisplayGroupsCarryOldKindsNotYetProduced() async {
+        let vm = makeViewModel()
+        // 旧报告：cache 400 + 大文件 500（旧扫描产出）。
+        vm.bindCoordinator(makeCoordinator(
+            report: attributionReport(items: [causeItem(bytes: 400)])))
+        vm.rebindScope {
+            CanvasScanScope(categories: [], duplicateRoots: [],
+                            photoDirectories: [], largeFileRoots: [])
+        }
+        await vm.runCanvasScan()
+        XCTAssertEqual(vm.canvasReport?.groups.map(\.id), [.cause(.cache)])
+
+        // 新扫描：只有归因段（检测器全 nil）→ 产出 cache 300。
+        vm.bindCoordinator(makeCoordinator(
+            report: attributionReport(items: [causeItem(bytes: 300)]),
+            duplicate: nil))
+        let task = Task { await vm.runCanvasScan() }
+        _ = await waitUntil { vm.scanPhase.isScanning }
+
+        let ids = vm.displayGroups.map(\.id)
+        XCTAssertEqual(Set(ids).count, ids.count, "id 唯一")
+        XCTAssertTrue(ids.contains(.cause(.cache)), "新 kind 替换旧 kind")
+        let finished = await waitUntil { !(vm.canvasCoordinator?.isRunning ?? true) }
+        XCTAssertTrue(finished)
+        await task.value
+        XCTAssertEqual(vm.canvasReport?.groups.map(\.id), [.cause(.cache)])
     }
 
     func testReentrantStartScanWhileRunningIsIgnored() async {
@@ -290,11 +322,65 @@ final class AnatomyScanStateTests: XCTestCase {
             vm.scanPhase == .scanning(progress: 0.5, path: "/Users/t/Library")
         }
         XCTAssertTrue(mirrored, "引擎扫描期间 hero 镜像引擎进度（ScanResultsViewModel.$progress/currentPath）")
+        XCTAssertEqual(vm.activeScanSource, .engine, "镜像期间数据源 = 引擎")
+        XCTAssertFalse(vm.showsScanCancel,
+                       "fix r1 ②：引擎镜像态隐藏「取消」（对引擎无效，显示即误导）")
 
         scanVM.assign(snapshot: .init(isScanning: false, hasScanned: true,
                                       categories: [], totalSelectedSize: 0,
                                       totalSelectedCount: 0, needsFullDiskAccess: false))
         let settled = await waitUntil { vm.scanPhase == .idle }
         XCTAssertTrue(settled, "引擎扫描结束（画布无旧报告）→ 回到 idle")
+    }
+
+    /// fix r1 ② — 扇出扫描中「取消」必须可见（与镜像态相反）。
+    func testCancelButtonVisibleDuringFanOutScan() async {
+        let vm = makeViewModel()
+        let gate = Gate()
+        vm.bindCoordinator(makeCoordinator(
+            report: attributionReport(items: [causeItem(bytes: 400)]),
+            duplicate: GatedDuplicateScanner(gate: gate, recorder: CallRecorder())))
+        vm.rebindScope {
+            CanvasScanScope(categories: [], duplicateRoots: [URL(fileURLWithPath: "/t")],
+                            photoDirectories: [], largeFileRoots: [])
+        }
+
+        vm.startScan()
+        let entered = await waitUntil { vm.scanPhase.isScanning }
+        XCTAssertTrue(entered)
+        XCTAssertEqual(vm.activeScanSource, .fanOut)
+        XCTAssertTrue(vm.showsScanCancel, "扇出扫描中「取消」可见（有真取消句柄）")
+
+        await gate.open()
+        _ = await waitUntil { !(vm.canvasCoordinator?.isRunning ?? true) }
+        XCTAssertFalse(vm.showsScanCancel, "扫描结束「取消」隐藏")
+    }
+
+    /// fix r1 ⑤ — bindScanViewModel 幂等：重复 bind 不累积订阅（归因刷新
+    /// 恰好跑一次，而不是每个旧订阅各跑一次）。
+    func testBindScanViewModelIsIdempotent() async {
+        let vm = makeViewModel()
+        var providerCalls = 0
+        vm.rebindCategories {
+            providerCalls += 1
+            return []
+        }
+        let scanVM = ScanResultsViewModel(engine: nil)
+        vm.bindScanViewModel(scanVM)
+        vm.bindScanViewModel(scanVM)
+        vm.bindScanViewModel(scanVM)
+
+        scanVM.assign(snapshot: .init(isScanning: true, hasScanned: true,
+                                      categories: [], totalSelectedSize: 0,
+                                      totalSelectedCount: 0, needsFullDiskAccess: false))
+        scanVM.assign(snapshot: .init(isScanning: false, hasScanned: true,
+                                      categories: [], totalSelectedSize: 0,
+                                      totalSelectedCount: 0, needsFullDiskAccess: false))
+
+        let refreshed = await waitUntil { providerCalls > 0 }
+        XCTAssertTrue(refreshed)
+        try? await Task.sleep(nanoseconds: 200_000_000)
+        XCTAssertEqual(providerCalls, 1,
+                       "三次 bind 只留一份订阅：isScanning 下降沿恰好触发一次刷新")
     }
 }

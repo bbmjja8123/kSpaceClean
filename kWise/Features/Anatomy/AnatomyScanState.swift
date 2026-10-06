@@ -47,10 +47,11 @@ extension AnatomyViewModel {
                 Task { @MainActor in
                     guard let self, let active = self.canvasCoordinator,
                           active.isRunning, active === coordinator,
-                          case .scanning(_, let path) = self.scanPhase else { return }
-                    self.scanPhase = .scanning(
-                        progress: Self.fanOutProgress(groupCount: groups.count),
-                        path: path)
+                          case .scanning(let current, let path) = self.scanPhase else { return }
+                    // fix r1 ③：进度只单调递增（groups 计数回退时不倒退）。
+                    let next = Self.fanOutProgress(groupCount: groups.count)
+                    guard next > current else { return }
+                    self.scanPhase = .scanning(progress: next, path: path)
                 }
             }
             .store(in: &canvasCancellables)
@@ -61,7 +62,10 @@ extension AnatomyViewModel {
     /// - 引擎扫描结束（true→false）：归因 report 刷新 —— P1 修复波机制，
     ///   所有扫描入口（⌘N/⌘R、菜单栏 quickScan）都收敛到同一个 startScan。
     /// （internal：`ScanResultsViewModel` 是 app 内部类型，不能跨 public 泄露。）
+    /// 幂等：重复 bind 先撤旧订阅再挂新的（fix r1 ⑤——重复 bind 不累积）。
     func bindScanViewModel(_ vm: ScanResultsViewModel) {
+        scanVMBindCancellables.removeAll()
+
         vm.isScanningPublisher
             .dropFirst()
             .removeDuplicates()
@@ -149,14 +153,40 @@ extension AnatomyViewModel {
 
     /// 画布组列表：
     /// - 完成/空闲态 → `canvasReport.groups`（totalBytes 降序）；
-    /// - 扫描中 → 上一次报告的组**保留**（不清空，渲染层变灰）+ 协调器
-    ///   增量产出的新组（spec §5：分组区淡出但不消失）。
+    /// - 扫描中 → 上一次报告的组**保留**（不清空，渲染层变灰）+ 协调器增量
+    ///   产出的新组；同 GroupKind 的旧组被新组**替换**（fix r1 ②：新扫描的
+    ///   组就是最新事实，且保证 ForEach id 唯一——旧报告组与增量组并存时
+    ///   同 kind 出现两次会让 List identity 冲突、展开态错乱）。
     public var displayGroups: [CanvasGroup] {
         if scanPhase.isScanning, let coordinator = canvasCoordinator,
            coordinator.isRunning {
-            return (canvasReport?.groups ?? []) + coordinator.groups
+            let incremental = coordinator.groups
+            let carried = (canvasReport?.groups ?? []).filter { old in
+                !incremental.contains { $0.id == old.id }
+            }
+            return carried + incremental
         }
         return canvasReport?.groups ?? []
+    }
+
+    // MARK: hero 进度态数据源（fix r1 ②——取消按钮的诚实可见性）
+
+    /// hero 进度态的来源：`.fanOut` = 画布自己的扇出扫描（取消按钮有效）；
+    /// `.engine` = 扫描页引擎扫描的镜像（取消按钮对引擎无效，视图隐藏）。
+    public enum ScanSource { case fanOut, engine }
+
+    /// 当前扫描中 hero 进度态的数据源。扇出优先（它有真取消句柄）；
+    /// 非扫描期返回 `.fanOut`（`showsScanCancel` 会因 `isScanning == false` 恒 false）。
+    public var activeScanSource: ScanSource {
+        if canvasCoordinator?.isRunning == true { return .fanOut }
+        if engineScanMirrored { return .engine }
+        return .fanOut
+    }
+
+    /// hero「取消」按钮是否应显示（fix r1 ②）：只在扇出扫描中可见——
+    /// 引擎镜像态取消按钮对引擎扫描无效，显示即误导（点了还闪回）。
+    public var showsScanCancel: Bool {
+        scanPhase.isScanning && activeScanSource == .fanOut
     }
 
     /// hero「安全快捷回收 · 预计 X」的估算 —— 只累计绿徽（✓ 可回收）条目的

@@ -7645,19 +7645,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "More tools (coming soon)"
+            "value": "More tools"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "更多工具（即将上线）"
+            "value": "更多工具"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "その他のツール（近日公開）"
+            "value": "その他のツール"
           }
         }
       }

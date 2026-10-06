@@ -276,12 +276,16 @@ public struct AnatomyView: View {
                     .truncationMode(.head)
                     .help(path)
             }
-            Button {
-                viewModel.cancelScan()
-            } label: {
-                Text("canvas.scan.cancel")
+            // fix r1 ②：只在扇出扫描中显示「取消」——引擎镜像态（扫描页发起）
+            // 取消按钮对引擎扫描无效，显示即误导（点了闪回）。
+            if viewModel.showsScanCancel {
+                Button {
+                    viewModel.cancelScan()
+                } label: {
+                    Text("canvas.scan.cancel")
+                }
+                .buttonStyle(.bordered)
             }
-            .buttonStyle(.bordered)
         }
         .padding(.vertical, AppSpacing.xs)
     }
@@ -352,6 +356,8 @@ public struct AnatomyView: View {
         let groups = viewModel.displayGroups
         if !groups.isEmpty {
             Section {
+                // id 唯一性由 displayGroups 的同 kind 去重保证（fix r1 ②：
+                // 扫描中旧报告组与增量组并存时，增量组替换同 kind 旧组）。
                 ForEach(Array(groups.enumerated()), id: \.element.id) { index, group in
                     // 默认展开前 2 组（spec §3.4）；全量条目走 T6 下钻页。
                     CanvasGroupCard(group: group,
