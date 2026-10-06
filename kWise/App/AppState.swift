@@ -61,11 +61,11 @@ public final class AppState: ObservableObject {
         // P0 的 `.attribution` 验证面也已在 P1 T5 退役（工具箱卡直达 `.anatomy`），
         // 枚举残留一并清除。
 
-        /// Fixed icon-rail order (v2.0 Phase 2). The rail no longer grows
-        /// with every module — deep surfaces live in the toolbox and are
-        /// reachable via deep links + `allCases`.
+        /// Fixed icon-rail order. P2 T1 (Klaris 单一主画布)：rail 收敛至
+        /// 3 项 —— 扫描/清理/工具全部折进解剖画布（spec §2），深链/工具箱
+        /// 面仍经 `allCases` 可达（case 保留至 W4 清扫）。
         public static var railItems: [NavigationItem] {
-            [.anatomy, .scan, .tools, .cleanup, .history, .settings]
+            [.anatomy, .history, .settings]
         }
 
         /// 工具箱八件套 —— 这些导航项以 Tab 方式打开（v2.5）。

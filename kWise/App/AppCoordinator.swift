@@ -47,7 +47,9 @@ public final class AppCoordinator: ObservableObject {
             navigate(to: .privacy)
             return true
         case "health":
-            navigate(to: .diskHealth)
+            // P2 T1: DiskHealthCard 已内嵌解剖画布（spec §7）—— 深链落
+            // 首屏而非独立磁盘健康详情页。
+            navigate(to: .anatomy)
             return true
         case "startup":
             navigate(to: .startupItems)

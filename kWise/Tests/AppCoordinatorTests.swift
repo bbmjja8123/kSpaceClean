@@ -48,6 +48,18 @@ final class AppCoordinatorTests: XCTestCase {
                        "SmartCare 降级：深链与 Widget 按钮应落在解剖首屏（R1）")
     }
 
+    /// P2 T1: DiskHealthCard 已内嵌解剖画布（spec §7）——`klaris://health`
+    /// 深链落首屏 `.anatomy`，不再跳独立磁盘健康详情页。
+    func test_handleDeepLink_health_opensAnatomy() {
+        let appState = AppState()
+        let coordinator = AppCoordinator(appState: appState)
+        let url = URL(string: "klaris://health")!
+        let result = coordinator.handleDeepLink(url)
+        XCTAssertTrue(result)
+        XCTAssertEqual(appState.navigation, .anatomy,
+                       "health 深链：DiskHealthCard 已在画布上，应落解剖首屏（P2 spec §7）")
+    }
+
     func test_navigate() {
         let appState = AppState()
         let coordinator = AppCoordinator(appState: appState)
