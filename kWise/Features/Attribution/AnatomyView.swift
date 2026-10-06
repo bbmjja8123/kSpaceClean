@@ -118,6 +118,10 @@ public struct AnatomyView: View {
     private let onOpenShredder: () -> Void
     /// 「+」菜单 → 旧版空间地图（W4 退役前的逃生口）。
     private let onSpaceMapLegacy: () -> Void
+    /// 扫描中态「取消」回调（P2 T5 fix r1，Important 1）：扇出取消之外，
+    /// RootView 据此把快捷回收管线一并作废 —— 否则取消后管线照样落
+    /// `.confirming`，模态预演 sheet 会在用户明确取消后弹出。
+    private let onScanCancelled: () -> Void
     /// 归因规则 sheet（「+」菜单 rules 项；规则链接行的同一 corpus）。
     @State private var showRulesSheet = false
 
@@ -128,7 +132,8 @@ public struct AnatomyView: View {
          onOpenDiskHealth: @escaping () -> Void,
          onGroupAction: @escaping (CanvasGroup) -> Void = { _ in },
          onOpenShredder: @escaping () -> Void = {},
-         onSpaceMapLegacy: @escaping () -> Void = {}) {
+         onSpaceMapLegacy: @escaping () -> Void = {},
+         onScanCancelled: @escaping () -> Void = {}) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.coordinator = coordinator
         self.diskHealthViewModel = diskHealthViewModel
@@ -137,6 +142,7 @@ public struct AnatomyView: View {
         self.onGroupAction = onGroupAction
         self.onOpenShredder = onOpenShredder
         self.onSpaceMapLegacy = onSpaceMapLegacy
+        self.onScanCancelled = onScanCancelled
     }
 
     public var body: some View {
@@ -224,8 +230,8 @@ public struct AnatomyView: View {
                 .foregroundStyle(Color.textSecondary)
             compositionBar
             HStack(spacing: AppSpacing.sm) {
-                // 唯一的回收入口：跳 Smart Care 次级页（T5 起改走预演链）。
-                // 本页本身零清理动作。
+                // 回收入口（P2 T5 R-统一）：触发快捷回收管线，`.confirming`
+                // 落地后由根部预演 sheet 接管 —— 本页本身零清理动作。
                 Button(action: onQuickClean) {
                     Text(quickCleanTitle)
                 }
@@ -301,9 +307,12 @@ public struct AnatomyView: View {
             }
             // fix r1 ②：只在扇出扫描中显示「取消」——引擎镜像态（扫描页发起）
             // 取消按钮对引擎扫描无效，显示即误导（点了闪回）。
+            // fix r1（Important 1）：取消同时作废快捷回收管线（onScanCancelled
+            // → RootView 重置 smartCareViewModel）—— 取消必须真的取消。
             if viewModel.showsScanCancel {
                 Button {
                     viewModel.cancelScan()
+                    onScanCancelled()
                 } label: {
                     Text("canvas.scan.cancel")
                 }

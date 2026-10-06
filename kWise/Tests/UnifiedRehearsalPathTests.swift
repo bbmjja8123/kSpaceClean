@@ -140,6 +140,37 @@ final class UnifiedRehearsalPathTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: f3.path), "sheet 上豁免的行保留")
     }
 
+    // MARK: - fix r1（Important 2）：失败运行不得继承上次成功的 outcome
+
+    /// 成功一次 → 注入系统性失败（确认集里的文件在 sheet → confirm 之间
+    /// 消失，真实竞态）→ 本次运行的返回值与 `lastOutcome` 必须反映失败
+    ///（freed 0），绝不能把上次成功的字节顶给 doneHero。
+    func testFailedRunNeverInheritsPreviousSuccessOutcome() async {
+        let (vm, root) = makeVM()
+        let f1 = makeFile(in: root, named: "run1-a.bin")
+        let f2 = makeFile(in: root, named: "run1-b.bin")
+
+        // 第一次运行：真实成功，freedBytes = 1 + 2。
+        let items = await vm.makeRehearsal(sizes: [f1: 1, f2: 2], urls: [f1, f2])
+        let first = await vm.executeConfirmedCleanup(confirmedTargets: items.map(\.target))
+        XCTAssertEqual(first?.freedBytes, 3)
+        XCTAssertEqual(vm.lastOutcome?.freedBytes, 3)
+
+        // 第二次运行（失败注入）： vanished 路径绕过预演存在性过滤 ——
+        // 与「sheet 打开期间文件被删」的真实竞态同构。
+        let vanished = CleanupTarget(url: root.appendingPathComponent("vanished.bin"),
+                                     size: 9)
+        let outcome = await vm.executeConfirmedCleanup(confirmedTargets: [vanished])
+        XCTAssertEqual(outcome?.succeeded.isEmpty, true, "失败运行不得有成功项")
+        XCTAssertEqual(outcome?.freedBytes, 0)
+        XCTAssertEqual(outcome?.failed.count, 1)
+        XCTAssertEqual(vm.lastOutcome?.freedBytes, 0,
+                       "lastOutcome 必须反映本次失败运行（进场即清旧值）")
+        XCTAssertEqual(vm.lastOutcome?.failed.count, 1)
+        XCTAssertEqual(vm.lastResult?.snapshots.isEmpty, true,
+                       "lastResult 同样不得残留上次成功的快照")
+    }
+
     // MARK: - 两层信任豁免废除：orchestrator 不再直执行
 
     /// 旧 `confirm()` 在 `.confirming` 一键直执行引擎 —— 已废除。现在

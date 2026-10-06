@@ -147,13 +147,21 @@ public final class CleanupViewModel: ObservableObject {
     ///     平移）；执行大小以 target 自带 size 为准，本参数不参与。
     ///   - confirmedTargets: 预演 sheet 确认后传出的勾选子集（nil = 未接
     ///     预演 UI 的兼容路径，用暂存的全量）。
+    /// - Returns: 本次运行的真实 `CleanupOutcome`（含逐项失败）；`nil` =
+    ///     本次没有产生运行（双击守卫 / 空清单）或引擎抛错。宿主（P2 T5
+    ///     的 `finishRehearsal`）**以返回值判定成败**，绝不读上次运行的
+    ///     `lastOutcome` 推断 —— fix r1（Important 2）。
+    @discardableResult
     public func executeConfirmedCleanup(sizes: [URL: Int64]? = nil,
-                                        confirmedTargets: [CleanupTarget]? = nil) async {
-        guard !isCleaning else { return }
+                                        confirmedTargets: [CleanupTarget]? = nil) async -> CleanupOutcome? {
+        guard !isCleaning else { return nil }
         let toRun = confirmedTargets ?? pendingTargets
         pendingTargets = []
-        guard !toRun.isEmpty else { return }
+        guard !toRun.isEmpty else { return nil }
         isCleaning = true
+        // fix r1（Important 2）：进场即清上次结果 —— 失败的运行绝不能让
+        // 上一次成功的 `lastOutcome` 顶替本次被展示（doneHero 陈旧字节）。
+        lastOutcome = nil
         defer {
             isCleaning = false
             Task { await self.refreshHistory() }
@@ -180,9 +188,12 @@ public final class CleanupViewModel: ObservableObject {
             if outcome.quotaExhausted {
                 onQuotaExhausted?()
             }
+            return outcome
         } catch {
             // Phase B Task 5: best-effort; UI shows the error via `lastResult`.
+            // fix r1：`lastOutcome` 已在进场时清空 —— 这里不回填旧值。
             self.lastResult = nil
+            return nil
         }
         // （暂存在进入时已同步清空 —— 双击/重放都拿不到清单。）
     }

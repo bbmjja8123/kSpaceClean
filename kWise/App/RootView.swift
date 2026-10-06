@@ -58,6 +58,12 @@ struct RootView: View {
     @State private var rehearsalPayload: RehearsalSheetPayload?
     /// hero 快捷回收的流程阶段 —— 决定 sheet 确认后是否给 orchestrator
     /// 回填 doneHero/failedHero，以及取消时是否复位状态机。
+    /// ⚠️ 状态迁移不对称（fix r1 ⑥ 显式化）：`.running` 只由**画布 hero**
+    /// 的 `onQuickClean` 置位；`.awaitingConfirm` 由共享的
+    /// `.onReceive(smartCareViewModel.$state)` 对**所有触发源**（画布 hero /
+    /// smartCare 页 idle hero / 菜单栏 quickClean）统一置位 —— 因为
+    /// `.confirming` 一律由根部预演 sheet 接管。`.executing` 与 `.none` 只
+    /// 在 `finishRehearsal` / sheet 取消里迁移。
     @State private var quickCleanStage: QuickCleanStage = .none
 
     /// P2 T5 R-统一：快捷回收 = 推荐项预演（已勾选好）→ 确认 → 统一链执行。
@@ -329,6 +335,16 @@ struct RootView: View {
                 onSpaceMapLegacy: {
                     // 「+」菜单 → 旧版空间地图（W4 退役前的逃生口）。
                     appState.navigation = .spaceMap
+                },
+                onScanCancelled: {
+                    // fix r1（Important 1）：取消必须真的取消 —— 扇出取消
+                    // 之外，快捷回收管线（runSmartCare → 引擎扫描 → 推荐计算）
+                    // 也要一并作废；否则取消后管线照样落 `.confirming`，
+                    // 模态预演 sheet 会在用户明确取消后弹出。
+                    if quickCleanStage == .running {
+                        quickCleanStage = .none
+                        smartCareViewModel.reset()
+                    }
                 }
             )
         // P1 T6 — smartCare 降级为「安全快捷回收」次级页（spec §3.1）：
@@ -412,11 +428,14 @@ struct RootView: View {
             quickCleanStage = .executing
             smartCareViewModel.beginQuickCleanExecution()
         }
-        await cleanupViewModel.executeConfirmedCleanup(sizes: nil,
-                                                       confirmedTargets: confirmed)
+        // fix r1（Important 2）：成败以**本次运行的返回值**判定 —— 返回值
+        // 为 nil（引擎抛错 / no-op）即走 failExecution，绝不读 `lastOutcome`
+        // 推断（上次成功的旧字节不能顶替本次失败展示成 doneHero）。
+        let outcome = await cleanupViewModel.executeConfirmedCleanup(
+            sizes: nil, confirmedTargets: confirmed)
         guard quickClean else { return }
         quickCleanStage = .none
-        if let outcome = cleanupViewModel.lastOutcome {
+        if let outcome {
             smartCareViewModel.completeQuickClean(
                 freedBytes: outcome.freedBytes,
                 durationSeconds: Date().timeIntervalSince(started))

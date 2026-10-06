@@ -77,6 +77,48 @@ final class SmartCareOrchestratorTests: XCTestCase {
         }
     }
 
+    /// fix r1（Important 2）锁定：失败回填必须覆盖上一次成功的 `.done` ——
+    /// 宿主绝不能让旧 outcome 的字节顶替本次失败展示成 doneHero。
+    func testFailBackfillOverridesPreviousDone() {
+        let orch = SmartCareOrchestrator()
+        orch.beginExecution()
+        orch.completeExecution(freedBytes: 42, durationSeconds: 0.1)
+        if case .done(let freed, _) = orch.state {
+            XCTAssertEqual(freed, 42)
+        } else {
+            XCTFail("expected .done, got \(orch.state)")
+        }
+
+        // 下一轮：失败回填覆盖旧成功。
+        orch.beginExecution()
+        orch.failExecution(message: "清理未能完成，请重试")
+        if case .failed = orch.state {} else {
+            XCTFail("failed backfill must override stale .done, got \(orch.state)")
+        }
+    }
+
+    /// fix r1（Important 1）锁定：`reset()` 必须使在途管线放弃 —— 取消后
+    /// 绝不允许落进 `.confirming`（否则根部会在用户取消后弹模态预演 sheet）；
+    /// 且取消后状态机可重新 start（代次机制不卡死）。
+    func testResetAbortsInFlightPipelineBeforeConfirming() async {
+        let scanVM = ScanResultsViewModel(engine: nil)
+        let orch = SmartCareOrchestrator(scanResultsViewModel: scanVM)
+        orch.start()
+
+        // 立即取消：runPipeline 尚在途（代次已作废）。
+        orch.reset()
+        try? await Task.sleep(nanoseconds: 1_200_000_000)
+        XCTAssertEqual(orch.state, .idle, "取消后管线不得进入 .confirming")
+        XCTAssertTrue(orch.recommendedItems.isEmpty, "取消后不得残留推荐项")
+
+        // 取消后可重新发起（代次机制不卡死状态机）。
+        orch.start()
+        try? await Task.sleep(nanoseconds: 1_200_000_000)
+        if case .confirming = orch.state {} else {
+            XCTFail("expected .confirming after re-start, got \(orch.state)")
+        }
+    }
+
     func testResetReturnsToIdle() async {
         let scanVM = ScanResultsViewModel(engine: nil)
         let orch = SmartCareOrchestrator(scanResultsViewModel: scanVM)

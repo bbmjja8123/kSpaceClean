@@ -50,6 +50,11 @@ final class SmartCareOrchestrator: ObservableObject {
     @Published private(set) var recommendedItems: [ScanResult] = []
 
     private weak var scanResultsViewModel: ScanResultsViewModel?
+    /// 进行中管线的代次（P2 T5 fix r1，Important 1）：`start()` 递增并捕获、
+    /// `reset()`/`attach()` 递增作废 —— 在途 `runPipeline` 在每个挂起点后
+    /// 核对代次，被取消的管线静默放弃。取消必须真的取消：用户取消后管线
+    /// 绝不允许落进 `.confirming`（否则根部会弹出模态预演 sheet）。
+    private var pipelineGeneration = 0
 
     /// Designated initializer. The view model can also be attached later
     /// via ``attach(scanResultsViewModel:)`` when SwiftUI environment
@@ -73,6 +78,8 @@ final class SmartCareOrchestrator: ObservableObject {
     /// Late-binds a scan view model after construction.
     func attach(scanResultsViewModel: ScanResultsViewModel) {
         self.scanResultsViewModel = scanResultsViewModel
+        // 换绑定即作废旧 scanVM 的在途管线（与 reset 同一代次语义）。
+        pipelineGeneration += 1
         state = .idle
         recommendedItems = []
     }
@@ -83,9 +90,13 @@ final class SmartCareOrchestrator: ObservableObject {
             state = .failed(message: "扫描模块未连接")
             return
         }
+        pipelineGeneration += 1
+        let generation = pipelineGeneration
         state = .scanning(progress: 0)
         scanVM.startScan()
-        Task { @MainActor in await self.runPipeline(scanVM: scanVM) }
+        Task { @MainActor in
+            await self.runPipeline(scanVM: scanVM, generation: generation)
+        }
     }
 
     /// 预演 sheet 确认后由宿主调用：进入 `.cleaning`，随后统一链
@@ -106,8 +117,11 @@ final class SmartCareOrchestrator: ObservableObject {
         state = .failed(message: message)
     }
 
-    /// Returns to `.idle` so the hero CTA can re-trigger the flow.
+    /// Returns to `.idle` and **aborts any in-flight pipeline** (P2 T5 fix r1):
+    /// the generation bump makes `runPipeline` bail out at its next checkpoint
+    /// instead of walking into `.confirming`. Cancelling must actually cancel.
     public func reset() {
+        pipelineGeneration += 1
         state = .idle
         recommendedItems = []
     }
@@ -117,12 +131,19 @@ final class SmartCareOrchestrator: ObservableObject {
     /// Polls the injected view model's `isScanning` flag, mirrors progress
     /// onto the orchestrator's `.scanning(progress:)` state, then runs the
     /// auto-pick on completion and transitions to `.confirming`.
-    private func runPipeline(scanVM: ScanResultsViewModel) async {
+    ///
+    /// fix r1（Important 1）：`generation` 与 ``pipelineGeneration`` 不一致
+    /// 即中途取消 —— 在每个挂起点后核对并放弃（state 已被 `reset()` 归
+    /// `.idle`，这里绝不再写）。
+    private func runPipeline(scanVM: ScanResultsViewModel, generation: Int) async {
+        guard generation == pipelineGeneration else { return }
         // Mirror scan progress at ~10 Hz while the engine is busy.
         while scanVM.isScanning {
             state = .scanning(progress: scanVM.progress)
             try? await Task.sleep(nanoseconds: 100_000_000)
+            guard generation == pipelineGeneration else { return }
         }
+        guard generation == pipelineGeneration else { return }
         state = .scanning(progress: 1.0)
 
         // Sandboxed / scope-limited: surface the gap instead of presenting
@@ -134,8 +155,10 @@ final class SmartCareOrchestrator: ObservableObject {
 
         // Auto-pick: collect all leaf entries where
         // `ScanResult.isRecommended == true`.
+        guard generation == pipelineGeneration else { return }
         state = .recommending
         let picks = computeRecommendedPicks(scanVM: scanVM)
+        guard generation == pipelineGeneration else { return }
         recommendedItems = picks
 
         let totalSize = picks.reduce(Int64(0)) { $0 + $1.fileSize }
