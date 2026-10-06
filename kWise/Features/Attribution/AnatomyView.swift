@@ -113,19 +113,29 @@ public struct AnatomyView: View {
     /// 组头「就地清理」回调 —— T5 接组过滤预演链；本任务注入空实现
     /// （视图零清理动作，Global Constraints）。
     private let onGroupAction: (CanvasGroup) -> Void
+    /// 「+」菜单 → 粉碎窗（RootView 挂 sheet + 整窗拖放转发，P2 T4）。
+    private let onOpenShredder: () -> Void
+    /// 「+」菜单 → 旧版空间地图（W4 退役前的逃生口）。
+    private let onSpaceMapLegacy: () -> Void
+    /// 归因规则 sheet（「+」菜单 rules 项；规则链接行的同一 corpus）。
+    @State private var showRulesSheet = false
 
     init(viewModel: AnatomyViewModel,
          coordinator: CanvasScanCoordinator,
          diskHealthViewModel: DiskHealthViewModel,
          onQuickClean: @escaping () -> Void,
          onOpenDiskHealth: @escaping () -> Void,
-         onGroupAction: @escaping (CanvasGroup) -> Void = { _ in }) {
+         onGroupAction: @escaping (CanvasGroup) -> Void = { _ in },
+         onOpenShredder: @escaping () -> Void = {},
+         onSpaceMapLegacy: @escaping () -> Void = {}) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.coordinator = coordinator
         self.diskHealthViewModel = diskHealthViewModel
         self.onQuickClean = onQuickClean
         self.onOpenDiskHealth = onOpenDiskHealth
         self.onGroupAction = onGroupAction
+        self.onOpenShredder = onOpenShredder
+        self.onSpaceMapLegacy = onSpaceMapLegacy
     }
 
     public var body: some View {
@@ -165,6 +175,14 @@ public struct AnatomyView: View {
         .task {
             loadCorpusAndRefresh()
             await diskHealthViewModel.refresh()
+        }
+        // 「+」菜单 rules 项的落点（P2 T4）——复用同一份已加载 corpus；
+        // 与规则链接行互为入口（一个走 List 推入、一个走菜单 → sheet）。
+        .sheet(isPresented: $showRulesSheet) {
+            if let corpus = rulesCorpus {
+                AttributionRulesView(corpus: corpus)
+                    .frame(minWidth: 560, minHeight: 420)
+            }
         }
     }
 
@@ -211,11 +229,15 @@ public struct AnatomyView: View {
                     Text(quickCleanTitle)
                 }
                 .buttonStyle(.borderedProminent)
-                // 「+」菜单占位 —— P2 T4 接 CanvasPlusMenu（粉碎窗/规则/维护）。
-                Image(systemName: "plus.circle")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.textSecondary)
-                    .help(String(localized: String.LocalizationValue("canvas.hero.plusMenu.help")))
+                // 「+」菜单（P2 T4）：粉碎窗 · 旧版空间地图 · 归因规则。
+                CanvasPlusMenu(actions: CanvasPlusMenuActions(
+                    onShredder: onOpenShredder,
+                    onSpaceMapLegacy: onSpaceMapLegacy,
+                    onAttributionRules: {
+                        // corpus 未加载成功时不弹空 sheet（诚实降级——规则
+                        // 链接行同样以 corpus 存在为渲染条件）。
+                        if rulesCorpus != nil { showRulesSheet = true }
+                    }))
                 Button {
                     viewModel.startScan()
                 } label: {

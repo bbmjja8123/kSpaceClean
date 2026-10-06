@@ -49,9 +49,12 @@ public final class ShredderViewModel: ObservableObject {
         stagedURLs += panel.urls.filter { !stagedURLs.contains($0) }
     }
 
-    /// Drag & drop entry point. Only regular in-scope files are staged;
-    /// directories and system paths are refused with an honest message.
-    func handleDrop(urls: [URL]) {
+    /// Drag & drop entry point — also the public entry for external drops
+    /// (P2 T4 window-wide drag-to-shred forwards here). Only regular
+    /// in-scope files are staged; directories and system paths are refused
+    /// with an honest message. No cleanup happens here — staging only; the
+    /// DELETE confirmation chain in ShredderView still gates any shred.
+    public func performDrop(urls: [URL]) {
         let acceptable = urls.filter { FileShredder.guardrailsPass(for: $0) }
         let rejected = urls.count - acceptable.count
         stagedURLs += acceptable.filter { !stagedURLs.contains($0) }

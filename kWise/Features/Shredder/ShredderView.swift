@@ -122,22 +122,13 @@ struct ShredderView: View {
         }
     }
 
-    /// Resolves dropped file-URL providers and stages them via the VM.
+    /// Resolves dropped file-URL providers and stages them via the VM
+    /// (P2 T4: resolution moved into the shared `FileURLDropResolver` so the
+    /// window-wide drag-to-shred overlay uses the same code path).
     private func handleDrop(_ providers: [NSItemProvider]) -> Bool {
-        let group = DispatchGroup()
-        var urls: [URL] = []
-        let lock = NSLock()
-        for provider in providers where provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
-            group.enter()
-            _ = provider.loadObject(ofClass: URL.self) { url, _ in
-                if let url { lock.lock(); urls.append(url); lock.unlock() }
-                group.leave()
-            }
+        FileURLDropResolver.resolve(providers) { [weak viewModel] urls in
+            viewModel?.performDrop(urls: urls)
         }
-        group.notify(queue: .main) { [weak viewModel] in
-            viewModel?.handleDrop(urls: urls)
-        }
-        return true
     }
 
     // MARK: - History Block

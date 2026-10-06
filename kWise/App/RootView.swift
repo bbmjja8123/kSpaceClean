@@ -44,6 +44,12 @@ struct RootView: View {
     /// 磁盘健康（P1 T9 — T6 遗留条件）：DiskHealthCard 的新渲染位在解剖页，
     /// VM 与卡片在此持有、点击进入 `.diskHealth` 详情页。
     @StateObject private var diskHealthViewModel = DiskHealthViewModel()
+    /// 整窗拖放粉碎（P2 T4）：拖拽悬停点亮「松开以粉碎」覆盖层，松开后
+    /// 全为普通文件才转发粉碎窗（graph.shredderVM() 预填 + sheet 打开）。
+    @StateObject private var dragToShred = DragToShredModel()
+    /// 粉碎窗 sheet（「+」菜单 / 整窗拖放共用入口；VM 走 graph 缓存装配，
+    /// 与 `.shredder` 页共享同一份暂存/历史状态）。
+    @State private var showShredWindow = false
     /// First-launch onboarding (v2.0 Phase 8) — welcome → PowerScope grant
     /// → menu bar & widget tour. Never re-shown once completed.
     @AppStorage("onboarding.completed.v1") private var onboardingCompleted = false
@@ -98,6 +104,11 @@ struct RootView: View {
             }
         }
         .frame(minWidth: 1024, minHeight: 680)
+        // 整窗拖放粉碎（P2 T4）：挂在根内容上（rail / Tab 行 / 画布都算
+        // 有效投放区），覆盖层只在拖拽悬停期间出现——破坏性 UI 仅在表达
+        // 意图后现身。接受的批次预填粉碎 VM 并打开粉碎窗；粉碎自身的
+        // DELETE 确认链在 ShredderView 内，未被绕过。
+        .modifier(DragToShredOverlay(model: dragToShred))
         .scanKeyboardShortcuts(
             onNewScan: {
                 // ⌘N — switch to the scan surface and start a fresh scan
@@ -129,6 +140,15 @@ struct RootView: View {
                         onboardingCompleted = true
                         showOnboarding = false
                     }
+                }
+        )
+        // 粉碎窗 sheet（P2 T4）——同样挂独立 background 节点，与 paywall /
+        // onboarding 两个 sheet 互斥共存。
+        .background(
+            Color.clear
+                .sheet(isPresented: $showShredWindow) {
+                    ShredderView(viewModel: graph.shredderVM())
+                        .frame(minWidth: 560, minHeight: 420)
                 }
         )
         .onAppear {
@@ -175,6 +195,13 @@ struct RootView: View {
             }
             graph.menuBarManager.onOpenSettings = {
                 appState.navigation = .settings
+            }
+            // P2 T4 — 整窗拖放粉碎的转发目标：全为普通文件（DragToShredModel
+            // 校验）才预填 graph.shredderVM() 并打开粉碎窗；确认链仍在
+            // ShredderView 的 DELETE 流程内，这里只做「开窗 + 预填」。
+            dragToShred.onShredRequested = { urls in
+                graph.shredderVM().performDrop(urls: urls)
+                showShredWindow = true
             }
             // First-launch onboarding (v2.0 Phase 8).
             if !onboardingCompleted {
@@ -224,6 +251,15 @@ struct RootView: View {
                 },
                 onGroupAction: { _ in
                     // P2 T5 接统一预演链（makeRehearsal + CleanupRehearsalSheet）。
+                },
+                onOpenShredder: {
+                    // 「+」菜单 → 粉碎窗（graph.shredderVM() 缓存装配复用，
+                    // 与 `.shredder` 页共享暂存状态）。
+                    showShredWindow = true
+                },
+                onSpaceMapLegacy: {
+                    // 「+」菜单 → 旧版空间地图（W4 退役前的逃生口）。
+                    appState.navigation = .spaceMap
                 }
             )
         // P1 T6 — smartCare 降级为「安全快捷回收」次级页（spec §3.1）：
