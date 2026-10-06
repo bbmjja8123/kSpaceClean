@@ -2741,29 +2741,6 @@
         }
       }
     },
-    "nav.monthlyReport": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Health Report"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "健康レポート"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "健康月报"
-          }
-        }
-      }
-    },
     "nav.photoClean": {
       "extractionState": "stale",
       "localizations": {

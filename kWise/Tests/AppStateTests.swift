@@ -60,7 +60,8 @@ final class AppStateTests: XCTestCase {
         // P1 T1 adds `.anatomy` (rail head; SmartCare retired to deep link).
         // P1 T8 retires `.assistant` (Q&A embedded in DetailPanel) and the
         // dormant `.attribution` residue case (P1 T5 routed it to `.anatomy`).
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 18)
+        // P2 T7 retires `.monthlyReport` (merged into the history page).
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 17)
     }
 
     /// v2.0 Phase 2: the rail was fixed at six entries and never grew.

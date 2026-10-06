@@ -373,8 +373,6 @@ struct RootView: View {
             ToolboxView()
         case .spaceMap:
             SpaceMapView(viewModel: spaceMapViewModel)
-        case .monthlyReport:
-            MonthlyReportView()
         case .duplicates:
             DuplicateView(viewModel: makeDuplicateViewModel())
         case .largeOld:

@@ -3,6 +3,11 @@
 // 清理时间线 (v2.0 Phase 7) — every cleanup run becomes one timeline event
 // (grouped by the per-run `runID` written since the Core Data migration),
 // with whole-run rollback via `RestoreFromTrashService`.
+//
+// P2 T7 — the dashboard header is replaced by the narrative header
+// (「这周你回收了 X」+ 磁盘对比 + 打卡一行小字，见 NarrativeHeaderModel)，
+// and the retired monthly report's weekly buckets / top files / forecast
+// are absorbed as the collapsible 「本月」 section above the event list.
 import SwiftUI
 import CoreData
 import DesignSystem
@@ -31,15 +36,37 @@ public final class TimelineViewModel: ObservableObject {
     @Published public private(set) var isRestoring = false
     @Published public private(set) var lastRestoreMessage: String?
 
+    /// P2 T7 — narrative header lines (headline / disk sub / streak line).
+    @Published public private(set) var narrative: (headline: String, sub: String, streakLine: String?) =
+        (NarrativeHeaderModel.weekHeadline(records: [], now: Date(), calendar: .current),
+         "磁盘采样不足，暂无法与上周比较",
+         nil)
+    /// P2 T7 — the retired monthly report's data, rendered as the 「本月」
+    /// collapsible section (weekly buckets / top files / forecast).
+    @Published public private(set) var monthly: MonthlyReport?
+
     private let persistence: PersistenceController
 
     public init(persistence: PersistenceController = .shared) {
         self.persistence = persistence
     }
 
-    public func refresh() {
+    /// Re-reads the local history and rebuilds the narrative header and the
+    /// 本月 data from the injected environment (tests/previews inject;
+    /// production reads the sample ring + streak ledger once per refresh).
+    public func refresh(environment: NarrativeEnvironment = .live) {
         let rows = persistence.fetchHistory(limit: 0)
         events = Self.group(rows)
+        narrative = NarrativeHeaderModel.build(
+            records: rows,
+            samples: environment.samples,
+            streak: environment.streak
+        )
+        monthly = ReportGenerator.generate(
+            history: rows,
+            streak: environment.streak,
+            samples: environment.samples
+        )
     }
 
     /// Groups rows by `runID` (legacy rows fall back to their own row id).
@@ -105,6 +132,7 @@ public final class TimelineViewModel: ObservableObject {
 
 struct TimelineView: View {
     @StateObject private var viewModel: TimelineViewModel
+    @State private var showMonthly = false
 
     init(persistence: PersistenceController = .shared) {
         _viewModel = StateObject(wrappedValue: TimelineViewModel(persistence: persistence))
@@ -113,7 +141,8 @@ struct TimelineView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
-                header
+                narrativeHeader
+                monthlySection
                 if viewModel.events.isEmpty {
                     EmptyStateView(
                         icon: "clock",
@@ -131,11 +160,21 @@ struct TimelineView: View {
         .onAppear { viewModel.refresh() }
     }
 
-    private var header: some View {
+    /// P2 T7 — narrative header: one sentence + one honest sub-line + the
+    /// streak as a single small line (no game panel).
+    private var narrativeHeader: some View {
         VStack(alignment: .leading, spacing: AppSpacing.xs) {
-            Text("清理时间线")
-                .font(AppFont.title2)
+            Text(viewModel.narrative.headline)
+                .font(AppFont.titleHero)
                 .foregroundStyle(Color.textPrimary)
+            Text(viewModel.narrative.sub)
+                .font(AppFont.callout)
+                .foregroundStyle(Color.textSecondary)
+            if let streak = viewModel.narrative.streakLine {
+                Text(streak)
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
             Text("每次清理归为一条记录，可整体回滚到清理前状态")
                 .font(AppFont.caption)
                 .foregroundStyle(Color.textSecondary)
@@ -143,6 +182,92 @@ struct TimelineView: View {
                 Text(message)
                     .font(AppFont.caption)
                     .foregroundStyle(Color.success)
+            }
+        }
+    }
+
+    /// P2 T7 — the retired monthly report, absorbed as a collapsible
+    /// 「本月」 section: weekly buckets, top cleaned files, disk forecast.
+    @ViewBuilder
+    private var monthlySection: some View {
+        if let report = viewModel.monthly {
+            DisclosureGroup(isExpanded: $showMonthly) {
+                monthlyDetail(report)
+                    .padding(.top, AppSpacing.sm)
+            } label: {
+                HStack(spacing: AppSpacing.sm) {
+                    Text("本月")
+                        .font(AppFont.title3)
+                        .foregroundStyle(Color.textPrimary)
+                    Spacer()
+                    Text(SmartCareHeroView.formatBytes(report.totalFreedBytes))
+                        .font(AppFont.monoDigit)
+                        .foregroundStyle(Color.textSecondary)
+                }
+            }
+            .padding(AppSpacing.md)
+            .background(Color.bgSecondary)
+            .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+        }
+    }
+
+    private func monthlyDetail(_ report: MonthlyReport) -> some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            // Weekly buckets, oldest → newest (same chart the report had).
+            HStack(alignment: .bottom, spacing: AppSpacing.md) {
+                let maxBytes = max(report.weekly.map(\.freedBytes).max() ?? 1, 1)
+                ForEach(report.weekly) { bucket in
+                    VStack(spacing: AppSpacing.xs) {
+                        RoundedRectangle(cornerRadius: AppRadius.sm)
+                            .fill(Color.brandPrimary.opacity(0.7))
+                            .frame(height: CGFloat(max(4, 64 * Double(bucket.freedBytes) / Double(maxBytes))))
+                        Text(bucket.label)
+                            .font(AppFont.caption)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .frame(height: 96)
+
+            // Top cleaned files this month (up to 5, largest first).
+            if !report.topCleanedFiles.isEmpty {
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                    Text("本月清理的大文件")
+                        .font(AppFont.callout)
+                        .foregroundStyle(Color.textPrimary)
+                    ForEach(report.topCleanedFiles) { file in
+                        HStack {
+                            Image(systemName: "doc")
+                                .foregroundStyle(Color.brandPrimary)
+                            Text(file.name)
+                                .font(AppFont.body)
+                                .foregroundStyle(Color.textPrimary)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            Spacer()
+                            Text(SmartCareHeroView.formatBytes(file.size))
+                                .font(AppFont.monoDigit)
+                                .foregroundStyle(Color.textSecondary)
+                        }
+                    }
+                }
+            }
+
+            // Disk-full forecast (honest variants — C-5).
+            switch report.forecast {
+            case .insufficientData:
+                Text("样本不足 — 继续使用 kWise 几天后即可生成预测。")
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            case .stable:
+                Text("暂无明显的占满趋势（近期波动较大）。")
+                    .font(AppFont.caption)
+                    .foregroundStyle(Color.textSecondary)
+            case .filling(let days, _):
+                Text("按当前趋势，预计约 \(days) 天后磁盘占满。建议提前清理大文件。")
+                    .font(AppFont.callout)
+                    .foregroundStyle(Color.textPrimary)
             }
         }
     }

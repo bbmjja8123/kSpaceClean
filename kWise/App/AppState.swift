@@ -49,10 +49,10 @@ public final class AppState: ObservableObject {
         case appUninstall = "appUninstall"
         case shredder = "shredder"
         // v2.0 — toolbox + creative surfaces. `.galaxy` (3D) was removed:
-        // the 2D space map is `.spaceMap`.
+        // the 2D space map is `.spaceMap`. P2 T7: `.monthlyReport` 退役 ——
+        // 月报并入历史页（叙事头 + 「本月」可展开区）。
         case tools = "tools"
         case spaceMap = "spaceMap"
-        case monthlyReport = "monthlyReport"
         case duplicates = "duplicates"
         case largeOld = "largeOld"
         case photoClean = "photoClean"
@@ -94,7 +94,6 @@ public final class AppState: ObservableObject {
             case .shredder: return "document.badge.ellipsis"
             case .tools: return "square.grid.2x2"
             case .spaceMap: return "circle.hexagongrid.circle"
-            case .monthlyReport: return "chart.bar.doc.horizontal"
             case .duplicates: return "doc.on.doc"
             case .largeOld: return "arrow.up.left.and.arrow.down.right"
             case .photoClean: return "photo.on.rectangle"
@@ -117,7 +116,6 @@ public final class AppState: ObservableObject {
             case .shredder: return String(localized: "nav.shredder")
             case .tools: return String(localized: "nav.tools")
             case .spaceMap: return String(localized: "nav.spaceMap")
-            case .monthlyReport: return String(localized: "nav.monthlyReport")
             case .duplicates: return String(localized: "nav.duplicates")
             case .largeOld: return String(localized: "nav.largeOld")
             case .photoClean: return String(localized: "nav.photoClean")

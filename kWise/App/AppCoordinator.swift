@@ -67,7 +67,8 @@ public final class AppCoordinator: ObservableObject {
             navigate(to: .spaceMap)
             return true
         case "report", "monthlyreport":
-            navigate(to: .monthlyReport)
+            // P2 T7: 月报已并入历史页 —— 深链诚实落到历史（叙事头 + 本月区）。
+            navigate(to: .history)
             return true
         // P1 T8: klaris://assistant 随聊天框退役（问答内嵌 DetailPanel，
         // 无独立导航面）。未知 host 走 default → false。
