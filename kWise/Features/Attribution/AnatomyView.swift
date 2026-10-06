@@ -6,9 +6,10 @@
 // 扫描未覆盖卡（P0 黑盒卡的诚实版）→ CanvasGroupCard 动态组列表（找到才出现，
 // 扫描中 opacity(0.4) 不清空）→ 系统状态条（T5 前静态占位）→ 拒答虚线卡
 // （refused+probable）→ 规则链接。
-// 红线：本页没有任何清理动作——组头「就地清理」只触发注入的回调（T5 接
-// 预演链），hero「安全快捷回收」跳 Smart Care 次级页；扫描入口是 startScan
-// （扇出 coordinator）。
+// 红线：本页没有任何清理动作——组头「就地清理」与 hero「安全快捷回收」
+// 都只触发注入的回调（P2 T5 R-统一：RootView 把两者接进统一预演链 ——
+// 组头 = 组过滤预演、hero = 推荐项预演，均由根部 CleanupRehearsalSheet
+// 呈现）；扫描入口是 startScan（扇出 coordinator）。
 // P0/P1 诚实渲染契约原样保留：空参数 lastModified 行隐藏、ruleID==nil 无
 // notes、snapshots==nil → unreadable 行、.negativeResidual → insufficient。
 import SwiftUI

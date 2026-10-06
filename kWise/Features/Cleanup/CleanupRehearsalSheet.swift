@@ -9,6 +9,9 @@ import CommonUtils
 
 struct CleanupRehearsalSheet: View {
     let items: [RehearsalItem]
+    /// 预演语境（P2 T5 统一句式）：组头入口带组名（如「应用缓存」），
+    /// hero 快捷回收 / 下钻入口为 nil。只作说明副行，确认/执行契约不变。
+    var context: String? = nil
     /// r1 fix（Critical 1）：确认必须**携带被勾选的子集** —— sheet 的
     /// exempt 勾选只改本地显示集合，执行方（VM）不知道它；因此 onConfirm
     /// 传出 `confirmedItems` 的 targets，执行集合以传入为准。
@@ -30,6 +33,11 @@ struct CleanupRehearsalSheet: View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             Text("attr.rehearsal.title")
                 .font(AppFont.title2)
+            if let context {
+                Text(context)
+                    .font(AppFont.callout)
+                    .foregroundStyle(Color.textSecondary)
+            }
             Text("attr.rehearsal.banner")
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textSecondary)
@@ -108,4 +116,6 @@ struct CleanupRehearsalSheet: View {
 struct RehearsalSheetPayload: Identifiable {
     let id = UUID()
     let items: [RehearsalItem]
+    /// 组头入口的组名等语境（nil = hero / 下钻入口）。
+    var context: String? = nil
 }

@@ -37,33 +37,43 @@ final class SmartCareOrchestratorTests: XCTestCase {
         }
     }
 
-    // MARK: - Confirm / Reset
+    // MARK: - Execution (host-driven, P2 T5 R-统一)
 
-    func testConfirmTransitionsThroughCleaningToDone() async {
+    /// P2 T5：旧 `confirm()` 直执行路径已废除 —— `.confirming` 停在原地等
+    /// 预演 sheet；状态推进由宿主经统一链跑完后回填。
+    func testExecutionTransitionsAreHostDriven() async {
         let scanVM = ScanResultsViewModel(engine: nil)
         let orch = SmartCareOrchestrator(scanResultsViewModel: scanVM)
         orch.start()
         try? await Task.sleep(nanoseconds: 1_200_000_000)
-
-        orch.confirm()
-        try? await Task.sleep(nanoseconds: 100_000_000)
-        switch orch.state {
-        case .cleaning:
-            // OK mid-flight
-            break
-        case .done:
-            // Zero recommended items: the engine completes near-instantly.
-            break
-        default:
-            XCTFail("expected .cleaning (or already .done for empty picks), got \(orch.state)")
+        guard case .confirming = orch.state else {
+            return XCTFail("expected .confirming, got \(orch.state)")
         }
 
-        // confirm()'s stub sleeps 1.5s before transitioning to .done.
-        try? await Task.sleep(nanoseconds: 1_700_000_000)
-        if case .done(let freed, _) = orch.state {
-            XCTAssertEqual(freed, 0)
+        // orchestrator 自己不动手：确认态停留（无 .cleaning/.done 自迁移）。
+        try? await Task.sleep(nanoseconds: 200_000_000)
+        guard case .confirming = orch.state else {
+            return XCTFail("confirming must hold until host drives, got \(orch.state)")
+        }
+
+        orch.beginExecution()
+        XCTAssertEqual(orch.state, .cleaning(progress: 0))
+        orch.completeExecution(freedBytes: 128, durationSeconds: 0.4)
+        if case .done(let freed, let duration) = orch.state {
+            XCTAssertEqual(freed, 128)
+            XCTAssertGreaterThanOrEqual(duration, 0)
         } else {
             XCTFail("expected .done, got \(orch.state)")
+        }
+    }
+
+    func testFailExecutionSurfacesFailed() {
+        let orch = SmartCareOrchestrator()
+        orch.failExecution(message: "清理未能完成")
+        if case .failed(let message) = orch.state {
+            XCTAssertFalse(message.isEmpty)
+        } else {
+            XCTFail("expected .failed, got \(orch.state)")
         }
     }
 

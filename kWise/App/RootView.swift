@@ -34,7 +34,8 @@ struct RootView: View {
         rootsProvider: { [] }
     )
     /// 空间解剖（P1 T5 新首屏）— 与空间地图共用同一棵扫描树，服务只读不清理；
-    /// 页内零清理动作，唯一回收入口是「安全快捷回收」按钮（跳 Smart Care）。
+    /// 页内零清理动作，回收入口（组头就地清理 / hero 快捷回收）都经根部
+    /// 统一预演 sheet（P2 T5 R-统一）。
     @StateObject private var anatomyViewModel = AnatomyViewModel(
         service: .live()
     )
@@ -50,6 +51,25 @@ struct RootView: View {
     /// 粉碎窗 sheet（「+」菜单 / 整窗拖放共用入口；VM 走 graph 缓存装配，
     /// 与 `.shredder` 页共享同一份暂存/历史状态）。
     @State private var showShredWindow = false
+    /// 统一预演 sheet（P2 T5 R-统一）：组头就地清理与 hero 快捷回收两条
+    /// 入口的预演呈现节点（下钻入口的 sheet 仍在 ScanResultsView 内 ——
+    /// 三入口同一张 ``CleanupRehearsalSheet``、同一条 CleanupViewModel
+    /// 预演链：makeRehearsal → 确认 → executeConfirmedCleanup）。
+    @State private var rehearsalPayload: RehearsalSheetPayload?
+    /// hero 快捷回收的流程阶段 —— 决定 sheet 确认后是否给 orchestrator
+    /// 回填 doneHero/failedHero，以及取消时是否复位状态机。
+    @State private var quickCleanStage: QuickCleanStage = .none
+
+    /// P2 T5 R-统一：快捷回收 = 推荐项预演（已勾选好）→ 确认 → 统一链执行。
+    private enum QuickCleanStage: Equatable {
+        /// hero/菜单栏触发的扫描 + 推荐计算进行中。
+        case running
+        /// `.confirming` 已落到预演 sheet，等待用户确认/取消。
+        case awaitingConfirm
+        /// sheet 已确认，统一链执行中。
+        case executing
+        case none
+    }
     /// First-launch onboarding (v2.0 Phase 8) — welcome → PowerScope grant
     /// → menu bar & widget tour. Never re-shown once completed.
     @AppStorage("onboarding.completed.v1") private var onboardingCompleted = false
@@ -151,18 +171,63 @@ struct RootView: View {
                         .frame(minWidth: 560, minHeight: 420)
                 }
         )
+        // 统一预演 sheet（P2 T5）——独立 background 节点；组头/快捷回收
+        // 两条新入口在此呈现，确认只执行 sheet 上勾选的子集。
+        .background(
+            Color.clear
+                .sheet(item: $rehearsalPayload) { payload in
+                    CleanupRehearsalSheet(
+                        items: payload.items,
+                        context: payload.context,
+                        onConfirm: { confirmed in
+                            let quickClean = quickCleanStage == .awaitingConfirm
+                            rehearsalPayload = nil
+                            Task {
+                                await finishRehearsal(confirmed,
+                                                      quickClean: quickClean)
+                            }
+                        },
+                        onCancel: {
+                            rehearsalPayload = nil
+                            if quickCleanStage == .awaitingConfirm {
+                                quickCleanStage = .none
+                                smartCareViewModel.reset()
+                            }
+                        },
+                        isExecuting: cleanupViewModel.isCleaning
+                    )
+                    .frame(width: 560, height: 480)
+                }
+        )
+        // R-统一：Smart Care 落到 `.confirming` 时一律由预演 sheet 接管
+        //（覆盖 hero 快捷回收、smartCare 页 idle hero 与菜单栏 quickClean
+        // 三个触发源）；扫描失败则把 failedHero 展示给发起页。
+        .onReceive(smartCareViewModel.$state) { state in
+            switch state {
+            case .confirming:
+                quickCleanStage = .awaitingConfirm
+                presentQuickCleanRehearsal()
+            case .failed:
+                if quickCleanStage == .running {
+                    quickCleanStage = .none
+                    appState.navigation = .smartCare
+                }
+            default:
+                break
+            }
+        }
         .onAppear {
             // Late-bind the Smart Care VM to the scan VM. Two @StateObject
             // can't reference each other at init time; `.attach` resolves the
             // dependency once both views have been created.
             smartCareViewModel.attach(scanResultsViewModel: scanResultsViewModel)
-            // v2.0 Phase 1 — DI unification: re-point both view models at the
-            // graph engine so quota + event sinks apply to every cleanup
-            // surface, and route quota exhaustion to the paywall sheet.
+            // v2.0 Phase 1 — DI unification: re-point the cleanup view model
+            // at the graph engine so quota + event sinks apply to every
+            // cleanup surface, and route quota exhaustion to the paywall
+            // sheet. P2 T5（R-统一）：Smart Care 的执行也归这条链 ——
+            // orchestrator 不再单独持有引擎。
             cleanupViewModel.useEngine(graph.cleanupEngine)
             cleanupViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
-            smartCareViewModel.useEngine(graph.cleanupEngine)
-            smartCareViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
             // 空间地图 renders the scan tree — rebind the roots provider now
             // that scanResultsViewModel exists (init-time capture would be nil).
             spaceMapViewModel.rebindRoots { scanResultsViewModel.categories }
@@ -236,21 +301,25 @@ struct RootView: View {
         case .settings:
             SettingsView()
         // P1 T5 — 解剖视图首屏 → P2 T3 主画布（spec §3）:「你的 N GB，去哪了」。
-        // 页内零清理动作；「安全快捷回收」跳 Smart Care 次级页（T5 起改预演链），
-        // 组头「就地清理」回调 T5 接组过滤预演 —— 现注入空实现。
+        // P2 T5 R-统一：页内两条预演入口（组头就地清理 / hero 快捷回收）
+        // 都经根部预演 sheet → 统一链执行 —— 本页仍零直接清理动作。
         case .anatomy:
             AnatomyView(
                 viewModel: anatomyViewModel,
                 coordinator: canvasCoordinator,
                 diskHealthViewModel: diskHealthViewModel,
                 onQuickClean: {
-                    appState.navigation = .smartCare
+                    // R-统一：快捷回收 = 推荐项预演。留在画布（扫描态由
+                    // bindScanViewModel 镜像进 hero）；`.confirming` 一到，
+                    // 根部 onReceive 弹推荐项预演 sheet。
+                    quickCleanStage = .running
+                    smartCareViewModel.runSmartCare()
                 },
                 onOpenDiskHealth: {
                     appState.navigation = .diskHealth
                 },
-                onGroupAction: { _ in
-                    // P2 T5 接统一预演链（makeRehearsal + CleanupRehearsalSheet）。
+                onGroupAction: { group in
+                    presentGroupRehearsal(group)
                 },
                 onOpenShredder: {
                     // 「+」菜单 → 粉碎窗（graph.shredderVM() 缓存装配复用，
@@ -297,6 +366,64 @@ struct RootView: View {
         // P1 T5/T8：`.attribution` 验证面与 `.assistant` 聊天框均已退役 ——
         // 枚举 case 已删，工具箱卡片直达 `.anatomy`，问答内嵌 DetailPanel。
         }
+    }
+
+    // MARK: - 统一预演（P2 T5 R-统一）
+
+    /// 组头「就地清理」→ 组过滤预演：组内 `CanvasEntry.target` 直入预演链，
+    /// sheet 以组名为语境。三入口统一句式的第一条（下钻入口的 sheet 在
+    /// ScanResultsView 内，同一条 VM 链）。
+    private func presentGroupRehearsal(_ group: CanvasGroup) {
+        let targets = group.entries.compactMap(\.target)
+        // 组装器保证 rehearse 组的条目非空且带 target；防御性兜底而已。
+        guard !targets.isEmpty else { return }
+        Task {
+            let items = await cleanupViewModel.makeRehearsal(targets: targets)
+            rehearsalPayload = RehearsalSheetPayload(items: items, context: group.title)
+        }
+    }
+
+    /// hero 快捷回收 → 推荐项预演（已勾选好）。C4：`recommendedTargets`
+    /// 已由 `IntentScanAdapter` 的 `riskLevel.defaultChecked` 门控保证不含
+    /// 危险项。
+    private func presentQuickCleanRehearsal() {
+        Task {
+            let items = await cleanupViewModel.makeRehearsal(
+                targets: smartCareViewModel.recommendedTargets)
+            rehearsalPayload = RehearsalSheetPayload(items: items)
+        }
+    }
+
+    /// 预演确认 → 统一链执行（确认只执行 sheet 上勾选的子集）。快捷回收
+    /// 路径再把结果回填给 orchestrator（doneHero / failedHero）并导航到
+    /// smartCare 页展示；组头路径执行完就地关闭 sheet 即可。
+    private func finishRehearsal(_ confirmed: [CleanupTarget],
+                                 quickClean: Bool) async {
+        // sheet 在 confirmedItems 为空时禁用确认；此守卫纯防御。
+        guard !confirmed.isEmpty else {
+            if quickClean {
+                quickCleanStage = .none
+                smartCareViewModel.reset()
+            }
+            return
+        }
+        let started = Date()
+        if quickClean {
+            quickCleanStage = .executing
+            smartCareViewModel.beginQuickCleanExecution()
+        }
+        await cleanupViewModel.executeConfirmedCleanup(sizes: nil,
+                                                       confirmedTargets: confirmed)
+        guard quickClean else { return }
+        quickCleanStage = .none
+        if let outcome = cleanupViewModel.lastOutcome {
+            smartCareViewModel.completeQuickClean(
+                freedBytes: outcome.freedBytes,
+                durationSeconds: Date().timeIntervalSince(started))
+        } else {
+            smartCareViewModel.failQuickClean(message: "清理未能完成，请重试")
+        }
+        appState.navigation = .smartCare
     }
 
     // MARK: - Tool view-model factories

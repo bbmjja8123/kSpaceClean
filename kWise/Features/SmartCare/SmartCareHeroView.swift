@@ -5,7 +5,8 @@ import PowerScope
 /// 「安全快捷回收」次级页（P1 T6 降级 — spec §3.1）。
 ///
 /// 首屏已让位给解剖视图（P1 T5）；本页从导航枢纽收缩为单卡次级页：
-/// 只保留 Smart Care 3 步流（scan → recommend → confirm → clean）的
+/// 只保留 Smart Care 3 步流（scan → recommend → 预演 sheet 确认 → clean，
+/// P2 T5 R-统一：确认面板退役，`.confirming` 由根部预演 sheet 接管）的
 /// 状态机卡片 + 一行诚实说明。不再渲染模块网格、不再承担页面跳转 ——
 /// 入口只剩解剖视图的「安全快捷回收」按钮、菜单栏 quickClean 与扫描
 /// 结果页内嵌面板。container-only 用户看到的是授权卡（controller
@@ -79,7 +80,7 @@ struct SmartCareHeroView: View {
             case .recommending:
                 busyHero(phase: "正在挑选可清理项", progress: nil)
             case .confirming(let itemCount, let totalSize):
-                confirmHero(itemCount: itemCount, totalSize: totalSize)
+                confirmingHero(itemCount: itemCount, totalSize: totalSize)
             case .cleaning(let progress):
                 busyHero(phase: "正在清理", progress: progress)
             case .done(let freedBytes, _):
@@ -141,7 +142,10 @@ struct SmartCareHeroView: View {
         }
     }
 
-    private func confirmHero(itemCount: Int, totalSize: Int64) -> some View {
+    /// R-统一（P2 T5）：确认面板退役 —— `.confirming` 由根部的预演 sheet
+    /// （``CleanupRehearsalSheet``）接管，本卡片只渲染被动说明；不再有
+    /// 绕过预演的「一键清理」直执行按钮。
+    private func confirmingHero(itemCount: Int, totalSize: Int64) -> some View {
         HStack(spacing: AppSpacing.md) {
             Image(systemName: "wand.and.stars")
                 .font(.system(size: 32))
@@ -150,13 +154,11 @@ struct SmartCareHeroView: View {
                 Text("发现 \(itemCount) 项可清理")
                     .font(AppFont.title2)
                     .foregroundStyle(Color.textPrimary)
-                Text("预计释放 \(Self.formatBytes(totalSize))（移入废纸篓，可随时还原）")
+                Text("预计释放 \(Self.formatBytes(totalSize))。请在预演清单中确认要回收的项目（移入废纸篓，可随时还原）。")
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             }
             Spacer()
-            Button("一键清理") { viewModel.confirm() }
-                .buttonStyle(.borderedProminent)
             Button("取消") { viewModel.reset() }
                 .buttonStyle(.bordered)
         }

@@ -11,8 +11,8 @@ public final class CleanupViewModel: ObservableObject {
     /// `TrashResult` records `fileSize: 0`, so it cannot).
     @Published public private(set) var lastOutcome: CleanupOutcome?
     @Published public var cleanupHistory: [CleanupHistoryItem] = []
-    /// Pending cleanup list — set externally (e.g. by the Smart Care
-    /// orchestrator's `.confirm()` or the CleanupContentView confirm dialog)
+    /// Pending cleanup list — set externally (e.g. by the cleanup confirm
+    /// dialog or the CleanupContentView confirm flow)
     /// before calling ``cleanupNow()``. Empty list = no-op.
     @Published public var urlsToCleanup: [URL] = []
     /// 归因查询晚绑定（P1 T4）—— RootView `.onAppear` 把它指向归因服务
@@ -116,6 +116,21 @@ public final class CleanupViewModel: ObservableObject {
         }
         pendingTargets = targets
         return CleanupRehearsal.build(targets: targets, attributions: attributionLookup?() ?? [])
+    }
+
+    /// 预演段·target 直入（P2 T5 统一句式）：主画布组卡 / hero 快捷回收 /
+    /// 下钻勾选集的 `CleanupTarget` 直接进入预演 —— 不经 URL 重映射，
+    /// target 携带的 risk / bundleID / categoryID 原样保留（history 行与
+    /// 逐项归因依赖这些字段）。存在性过滤与 ``makeRehearsal(sizes:urls:)``
+    /// 同一规则：消失的路径既不预演也不会执行。
+    ///
+    /// - Parameter targets: 入选清理清单（如 `group.entries.compactMap(\.target)`）。
+    /// - Returns: 与 targets 1:1 同序的预演项（过滤消失路径后）。
+    @discardableResult
+    public func makeRehearsal(targets: [CleanupTarget]) async -> [RehearsalItem] {
+        let existing = targets.filter { (try? $0.url.checkResourceIsReachable()) == true }
+        pendingTargets = existing
+        return CleanupRehearsal.build(targets: existing, attributions: attributionLookup?() ?? [])
     }
 
     /// 执行段（P1 T4；r1 修订）：执行集合**以传入的 `confirmedTargets` 为准**

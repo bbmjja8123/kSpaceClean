@@ -3,7 +3,7 @@ import Combine
 
 /// 3-step Smart Care state machine (v1.5).
 ///
-/// State transitions:
+/// State transitions (P2 T5 R-统一 起):
 /// ```
 ///   .idle
 ///     → .scanning(progress)       (user taps hero CTA)
@@ -12,11 +12,12 @@ import Combine
 ///     → .failed(message)           (FDA required, scan errored, etc.)
 ///   .recommending
 ///     → .confirming(items, bytes)  (auto-pick algorithm yields N items)
-///   .confirming
-///     → .cleaning(progress)        (user confirms)
+///   .confirming                    (预演 sheet 接管 —— orchestrator 停在这里，
+///                                   绝不自行动手)
+///     → .cleaning(progress)        (sheet 确认后宿主调 beginExecution)
 ///   .cleaning
-///     → .done(freedBytes, dur)     (cleanup engine returns outcome)
-///     → .failed(message)           (cleanup errored)
+///     → .done(freedBytes, dur)     (统一链跑完，宿主回填 completeExecution)
+///     → .failed(message)           (宿主回填 failExecution)
 ///   any
 ///     → .idle                      (reset)
 /// ```
@@ -32,46 +33,41 @@ public enum SmartCareState: Equatable {
     case failed(message: String)
 }
 
-/// Drives the Smart Care 3-step pipeline.
+/// Drives the Smart Care scan → recommend pipeline.
 ///
-/// Phase B scope (Task 3):
-/// * Owns the state machine and the `start()` / `confirm()` / `reset()` entry points.
-/// * Delegates actual scanning to an injected ``ScanResultsViewModel`` (which
-///   in turn owns the lower-level `ScanEngine`).
-/// * Recommended-pick algorithm: filters the engine's leaf entries to
-///   risk levels that are default-checked (`.recommended`) — the same
-///   single-source traversal the AppIntents use (`IntentScanAdapter`).
+/// P2 T5（R-统一，废除 P1 两层信任裁定）：orchestrator 只保留**扫描与
+/// 推荐计算** —— `.confirming` 由根部的预演 sheet（``CleanupRehearsalSheet``）
+/// 接管，确认后执行统一走 `CleanupViewModel.makeRehearsal(targets:)` +
+/// `executeConfirmedCleanup` 预演链。orchestrator 不再持有清理引擎，
+/// 旧的 `confirm()` 直执行路径已删除；宿主在统一链跑完后用
+/// ``beginExecution()`` / ``completeExecution(freedBytes:durationSeconds:)`` /
+/// ``failExecution(message:)`` 回填 `doneHero` / `failedHero`。
 ///
-/// Follow-up tasks hook ``confirm()`` into `CleanupEngine.cleanup(targets:)`
-/// (Task 5) and wire `SmartCareHeroView`'s CTA (Task 4).
+/// - SeeAlso: `IntentScanAdapter.recommendedEntries`（推荐计算单源）。
 @MainActor
 final class SmartCareOrchestrator: ObservableObject {
     @Published public private(set) var state: SmartCareState = .idle
     @Published private(set) var recommendedItems: [ScanResult] = []
 
     private weak var scanResultsViewModel: ScanResultsViewModel?
-    /// Injected cleanup engine. Defaults to a fresh instance backed by the
-    /// shared `PersistenceController`; tests can substitute a stub. The app
-    /// root re-points it at the graph engine (quota + sinks) in `.onAppear`.
-    private(set) var cleanupEngine: CleanupEngine
-    /// `true` when the most recent `.done` run left targets behind because
-    /// the free-tier quota ran out. The view model surfaces the paywall.
-    @Published public private(set) var lastRunQuotaExhausted = false
 
     /// Designated initializer. The view model can also be attached later
     /// via ``attach(scanResultsViewModel:)`` when SwiftUI environment
     /// resolution is preferred.
-    init(scanResultsViewModel: ScanResultsViewModel? = nil,
-                cleanupEngine: CleanupEngine? = nil) {
+    init(scanResultsViewModel: ScanResultsViewModel? = nil) {
         self.scanResultsViewModel = scanResultsViewModel
-        // `CleanupEngine.standard()` needs MainActor isolation — resolving
-        // here (inside a @MainActor init) keeps the default optional.
-        self.cleanupEngine = cleanupEngine ?? CleanupEngine.standard()
     }
 
-    /// Re-point at the shared graph engine (v2.0 Phase 1 DI unification).
-    func useEngine(_ engine: CleanupEngine) {
-        self.cleanupEngine = engine
+    /// 推荐项 → 预演入参（P2 T5）：hero 快捷回收的 sheet 用这批 targets
+    /// 调 `CleanupViewModel.makeRehearsal(targets:)`。C4：risk 恒为
+    /// `.recommended` —— 危险项已被 `recommendedEntries` 的
+    /// `riskLevel.defaultChecked` 门控排除。
+    public var recommendedTargets: [CleanupTarget] {
+        recommendedItems.map { entry in
+            CleanupTarget(url: URL(fileURLWithPath: entry.path),
+                          size: entry.fileSize,
+                          risk: .recommended)
+        }
     }
 
     /// Late-binds a scan view model after construction.
@@ -92,40 +88,28 @@ final class SmartCareOrchestrator: ObservableObject {
         Task { @MainActor in await self.runPipeline(scanVM: scanVM) }
     }
 
-    /// User confirms the recommended picks. Phase C-3 polish (post-Phase D):
-    /// real `CleanupEngine.cleanup(targets:)` invocation. Returns the actual
-    /// `CleanupOutcome.freedBytes` so the user sees a truthful
-    /// "X.XX GB freed" within ~1.5s.
-    public func confirm() {
+    /// 预演 sheet 确认后由宿主调用：进入 `.cleaning`，随后统一链
+    /// （`CleanupViewModel.executeConfirmedCleanup`）在跑。执行中状态由
+    /// sheet 的 `isExecuting` 渲染，orchestrator 不触碰引擎。
+    public func beginExecution() {
         state = .cleaning(progress: 0)
-        Task { @MainActor in
-            let started = Date()
-            let targets = recommendedItems.map { entry -> CleanupTarget in
-                let url = URL(fileURLWithPath: entry.path)
-                return CleanupTarget(url: url, size: entry.fileSize, risk: .recommended)
-            }
-            do {
-                let outcome = try await cleanupEngine.cleanup(targets: targets)
-                lastRunQuotaExhausted = outcome.quotaExhausted
-                state = .done(
-                    freedBytes: outcome.freedBytes,
-                    durationSeconds: Date().timeIntervalSince(started)
-                )
-            } catch {
-                state = .failed(message: "清理失败：\(error.localizedDescription)")
-            }
-        }
+    }
+
+    /// 统一链跑完后的结果回填（P2 T5）：`doneHero` 展示的真实释放字节
+    /// 来自 `CleanupOutcome.freedBytes`，不再由 orchestrator 自行测量。
+    public func completeExecution(freedBytes: Int64, durationSeconds: TimeInterval) {
+        state = .done(freedBytes: freedBytes, durationSeconds: durationSeconds)
+    }
+
+    /// 统一链失败（`lastOutcome == nil`）时的回填；`failedHero` 展示。
+    public func failExecution(message: String) {
+        state = .failed(message: message)
     }
 
     /// Returns to `.idle` so the hero CTA can re-trigger the flow.
     public func reset() {
         state = .idle
         recommendedItems = []
-    }
-
-    /// Clears the one-shot paywall flag after the view model has reacted.
-    func resetQuotaFlag() {
-        lastRunQuotaExhausted = false
     }
 
     // MARK: - Pipeline

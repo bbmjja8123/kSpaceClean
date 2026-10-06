@@ -167,10 +167,9 @@ public final class AppGraph: ObservableObject {
         ScanEngine(orchestrator: makeScanOrchestrator())
     }
 
-    /// Fresh Smart Care orchestrator over the shared cleanup engine.
-    func makeSmartCareOrchestrator(scanVM: ScanResultsViewModel? = nil) -> SmartCareOrchestrator {
-        SmartCareOrchestrator(scanResultsViewModel: scanVM, cleanupEngine: cleanupEngine)
-    }
+    // P2 T5（R-统一）：Smart Care orchestrator 的清理引擎接线已删除 ——
+    // 快捷回收统一走 CleanupViewModel 预演链（graph.cleanupEngine 仍服务
+    // 该链），orchestrator 只保留扫描与推荐计算。
 }
 
 // MARK: - Environment access
