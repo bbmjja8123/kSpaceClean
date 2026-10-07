@@ -5,9 +5,10 @@
 // A toast that surfaces running-app conflicts surfaced by Task C3's
 // `WarningDetectionService` so the user can choose how to proceed before the
 // cleanup engine moves anything to Trash. The toast is the standalone
-// alternative to the inline warning footer embedded in ``CleanupConfirmSheet``
-// (Task C4) — it is presented when the warning comes back from the engine
-// *after* the user has already confirmed.
+// alternative to the inline warning footer of the old confirm panel (the
+// panel was retired in P2 T9 — cleanups now run through the unified
+// rehearsal sheet) — it is presented when the warning comes back from the
+// engine *after* the user has already confirmed.
 //
 // The three actions match the v1.0 design (Q11 decision):
 // - **Skip** these items — leave the conflicting paths out of the cleanup.

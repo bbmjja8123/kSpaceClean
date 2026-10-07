@@ -205,8 +205,9 @@ struct RootView: View {
                 presentQuickCleanRehearsal()
             case .failed:
                 if quickCleanStage == .running {
+                    // fix r1（Important 2）：失败不再立即复位吞掉 —— hero
+                    // 的结果卡展示失败信息，8 秒自动复位（或点「好」）。
                     quickCleanStage = .none
-                    smartCareViewModel.reset()
                 }
             default:
                 break
@@ -253,6 +254,9 @@ struct RootView: View {
             graph.menuBarManager.onQuickClean = {
                 NSApp.activate(ignoringOtherApps: true)
                 appState.navigation = .anatomy
+                // fix r1（Critical 1）：container-only 门控同样适用于菜单栏
+                // 入口 —— 未授权不启动管线（hero 上有授权卡承接）。
+                guard QuickCleanGate.allowsPipeline(AppScope.shared.capability.level) else { return }
                 quickCleanStage = .running
                 smartCareViewModel.runSmartCare()
             }
@@ -298,10 +302,14 @@ struct RootView: View {
                 viewModel: anatomyViewModel,
                 coordinator: canvasCoordinator,
                 diskHealthViewModel: diskHealthViewModel,
+                smartCareViewModel: smartCareViewModel,
                 onQuickClean: {
                     // R-统一：快捷回收 = 推荐项预演。留在画布（扫描态由
                     // bindScanViewModel 镜像进 hero）；`.confirming` 一到，
                     // 根部 onReceive 弹推荐项预演 sheet。
+                    // fix r1（Critical 1）：container-only 门控 —— 授权卡在
+                    // hero 上（AnatomyView），管线不允许启动。
+                    guard QuickCleanGate.allowsPipeline(AppScope.shared.capability.level) else { return }
                     quickCleanStage = .running
                     smartCareViewModel.runSmartCare()
                 },

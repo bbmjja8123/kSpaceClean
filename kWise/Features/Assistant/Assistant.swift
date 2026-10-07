@@ -168,15 +168,21 @@ enum AssistantAnswerBuilder {
                 suggestions: exampleQuestions
             )
         case .appLeftovers:
+            // fix r1（Important 3）：逐项卸载界面随 P2 T9 退役 —— 不得再
+            // 宣传用户无法触达的「清除残留 / 30 天备份回滚」行动承诺；
+            // 系统状态条目前只是分类摘要（无真实计数），也不得宣称它
+            // 「显示现状」。
             return AssistantAnswer(
-                headline: "应用卸载会同时清除缓存、日志等残留文件，全部可回滚。",
-                cards: [AssistantAnswer.Card(title: "应用残留", detail: "1141 条规则识别残留，可备份 30 天")],
+                headline: "应用残留的逐项处理界面将在后续版本回归；本版本不会动你的应用数据。",
+                cards: [AssistantAnswer.Card(title: "应用残留", detail: "本版本暂无逐项处理入口")],
                 suggestions: exampleQuestions
             )
         case .startupItems:
+            // fix r1（Important 4）：逐项停用/恢复界面随 P2 T9 退役 ——
+            // 同样只做诚实交代，不做不可达的行动承诺。
             return AssistantAnswer(
-                headline: "启动项管理支持停用用户级启动代理，随时可在时间线恢复。",
-                cards: [AssistantAnswer.Card(title: "启动项", detail: "停用/恢复登录启动代理")],
+                headline: "启动项的逐项停用与恢复将在后续版本回归；本版本不会改动任何启动项。",
+                cards: [AssistantAnswer.Card(title: "启动项", detail: "本版本暂不改动任何启动项")],
                 suggestions: exampleQuestions
             )
         case .shredHelp:

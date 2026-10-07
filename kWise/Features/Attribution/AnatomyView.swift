@@ -125,6 +125,13 @@ public struct AnatomyView: View {
     @ObservedObject private var diskHealthViewModel: DiskHealthViewModel
     /// 扇出协调器（增量组/诊断/虚线卡的 @Published 来源）。
     @ObservedObject private var coordinator: CanvasScanCoordinator
+    /// 快捷回收状态机（P2 T9 fix r1，Important 2）：hero 渲染其结果态
+    /// （done/failed），执行与确认仍在根部统一预演链。
+    @ObservedObject private var smartCareViewModel: SmartCareViewModel
+    /// 授权快照（P2 T9 fix r1，Critical 1）：container-only 时快捷回收位
+    /// 渲染授权卡，管线不允许启动。
+    @ObservedObject private var appScope = AppScope.shared
+    @State private var grantCardDismissed = false
     @State private var rulesCorpus: AttributionRuleCorpus?
     private let onQuickClean: () -> Void
     private let onOpenDiskHealth: () -> Void
@@ -157,6 +164,7 @@ public struct AnatomyView: View {
     init(viewModel: AnatomyViewModel,
          coordinator: CanvasScanCoordinator,
          diskHealthViewModel: DiskHealthViewModel,
+         smartCareViewModel: SmartCareViewModel,
          onQuickClean: @escaping () -> Void,
          onOpenDiskHealth: @escaping () -> Void,
          onGroupAction: @escaping (CanvasGroup) -> Void = { _ in },
@@ -166,6 +174,7 @@ public struct AnatomyView: View {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.coordinator = coordinator
         self.diskHealthViewModel = diskHealthViewModel
+        self.smartCareViewModel = smartCareViewModel
         self.onQuickClean = onQuickClean
         self.onOpenDiskHealth = onOpenDiskHealth
         self.onGroupAction = onGroupAction
@@ -262,7 +271,8 @@ public struct AnatomyView: View {
         }
     }
 
-    /// idle 态：标题 + 副行 + 构成条 + 按钮行（快捷回收 · 「+」菜单占位 · 重新扫描）。
+    /// idle 态：标题 + 副行 + 构成条 + 结果态卡（若有）+ 按钮行（快捷回收 ·
+    /// 「+」菜单 · 重新扫描）。
     private var idleHero: some View {
         VStack(alignment: .leading, spacing: AppSpacing.xs) {
             if let used = viewModel.usedBytes {
@@ -275,15 +285,35 @@ public struct AnatomyView: View {
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textSecondary)
             compositionBar
+            // fix r1（Important 2）：快捷回收结果态回到 hero —— done 显示
+            // 真实释放字节（C-3）+「移入废纸篓 · 30 天可还原」披露行，
+            // failed 显示失败信息；8 秒后自动复位，点「好」立即复位。
+            if QuickCleanResultCard.isResultState(smartCareViewModel.state) {
+                QuickCleanResultCard(state: smartCareViewModel.state,
+                                     onDismiss: { smartCareViewModel.reset() })
+            }
             HStack(spacing: AppSpacing.sm) {
                 // 回收入口（P2 T5 R-统一）：触发快捷回收管线，`.confirming`
                 // 落地后由根部预演 sheet 接管 —— 本页本身零清理动作。
-                Button(action: onQuickClean) {
-                    Text(quickCleanTitle)
+                // fix r1（Critical 1）：container-only 时不渲染快捷回收按钮
+                // （扫描一无所获的管线不该启动），改渲染授权卡。
+                if QuickCleanGate.showsGrantCard(appScope.capability.level) {
+                    if grantCardDismissed {
+                        QuickCleanGrantDeclinedRow(onGrant: { grantCardDismissed = false })
+                    } else {
+                        QuickCleanGrantCard(
+                            onGrant: { Task { await appScope.grant() } },
+                            onSkip: { grantCardDismissed = true })
+                    }
                 }
-                .buttonStyle(.borderedProminent)
-                // 「+」菜单（P2 T4）：粉碎窗 · 归因规则（旧版空间地图项随
-                // 旧版空间地图项在 P2 T9 退役）。
+                if !QuickCleanGate.showsGrantCard(appScope.capability.level) {
+                    Button(action: onQuickClean) {
+                        Text(quickCleanTitle)
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                // 「+」菜单（P2 T4）：粉碎窗 · 归因规则（旧版空间地图项
+                // 随 P2 T9 退役）。
                 CanvasPlusMenu(actions: CanvasPlusMenuActions(
                     onShredder: onOpenShredder,
                     onAttributionRules: {
@@ -300,6 +330,14 @@ public struct AnatomyView: View {
             }
         }
         .padding(.vertical, AppSpacing.xs)
+        // fix r1（Important 2）：结果态 8 秒后自动复位回 idle（用户点
+        // 「好」可立即复位；离开页面则 task 取消，状态保留到回来再展示）。
+        .task(id: smartCareViewModel.state) {
+            guard QuickCleanResultCard.isResultState(smartCareViewModel.state) else { return }
+            try? await Task.sleep(nanoseconds: 8_000_000_000)
+            guard !Task.isCancelled else { return }
+            smartCareViewModel.reset()
+        }
     }
 
     /// 「安全快捷回收 · 预计 X」——估算只累计绿徽（✓ 可回收）条目的诚实字节；

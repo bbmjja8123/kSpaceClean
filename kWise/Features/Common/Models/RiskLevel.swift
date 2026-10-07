@@ -76,7 +76,8 @@ public enum RiskLevel: Int, Codable, Sendable, CaseIterable, Comparable {
 
     /// Whether cleaning items at this level requires a second confirmation prompt.
     /// Reserved for `.dangerous` per the v3 spec (§1.2). The actual confirmation UI
-    /// lives in `CleanupConfirmSheet` and `DangerousConfirmDialog` (Tasks C4 / C5).
+    /// lives in the unified rehearsal sheet and `DangerousConfirmDialog`
+    /// (the standalone confirm panel was retired in P2 T9).
     public var requiresDoubleConfirm: Bool {
         self == .dangerous
     }

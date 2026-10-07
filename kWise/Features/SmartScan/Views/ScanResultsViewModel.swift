@@ -332,8 +332,10 @@ final class ScanResultsViewModel: ObservableObject {
 
     // MARK: - Bulk selection (v1.5 Task 4)
 
-    /// Select every visible node — wired to the 全选 button in the results
-    /// `SummaryBar`. Cascades downward via each node's `setState(_:)`
+    /// Select every visible node — the bulk-select action of the scan
+    /// results tree (its last view consumer, the standalone results page,
+    /// was retired in P2 T9; the tree itself still drives the canvas).
+    /// Cascades downward via each node's `setState(_:)`
     /// implementation; parents recompute their state automatically.
     func selectAll() {
         for category in snapshot.categories {
@@ -848,8 +850,8 @@ final class ScanResultsViewModel: ObservableObject {
 
     // MARK: - Cleanup bridge (UX 重构 Phase 2)
 
-    /// Every URL currently checked in the tree — the SummaryBar 清理 button
-    /// now cleans exactly this (previously it re-ran Smart Care and
+    /// Every URL currently checked in the tree — the cleanup entry point
+    /// consumes exactly this set (previously it re-ran Smart Care and
     /// ignored the user's selection).
     func selectedURLs() -> [URL] {
         snapshot.categories.flatMap { $0.collectSelected() }
