@@ -84,7 +84,7 @@ struct OnboardingPage2: View {
         ScrollView {
             VStack(spacing: AppSpacing.lg) {
                 VStack(spacing: AppSpacing.sm) {
-                    Text("扫描前，先把承诺说清楚")
+                    Text(String(localized: String.LocalizationValue("ob3.promiseTitle")))
                         .font(AppFont.largeTitle)
                         .foregroundColor(.textPrimary)
                 }
@@ -200,7 +200,7 @@ struct OnboardingPage3: View {
                     .font(AppFont.largeTitle)
                     .foregroundColor(.textPrimary)
 
-                Text("完成后立即开始第一次扫描，发现可清理的空间")
+                Text(String(localized: String.LocalizationValue("ob3.firstScanSubtitle")))
                     .font(AppFont.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)

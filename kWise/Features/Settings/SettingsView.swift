@@ -74,17 +74,16 @@ struct SettingsView: View {
                     }
                 }
 
-                // P2 T8 — 设置吸收三区。旧 `.privacy` / `.maintenance` 独立页
-                // 在 W4 退役前仍可达；这里的区是吸收后的长期归宿。
-                Section("维护") {
+                // P2 T8 fix r1 — 三区标题走 xcstrings（settings.* ×3）。
+                Section(String(localized: String.LocalizationValue("settings.maintenance.header"))) {
                     maintenanceSection
                 }
 
-                Section("隐私") {
+                Section(String(localized: String.LocalizationValue("settings.privacy.header"))) {
                     privacySection
                 }
 
-                Section("归因规则") {
+                Section(String(localized: String.LocalizationValue("settings.rules.header"))) {
                     rulesSection
                 }
 
@@ -281,19 +280,21 @@ struct SettingsView: View {
             HStack(spacing: AppSpacing.xs) {
                 ProgressView()
                     .controlSize(.small)
-                Text("运行中...")
+                Text(String(localized: String.LocalizationValue("settings.maintenance.running")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
             }
         } else if task.isEngineBacked {
-            Button("清理") {
+            Button(String(localized: String.LocalizationValue("settings.maintenance.cleanButton"))) {
                 Task { await vm.execute(task) }
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.small)
             .disabled(vm.isRunning)
         } else {
-            Button(vm.copiedCommands.contains(task.id) ? "已复制 ✓" : "复制终端命令") {
+            Button(vm.copiedCommands.contains(task.id)
+                   ? String(localized: String.LocalizationValue("settings.maintenance.copied"))
+                   : String(localized: String.LocalizationValue("settings.maintenance.copyCommand"))) {
                 vm.copyCommand(for: task)
             }
             .buttonStyle(.bordered)
@@ -312,18 +313,18 @@ struct SettingsView: View {
             HStack(spacing: AppSpacing.sm) {
                 ProgressView()
                     .controlSize(.small)
-                Text("正在扫描浏览器痕迹...")
+                Text(String(localized: String.LocalizationValue("settings.privacy.scanning")))
                     .font(AppFont.body)
                     .foregroundColor(.textSecondary)
             }
         } else if privacyVM.items.isEmpty {
             LabeledContent {
-                Button("扫描") { privacyVM.startScan() }
+                Button(String(localized: String.LocalizationValue("settings.privacy.scanButton"))) { privacyVM.startScan() }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.small)
             } label: {
-                Text("浏览器痕迹")
-                Text("扫描浏览器历史、Cookie、缓存与过期系统日志，全部在本机完成。")
+                Text(String(localized: String.LocalizationValue("settings.privacy.browserTracesTitle")))
+                Text(String(localized: String.LocalizationValue("settings.privacy.browserTracesSubtitle")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
             }
@@ -354,7 +355,7 @@ struct SettingsView: View {
             Text(category.rawValue)
                 .font(AppFont.caption)
                 .foregroundColor(.textSecondary)
-            Text("\(count) 项")
+            Text(String(format: String(localized: String.LocalizationValue("settings.privacy.itemCount")), count))
                 .font(AppFont.caption)
                 .foregroundColor(.textSecondary)
             Spacer()
@@ -391,18 +392,18 @@ struct SettingsView: View {
     private var privacySummaryRow: some View {
         VStack(alignment: .leading, spacing: AppSpacing.xs) {
             HStack(spacing: AppSpacing.sm) {
-                Text("已选 \(privacyVM.selectedItems.count) 项 · 可释放 \(FileSizeFormatter.abbreviated(from: privacyVM.selectedSize))")
+                Text(String(format: String(localized: String.LocalizationValue("settings.privacy.selectedSummary")), privacyVM.selectedItems.count, FileSizeFormatter.abbreviated(from: privacyVM.selectedSize)))
                     .font(AppFont.callout)
                     .foregroundColor(.textPrimary)
 
                 Spacer()
 
-                Button("重新扫描") { privacyVM.startScan() }
+                Button(String(localized: String.LocalizationValue("settings.privacy.rescanButton"))) { privacyVM.startScan() }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
                     .disabled(privacyVM.isCleaning)
 
-                Button(privacyVM.isCleaning ? "清理中..." : "清理已选") {
+                Button(privacyVM.isCleaning ? String(localized: String.LocalizationValue("settings.privacy.cleaningButton")) : String(localized: String.LocalizationValue("settings.privacy.cleanSelectedButton"))) {
                     Task { await privacyVM.cleanupSelected() }
                 }
                 .buttonStyle(.borderedProminent)
@@ -413,7 +414,7 @@ struct SettingsView: View {
 
             // C-5：登录态分级确认 — 选中 Cookie 时必须看到后果说明。
             if privacyVM.selectedItems.contains(where: \.isLoginState) {
-                Text("包含 Cookie：清理后将退出这些网站的登录状态")
+                Text(String(localized: String.LocalizationValue("settings.privacy.cookieWarning")))
                     .font(AppFont.caption)
                     .foregroundColor(.warning)
             }
@@ -435,12 +436,12 @@ struct SettingsView: View {
     private var rulesSection: some View {
         if rulesCorpus != nil {
             LabeledContent {
-                Button("查看") { showRulesSheet = true }
+                Button(String(localized: String.LocalizationValue("settings.rules.viewButton"))) { showRulesSheet = true }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
             } label: {
-                Text("归因规则清单")
-                Text("逐条查看每条归因判断依据的规则：匹配路径、归属与回收方式。")
+                Text(String(localized: String.LocalizationValue("settings.rules.listTitle")))
+                Text(String(localized: String.LocalizationValue("settings.rules.listSubtitle")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
             }
