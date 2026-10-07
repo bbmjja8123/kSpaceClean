@@ -31,6 +31,9 @@ public final class AppGraph: ObservableObject {
     /// widget snapshot, streaks, monthly report).
     public let eventSinks: [CleanupEventSink]
     // v2.5 Tab 化工具箱：每个工具一个常驻 VM（懒创建，Tab 切换不重建）。
+    // P2 T9：工具表面随工具箱退役，仅粉碎窗（「+」菜单 / 整窗拖放共用）
+    // 保留常驻装配；各工具的 VM/扫描器保留为逻辑层（画布扇出与设置页
+    // 直接消费，测试直接构造）。
     private var toolVMCache: [String: AnyObject] = [:]
 
     private func cached<T: AnyObject>(_ key: String, _ make: () -> T) -> T {
@@ -40,54 +43,12 @@ public final class AppGraph: ObservableObject {
         return value
     }
 
-    func appUninstallVM(onQuota: @escaping () -> Void) -> AppUninstallViewModel {
-        cached("appUninstall") {
-            let vm = AppUninstallViewModel(engine: cleanupEngine)
-            vm.onQuotaExhausted = onQuota
-            return vm
-        }
-    }
-
-    func duplicatesVM(onQuota: @escaping () -> Void) -> DuplicateViewModel {
-        cached("duplicates") {
-            let vm = DuplicateViewModel(engine: cleanupEngine)
-            vm.onQuotaExhausted = onQuota
-            return vm
-        }
-    }
-
-    func largeOldVM(onQuota: @escaping () -> Void) -> LargeOldViewModel {
-        cached("largeOld") {
-            let vm = LargeOldViewModel(engine: cleanupEngine)
-            vm.onQuotaExhausted = onQuota
-            return vm
-        }
-    }
-
-    func photoCleanVM(onQuota: @escaping () -> Void) -> PhotoCleanViewModel {
-        cached("photoClean") {
-            let vm = PhotoCleanViewModel(engine: cleanupEngine)
-            vm.onQuotaExhausted = onQuota
-            return vm
-        }
-    }
-
-    func photoSimilarityVM(onQuota: @escaping () -> Void) -> PhotoSimilarityViewModel {
-        cached("photoSimilarity") {
-            let vm = PhotoSimilarityViewModel(engine: cleanupEngine)
-            vm.onQuotaExhausted = onQuota
-            return vm
-        }
-    }
-
     func shredderVM() -> ShredderViewModel {
         cached("shredder") { ShredderViewModel() }
     }
 
-    func startupItemsVM() -> StartupItemsViewModel {
-        cached("startupItems") { StartupItemsViewModel() }
-    }
-
+    /// P2 T8 起维护任务由设置页承接（P2 T9 保留装配）：引擎接线 + 配额
+    /// 超限弹买断墙，与其它清理面同一条引擎链。
     func maintenanceVM(onQuota: @escaping () -> Void) -> MaintenanceViewModel {
         cached("maintenance") {
             let vm = MaintenanceViewModel(engine: cleanupEngine)
@@ -96,8 +57,11 @@ public final class AppGraph: ObservableObject {
         }
     }
 
-    // P1 T8: assistantVM() 已随聊天框退役删除——问答由 DetailPanel 内嵌的
+    // P1 T8: assistantVM() 已随聊天框退役删除——问答由下钻页内嵌的
     // AssistantNodePanelModel 承接（自带 matcher/builder，无共享状态）。
+    // P2 T9: appUninstallVM/duplicatesVM/largeOldVM/photoCleanVM/
+    // photoSimilarityVM/startupItemsVM 随工具表面退役删除（各 VM/扫描器
+    // 保留为逻辑层，画布扇出与测试直接构造）。
 
     // MARK: Shared instance for App Intents / widget intents
 

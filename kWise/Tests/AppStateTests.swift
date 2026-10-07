@@ -8,8 +8,6 @@ final class AppStateTests: XCTestCase {
         // P1 T1: SmartCare 降级为深链面 — 首屏让位给空间解剖（spec §3.1）。
         XCTAssertEqual(state.navigation, .anatomy)
         XCTAssertEqual(state.scanState, .idle)
-        // UX 重构 Phase 1: the detail panel is auto-hidden until selected.
-        XCTAssertFalse(state.rightPanelVisible)
         XCTAssertNil(state.selectedCategory)
     }
 
@@ -29,22 +27,6 @@ final class AppStateTests: XCTestCase {
         }
     }
 
-    func test_toggleRightPanel() {
-        let state = AppState()
-        state.rightPanelVisible = true
-        XCTAssertTrue(state.rightPanelVisible)
-        state.rightPanelVisible = false
-        XCTAssertFalse(state.rightPanelVisible)
-    }
-
-    func test_rightPanelVisible_toggle() {
-        let state = AppState()
-        state.rightPanelVisible = true
-        XCTAssertTrue(state.rightPanelVisible)
-        state.rightPanelVisible = false
-        XCTAssertFalse(state.rightPanelVisible)
-    }
-
     func test_selectedCategory() {
         let state = AppState()
         state.selectedCategory = .image
@@ -54,26 +36,23 @@ final class AppStateTests: XCTestCase {
     }
 
     func test_NavigationItem_allCases() {
-        // v2.0 Phase 2: 11 original + 8 new (tools/spaceMap/monthlyReport/
-        // assistant/duplicates/largeOld/photoClean/maintenance) − galaxy.
-        // P0 Task 9 added `.attribution` (toolbox deep surface).
-        // P1 T1 adds `.anatomy` (rail head; SmartCare retired to deep link).
-        // P1 T8 retires `.assistant` (Q&A embedded in DetailPanel) and the
-        // dormant `.attribution` residue case (P1 T5 routed it to `.anatomy`).
-        // P2 T7 retires `.monthlyReport` (merged into the history page).
-        XCTAssertEqual(AppState.NavigationItem.allCases.count, 17)
+        // P2 T9（spec §2/§9）：~20 表面收敛为 6 —— 可导航面只剩 3：
+        // 解剖画布（含下钻路由）/ 历史 / 设置；粉碎窗与磁盘健康详情走
+        // sheet，不占导航枚举。
+        XCTAssertEqual(AppState.NavigationItem.allCases.count, 3)
+        XCTAssertEqual(AppState.NavigationItem.allCases,
+                       [.anatomy, .history, .settings])
     }
 
     /// v2.0 Phase 2: the rail was fixed at six entries and never grew.
-    /// P2 T1 (Klaris 单一主画布)：rail 收敛至 3 项 —— 扫描/清理/工具全部
-    /// 折进解剖画布（spec §2）。其余 case 保留编译（W4 才删）。
+    /// P2 T1 (Klaris 单一主画布)：rail 收敛至 3 项；P2 T9 起与 allCases 恒等。
     func test_NavigationItem_railItems() {
         XCTAssertEqual(AppState.NavigationItem.railItems, [
             .anatomy, .history, .settings
         ])
-        for item in AppState.NavigationItem.railItems {
-            XCTAssertTrue(AppState.NavigationItem.allCases.contains(item))
-        }
+        XCTAssertEqual(AppState.NavigationItem.railItems,
+                       AppState.NavigationItem.allCases,
+                       "rail 之外不再存在可导航面")
     }
 
     /// P2 T1: rail 收敛至 3 项（spec §2 —— 单一主画布）。
@@ -84,17 +63,18 @@ final class AppStateTests: XCTestCase {
 
     /// P1 T1: anatomy is the rail head; smartCare survives only as a deep
     /// link / Widget target (spec §3.1 — SmartCare 降级).
-    /// P2 T1: rail 收敛后 count 断言同步为 3。
-    func testAnatomyIsRailHeadAndSmartCareRetired() {
+    /// P2 T9：退役 case（scan/cleanup/tools/smartCare…）全部删除 —— 用
+    /// rawValue 断言，杜绝同名 case 复活。
+    func testAnatomyIsRailHeadAndRetiredCasesStayRetired() {
         XCTAssertEqual(AppState.NavigationItem.railItems.first, .anatomy)
-        XCTAssertFalse(AppState.NavigationItem.railItems.contains(.smartCare),
-                       "SmartCare 降级后不再占 rail 位（spec §3.1）")
-        XCTAssertFalse(AppState.NavigationItem.railItems.contains(.scan),
-                       "扫描并入解剖画布，不再占 rail 位（P2 spec §2）")
-        XCTAssertFalse(AppState.NavigationItem.railItems.contains(.cleanup),
-                       "清理并入解剖画布，不再占 rail 位（P2 spec §2）")
-        XCTAssertFalse(AppState.NavigationItem.railItems.contains(.tools),
-                       "工具箱改由画布承接，不再占 rail 位（P2 spec §2）")
+        let rawValues = Set(AppState.NavigationItem.allCases.map(\.rawValue))
+        for retired in ["scan", "cleanup", "tools", "smartCare", "spaceMap",
+                        "privacy", "diskHealth", "startupItems", "appUninstall",
+                        "shredder", "duplicates", "largeOld", "photoClean",
+                        "maintenance"] {
+            XCTAssertFalse(rawValues.contains(retired),
+                           "退役导航面 \(retired) 不得复活（P2 spec §9）")
+        }
         XCTAssertEqual(AppState.NavigationItem.railItems.count, 3)
     }
 

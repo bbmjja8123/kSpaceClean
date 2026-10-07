@@ -111,19 +111,16 @@ public struct AssistantAnswer: Equatable {
         public let title: String
         public let detail: String
         public let nodeID: UUID?
-        /// 一键执行 (v2.6 W9)：卡片底部按钮 → 打开对应工具 Tab。
-        public let actionTitle: String?
-        public let actionDestination: AppState.NavigationItem?
+        // P2 T9：`actionTitle/actionDestination` 诚实删除 —— 卡片按钮原先
+        // 跳转的 `.duplicates/.appUninstall/.startupItems/.shredder/.photoClean`
+        // 导航面已全部退役；画布上「去哪处理」由组卡与下钻页承接，答案卡
+        // 不再提供通往不存在表面的假按钮。
 
-        public init(title: String, detail: String, nodeID: UUID? = nil,
-                    actionTitle: String? = nil,
-                    actionDestination: AppState.NavigationItem? = nil) {
+        public init(title: String, detail: String, nodeID: UUID? = nil) {
             self.id = UUID()
             self.title = title
             self.detail = detail
             self.nodeID = nodeID
-            self.actionTitle = actionTitle
-            self.actionDestination = actionDestination
         }
 
         public static func == (lhs: Card, rhs: Card) -> Bool { lhs.id == rhs.id }
@@ -166,30 +163,26 @@ enum AssistantAnswerBuilder {
             )
         case .duplicates:
             return AssistantAnswer(
-                headline: "重复文件清理在工具箱中，扫描后会智能保留最新原件。",
-                cards: [AssistantAnswer.Card(title: "打开重复文件工具", detail: "字节级 + APFS 克隆 + 视觉相似",
-                                             actionTitle: "去清理", actionDestination: .duplicates)],
+                headline: "重复文件按组呈现在首屏画布上，点组卡进下钻页逐项勾选；扫描后会智能保留最新原件。",
+                cards: [AssistantAnswer.Card(title: "重复文件", detail: "字节级 + APFS 克隆 + 视觉相似")],
                 suggestions: exampleQuestions
             )
         case .appLeftovers:
             return AssistantAnswer(
                 headline: "应用卸载会同时清除缓存、日志等残留文件，全部可回滚。",
-                cards: [AssistantAnswer.Card(title: "打开应用卸载", detail: "1141 条规则识别残留，可备份 30 天",
-                                             actionTitle: "去卸载", actionDestination: .appUninstall)],
+                cards: [AssistantAnswer.Card(title: "应用残留", detail: "1141 条规则识别残留，可备份 30 天")],
                 suggestions: exampleQuestions
             )
         case .startupItems:
             return AssistantAnswer(
                 headline: "启动项管理支持停用用户级启动代理，随时可在时间线恢复。",
-                cards: [AssistantAnswer.Card(title: "打开启动项管理", detail: "停用/恢复登录启动代理",
-                                             actionTitle: "去管理", actionDestination: .startupItems)],
+                cards: [AssistantAnswer.Card(title: "启动项", detail: "停用/恢复登录启动代理")],
                 suggestions: exampleQuestions
             )
         case .shredHelp:
             return AssistantAnswer(
                 headline: "文件粉碎先覆写内容（SSD 一次覆写已足够），再随机化文件名并移入废纸篓。",
-                cards: [AssistantAnswer.Card(title: "打开文件粉碎", detail: "覆写 + 校验 + 改名，支持拖放",
-                                             actionTitle: "去粉碎", actionDestination: .shredder)],
+                cards: [AssistantAnswer.Card(title: "文件粉碎", detail: "首屏「+」菜单或把文件拖进窗口即可粉碎")],
                 suggestions: exampleQuestions
             )
         case .cleanupNow:
@@ -202,9 +195,8 @@ enum AssistantAnswerBuilder {
             )
         case .similarPhotos:
             return AssistantAnswer(
-                headline: "工具箱 → 照片清理 → 相似照片：本机感知比对找出截图堆积与相似照片，每组至少保留一张。",
-                cards: [AssistantAnswer.Card(title: "打开照片清理", detail: "感知哈希找出相似照片，本机比对不联网",
-                                             actionTitle: "去清理", actionDestination: .photoClean)],
+                headline: "相似照片按组呈现在首屏画布上：本机感知比对找出截图堆积，每组至少保留一张。",
+                cards: [AssistantAnswer.Card(title: "相似照片", detail: "感知哈希找出相似照片，本机比对不联网")],
                 suggestions: exampleQuestions
             )
         case .freeUpSpace:
@@ -260,7 +252,7 @@ enum AssistantAnswerBuilder {
         let cards = leaves.prefix(5).map { entry in
             AssistantAnswer.Card(
                 title: entry.title,
-                detail: SmartCareHeroView.formatBytes(entry.size),
+                detail: SharedByteFormat.formatBytes(entry.size),
                 nodeID: entry.id
             )
         }
@@ -296,7 +288,7 @@ enum AssistantAnswerBuilder {
             .map { category in
                 AssistantAnswer.Card(
                     title: category.title,
-                    detail: SmartCareHeroView.formatBytes(category.totalSize),
+                    detail: SharedByteFormat.formatBytes(category.totalSize),
                     nodeID: category.id
                 )
             }

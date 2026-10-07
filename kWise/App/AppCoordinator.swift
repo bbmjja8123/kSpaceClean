@@ -6,6 +6,17 @@ import SwiftUI
 /// through here so deep links, the icon rail, widget/intent opens, and the
 /// menu bar cannot disagree. Views stop assigning `appState.navigation`
 /// directly; they call ``navigate(to:)`` or a deep link.
+///
+/// P2 T9（spec §7 深链终态）：可导航面只剩 anatomy / history / settings。
+/// 深链映射 ——
+/// - `klaris://scan?path=` → anatomy（扫描即动作，hero 发起；Finder 扩展入口）
+/// - `klaris://smartcare` → anatomy（hero「安全快捷回收」承接）
+/// - `klaris://health`    → anatomy（DiskHealthCard 在画布上，点击出详情 sheet）
+/// - `klaris://history`   → history（通知深链 / 时间线）
+/// - `klaris://settings`  → settings
+/// 已退役面的旧深链（clean/privacy/startup/uninstall/shred/tools/spacemap/
+/// report/duplicates/largefiles/photoclean/maintenance）不再处理 —— 返回
+/// false 走「未处理」，绝不把用户引向一个不存在的表面。
 @MainActor
 public final class AppCoordinator: ObservableObject {
     public weak var appState: AppState?
@@ -34,95 +45,43 @@ public final class AppCoordinator: ObservableObject {
 
         switch host {
         case "scan":
-            navigate(to: .scan)
-            return true
-        case "clean":
-            return handleCleanLink(url)
-        case "smartcare":
-            // P1 T1: SmartCare 降级 — 深链与 Widget 一键清理按钮落在解剖
-            // 首屏（R1），其快捷回收入口由 T5/T6 在 anatomy 视图内承接。
+            // spec §7：`scan?path=` 保留 —— Finder 扩展「用 Klaris 扫描」
+            // 的上下文入口。落解剖画布（扫描即动作，hero 发起扫描）。
             navigate(to: .anatomy)
             return true
-        case "privacy":
-            navigate(to: .privacy)
+        case "smartcare":
+            // Widget 一键清理按钮 → 画布 hero（快捷回收入口在 hero 上）。
+            navigate(to: .anatomy)
             return true
         case "health":
-            // P2 T1: DiskHealthCard 已内嵌解剖画布（spec §7）—— 深链落
-            // 首屏而非独立磁盘健康详情页。
+            // DiskHealthCard 内嵌画布（spec §7）—— 深链落首屏，点击卡片
+            // 打开详情 sheet。
             navigate(to: .anatomy)
             return true
-        case "startup":
-            navigate(to: .startupItems)
-            return true
-        case "uninstall":
-            openToolTab(.appUninstall)
-            return true
-        case "shred":
-            openToolTab(.shredder)
-            return true
-        case "tools":
-            navigate(to: .tools)
-            return true
-        case "spacemap":
-            navigate(to: .spaceMap)
-            return true
-        case "report", "monthlyreport":
-            // P2 T7: 月报已并入历史页 —— 深链诚实落到历史（叙事头 + 本月区）。
-            navigate(to: .history)
-            return true
-        // P1 T8: klaris://assistant 随聊天框退役（问答内嵌 DetailPanel，
-        // 无独立导航面）。未知 host 走 default → false。
-        case "duplicates":
-            openToolTab(.duplicates)
-            return true
-        case "largefiles":
-            openToolTab(.largeOld)
-            return true
-        case "photoclean":
-            openToolTab(.photoClean)
-            return true
-        case "maintenance":
-            openToolTab(.maintenance)
-            return true
         case "history":
+            // 清理完成通知深链（CleanupNotificationSink）→ 时间线。
             navigate(to: .history)
             return true
         case "settings":
             navigate(to: .settings)
             return true
+        case "report", "monthlyreport":
+            // P2 T7：月报已并入历史页 —— 深链诚实落到历史（叙事头 + 本月区）。
+            navigate(to: .history)
+            return true
+        // P2 T9：`clean/privacy/startup/uninstall/shred/tools/spacemap/
+        // duplicates/largefiles/photoclean/maintenance` 随对应表面退役，
+        // 一律落到 default → false（诚实未处理）。
         default:
             return false
         }
     }
-
-    /// `klaris://clean?path=/some/file` — the Finder extension's context-menu
-    /// deep link. The `path` parameter was historically ignored; it now
-    /// pre-seeds the cleanup surface with that file (v2.0 Phase 2).
-    private func handleCleanLink(_ url: URL) -> Bool {
-        navigate(to: .cleanup)
-        if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-           let path = components.queryItems?.first(where: { $0.name == "path" })?.value,
-           !path.isEmpty {
-            cleanLinkSeed = path
-        }
-        return true
-    }
-
-    /// Last path received via a clean deep link, consumed by the cleanup
-    /// surface (`CleanupContentView`) to pre-select the target.
-    @Published public var cleanLinkSeed: String?
 
     // MARK: - Navigation
 
     /// Navigate to a specific page.
     public func navigate(to item: AppState.NavigationItem) {
         appState?.navigation = item
-    }
-
-    /// 打开一个工具 Tab（v2.5）：已开激活、未开新建，然后导航。
-    /// 工具箱卡片与工具类 deep link 都走这里（导航唯一权威）。
-    public func openToolTab(_ item: AppState.NavigationItem) {
-        appState?.openToolTab(item)
     }
 
     /// Present the paywall sheet (free-tier gate — never ad hoc from views).

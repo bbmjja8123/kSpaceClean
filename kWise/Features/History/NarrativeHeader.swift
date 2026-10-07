@@ -54,7 +54,7 @@ public enum NarrativeHeaderModel {
             // 空历史诚实零 — 不虚构回收量。
             return "最近 7 天还没有清理记录"
         }
-        return "最近 7 天你回收了 \(SmartCareHeroView.formatBytes(weekFreed))"
+        return "最近 7 天你回收了 \(SharedByteFormat.formatBytes(weekFreed))"
     }
 
     // MARK: - Sub（磁盘比上周轻/重 X%）

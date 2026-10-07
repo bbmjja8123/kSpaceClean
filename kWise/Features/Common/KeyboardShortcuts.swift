@@ -23,7 +23,7 @@ import SwiftUI
 /// ## Usage
 ///
 /// ```swift
-/// ScanResultsView()
+/// RootView()
 ///     .scanKeyboardShortcuts(
 ///         onNewScan:  { viewModel.startNewScan() },
 ///         onRescan:   { viewModel.rescan() }

@@ -35,7 +35,7 @@ public enum RecommendPolicy: String, Codable, Sendable, CaseIterable {
 
 /// Resolves whether a node should be default-selected based on its risk level and
 /// the active `RecommendPolicy`. Pure value type so the cascade-checkbox algorithm
-/// in `ScanResultsViewModel.applyDefaultSelection(...)` runs safely on the main actor.
+/// in `ScanResultsViewModel.applyDefaultSelection(...)` runs safely on the main actor (the retired scan page was its last view consumer).
 public struct DefaultSelectionPolicy: Sendable {
     public let policy: RecommendPolicy
 

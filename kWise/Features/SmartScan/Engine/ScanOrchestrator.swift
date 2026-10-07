@@ -13,7 +13,7 @@
 //   3. For each file, ask `BundleIDResolver.resolve(path:)` which app, if
 //      any, owns the path so cleanup warnings can mention the right app.
 //   4. Emit `ScanProgress` events on an `AsyncStream` so the SwiftUI layer
-//      (`ScanResultsView` / `ScanProgressView`) can render live state.
+//      (the canvas hero scan-progress state) can render live state.
 //
 // Concurrency: `ScanOrchestrator` is an `actor` so its `categoryDefs`,
 // `riskClassifier`, and `bundleIDResolver` are accessed under actor
@@ -953,7 +953,7 @@ public actor ScanOrchestrator {
         return "\(categoryID).folder.\(parts[0])"
     }
 
-    /// Build the per-category progress rows shown in `ScanProgressView`.
+    /// Build the per-category progress rows for the scan-progress state.
     /// Static so it doesn't need actor isolation.
     private static func makeCategoryProgress(for def: CategoryDefinition) -> CategoryProgress {
         CategoryProgress(

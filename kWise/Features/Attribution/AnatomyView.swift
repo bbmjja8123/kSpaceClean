@@ -133,8 +133,6 @@ public struct AnatomyView: View {
     private let onGroupAction: (CanvasGroup) -> Void
     /// 「+」菜单 → 粉碎窗（RootView 挂 sheet + 整窗拖放转发，P2 T4）。
     private let onOpenShredder: () -> Void
-    /// 「+」菜单 → 旧版空间地图（W4 退役前的逃生口）。
-    private let onSpaceMapLegacy: () -> Void
     /// 扫描中态「取消」回调（P2 T5 fix r1，Important 1）：扇出取消之外，
     /// RootView 据此把快捷回收管线一并作废 —— 否则取消后管线照样落
     /// `.confirming`，模态预演 sheet 会在用户明确取消后弹出。
@@ -163,7 +161,6 @@ public struct AnatomyView: View {
          onOpenDiskHealth: @escaping () -> Void,
          onGroupAction: @escaping (CanvasGroup) -> Void = { _ in },
          onOpenShredder: @escaping () -> Void = {},
-         onSpaceMapLegacy: @escaping () -> Void = {},
          onScanCancelled: @escaping () -> Void = {},
          onDrillDownRehearse: @escaping (String, [CleanupTarget]) -> Void = { _, _ in }) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -173,7 +170,6 @@ public struct AnatomyView: View {
         self.onOpenDiskHealth = onOpenDiskHealth
         self.onGroupAction = onGroupAction
         self.onOpenShredder = onOpenShredder
-        self.onSpaceMapLegacy = onSpaceMapLegacy
         self.onScanCancelled = onScanCancelled
         self.onDrillDownRehearse = onDrillDownRehearse
     }
@@ -286,10 +282,10 @@ public struct AnatomyView: View {
                     Text(quickCleanTitle)
                 }
                 .buttonStyle(.borderedProminent)
-                // 「+」菜单（P2 T4）：粉碎窗 · 旧版空间地图 · 归因规则。
+                // 「+」菜单（P2 T4）：粉碎窗 · 归因规则（旧版空间地图项随
+                // 旧版空间地图项在 P2 T9 退役）。
                 CanvasPlusMenu(actions: CanvasPlusMenuActions(
                     onShredder: onOpenShredder,
-                    onSpaceMapLegacy: onSpaceMapLegacy,
                     onAttributionRules: {
                         // corpus 未加载成功时不弹空 sheet（诚实降级——规则
                         // 链接行同样以 corpus 存在为渲染条件）。

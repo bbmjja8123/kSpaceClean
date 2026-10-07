@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-/// Sort field options exposed in the LargeOldView.
+/// Sort field options exposed in the large-old-file UI.
 public enum LargeOldSortField: String, CaseIterable, Identifiable, Sendable {
     case size = "Size"
     case date = "Date"
@@ -11,7 +11,7 @@ public enum LargeOldSortField: String, CaseIterable, Identifiable, Sendable {
     public var id: String { rawValue }
 }
 
-/// Main-actor view model that drives ``LargeOldView``.
+/// Main-actor view model that drives the large-old-file UI.
 @MainActor
 public final class LargeOldViewModel: ObservableObject {
     // MARK: Published

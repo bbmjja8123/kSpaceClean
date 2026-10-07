@@ -12,7 +12,7 @@ public final class CleanupViewModel: ObservableObject {
     @Published public private(set) var lastOutcome: CleanupOutcome?
     @Published public var cleanupHistory: [CleanupHistoryItem] = []
     /// Pending cleanup list — set externally (e.g. by the cleanup confirm
-    /// dialog or the CleanupContentView confirm flow)
+    /// dialog or the unified rehearsal confirm flow)
     /// before calling ``cleanupNow()``. Empty list = no-op.
     @Published public var urlsToCleanup: [URL] = []
     /// 归因查询晚绑定（P1 T4）—— RootView `.onAppear` 把它指向归因服务
@@ -29,7 +29,7 @@ public final class CleanupViewModel: ObservableObject {
     private let mover = TrashMover()
     private let history = CleanupHistory()
     /// Structured-API engine — used by ``cleanupNow()`` and the
-    /// `CleanupContentView` confirmation flow. Defaults to a fresh instance
+    /// unified confirmation flow. Defaults to a fresh instance
     /// driven by the shared `PersistenceController`; the app root re-points
     /// it at the graph engine (quota + sinks) in `.onAppear`.
     private(set) var engine: CleanupEngine
@@ -85,7 +85,7 @@ public final class CleanupViewModel: ObservableObject {
     ///   storm. `nil` = fall back to a per-URL stat.
     ///
     /// P1 T4 — 兼容包装：预演 + 无预演直接执行。不接预演 UI 的调用方
-    /// （历史上是 `CleanupContentView.performCleanup()` 一类的旧路径）
+    /// （历史上是旧扫描页 performCleanup() 一类的旧路径）
     /// 继续可用；接预演的面板改走 ``makeRehearsal(sizes:urls:)`` +
     /// ``executeConfirmedCleanup(sizes:)`` 两段式。
     public func cleanupNow(sizes: [URL: Int64]? = nil) async {

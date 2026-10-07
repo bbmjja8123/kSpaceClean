@@ -1,7 +1,8 @@
 // kWise/Tests/CanvasPlusMenuTests.swift
 //
 // P2 T4 — 「+」菜单注册 + 整窗拖放粉碎状态机（逻辑层，不渲染快照）：
-// - CanvasPlusMenuItem 三项注册（粉碎窗 / 旧版空间地图 / 归因规则）+
+// - CanvasPlusMenuItem 两项注册（粉碎窗 / 归因规则；P2 T9 旧版空间地图项
+//   随 SpaceMapView 退役）+
 //   CanvasPlusMenuActions 按 item 分发到各自回调（标题钉 key，三语完整性由
 //   LocalizationCompletenessTests 兜底）
 // - DragToShredModel：非文件 URL / 目录 / 混合批次拒绝（全有或全无）、
@@ -34,18 +35,17 @@ final class CanvasPlusMenuTests: XCTestCase {
 
     // MARK: - 「+」菜单注册
 
-    /// 菜单恰好三项、顺序稳定 —— W4 收敛删除清单里的旧地图/规则入口
-    /// 从这里进出（spec §3.8 / 决策 ⓒ）。
-    func testPlusMenuRegistersExactlyThreeItemsInOrder() {
+    /// 菜单恰好两项、顺序稳定 —— P2 T9：旧版空间地图逃生口随 SpaceMapView
+    /// 退役（画布即地图，spec §2/§9）。
+    func testPlusMenuRegistersExactlyTwoItemsInOrder() {
         XCTAssertEqual(CanvasPlusMenuItem.allCases,
-                       [.shredder, .spaceMapLegacy, .attributionRules],
-                       "「+」菜单 = 粉碎窗 · 旧版空间地图 · 归因规则")
+                       [.shredder, .attributionRules],
+                       "「+」菜单 = 粉碎窗 · 归因规则")
     }
 
     /// 标题钉 key（文案改动不破坏映射契约），且 key 能经本地化表取值。
     func testPlusMenuItemTitlesResolveLocalizedKeys() {
         XCTAssertEqual(CanvasPlusMenuItem.shredder.titleKey, "canvas.plusMenu.shredder")
-        XCTAssertEqual(CanvasPlusMenuItem.spaceMapLegacy.titleKey, "canvas.plusMenu.spaceMapLegacy")
         XCTAssertEqual(CanvasPlusMenuItem.attributionRules.titleKey, "canvas.plusMenu.attributionRules")
         for item in CanvasPlusMenuItem.allCases {
             XCTAssertEqual(item.title,
@@ -54,21 +54,19 @@ final class CanvasPlusMenuTests: XCTestCase {
         }
     }
 
-    /// 动作分发：三个 case 各自路由到自己的回调（互不串线）。
+    /// 动作分发：两个 case 各自路由到自己的回调（互不串线）。
     func testMenuActionDispatchRoutesEachItemToItsOwnHandler() {
         var calls: [CanvasPlusMenuItem] = []
         let actions = CanvasPlusMenuActions(
             onShredder: { calls.append(.shredder) },
-            onSpaceMapLegacy: { calls.append(.spaceMapLegacy) },
             onAttributionRules: { calls.append(.attributionRules) })
 
         // 故意以非枚举顺序触发 —— 断言看的是「每项命中自己的处理器」，
         // 而非调用顺序。
-        let invocationOrder: [CanvasPlusMenuItem] =
-            [.spaceMapLegacy, .attributionRules, .shredder]
+        let invocationOrder: [CanvasPlusMenuItem] = [.attributionRules, .shredder]
         for item in invocationOrder { actions(item) }
 
-        XCTAssertEqual(calls, invocationOrder, "三个菜单项逐一命中自己的处理器")
+        XCTAssertEqual(calls, invocationOrder, "菜单项逐一命中自己的处理器")
     }
 
     // MARK: - DragToShredModel（拖放覆盖层状态机）

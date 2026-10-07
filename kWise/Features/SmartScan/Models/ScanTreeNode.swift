@@ -6,7 +6,7 @@ import Foundation
 /// `ScanTreeNode` is the v3 (post-2026-07-29 redesign) abstraction over the
 /// category → sub-category → action → result cascade. Concrete types live
 /// in their own files (`ScanCategory`, `ScanSubCategory`, `ScanAction`,
-/// `ScanResult`). The tree powers the results UI in `ScanResultsView` and
+/// `ScanResult`). The tree powers the scan results UI (canvas / drill-down) and
 /// the cascading selection policy implemented in `ScanResultsViewModel`.
 ///
 /// All nodes are value-equivalent by `id` — `Hashable`/`Equatable` collapse
@@ -37,7 +37,7 @@ public protocol ScanTreeNode: Identifiable, Hashable, Sendable {
 
     /// True when a default filter (e.g. the 100 KB size floor) would hide this
     /// node from the default tree view. The node remains in the data model
-    /// so the cleanup pipeline can still select it; `ScanResultsView`
+    /// so the cleanup pipeline can still select it; the results UI
     /// skips rendering unless `ScanResultsViewModel.showAllHidden` is on.
     var isHiddenByFilter: Bool { get set }
 

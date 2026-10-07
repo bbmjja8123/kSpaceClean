@@ -200,7 +200,7 @@ struct TimelineView: View {
                         .font(AppFont.title3)
                         .foregroundStyle(Color.textPrimary)
                     Spacer()
-                    Text(SmartCareHeroView.formatBytes(report.totalFreedBytes))
+                    Text(SharedByteFormat.formatBytes(report.totalFreedBytes))
                         .font(AppFont.monoDigit)
                         .foregroundStyle(Color.textSecondary)
                 }
@@ -246,7 +246,7 @@ struct TimelineView: View {
                                 .lineLimit(1)
                                 .truncationMode(.middle)
                             Spacer()
-                            Text(SmartCareHeroView.formatBytes(file.size))
+                            Text(SharedByteFormat.formatBytes(file.size))
                                 .font(AppFont.monoDigit)
                                 .foregroundStyle(Color.textSecondary)
                         }
@@ -317,7 +317,7 @@ private struct TimelineEventRow: View {
                         .font(AppFont.caption)
                         .foregroundStyle(Color.textSecondary)
                     Spacer()
-                    Text(SmartCareHeroView.formatBytes(event.freedBytes))
+                    Text(SharedByteFormat.formatBytes(event.freedBytes))
                         .font(AppFont.monoDigit)
                         .foregroundStyle(Color.textPrimary)
                 }

@@ -45,7 +45,8 @@ public struct ScanFilterOptions: Equatable, Sendable {
     public static let `default` = ScanFilterOptions()
 }
 
-/// View-model backing `ScanResultsView` — the 4-level scan results tree.
+/// View-model owning the 4-level scan results tree (P2 T9 起不再有独立
+/// 结果页 —— 画布、下钻页与预演链都消费这份模型)。
 ///
 /// `ScanResultsViewModel` owns the canonical tree of scan results, the
 /// set of expanded node ids, and the aggregate selection summary shown

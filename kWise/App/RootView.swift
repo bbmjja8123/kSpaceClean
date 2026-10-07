@@ -3,6 +3,9 @@ import DesignSystem
 
 /// RootView with navigation content switching.
 /// Displays different content based on appState.navigation.
+///
+/// P2 T9（spec §2 单一主画布）：导航面收敛为 3 —— 解剖画布（首屏，含下钻
+/// 路由）/ 历史 / 设置。粉碎窗与磁盘健康详情以 sheet 呈现，不再占据导航。
 struct RootView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var coordinator: AppCoordinator
@@ -18,8 +21,8 @@ struct RootView: View {
     // away, comes back — the categories tree is still there).
     //
     // C3: this is now the *only* scan model the root owns. All scan
-    // triggers (toolbar-era buttons, ⌘N / ⌘R, menu-bar quick scan) route
-    // here so every user-initiated scan runs a pipeline the screen is
+    // triggers (hero「重新扫描」, ⌘N / ⌘R, menu-bar quick scan) route
+    // here so every user-initiated scan runs a pipeline the canvas is
     // actually watching. (P1 T9: the legacy rule-driven engine was
     // retired — the AppIntents now share this same orchestrator chain.)
     @StateObject private var scanResultsViewModel = ScanResultsViewModel(
@@ -29,10 +32,6 @@ struct RootView: View {
     // 3-step state machine. Attach lazily once `scanResultsViewModel`
     // is reachable (see `.onAppear` below).
     @StateObject private var smartCareViewModel = SmartCareViewModel()
-    /// 空间地图 (v2.0 Phase 4) — renders the same tree the results view owns.
-    @StateObject private var spaceMapViewModel = SpaceMapViewModel(
-        rootsProvider: { [] }
-    )
     /// 空间解剖（P1 T5 新首屏）— 与空间地图共用同一棵扫描树，服务只读不清理；
     /// 页内零清理动作，回收入口（组头就地清理 / hero 快捷回收）都经根部
     /// 统一预演 sheet（P2 T5 R-统一）。
@@ -43,27 +42,29 @@ struct RootView: View {
     /// 照片 → 大文件），增量组/诊断/虚线卡经 @Published 直接上画布。
     @StateObject private var canvasCoordinator = CanvasScanCoordinator()
     /// 磁盘健康（P1 T9 — T6 遗留条件）：DiskHealthCard 的新渲染位在解剖页，
-    /// VM 与卡片在此持有、点击进入 `.diskHealth` 详情页。
+    /// VM 与卡片在此持有，点击打开详情 sheet（P2 T9：`.diskHealth` 导航面
+    /// 退役，详情改走画布 sheet）。
     @StateObject private var diskHealthViewModel = DiskHealthViewModel()
     /// 整窗拖放粉碎（P2 T4）：拖拽悬停点亮「松开以粉碎」覆盖层，松开后
     /// 全为普通文件才转发粉碎窗（graph.shredderVM() 预填 + sheet 打开）。
     @StateObject private var dragToShred = DragToShredModel()
-    /// 粉碎窗 sheet（「+」菜单 / 整窗拖放共用入口；VM 走 graph 缓存装配，
-    /// 与 `.shredder` 页共享同一份暂存/历史状态）。
+    /// 粉碎窗 sheet（「+」菜单 / 整窗拖放共用入口；VM 走 graph 缓存装配）。
     @State private var showShredWindow = false
+    /// 磁盘健康详情 sheet（P2 T9：DiskHealthDetailView 保留为画布下钻页）。
+    @State private var showDiskHealthDetail = false
     /// 统一预演 sheet（P2 T5 R-统一）：组头就地清理与 hero 快捷回收两条
-    /// 入口的预演呈现节点（下钻入口的 sheet 仍在 ScanResultsView 内 ——
-    /// 三入口同一张 ``CleanupRehearsalSheet``、同一条 CleanupViewModel
-    /// 预演链：makeRehearsal → 确认 → executeConfirmedCleanup）。
+    /// 入口的预演呈现节点（下钻入口的 sheet 同在此呈现 —— 三入口同一张
+    /// ``CleanupRehearsalSheet``、同一条 CleanupViewModel 预演链：
+    /// makeRehearsal → 确认 → executeConfirmedCleanup）。
     @State private var rehearsalPayload: RehearsalSheetPayload?
     /// hero 快捷回收的流程阶段 —— 决定 sheet 确认后是否给 orchestrator
     /// 回填 doneHero/failedHero，以及取消时是否复位状态机。
     /// ⚠️ 状态迁移不对称（fix r1 ⑥ 显式化）：`.running` 只由**画布 hero**
     /// 的 `onQuickClean` 置位；`.awaitingConfirm` 由共享的
     /// `.onReceive(smartCareViewModel.$state)` 对**所有触发源**（画布 hero /
-    /// smartCare 页 idle hero / 菜单栏 quickClean）统一置位 —— 因为
-    /// `.confirming` 一律由根部预演 sheet 接管。`.executing` 与 `.none` 只
-    /// 在 `finishRehearsal` / sheet 取消里迁移。
+    /// 菜单栏 quickClean）统一置位 —— 因为 `.confirming` 一律由根部预演
+    /// sheet 接管。`.executing` 与 `.none` 只在 `finishRehearsal` / sheet
+    /// 取消里迁移。
     @State private var quickCleanStage: QuickCleanStage = .none
 
     /// P2 T5 R-统一：快捷回收 = 推荐项预演（已勾选好）→ 确认 → 统一链执行。
@@ -91,54 +92,28 @@ struct RootView: View {
                 // buttons all duplicated rail items. The rail is now the only
                 // global navigation; page-level actions live inside each page.
                 HStack(spacing: 0) {
-                    // Icon Rail (left sidebar) — brand mark on top, fixed 6 items.
+                    // Icon Rail (left sidebar) — brand mark on top, 3 items.
                     iconRail
                         .frame(width: 56)
                         .padding(.leading, 8)
                         .padding(.vertical, 12)
 
-                    VStack(spacing: 0) {
-                        // v2.5 Tab 化工具箱：有打开的 Tab 时顶部显示 Tab 行。
-                        if !appState.toolTabs.isEmpty {
-                            ToolTabBar(
-                                tabs: appState.toolTabs,
-                                activeToolTabID: appState.activeToolTabID,
-                                isToolPageActive: appState.navigation.isToolboxTool,
-                                onActivate: { appState.activateToolTab($0) },
-                                onClose: { appState.closeToolTab($0) },
-                                onToolbox: { appState.navigation = .tools }
-                            )
-                            Divider().background(Color.divider)
-                        }
-
-                        // Main content area (switches based on navigation)
-                        mainContent
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-
-                    // Selection detail panel (UX 重构 Phase 3): auto-hidden
-                    // until a row is tapped; ⌘I toggles. No compensating
-                    // paddings — the rail/content alignment accounts for it.
-                    if appState.rightPanelVisible, appState.detailSelection != nil {
-                        DetailPanelView(viewModel: scanResultsViewModel)
-                            .frame(width: min(280, geo.size.width * 0.28))
-                            .padding(.trailing, 12)
-                            .padding(.vertical, 12)
-                            .transition(.move(edge: .trailing).combined(with: .opacity))
-                    }
+                    // Main content area (switches based on navigation)
+                    mainContent
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
         }
         .frame(minWidth: 1024, minHeight: 680)
-        // 整窗拖放粉碎（P2 T4）：挂在根内容上（rail / Tab 行 / 画布都算
-        // 有效投放区），覆盖层只在拖拽悬停期间出现——破坏性 UI 仅在表达
-        // 意图后现身。接受的批次预填粉碎 VM 并打开粉碎窗；粉碎自身的
-        // DELETE 确认链在 ShredderView 内，未被绕过。
+        // 整窗拖放粉碎（P2 T4）：挂在根内容上（rail / 画布都算有效投放区），
+        // 覆盖层只在拖拽悬停期间出现——破坏性 UI 仅在表达意图后现身。
+        // 接受的批次预填粉碎 VM 并打开粉碎窗；粉碎自身的 DELETE 确认链在
+        // ShredderView 内，未被绕过。
         .modifier(DragToShredOverlay(model: dragToShred))
         .scanKeyboardShortcuts(
             onNewScan: {
-                // ⌘N — switch to the scan surface and start a fresh scan
-                appState.navigation = .scan
+                // ⌘N — switch to the canvas and start a fresh scan
+                appState.navigation = .anatomy
                 scanResultsViewModel.startScan()
             },
             onRescan: {
@@ -146,11 +121,10 @@ struct RootView: View {
                 // (ScanResultsViewModel does not differentiate "new" from
                 // "rescan"; both delegate to startScan(), which cancels any
                 // in-flight orchestrator run before starting a new one.)
-                appState.navigation = .scan
+                appState.navigation = .anatomy
                 scanResultsViewModel.startScan()
             }
         )
-        .modifier(RootKeyboardShortcuts(appState: appState))
         // Free-tier paywall — the only place the sheet is presented from
         // (v2.0 Phase 1). `CleanupOutcome.quotaExhausted` routes here via
         // `AppCoordinator.presentPaywall()`.
@@ -176,7 +150,7 @@ struct RootView: View {
                 }
         )
         // 粉碎窗 sheet（P2 T4）——同样挂独立 background 节点，与 paywall /
-        // onboarding 两个 sheet 互斥共存。
+        // onboarding / 磁盘健康详情互斥共存。
         .background(
             Color.clear
                 .sheet(isPresented: $showShredWindow) {
@@ -184,8 +158,17 @@ struct RootView: View {
                         .frame(minWidth: 560, minHeight: 420)
                 }
         )
-        // 统一预演 sheet（P2 T5）——独立 background 节点；组头/快捷回收
-        // 两条新入口在此呈现，确认只执行 sheet 上勾选的子集。
+        // 磁盘健康详情 sheet（P2 T9）——DiskHealthDetailView 保留为画布下钻
+        // 深链页（spec §2：不占导航面，从 DiskHealthCard 点击进入）。
+        .background(
+            Color.clear
+                .sheet(isPresented: $showDiskHealthDetail) {
+                    DiskHealthDetailView()
+                        .frame(minWidth: 560, minHeight: 420)
+                }
+        )
+        // 统一预演 sheet（P2 T5）——独立 background 节点；组头/快捷回收/
+        // 下钻三条入口在此呈现，确认只执行 sheet 上勾选的子集。
         .background(
             Color.clear
                 .sheet(item: $rehearsalPayload) { payload in
@@ -213,8 +196,8 @@ struct RootView: View {
                 }
         )
         // R-统一：Smart Care 落到 `.confirming` 时一律由预演 sheet 接管
-        //（覆盖 hero 快捷回收、smartCare 页 idle hero 与菜单栏 quickClean
-        // 三个触发源）；扫描失败则把 failedHero 展示给发起页。
+        //（覆盖 hero 快捷回收与菜单栏 quickClean 两个触发源）；扫描失败则
+        // 复位状态机（快捷回收独立失败页已随 P2 T9 退役）。
         .onReceive(smartCareViewModel.$state) { state in
             switch state {
             case .confirming:
@@ -223,7 +206,7 @@ struct RootView: View {
             case .failed:
                 if quickCleanStage == .running {
                     quickCleanStage = .none
-                    appState.navigation = .smartCare
+                    smartCareViewModel.reset()
                 }
             default:
                 break
@@ -241,11 +224,8 @@ struct RootView: View {
             // orchestrator 不再单独持有引擎。
             cleanupViewModel.useEngine(graph.cleanupEngine)
             cleanupViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
-            // 空间地图 renders the scan tree — rebind the roots provider now
-            // that scanResultsViewModel exists (init-time capture would be nil).
-            spaceMapViewModel.rebindRoots { scanResultsViewModel.categories }
-            // 空间解剖 reads the same live scan results（init-time capture 不可用，
-            // 同 rebindRoots 的晚绑定模式）。
+            // 空间解剖 reads the live scan results（init-time capture 不可用，
+            // rebindRoots 的晚绑定模式）。
             anatomyViewModel.rebindCategories { scanResultsViewModel.categories }
             // P2 T6 — 下钻页节点问答的数据源（AssistantNodePanel 复用组件）。
             anatomyViewModel.rebindScanResults { [weak scanResultsViewModel] in scanResultsViewModel }
@@ -263,14 +243,17 @@ struct RootView: View {
             }
             // Menu bar quick actions (C-8, v2.0 Phase 3): route through the
             // coordinator — the menu never mutates appState directly.
+            // P2 T9：扫描与快捷回收都落在解剖画布（独立扫描/Smart Care 页
+            // 已退役）。
             graph.menuBarManager.onQuickScan = {
                 NSApp.activate(ignoringOtherApps: true)
-                appState.navigation = .scan
+                appState.navigation = .anatomy
                 scanResultsViewModel.startScan()
             }
             graph.menuBarManager.onQuickClean = {
                 NSApp.activate(ignoringOtherApps: true)
-                appState.navigation = .smartCare
+                appState.navigation = .anatomy
+                quickCleanStage = .running
                 smartCareViewModel.runSmartCare()
             }
             graph.menuBarManager.onOpenSettings = {
@@ -299,25 +282,17 @@ struct RootView: View {
         Color.bgPrimary.ignoresSafeArea()
     }
 
-    // MARK: - Main Content
+    // MARK: - Main Content（P2 T9：3 分支 + sheet 呈现的下钻面）
     @ViewBuilder
     private var mainContent: some View {
         switch appState.navigation {
-        case .scan:
-            ScanResultsView(
-                viewModel: scanResultsViewModel,
-                smartCareViewModel: smartCareViewModel,
-                cleanupViewModel: cleanupViewModel
-            )
-        case .cleanup:
-            CleanupContentView(viewModel: cleanupViewModel)
         case .history:
             TimelineView()
         case .settings:
             SettingsView()
         // P1 T5 — 解剖视图首屏 → P2 T3 主画布（spec §3）:「你的 N GB，去哪了」。
-        // P2 T5 R-统一：页内两条预演入口（组头就地清理 / hero 快捷回收）
-        // 都经根部预演 sheet → 统一链执行 —— 本页仍零直接清理动作。
+        // P2 T5 R-统一：页内三条预演入口（组头就地清理 / hero 快捷回收 /
+        // 下钻「预演并清理」）都经根部预演 sheet → 统一链执行。
         case .anatomy:
             AnatomyView(
                 viewModel: anatomyViewModel,
@@ -331,19 +306,15 @@ struct RootView: View {
                     smartCareViewModel.runSmartCare()
                 },
                 onOpenDiskHealth: {
-                    appState.navigation = .diskHealth
+                    // P2 T9：详情不占导航面 —— 画布下钻以 sheet 呈现。
+                    showDiskHealthDetail = true
                 },
                 onGroupAction: { group in
                     presentGroupRehearsal(group)
                 },
                 onOpenShredder: {
-                    // 「+」菜单 → 粉碎窗（graph.shredderVM() 缓存装配复用，
-                    // 与 `.shredder` 页共享暂存状态）。
+                    // 「+」菜单 → 粉碎窗（graph.shredderVM() 缓存装配复用）。
                     showShredWindow = true
-                },
-                onSpaceMapLegacy: {
-                    // 「+」菜单 → 旧版空间地图（W4 退役前的逃生口）。
-                    appState.navigation = .spaceMap
                 },
                 onScanCancelled: {
                     // fix r1（Important 1）：取消必须真的取消 —— 扇出取消
@@ -361,46 +332,14 @@ struct RootView: View {
                     presentDrillDownRehearsal(targets: targets, context: context)
                 }
             )
-        // P1 T6 — smartCare 降级为「安全快捷回收」次级页（spec §3.1）：
-        // 单卡状态机 + 诚实说明行；不再充当导航枢纽。
-        case .smartCare:
-            SmartCareHeroView(viewModel: smartCareViewModel)
-        case .privacy:
-            PrivacyView()  // Phase C Task 7 — wire PrivacyView into nav
-        case .diskHealth:
-            DiskHealthDetailView()  // Phase D Task 12 — wire disk health detail view
-        case .startupItems:
-            StartupItemsView(viewModel: graph.startupItemsVM())
-        case .appUninstall:
-            AppUninstallView(viewModel: makeAppUninstallViewModel())
-        case .shredder:
-            ShredderView(viewModel: graph.shredderVM())
-        // v2.0 — toolbox + deep surfaces.
-        case .tools:
-            ToolboxView()
-        case .spaceMap:
-            SpaceMapView(viewModel: spaceMapViewModel)
-        case .duplicates:
-            DuplicateView(viewModel: makeDuplicateViewModel())
-        case .largeOld:
-            LargeOldView(viewModel: makeLargeOldViewModel())
-        case .photoClean:
-            PhotoCleanView(
-                viewModel: makePhotoCleanViewModel(),
-                similarityViewModel: makePhotoSimilarityViewModel()
-            )
-        case .maintenance:
-            MaintenanceView(viewModel: makeMaintenanceViewModel())
-        // P1 T5/T8：`.attribution` 验证面与 `.assistant` 聊天框均已退役 ——
-        // 枚举 case 已删，工具箱卡片直达 `.anatomy`，问答内嵌 DetailPanel。
         }
     }
 
     // MARK: - 统一预演（P2 T5 R-统一）
 
     /// 组头「就地清理」→ 组过滤预演：组内 `CanvasEntry.target` 直入预演链，
-    /// sheet 以组名为语境。三入口统一句式的第一条（下钻入口的 sheet 在
-    /// ScanResultsView 内，同一条 VM 链）。
+    /// sheet 以组名为语境。三入口统一句式的第一条（下钻入口的 sheet 同在
+    /// 根部呈现，同一条 VM 链）。
     private func presentGroupRehearsal(_ group: CanvasGroup) {
         let targets = group.entries.compactMap(\.target)
         // 组装器保证 rehearse 组的条目非空且带 target；防御性兜底而已。
@@ -435,8 +374,7 @@ struct RootView: View {
     }
 
     /// 预演确认 → 统一链执行（确认只执行 sheet 上勾选的子集）。快捷回收
-    /// 路径再把结果回填给 orchestrator（doneHero / failedHero）并导航到
-    /// smartCare 页展示；组头路径执行完就地关闭 sheet 即可。
+    /// 路径再把结果回填给 orchestrator；组头路径执行完就地关闭 sheet 即可。
     private func finishRehearsal(_ confirmed: [CleanupTarget],
                                  quickClean: Bool) async {
         // sheet 在 confirmedItems 为空时禁用确认；此守卫纯防御。
@@ -466,35 +404,9 @@ struct RootView: View {
         } else {
             smartCareViewModel.failQuickClean(message: "清理未能完成，请重试")
         }
-        appState.navigation = .smartCare
-    }
-
-    // MARK: - Tool view-model factories
-
-    /// v2.5 Tab 化工具箱：VM 全部缓存在 AppGraph（每个工具一份常驻），
-    /// Tab 切换只换视图，工具内部状态（扫描结果/已选/进度）永不丢失。
-    private func makeAppUninstallViewModel() -> AppUninstallViewModel {
-        graph.appUninstallVM { coordinator.presentPaywall() }
-    }
-
-    private func makeDuplicateViewModel() -> DuplicateViewModel {
-        graph.duplicatesVM { coordinator.presentPaywall() }
-    }
-
-    private func makeLargeOldViewModel() -> LargeOldViewModel {
-        graph.largeOldVM { coordinator.presentPaywall() }
-    }
-
-    private func makePhotoCleanViewModel() -> PhotoCleanViewModel {
-        graph.photoCleanVM { coordinator.presentPaywall() }
-    }
-
-    private func makePhotoSimilarityViewModel() -> PhotoSimilarityViewModel {
-        graph.photoSimilarityVM { coordinator.presentPaywall() }
-    }
-
-    private func makeMaintenanceViewModel() -> MaintenanceViewModel {
-        graph.maintenanceVM { coordinator.presentPaywall() }
+        // P2 T9：Smart Care 页已退役 —— 快捷回收留在画布上完成（结果状态
+        // 由 orchestrator 持有，下一次快捷回收重新计算）。
+        appState.navigation = .anatomy
     }
 
     // MARK: - Icon Rail
@@ -510,8 +422,7 @@ struct RootView: View {
                     .help("kWise")
                 Divider()
                     .padding(.horizontal, AppSpacing.sm)
-                // Fixed rail (v2.0 Phase 2): deep surfaces live in the
-                // toolbox instead of growing the rail.
+                // Fixed rail (P2 T1 收敛、T9 定稿): anatomy / history / settings.
                 ForEach(AppState.NavigationItem.railItems, id: \.self) { item in
                     IconRailButton(
                         item: item,
@@ -554,37 +465,3 @@ private struct IconRailButton: View, Equatable {
     }
 }
 
-// MARK: - Root Keyboard Shortcuts
-
-/// Global keyboard shortcuts for the main app window.
-private struct RootKeyboardShortcuts: ViewModifier {
-    @ObservedObject var appState: AppState
-    @State private var monitor: Any?
-
-    func body(content: Content) -> some View {
-        content
-            .onAppear {
-                monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-                    let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
-                    let isCommand = flags == .command
-
-                    guard isCommand else { return event }
-
-                    switch event.charactersIgnoringModifiers {
-                    case "i":
-                        // ⌘I — toggle the selection detail panel (macOS
-                        // inspector convention, UX 重构 Phase 1).
-                        appState.rightPanelVisible.toggle()
-                        return nil
-                    default: return event
-                    }
-                }
-            }
-            .onDisappear {
-                if let monitor = monitor {
-                    NSEvent.removeMonitor(monitor)
-                    self.monitor = nil
-                }
-            }
-    }
-}

@@ -83,25 +83,23 @@ final class AssistantIntentMatcherTests: XCTestCase {
 final class NewCopyAuditTests: XCTestCase {
 
     private static let v2FeatureFiles = [
-        "Features/Toolbox/ToolboxView.swift",
-        "Features/StartupItems/StartupItemsView.swift",
         "Features/Shredder/ShredderView.swift",
         "Features/Shredder/FileShredder.swift",
         "Features/History/TimelineView.swift",
         "Features/Report/MonthlyReport.swift",
         // P1 T8: AssistantView.swift 退役；问答内嵌面板继承审计位。
         "Features/Assistant/AssistantNodePanel.swift",
-        "Features/SpaceMap/SpaceMapView.swift",
-        "Features/SmartCare/SmartCareHeroView.swift",
-        "Features/PhotoClean/PhotoCleanView.swift",
         "Features/PhotoClean/PhotoSimilarityScanner.swift",
         "Features/AppUninstall/UninstallBackupStore.swift",
         "Features/AppUninstall/ResidueGroupingEngine.swift",
         "Features/AppUninstall/ResidueExplainer.swift",
-        "Features/AppUninstall/AppUninstallDetailPanel.swift",
         // P1 final (F1)：onboarding 是「信任契约」的第一块面板——虚假的
         // CoreML 承诺绝不允许在这里复活。
         "Features/Onboarding/OnboardingPages.swift",
+        // P2 T9：工具/地图/快捷回收表面随单一主画布退役（spec §2/§9）——
+        // ToolboxView / StartupItemsView / SpaceMapView / SmartCareHeroView /
+        // PhotoCleanView / AppUninstallDetailPanel 不再出现在审计清单，
+        // 退役本身由 SurfaceRetirementAuditTests 钉住。
     ]
 
     private static let bannedPhrases = [
@@ -178,20 +176,11 @@ final class NewCopyAuditTests: XCTestCase {
 
 /// P1 T6 — SmartCare 降级文案审计（spec §3.1）。次级页不得再宣称「一键焕新」
 /// 级叙事（本地化值里也不得复活——文案实际所在处一并扫，口径同
-/// AttributionCopyAuditTests），不再是导航枢纽；container-only 用户的授权卡
-/// 必须保留（controller ruling R1：未授权的快捷回收要诚实降级，不得空跑）。
+/// AttributionCopyAuditTests）。
+/// P2 T9：SmartCareHeroView 源文件随单一主画布退役 —— 源码级断言
+/// （hero 源码扫描 / 授权卡）由 SurfaceRetirementAuditTests 的零残留审计
+/// 取代；catalog 级断言（快捷回收诚实文案三语）原样保留。
 final class SmartCareDemotionCopyAuditTests: XCTestCase {
-
-    private var heroSource: String {
-        get throws {
-            let root = URL(fileURLWithPath: #filePath)
-                .deletingLastPathComponent() // Tests/
-                .deletingLastPathComponent() // kWise/
-            return try String(contentsOf:
-                root.appendingPathComponent("Features/SmartCare/SmartCareHeroView.swift"),
-                encoding: .utf8)
-        }
-    }
 
     // 实测 catalog 每条 value 是 { extractionState?, comment?, localizations }，
     // 不能直接当 [String: Unit] 解——只取 localizations（同 AttributionCopyAuditTests）。
@@ -207,12 +196,6 @@ final class SmartCareDemotionCopyAuditTests: XCTestCase {
         let catalog = try JSONDecoder().decode(Catalog.self,
                                                from: Data(contentsOf: url))
         return catalog.strings.compactMapValues { $0.localizations }
-    }
-
-    func testSmartCareHeroCopyIsHonestAfterDemotion() throws {
-        // 降级后的英雄文案不得再宣称「一键焕新」级叙事（spec §3.1）。
-        XCTAssertFalse(try heroSource.contains("焕然如新"),
-                       "降级页不得使用焕新级口号")
     }
 
     /// 「焕然如新」也不得借本地化值复活（key 本身就是中文文案，一并扫）。
@@ -245,67 +228,12 @@ final class SmartCareDemotionCopyAuditTests: XCTestCase {
         XCTAssertTrue(try XCTUnwrap(unit["ja"]?.stringUnit?.value).contains("30 日間"))
     }
 
-    /// rail / tooltip / 解剖入口共用 `nav.smartCare` —— 降级名三语固定。
+    /// rail / tooltip 退役后，`nav.smartCare` 三语值仍由 catalog 固定 ——
+    /// 防止旧降级名被改成焕新级口号后复活。
     func testNavSmartCareIsDemotedInAllLanguages() throws {
         let unit = try XCTUnwrap(try catalogLocalizations()["nav.smartCare"])
         XCTAssertEqual(unit["zh-Hans"]?.stringUnit?.value, "安全快捷回收")
         XCTAssertEqual(unit["en"]?.stringUnit?.value, "Safe Quick Clean")
         XCTAssertEqual(unit["ja"]?.stringUnit?.value, "安全なクイッククリーン")
-    }
-
-    /// 次级页不再充当导航枢纽：模块网格与 `appState.navigation` 跳转辅助删除。
-    func testSmartCareHeroIsNoLongerANavHub() throws {
-        let source = try heroSource
-        for marker in ["moduleGrid", "moduleCard", "appState.navigation"] {
-            XCTAssertFalse(source.contains(marker),
-                           "降级页不得再含导航枢纽痕迹: \(marker)")
-        }
-    }
-
-    /// Controller ruling R1 — 未授权（container-only）的快捷回收必须诚实降级
-    /// 为授权卡，不得删除授权分支。
-    func testScopeGrantCardSurvivesDemotion() throws {
-        XCTAssertTrue(try heroSource.contains("scopeGrantCard"),
-                      "R1: scopeGrantCard 必须保留")
-    }
-}
-
-/// v2.6 卸载详情面板 copy 审计（Task 6 Step 3）。C-1：界面只显示
-/// 友好路径，raw path 仅允许出现在 tooltip（`.help`）与勾选逻辑 key 中。
-final class UninstallCopyAuditTests: XCTestCase {
-
-    private var panelSource: String {
-        get throws {
-            let root = URL(fileURLWithPath: #filePath)
-                .deletingLastPathComponent() // Tests/
-                .deletingLastPathComponent() // kWise/
-            return try String(contentsOf:
-                root.appendingPathComponent("Features/AppUninstall/AppUninstallDetailPanel.swift"),
-                encoding: .utf8)
-        }
-    }
-
-    func testDetailPanelShowsFriendlyPath() throws {
-        XCTAssertTrue(try panelSource.contains("ScanTreeRow.friendlyPath(for:"),
-                      "残留行展示必须走 ScanTreeRow.friendlyPath（C-1）")
-    }
-
-    /// raw path 不得直接进入任何 `Text(...)` 展示 —— 唯一合法出口是
-    /// `.help(residue.url.path)` tooltip。`Text(ScanTreeRow.friendlyPath(
-    /// for: ...))` 属于友好路径展示，不算 raw 泄漏。
-    func testDetailPanelRawPathIsTooltipOnly() throws {
-        let source = try panelSource
-        XCTAssertTrue(source.contains(".help(residue.url.path)"),
-                      "raw path 必须保留为 tooltip")
-
-        let offending = source.components(separatedBy: .newlines).filter { line in
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-            guard trimmed.hasPrefix("//") == false else { return false }
-            return line.contains("Text(")
-                && line.contains(".url.path")
-                && !line.contains("friendlyPath")
-        }
-        XCTAssertTrue(offending.isEmpty,
-                      "C-1: raw path 不得进入 Text 展示（仅 .help tooltip 允许）: \(offending)")
     }
 }

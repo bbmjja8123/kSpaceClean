@@ -220,7 +220,7 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - 维护区（P2 T8 吸收自旧 MaintenanceView）
+    // MARK: - 维护区（P2 T8 吸收自旧维护独立页）
 
     /// 每张维护任务一行：引导任务给「复制终端命令」，引擎任务
     /// （清理用户日志）给真实清理按钮 —— VM 与引导文案全部复用，
@@ -302,7 +302,7 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - 隐私区（P2 T8 吸收自旧 PrivacyView / PrivacyClean）
+    // MARK: - 隐私区（P2 T8 吸收自旧隐私独立页 / PrivacyClean）
 
     /// 入口：扫描浏览器痕迹 → 分类结果（逐项可勾选）→ 汇总行清理。
     /// 扫描、勾选与清理全部走既有 `PrivacyViewModel`（PrivacyScanner

@@ -12,11 +12,10 @@ import DesignSystem
 // MARK: - 「+」菜单
 
 /// hero「+」菜单的注册项。顺序即菜单顺序（spec §3.8）。
+/// P2 T9：`.spaceMapLegacy` 逃生口随空间地图退役 —— 画布即地图。
 enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
     /// 粉碎窗（RootView 挂 sheet，graph.shredderVM() 现有装配复用）。
     case shredder
-    /// 旧版空间地图（W4 退役前的逃生口，走既有 .spaceMap 导航）。
-    case spaceMapLegacy
     /// 归因规则清单（规则 corpus 的诚实披露页）。
     case attributionRules
 
@@ -26,7 +25,6 @@ enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
     var titleKey: String {
         switch self {
         case .shredder: return "canvas.plusMenu.shredder"
-        case .spaceMapLegacy: return "canvas.plusMenu.spaceMapLegacy"
         case .attributionRules: return "canvas.plusMenu.attributionRules"
         }
     }
@@ -34,7 +32,6 @@ enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
     var systemImage: String {
         switch self {
         case .shredder: return "flame"
-        case .spaceMapLegacy: return "circle.hexagongrid.circle"
         case .attributionRules: return "list.bullet.rectangle.portrait"
         }
     }
@@ -47,13 +44,11 @@ enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
 /// 菜单项 → 动作的路由。测试钉住分发不串线；视图只消费。
 struct CanvasPlusMenuActions {
     var onShredder: () -> Void
-    var onSpaceMapLegacy: () -> Void
     var onAttributionRules: () -> Void
 
     func callAsFunction(_ item: CanvasPlusMenuItem) {
         switch item {
         case .shredder: onShredder()
-        case .spaceMapLegacy: onSpaceMapLegacy()
         case .attributionRules: onAttributionRules()
         }
     }

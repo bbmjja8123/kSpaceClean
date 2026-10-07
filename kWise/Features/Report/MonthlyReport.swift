@@ -4,7 +4,7 @@
 // cleanup history + disk samples: weekly freed bytes, top categories,
 // streak, and the disk-full forecast. Zero network.
 //
-// P2 T7 — MonthlyReportView 已退役：叙事头（NarrativeHeaderModel）+
+// P2 T7 — 独立月报页已退役：叙事头（NarrativeHeaderModel）+
 // TimelineView 的「本月」可展开区直接消费这份模型。视图/VM 删除，
 // `ReportGenerator.generate` 是唯一入口（Phase7CreativeTests 钉住）。
 import Foundation

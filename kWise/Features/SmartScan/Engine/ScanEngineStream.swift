@@ -3,7 +3,7 @@
 // Thin MainActor wrapper around `ScanOrchestrator` that surfaces the
 // parallel scan pipeline as an `AsyncStream<ScanProgress>` and folds the
 // per-category `ScanCategory` payloads into an `@Published` array the
-// SwiftUI `ScanResultsView` can render directly.
+// SwiftUI surfaces (canvas / drill-down) can render directly.
 //
 // Why this file exists:
 // * `ScanOrchestrator` (Task B3) is an `actor` that emits work asynchronously

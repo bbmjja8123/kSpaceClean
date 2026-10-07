@@ -3,7 +3,7 @@ import SwiftUI
 /// Empty / error state scenarios rendered by ``EmptyStateView``.
 ///
 /// Eight scenarios cover the empty-state surfaces used across
-/// `ScanResultsView`, history view, onboarding, and disk-full guards.
+/// the history view, onboarding, and disk-full guards.
 /// The first six are "happy-path" empties (first launch, no results,
 /// cleanup complete, no history, no FDA, scan failed); the last three are
 /// guarded error states (cleanup failed, disk full) plus the FDA permission

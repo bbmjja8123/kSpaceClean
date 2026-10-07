@@ -4,7 +4,7 @@ import Combine
 /// SwiftUI-facing wrapper around ``SmartCareOrchestrator``.
 ///
 /// Two reasons this exists separately from the orchestrator:
-/// 1. `SmartCareHeroView` (root of the home surface) owns this VM via
+/// 1. The home-surface quick-clean entry (canvas hero, P2 T9) owns this VM via
 ///    `@StateObject`; the orchestrator's `@MainActor` lifecycle is identical
 ///    but the project convention keeps SwiftUI glue in a `*ViewModel` file.
 /// 2. Exposes high-level intent (`runSmartCare`, `beginQuickCleanExecution`,
