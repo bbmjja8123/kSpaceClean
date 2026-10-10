@@ -8421,6 +8421,29 @@
         }
       }
     },
+    "canvas.scan.stopping": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopping scan…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描正在停止…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンを停止しています…"
+          }
+        }
+      }
+    },
     "canvas.shred.dropOverlay": {
       "extractionState": "manual",
       "localizations": {
@@ -8647,6 +8670,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "未能完成"
+          }
+        }
+      }
+    },
+    "canvas.quickclean.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing was recommended this time. The groups on the canvas below can still be reviewed and cleaned individually."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这次没有推荐清理的项目。下方画布里的分组仍可逐组预演清理。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今回は推奨項目がありません。下のキャンバスのグループは個別に確認してクリーンできます。"
           }
         }
       }

@@ -45,6 +45,26 @@ final class AnatomyScanStateTests: XCTestCase {
         func attribute(categories: [ScanCategory]) async -> AttributionReport { report }
     }
 
+    /// C1 锁定测试用：归因产出条目数 = 收到的 categories（树）条目数 ——
+    /// 「扇出是否消费了新鲜树」由组数量直接可辨（空树 → 零组，有树 → 组非空）。
+    private struct TreeSizedAttribution: AttributionScanning {
+        func attribute(categories: [ScanCategory]) async -> AttributionReport {
+            let items = (0..<categories.count).map { index in
+                SpaceAttribution(scope: .fileTree, paths: ["/Users/t/cat\(index)"],
+                                 bytes: 100, owner: .system, cause: .cache,
+                                 reclaim: .recycles(expectedDays: 7),
+                                 confidence: .certain, source: .rule, ruleID: "t",
+                                 evidence: [], lastModified: nil)
+            }
+            return AttributionReport(
+                items: items, refused: [], unattributedBytes: 0,
+                blackBox: BlackBoxBreakdown(usedBytes: 1_000, visibleBytes: 400,
+                                            residualBytes: 600, snapshotCount: 0,
+                                            status: .reconciled),
+                snapshots: [], generatedAt: Date())
+        }
+    }
+
     /// 挂在 gate 上的重复检测器 —— 放行后产出 1 组。
     private final class GatedDuplicateScanner: DuplicateScanning, @unchecked Sendable {
         let gate: Gate
@@ -382,5 +402,128 @@ final class AnatomyScanStateTests: XCTestCase {
         try? await Task.sleep(nanoseconds: 200_000_000)
         XCTAssertEqual(providerCalls, 1,
                        "三次 bind 只留一份订阅：isScanning 下降沿恰好触发一次刷新")
+    }
+
+    // MARK: - C1（P2 final）：统一扫描入口 —— 先引擎扫描，后对新鲜树扇出
+
+    /// 锁定测试：空初始树 → startScan → 引擎扫描产出 → 扇出消费新树 →
+    /// 组非空（空树 → 有树两阶段，注入 mock，零文件系统触达）。
+    func testCanvasScanAwaitsEngineScanThenFansOutFreshTree() async {
+        let vm = makeViewModel()
+        let scanVM = ScanResultsViewModel(engine: nil)
+        vm.rebindCategories { scanVM.categories }
+        vm.bindScanViewModel(scanVM)
+        vm.bindCoordinator(CanvasScanCoordinator(
+            attributionService: TreeSizedAttribution(),
+            duplicateScanner: nil, photoScanner: nil, largeFileScanner: nil))
+        // 扇出范围镜像生产装配：**此刻**的新鲜树（defaultScope 的
+        // categoriesProvider 等价物；这里用 rebindScope 避开能力探测）。
+        vm.rebindScope {
+            CanvasScanScope(categories: scanVM.categories, duplicateRoots: [],
+                            photoDirectories: [], largeFileRoots: [])
+        }
+
+        // 阶段一：引擎扫描开始（空树）—— 画布扫描入口等待引擎完成。
+        scanVM.assign(snapshot: .init(isScanning: true, hasScanned: false,
+                                      categories: [], totalSelectedSize: 0,
+                                      totalSelectedCount: 0, needsFullDiskAccess: false))
+        let task = Task { await vm.runCanvasScan() }
+
+        // 阶段二：引擎扫描完成 → 新鲜树落进 categories（生产里即
+        // startRealScan 的收尾 snapshot 写入）→ 扇出消费新树。
+        let tree = ScanCategory(categoryID: "c", title: "c", subItems: [])
+        scanVM.assign(snapshot: .init(isScanning: false, hasScanned: true,
+                                      categories: [tree], totalSelectedSize: 0,
+                                      totalSelectedCount: 0, needsFullDiskAccess: false))
+        await task.value
+
+        XCTAssertEqual(vm.scanPhase, .done)
+        XCTAssertEqual(vm.canvasReport?.groups.map(\.id), [.cause(.cache)],
+                       "扇出消费新鲜树 → cause 组非空（空树 → 有树两阶段）")
+    }
+
+    // MARK: - I3（P2 final）：取消后立即重扫不静默丢弃
+
+    func testRescanAfterCancelIsQueuedNotSilentlyDropped() async {
+        let vm = makeViewModel()
+        let gate = Gate()
+        let recorder = CallRecorder()
+        vm.bindCoordinator(makeCoordinator(
+            report: attributionReport(items: [causeItem(bytes: 400)]),
+            duplicate: GatedDuplicateScanner(gate: gate, recorder: recorder)))
+        vm.rebindScope {
+            CanvasScanScope(categories: [], duplicateRoots: [URL(fileURLWithPath: "/t")],
+                            photoDirectories: [], largeFileRoots: [])
+        }
+
+        vm.startScan()
+        let entered = await waitUntil { vm.scanPhase.isScanning }
+        XCTAssertTrue(entered)
+
+        vm.cancelScan()
+        XCTAssertEqual(vm.scanPhase, .stopping,
+                       "取消 → 诚实「正在停止」过渡态（管线尚未落定）")
+
+        // 停止窗口期立即重扫 —— 排队等待落定后真实启动，绝不静默丢弃。
+        vm.startScan()
+        await gate.open()
+        let finished = await waitUntil { vm.scanPhase == .done }
+        XCTAssertTrue(finished, "取消后的重扫最终真实启动（.done）")
+        XCTAssertEqual(recorder.count(of: "duplicates"), 2,
+                       "第二扇出真实运行（取消 + 重扫各一次）")
+    }
+
+    // MARK: - I2（P2 final）：就地清理成功后画布就地失效
+
+    func testApplyCleanupOutcomeRemovesAffectedEntriesAndGroups() async {
+        let vm = makeViewModel()
+        vm.bindCoordinator(makeCoordinator(report: attributionReport(items: [
+            SpaceAttribution(scope: .fileTree, paths: ["/Users/t/caches/keep"], bytes: 400,
+                             owner: .system, cause: .cache,
+                             reclaim: .recycles(expectedDays: 7), confidence: .certain,
+                             source: .rule, ruleID: "t", evidence: [], lastModified: nil),
+            SpaceAttribution(scope: .fileTree, paths: ["/Users/t/caches/x"], bytes: 300,
+                             owner: .system, cause: .cache,
+                             reclaim: .recycles(expectedDays: 7), confidence: .certain,
+                             source: .rule, ruleID: "t", evidence: [], lastModified: nil),
+        ])))
+        vm.rebindScope {
+            CanvasScanScope(categories: [], duplicateRoots: [],
+                            photoDirectories: [], largeFileRoots: [])
+        }
+        await vm.runCanvasScan()
+        XCTAssertEqual(vm.canvasReport?.groups.first?.totalBytes, 700)
+
+        // 下钻缓存预先存在 —— 清理后必须整体作废。
+        let group = vm.canvasReport?.groups.first
+        vm.drillDownModels[.cause(.cache)] = GroupDrillDownModel(
+            group: group!, entries: group!.entries)
+
+        // 清理掉 300 字节条目 → 组字节减少（700 → 400）、下钻缓存清空。
+        await vm.applyCleanupOutcome(CleanupOutcome(
+            succeeded: [URL(fileURLWithPath: "/Users/t/caches/x")], freedBytes: 300))
+        XCTAssertEqual(vm.canvasReport?.groups.first?.totalBytes, 400,
+                       "清理后画布组字节就地减少（不等下一次重扫）")
+        XCTAssertTrue(vm.drillDownModels.isEmpty, "下钻勾选缓存整体作废")
+
+        // 清理掉组内最后一条 → 整组消失（空组不出现契约）。
+        await vm.applyCleanupOutcome(CleanupOutcome(
+            succeeded: [URL(fileURLWithPath: "/Users/t/caches/keep")], freedBytes: 400))
+        XCTAssertTrue(vm.canvasReport?.groups.isEmpty ?? false, "清空的组连组一起消失")
+    }
+
+    // MARK: - I4（P2 final）：快捷回收估算用诚实字节
+
+    func testQuickCleanEstimateUsesHonestEntryBytes() {
+        let vm = makeViewModel()
+        let honestEntry = CanvasEntry(title: "copy", bytes: 100, badge: .recyclable)
+        let dataEntry = CanvasEntry(title: "data", bytes: 5_000, badge: .dataNotJunk)
+        let group = CanvasGroup(
+            id: .duplicates, icon: "doc.on.doc", title: "重复文件", subtitle: "",
+            totalBytes: 100, entries: [honestEntry, dataEntry], action: .rehearse)
+        vm.canvasReport = CanvasReport(groups: [group], uncovered: nil,
+                                       snapshots: [], generatedAt: Date())
+        XCTAssertEqual(vm.quickCleanEstimate, 100,
+                       "估算只累计绿徽条目的诚实字节（克隆增量），绝不吃全尺寸")
     }
 }

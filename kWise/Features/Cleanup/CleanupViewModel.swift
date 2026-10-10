@@ -133,6 +133,28 @@ public final class CleanupViewModel: ObservableObject {
         return CleanupRehearsal.build(targets: existing, attributions: attributionLookup?() ?? [])
     }
 
+    /// 预演段·画布条目直入（I1，P2 final）：组头就地清理 / 下钻勾选集携带
+    /// `CanvasEntry` 的入口走这里 —— target 之外还把五色徽章带进预演项，
+    /// sheet 据此把「数据·不属垃圾」等非绿徽条目**默认豁免**（C4）。
+    /// 存在性过滤与 `makeRehearsal(targets:)` 同一规则。
+    ///
+    /// - Parameter entries: 入选画布条目（如 `group.entries` / 下钻勾选集）。
+    /// - Returns: 与条目 1:1 同序的预演项（过滤消失路径与无 target 条目后）。
+    @discardableResult
+    public func makeRehearsal(entries: [CanvasEntry]) async -> [RehearsalItem] {
+        let existing = entries.compactMap { entry -> (CleanupTarget, BadgeKind)? in
+            guard let target = entry.target,
+                  (try? target.url.checkResourceIsReachable()) == true else { return nil }
+            return (target, entry.badge)
+        }
+        pendingTargets = existing.map(\.0)
+        let badges = Dictionary(existing.map { ($0.0.url.path, $0.1) },
+                                uniquingKeysWith: { first, _ in first })
+        return CleanupRehearsal.build(targets: pendingTargets,
+                                      attributions: attributionLookup?() ?? [],
+                                      badgesByPath: badges)
+    }
+
     /// 执行段（P1 T4；r1 修订）：执行集合**以传入的 `confirmedTargets` 为准**
     /// （预演 sheet 上用户取消勾选的子集绝不执行）；未传时回退到
     /// ``pendingTargets``（其语义为「上次预演的全部项」）。空集合 = 直接

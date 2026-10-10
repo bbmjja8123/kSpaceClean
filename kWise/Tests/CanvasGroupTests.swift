@@ -143,6 +143,37 @@ final class CanvasGroupTests: XCTestCase {
                      "克隆集 honestReclaimable == 0 → 空组不出现")
     }
 
+    /// I4（P2 final）：条目字节 = 诚实回收字节的占比分摊，不是原始全尺寸 ——
+    /// Σ entry.bytes == 组级 honestlyReclaimable ≠ 原始尺寸合计。
+    func testDetectorEntriesCarryHonestBytesNotFullSize() {
+        let mapped = ToolboxGroup(
+            id: UUID(), category: .identical, similarity: nil,
+            evidenceSummary: "字节级相同",
+            files: [
+                ToolboxFile(id: UUID(), url: URL(fileURLWithPath: "/Users/t/a"),
+                            size: 300, modificationDate: Date(),
+                            isAPFSClone: false, isSelected: false, reason: nil),
+                ToolboxFile(id: UUID(), url: URL(fileURLWithPath: "/Users/t/b"),
+                            size: 300, modificationDate: Date(),
+                            isAPFSClone: false, isSelected: true, reason: nil),
+                ToolboxFile(id: UUID(), url: URL(fileURLWithPath: "/Users/t/c"),
+                            size: 300, modificationDate: Date(),
+                            isAPFSClone: false, isSelected: true, reason: nil),
+            ],
+            isExpanded: true,
+            honestlyReclaimable: 200)
+        let group = CanvasGroupAssembler.assembleDuplicates(from: [mapped])
+
+        XCTAssertNotNil(group)
+        XCTAssertEqual(group?.totalBytes, 200, "组级总量保持诚实字节")
+        let entryBytes = group?.entries.reduce(Int64(0)) { $0 + $1.bytes }
+        XCTAssertEqual(entryBytes, 200,
+                       "Σ entry.bytes == 诚实总量，不夸大成原始 600")
+        XCTAssertEqual(group?.entries.first?.target?.size,
+                       group?.entries.first?.bytes,
+                       "target.size 同步为诚实字节（预演合计不夸大）")
+    }
+
     func testPhotosGroupReusesReasonsAndRehearseAction() {
         let engineGroup = dupGroup([
             file("/Users/t/IMG_1.jpg", size: 200, modifiedOffset: 0),

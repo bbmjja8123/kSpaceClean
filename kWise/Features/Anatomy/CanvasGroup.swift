@@ -214,18 +214,32 @@ public enum CanvasGroupAssembler {
     private static func detectorGroup(kind: GroupKind,
                                       groups: [ToolboxGroup],
                                       categoryID: String) -> CanvasGroup? {
-        let entries = groups.flatMap { group in
-            group.files.filter(\.isSelected).map { file in
-                CanvasEntry(
+        // I4（P2 final）：条目字节 = 诚实回收字节，不是原始全尺寸 ——
+        // APFS 克隆副本共享物理块，按全尺寸计会夸大「预计可回收」与下钻
+        // 勾选合计。组级 `honestlyReclaimable`（DetectionCore 链路已算过）
+        // 按条目原始尺寸占比分摊，保证 Σ entry.bytes == 组级诚实总量。
+        let entries = groups.flatMap { group -> [CanvasEntry] in
+            let selected = group.files.filter(\.isSelected)
+            let honestTotal = group.honestlyReclaimable
+            let rawSum = selected.reduce(Int64(0)) { $0 + $1.size }
+            return selected.map { file in
+                let honestBytes: Int64
+                if honestTotal > 0, rawSum > 0, honestTotal < rawSum {
+                    honestBytes = Int64((Double(file.size) / Double(rawSum))
+                                        * Double(honestTotal))
+                } else {
+                    honestBytes = file.size
+                }
+                return CanvasEntry(
                     id: file.id,
                     title: file.url.lastPathComponent,
-                    bytes: file.size,
+                    bytes: honestBytes,
                     badge: .recyclable,
                     detail: file.url.deletingLastPathComponent().path,
                     target: CleanupTarget(
                         id: file.id,
                         url: file.url,
-                        size: file.size,
+                        size: honestBytes,
                         risk: .recommended,
                         categoryID: categoryID))
             }

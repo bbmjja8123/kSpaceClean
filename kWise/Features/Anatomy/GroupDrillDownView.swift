@@ -51,6 +51,13 @@ final class GroupDrillDownModel: ObservableObject {
         entries.filter { checked.contains($0.id) }.compactMap(\.target)
     }
 
+    /// 勾选集 → 预演条目（I1，P2 final）：与 `checkedTargets` 同序同过滤，
+    /// 但保留 `CanvasEntry` 整体 —— 预演 sheet 需要徽章才能把非绿徽条目
+    /// 默认豁免（C4 违约修复）。
+    var checkedEntries: [CanvasEntry] {
+        entries.filter { checked.contains($0.id) && $0.target != nil }
+    }
+
     /// 勾选集的诚实字节合计 —— 只计带 target 的条目（无 target 的勾选项
     /// 既不预演也不计入，不夸大）。
     var checkedBytes: Int64 {
@@ -94,8 +101,9 @@ struct GroupDrillDownView: View {
     let group: CanvasGroup
     /// 下钻条目（cause 组 = 树切片；detection 组 = CanvasEntry 全量）。
     let entries: [CanvasEntry]
-    /// 底部「预演并清理」回调 —— 勾选集的 targets 直入根部统一预演 sheet。
-    let onRehearse: ([CleanupTarget]) -> Void
+    /// 底部「预演并清理」回调 —— 勾选集的条目（target + 徽章）直入根部
+    /// 统一预演 sheet（I1：徽章随条目进预演，非绿徽默认豁免）。
+    let onRehearse: ([CanvasEntry]) -> Void
     /// 面包屑「← 解剖」回调（宿主关闭下钻页；默认空实现便于预览/测试）。
     var onBack: () -> Void = {}
     /// 节点问答的数据源（扫描页 VM 弱引用；nil 时诚实降级为无数据答案卡）。
@@ -107,7 +115,7 @@ struct GroupDrillDownView: View {
 
     init(group: CanvasGroup,
                 entries: [CanvasEntry],
-                onRehearse: @escaping ([CleanupTarget]) -> Void,
+                onRehearse: @escaping ([CanvasEntry]) -> Void,
                 onBack: @escaping () -> Void = {},
                 scanResultsProvider: @escaping () -> ScanResultsViewModel? = { nil },
                 selectionModel: GroupDrillDownModel? = nil) {
@@ -252,7 +260,7 @@ struct GroupDrillDownView: View {
                 .foregroundStyle(Color.textSecondary)
             Spacer()
             Button {
-                onRehearse(model.checkedTargets)
+                onRehearse(model.checkedEntries)
             } label: {
                 Text("canvas.drilldown.rehearse")
             }

@@ -20,7 +20,22 @@ struct CleanupRehearsalSheet: View {
     /// r1 fix（Important 3）：执行中禁用确认按钮（双击守卫的 UI 侧，
     /// VM 侧另有同步 `isCleaning` 守卫兜底）。
     var isExecuting: Bool = false
-    @State private var exemptedPaths: Set<String> = []
+    /// I1（P2 final）：初始豁免集 = 带非 `.recyclable` 徽章的条目（C4）——
+    /// 「数据·不属垃圾」等项绝不默认进清理集；无徽章条目默认勾选。
+    @State private var exemptedPaths: Set<String>
+
+    init(items: [RehearsalItem],
+         context: String? = nil,
+         onConfirm: @escaping ([CleanupTarget]) -> Void,
+         onCancel: @escaping () -> Void,
+         isExecuting: Bool = false) {
+        self.items = items
+        self.context = context
+        self.onConfirm = onConfirm
+        self.onCancel = onCancel
+        self.isExecuting = isExecuting
+        _exemptedPaths = State(initialValue: CleanupRehearsal.defaultExemptedPaths(for: items))
+    }
 
     private var confirmedItems: [RehearsalItem] {
         items.filter { !exemptedPaths.contains($0.target.url.path) }
@@ -60,6 +75,17 @@ struct CleanupRehearsalSheet: View {
                             }
                         }
                         Spacer()
+                        // I1：五色徽章列 —— 与画布/下钻行同一语义映射
+                        //（CanvasGroupCardCopy，色/Symbol/文案三表测试钉住）。
+                        if let badge = item.badge {
+                            HStack(spacing: 2) {
+                                Image(systemName: CanvasGroupCardCopy.symbol(for: badge))
+                                Text(CanvasGroupCardCopy.badgeTitle(for: badge))
+                            }
+                            .font(AppFont.caption)
+                            .foregroundStyle(CanvasGroupCardCopy.color(for: badge))
+                            .help(CanvasGroupCardCopy.badgeTitle(for: badge))
+                        }
                         Text(FileSizeFormatter.abbreviated(from: item.target.size))
                             .font(AppFont.caption.monospaced())
                     }

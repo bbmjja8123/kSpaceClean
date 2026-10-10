@@ -25,6 +25,9 @@ extension AnatomyViewModel {
         case idle
         /// 扇出或引擎扫描进行中；`path` 为空表示尚无当前路径（准备段）。
         case scanning(progress: Double, path: String)
+        /// 上一轮扫描正在收尾（用户已取消 / 重扫已排队等待落定）——
+        /// P2 final I3 的诚实过渡态：既不伪造进度，也不静默吞掉重扫。
+        case stopping
         /// 最近一次扇出扫描已完成。
         case done
 
@@ -40,6 +43,7 @@ extension AnatomyViewModel {
     /// 注入画布扇出协调器（RootView onAppear 晚绑定，同 rebindCategories 模式）。
     /// 同时订阅协调器的增量组产出：每组完成即推进粗粒度里程碑进度 ——
     /// 归因/重复/照片/大文件四段，画布不清空、hero 进度不撒谎。
+    /// 另订阅 `isRunning` 下降沿：`.stopping` 过渡态（I3）落定后回 idle。
     public func bindCoordinator(_ coordinator: CanvasScanCoordinator) {
         canvasCoordinator = coordinator
         coordinator.$groups
@@ -55,6 +59,20 @@ extension AnatomyViewModel {
                 }
             }
             .store(in: &canvasCancellables)
+        // I3（P2 final）：扇出管线停止（含取消后的自然收尾）→ 若 hero 正处
+        // 「正在停止」过渡态则回 idle。兜底通道（常规收尾由 runCanvasScan
+        // 被取消的 continuation 就地复位 —— 它恰在 isRunning 落 false 后
+        // 恢复，不会被观察到 stale 的 .stopping）。
+        coordinator.$isRunning
+            .removeDuplicates()
+            .sink { [weak self] running in
+                Task { @MainActor in
+                    guard let self, self.canvasCoordinator === coordinator, !running,
+                          case .stopping = self.scanPhase else { return }
+                    self.scanPhase = .idle
+                }
+            }
+            .store(in: &canvasCancellables)
     }
 
     /// 注入扫描页 VM（RootView onAppear 晚绑定）。
@@ -65,6 +83,9 @@ extension AnatomyViewModel {
     /// 幂等：重复 bind 先撤旧订阅再挂新的（fix r1 ⑤——重复 bind 不累积）。
     func bindScanViewModel(_ vm: ScanResultsViewModel) {
         scanVMBindCancellables.removeAll()
+        // C1（P2 final）：统一扫描入口 —— runCanvasScan 先经这里绑定的
+        // 扫描页 VM await 引擎扫描完成，再对新鲜树做归因/检测器扇出。
+        scanVM = vm
 
         vm.isScanningPublisher
             .dropFirst()
@@ -108,33 +129,76 @@ extension AnatomyViewModel {
 
     // MARK: - 动作
 
-    /// hero「重新扫描」/ ⌘R 的画布扫描入口。fire-and-forget；测试可直接
-    /// await `runCanvasScan()`。重入守卫见 `runCanvasScan`。
+    /// hero「重新扫描」/ ⌘R / 菜单栏 quickScan / onboarding 首扫的**唯一**
+    /// 画布扫描入口（C1）。fire-and-forget；测试可直接 await `runCanvasScan()`。
+    ///
+    /// 重入语义：
+    /// - 活跃扫描期（`isRunning` 且非 `.stopping`）的重复触发 → 忽略
+    ///   （【交接 T2】isRunning 守卫，既有契约）；
+    /// - `.stopping` 过渡期（用户已取消、上一轮管线正在收尾）的重扫 →
+    ///   排队等落定后真实启动 —— 取消后立即重扫绝不静默丢弃（I3）。
     public func startScan() {
-        guard let coordinator = canvasCoordinator, !coordinator.isRunning else { return }
+        guard let coordinator = canvasCoordinator else { return }
+        if coordinator.isRunning, scanPhase != .stopping { return }
         canvasScanTask?.cancel()
         canvasScanTask = Task { await runCanvasScan() }
     }
 
-    /// hero「取消」—— 取消扇出 Task；进度态回到 idle（不伪造完成态，
-    /// 也不把取消当成功写 canvasReport）。
+    /// hero「取消」—— 取消扇出 Task；不伪造完成态，也不把取消当成功写
+    /// canvasReport。管线尚未落定时进入 `.stopping` 诚实过渡态（I3），
+    /// 由 bindCoordinator 的 isRunning 下降沿订阅回 idle。
     public func cancelScan() {
         canvasScanTask?.cancel()
         canvasScanTask = nil
-        if case .scanning = scanPhase {
+        if canvasCoordinator?.isRunning == true {
+            if case .scanning = scanPhase {
+                scanPhase = .stopping
+            }
+        } else if scanPhase.isScanning {
             scanPhase = .idle
         }
     }
 
     /// 可等待的扇出扫描管线（startScan 的实现体）。
+    ///
+    /// C1（P2 final）统一扫描入口，三段：
+    /// 1. 若上一轮扇出仍在收尾（`.stopping` 排队的重扫）→ 等其落定；
+    /// 2. await 引擎扫描完成（沿用 SmartCareOrchestrator 的轮询模式，
+    ///    进度经 bindScanViewModel 的镜像上 hero）；
+    /// 3. 对**新鲜树**做归因 + 检测器扇出 —— 首启/重扫时画布组不再吃
+    ///    空树的哑火（旧实现只扇出、从不跑引擎，categoriesProvider 读
+    ///    到的是空 categories → 零 cause 组）。
     func runCanvasScan() async {
-        guard let coordinator = canvasCoordinator, !coordinator.isRunning else { return }
+        guard let coordinator = canvasCoordinator else { return }
+        // 段 1：上一轮管线正在收尾 —— 诚实呈现「正在停止」，不静默丢弃。
+        if coordinator.isRunning {
+            if case .scanning = scanPhase { scanPhase = .stopping }
+            while coordinator.isRunning {
+                try? await Task.sleep(nanoseconds: 50_000_000)
+                if Task.isCancelled { return }
+            }
+        }
+        // 段 2：引擎扫描（扫描页 VM）。已在扫描中（如 ⌘N 先到）则顺延等待；
+        // 未绑定（测试/降级路径）直接跳到扇出 —— 保持既有测试契约。
+        if let scanVM {
+            scanVM.startScan()
+            while scanVM.isScanning {
+                // 进度由 bindScanViewModel 的镜像订阅驱动（engineScanMirrored）。
+                try? await Task.sleep(nanoseconds: 100_000_000)
+                if Task.isCancelled { return }
+            }
+        }
+        guard !Task.isCancelled else { return }
         scanPhase = .scanning(progress: 0, path: "")
+        // 段 3：扇出消费**此刻**的新鲜树（provider 在扫描完成后才求值）。
         let scope = canvasScopeProvider?() ?? Self.defaultScope(
             categories: categoriesProvider?() ?? [])
         let report = await coordinator.runScan(scope: scope)
         guard !Task.isCancelled else {
-            scanPhase = .idle
+            // I3：取消的收尾 —— 本 continuation 恰在 isRunning 落 false 之后
+            // 恢复，就地复位 .stopping（外部观察者不会看到过期的停止态）。
+            // 仅在仍处 .stopping 时写（排队重扫的 .scanning 绝不被回退）。
+            if case .stopping = scanPhase { scanPhase = .idle }
             return
         }
         // 【交接 T2】消费 runScan 返回值前先查 isRunning —— 重入返回的

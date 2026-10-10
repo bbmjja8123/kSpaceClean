@@ -87,26 +87,6 @@ public final class PrivacyScanner: Sendable {
         return items
     }
 
-    /// Moves every URL in `items` to the Trash.
-    /// - Returns: The number of items successfully trashed.
-    public func cleanup(items: [PrivacyItem]) async -> Int {
-        var successCount = 0
-        for item in items {
-            guard fm.fileExists(atPath: item.url.path) else { continue }
-            do {
-                var trashedURL: NSURL?
-                try fm.trashItem(at: item.url, resultingItemURL: &trashedURL)
-                successCount += 1
-            } catch {
-                // Silently skip items that cannot be trashed (e.g. permission
-                // denied, file in use).  The caller may inspect the returned
-                // count to show a partial-success notice.
-                continue
-            }
-        }
-        return successCount
-    }
-
     // MARK: - Safari
 
     private func scanSafari() -> [PrivacyItem] {

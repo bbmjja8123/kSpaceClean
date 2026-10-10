@@ -149,6 +149,27 @@ struct SettingsView: View {
                     PaywallView(store: graph.storeManager)
                 }
         )
+        // I5（P2 final）：隐私清理的统一预演 sheet —— 与主画布同一张
+        // CleanupRehearsalSheet、同一条 CleanupViewModel 链（确认只执行
+        // sheet 上勾选的子集；取消即作废）。
+        .background(
+            Color.clear
+                .sheet(isPresented: Binding(
+                    get: { privacyVM.rehearsalItems != nil },
+                    set: { if !$0 { privacyVM.cancelRehearsal() } })) {
+                    if let items = privacyVM.rehearsalItems {
+                        CleanupRehearsalSheet(
+                            items: items,
+                            context: String(localized: String.LocalizationValue("settings.privacy.header")),
+                            onConfirm: { confirmed in
+                                Task { await privacyVM.confirmRehearsal(confirmed) }
+                            },
+                            onCancel: { privacyVM.cancelRehearsal() },
+                            isExecuting: privacyVM.isCleaning)
+                            .frame(width: 560, height: 480)
+                    }
+                }
+        )
     }
 
     // MARK: - Launch at login (SMAppService)
@@ -404,7 +425,10 @@ struct SettingsView: View {
                     .disabled(privacyVM.isCleaning)
 
                 Button(privacyVM.isCleaning ? String(localized: String.LocalizationValue("settings.privacy.cleaningButton")) : String(localized: String.LocalizationValue("settings.privacy.cleanSelectedButton"))) {
-                    Task { await privacyVM.cleanupSelected() }
+                    // I5（P2 final）：与主画布同一句式 —— 选中项 → 预演 sheet
+                    // → 统一链执行（引擎 trash + 历史 + 回滚），不再是免预演
+                    // 免门控的第二句式。
+                    Task { await privacyVM.prepareRehearsal() }
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.danger)

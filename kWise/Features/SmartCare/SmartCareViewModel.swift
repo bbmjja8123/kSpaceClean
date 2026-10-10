@@ -24,6 +24,11 @@ public final class SmartCareViewModel: ObservableObject {
     /// Forwards the orchestrator's published state to SwiftUI.
     @Published public private(set) var state: SmartCareState
 
+    /// M3（P2 final）：本次快捷回收的推荐集为空 —— hero 呈现诚实空态文案
+    /// （不再弹一张确认键禁用的空预演 sheet）。`runSmartCare` / `reset`
+    /// 时清除。
+    @Published public private(set) var showsEmptyRecommendation = false
+
     /// Convenience bool — `true` while the orchestrator is in
     /// `.scanning`, `.recommending`, or `.cleaning`.
     public var isBusy: Bool {
@@ -60,8 +65,17 @@ public final class SmartCareViewModel: ObservableObject {
     /// Hero CTA. Triggers `Smart Care`: scan → auto-pick → `.confirming`
     /// （随后由根部预演 sheet 接管，R-统一）。
     public func runSmartCare() {
+        showsEmptyRecommendation = false
         orchestrator.start()
         state = orchestrator.state
+    }
+
+    /// 推荐集为空（M3）：复位状态机并点亮 hero 的诚实空态文案。
+    /// 由 RootView 在 `.confirming` 落地且 `recommendedTargets.isEmpty` 时调用。
+    public func markEmptyRecommendation() {
+        orchestrator.reset()
+        state = orchestrator.state
+        showsEmptyRecommendation = true
     }
 
     /// 推荐项 → 预演入参（C4：危险项已在 adapter 门控中排除）。
@@ -90,6 +104,7 @@ public final class SmartCareViewModel: ObservableObject {
 
     /// Re-arm for another run.
     public func reset() {
+        showsEmptyRecommendation = false
         orchestrator.reset()
         state = orchestrator.state
     }

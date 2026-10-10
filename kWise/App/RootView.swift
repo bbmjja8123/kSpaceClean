@@ -112,17 +112,17 @@ struct RootView: View {
         .modifier(DragToShredOverlay(model: dragToShred))
         .scanKeyboardShortcuts(
             onNewScan: {
-                // ⌘N — switch to the canvas and start a fresh scan
+                // ⌘N — switch to the canvas and start a fresh scan.
+                // C1（P2 final）：所有扫描入口收敛到画布唯一入口 —— 先引擎
+                // 扫描、后对新鲜树扇出，画布不再吃空树哑火。
                 appState.navigation = .anatomy
-                scanResultsViewModel.startScan()
+                anatomyViewModel.startScan()
             },
             onRescan: {
-                // ⌘R — re-run the scan using the same root paths and filters
-                // (ScanResultsViewModel does not differentiate "new" from
-                // "rescan"; both delegate to startScan(), which cancels any
-                // in-flight orchestrator run before starting a new one.)
+                // ⌘R — 同一入口（画布管线自身区分首扫/重扫；.stopping 过渡
+                // 期的重扫会被排队而非静默丢弃，I3）。
                 appState.navigation = .anatomy
-                scanResultsViewModel.startScan()
+                anatomyViewModel.startScan()
             }
         )
         // Free-tier paywall — the only place the sheet is presented from
@@ -249,7 +249,8 @@ struct RootView: View {
             graph.menuBarManager.onQuickScan = {
                 NSApp.activate(ignoringOtherApps: true)
                 appState.navigation = .anatomy
-                scanResultsViewModel.startScan()
+                // C1（P2 final）：菜单栏扫描同样收敛到画布唯一入口。
+                anatomyViewModel.startScan()
             }
             graph.menuBarManager.onQuickClean = {
                 NSApp.activate(ignoringOtherApps: true)
@@ -334,10 +335,11 @@ struct RootView: View {
                         smartCareViewModel.reset()
                     }
                 },
-                onDrillDownRehearse: { context, targets in
-                    // P2 T6 — 下钻「预演并清理」：勾选集 targets 直入同一条
-                    // 预演链，sheet 以组名为语境（与组头就地清理同源）。
-                    presentDrillDownRehearsal(targets: targets, context: context)
+                onDrillDownRehearse: { context, entries in
+                    // P2 T6 — 下钻「预演并清理」：勾选集条目（target + 徽章）
+                    // 直入同一条预演链，sheet 以组名为语境（与组头就地清理
+                    // 同源；I1 徽章进预演 → 非绿徽默认豁免）。
+                    presentDrillDownRehearsal(entries: entries, context: context)
                 }
             )
         }
@@ -349,34 +351,42 @@ struct RootView: View {
     /// sheet 以组名为语境。三入口统一句式的第一条（下钻入口的 sheet 同在
     /// 根部呈现，同一条 VM 链）。
     private func presentGroupRehearsal(_ group: CanvasGroup) {
-        let targets = group.entries.compactMap(\.target)
+        // I1（P2 final）：entries 直入预演 —— 徽章随条目进 sheet，
+        // 「数据·不属垃圾」等非绿徽条目默认豁免（C4 违约修复）。
+        let entries = group.entries.filter { $0.target != nil }
         // 组装器保证 rehearse 组的条目非空且带 target；防御性兜底而已。
-        guard !targets.isEmpty else { return }
+        guard !entries.isEmpty else { return }
         Task {
-            let items = await cleanupViewModel.makeRehearsal(targets: targets)
+            let items = await cleanupViewModel.makeRehearsal(entries: entries)
             rehearsalPayload = RehearsalSheetPayload(items: items, context: group.title)
         }
     }
 
-    /// 下钻页「预演并清理」（P2 T6）→ 勾选集预演：勾选集 targets 直入
-    /// `makeRehearsal(targets:)`（risk/bundleID/categoryID 原样保留），sheet
-    /// 以下钻组名为语境；确认执行复用统一链 `executeConfirmedCleanup`。
-    /// 勾选集为空时按钮已禁用，此守卫纯防御。
-    private func presentDrillDownRehearsal(targets: [CleanupTarget], context: String) {
-        guard !targets.isEmpty else { return }
+    /// 下钻页「预演并清理」（P2 T6）→ 勾选集预演：勾选集**条目**直入
+    /// `makeRehearsal(entries:)`（target 的 risk/bundleID/categoryID 与
+    /// 五色徽章原样保留），sheet 以下钻组名为语境；确认执行复用统一链
+    /// `executeConfirmedCleanup`。勾选集为空时按钮已禁用，此守卫纯防御。
+    private func presentDrillDownRehearsal(entries: [CanvasEntry], context: String) {
+        guard !entries.isEmpty else { return }
         Task {
-            let items = await cleanupViewModel.makeRehearsal(targets: targets)
+            let items = await cleanupViewModel.makeRehearsal(entries: entries)
             rehearsalPayload = RehearsalSheetPayload(items: items, context: context)
         }
     }
 
     /// hero 快捷回收 → 推荐项预演（已勾选好）。C4：`recommendedTargets`
     /// 已由 `IntentScanAdapter` 的 `riskLevel.defaultChecked` 门控保证不含
-    /// 危险项。
+    /// 危险项。M3（P2 final）：推荐集为空时不再弹可禁用的空 sheet ——
+    /// 复位状态机并在 hero 呈现诚实空态文案。
     private func presentQuickCleanRehearsal() {
+        let recommended = smartCareViewModel.recommendedTargets
+        guard !recommended.isEmpty else {
+            quickCleanStage = .none
+            smartCareViewModel.markEmptyRecommendation()
+            return
+        }
         Task {
-            let items = await cleanupViewModel.makeRehearsal(
-                targets: smartCareViewModel.recommendedTargets)
+            let items = await cleanupViewModel.makeRehearsal(targets: recommended)
             rehearsalPayload = RehearsalSheetPayload(items: items)
         }
     }
@@ -403,6 +413,11 @@ struct RootView: View {
         // 推断（上次成功的旧字节不能顶替本次失败展示成 doneHero）。
         let outcome = await cleanupViewModel.executeConfirmedCleanup(
             sizes: nil, confirmedTargets: confirmed)
+        // I2（P2 final）：就地清理成功 → 画布就地失效（移除已清理条目/组、
+        // 作废下钻勾选缓存、重跑归因）—— 不等下一次重扫画布才反映新事实。
+        if let outcome {
+            await anatomyViewModel.applyCleanupOutcome(outcome)
+        }
         guard quickClean else { return }
         quickCleanStage = .none
         if let outcome {

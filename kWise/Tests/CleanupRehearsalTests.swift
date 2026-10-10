@@ -1,6 +1,7 @@
 import XCTest
 @testable import kWise
 
+@MainActor
 final class CleanupRehearsalTests: XCTestCase {
     private func target(_ path: String, size: Int64 = 100) -> CleanupTarget {
         CleanupTarget(url: URL(fileURLWithPath: path), size: size, risk: .recommended)
@@ -39,5 +40,50 @@ final class CleanupRehearsalTests: XCTestCase {
                                        evidence: [], lastModified: nil)
         let items = CleanupRehearsal.build(targets: [target("/m")], attributions: [refused])
         XCTAssertEqual(items[0].attribution?.confidence, .refused)
+    }
+
+    // MARK: - I1（P2 final）：徽章进预演 + 非绿徽默认豁免（C4）
+
+    /// 含「数据·不属垃圾」条目的组预演 → 该项初始豁免（锁定测试）。
+    func testDataNotJunkEntryDefaultsExempted() {
+        let items = [
+            RehearsalItem(target: target("/junk"), attribution: nil, badge: .recyclable),
+            RehearsalItem(target: target("/data"), attribution: nil, badge: .dataNotJunk),
+            RehearsalItem(target: target("/migrate"), attribution: nil, badge: .migrate),
+            RehearsalItem(target: target("/attention"), attribution: nil, badge: .attention),
+            RehearsalItem(target: target("/leave"), attribution: nil, badge: .leaveAlone),
+            // 无徽章（快捷回收推荐项等树来源）→ 保持默认勾选。
+            RehearsalItem(target: target("/tree-pick"), attribution: nil, badge: nil),
+        ]
+        let exempted = CleanupRehearsal.defaultExemptedPaths(for: items)
+        XCTAssertEqual(exempted, ["/data", "/migrate", "/attention", "/leave"],
+                       "非 .recyclable 徽章一律初始豁免（C4）；绿徽与无徽章默认勾选")
+    }
+
+    /// `makeRehearsal(entries:)` 把 CanvasEntry 的徽章原样带进预演项。
+    func testMakeRehearsalEntriesCarriesBadge() async throws {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("rehearsal-badge-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let junk = root.appendingPathComponent("junk.bin")
+        let data = root.appendingPathComponent("data.bin")
+        try Data("x".utf8).write(to: junk)
+        try Data("x".utf8).write(to: data)
+
+        let vm = CleanupViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true), quota: nil))
+        let entries = [
+            CanvasEntry(title: "junk", bytes: 10, badge: .recyclable,
+                        target: CleanupTarget(url: junk, size: 10, risk: .recommended)),
+            CanvasEntry(title: "data", bytes: 20, badge: .dataNotJunk,
+                        target: CleanupTarget(url: data, size: 20, risk: .optional)),
+        ]
+        let items = await vm.makeRehearsal(entries: entries)
+        XCTAssertEqual(items.map(\.target.url), [junk, data], "与条目 1:1 同序")
+        XCTAssertEqual(items.map(\.badge), [.recyclable, .dataNotJunk],
+                       "徽章随条目进预演（sheet 据此渲染五色徽章列 + 默认豁免）")
+        XCTAssertEqual(CleanupRehearsal.defaultExemptedPaths(for: items), [data.path],
+                       "含 dataNotJunk 条目的组预演 → 该项初始 exempted")
     }
 }

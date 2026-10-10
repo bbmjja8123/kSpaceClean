@@ -15,10 +15,19 @@ public final class PrivacyViewModel: ObservableObject {
     @Published public var isCleaning = false
     /// Human-readable message shown when scan or cleanup finishes.
     @Published public var statusMessage: String?
+    /// I5（P2 final）：待预演的清单（非 nil → 宿主呈现统一预演 sheet）。
+    /// 确认/取消后置回 nil。隐私清理不再有免预演免门控的第二句式。
+    @Published public private(set) var rehearsalItems: [RehearsalItem]?
 
     private let scanner = PrivacyScanner()
+    /// 统一清理链（I5）：预演 → executeConfirmedCleanup（引擎 trash +
+    /// 清理历史 + 30 天回滚）。引擎语义完全覆盖旧的 `PrivacyScanner.cleanup`
+    /// 逐项 trashItem（普通移废纸篓），无安全擦除等引擎覆盖不了的语义。
+    public let cleanupViewModel: CleanupViewModel
 
-    public init() {}
+    public init(cleanupViewModel: CleanupViewModel? = nil) {
+        self.cleanupViewModel = cleanupViewModel ?? CleanupViewModel()
+    }
 
     // MARK: - Scan
 
@@ -92,29 +101,43 @@ public final class PrivacyViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Cleanup
+    // MARK: - Cleanup（I5：统一预演链 —— 选中项 → CleanupTarget → 预演 sheet → executeConfirmedCleanup）
 
-    /// Moves all selected items to the Trash.
-    /// - Returns: The number of items successfully cleaned.
-    @discardableResult
-    public func cleanupSelected() async -> Int {
+    /// 选中项 → 预演段：登录态文件（Cookie 等）标 `.caution`（与 C-5 分级
+    /// 确认同语义），其余 `.recommended`。产出清单落在 `rehearsalItems`，
+    /// 宿主据此呈现统一预演 sheet；此步不动任何文件。
+    public func prepareRehearsal() async {
         let toClean = selectedItems
-        guard !toClean.isEmpty else { return 0 }
-
-        isCleaning = true
+        guard !toClean.isEmpty else { return }
         statusMessage = nil
-
-        let count = await scanner.cleanup(items: toClean)
-
-        // Remove successfully cleaned items from the published list.
-        // We match by id because the `url` may already be gone after trashing.
-        if count > 0 {
-            let cleanedIDs = Set(toClean.prefix(count).map(\.id))
-            items.removeAll { cleanedIDs.contains($0.id) }
+        let targets = toClean.map { item in
+            CleanupTarget(url: item.url,
+                          size: item.estimatedSize,
+                          risk: item.isLoginState ? .caution : .recommended)
         }
+        rehearsalItems = await cleanupViewModel.makeRehearsal(targets: targets)
+    }
 
-        isCleaning = false
-        statusMessage = "清理完成，已移除 \(count) 项"
-        return count
+    /// 预演确认 → 统一链执行段：引擎 trash + 清理历史 + 回滚；成功后把
+    /// 已清理项从列表移除（按路径匹配 —— url 清理后可能已不存在）。
+    public func confirmRehearsal(_ confirmed: [CleanupTarget]) async {
+        rehearsalItems = nil
+        guard !confirmed.isEmpty else { return }
+        isCleaning = true
+        defer { isCleaning = false }
+        let outcome = await cleanupViewModel.executeConfirmedCleanup(
+            confirmedTargets: confirmed)
+        guard let outcome else {
+            statusMessage = "清理未能完成，请重试"
+            return
+        }
+        let cleaned = Set(outcome.succeeded.map(\.path))
+        items.removeAll { cleaned.contains($0.url.path) }
+        statusMessage = "清理完成，已移除 \(outcome.successCount) 项"
+    }
+
+    /// 预演取消：丢弃清单，不动任何文件。
+    public func cancelRehearsal() {
+        rehearsalItems = nil
     }
 }

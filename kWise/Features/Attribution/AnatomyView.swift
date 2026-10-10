@@ -53,6 +53,9 @@ public final class AnatomyViewModel: ObservableObject {
     var scanVMBindCancellables: Set<AnyCancellable> = []
     /// 引擎扫描镜像中（hero 进度条数据源 = ScanResultsViewModel.$progress）。
     var engineScanMirrored = false
+    /// C1（P2 final）：bindScanViewModel 绑定的扫描页 VM —— runCanvasScan
+    /// 的统一入口先 await 它的引擎扫描完成，再对新鲜树做扇出。
+    var scanVM: ScanResultsViewModel?
 
     private let service: AttributionService
     /// internal：AnatomyScanState.swift 的扩展（runCanvasScan 完成后的
@@ -118,6 +121,38 @@ public final class AnatomyViewModel: ObservableObject {
         guard let report else { return nil }
         return CanvasGroupAssembler.uncertainCard(from: report.refused)
     }
+
+    /// I2（P2 final）：就地清理成功后画布**就地失效** —— 不等下一次重扫：
+    /// - 从 `canvasReport.groups` 移除已执行 targets 命中的条目（整组清空
+    ///   则连组一起消失 —— 组装器「空组不出现」契约）；
+    /// - 作废下钻勾选态缓存（旧组已不存在，陈旧勾选是假承诺）；
+    /// - 重跑归因（纯内存，hero 构成条/未覆盖卡随新事实刷新）。
+    public func applyCleanupOutcome(_ outcome: CleanupOutcome) async {
+        let cleanedPaths = Set(outcome.succeeded.map(\.path))
+        guard !cleanedPaths.isEmpty else { return }
+        if let report = canvasReport {
+            let groups = report.groups.compactMap { group -> CanvasGroup? in
+                let remaining = group.entries.filter { entry in
+                    guard let path = entry.target?.url.path else { return true }
+                    return !cleanedPaths.contains(path)
+                }
+                guard remaining.count != group.entries.count else { return group }
+                return CanvasGroupAssembler.assemble(
+                    kind: group.id,
+                    icon: group.icon,
+                    title: group.title,
+                    subtitle: group.subtitle,
+                    action: group.action,
+                    entries: remaining)
+            }
+            canvasReport = CanvasReport(groups: groups,
+                                        uncovered: report.uncovered,
+                                        snapshots: report.snapshots,
+                                        generatedAt: Date())
+        }
+        drillDownModels.removeAll()
+        await refresh()
+    }
 }
 
 public struct AnatomyView: View {
@@ -144,10 +179,10 @@ public struct AnatomyView: View {
     /// RootView 据此把快捷回收管线一并作废 —— 否则取消后管线照样落
     /// `.confirming`，模态预演 sheet 会在用户明确取消后弹出。
     private let onScanCancelled: () -> Void
-    /// 下钻页底部「预演并清理」（P2 T6）—— 勾选集 targets → 根部统一预演
-    /// sheet（与组头就地清理同一张 sheet、同一条 CleanupViewModel 链）。
-    /// 参数：组名（sheet 语境副行）+ 勾选集 targets。
-    private let onDrillDownRehearse: (String, [CleanupTarget]) -> Void
+    /// 下钻页底部「预演并清理」（P2 T6）—— 勾选集条目（target + 徽章）→
+    /// 根部统一预演 sheet（与组头就地清理同一张 sheet、同一条
+    /// CleanupViewModel 链）。参数：组名（sheet 语境副行）+ 勾选集条目。
+    private let onDrillDownRehearse: (String, [CanvasEntry]) -> Void
     /// 打开的下钻页（T6）：nil = 画布；非 nil = 下钻页替换画布区。
     /// 本 App 无 NavigationStack（导航全走 appState 切换），下钻用本地
     /// 页面切换实现「推入 → 面包屑返回」，勾选态由 VM 缓存跨页面保留。
@@ -170,7 +205,7 @@ public struct AnatomyView: View {
          onGroupAction: @escaping (CanvasGroup) -> Void = { _ in },
          onOpenShredder: @escaping () -> Void = {},
          onScanCancelled: @escaping () -> Void = {},
-         onDrillDownRehearse: @escaping (String, [CleanupTarget]) -> Void = { _, _ in }) {
+         onDrillDownRehearse: @escaping (String, [CanvasEntry]) -> Void = { _, _ in }) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.coordinator = coordinator
         self.diskHealthViewModel = diskHealthViewModel
@@ -188,8 +223,8 @@ public struct AnatomyView: View {
             GroupDrillDownView(
                 group: drillDown.group,
                 entries: drillDown.entries,
-                onRehearse: { targets in
-                    onDrillDownRehearse(drillDown.group.title, targets)
+                onRehearse: { entries in
+                    onDrillDownRehearse(drillDown.group.title, entries)
                 },
                 onBack: { self.drillDown = nil },
                 scanResultsProvider: viewModel.scanResultsProvider ?? { nil },
@@ -238,8 +273,8 @@ public struct AnatomyView: View {
             loadCorpusAndRefresh()
             await diskHealthViewModel.refresh()
         }
-        // 「+」菜单 rules 项的落点（P2 T4）——复用同一份已加载 corpus；
-        // 与规则链接行互为入口（一个走 List 推入、一个走菜单 → sheet）。
+        // 规则清单 sheet 的唯一落点（M2）：规则链接行与「+」菜单 rules 项
+        // 都走这里 —— 同一份已加载 corpus，同一张 AttributionRulesView。
         .sheet(isPresented: $showRulesSheet) {
             if let corpus = rulesCorpus {
                 AttributionRulesView(corpus: corpus)
@@ -265,10 +300,24 @@ public struct AnatomyView: View {
         Section {
             if viewModel.scanPhase.isScanning {
                 scanningHero
+            } else if viewModel.scanPhase == .stopping {
+                stoppingHero
             } else {
                 idleHero
             }
         }
+    }
+
+    /// 「正在停止…」（I3，P2 final）：取消后上一轮管线收尾的诚实过渡态 ——
+    /// 不伪造进度，也不给一个点了没反应的重扫按钮。
+    private var stoppingHero: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+            Text("canvas.scan.stopping")
+                .font(AppFont.title2)
+            ProgressView()
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.vertical, AppSpacing.xs)
     }
 
     /// idle 态：标题 + 副行 + 构成条 + 结果态卡（若有）+ 按钮行（快捷回收 ·
@@ -291,6 +340,13 @@ public struct AnatomyView: View {
             if QuickCleanResultCard.isResultState(smartCareViewModel.state) {
                 QuickCleanResultCard(state: smartCareViewModel.state,
                                      onDismiss: { smartCareViewModel.reset() })
+            }
+            // M3（P2 final）：推荐集为空时的诚实空态 —— 不再弹一张确认键
+            // 禁用的空预演 sheet。指向画布上仍可手动预演的组。
+            if smartCareViewModel.showsEmptyRecommendation {
+                Text("canvas.quickclean.empty")
+                    .font(AppFont.callout)
+                    .foregroundStyle(Color.textSecondary)
             }
             HStack(spacing: AppSpacing.sm) {
                 // 回收入口（P2 T5 R-统一）：触发快捷回收管线，`.confirming`
@@ -618,11 +674,21 @@ public struct AnatomyView: View {
     private var rulesLink: some View {
         if let corpus = rulesCorpus {
             Section {
-                NavigationLink {
-                    AttributionRulesView(corpus: corpus)
+                // M2（P2 final）：本 App 无 NavigationStack（导航全走
+                // appState 切换），NavigationLink 在此是死 UI —— 改为 sheet
+                // 呈现（与「+」菜单 rules 项同一落点、同一份 corpus）。
+                Button {
+                    showRulesSheet = true
                 } label: {
-                    Text("attr.rules.title")
+                    HStack {
+                        Text("attr.rules.title")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(AppFont.caption)
+                            .foregroundStyle(Color.textSecondary)
+                    }
                 }
+                .buttonStyle(.plain)
             }
         }
     }
