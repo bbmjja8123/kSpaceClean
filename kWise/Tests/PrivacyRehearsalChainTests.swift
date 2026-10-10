@@ -86,4 +86,48 @@ final class PrivacyRehearsalChainTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: cacheFile.path),
                       "取消即作废 —— 绝不执行")
     }
+
+    // MARK: - P2 final residual（re-review）：隐私清理走 graph 引擎的配额门
+
+    /// 锁定测试：执行经 graph 引擎的 quota 买断门（StubQuota(remaining: 0)）
+    /// —— R5 refusal：全部 targets 落 `skippedForQuota` + `quotaExhausted`，
+    /// 接线的回调被触发（生产里即 RootView 的 `coordinator.presentPaywall`），
+    /// 文件原样保留。绝不因平行引擎实例绕过配额。
+    func testQuotaExhaustedSurfacesViaWiredCallback() async throws {
+        var quotaFired = false
+        let engine = CleanupEngine(persistence: PersistenceController(inMemory: true),
+                                   quota: StubQuota(remaining: 0))
+        let vm = PrivacyViewModel(cleanupViewModel: CleanupViewModel(engine: engine))
+        vm.cleanupViewModel.onQuotaExhausted = { quotaFired = true }
+        vm.items = [
+            PrivacyItem(name: "缩略图缓存", category: .quickLook, url: cacheFile,
+                        estimatedSize: 1),
+        ]
+
+        await vm.prepareRehearsal()
+        let items = try XCTUnwrap(vm.rehearsalItems)
+        await vm.confirmRehearsal(items.map(\.target))
+
+        XCTAssertTrue(quotaFired, "配额超限必须经接线的回调上浮（买断墙路由）")
+        let outcome = try XCTUnwrap(vm.cleanupViewModel.lastOutcome)
+        XCTAssertTrue(outcome.quotaExhausted)
+        XCTAssertEqual(outcome.skippedForQuota, [cacheFile],
+                       "R5 refusal：全部 targets 落 skippedForQuota，绝不截断")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: cacheFile.path),
+                      "配额耗尽 → 文件保留（未被旁路删除）")
+        XCTAssertFalse(vm.items.isEmpty, "未执行成功 → 列表不移除")
+    }
+
+    /// graph 工厂装配锁定：`privacyCleanupVM(onQuota:)` 缓存复用（RootView
+    /// 与设置页同一实例）且 onQuota 接进统一链的 CleanupViewModel。
+    func testGraphFactoryCachesVMAndWiresQuotaCallback() {
+        let graph = AppGraph()
+        var fired = false
+        let vm1 = graph.privacyCleanupVM { fired = true }
+        let vm2 = graph.privacyCleanupVM { XCTFail("缓存复用 —— 二次工厂调用不得重接回调") }
+
+        XCTAssertTrue(vm1 === vm2, "graph 缓存：两次装配同一 PrivacyViewModel 实例")
+        vm1.cleanupViewModel.onQuotaExhausted?()
+        XCTAssertTrue(fired, "onQuota 接线进统一链 CleanupViewModel（配额超限路由买断墙）")
+    }
 }

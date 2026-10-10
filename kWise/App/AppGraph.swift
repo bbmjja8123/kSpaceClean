@@ -57,6 +57,19 @@ public final class AppGraph: ObservableObject {
         }
     }
 
+    /// I5（P2 final）+ re-review residual：隐私清理的常驻 VM —— 统一预演链
+    /// 的 CleanupViewModel **直接连 graph 引擎**（quota 买断门 + 事件 sink
+    /// 与其它清理面同一条链），不再是 `CleanupEngine.standard()` 平行实例。
+    /// 缓存复用：RootView（配额超限 → 买断墙路由）与设置页取**同一实例**
+    /// —— 与 `maintenanceVM` 同模式；`onQuota` 以首次接线为准。
+    func privacyCleanupVM(onQuota: @escaping () -> Void) -> PrivacyViewModel {
+        cached("privacyCleanup") {
+            let vm = PrivacyViewModel(cleanupViewModel: CleanupViewModel(engine: cleanupEngine))
+            vm.cleanupViewModel.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
     // P1 T8: assistantVM() 已随聊天框退役删除——问答由下钻页内嵌的
     // AssistantNodePanelModel 承接（自带 matcher/builder，无共享状态）。
     // P2 T9: appUninstallVM/duplicatesVM/largeOldVM/photoCleanVM/

@@ -19,7 +19,10 @@ struct SettingsView: View {
     /// 引擎 + 配额路由复用）；隐私清理 VM 就地扫描浏览器痕迹；归因规则
     /// 复用 P0 规则清单组件（AttributionRulesView，corpus 从 bundle 读）。
     @State private var maintenanceVM: MaintenanceViewModel?
-    @StateObject private var privacyVM = PrivacyViewModel()
+    /// P2 final residual：隐私清理 VM 改走 graph 缓存装配（与 maintenanceVM
+    /// 同模式）—— RootView 与设置页取同一实例，统一链 CleanupViewModel
+    /// 直连 graph 引擎（quota 买断门 + 事件 sink），配额超限路由买断墙。
+    @State private var privacyVM: PrivacyViewModel?
     @State private var rulesCorpus: AttributionRuleCorpus?
     @State private var showRulesSheet = false
     @State private var showPaywallSheet = false
@@ -105,6 +108,13 @@ struct SettingsView: View {
             if maintenanceVM == nil {
                 maintenanceVM = graph.maintenanceVM { showPaywallSheet = true }
             }
+            // P2 final residual：隐私清理 VM 同一装配模式 —— graph 缓存返回
+            // 与 RootView onAppear 接线的同一实例（quota 买断门 + 事件 sink
+            // 同一条链）。首次接线的 onQuota 回调生效（生产里是 RootView 的
+            // coordinator.presentPaywall 路由）。
+            if privacyVM == nil {
+                privacyVM = graph.privacyCleanupVM { showPaywallSheet = true }
+            }
             // 归因规则语料：与 AnatomyView 的 rulesLink 同源（bundle JSON）。
             if rulesCorpus == nil {
                 rulesCorpus = Bundle.main.url(forResource: "attribution_rules",
@@ -155,9 +165,9 @@ struct SettingsView: View {
         .background(
             Color.clear
                 .sheet(isPresented: Binding(
-                    get: { privacyVM.rehearsalItems != nil },
-                    set: { if !$0 { privacyVM.cancelRehearsal() } })) {
-                    if let items = privacyVM.rehearsalItems {
+                    get: { privacyVM?.rehearsalItems != nil },
+                    set: { if !$0 { privacyVM?.cancelRehearsal() } })) {
+                    if let privacyVM, let items = privacyVM.rehearsalItems {
                         CleanupRehearsalSheet(
                             items: items,
                             context: String(localized: String.LocalizationValue("settings.privacy.header")),
@@ -330,39 +340,43 @@ struct SettingsView: View {
     /// 不变）；登录态（Cookie）选中时的后果说明保留。
     @ViewBuilder
     private var privacySection: some View {
-        if privacyVM.isScanning {
-            HStack(spacing: AppSpacing.sm) {
-                ProgressView()
-                    .controlSize(.small)
-                Text(String(localized: String.LocalizationValue("settings.privacy.scanning")))
-                    .font(AppFont.body)
-                    .foregroundColor(.textSecondary)
+        // P2 final residual：VM 改走 graph 缓存装配（RootView 与设置页同一
+        // 实例，引擎/quota/sinks 同一条链）—— onAppear 装配，未就绪时不渲染。
+        if let privacyVM {
+            if privacyVM.isScanning {
+                HStack(spacing: AppSpacing.sm) {
+                    ProgressView()
+                        .controlSize(.small)
+                    Text(String(localized: String.LocalizationValue("settings.privacy.scanning")))
+                        .font(AppFont.body)
+                        .foregroundColor(.textSecondary)
+                }
+            } else if privacyVM.items.isEmpty {
+                LabeledContent {
+                    Button(String(localized: String.LocalizationValue("settings.privacy.scanButton"))) { privacyVM.startScan() }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.small)
+                } label: {
+                    Text(String(localized: String.LocalizationValue("settings.privacy.browserTracesTitle")))
+                    Text(String(localized: String.LocalizationValue("settings.privacy.browserTracesSubtitle")))
+                        .font(AppFont.caption)
+                        .foregroundColor(.textSecondary)
+                }
+            } else {
+                privacyResults(privacyVM)
             }
-        } else if privacyVM.items.isEmpty {
-            LabeledContent {
-                Button(String(localized: String.LocalizationValue("settings.privacy.scanButton"))) { privacyVM.startScan() }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.small)
-            } label: {
-                Text(String(localized: String.LocalizationValue("settings.privacy.browserTracesTitle")))
-                Text(String(localized: String.LocalizationValue("settings.privacy.browserTracesSubtitle")))
-                    .font(AppFont.caption)
-                    .foregroundColor(.textSecondary)
-            }
-        } else {
-            privacyResults
         }
     }
 
     @ViewBuilder
-    private var privacyResults: some View {
+    private func privacyResults(_ privacyVM: PrivacyViewModel) -> some View {
         ForEach(privacyVM.itemsByCategory, id: \.0) { category, items in
             privacyCategoryHeader(category, count: items.count)
             ForEach(items) { item in
-                privacyItemRow(item)
+                privacyItemRow(item, viewModel: privacyVM)
             }
         }
-        privacySummaryRow
+        privacySummaryRow(privacyVM)
     }
 
     private func privacyCategoryHeader(
@@ -384,7 +398,7 @@ struct SettingsView: View {
         .padding(.top, AppSpacing.xs)
     }
 
-    private func privacyItemRow(_ item: PrivacyItem) -> some View {
+    private func privacyItemRow(_ item: PrivacyItem, viewModel privacyVM: PrivacyViewModel) -> some View {
         HStack(spacing: AppSpacing.sm) {
             Toggle(isOn: Binding(
                 get: { item.isSelected },
@@ -410,7 +424,7 @@ struct SettingsView: View {
         }
     }
 
-    private var privacySummaryRow: some View {
+    private func privacySummaryRow(_ privacyVM: PrivacyViewModel) -> some View {
         VStack(alignment: .leading, spacing: AppSpacing.xs) {
             HStack(spacing: AppSpacing.sm) {
                 Text(String(format: String(localized: String.LocalizationValue("settings.privacy.selectedSummary")), privacyVM.selectedItems.count, FileSizeFormatter.abbreviated(from: privacyVM.selectedSize)))

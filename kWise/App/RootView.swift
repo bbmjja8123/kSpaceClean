@@ -225,6 +225,11 @@ struct RootView: View {
             // orchestrator 不再单独持有引擎。
             cleanupViewModel.useEngine(graph.cleanupEngine)
             cleanupViewModel.onQuotaExhausted = { coordinator.presentPaywall() }
+            // P2 final residual（re-review）：设置页隐私清理并入 graph 引擎
+            // —— 同一条统一链的 CleanupViewModel 连 graph.cleanupEngine
+            // （quota 买断门 + 事件 sink），配额超限同样路由买断墙。graph
+            // 缓存保证设置页取到这一同一实例（privacyCleanupVM 工厂）。
+            graph.privacyCleanupVM { coordinator.presentPaywall() }
             // 空间解剖 reads the live scan results（init-time capture 不可用，
             // rebindRoots 的晚绑定模式）。
             anatomyViewModel.rebindCategories { scanResultsViewModel.categories }
