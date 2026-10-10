@@ -13,7 +13,7 @@
 
 | App | Bundle ID | 主轴 | 定价 | 状态 |
 |---|---|---|---|---|
-| **kWise**（Mac 管家 / CMM 对标） | `app.kraftly.klaris` | 空间解剖首屏 + 预演式清理 + 启动项 + 隐私 + 磁盘健康 + 基础卸载/粉碎 | 免费（扫描+归因+拒答清单）+ $9.90 买断 | 🔄 **Klaris P1 信任解剖完成** |
+| **kWise**（Mac 管家 / CMM 对标，产品名 Klaris） | `app.kraftly.klaris` | 空间解剖单一画布（扫描即动作 + 就地预演）+ 叙事历史 | 免费（扫描+归因+拒答清单）+ $9.90 买断 | 🔄 **Klaris P2 单一画布完成** |
 | **kMonitor**（菜单栏监控） | `app.kraftly.kmonitor` | 平台集成 + Widget | 待设计 | 📋 Backlog |
 | **kSift**（重复/大文件/粉碎） | `app.kraftly.ksift` | 极客 + AI（开发者场景） | $9.99 买断 | 📋 Spec 定稿 |
 | **kUninstall**（应用卸载） | `app.kraftly.kuninstall` | 平台集成 + 自动化 | 待设计 | 📋 Backlog |
@@ -66,7 +66,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 - **编译目标**：macOS 14 SDK（用 `#available` 包裹高版本 API）
 - **持久化**：Core Data（统一）+ Codable + FileManager（轻量场景）
 - **并发**：Swift Concurrency（async/await + TaskGroup）
-- **图形**：SwiftUI Canvas（2D 空间地图 sunburst / treemap，无 Metal）
+- **图形**：纯 SwiftUI 声明式 UI（无 Metal、无自绘地图；2D 空间地图 sunburst/treemap 已随 P2 T9 退役）
 - **AI**：NLEmbedding（端上语义归因，零网络）+ 本机规则引擎（无 CoreML 模型、无云服务）
 - **分发**：**仅 Mac App Store**（不做 DMG / 官网 / Notarized）
 
@@ -123,51 +123,59 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 ### 3.3 核心差异化
 | 维度 | CleanMyMac X | DaisyDisk | kWise 差异点 |
 |---|---|---|---|
-| 主界面 | 模块拼盘 | 磁盘可视化 | **2D 空间地图（Canvas sunburst/treemap）+ 空间解剖首屏（归因解释"空间去哪儿了"）** |
+| 主界面 | 模块拼盘 | 磁盘可视化 | **空间解剖单一画布**——唯一首屏，动态分组（归因 cause 组 + 重复/相似照片/大文件检测组，空组不出现），扫描在 hero 内发起（扫描即动作），就地预演，无独立扫描页/清理页/工具箱 |
 | 智能分类 | 规则匹配 | 无 | **本机规则归因（attribution_rules.json）+ NLEmbedding 端上语义推测（probable 档），零网络、无云模型** |
 | 扫描速度 | 中等 | 慢 | **单引擎 ScanOrchestrator 流式扫描（实时合成 + ETA）** |
 | 隐私 | 上报统计 | 本地 | **零网络上报，所有计算在本地** |
-| 一键清理 | ✅ | ❌ | ✅ **两段预演式清理**（预演与执行逐项一致、每项给原因、可逐项豁免）+ 废纸篓回滚 + Interactive Widget 入口（macOS 14+） |
+| 一键清理 | ✅ | ❌ | ✅ **统一两段预演式清理**（画布组/快捷回收/下钻页三个入口全部先预演再执行，预演与执行逐项一致、每项给原因、可逐项豁免）+ 废纸篓回滚 |
 | App Store 集成 | ✅ | ❌ | ✅ + Shortcuts 集成 |
 
-### 3.4 v1.5 完整功能（首发即包含全部）
+### 3.4 Klaris 功能现状（P2 单一画布后）
 
-> v1 已完成模块（标记为 ✅）全部继承；v1.5 新增模块（标记为 🆕）为 App Store 上架硬门槛。
+> IA 收敛（P2 T9）：导航只剩 3 项 `.anatomy / .history / .settings`；下钻页在画布内路由，粉碎窗 / 磁盘健康详情以 sheet 呈现。已退役表面：Toolbox / SpaceMap（2D 空间地图）/ CleanupContent / SmartCareHero / 独立扫描页 / 各工具视图（~27 个 UI 文件删除）。
 
-| 模块 | v1.5 内容 | 状态 |
+| 模块 | 内容 | 状态 |
 |---|---|---|
-| 流式扫描（ScanOrchestrator） | 实时合成 + ETA + 应用级粒度（单引擎，旧规则引擎已删） | ✅ |
-| 工具箱清理工具 | 系统缓存 / 应用残留（卸载） / 大文件 / 重复文件 / 照片 | ✅ |
-| 🆕 **空间解剖 + 归因** | 本机规则归因（attribution_rules.json）+ NLEmbedding 端上语义推测（probable 档，可解释、零网络） | 🔴 P1 新增 |
-| 一键清理 | **两段预演式清理**（预演=执行逐项一致、每项给原因、拒答清单）+ 移入废纸篓 + 30 天清理历史可回滚 | ✅（P1 重做） |
-| **Smart Care** | safe-quick-clean 次级页（P1 降级，深链 `klaris://smartcare` 可直达） | 🔄 P1 降级 |
-| 🆕 **启动项管理** | login items / launch agents / daemons | ✅ 已交付 |
-| 🆕 **隐私清理** | 浏览器历史 / 应用权限概览 | ✅ 已交付 |
-| 🆕 **磁盘健康卡片** | S.M.A.R.T. 状态 + 卷诊断 | ✅ 已交付 |
-| 🆕 **应用卸载（基础）** | CMM X parity 级别 | ✅ 已交付 |
-| 🆕 **文件粉碎（基础）** | CMM X parity 级别 | ✅ 已交付 |
-| PowerScope 主目录授权 | 主目录书签授权引导（替代旧 FDA 引导，见 kFoundation PowerScope） | ✅ |
+| 🆕 **空间解剖单一画布** | 唯一首屏（AnatomyView）：动态分组（归因 cause 组 + 重复/相似照片/大文件三检测组，空组不出现）+ 五色徽章（绿可回收/蓝迁出/橙注意/红数据·不属垃圾/灰不敢判）+ refused 派生 UncertainCard | 🔴 P2 重做 |
+| 流式扫描（ScanOrchestrator） | 扫描在画布 hero 内发起（扫描即动作，含进行中/取消/完成态）；单引擎，实时合成 + ETA | ✅（P2 收进画布） |
+| 统一预演式清理 | **三个入口（画布组 / 快捷回收 / 下钻页）全部先预演再执行**，预演=执行逐项一致、每项给原因、可逐项豁免 + 废纸篓 30 天回滚 | ✅（P2 T5 收口） |
+| **Smart Care** | 降级为画布 hero「安全快捷回收」流（QuickCleanHeroStates），不再是独立页面；深链 `klaris://smartcare` 落画布 | 🔄 P2 再降级 |
+| 分组下钻 | GroupDrillDownView（画布内 navigationDestination）：文件级勾选 + 就地预演入口 + 节点问答（AssistantNodePanel 复用） | 🔴 P2 新增 |
+| 叙事历史 | TimelineView + NarrativeHeader（吸收月报，P2 T7）；按 run 分组、整体回滚 | ✅ |
+| 设置 | 吸收维护（~/Library/Logs 引导动作）/ 隐私（TCC 概览）/ 归因规则查看（P2 T8） | ✅ |
+| Onboarding | 3 页（价值主张 → 扫描承诺+主目录授权合并 → 就绪），完成后自动首扫（P2 T8） | ✅ |
+| 文件粉碎 | 画布「+」菜单 sheet（1-pass 覆写 SSD 诚实文案 + 校验 + 改名 + trash 处置） | ✅（P2 T4） |
+| 磁盘健康 | 画布 DiskHealthCard + 详情 sheet（S.M.A.R.T. + 卷诊断 + 预测） | ✅ |
+| 🆕 启动项管理 | 引擎（PowerScope 扫描 + 开关）已交付，**UI 不可达**（P2 T9 退役其页面） | ⚠️ P3 候选 |
+| 🆕 应用卸载（基础） | 引擎（AppUninstallScanner/ResidueExplainer/备份回滚）已交付，**UI 不可达**（P2 T9 退役其页面） | ⚠️ P3 候选 |
+| PowerScope 主目录授权 | 主目录书签授权（画布 grant gate 承接，替代旧 FDA 引导） | ✅ |
 | 菜单栏图标 | 显示已用空间 + 一键扫描入口 | ✅ |
-| 桌面 Widget | 基础版（13）+ Interactive 版（14+） | ✅ |
-| Shortcuts App Intents | 扫描等（走 ScanOrchestrator 单引擎） | ✅ |
-| Finder 扩展 | 右键"用 kWise 扫描" | ✅ |
-| Live Activities / Spotlight | 已删除（v2.0 Phase 1 清理死面） | ❌ 已删 |
+| 桌面 Widget | 基础版（13）+ Interactive 版（14+，交互按钮落 `klaris://smartcare` → 画布） | ✅ |
+| Shortcuts App Intents | 扫描/清理等（走 ScanOrchestrator 单引擎） | ✅ |
+| Finder 扩展 | 右键"用 Klaris 扫描" → `klaris://scan?path=` 落画布 | ✅ |
+| 助手问答 | 下钻页节点级问答（AssistantNodePanel，聊天框已退役；答案诚实，不承诺扫描/清理范围外的事） | ✅（P2 T9 fix） |
+| Live Activities / Spotlight / 空间地图 | 已删除（v2.0 Phase 1 / P2 T9 清理死面） | ❌ 已删 |
 | 本地化 | 英文 + 简体中文 + 日文 | ✅ |
-| 助手问答 | 节点级问答内嵌详情面板（AssistantNodePanel，聊天框已退役） | 🔄 P1 改造 |
+
+**深链（P2 终态）**：`klaris://scan?path=` / `smartcare` / `health` → anatomy；`history` → history；`settings` → settings。退役面的旧深链（clean/privacy/startup/uninstall/shred/tools/spacemap 等）不再路由。
 
 ### 3.5 kWise 内部模块
 ```
 kWise/
 ├── App/
 │   ├── kWiseApp.swift                # @main
-│   ├── RootView.swift                # NavigationSplitView（rail 首项 = .anatomy）
-│   └── AppCoordinator.swift
+│   ├── RootView.swift                # NavigationSplitView（rail 3 项：anatomy/history/settings）
+│   ├── AppCoordinator.swift          # 深链路由（klaris:// 终态）+ 粉碎 sheet
+│   └── AppGraph.swift                # DI 单根
 ├── Features/
-│   ├── Attribution/                  # 空间解剖 + 归因（规则 + NLEmbedding L1，差异化核心）
+│   ├── Anatomy/                      # 画布数据层（CanvasGroup/CanvasScanCoordinator）+ GroupDrillDownView
+│   ├── Attribution/                  # AnatomyView（唯一首屏）+ 归因引擎（规则 + NLEmbedding）
 │   ├── SmartScan/                    # ScanOrchestrator 单引擎 + IntentScanAdapter
-│   ├── Cleanup/                      # 两段预演（CleanupRehearsal）+ 引擎 + buyout gate
-│   ├── SpaceMap/                     # 2D 空间地图（Canvas sunburst/treemap）
-│   └── Onboarding/                   # PowerScope 主目录授权引导
+│   ├── Cleanup/                      # 统一预演（CleanupRehearsal）+ 引擎 + buyout gate
+│   ├── History/                      # 时间线 + 叙事头（吸收月报）
+│   ├── Settings/                     # 设置（吸收维护/隐私/归因规则查看）
+│   ├── Onboarding/                   # 3 页引导 + 自动首扫
+│   └── Shredder/ ...                 # 粉碎 / DiskHealth / Assistant(节点问答) / Gamification 等支撑模块
 ├── Store/                            # StoreManager（$9.90 非消耗买断）+ PaywallView
 ├── Shared/WidgetFeed/                # Widget 快照 + 交互清理（双 target）
 ├── Intents/                          # App Intents / Shortcuts（走 ScanOrchestrator）
@@ -222,7 +230,9 @@ kWise/
 | M5 | **应用卸载（基础版）** | 由 kUninstall 集成 |
 | M6 | **文件粉碎（基础版）** | 由 kSift 集成 |
 
-**强烈建议（非阻塞）：** 定时自动清理 / 空间地图与解剖联动 / L2 语义归因（均列入 P2）。
+**强烈建议（非阻塞）：** 定时自动清理 / L2 语义归因。
+
+> P2 后现状：M1 Smart Care 已降级为画布快捷回收流；M5/M6 的引擎已交付但 UI 不可达（P3 候选）。
 
 **功能范围待 grill：** UI 重做方案 / Smart Care 具体行为 / 启动项 UI 位置 / 隐私权限数据源 / 基础 vs 深度卸载切分线。
 
@@ -406,12 +416,28 @@ kWise/
 - [x] **T10 文档诚实化** — 本文件假卖点修正 + 全量测试基线（见下）
 - [x] **测试基线** — **579 tests / 0 failures**（`xcodebuild test -workspace KraftlyWorkspace.xcworkspace -scheme kWise`，2026-09-30，全量单跑 ~7 分钟未触发 wedge）
 
+### Klaris P2 — 单一画布改造 ✅ (2026-10-06 → 2026-10-07)
+> 11 任务 + 3 修复轮，15 commits（`ac48837..5322707` + T10 docs）。spec：`.superpowers/sdd/2026-10-06-klaris-p2-single-canvas/`。
+- [x] **T1 rail 收敛为 3** — `[.anatomy, .history, .settings]`，深链全部落画布
+- [x] **T2 画布数据层** — CanvasGroup/CanvasEntry/GroupKind 动态分组组装器（空组不出现、refused→UncertainCard）+ CanvasScanCoordinator 三检测器 fan-out
+- [x] **T3 解剖即唯一画布** — AnatomyView 重做：动态组卡 + 扫描即动作（hero 进度/取消/完成态）+ 按因动词（rehearse/guidance/migrate）；修复轮：rescan 身份去重 + 诚实取消
+- [x] **T4 「+」菜单 + 拖拽粉碎** — 窗口级 drag-to-shred overlay + 粉碎 sheet 入口
+- [x] **T5 统一预演收口** — 画布组/快捷回收/下钻页三入口全部先预演再执行；修复轮：快捷清理取消中止管线 + 清 stale 结果
+- [x] **T6 分组下钻** — GroupDrillDownView：文件级勾选 + 就地预演入口 + 节点问答（AssistantNodePanel 复用）
+- [x] **T7 叙事历史** — NarrativeHeader 吸收月报（环境每次现取 + 诚实百分比档）
+- [x] **T8 设置吸收 + Onboarding 3 页** — 维护/隐私/归因规则并入设置页；onboarding 3 页（授权合并进第 2 页）+ 完成后自动首扫；修复轮：新文案三语补齐
+- [x] **T9 退役清扫** — 20 面 → 6 面（~27 个 UI 文件删除，NavigationItem 3 case）；修复轮：快捷清理 grant gate 恢复 + 结果卡渲染 + 助手诚实文案
+- [x] **T10 收尾** — 本文件按单一画布现实重写 + 全量测试基线（见下）
+- [x] **测试基线** — **562 tests / 0 failures**（build-for-testing + 分批 -only-testing，45 批逐批报告，2026-10-08）。13 个源码枚举型审计类/方法因宿主 wedge（沙箱测试宿主 open()/trash-XPC 阻塞，重启可解）跳过，其源码审计断言已带外 grep 复核全绿；待重启后复跑（详见 task-10-report）
+- [x] **能力决策备忘（待 Product）** — 卸载/启动项引擎已交付但 UI 不可达（P3 候选）；助手答案诚实化（只承诺已实现能力）
+
 ### Backlog（待设计）
-- [ ] kWise v2 — 3D 磁盘星系图（已被 2D 空间地图替代交付；Metal 重启需 Product 拍板）
-- [ ] kWise 发布决策 — TestFlight / App Store 元数据 / 提审节奏（M1–M6 上架门槛功能已齐，待 Product 拍板）
+- [ ] Klaris P3 候选 — 卸载 / 启动项 UI 重接入（引擎已交付，P2 T9 后不可达）；L2 语义归因
+- [ ] kWise v2 — 3D 磁盘星系图（2D 空间地图也已随 P2 T9 退役；Metal 重启需 Product 拍板）
+- [ ] kWise 发布决策 — TestFlight / App Store 元数据 / 提审节奏（上架门槛功能引擎已齐，卸载/启动项 UI 待 P3）
 
 > ⚠️ **现阶段不要写实现代码**。所有设计待汇总到 spec 文档并通过后，再通过 writing-plans 技能拆解为可执行任务。
 
 ---
 
-最后更新：2026-09-30（Klaris P1 信任解剖 10 任务 + 2 修复轮收尾；CLAUDE.md 诚实化——真实能力表述、买断定价、P1 进度）
+最后更新：2026-10-07（Klaris P2 单一画布 11 任务 + 3 修复轮收尾；CLAUDE.md 按 IA 终态重写——rail 3 项、退役表面清单、卸载/启动项 UI 不可达备忘、P2 测试基线）
