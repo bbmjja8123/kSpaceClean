@@ -186,7 +186,9 @@ struct RootView: View {
         .background(
             Color.clear
                 .sheet(isPresented: $showDiskHealthDetail) {
-                    DiskHealthDetailView()
+                    // P3：注入画布 DiskHealthCard 的同一 VM（状态共享，详情
+                    // 不再独立重拉）。
+                    DiskHealthDetailView(viewModel: diskHealthViewModel)
                         .frame(minWidth: 560, minHeight: 420)
                 }
         )
@@ -464,7 +466,8 @@ struct RootView: View {
                 freedBytes: outcome.freedBytes,
                 durationSeconds: Date().timeIntervalSince(started))
         } else {
-            smartCareViewModel.failQuickClean(message: "清理未能完成，请重试")
+            smartCareViewModel.failQuickClean(
+                message: String(localized: String.LocalizationValue("canvas.quickclean.failedRetry")))
         }
         // P2 T9：Smart Care 页已退役 —— 快捷回收留在画布上完成（结果状态
         // 由 orchestrator 持有，下一次快捷回收重新计算）。

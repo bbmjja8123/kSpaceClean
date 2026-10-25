@@ -8,17 +8,25 @@ import AppCatalogCore
 public enum ResidueGroupKind: String, CaseIterable {
     case preferences, caches, appData, webData, launchAgents, plugins, savedState, other
 
-    /// 分组展示名（硬编码中文，本地化在全局 pass 统一处理，见 CLAUDE.md backlog）。
+    /// 分组展示名。
     var title: String {
         switch self {
-        case .preferences: return "偏好设置"
-        case .caches: return "缓存数据"
-        case .appData: return "应用数据"
-        case .webData: return "网页数据"
-        case .launchAgents: return "启动项"
-        case .plugins: return "插件与面板"
-        case .savedState: return "窗口状态"
-        case .other: return "其他"
+        case .preferences:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.preferences"))
+        case .caches:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.caches"))
+        case .appData:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.appData"))
+        case .webData:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.webData"))
+        case .launchAgents:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.launchAgents"))
+        case .plugins:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.plugins"))
+        case .savedState:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.savedState"))
+        case .other:
+            return String(localized: String.LocalizationValue("uninstall.group.kind.other"))
         }
     }
 

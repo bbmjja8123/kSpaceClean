@@ -91,7 +91,8 @@ public actor FileShredder {
                         continuation.yield(ShredProgress(
                             currentURL: url, completedFiles: completed,
                             totalFiles: urls.count,
-                            phase: .failed("超出允许范围")))
+                            phase: .failed(String(
+                                localized: String.LocalizationValue("shred.fail.outOfScope")))))
                         continue
                     }
 
@@ -139,7 +140,9 @@ public actor FileShredder {
 
                 let finalPhase: ShredProgress.Phase = failures.isEmpty
                     ? .done
-                    : .failed("有 \(failures.count) 个文件未能粉碎")
+                    : .failed(String(
+                        format: String(localized: String.LocalizationValue("shred.fail.partial")),
+                        Int64(failures.count)))
                 continuation.yield(ShredProgress(
                     currentURL: urls.last ?? URL(fileURLWithPath: "/"),
                     completedFiles: completed, totalFiles: urls.count,
@@ -274,7 +277,9 @@ public enum ShredError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .verifyFailed(let url):
-            return "覆写校验失败：\(url.lastPathComponent) 存在非零字节"
+            return String(
+                format: String(localized: String.LocalizationValue("shred.error.verifyFailed")),
+                url.lastPathComponent)
         }
     }
 }

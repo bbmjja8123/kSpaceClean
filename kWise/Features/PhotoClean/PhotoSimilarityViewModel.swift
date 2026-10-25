@@ -57,7 +57,7 @@ final class PhotoSimilarityViewModel: ObservableObject {
         let screenshots = FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent("Pictures/Screenshots", isDirectory: true)
         guard AppScope.shared.capability.canRead(screenshots) else {
-            statusMessage = "当前授权范围无法读取截图目录"
+            statusMessage = String(localized: String.LocalizationValue("photo.screenshots.noAccess"))
             return
         }
         isScanning = true
@@ -97,8 +97,8 @@ final class PhotoSimilarityViewModel: ObservableObject {
                 self.isScanning = false
                 self.scanProgress = 1.0
                 self.statusMessage = self.groups.isEmpty
-                    ? "近 30 天没有需要清理的旧截图。"
-                    : "已预选 30 天前的旧截图，每组保留最新一张。请确认后清理。"
+                    ? String(localized: String.LocalizationValue("photo.screenshots.none"))
+                    : String(localized: String.LocalizationValue("photo.screenshots.preselected"))
             }
         }
     }
@@ -107,7 +107,7 @@ final class PhotoSimilarityViewModel: ObservableObject {
         guard !isScanning else { return }
         let dirs = candidateDirectories
         guard !dirs.isEmpty else {
-            statusMessage = "当前授权范围无法读取照片目录"
+            statusMessage = String(localized: String.LocalizationValue("photo.scan.noAccess"))
             return
         }
         isScanning = true
@@ -137,7 +137,7 @@ final class PhotoSimilarityViewModel: ObservableObject {
                 self.isScanning = false
                 self.scanProgress = 1.0
                 if self.groups.isEmpty {
-                    self.statusMessage = "未发现相似的 photos — 这些目录很干净。"
+                    self.statusMessage = String(localized: String.LocalizationValue("photo.scan.none"))
                 }
             }
         }
@@ -190,7 +190,7 @@ final class PhotoSimilarityViewModel: ObservableObject {
     /// 组内至少保留一张 — 全选被拒绝并给出诚实提示（C-5）。
     func selectAllInGroup(_ id: UUID) {
         guard let gi = groups.firstIndex(where: { $0.id == id }) else { return }
-        statusMessage = "每组至少保留一张照片，不能全部删除。"
+        statusMessage = String(localized: String.LocalizationValue("photo.selection.keepOne"))
         for fi in groups[gi].files.indices.dropFirst() {
             groups[gi].files[fi].isSelected = true
         }
@@ -223,7 +223,9 @@ final class PhotoSimilarityViewModel: ObservableObject {
                 onQuotaExhausted?()
             }
         } catch {
-            statusMessage = "清理失败：\(error.localizedDescription)"
+            statusMessage = String(
+                format: String(localized: String.LocalizationValue("photo.cleanup.failed")),
+                error.localizedDescription)
         }
     }
 }

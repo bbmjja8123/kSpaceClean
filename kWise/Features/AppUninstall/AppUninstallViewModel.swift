@@ -20,11 +20,16 @@ public final class AppUninstallViewModel: ObservableObject {
 
         public var displayName: String {
             switch self {
-            case .name: return "名称"
-            case .size: return "总大小"
-            case .leftoverSize: return "残留大小"
-            case .lastUsed: return "未使用优先"
-            case .installDate: return "最近安装"
+            case .name:
+                return String(localized: String.LocalizationValue("uninstall.sort.name"))
+            case .size:
+                return String(localized: String.LocalizationValue("uninstall.sort.size"))
+            case .leftoverSize:
+                return String(localized: String.LocalizationValue("uninstall.sort.leftoverSize"))
+            case .lastUsed:
+                return String(localized: String.LocalizationValue("uninstall.sort.lastUsed"))
+            case .installDate:
+                return String(localized: String.LocalizationValue("uninstall.sort.installDate"))
             }
         }
     }
@@ -60,7 +65,9 @@ public final class AppUninstallViewModel: ObservableObject {
         }
         guard !shared.isEmpty else { return nil }
         let names = shared.prefix(3).map { $0.url.lastPathComponent }.joined(separator: "、")
-        return "\(shared.count) 个残留位于与其他应用共享的目录（\(names)…），删除可能影响其他应用。"
+        return String(
+            format: String(localized: String.LocalizationValue("uninstall.warning.sharedDirectory")),
+            Int64(shared.count), names)
     }
 
     /// App Reset (v2.6)：保留 App，清偏好/缓存。

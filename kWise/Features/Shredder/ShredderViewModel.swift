@@ -44,7 +44,7 @@ public final class ShredderViewModel: ObservableObject {
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = true
-        panel.message = "选择要粉碎的文件（内容将被覆写，不可恢复）"
+        panel.message = String(localized: String.LocalizationValue("shred.pick.message"))
         guard panel.runModal() == .OK else { return }
         stagedURLs += panel.urls.filter { !stagedURLs.contains($0) }
     }
@@ -59,7 +59,9 @@ public final class ShredderViewModel: ObservableObject {
         let rejected = urls.count - acceptable.count
         stagedURLs += acceptable.filter { !stagedURLs.contains($0) }
         if rejected > 0 {
-            completedMessage = "\(rejected) 个项目被拒绝（仅支持用户文件，目录与系统路径不可粉碎）"
+            completedMessage = String(
+                format: String(localized: String.LocalizationValue("shred.drop.rejected")),
+                Int64(rejected))
         }
     }
 
@@ -105,15 +107,25 @@ public final class ShredderViewModel: ObservableObject {
             : 0
         switch progress.phase {
         case .overwriting(let pass):
-            progressText = "正在覆写（第 \(pass) 遍）：\(progress.currentURL.lastPathComponent)"
+            progressText = String(
+                format: String(localized: String.LocalizationValue("shred.progress.overwriting")),
+                Int64(pass), progress.currentURL.lastPathComponent)
         case .verifying:
-            progressText = "正在校验：\(progress.currentURL.lastPathComponent)"
+            progressText = String(
+                format: String(localized: String.LocalizationValue("shred.progress.verifying")),
+                progress.currentURL.lastPathComponent)
         case .renaming:
-            progressText = "正在随机化文件名：\(progress.currentURL.lastPathComponent)"
+            progressText = String(
+                format: String(localized: String.LocalizationValue("shred.progress.renaming")),
+                progress.currentURL.lastPathComponent)
         case .trashing:
-            progressText = "移入废纸篓：\(progress.currentURL.lastPathComponent)"
+            progressText = String(
+                format: String(localized: String.LocalizationValue("shred.progress.trashing")),
+                progress.currentURL.lastPathComponent)
         case .done:
-            completedMessage = "已完成粉碎 \(total) 个文件"
+            completedMessage = String(
+                format: String(localized: String.LocalizationValue("shred.done")),
+                Int64(total))
             stagedURLs.removeAll()
             progressText = ""
             progressFraction = 1.0

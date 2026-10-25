@@ -39,7 +39,7 @@ public final class TimelineViewModel: ObservableObject {
     /// P2 T7 — narrative header lines (headline / disk sub / streak line).
     @Published public private(set) var narrative: (headline: String, sub: String, streakLine: String?) =
         (NarrativeHeaderModel.weekHeadline(records: [], now: Date(), calendar: .current),
-         "磁盘采样不足，暂无法与上周比较",
+         String(localized: String.LocalizationValue("history.narrative.subInsufficientSamples")),
          nil)
     /// P2 T7 — the retired monthly report's data, rendered as the 「本月」
     /// collapsible section (weekly buckets / top files / forecast).
@@ -81,7 +81,7 @@ public final class TimelineViewModel: ObservableObject {
             return TimelineEvent(
                 id: runID,
                 date: date,
-                kindLabel: rows.first?.kindLabel ?? "清理",
+                kindLabel: rows.first?.kindLabel ?? String(localized: String.LocalizationValue("history.timeline.kindCleanup")),
                 itemCount: rows.count,
                 freedBytes: freed,
                 restorableCount: notRestored,
@@ -118,9 +118,15 @@ public final class TimelineViewModel: ObservableObject {
             await MainActor.run { [weak self] in
                 self?.isRestoring = false
                 if failed == 0 {
-                    self?.lastRestoreMessage = "已还原 \(restored) 项"
+                    self?.lastRestoreMessage = String(
+                        format: String(localized: String.LocalizationValue("history.timeline.restoredCount")),
+                        restored
+                    )
                 } else {
-                    self?.lastRestoreMessage = "还原 \(restored) 项，\(failed) 项已不在废纸篓"
+                    self?.lastRestoreMessage = String(
+                        format: String(localized: String.LocalizationValue("history.timeline.restoredPartial")),
+                        restored, failed
+                    )
                 }
                 self?.refresh()
             }
@@ -146,8 +152,8 @@ struct TimelineView: View {
                 if viewModel.events.isEmpty {
                     EmptyStateView(
                         icon: "clock",
-                        title: "还没有清理记录",
-                        subtitle: "完成一次清理后，这里会显示时间线。"
+                        title: String(localized: String.LocalizationValue("history.timeline.emptyTitle")),
+                        subtitle: String(localized: String.LocalizationValue("history.timeline.emptySubtitle"))
                     )
                     .frame(maxWidth: .infinity)
                 } else {
@@ -175,7 +181,7 @@ struct TimelineView: View {
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             }
-            Text("每次清理归为一条记录，可整体回滚到清理前状态")
+            Text(String(localized: String.LocalizationValue("history.timeline.explainer")))
                 .font(AppFont.caption)
                 .foregroundStyle(Color.textSecondary)
             if let message = viewModel.lastRestoreMessage {
@@ -196,7 +202,7 @@ struct TimelineView: View {
                     .padding(.top, AppSpacing.sm)
             } label: {
                 HStack(spacing: AppSpacing.sm) {
-                    Text("本月")
+                    Text(String(localized: String.LocalizationValue("history.monthly.sectionTitle")))
                         .font(AppFont.title3)
                         .foregroundStyle(Color.textPrimary)
                     Spacer()
@@ -233,7 +239,7 @@ struct TimelineView: View {
             // Top cleaned files this month (up to 5, largest first).
             if !report.topCleanedFiles.isEmpty {
                 VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                    Text("本月清理的大文件")
+                    Text(String(localized: String.LocalizationValue("history.monthly.topFiles")))
                         .font(AppFont.callout)
                         .foregroundStyle(Color.textPrimary)
                     ForEach(report.topCleanedFiles) { file in
@@ -257,17 +263,20 @@ struct TimelineView: View {
             // Disk-full forecast (honest variants — C-5).
             switch report.forecast {
             case .insufficientData:
-                Text("样本不足 — 继续使用 kWise 几天后即可生成预测。")
+                Text(String(localized: String.LocalizationValue("history.forecast.insufficientData")))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             case .stable:
-                Text("暂无明显的占满趋势（近期波动较大）。")
+                Text(String(localized: String.LocalizationValue("history.forecast.stable")))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             case .filling(let days, _):
-                Text("按当前趋势，预计约 \(days) 天后磁盘占满。建议提前清理大文件。")
-                    .font(AppFont.callout)
-                    .foregroundStyle(Color.textPrimary)
+                Text(String(
+                    format: String(localized: String.LocalizationValue("history.forecast.filling")),
+                    days
+                ))
+                .font(AppFont.callout)
+                .foregroundStyle(Color.textPrimary)
             }
         }
     }
@@ -323,17 +332,19 @@ private struct TimelineEventRow: View {
                 }
 
                 Text(event.isRestorable
-                     ? "\(event.restorableCount) 项可还原"
-                     : "已还原或已超出废纸篓保留期")
+                     ? String(format: String(localized: String.LocalizationValue("history.timeline.restorableCount")), event.restorableCount)
+                     : String(localized: String.LocalizationValue("history.timeline.notRestorable")))
                     .font(AppFont.caption)
                     .foregroundStyle(event.isRestorable ? Color.success : Color.textSecondary)
 
                 HStack {
-                    Button("查看明细") { withAnimation(KFAnimation.easeInOut) { expanded.toggle() } }
-                        .buttonStyle(.plain)
-                        .font(AppFont.caption)
+                    Button(String(localized: String.LocalizationValue("history.timeline.showDetails"))) {
+                        withAnimation(KFAnimation.easeInOut) { expanded.toggle() }
+                    }
+                    .buttonStyle(.plain)
+                    .font(AppFont.caption)
                     Spacer()
-                    Button("整体回滚") { onRollback() }
+                    Button(String(localized: String.LocalizationValue("history.timeline.rollbackAll"))) { onRollback() }
                         .buttonStyle(.bordered)
                         .controlSize(.small)
                         .disabled(!event.isRestorable)

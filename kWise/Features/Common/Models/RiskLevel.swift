@@ -35,25 +35,20 @@ public enum RiskLevel: Int, Codable, Sendable, CaseIterable, Comparable {
         return recommended ? .recommended : .optional
     }
 
-    /// Display name for the Chinese UI surface used throughout kWise.
+    /// Display name for the localized UI surface used throughout kWise.
     /// Equivalent to the canonical `label` property — kept for backwards compatibility
     /// with existing call sites that predate the v3 spec.
     public var displayName: String {
-        switch self {
-        case .recommended: return "推荐"
-        case .optional: return "可选"
-        case .caution: return "谨慎"
-        case .dangerous: return "危险"
-        }
+        label
     }
 
     /// Canonical v3-spec label shown in risk badges and row titles.
     public var label: String {
         switch self {
-        case .recommended: return "推荐"
-        case .optional: return "可选"
-        case .caution: return "谨慎"
-        case .dangerous: return "危险"
+        case .recommended: return String(localized: String.LocalizationValue("risk.level.recommended"))
+        case .optional: return String(localized: String.LocalizationValue("risk.level.optional"))
+        case .caution: return String(localized: String.LocalizationValue("risk.level.caution"))
+        case .dangerous: return String(localized: String.LocalizationValue("risk.level.dangerous"))
         }
     }
 

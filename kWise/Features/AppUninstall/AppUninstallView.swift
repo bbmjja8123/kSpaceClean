@@ -49,11 +49,11 @@ struct AppUninstallView: View {
             isPresented: $showConfirm,
             titleVisibility: .visible
         ) {
-            Button("移入废纸篓", role: .destructive) {
+            Button(String(localized: String.LocalizationValue("uninstall.confirm.moveTrash")), role: .destructive) {
                 showConfirm = false
                 Task { await runUninstall() }
             }
-            Button("取消", role: .cancel) {}
+            Button(String(localized: String.LocalizationValue("common.cancel")), role: .cancel) {}
         } message: {
             Text(confirmMessage)
         }
@@ -64,15 +64,15 @@ struct AppUninstallView: View {
     private var header: some View {
         HStack(spacing: AppSpacing.md) {
             VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                Text("应用卸载")
+                Text(String(localized: String.LocalizationValue("uninstall.title")))
                     .font(AppFont.title2)
                     .foregroundStyle(Color.textPrimary)
-                Text("应用与残留移入废纸篓，30 天内可还原；登录态与个人数据不做云端处理")
+                Text(String(localized: String.LocalizationValue("uninstall.subtitle")))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             }
             Spacer()
-            Picker("排序", selection: Binding(
+            Picker(String(localized: String.LocalizationValue("uninstall.sort.label")), selection: Binding(
                 get: { viewModel.sortBy },
                 set: { viewModel.toggleSort($0) })) {
                 ForEach(AppUninstallViewModel.SortField.allCases, id: \.self) { field in
@@ -84,7 +84,7 @@ struct AppUninstallView: View {
             Button {
                 viewModel.startScan()
             } label: {
-                Label("重新扫描", systemImage: "arrow.clockwise")
+                Label(String(localized: String.LocalizationValue("common.rescan")), systemImage: "arrow.clockwise")
             }
             .buttonStyle(.bordered)
             .disabled(viewModel.isScanning)
@@ -114,7 +114,7 @@ struct AppUninstallView: View {
         VStack(spacing: AppSpacing.md) {
             ProgressView()
                 .controlSize(.large)
-            Text("正在扫描已安装应用与残留…")
+            Text(String(localized: String.LocalizationValue("uninstall.scanning")))
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textSecondary)
         }
@@ -126,10 +126,10 @@ struct AppUninstallView: View {
             Image(systemName: "square.and.arrow.down.on.square")
                 .font(.system(size: 36))
                 .foregroundStyle(Color.textSecondary)
-            Text("未发现可卸载的应用残留")
+            Text(String(localized: String.LocalizationValue("uninstall.empty.title")))
                 .font(AppFont.title3)
                 .foregroundStyle(Color.textPrimary)
-            Text("将 .app 拖入本窗口可扫描指定应用及其残留")
+            Text(String(localized: String.LocalizationValue("uninstall.empty.subtitle")))
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textSecondary)
         }
@@ -144,11 +144,11 @@ struct AppUninstallView: View {
         VStack(spacing: 0) {
             // 搜索 + 汇总行
             HStack(spacing: AppSpacing.sm) {
-                TextField("搜索应用或 Bundle ID", text: $viewModel.searchText)
+                TextField(String(localized: String.LocalizationValue("uninstall.search.placeholder")), text: $viewModel.searchText)
                     .textFieldStyle(.roundedBorder)
                     .controlSize(.small)
                 Spacer()
-                Text("\(viewModel.visibleEntries.count) 个应用")
+                Text(String(format: String(localized: String.LocalizationValue("uninstall.count.apps")), viewModel.visibleEntries.count))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -167,7 +167,7 @@ struct AppUninstallView: View {
                     .font(AppFont.callout)
                     .foregroundStyle(Color.textPrimary)
                 Spacer()
-                Button("卸载所选") { showConfirm = true }
+                Button(String(localized: String.LocalizationValue("uninstall.button.uninstallSelected"))) { showConfirm = true }
                     .buttonStyle(.borderedProminent)
                     .tint(.danger)
                     .controlSize(.small)
@@ -194,7 +194,7 @@ struct AppUninstallView: View {
                         .font(AppFont.body)
                         .foregroundStyle(Color.textPrimary)
                     if entry.isOrphan {
-                        Text("残留")
+                        Text(String(localized: String.LocalizationValue("uninstall.row.orphanBadge")))
                             .font(AppFont.caption)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 1)
@@ -215,7 +215,7 @@ struct AppUninstallView: View {
                     .font(AppFont.monoDigit)
                     .foregroundStyle(Color.textPrimary)
                 if entry.leftoverSize > 0 {
-                    Text("残留 \(FileSizeFormatter.abbreviated(from: entry.leftoverSize))")
+                    Text(String(format: String(localized: String.LocalizationValue("uninstall.row.leftover")), FileSizeFormatter.abbreviated(from: entry.leftoverSize)))
                         .font(AppFont.caption)
                         .foregroundStyle(Color.warning)
                 }
@@ -232,7 +232,7 @@ struct AppUninstallView: View {
             AppUninstallDetailPanel(viewModel: viewModel, entry: entry)
         } else {
             VStack {
-                Text("选择左侧应用查看残留明细")
+                Text(String(localized: String.LocalizationValue("uninstall.detail.placeholder")))
                     .font(AppFont.callout)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -250,7 +250,7 @@ struct AppUninstallView: View {
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textPrimary)
             Spacer()
-            Button("好") { resultBanner = nil }
+            Button(String(localized: String.LocalizationValue("common.ok"))) { resultBanner = nil }
                 .buttonStyle(.plain)
                 .foregroundStyle(Color.textSecondary)
         }
@@ -263,25 +263,33 @@ struct AppUninstallView: View {
 
     private var commitSummary: String {
         let count = viewModel.selectedEntries.count
-        guard count > 0 else { return "未选择应用" }
+        guard count > 0 else {
+            return String(localized: String.LocalizationValue("uninstall.commit.none"))
+        }
         return String(
-            format: "已选 %d 个应用 · 可回收 %@",
-            count, FileSizeFormatter.abbreviated(from: viewModel.selectedCommitSize))
+            format: String(localized: String.LocalizationValue("uninstall.commit.summary")),
+            Int64(count), FileSizeFormatter.abbreviated(from: viewModel.selectedCommitSize))
     }
 
     private var confirmTitle: String {
         let entries = viewModel.selectedEntries
         let residues = viewModel.selectedPickedResidueCount
         if viewModel.hasExplicitResidueSelection && residues > 0 {
-            return "卸载（\(entries.count) 个应用，部分残留）"
+            return String(
+                format: String(localized: String.LocalizationValue("uninstall.confirm.title.partial")),
+                Int64(entries.count))
         }
-        return "卸载 \(entries.count) 个应用？"
+        return String(
+            format: String(localized: String.LocalizationValue("uninstall.confirm.title")),
+            Int64(entries.count))
     }
 
     private var confirmMessage: String {
         let size = FileSizeFormatter.abbreviated(from: viewModel.selectedCommitSize)
         let residues = viewModel.selectedCommitResidueCount
-        return "共 \(residues) 项（约 \(size)）将移入废纸篓，30 天内可还原。"
+        return String(
+            format: String(localized: String.LocalizationValue("uninstall.confirm.message")),
+            Int64(residues), size)
     }
 
     // MARK: - Actions
@@ -290,12 +298,18 @@ struct AppUninstallView: View {
         let outcome = await viewModel.uninstallSelected()
         var parts: [String] = []
         if !outcome.succeeded.isEmpty {
-            parts.append("已卸载 \(outcome.succeeded.count) 个应用")
+            parts.append(String(
+                format: String(localized: String.LocalizationValue("uninstall.result.uninstalled")),
+                Int64(outcome.succeeded.count)))
         }
         if !outcome.failed.isEmpty {
-            parts.append("\(outcome.failed.count) 个未完成")
+            parts.append(String(
+                format: String(localized: String.LocalizationValue("uninstall.result.failed")),
+                Int64(outcome.failed.count)))
         }
-        resultBanner = parts.isEmpty ? "没有需要处理的条目" : parts.joined(separator: "；")
+        resultBanner = parts.isEmpty
+            ? String(localized: String.LocalizationValue("uninstall.result.nothing"))
+            : parts.joined(separator: "；")
     }
 
     private func handleDrop(_ providers: [NSItemProvider]) -> Bool {

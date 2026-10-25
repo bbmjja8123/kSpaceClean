@@ -63,7 +63,7 @@ struct SkeletonRow: View {
                 phase = 1
             }
         }
-        .accessibilityLabel("加载中")
+        .accessibilityLabel(String(localized: String.LocalizationValue("common.a11y.loading")))
         .accessibilityElement(children: .ignore)
     }
 

@@ -37,7 +37,7 @@ struct RiskBadge: View {
             RoundedRectangle(cornerRadius: Radius.sm)
                 .stroke(level.backgroundColor.opacity(0.4), lineWidth: 0.5)
         )
-        .accessibilityLabel("风险等级，\(level.label)")
+        .accessibilityLabel(String(format: String(localized: String.LocalizationValue("common.risk.a11y")), level.label))
     }
 }
 

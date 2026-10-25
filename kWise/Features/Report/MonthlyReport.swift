@@ -62,7 +62,12 @@ public enum ReportGenerator {
                 .reduce(Int64(0)) { $0 + $1.size }
             buckets.append(MonthlyReport.WeekBucket(
                 id: week,
-                label: week == 0 ? "本周" : "\(week) 周前",
+                label: week == 0
+                    ? String(localized: String.LocalizationValue("report.week.thisWeek"))
+                    : String(
+                        format: String(localized: String.LocalizationValue("report.week.ago")),
+                        week
+                    ),
                 freedBytes: freed
             ))
         }
@@ -82,7 +87,10 @@ public enum ReportGenerator {
             .map { $0 }
 
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy 年 M 月"
+        // Locale-aware month label ("October 2026" / "2026年10月") — the old
+        // fixed pattern "yyyy 年 M 月" hard-coded Chinese order into every
+        // language.
+        formatter.setLocalizedDateFormatFromTemplate("yMMMM")
 
         let topFiles: [CleanedFile] = recent
             .sorted { $0.size > $1.size }
@@ -103,13 +111,20 @@ public enum ReportGenerator {
 
     private static func friendlyCategory(_ id: String) -> String {
         // Human-readable names; raw IDs only ever surface for unknown keys.
+        // Reuses the scan-category keys (single source of category naming).
         switch id {
-        case "system.cache": return "系统缓存"
-        case "app.cache": return "应用缓存"
-        case "web.junk": return "上网垃圾"
-        case "mail.attachment": return "邮件附件"
-        case "dev.junk": return "开发者垃圾"
-        case "system.log": return "系统日志"
+        case "system.cache":
+            return String(localized: String.LocalizationValue("scan.category.systemCache.title"))
+        case "app.cache":
+            return String(localized: String.LocalizationValue("scan.category.appCache.title"))
+        case "web.junk":
+            return String(localized: String.LocalizationValue("scan.category.browserJunk.title"))
+        case "mail.attachment":
+            return String(localized: String.LocalizationValue("scan.category.mailAttachments.title"))
+        case "dev.junk":
+            return String(localized: String.LocalizationValue("scan.category.developerJunk.title"))
+        case "system.log":
+            return String(localized: String.LocalizationValue("scan.category.systemLogs.title"))
         default: return id
         }
     }

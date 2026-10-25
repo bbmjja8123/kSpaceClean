@@ -43,10 +43,14 @@ public enum SMARTStatus: String, Sendable {
 
     public var friendlyTitle: String {
         switch self {
-        case .verified:    return "正常"
-        case .failing:     return "异常"
-        case .notSupported: return "不支持"
-        case .unknown:     return "未知"
+        case .verified:
+            return String(localized: String.LocalizationValue("diskhealth.smart.status.verified"))
+        case .failing:
+            return String(localized: String.LocalizationValue("diskhealth.smart.status.failing"))
+        case .notSupported:
+            return String(localized: String.LocalizationValue("diskhealth.smart.status.notSupported"))
+        case .unknown:
+            return String(localized: String.LocalizationValue("diskhealth.smart.status.unknown"))
         }
     }
 }

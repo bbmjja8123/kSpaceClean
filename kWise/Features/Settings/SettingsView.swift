@@ -38,18 +38,18 @@ struct SettingsView: View {
                 .foregroundColor(.textPrimary)
 
             Form {
-                Section("文件访问") {
+                Section(String(localized: String.LocalizationValue("settings.scope.header"))) {
                     scopeRow
                 }
 
-                Section("通用") {
-                    Toggle("登录时启动 kWise", isOn: launchAtLoginBinding)
-                    Toggle("菜单栏显示磁盘占用", isOn: $prefs.showMenuBarDiskUsage)
-                    Toggle("清理后通知", isOn: $prefs.notifyAfterCleanup)
+                Section(String(localized: String.LocalizationValue("settings.general.header"))) {
+                    Toggle(String(localized: String.LocalizationValue("settings.general.launchAtLogin")), isOn: launchAtLoginBinding)
+                    Toggle(String(localized: String.LocalizationValue("settings.general.menuBarDiskUsage")), isOn: $prefs.showMenuBarDiskUsage)
+                    Toggle(String(localized: String.LocalizationValue("settings.general.notifyAfterCleanup")), isOn: $prefs.notifyAfterCleanup)
                 }
 
-                Section("扫描") {
-                    Picker("扫描速度", selection: $prefs.scanSpeed) {
+                Section(String(localized: String.LocalizationValue("settings.scan.header"))) {
+                    Picker(String(localized: String.LocalizationValue("settings.scan.speedLabel")), selection: $prefs.scanSpeed) {
                         ForEach(ScanSpeed.allCases, id: \.self) { speed in
                             VStack(alignment: .leading) {
                                 Text(speed.displayName).tag(speed)
@@ -62,13 +62,13 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.menu)
 
-                    Picker("大文件阈值", selection: $prefs.largeFileThreshold) {
+                    Picker(String(localized: String.LocalizationValue("settings.scan.largeFileThreshold")), selection: $prefs.largeFileThreshold) {
                         Text("50 MB").tag(Int64(50_000_000))
                         Text("100 MB").tag(Int64(100_000_000))
                         Text("500 MB").tag(Int64(500_000_000))
                         Text("1 GB").tag(Int64(1_000_000_000))
                     }
-                    Picker("相似照片灵敏度", selection: $prefs.similarityPresetRaw) {
+                    Picker(String(localized: String.LocalizationValue("settings.scan.similarityPreset")), selection: $prefs.similarityPresetRaw) {
                         Text("严格（仅几乎相同）").tag(SimilarityPreset.strict.rawValue)
                         Text("标准").tag(SimilarityPreset.normal.rawValue)
                         Text("宽松（找出更多）").tag(SimilarityPreset.loose.rawValue)
@@ -83,12 +83,12 @@ struct SettingsView: View {
                 // 「+」菜单另有直达入口）。
                 Section("启动项") {
                     LabeledContent {
-                        Button("管理") { showStartupItemsSheet = true }
+                        Button(String(localized: String.LocalizationValue("settings.startup.manage"))) { showStartupItemsSheet = true }
                             .buttonStyle(.bordered)
                             .controlSize(.small)
                     } label: {
-                        Text("登录与启动代理")
-                        Text("查看并停用用户级启动项；系统级项目提供手动指引。")
+                        Text(String(localized: String.LocalizationValue("settings.startup.title")))
+                        Text(String(localized: String.LocalizationValue("settings.startup.subtitle")))
                             .font(AppFont.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -107,7 +107,7 @@ struct SettingsView: View {
                     rulesSection
                 }
 
-                Section("解锁") {
+                Section(String(localized: String.LocalizationValue("settings.unlock.header"))) {
                     subscriptionRow
                 }
             }
@@ -141,13 +141,13 @@ struct SettingsView: View {
             }
         }
         .alert(
-            "登录项设置失败",
+            String(localized: String.LocalizationValue("settings.loginItem.errorTitle")),
             isPresented: Binding(
                 get: { loginItemService.lastError != nil },
                 set: { if !$0 { loginItemService.acknowledgeError() } }
             )
         ) {
-            Button("好", role: .cancel) {}
+            Button(String(localized: String.LocalizationValue("common.ok")), role: .cancel) {}
         } message: {
             Text(loginItemService.lastError ?? "")
         }
@@ -232,16 +232,18 @@ struct SettingsView: View {
             let store = graph.storeManager
             LabeledContent {
                 if store.hasPurchased {
-                    Text("已解锁")
+                    Text(String(localized: String.LocalizationValue("settings.unlock.unlocked")))
                         .foregroundColor(.success)
                 } else {
-                    Button("恢复购买") {
+                    Button(String(localized: String.LocalizationValue("pw.buyout.restore"))) {
                         Task { await store.restorePurchases() }
                     }
                 }
             } label: {
-                Text(store.hasPurchased ? "当前: 买断版" : "当前: 免费版")
-                Text("扫描、归因、拒答清单永久免费；回收动作一次买断解锁。")
+                Text(store.hasPurchased
+                     ? String(localized: String.LocalizationValue("settings.unlock.plan.buyout"))
+                     : String(localized: String.LocalizationValue("settings.unlock.plan.free")))
+                Text(String(localized: String.LocalizationValue("settings.unlock.plan.subtitle")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
             }
@@ -249,8 +251,8 @@ struct SettingsView: View {
             LabeledContent {
                 EmptyView()
             } label: {
-                Text("当前: 直营版")
-                Text("回收动作解锁请在 Mac App Store 购买 Klaris。")
+                Text(String(localized: String.LocalizationValue("settings.unlock.plan.direct")))
+                Text(String(localized: String.LocalizationValue("settings.unlock.plan.directSubtitle")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
             }
@@ -268,14 +270,14 @@ struct SettingsView: View {
             LabeledContent {
                 EmptyView()
             } label: {
-                Text("完整磁盘访问")
-                Text("直营版直接运行于你的 Mac 上，可扫描完整磁盘。")
+                Text(String(localized: String.LocalizationValue("common.scope.fullAccess.title")))
+                Text(String(localized: String.LocalizationValue("settings.scope.fullAccess.subtitle")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
             }
         case .homeGranted:
             LabeledContent {
-                Button("撤销授权", role: .destructive) {
+                Button(String(localized: String.LocalizationValue("settings.scope.revokeButton")), role: .destructive) {
                     Task { await appScope.revoke() }
                 }
             } label: {
@@ -286,7 +288,7 @@ struct SettingsView: View {
             }
         case .containerOnly:
             LabeledContent {
-                Button("授权主目录") {
+                Button(String(localized: String.LocalizationValue("common.grantHome"))) {
                     Task { await appScope.grant() }
                 }
                 .buttonStyle(.borderedProminent)
@@ -324,7 +326,7 @@ struct SettingsView: View {
                     .font(.system(size: 14))
                     .foregroundColor(.brandPrimary)
 
-                Text(task.rawValue)
+                Text(task.title)
                     .font(AppFont.body)
                     .foregroundColor(.textPrimary)
 
@@ -399,14 +401,14 @@ struct SettingsView: View {
         // 不渲染无意义（注定为空）的扫描按钮。
         if !QuickCleanGate.allowsPipeline(appScope.capability.level) {
             LabeledContent {
-                Button("授权主目录") {
+                Button(String(localized: String.LocalizationValue("common.grantHome"))) {
                     Task { await appScope.grant() }
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
             } label: {
-                Text("需要主目录授权")
-                Text("授权后才能扫描浏览器历史、Cookie 与下载记录。")
+                Text(String(localized: String.LocalizationValue("settings.privacy.grantRequired.title")))
+                Text(String(localized: String.LocalizationValue("settings.privacy.grantRequired.subtitle")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
             }
@@ -455,8 +457,7 @@ struct SettingsView: View {
             Image(systemName: category.icon)
                 .font(.system(size: 12))
                 .foregroundColor(.textSecondary)
-            Text(category.rawValue)
-                .font(AppFont.caption)
+            Text(category.displayName)
                 .foregroundColor(.textSecondary)
             Text(String(format: String(localized: String.LocalizationValue("settings.privacy.itemCount")), count))
                 .font(AppFont.caption)

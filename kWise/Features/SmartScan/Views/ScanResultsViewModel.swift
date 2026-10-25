@@ -480,14 +480,14 @@ final class ScanResultsViewModel: ObservableObject {
         let recResult = ScanResult(
             url: URL(fileURLWithPath: "/Library/Caches/com.apple.Safari"),
             path: "/Library/Caches/com.apple.Safari",
-            title: "Safari 缓存",
+            title: String(localized: String.LocalizationValue("scan.mock.safariCache")),
             fileSize: 2_100_000_000,
             cleanType: .cache,
             riskLevel: .recommended
         )
         let sub = ScanSubCategory(
             subCategoryID: "system.cache",
-            title: "系统缓存",
+            title: String(localized: String.LocalizationValue("scan.category.systemCache.title")),
             totalSize: 4_200_000_000,
             directResults: [recResult],
             showAction: false,
@@ -495,7 +495,7 @@ final class ScanResultsViewModel: ObservableObject {
         )
         let category = ScanCategory(
             categoryID: "system.junk",
-            title: "系统垃圾",
+            title: String(localized: String.LocalizationValue("scan.mock.category.title")),
             totalSize: 4_200_000_000,
             subItems: [sub],
             riskLevel: .recommended

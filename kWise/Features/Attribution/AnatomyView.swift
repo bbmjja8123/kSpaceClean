@@ -582,31 +582,31 @@ public struct AnatomyView: View {
                 VStack(alignment: .leading, spacing: AppSpacing.xs) {
                     switch level {
                     case .fullAccess:
-                        Text("完整磁盘访问")
+                        Text(String(localized: String.LocalizationValue("common.scope.fullAccess.title")))
                             .font(AppFont.callout)
                             .foregroundStyle(Color.textPrimary)
-                        Text("直营版可直接扫描完整磁盘。")
+                        Text(String(localized: String.LocalizationValue("canvas.status.fullAccess.body")))
                             .font(AppFont.caption)
                             .foregroundStyle(Color.textSecondary)
                     case .homeGranted:
-                        Text("主目录已授权")
+                        Text(String(localized: String.LocalizationValue("canvas.status.homeGranted.title")))
                             .font(AppFont.callout)
                             .foregroundStyle(Color.textPrimary)
-                        Text("扫描范围覆盖你的主目录。")
+                        Text(String(localized: String.LocalizationValue("canvas.status.homeGranted.body")))
                             .font(AppFont.caption)
                             .foregroundStyle(Color.textSecondary)
                     case .containerOnly:
-                        Text("仅容器访问")
+                        Text(String(localized: String.LocalizationValue("仅容器访问")))
                             .font(AppFont.callout)
                             .foregroundStyle(Color.textPrimary)
-                        Text("授权主目录后才能发现并清理大部分垃圾文件。")
+                        Text(String(localized: String.LocalizationValue("canvas.status.containerOnly.body")))
                             .font(AppFont.caption)
                             .foregroundStyle(Color.textSecondary)
                     }
                 }
                 Spacer()
                 if level == .containerOnly {
-                    Button("授权主目录") {
+                    Button(String(localized: String.LocalizationValue("common.grantHome"))) {
                         Task { await appScope.grant() }
                     }
                     .buttonStyle(.borderedProminent)

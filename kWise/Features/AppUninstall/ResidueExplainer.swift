@@ -27,42 +27,44 @@ enum ResidueExplainer {
         let chatMarkers = ["MessageStore", "ChatStorage", "MessageArchive"]
         if residue.type == .appSupport || residue.type == .container,
            chatMarkers.contains(where: { path.localizedCaseInsensitiveContains($0) }) {
-            return "聊天记录数据，删除后聊天图片与消息不再显示"
+            return String(localized: String.LocalizationValue("uninstall.residue.chatData"))
         }
 
         switch residue.type {
         case .preferences:
-            return "应用的偏好设置，删除后 App 恢复首次启动的默认配置"
+            return String(localized: String.LocalizationValue("uninstall.residue.preferences"))
         case .caches:
-            return "缓存文件，删除后 App 会自动重建"
+            return String(localized: String.LocalizationValue("uninstall.residue.caches"))
         case .savedState:
-            return "窗口状态记录，删除后无影响"
+            return String(localized: String.LocalizationValue("uninstall.residue.savedState"))
         case .httpStorage:
-            return "网络缓存数据，删除后部分网站或服务可能需要重新登录"
+            return String(localized: String.LocalizationValue("uninstall.residue.httpStorage"))
         case .launchAgent, .launchDaemon, .startupItem:
-            return "开机自启动配置，删除后 App 不再自动启动"
+            return String(localized: String.LocalizationValue("uninstall.residue.launchItem"))
         case .webKit, .cookie:
-            return "网页数据（Cookie/本地存储），清理后将退出相关网站的登录"
+            return String(localized: String.LocalizationValue("uninstall.residue.webData"))
         case .groupContainer:
-            return "应用组共享数据，可能被同厂商多个应用使用"
+            return String(localized: String.LocalizationValue("uninstall.residue.groupContainer"))
         case .plugin, .prefPane:
-            return "应用插件或系统偏好面板"
+            return String(localized: String.LocalizationValue("uninstall.residue.plugin"))
         case .log:
-            return "日志文件，通常可安全删除"
+            return String(localized: String.LocalizationValue("uninstall.residue.log"))
         case .appleScript:
-            return "自动化脚本，删除后相关自动化操作失效"
+            return String(localized: String.LocalizationValue("uninstall.residue.appleScript"))
         default:
             break
         }
 
         // 路径模式补充（未知 type 或需要更细的解释）。
         if path.contains("Application Support") {
-            return "应用支撑数据目录"
+            return String(localized: String.LocalizationValue("uninstall.residue.appSupport"))
         }
         if path.contains("Logs") {
-            return "日志文件，通常可安全删除"
+            return String(localized: String.LocalizationValue("uninstall.residue.log"))
         }
-        return "应用的支撑文件（由「\(appName)」创建）"
+        return String(
+            format: String(localized: String.LocalizationValue("uninstall.residue.fallback")),
+            appName)
     }
 
     /// 归属推断共享 API：label 反查 zh 映射 → 「这是 XX 的后台助手」。
@@ -87,7 +89,9 @@ enum ResidueExplainer {
             if cleaned.lowercased().contains(
                 mapping.bundleID.replacingOccurrences(of: "com.", with: "").lowercased())
                 || mapping.bundleID.lowercased().contains(cleaned.lowercased()) {
-                return "这是「\(mapping.displayName)」的后台助手"
+                return String(
+                    format: String(localized: String.LocalizationValue("uninstall.residue.ownerHint")),
+                    mapping.displayName)
             }
         }
         return nil

@@ -11,8 +11,8 @@ import AppIntents
 import AppKit
 
 public struct RunSmartCareIntent: AppIntent {
-    public static let title: LocalizedStringResource = "运行 Smart Care"
-    public static let description = IntentDescription("打开 kWise 并开始一键智能清理。")
+    public static let title: LocalizedStringResource = "intent.smartcare.title"
+    public static let description = IntentDescription("intent.smartcare.description")
     public static let openAppWhenRun = true
 
     public init() {}

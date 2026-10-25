@@ -63,36 +63,36 @@ public struct CategoryDefinition: Sendable, Identifiable, Hashable {
     public static let defaults: [CategoryDefinition] = [
         CategoryDefinition(
             id: "system.cache",
-            title: "系统缓存",
-            tooltip: "由系统或应用自动重建的缓存文件",
+            title: String(localized: String.LocalizationValue("scan.category.systemCache.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.systemCache.tooltip")),
             paths: ["~/Library/Caches", "/Library/Caches"],
             riskLevel: .recommended
         ),
         CategoryDefinition(
             id: "app.cache",
-            title: "应用缓存",
-            tooltip: "应用主动写入的缓存或临时数据",
+            title: String(localized: String.LocalizationValue("scan.category.appCache.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.appCache.tooltip")),
             paths: ["~/Library/Application Support", "~/Library/Containers"],
             riskLevel: .caution
         ),
         CategoryDefinition(
             id: "browser.junk",
-            title: "上网垃圾",
-            tooltip: "浏览器历史、Cookie 与本地存储",
+            title: String(localized: String.LocalizationValue("scan.category.browserJunk.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.browserJunk.tooltip")),
             paths: ["~/Library/Safari", "~/Library/Cookies"],
             riskLevel: .caution
         ),
         CategoryDefinition(
             id: "mail.attachments",
-            title: "邮件附件",
-            tooltip: "已下载的邮件附件与本地缓存",
+            title: String(localized: String.LocalizationValue("scan.category.mailAttachments.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.mailAttachments.tooltip")),
             paths: ["~/Library/Mail"],
             riskLevel: .caution
         ),
         CategoryDefinition(
             id: "developer.junk",
-            title: "开发者垃圾",
-            tooltip: "Xcode DerivedData、模拟器缓存与 SPM 工作目录",
+            title: String(localized: String.LocalizationValue("scan.category.developerJunk.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.developerJunk.tooltip")),
             paths: ["~/Library/Developer/Xcode/DerivedData",
                     "~/Library/Developer/CoreSimulator/Caches",
                     "~/Library/Caches/org.swift.swiftpm"],
@@ -100,8 +100,8 @@ public struct CategoryDefinition: Sendable, Identifiable, Hashable {
         ),
         CategoryDefinition(
             id: "system.logs",
-            title: "系统日志",
-            tooltip: "诊断日志与崩溃报告",
+            title: String(localized: String.LocalizationValue("scan.category.systemLogs.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.systemLogs.tooltip")),
             paths: ["/private/var/log", "/Library/Logs",
                     "~/Library/Logs/DiagnosticReports"],
             riskLevel: .recommended
@@ -109,8 +109,8 @@ public struct CategoryDefinition: Sendable, Identifiable, Hashable {
         // v2.4 — iOS 旧设备备份（对标 CMM "iOS device backups"，常占数 GB）
         CategoryDefinition(
             id: "ios.backup",
-            title: "iOS 设备备份",
-            tooltip: "iPhone/iPad 的本地备份，旧备份可安全移除",
+            title: String(localized: String.LocalizationValue("scan.category.iosBackup.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.iosBackup.tooltip")),
             paths: ["~/Library/Application Support/MobileSync/Backup"],
             riskLevel: .caution
         ),
@@ -118,8 +118,8 @@ public struct CategoryDefinition: Sendable, Identifiable, Hashable {
         // 永久清空（已在废纸篓内），CleanupEngine 特判 removeItem。
         CategoryDefinition(
             id: "trash",
-            title: "废纸篓",
-            tooltip: "废纸篓中的文件，清倒后不可恢复",
+            title: String(localized: String.LocalizationValue("scan.category.trash.title")),
+            tooltip: String(localized: String.LocalizationValue("scan.category.trash.tooltip")),
             paths: ["~/.Trash"],
             riskLevel: .recommended
         )
@@ -798,7 +798,7 @@ public actor ScanOrchestrator {
                 // root with no app rule and no owning folder.
                 let sub = ScanSubCategory(
                     subCategoryID: key,
-                    title: "其他未识别",
+                    title: String(localized: String.LocalizationValue("scan.category.unrecognized.title")),
                     bundleID: nil,
                     appName: nil,
                     totalSize: bucketSize[key] ?? 0,

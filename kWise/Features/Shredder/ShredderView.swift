@@ -45,15 +45,15 @@ struct ShredderView: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                Text("文件粉碎")
+                Text(String(localized: String.LocalizationValue("shred.title")))
                     .font(AppFont.title2)
                     .foregroundStyle(Color.textPrimary)
-                Text("覆写文件内容后移入废纸篓，确保敏感文件无法恢复")
+                Text(String(localized: String.LocalizationValue("shred.subtitle")))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             }
             Spacer()
-            Button("添加文件…") { viewModel.pickFiles() }
+            Button(String(localized: String.LocalizationValue("shred.addFiles"))) { viewModel.pickFiles() }
                 .buttonStyle(.bordered)
                 .disabled(viewModel.isShredding)
         }
@@ -110,8 +110,10 @@ struct ShredderView: View {
         VStack(spacing: AppSpacing.md) {
             EmptyStateView(
                 icon: "document.badge.ellipsis",
-                title: isDropTargeted ? "松开以添加文件" : "拖入文件或点击添加",
-                subtitle: "文件内容将被覆写，此操作不可逆。仅支持用户文件。"
+                title: isDropTargeted
+                    ? String(localized: String.LocalizationValue("shred.drop.release"))
+                    : String(localized: String.LocalizationValue("shred.drop.idle")),
+                subtitle: String(localized: String.LocalizationValue("shred.drop.subtitle"))
             )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -135,7 +137,7 @@ struct ShredderView: View {
 
     private var historyBlock: some View {
         VStack(alignment: .leading, spacing: AppSpacing.xs) {
-            Text("最近粉碎记录")
+            Text(String(localized: String.LocalizationValue("shred.history.title")))
                 .font(AppFont.caption)
                 .foregroundColor(.textSecondary)
                 .padding(.horizontal, AppSpacing.lg)
@@ -190,11 +192,11 @@ struct ShredderView: View {
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
                 Spacer()
-                Button("移除全部") { viewModel.clear() }
+                Button(String(localized: String.LocalizationValue("shred.removeAll"))) { viewModel.clear() }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
                     .disabled(viewModel.stagedURLs.isEmpty || viewModel.isShredding)
-                Button("粉碎 (\(viewModel.stagedURLs.count))") {
+                Button(String(format: String(localized: String.LocalizationValue("shred.start")), Int64(viewModel.stagedURLs.count))) {
                     showConfirm = true
                 }
                 .buttonStyle(.borderedProminent)
@@ -208,8 +210,8 @@ struct ShredderView: View {
     /// Honest C-5 copy: no scareware, no fake "military grade" claims.
     private var planNote: String {
         viewModel.plan.passes > 1
-            ? "HDD 模式：\(viewModel.plan.passes) 次覆写 + 校验 + 文件名随机化"
-            : "1 次覆写 + 校验 + 文件名随机化（对 SSD 已足够）"
+            ? String(format: String(localized: String.LocalizationValue("shred.plan.hdd")), Int64(viewModel.plan.passes))
+            : String(localized: String.LocalizationValue("shred.plan.ssd"))
     }
 
     // MARK: - Helpers

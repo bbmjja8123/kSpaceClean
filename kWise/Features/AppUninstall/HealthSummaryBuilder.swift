@@ -40,10 +40,12 @@ enum HealthSummaryBuilder {
             max(0, Calendar.current.dateComponents([.day], from: $0, to: now).day ?? 0)
         }
         let formatter = RelativeDateTimeFormatter()
-        formatter.locale = Locale(identifier: "zh_CN")
+        formatter.locale = .current
         let lastUsedText = entry.lastUsedDate.map {
-            "最近使用是 " + formatter.localizedString(for: $0, relativeTo: now)
-        } ?? "未知"
+            String(
+                format: String(localized: String.LocalizationValue("uninstall.health.lastUsed")),
+                formatter.localizedString(for: $0, relativeTo: now))
+        } ?? String(localized: String.LocalizationValue("uninstall.health.lastUsed.unknown"))
 
         let ratio = entry.appSize > 0
             ? Double(entry.leftoverSize) / Double(entry.appSize)
@@ -61,9 +63,12 @@ enum HealthSummaryBuilder {
             grade = .clean
         }
         let gradeText = switch grade {
-        case .clean: "干净"
-        case .normal: "正常"
-        case .bloated: "臃肿"
+        case .clean:
+            String(localized: String.LocalizationValue("uninstall.health.grade.clean"))
+        case .normal:
+            String(localized: String.LocalizationValue("uninstall.health.grade.normal"))
+        case .bloated:
+            String(localized: String.LocalizationValue("uninstall.health.grade.bloated"))
         }
         let total = FileSizeFormatter.abbreviated(from: entry.appSize + entry.leftoverSize)
 

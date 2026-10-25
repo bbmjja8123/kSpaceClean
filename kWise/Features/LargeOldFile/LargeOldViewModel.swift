@@ -31,12 +31,18 @@ public final class LargeOldViewModel: ObservableObject {
         public var id: String { rawValue }
         public var displayName: String {
             switch self {
-            case .video: return "视频"
-            case .audio: return "音频"
-            case .image: return "图片"
-            case .document: return "文档"
-            case .archive: return "压缩包"
-            case .diskImage: return "镜像"
+            case .video:
+                return String(localized: String.LocalizationValue("largeold.filter.video"))
+            case .audio:
+                return String(localized: String.LocalizationValue("largeold.filter.audio"))
+            case .image:
+                return String(localized: String.LocalizationValue("largeold.filter.image"))
+            case .document:
+                return String(localized: String.LocalizationValue("largeold.filter.document"))
+            case .archive:
+                return String(localized: String.LocalizationValue("largeold.filter.archive"))
+            case .diskImage:
+                return String(localized: String.LocalizationValue("largeold.filter.diskImage"))
             }
         }
         var extensions: Set<String> {
@@ -60,6 +66,16 @@ public final class LargeOldViewModel: ObservableObject {
     public enum DisplayMode: String, CaseIterable {
         case files = "文件列表"
         case folders = "文件夹聚合"
+
+        /// Localized display name (rawValue is a stable identifier, not copy).
+        public var displayName: String {
+            switch self {
+            case .files:
+                return String(localized: String.LocalizationValue("largeold.mode.files"))
+            case .folders:
+                return String(localized: String.LocalizationValue("largeold.mode.folders"))
+            }
+        }
     }
 
     /// One aggregated folder — computed from the current entries, no extra

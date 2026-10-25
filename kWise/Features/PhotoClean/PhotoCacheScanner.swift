@@ -23,6 +23,18 @@ public struct PhotoCacheItem: Identifiable, Sendable {
             case .photoStream: return "icloud"
             }
         }
+
+        /// Localized display name (rawValue is a stable identifier, not copy).
+        public var displayName: String {
+            switch self {
+            case .photosApp, .iPhoto:
+                return rawValue
+            case .iOSBackup:
+                return String(localized: String.LocalizationValue("photo.cache.category.iOSBackup"))
+            case .photoStream:
+                return String(localized: String.LocalizationValue("photo.cache.category.photoStream"))
+            }
+        }
     }
 }
 
@@ -130,7 +142,7 @@ public final class PhotoCacheScanner: Sendable {
         guard totalSize > 0 else { return nil }
 
         return PhotoCacheItem(
-            name: "iPhoto 图库缓存",
+            name: String(localized: String.LocalizationValue("photo.cache.item.iPhotoLibrary")),
             category: .iPhoto,
             url: iPhotoDir,
             estimatedSize: totalSize
@@ -167,7 +179,7 @@ public final class PhotoCacheScanner: Sendable {
 
             let deviceName = url.lastPathComponent
             items.append(PhotoCacheItem(
-                name: String(format: "iOS 备份 — %@", deviceName),
+                name: String(format: String(localized: String.LocalizationValue("photo.cache.item.iOSBackup")), deviceName),
                 category: .iOSBackup,
                 url: url,
                 estimatedSize: size
@@ -213,7 +225,7 @@ public final class PhotoCacheScanner: Sendable {
         guard size > 0 else { return nil }
 
         return PhotoCacheItem(
-            name: category.rawValue,
+            name: category.displayName,
             category: category,
             url: url,
             estimatedSize: size

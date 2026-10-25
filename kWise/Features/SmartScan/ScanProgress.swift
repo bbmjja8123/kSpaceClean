@@ -71,14 +71,14 @@ public enum ScanStage: Int, Sendable, CaseIterable, Equatable {
 
     public var title: String {
         switch self {
-        case .cache: return "缓存扫描"
-        case .devJunk: return "开发残留"
-        case .binary: return "二进制文件"
-        case .language: return "语言包"
-        case .brokenConfig: return "损坏配置"
-        case .iosCache: return "iOS 缓存"
-        case .appLeftovers: return "应用残留"
-        case .browserCache: return "浏览器缓存"
+        case .cache: return String(localized: String.LocalizationValue("scanStage.cache.title"))
+        case .devJunk: return String(localized: String.LocalizationValue("scanStage.devJunk.title"))
+        case .binary: return String(localized: String.LocalizationValue("scanStage.binary.title"))
+        case .language: return String(localized: String.LocalizationValue("scanStage.language.title"))
+        case .brokenConfig: return String(localized: String.LocalizationValue("scanStage.brokenConfig.title"))
+        case .iosCache: return String(localized: String.LocalizationValue("scanStage.iosCache.title"))
+        case .appLeftovers: return String(localized: String.LocalizationValue("scanStage.appLeftovers.title"))
+        case .browserCache: return String(localized: String.LocalizationValue("scanStage.browserCache.title"))
         }
     }
 

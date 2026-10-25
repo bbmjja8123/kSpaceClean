@@ -12,19 +12,37 @@ import Foundation
 /// action instead.
 public enum MaintenanceTask: String, CaseIterable, Identifiable, Sendable {
     /// Flush DNS cache to resolve domain resolution issues.
-    case dnsFlush = "刷新 DNS 缓存"
+    case dnsFlush = "Flush DNS cache"
     /// Rebuild Spotlight index to fix search anomalies.
-    case spotlightRebuild = "重建 Spotlight 索引"
+    case spotlightRebuild = "Rebuild Spotlight index"
     /// Purge inactive memory to improve system responsiveness.
-    case memoryPurge = "释放内存"
+    case memoryPurge = "Purge inactive memory"
     /// Clear font cache to fix font rendering issues.
-    case fontCacheRebuild = "重建字体缓存"
+    case fontCacheRebuild = "Rebuild font cache"
     /// Rebuild Launch Services database to fix "Open With" issues.
-    case launchServicesRebuild = "重建 Launch Services"
+    case launchServicesRebuild = "Rebuild Launch Services"
     /// Clear user log files to free disk space — engine-backed.
-    case userLogClear = "清理用户日志"
+    case userLogClear = "Clean user logs"
 
     public var id: String { rawValue }
+
+    /// Localized, user-visible task title (rendered on the maintenance row).
+    public var title: String {
+        switch self {
+        case .dnsFlush:
+            return String(localized: String.LocalizationValue("maintenance.task.dnsFlush.title"))
+        case .spotlightRebuild:
+            return String(localized: String.LocalizationValue("maintenance.task.spotlightRebuild.title"))
+        case .memoryPurge:
+            return String(localized: String.LocalizationValue("maintenance.task.memoryPurge.title"))
+        case .fontCacheRebuild:
+            return String(localized: String.LocalizationValue("maintenance.task.fontCacheRebuild.title"))
+        case .launchServicesRebuild:
+            return String(localized: String.LocalizationValue("maintenance.task.launchServicesRebuild.title"))
+        case .userLogClear:
+            return String(localized: String.LocalizationValue("maintenance.task.userLogClear.title"))
+        }
+    }
 
     /// SF Symbol name corresponding to the maintenance operation.
     public var icon: String {
@@ -48,17 +66,17 @@ public enum MaintenanceTask: String, CaseIterable, Identifiable, Sendable {
     public var detail: String {
         switch self {
         case .dnsFlush:
-            return "清除 DNS 缓存记录，解决域名解析问题"
+            return String(localized: String.LocalizationValue("maintenance.task.dnsFlush.detail"))
         case .spotlightRebuild:
-            return "重新建立文件索引，修复搜索异常"
+            return String(localized: String.LocalizationValue("maintenance.task.spotlightRebuild.detail"))
         case .memoryPurge:
-            return "强制释放非活跃内存，提升系统响应速度"
+            return String(localized: String.LocalizationValue("maintenance.task.memoryPurge.detail"))
         case .fontCacheRebuild:
-            return "清除字体缓存，修复字体显示问题"
+            return String(localized: String.LocalizationValue("maintenance.task.fontCacheRebuild.detail"))
         case .launchServicesRebuild:
-            return "重建应用注册信息，修复打开方式异常"
+            return String(localized: String.LocalizationValue("maintenance.task.launchServicesRebuild.detail"))
         case .userLogClear:
-            return "将用户日志移入废纸篓，释放磁盘空间（可回滚）"
+            return String(localized: String.LocalizationValue("maintenance.task.userLogClear.detail"))
         }
     }
 
@@ -89,7 +107,7 @@ public enum MaintenanceTask: String, CaseIterable, Identifiable, Sendable {
     /// Honest sandbox note shown on every card (C-5: no pretending).
     public var sandboxNote: String {
         isEngineBacked
-            ? "由 kWise 直接完成，移入废纸篓可回滚。"
-            : "出于 App Store 沙箱限制，此项需在终端中执行。"
+            ? String(localized: String.LocalizationValue("maintenance.note.engineBacked"))
+            : String(localized: String.LocalizationValue("maintenance.note.terminalRequired"))
     }
 }

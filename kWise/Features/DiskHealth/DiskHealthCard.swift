@@ -28,7 +28,7 @@ public struct DiskHealthCard: View {
                         badge
                     }
                     Spacer(minLength: 0)
-                    Text("磁盘健康")
+                    Text(String(localized: String.LocalizationValue("diskhealth.title")))
                         .font(AppFont.title3)
                         .foregroundStyle(Color.textPrimary)
                     Text(summary)
@@ -66,20 +66,22 @@ public struct DiskHealthCard: View {
     private var summary: String {
         switch viewModel.grade {
         case .good:
-            return "S.M.A.R.T. 正常 · 容量充足"
+            return String(localized: String.LocalizationValue("diskhealth.card.summary.good"))
         case .caution:
             if let total = viewModel.volume.totalBytes,
                let free = viewModel.volume.freeBytes,
                total > 0 {
                 let usedPercent = Int(Double(total - free) / Double(total) * 100)
-                return "已用 \(usedPercent)% · 考虑清理"
+                return String(
+                    format: String(localized: String.LocalizationValue("diskhealth.card.summary.caution")),
+                    Int64(usedPercent))
             }
-            return "已用 ≥ 95% · 考虑清理"
+            return String(localized: String.LocalizationValue("diskhealth.card.summary.cautionNoData"))
         case .danger:
-            return "S.M.A.R.T. 报告异常"
+            return String(localized: String.LocalizationValue("diskhealth.card.summary.danger"))
         case .unknown:
             // C-5 honest FDA: drive unreadable without Full Disk Access.
-            return "已读 容量 · 需 FDA 读取 SMART"
+            return String(localized: String.LocalizationValue("diskhealth.card.summary.unknown"))
         }
     }
 }

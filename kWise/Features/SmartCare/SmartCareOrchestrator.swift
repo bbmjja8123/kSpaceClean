@@ -87,7 +87,7 @@ final class SmartCareOrchestrator: ObservableObject {
     /// Hero CTA entry point. Triggers the scan → recommend pipeline.
     public func start() {
         guard let scanVM = scanResultsViewModel else {
-            state = .failed(message: "扫描模块未连接")
+            state = .failed(message: String(localized: String.LocalizationValue("smartcare.error.scanModuleMissing")))
             return
         }
         pipelineGeneration += 1
@@ -149,7 +149,7 @@ final class SmartCareOrchestrator: ObservableObject {
         // Sandboxed / scope-limited: surface the gap instead of presenting
         // an empty results page (PowerScope-era copy — no FDA promises).
         if scanVM.needsFullDiskAccess {
-            state = .failed(message: "需要主目录访问权限，请在设置中授权后重试")
+            state = .failed(message: String(localized: String.LocalizationValue("smartcare.error.homeAccessRequired")))
             return
         }
 

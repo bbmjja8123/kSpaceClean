@@ -21,10 +21,10 @@ struct PrivacyOverviewView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: AppSpacing.xs) {
-            Text("隐私概览")
+            Text(String(localized: String.LocalizationValue("privacy.overview.title")))
                 .font(AppFont.title2)
                 .foregroundStyle(Color.textPrimary)
-            Text("kWise 只列出它能实际处理的项目；其余项会直接带你去系统设置。")
+            Text(String(localized: String.LocalizationValue("privacy.overview.subtitle")))
                 .font(AppFont.body)
                 .foregroundStyle(Color.textSecondary)
         }

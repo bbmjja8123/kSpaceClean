@@ -14,14 +14,15 @@ enum DuplicateFolderDescriber {
             ?? NLEmbedding.wordEmbedding(for: .english)
     }
 
-    /// 主题锚点：文件名词向量质心 vs 主题锚点词组。
+    /// 主题锚点：文件名词向量质心 vs 主题锚点词组。`name` 为本地化键
+    /// （展示时经 `String(localized:)` 解析；锚点词本身保留原文用于匹配）。
     static let topics: [(name: String, anchors: [String])] = [
-        ("项目代码", ["swift", "py", "git", "source", "build", "代码"]),
-        ("照片", ["img", "photo", "dng", "heic", "jpg", "照片"]),
-        ("发票文档", ["invoice", "receipt", "pdf", "发票", "账单"]),
-        ("音乐", ["mp3", "flac", "track", "音乐", "album"]),
-        ("视频素材", ["clip", "mov", "mp4", "footage", "视频"]),
-        ("设计稿", ["sketch", "psd", "figma", "设计"]),
+        ("dupe.topic.code", ["swift", "py", "git", "source", "build", "代码"]),
+        ("dupe.topic.photos", ["img", "photo", "dng", "heic", "jpg", "照片"]),
+        ("dupe.topic.invoices", ["invoice", "receipt", "pdf", "发票", "账单"]),
+        ("dupe.topic.music", ["mp3", "flac", "track", "音乐", "album"]),
+        ("dupe.topic.video", ["clip", "mov", "mp4", "footage", "视频"]),
+        ("dupe.topic.design", ["sketch", "psd", "figma", "设计"]),
     ]
 
     /// 主题命中的余弦阈值（与 ResidueGroupingEngine 一致：低于阈值视为
@@ -49,16 +50,25 @@ enum DuplicateFolderDescriber {
     /// 四分支文案合成（纯函数，全分支可测）：
     /// 有主题 + 有时间差 / 有主题 / 只有时间差 / 全无。
     static func compose(topic: String?, days: Int?) -> String {
-        switch (topic, days) {
+        // topic 现为本地化键 → 解析为展示名后再进入文案。
+        let topicName = topic.map {
+            String(localized: String.LocalizationValue($0))
+        }
+        switch (topicName, days) {
         case (.some(let name), .some(let d)):
-            return String(format: "这看起来是「%@」相关的备份副本——其中一个已经 %lld 天没有更新，像是同一项目的旧备份",
-                          name, d)
+            return String(
+                format: String(localized: String.LocalizationValue("dupe.folder.backupTopicWithAge")),
+                name, Int64(d))
         case (.some(let name), nil):
-            return String(format: "这看起来是「%@」相关的备份副本——像是同一项目的两次备份", name)
+            return String(
+                format: String(localized: String.LocalizationValue("dupe.folder.backupTopic")),
+                name)
         case (nil, .some(let d)):
-            return String(format: "两个文件夹内容完全相同——其中一个已经 %lld 天没有更新，像是同一项目的旧备份", d)
+            return String(
+                format: String(localized: String.LocalizationValue("dupe.folder.sameWithAge")),
+                Int64(d))
         case (nil, nil):
-            return "两个文件夹内容完全相同——像是同一项目的两次备份"
+            return String(localized: String.LocalizationValue("dupe.folder.same"))
         }
     }
 

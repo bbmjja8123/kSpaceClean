@@ -41,10 +41,10 @@ struct StartupItemsView: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                Text("启动项")
+                Text(String(localized: String.LocalizationValue("startup.title")))
                     .font(AppFont.title2)
                     .foregroundStyle(Color.textPrimary)
-                Text("用户级启动项可停用并随时恢复；系统级项目给出手动处理指引")
+                Text(String(localized: String.LocalizationValue("startup.subtitle")))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -52,7 +52,7 @@ struct StartupItemsView: View {
             Button {
                 viewModel.startScan()
             } label: {
-                Label("重新扫描", systemImage: "arrow.clockwise")
+                Label(String(localized: String.LocalizationValue("common.rescan")), systemImage: "arrow.clockwise")
             }
             .buttonStyle(.bordered)
             .disabled(viewModel.isScanning)
@@ -73,21 +73,21 @@ struct StartupItemsView: View {
         } else {
             List {
                 if !viewModel.userItems.isEmpty {
-                    Section("用户启动项") {
+                    Section(String(localized: String.LocalizationValue("startup.section.user"))) {
                         ForEach(viewModel.userItems) { entry in
                             userRow(entry)
                         }
                     }
                 }
                 if !viewModel.systemItems.isEmpty {
-                    Section("系统启动项（只读）") {
+                    Section(String(localized: String.LocalizationValue("startup.section.system"))) {
                         ForEach(viewModel.systemItems) { entry in
                             systemRow(entry)
                         }
                     }
                 }
                 if !viewModel.malformedItems.isEmpty {
-                    Section("异常配置") {
+                    Section(String(localized: String.LocalizationValue("startup.section.malformed"))) {
                         ForEach(viewModel.malformedItems, id: \.id) { item in
                             malformedRow(item)
                         }
@@ -96,7 +96,7 @@ struct StartupItemsView: View {
                 if viewModel.userItems.isEmpty && viewModel.systemItems.isEmpty
                     && viewModel.malformedItems.isEmpty {
                     Section {
-                        Text("未发现第三方启动项。")
+                        Text(String(localized: String.LocalizationValue("startup.empty.none")))
                             .font(AppFont.callout)
                             .foregroundStyle(Color.textSecondary)
                     }
@@ -111,13 +111,13 @@ struct StartupItemsView: View {
             Image(systemName: "lock")
                 .font(.system(size: 32))
                 .foregroundStyle(Color.warning)
-            Text("需要主目录授权")
+            Text(String(localized: String.LocalizationValue("startup.grant.title")))
                 .font(AppFont.title3)
                 .foregroundStyle(Color.textPrimary)
-            Text("授权主目录后才能查看和管理用户级启动项。")
+            Text(String(localized: String.LocalizationValue("startup.grant.subtitle")))
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textSecondary)
-            Button("授权主目录") {
+            Button(String(localized: String.LocalizationValue("startup.grant.button"))) {
                 Task { await appScope.grant() }
             }
             .buttonStyle(.borderedProminent)
@@ -129,7 +129,7 @@ struct StartupItemsView: View {
         VStack(spacing: AppSpacing.md) {
             ProgressView()
                 .controlSize(.large)
-            Text("正在扫描启动项…")
+            Text(String(localized: String.LocalizationValue("startup.scanning")))
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textSecondary)
         }
@@ -161,7 +161,7 @@ struct StartupItemsView: View {
                     }
                 }
                 Spacer()
-                Button("停用") {
+                Button(String(localized: String.LocalizationValue("startup.disable.button"))) {
                     viewModel.disable(entry)
                 }
                 .buttonStyle(.bordered)
@@ -196,7 +196,7 @@ struct StartupItemsView: View {
                 }
                 Spacer()
                 // 系统级项：只读 —— Toggler 会诚实拒绝，这里不给假开关。
-                Text("需手动处理")
+                Text(String(localized: String.LocalizationValue("startup.system.manualGuidance")))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
             }

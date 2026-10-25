@@ -41,14 +41,14 @@ struct DangerousConfirmDialog: View {
             TextField("", text: $inputText)
                 .textFieldStyle(.roundedBorder)
                 .frame(width: 200)
-                .accessibilityLabel("输入 DELETE 确认")
+                .accessibilityLabel(String(localized: String.LocalizationValue("dangerConfirm.tokenField.a11y")))
 
             HStack(spacing: Spacing.md) {
-                Button("取消", role: .cancel, action: onCancel)
+                Button(String(localized: String.LocalizationValue("common.cancel")), role: .cancel, action: onCancel)
                     .buttonStyle(.bordered)
                     .keyboardShortcut(.escape, modifiers: [])
 
-                Button("确 认", role: .destructive, action: onConfirm)
+                Button(String(localized: String.LocalizationValue("common.confirm")), role: .destructive, action: onConfirm)
                     .buttonStyle(.borderedProminent)
                     .tint(.riskDangerous)
                     .disabled(!Self.isConfirmationValid(inputText))

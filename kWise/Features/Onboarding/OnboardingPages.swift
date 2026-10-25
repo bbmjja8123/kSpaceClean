@@ -93,18 +93,18 @@ struct OnboardingPage2: View {
                 VStack(spacing: AppSpacing.xs) {
                     FeatureRow(
                         icon: "magnifyingglass",
-                        title: "智能扫描",
-                        description: "快速扫描系统缓存、应用残留与可清理文件"
+                        title: String(localized: String.LocalizationValue("onboarding.page2.feature.scan.title")),
+                        description: String(localized: String.LocalizationValue("onboarding.page2.feature.scan.body"))
                     )
                     FeatureRow(
                         icon: "brain",
-                        title: "智能归因",
-                        description: "本机规则归因 + 端上语义推测（零网络，数据不出机）"
+                        title: String(localized: String.LocalizationValue("onboarding.page2.feature.attribution.title")),
+                        description: String(localized: String.LocalizationValue("onboarding.page2.feature.attribution.body"))
                     )
                     FeatureRow(
                         icon: "trash",
-                        title: "一键清理",
-                        description: "智能清理系统缓存、应用残留与临时文件"
+                        title: String(localized: String.LocalizationValue("onboarding.page2.feature.clean.title")),
+                        description: String(localized: String.LocalizationValue("onboarding.page2.feature.clean.body"))
                     )
                 }
                 .padding(.horizontal, AppSpacing.xxl)
@@ -113,7 +113,7 @@ struct OnboardingPage2: View {
                     Image(systemName: "lock.shield")
                         .font(.title3)
                         .foregroundStyle(Color.success)
-                    Text("所有扫描与归因均在本机完成，零数据上报。")
+                    Text(String(localized: String.LocalizationValue("onboarding.page2.privacyNote")))
                         .font(AppFont.callout)
                         .foregroundColor(.textSecondary)
                     Spacer()
@@ -154,7 +154,7 @@ struct OnboardingPage2: View {
                 .foregroundStyle(Color.brandPrimary)
 
             VStack(spacing: AppSpacing.xs) {
-                Text("授权主目录访问")
+                Text(String(localized: String.LocalizationValue("授权主目录访问")))
                     .font(AppFont.title3)
                     .foregroundColor(.textPrimary)
 
@@ -167,7 +167,9 @@ struct OnboardingPage2: View {
             Button {
                 Task { await appScope.grant() }
             } label: {
-                Label(appScope.capability.level == .homeGranted ? "重新选择" : "授权主目录",
+                Label(appScope.capability.level == .homeGranted
+                      ? String(localized: String.LocalizationValue("onboarding.grant.rechoose"))
+                      : String(localized: String.LocalizationValue("common.grantHome")),
                       systemImage: "checkmark.shield")
                     .frame(maxWidth: .infinity)
                     .font(AppFont.title3)
@@ -177,12 +179,14 @@ struct OnboardingPage2: View {
             .controlSize(.large)
 
             if appScope.capability.level == .homeGranted {
-                Label("已授权", systemImage: "checkmark.circle.fill")
+                Label(String(localized: String.LocalizationValue("onboarding.grant.granted")),
+                      systemImage: "checkmark.circle.fill")
                     .foregroundStyle(Color.stateSuccess)
                     .font(AppFont.callout)
             }
 
-            Button("跳过此步骤", action: coordinator.skipGrant)
+            Button(String(localized: String.LocalizationValue("onboarding.grant.skipButton")),
+                   action: coordinator.skipGrant)
                 .buttonStyle(.plain)
                 .font(AppFont.callout)
                 .foregroundColor(.textSecondary)
@@ -199,17 +203,18 @@ struct OnboardingPage2: View {
                 .foregroundStyle(Color.brandPrimary)
 
             VStack(spacing: AppSpacing.xs) {
-                Text("完整磁盘访问")
+                Text(String(localized: String.LocalizationValue("common.scope.fullAccess.title")))
                     .font(AppFont.title3)
                     .foregroundColor(.textPrimary)
 
-                Text("本版本直接运行于你的 Mac 上，可读取完整磁盘完成扫描。文件不会被上传，扫描全部在本机完成。")
+                Text(String(localized: String.LocalizationValue("onboarding.grant.directBody")))
                     .font(AppFont.body)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
             }
 
-            Label("主目录访问：始终可用", systemImage: "checkmark.circle.fill")
+            Label(String(localized: String.LocalizationValue("onboarding.grant.directHomeReady")),
+                  systemImage: "checkmark.circle.fill")
                 .foregroundStyle(Color.stateSuccess)
                 .font(AppFont.callout)
         }
@@ -295,7 +300,7 @@ struct OnboardingContainerView: View {
 
             // Bottom navigation bar — unconditional; last page shows 完成.
             HStack(spacing: AppSpacing.md) {
-                Button("上一步") {
+                Button(String(localized: String.LocalizationValue("onboarding.nav.back"))) {
                     withAnimation(KFAnimation.easeInOut) { coordinator.back() }
                 }
                 .buttonStyle(.bordered)
@@ -303,11 +308,14 @@ struct OnboardingContainerView: View {
 
                 Spacer()
 
-                Text("第 \(coordinator.currentPage + 1) / \(coordinator.totalPages) 步")
+                Text(String(format: String(localized: String.LocalizationValue("onboarding.nav.step")),
+                            coordinator.currentPage + 1, coordinator.totalPages))
                     .font(AppFont.caption)
                     .foregroundStyle(Color.textSecondary)
 
-                Button(coordinator.currentPage == coordinator.totalPages - 1 ? "完成" : "下一步") {
+                Button(coordinator.currentPage == coordinator.totalPages - 1
+                       ? String(localized: String.LocalizationValue("onboarding.nav.done"))
+                       : String(localized: String.LocalizationValue("onboarding.nav.next"))) {
                     withAnimation(KFAnimation.easeInOut) { coordinator.next() }
                 }
                 .buttonStyle(.borderedProminent)

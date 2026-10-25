@@ -30,7 +30,8 @@ public final class MenuBarManager: NSObject, ObservableObject, CleanupEventSink 
     // MARK: Live state
 
     /// Real "最近清理" summary — never a placeholder string (C-5).
-    @Published public private(set) var lastCleanupSummary: String = "暂无清理记录"
+    @Published public private(set) var lastCleanupSummary: String =
+        String(localized: String.LocalizationValue("menubar.lastCleanup.none"))
 
     public func setup() {
         MenuBarManager.shared = self
@@ -104,15 +105,20 @@ public final class MenuBarManager: NSObject, ObservableObject, CleanupEventSink 
 
     private func buildMenu() -> NSMenu {
         let menu = NSMenu()
-        menu.addItem(withTitle: "快速清理", action: #selector(quickClean), keyEquivalent: "")
-        menu.addItem(withTitle: "快速扫描", action: #selector(quickScan), keyEquivalent: "")
+        menu.addItem(withTitle: String(localized: String.LocalizationValue("menubar.action.quickClean")),
+                     action: #selector(quickClean), keyEquivalent: "")
+        menu.addItem(withTitle: String(localized: String.LocalizationValue("快速扫描")),
+                     action: #selector(quickScan), keyEquivalent: "")
         menu.addItem(.separator())
         menu.addItem(withTitle: lastCleanupSummary, action: nil, keyEquivalent: "")
         menu.addItem(.separator())
-        menu.addItem(withTitle: "打开主窗口", action: #selector(openMainWindow), keyEquivalent: "")
-        menu.addItem(withTitle: "设置", action: #selector(openSettings), keyEquivalent: "")
+        menu.addItem(withTitle: String(localized: String.LocalizationValue("menubar.action.openMainWindow")),
+                     action: #selector(openMainWindow), keyEquivalent: "")
+        menu.addItem(withTitle: String(localized: String.LocalizationValue("设置")),
+                     action: #selector(openSettings), keyEquivalent: "")
         menu.addItem(.separator())
-        menu.addItem(withTitle: "退出", action: #selector(NSApp.terminate), keyEquivalent: "q")
+        menu.addItem(withTitle: String(localized: String.LocalizationValue("menubar.action.quit")),
+                     action: #selector(NSApp.terminate), keyEquivalent: "q")
         // Retain targets for the lifetime of the menu build (self is the
         // target; the menu item needs the selector + target pair).
         for item in menu.items {

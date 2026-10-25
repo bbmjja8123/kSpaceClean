@@ -42,6 +42,19 @@ final class DuplicateViewModel: ObservableObject {
         case developer = "开发目录"
 
         var id: String { rawValue }
+        /// Localized display name (rawValue is a stable identifier, not copy).
+        var displayName: String {
+            switch self {
+            case .general:
+                return String(localized: String.LocalizationValue("dupe.scenario.general"))
+            case .photos:
+                return String(localized: String.LocalizationValue("dupe.scenario.photos"))
+            case .documents:
+                return String(localized: String.LocalizationValue("dupe.scenario.documents"))
+            case .developer:
+                return String(localized: String.LocalizationValue("dupe.scenario.developer"))
+            }
+        }
         var minFileSize: Int64 {
             switch self {
             case .general: return 1_048_576

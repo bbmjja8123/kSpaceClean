@@ -23,10 +23,14 @@ public final class DiskHealthViewModel: ObservableObject {
 
         public var friendlyTitle: String {
             switch self {
-            case .good:    return "健康"
-            case .caution: return "注意"
-            case .danger:  return "异常"
-            case .unknown: return "未知"
+            case .good:
+                return String(localized: String.LocalizationValue("diskhealth.grade.good"))
+            case .caution:
+                return String(localized: String.LocalizationValue("diskhealth.grade.caution"))
+            case .danger:
+                return String(localized: String.LocalizationValue("diskhealth.grade.danger"))
+            case .unknown:
+                return String(localized: String.LocalizationValue("diskhealth.grade.unknown"))
             }
         }
     }

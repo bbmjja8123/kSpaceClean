@@ -32,9 +32,11 @@ public struct CleanupNotificationSink: CleanupEventSink {
         guard UserPreferences.load().notifyAfterCleanup else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "清理完成")
+        content.title = String(localized: String.LocalizationValue("cleanup.notify.title"))
         let formatted = ByteCountFormatter.string(fromByteCount: event.freedBytes, countStyle: .file)
-        content.body = String(localized: "本次已释放 \(formatted)")
+        content.body = String(
+            format: String(localized: String.LocalizationValue("cleanup.notify.body")),
+            formatted)
         content.sound = .default
         // 通知深链：点击进历史时间线还原本次清理。
         content.userInfo = ["deepLink": "klaris://history"]

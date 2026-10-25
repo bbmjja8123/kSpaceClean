@@ -58,8 +58,8 @@ public final class StartupItemsViewModel: ObservableObject {
         Task {
             let ok = await toggler.disable(entry)
             messages[entry.id] = ok
-                ? "已停用，可随时恢复"
-                : "停用失败（系统级项目需手动处理）"
+                ? String(localized: String.LocalizationValue("startup.disable.ok"))
+                : String(localized: String.LocalizationValue("startup.disable.failed"))
             startScan()
         }
     }
@@ -69,8 +69,8 @@ public final class StartupItemsViewModel: ObservableObject {
         Task {
             let ok = await toggler.enable(entry)
             messages[entry.id] = ok
-                ? "已恢复"
-                : "恢复失败 — 项目可能已被清出废纸篓"
+                ? String(localized: String.LocalizationValue("startup.enable.ok"))
+                : String(localized: String.LocalizationValue("startup.enable.failed"))
             startScan()
         }
     }

@@ -22,10 +22,10 @@ struct ScopeCoverageBadge: View {
                 .foregroundStyle(Color.textSecondary)
 
             if !coverage.isCompleteForScope, let onGrant {
-                Button("授权", action: onGrant)
+                Button(String(localized: String.LocalizationValue("scope.coverage.grantButton")), action: onGrant)
                     .buttonStyle(.link)
                     .font(AppFont.caption)
-                    .accessibilityLabel("授权访问未扫描区域")
+                    .accessibilityLabel(String(localized: String.LocalizationValue("scope.coverage.grant.a11y")))
             }
         }
         .padding(.horizontal, AppSpacing.sm)
@@ -37,18 +37,18 @@ struct ScopeCoverageBadge: View {
 
     private var headline: String {
         if coverage.isCompleteForScope {
-            return "已完整扫描当前可访问区域"
+            return String(localized: String.LocalizationValue("scope.coverage.complete"))
         }
         let names = coverage.skippedRegions.map(\.displayName).joined(separator: "、")
-        return "未授权：\(names)"
+        return String(format: String(localized: String.LocalizationValue("scope.coverage.incomplete.headline")), names)
     }
 
     private var accessibilitySummary: String {
         if coverage.isCompleteForScope {
-            return "已完整扫描当前可访问区域"
+            return String(localized: String.LocalizationValue("scope.coverage.complete.a11y"))
         }
         let names = coverage.skippedRegions.map(\.displayName).joined(separator: "、")
-        return "部分区域未授权访问：\(names)"
+        return String(format: String(localized: String.LocalizationValue("scope.coverage.incomplete.a11y")), names)
     }
 }
 

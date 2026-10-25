@@ -47,28 +47,28 @@ enum EmptyStateScenario {
     /// Localized title displayed under the icon (large-title typography).
     var title: String {
         switch self {
-        case .firstLaunch: return "Mac 存储清理，从这里开始"
-        case .noResults: return "Mac 已经干干净净"
-        case .cleanupComplete: return "清理完成"
-        case .noHistory: return "还没有清理记录"
-        case .noFDA: return "需要 Full Disk Access 权限"
-        case .scanFailed: return "扫描未完成"
-        case .cleanupFailed: return "清理未完成"
-        case .diskFull: return "无法清理 · 磁盘空间不足"
+        case .firstLaunch: return String(localized: String.LocalizationValue("emptyState.firstLaunch.title"))
+        case .noResults: return String(localized: String.LocalizationValue("emptyState.noResults.title"))
+        case .cleanupComplete: return String(localized: String.LocalizationValue("emptyState.cleanupComplete.title"))
+        case .noHistory: return String(localized: String.LocalizationValue("emptyState.noHistory.title"))
+        case .noFDA: return String(localized: String.LocalizationValue("emptyState.noFDA.title"))
+        case .scanFailed: return String(localized: String.LocalizationValue("emptyState.scanFailed.title"))
+        case .cleanupFailed: return String(localized: String.LocalizationValue("emptyState.cleanupFailed.title"))
+        case .diskFull: return String(localized: String.LocalizationValue("emptyState.diskFull.title"))
         }
     }
 
     /// Localized helper body text displayed below the title (regular body).
     var message: String {
         switch self {
-        case .firstLaunch: return "kWise 会扫描你 Mac 上可以安全清理的文件，给你一个详细列表。"
-        case .noResults: return "没有发现可以安全清理的文件。下次扫描建议在 7 天后。"
-        case .cleanupComplete: return "你的 Mac 已经被清理干净了。"
-        case .noHistory: return "你的第一次清理完成后，30 天内的清理记录会在这里显示。"
-        case .noFDA: return "kWise 需要 Full Disk Access 才能扫描你 Mac 上的所有可清理文件。"
-        case .scanFailed: return "扫描过程中遇到错误，部分文件未扫描。"
-        case .cleanupFailed: return "部分文件清理失败（文件被其他应用占用）。"
-        case .diskFull: return "需要至少 1 GB 可用空间执行清理。"
+        case .firstLaunch: return String(localized: String.LocalizationValue("emptyState.firstLaunch.message"))
+        case .noResults: return String(localized: String.LocalizationValue("emptyState.noResults.message"))
+        case .cleanupComplete: return String(localized: String.LocalizationValue("emptyState.cleanupComplete.message"))
+        case .noHistory: return String(localized: String.LocalizationValue("emptyState.noHistory.message"))
+        case .noFDA: return String(localized: String.LocalizationValue("emptyState.noFDA.message"))
+        case .scanFailed: return String(localized: String.LocalizationValue("emptyState.scanFailed.message"))
+        case .cleanupFailed: return String(localized: String.LocalizationValue("emptyState.cleanupFailed.message"))
+        case .diskFull: return String(localized: String.LocalizationValue("emptyState.diskFull.message"))
         }
     }
 

@@ -54,9 +54,11 @@ public final class PrivacyViewModel: ObservableObject {
             self.isScanning = false
 
             if results.isEmpty {
-                self.statusMessage = "未发现可清理的隐私数据"
+                self.statusMessage = String(localized: String.LocalizationValue("privacy.status.none"))
             } else {
-                self.statusMessage = "扫描完成，共发现 \(results.count) 项"
+                self.statusMessage = String(
+                    format: String(localized: String.LocalizationValue("privacy.status.scanDone")),
+                    Int64(results.count))
             }
         }
     }
@@ -128,12 +130,14 @@ public final class PrivacyViewModel: ObservableObject {
         let outcome = await cleanupViewModel.executeConfirmedCleanup(
             confirmedTargets: confirmed)
         guard let outcome else {
-            statusMessage = "清理未能完成，请重试"
+            statusMessage = String(localized: String.LocalizationValue("privacy.status.cleanupFailed"))
             return
         }
         let cleaned = Set(outcome.succeeded.map(\.path))
         items.removeAll { cleaned.contains($0.url.path) }
-        statusMessage = "清理完成，已移除 \(outcome.successCount) 项"
+        statusMessage = String(
+            format: String(localized: String.LocalizationValue("privacy.status.cleanupDone")),
+            Int64(outcome.successCount))
     }
 
     /// 预演取消：丢弃清单，不动任何文件。

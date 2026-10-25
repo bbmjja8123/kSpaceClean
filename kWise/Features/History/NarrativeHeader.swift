@@ -52,9 +52,12 @@ public enum NarrativeHeaderModel {
 
         guard weekFreed > 0 else {
             // 空历史诚实零 — 不虚构回收量。
-            return "最近 7 天还没有清理记录"
+            return String(localized: String.LocalizationValue("history.narrative.headlineEmpty"))
         }
-        return "最近 7 天你回收了 \(SharedByteFormat.formatBytes(weekFreed))"
+        return String(
+            format: String(localized: String.LocalizationValue("history.narrative.headlineWeek")),
+            SharedByteFormat.formatBytes(weekFreed)
+        )
     }
 
     // MARK: - Sub（磁盘比上周轻/重 X%）
@@ -67,7 +70,7 @@ public enum NarrativeHeaderModel {
                             calendar: Calendar) -> String {
         let sorted = samples.sorted { $0.day < $1.day }
         guard sorted.count >= minimumSamplesForComparison else {
-            return "磁盘采样不足，暂无法与上周比较"
+            return String(localized: String.LocalizationValue("history.narrative.subInsufficientSamples"))
         }
 
         let weekAgoKey = DiskSampleStore.dayKey(
@@ -79,7 +82,7 @@ public enum NarrativeHeaderModel {
               latest.day != weekAgo.day,
               weekAgo.usedBytes > 0
         else {
-            return "磁盘采样不足，暂无法与上周比较"
+            return String(localized: String.LocalizationValue("history.narrative.subInsufficientSamples"))
         }
 
         // Band on the *unrounded* ratio (fix r1): a 0.6% delta must not be
@@ -89,12 +92,18 @@ public enum NarrativeHeaderModel {
         let deltaPercent = Int((ratio * 100).rounded())
 
         if ratio <= -0.01 {
-            return "磁盘比上周轻 \(-deltaPercent)%"
+            return String(
+                format: String(localized: String.LocalizationValue("history.narrative.subLighter")),
+                -deltaPercent
+            )
         } else if ratio >= 0.01 {
             // 变重也如实报告 — 粉饰等于撒谎（C-5）。
-            return "磁盘比上周重 \(deltaPercent)%"
+            return String(
+                format: String(localized: String.LocalizationValue("history.narrative.subHeavier")),
+                deltaPercent
+            )
         }
-        return "磁盘占用与上周基本持平"
+        return String(localized: String.LocalizationValue("history.narrative.subFlat"))
     }
 
     // MARK: - Streak（打卡一行小字）
@@ -104,7 +113,10 @@ public enum NarrativeHeaderModel {
     static func streakLine(streak: StreakState?) -> String? {
         let current = (streak ?? StreakStore().load()).currentStreak
         guard current >= 1 else { return nil }
-        return "打卡 \(current) 天 🔥"
+        return String(
+            format: String(localized: String.LocalizationValue("history.narrative.streakLine")),
+            current
+        )
     }
 }
 

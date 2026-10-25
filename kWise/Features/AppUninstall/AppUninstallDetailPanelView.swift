@@ -45,7 +45,7 @@ struct AppUninstallDetailPanel: View {
                 Label(summary.totalSizeText, systemImage: "internaldrive")
                 Label(summary.lastUsedText, systemImage: "clock")
                 if let days = summary.daysInstalled {
-                    Label("已安装 \(days) 天", systemImage: "calendar")
+                    Label(String(format: String(localized: String.LocalizationValue("uninstall.detail.daysInstalled")), Int64(days)), systemImage: "calendar")
                 }
             }
             .font(AppFont.caption)
@@ -73,7 +73,7 @@ struct AppUninstallDetailPanel: View {
     private var residueSection: some View {
         if let groups = viewModel.groupedResiduesForSelectedEntry() {
             if groups.isEmpty {
-                Text("该应用没有发现残留文件。")
+                Text(String(localized: String.LocalizationValue("uninstall.detail.noResidues")))
                     .font(AppFont.callout)
                     .foregroundStyle(Color.textSecondary)
             } else {
@@ -81,7 +81,7 @@ struct AppUninstallDetailPanel: View {
                     residueGroupCard(group)
                 }
                 if viewModel.groupingDegraded {
-                    Label("语义分组降级（本机语义模型不可用），按路径规则分组。", systemImage: "info.circle")
+                    Label(String(localized: String.LocalizationValue("uninstall.detail.groupingDegraded")), systemImage: "info.circle")
                         .font(AppFont.caption)
                         .foregroundStyle(Color.textSecondary)
                 }
@@ -107,7 +107,9 @@ struct AppUninstallDetailPanel: View {
                     .font(AppFont.title3)
                     .foregroundStyle(Color.textPrimary)
                 Spacer()
-                Button(viewModel.groupSelected(entry.id, group.residues) ? "取消全组" : "全选") {
+                Button(viewModel.groupSelected(entry.id, group.residues)
+                        ? String(localized: String.LocalizationValue("uninstall.group.deselectAll"))
+                        : String(localized: String.LocalizationValue("common.selectAll"))) {
                     let selected = viewModel.groupSelected(entry.id, group.residues)
                     viewModel.setGroupSelection(entryID: entry.id,
                                                 residues: group.residues,

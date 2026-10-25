@@ -134,10 +134,16 @@ final class NewCopyAuditTests: XCTestCase {
         let root = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
+        // P4 本地化清扫：文案进 xcstrings（shred.plan.ssd）—— 断言源码
+        // 引用 key、catalog 三语值保留「1 次覆写对 SSD 已足够」语义。
         let source = try String(contentsOf: root.appendingPathComponent("Features/Shredder/ShredderView.swift"),
                                 encoding: .utf8)
-        XCTAssertTrue(source.contains("对 SSD 已足够"),
-                      "The 1-pass-is-enough-on-SSD note is mandatory copy")
+        XCTAssertTrue(source.contains("shred.plan.ssd"),
+                      "The 1-pass-is-enough-on-SSD note is mandatory copy (keyed)")
+        let catalog = try String(contentsOf: root.appendingPathComponent("Resources/Localizable.xcstrings"),
+                                 encoding: .utf8)
+        XCTAssertTrue(catalog.contains("shred.plan.ssd"),
+                      "shred.plan.ssd 必须存在于 xcstrings（SSD 诚实文案）")
     }
 
     /// P1 final (F1) — onboarding 不得虚构 CoreML 分类能力：实际实现是
@@ -162,10 +168,15 @@ final class NewCopyAuditTests: XCTestCase {
         XCTAssertTrue(source.contains("零数据上报"), "隐私承诺必须保留")
         XCTAssertTrue(source.contains("智能扫描"), "三类承诺之一：智能扫描")
         XCTAssertTrue(source.contains("一键清理"), "三类承诺之一：一键清理")
-        // 授权路径在合并页存活（P0 验收手册的三屏路径）。
-        XCTAssertTrue(source.contains("授权主目录"), "合并页必须保留授权入口")
-        XCTAssertTrue(source.contains("已授权"), "授权成功反馈必须保留")
-        XCTAssertTrue(source.contains("跳过此步骤"), "跳过授权的出口必须保留")
+        // 授权路径在合并页存活（P0 验收手册的三屏路径）。P4 本地化清扫：
+        // 文案进 xcstrings —— 源码断言 key 引用（onboarding.grant.*）。
+        XCTAssertTrue(source.contains("onboarding.grant.title")
+                   || source.contains("授权主目录"),
+                      "合并页必须保留授权入口（key 或 key 引用）")
+        XCTAssertTrue(source.contains("onboarding.grant.granted"),
+                      "授权成功反馈必须保留（keyed）")
+        XCTAssertTrue(source.contains("onboarding.grant.skipButton"),
+                      "跳过授权的出口必须保留（keyed）")
         XCTAssertTrue(source.contains("appScope.grant"),
                       "授权动作必须真实接线（PowerScope grant）")
         // 旧 5 页独立类型零残留。

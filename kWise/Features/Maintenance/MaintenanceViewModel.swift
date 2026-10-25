@@ -45,7 +45,7 @@ public final class MaintenanceViewModel: ObservableObject {
     /// "needs Terminal" outcome instead of pretending.
     public func execute(_ task: MaintenanceTask) async {
         guard task.isEngineBacked else {
-            results[task.id] = "需在终端中执行 — 命令已可复制"
+            results[task.id] = String(localized: String.LocalizationValue("maintenance.result.needsTerminal"))
             return
         }
         runningTask = task.id
@@ -54,15 +54,21 @@ public final class MaintenanceViewModel: ObservableObject {
         do {
             let outcome = try await cleanUserLogs()
             if outcome.successCount > 0 {
-                results[task.id] = "已移入废纸篓 \(outcome.successCount) 项 · 释放约 \(formatBytes(outcome.freedBytes))"
+                results[task.id] = String(
+                    format: String(localized: String.LocalizationValue("maintenance.result.movedToTrash")),
+                    outcome.successCount, formatBytes(outcome.freedBytes)
+                )
             } else if outcome.quotaExhausted {
-                results[task.id] = "免费额度已用完，本次未清理"
+                results[task.id] = String(localized: String.LocalizationValue("maintenance.result.quotaExhausted"))
                 onQuotaExhausted?()
             } else {
-                results[task.id] = "没有需要清理的日志"
+                results[task.id] = String(localized: String.LocalizationValue("maintenance.result.nothingToClean"))
             }
         } catch {
-            results[task.id] = "失败: \(error.localizedDescription)"
+            results[task.id] = String(
+                format: String(localized: String.LocalizationValue("maintenance.result.failure")),
+                error.localizedDescription
+            )
         }
     }
 

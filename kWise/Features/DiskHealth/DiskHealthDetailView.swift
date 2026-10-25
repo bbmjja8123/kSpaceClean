@@ -11,10 +11,15 @@ import DesignSystem
 /// - SeeAlso: ``SMARTReader``, ``VolumeDiagnostics``,
 ///   `docs/superpowers/plans/2026-08-09-kwise-v1.5-plan.md` Task 12
 public struct DiskHealthDetailView: View {
-    @StateObject private var viewModel = DiskHealthViewModel()
+    /// P3：注入画布 DiskHealthCard 的同一 VM —— 详情 sheet 与卡片共享
+    /// 一份状态（修复两实例各自独立拉取、状态可能互相矛盾的问题）。
+    @ObservedObject private var viewModel: DiskHealthViewModel
     @EnvironmentObject var appState: AppState
 
-    public init() {}
+    /// `nil` 时自建（preview / 无图测试）；生产由 RootView 传入画布同款。
+    public init(viewModel: DiskHealthViewModel? = nil) {
+        _viewModel = .init(wrappedValue: viewModel ?? DiskHealthViewModel())
+    }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.lg) {
@@ -36,7 +41,7 @@ public struct DiskHealthDetailView: View {
     private var headerView: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                Text("磁盘健康")
+                Text(String(localized: String.LocalizationValue("diskhealth.title")))
                     .font(AppFont.title2)
                     .foregroundStyle(Color.textPrimary)
                 Text(headline)
@@ -44,7 +49,7 @@ public struct DiskHealthDetailView: View {
                     .foregroundStyle(Color.textSecondary)
             }
             Spacer()
-            Button("刷新") {
+            Button(String(localized: String.LocalizationValue("diskhealth.refresh"))) {
                 Task { await viewModel.refresh() }
             }
             .buttonStyle(.bordered)
@@ -55,17 +60,21 @@ public struct DiskHealthDetailView: View {
 
     private var headline: String {
         switch viewModel.grade {
-        case .good:    return "一切正常"
-        case .caution: return "容量偏高，建议清理"
-        case .danger:  return "S.M.A.R.T. 报告异常 — 备份并联系 Apple 支持"
-        case .unknown: return "无法读取 S.M.A.R.T. 数据 — 通常需要完整磁盘访问"
+        case .good:
+            return String(localized: String.LocalizationValue("diskhealth.headline.good"))
+        case .caution:
+            return String(localized: String.LocalizationValue("diskhealth.headline.caution"))
+        case .danger:
+            return String(localized: String.LocalizationValue("diskhealth.headline.danger"))
+        case .unknown:
+            return String(localized: String.LocalizationValue("diskhealth.headline.unknown"))
         }
     }
 
     private var smartSection: some View {
         GlassPanel {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                Text("S.M.A.R.T. 状态")
+                Text(String(localized: String.LocalizationValue("diskhealth.section.smart")))
                     .font(AppFont.title3)
                     .foregroundStyle(Color.textPrimary)
                 HStack {
@@ -103,20 +112,20 @@ public struct DiskHealthDetailView: View {
     private var smartSubtitle: String {
         switch viewModel.smart.status {
         case .verified:
-            return "存储控制器自检通过。无需立即操作。"
+            return String(localized: String.LocalizationValue("diskhealth.smart.subtitle.verified"))
         case .failing:
-            return "存储控制器自检失败。建议立即备份重要数据并联系 Apple 支持。"
+            return String(localized: String.LocalizationValue("diskhealth.smart.subtitle.failing"))
         case .notSupported:
-            return "当前控制器不提供 S.M.A.R.T. 数据。"
+            return String(localized: String.LocalizationValue("diskhealth.smart.subtitle.notSupported"))
         case .unknown:
-            return "未读取到 S.M.A.R.T. 数据。在 Apple Silicon 上常见；可授予完整磁盘访问以获取更详细信息。"
+            return String(localized: String.LocalizationValue("diskhealth.smart.subtitle.unknown"))
         }
     }
 
     private var volumeSection: some View {
         GlassPanel {
             VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                Text("卷诊断")
+                Text(String(localized: String.LocalizationValue("diskhealth.section.volume")))
                     .font(AppFont.title3)
                 ForEach(viewModel.volume.diagnostics) { diagnostic in
                     rowFor(diagnostic)

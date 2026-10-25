@@ -57,11 +57,12 @@ struct IndeterminateCheckbox: View {
     /// Localized spoken label for VoiceOver; mirrors the visual state.
     func accessibilityLabelText(for state: CheckState) -> String {
         switch state {
-        case .off: return "未勾选"
-        case .on: return "已勾选"
-        case .mixed: return "部分勾选"
-        case .unchecked: return "未勾选"
-        case .checked: return "已勾选"
+        case .off, .unchecked:
+            return String(localized: String.LocalizationValue("common.checkstate.unchecked"))
+        case .on, .checked:
+            return String(localized: String.LocalizationValue("common.checkstate.checked"))
+        case .mixed:
+            return String(localized: String.LocalizationValue("common.checkstate.mixed"))
         }
     }
 

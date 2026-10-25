@@ -106,15 +106,60 @@ public struct Achievement: Equatable, Identifiable, Sendable {
 
     /// The full catalogue.
     public static let catalogue: [Achievement] = [
-        Achievement(id: "first.cleanup", title: "初次清理", detail: "完成第一次清理", icon: "sparkles"),
-        Achievement(id: "cleanup.10", title: "小试牛刀", detail: "累计清理 10 次", icon: "sparkles.rectangle.stack"),
-        Achievement(id: "cleanup.50", title: "清理达人", detail: "累计清理 50 次", icon: "star"),
-        Achievement(id: "freed.1g", title: "1 GB 里程碑", detail: "累计释放 1 GB 空间", icon: "externaldrive.badge.checkmark"),
-        Achievement(id: "freed.10g", title: "10 GB 里程碑", detail: "累计释放 10 GB 空间", icon: "externaldrive.badge.timemachine"),
-        Achievement(id: "freed.100g", title: "百 G 战神", detail: "累计释放 100 GB 空间", icon: "externaldrive.fill.badge.checkmark"),
-        Achievement(id: "streak.3", title: "三日坚持", detail: "连续 3 天清理", icon: "flame"),
-        Achievement(id: "streak.7", title: "一周成瘾", detail: "连续 7 天清理", icon: "flame.fill"),
-        Achievement(id: "streak.30", title: "月度仪式", detail: "连续 30 天清理", icon: "trophy"),
+        Achievement(
+            id: "first.cleanup",
+            title: String(localized: String.LocalizationValue("gamification.achievement.firstCleanup.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.firstCleanup.detail")),
+            icon: "sparkles"
+        ),
+        Achievement(
+            id: "cleanup.10",
+            title: String(localized: String.LocalizationValue("gamification.achievement.cleanup10.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.cleanup10.detail")),
+            icon: "sparkles.rectangle.stack"
+        ),
+        Achievement(
+            id: "cleanup.50",
+            title: String(localized: String.LocalizationValue("gamification.achievement.cleanup50.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.cleanup50.detail")),
+            icon: "star"
+        ),
+        Achievement(
+            id: "freed.1g",
+            title: String(localized: String.LocalizationValue("gamification.achievement.freed1g.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.freed1g.detail")),
+            icon: "externaldrive.badge.checkmark"
+        ),
+        Achievement(
+            id: "freed.10g",
+            title: String(localized: String.LocalizationValue("gamification.achievement.freed10g.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.freed10g.detail")),
+            icon: "externaldrive.badge.timemachine"
+        ),
+        Achievement(
+            id: "freed.100g",
+            title: String(localized: String.LocalizationValue("gamification.achievement.freed100g.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.freed100g.detail")),
+            icon: "externaldrive.fill.badge.checkmark"
+        ),
+        Achievement(
+            id: "streak.3",
+            title: String(localized: String.LocalizationValue("gamification.achievement.streak3.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.streak3.detail")),
+            icon: "flame"
+        ),
+        Achievement(
+            id: "streak.7",
+            title: String(localized: String.LocalizationValue("gamification.achievement.streak7.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.streak7.detail")),
+            icon: "flame.fill"
+        ),
+        Achievement(
+            id: "streak.30",
+            title: String(localized: String.LocalizationValue("gamification.achievement.streak30.title")),
+            detail: String(localized: String.LocalizationValue("gamification.achievement.streak30.detail")),
+            icon: "trophy"
+        ),
     ]
 }
 

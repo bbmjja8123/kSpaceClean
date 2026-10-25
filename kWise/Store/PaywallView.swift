@@ -96,17 +96,17 @@ struct PaywallView: View {
                     .font(.system(size: 48))
                     .foregroundColor(.brandAccent)
 
-                Text("在 Mac App Store 购买 Klaris")
+                Text(String(localized: String.LocalizationValue("paywall.direct.title")))
                     .font(AppFont.title2)
                     .foregroundColor(.textPrimary)
                     .multilineTextAlignment(.center)
 
-                Text("直营版不提供内购。打开 Mac App Store 搜索 Klaris，一次买断解锁回收动作；扫描、归因与拒答清单在所有版本永久免费。")
+                Text(String(localized: String.LocalizationValue("paywall.direct.body")))
                     .font(AppFont.caption)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
 
-                Button("好") {
+                Button(String(localized: String.LocalizationValue("common.ok"))) {
                     dismiss()
                 }
                 .buttonStyle(.bordered)

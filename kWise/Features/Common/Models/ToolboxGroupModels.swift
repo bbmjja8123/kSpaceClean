@@ -121,29 +121,33 @@ func honestReclaimable(for engine: DetectionCore.DuplicateGroup) -> Int64 {
     return size * Int64(max(0, engine.files.count - 1))
 }
 
-// MARK: - Evidence badges (zh)
+// MARK: - Evidence badges (localized)
 
-/// zh 徽标文案 — evidence → one line the UI can show on the group header.
+/// Evidence → one line the UI can show on the group header (localized).
 func badge(for evidence: DetectionCore.CategoryEvidence) -> String {
     switch evidence {
     case .byteIdentical(_, let verified):
-        return verified ? "字节级相同（已逐字节验证）" : "字节级相同"
+        return verified
+            ? String(localized: String.LocalizationValue("toolbox.evidence.byteIdentical.verified"))
+            : String(localized: String.LocalizationValue("toolbox.evidence.byteIdentical"))
     case .apfsClone:
-        return "APFS 克隆副本"
+        return String(localized: String.LocalizationValue("toolbox.evidence.apfsClone"))
     case .directoryDuplicate(_, let fileCount):
-        return "目录级重复（\(fileCount) 个文件）"
+        return String(format: String(localized: String.LocalizationValue("toolbox.evidence.directoryDuplicate")), fileCount)
     case .perceptualSimilarity(let distance, _):
-        return String(format: "视觉相似 %.0f%%", (1 - distance) * 100)
+        return String(format: String(localized: String.LocalizationValue("toolbox.evidence.perceptualSimilarity")), (1 - distance) * 100)
     case .rawJPEGPair(_, _, let exifMatch):
-        return exifMatch ? "RAW + JPEG 配对（EXIF 匹配）" : "RAW + JPEG 配对"
+        return exifMatch
+            ? String(localized: String.LocalizationValue("toolbox.evidence.rawJpegPair.exifMatched"))
+            : String(localized: String.LocalizationValue("toolbox.evidence.rawJpegPair"))
     case .buildArtifact:
-        return "构建产物"
+        return String(localized: String.LocalizationValue("toolbox.evidence.buildArtifact"))
     case .largeFile:
-        return "大文件"
+        return String(localized: String.LocalizationValue("toolbox.evidence.largeFile"))
     case .nameHeuristic(let stem, let count):
-        return "同名变体「\(stem)」× \(count)"
+        return String(format: String(localized: String.LocalizationValue("toolbox.evidence.nameVariant")), stem, count)
     case .similarVideo(let ratio, _):
-        return String(format: "相似视频（帧匹配 %.0f%%）", ratio * 100)
+        return String(format: String(localized: String.LocalizationValue("toolbox.evidence.similarVideo")), ratio * 100)
     }
 }
 

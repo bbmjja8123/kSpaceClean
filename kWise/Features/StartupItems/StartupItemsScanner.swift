@@ -70,11 +70,13 @@ public enum LaunchPlistParser {
         let plist = data.flatMap { try? PropertyListSerialization.propertyList(
             from: $0, options: [], format: nil) as? [String: Any] }
         guard plist != nil else {
-            return MalformedItem(plistURL: url, reason: "文件损坏或不是有效的 plist")
+            return MalformedItem(plistURL: url, reason: String(
+                localized: String.LocalizationValue("startup.malformed.corrupt")))
         }
         guard (plist?["Program"] as? String) != nil
                 || (plist?["ProgramArguments"] as? [String]) != nil else {
-            return MalformedItem(plistURL: url, reason: "缺少 Program / ProgramArguments，无法启动")
+            return MalformedItem(plistURL: url, reason: String(
+                localized: String.LocalizationValue("startup.malformed.missingProgram")))
         }
         return nil
     }

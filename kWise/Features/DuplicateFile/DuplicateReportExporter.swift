@@ -9,11 +9,15 @@ enum DuplicateReportExporter {
 
     /// 生成 CSV 文本：组序号, 类别, 文件路径, 大小, 建议动作。
     static func csv(from groups: [ToolboxGroup]) -> String {
-        var lines = ["组序号,类别,建议动作,文件路径,大小(字节)"]
+        var lines = [String(localized: String.LocalizationValue("dupe.export.header"))]
         for (index, group) in groups.enumerated() {
-            let action = group.files.first?.isSelected == true ? "删除此份" : "保留"
+            let action = group.files.first?.isSelected == true
+                ? String(localized: String.LocalizationValue("dupe.export.deleteThisCopy"))
+                : String(localized: String.LocalizationValue("dupe.export.keep"))
             for file in group.files {
-                let suggested = file.isSelected ? "删除此份" : "保留原件"
+                let suggested = file.isSelected
+                    ? String(localized: String.LocalizationValue("dupe.export.deleteThisCopy"))
+                    : String(localized: String.LocalizationValue("dupe.export.keepOriginal"))
                 _ = action
                 lines.append("\(index + 1),\"\(group.evidenceSummary)\",\"\(suggested)\",\"\(file.url.path)\",\(file.size)")
             }
@@ -26,7 +30,7 @@ enum DuplicateReportExporter {
     static func export(groups: [ToolboxGroup]) -> URL? {
         let panel = NSSavePanel()
         panel.allowedContentTypes = [.commaSeparatedText]
-        panel.nameFieldStringValue = "重复文件报告.csv"
+        panel.nameFieldStringValue = String(localized: String.LocalizationValue("dupe.export.filename"))
         panel.canCreateDirectories = true
         guard panel.runModal() == .OK, let url = panel.url else { return nil }
         let csv = csv(from: groups)

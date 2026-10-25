@@ -58,11 +58,12 @@ struct RestoreHistoryItemView: View {
             Divider().background(Color.divider)
 
             HStack {
-                Text("共 \(batch.count) 项 · \(formatBytes(totalSize))")
+                Text(String(format: String(localized: String.LocalizationValue("共 %@ 项 · %@")),
+                            String(batch.count), formatBytes(totalSize)))
                     .font(Typography.smallBody())
                     .foregroundColor(.textSecondary)
                 Spacer()
-                Button("关闭", role: .cancel, action: onClose)
+                Button(String(localized: String.LocalizationValue("common.close")), role: .cancel, action: onClose)
                     .keyboardShortcut(.escape, modifiers: [])
                 Button(action: restoreAll) {
                     if restoringAll {
@@ -153,7 +154,7 @@ private struct RestoreRow: View {
             }
             Spacer()
             statusBadge
-            Button("还原", action: onRestore)
+            Button(String(localized: String.LocalizationValue("common.restore")), action: onRestore)
                 .buttonStyle(.bordered)
                 .controlSize(.small)
                 .disabled(status == .restoring)
@@ -195,17 +196,17 @@ private struct RestoreRow: View {
                 .font(Typography.smallBody())
                 .foregroundColor(.textSecondary)
         case .restored:
-            Label("已还原", systemImage: "checkmark.circle.fill")
+            Label(String(localized: String.LocalizationValue("restore.status.restored")), systemImage: "checkmark.circle.fill")
                 .labelStyle(.titleAndIcon)
                 .font(Typography.smallBody())
                 .foregroundColor(.stateSuccess)
         case .notInTrash:
-            Label("不在废纸篓", systemImage: "trash.slash")
+            Label(String(localized: String.LocalizationValue("restore.status.notInTrash")), systemImage: "trash.slash")
                 .labelStyle(.titleAndIcon)
                 .font(Typography.smallBody())
                 .foregroundColor(.stateWarning)
         case .notFound:
-            Label("未找到", systemImage: "questionmark.folder")
+            Label(String(localized: String.LocalizationValue("restore.status.notFound")), systemImage: "questionmark.folder")
                 .labelStyle(.titleAndIcon)
                 .font(Typography.smallBody())
                 .foregroundColor(.stateWarning)

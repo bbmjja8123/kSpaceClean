@@ -51,6 +51,20 @@ public struct PrivacyItem: Identifiable, Sendable {
             case .systemLogs:      return "gray"
             }
         }
+
+        /// Localized display name (rawValue is a stable identifier, not copy).
+        public var displayName: String {
+            switch self {
+            case .safari, .chrome, .firefox, .quickLook:
+                return rawValue
+            case .recentItems:
+                return String(localized: String.LocalizationValue("privacy.category.recentItems"))
+            case .downloadHistory:
+                return String(localized: String.LocalizationValue("privacy.category.downloadHistory"))
+            case .systemLogs:
+                return String(localized: String.LocalizationValue("privacy.category.systemLogs"))
+            }
+        }
     }
 }
 
@@ -105,7 +119,8 @@ public final class PrivacyScanner: Sendable {
 
         // History.db
         let history = safari.appendingPathComponent("History.db")
-        appendIfExists(&items, url: history, name: "浏览历史 (History.db)",
+        appendIfExists(&items, url: history,
+                       name: String(localized: String.LocalizationValue("privacy.item.safariHistory")),
                        category: .safari)
 
         // Cookies.db
@@ -115,7 +130,8 @@ public final class PrivacyScanner: Sendable {
 
         // LocalStorage/
         let localStorage = safari.appendingPathComponent("LocalStorage")
-        appendIfExists(&items, url: localStorage, name: "本地存储 (LocalStorage)",
+        appendIfExists(&items, url: localStorage,
+                       name: String(localized: String.LocalizationValue("privacy.item.safariLocalStorage")),
                        category: .safari)
 
         return items
@@ -138,7 +154,7 @@ public final class PrivacyScanner: Sendable {
         for profile in profileDirs {
             let history = profile.appendingPathComponent("History")
             appendIfExists(&items, url: history,
-                           name: "\(profile.lastPathComponent) 浏览历史",
+                           name: String(format: String(localized: String.LocalizationValue("privacy.item.chromeHistory")), profile.lastPathComponent),
                            category: .chrome)
 
             let cookies = profile.appendingPathComponent("Cookies")
@@ -148,7 +164,7 @@ public final class PrivacyScanner: Sendable {
 
             let cache = profile.appendingPathComponent("Cache")
             appendIfExists(&items, url: cache,
-                           name: "\(profile.lastPathComponent) 缓存",
+                           name: String(format: String(localized: String.LocalizationValue("privacy.item.profileCache")), profile.lastPathComponent),
                            category: .chrome)
         }
 
@@ -176,7 +192,7 @@ public final class PrivacyScanner: Sendable {
         for profile in profileDirs {
             let places = profile.appendingPathComponent("places.sqlite")
             appendIfExists(&items, url: places,
-                           name: "\(profile.lastPathComponent) 历史记录",
+                           name: String(format: String(localized: String.LocalizationValue("privacy.item.firefoxHistory")), profile.lastPathComponent),
                            category: .firefox)
 
             let cookies = profile.appendingPathComponent("cookies.sqlite")
@@ -186,7 +202,7 @@ public final class PrivacyScanner: Sendable {
 
             let cache = profile.appendingPathComponent("cache2")
             appendIfExists(&items, url: cache,
-                           name: "\(profile.lastPathComponent) 缓存",
+                           name: String(format: String(localized: String.LocalizationValue("privacy.item.profileCache")), profile.lastPathComponent),
                            category: .firefox)
         }
 
@@ -203,7 +219,7 @@ public final class PrivacyScanner: Sendable {
         guard directoryExists(ql) else { return [] }
 
         return [
-            PrivacyItem(name: "Quick Look 缩略图缓存",
+            PrivacyItem(name: String(localized: String.LocalizationValue("privacy.item.quickLookCache")),
                         category: .quickLook,
                         url: ql,
                         estimatedSize: directorySize(ql))
@@ -220,7 +236,7 @@ public final class PrivacyScanner: Sendable {
         guard fm.fileExists(atPath: plist.path) else { return [] }
 
         return [
-            PrivacyItem(name: "最近项目记录",
+            PrivacyItem(name: String(localized: String.LocalizationValue("privacy.item.recentItems")),
                         category: .recentItems,
                         url: plist,
                         estimatedSize: fileSize(plist))
@@ -237,7 +253,7 @@ public final class PrivacyScanner: Sendable {
         guard fm.fileExists(atPath: plist.path) else { return [] }
 
         return [
-            PrivacyItem(name: "下载记录",
+            PrivacyItem(name: String(localized: String.LocalizationValue("privacy.item.downloadHistory")),
                         category: .downloadHistory,
                         url: plist,
                         estimatedSize: fileSize(plist))
@@ -280,7 +296,7 @@ public final class PrivacyScanner: Sendable {
         // If there are many small log files we expose them as a single
         // bundle so the user isn't overwhelmed with hundreds of rows.
         return [
-            PrivacyItem(name: "过期系统日志 (\(logURLs.count) 个文件)",
+            PrivacyItem(name: String(format: String(localized: String.LocalizationValue("privacy.item.systemLogs")), Int64(logURLs.count)),
                         category: .systemLogs,
                         url: logsDir,
                         estimatedSize: totalSize)

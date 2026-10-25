@@ -62,7 +62,7 @@ struct DiskUsageWidgetView: View {
             Label("kWise", systemImage: "sparkles")
                 .font(.headline)
             Spacer()
-            Text("打开 kWise 开始首次扫描")
+            Text(String(localized: String.LocalizationValue("widget.state.startPrompt")))
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -84,7 +84,7 @@ struct DiskUsageWidgetView: View {
             }
 
             Gauge(value: disk.usedFraction) {
-                Text("磁盘")
+                Text(String(localized: String.LocalizationValue("widget.gauge.disk")))
             }
             .gaugeStyle(.accessoryLinearCapacity)
             .tint(disk.usedFraction > 0.9 ? .red : disk.usedFraction > 0.7 ? .orange : .blue)
@@ -92,18 +92,18 @@ struct DiskUsageWidgetView: View {
             HStack {
                 if let last = snapshot.lastCleanup {
                     let formatted = ByteCountFormatter.string(fromByteCount: last.freedBytes, countStyle: .file)
-                    Text("上次清理 \(formatted)")
+                    Text(String(format: String(localized: String.LocalizationValue("widget.state.lastCleanup")), formatted))
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 } else if let forecast = snapshot.forecast, forecast.isReliable {
-                    Text("预计 \(forecast.daysToFull) 天后磁盘将满")
+                    Text(String(format: String(localized: String.LocalizationValue("widget.state.forecast")), forecast.daysToFull))
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
                 // Interactive Smart Care button (App Intent, macOS 14).
                 Button(intent: RunSmartCareIntent()) {
-                    Label("清理", systemImage: "wand.and.stars")
+                    Label(String(localized: String.LocalizationValue("清理")), systemImage: "wand.and.stars")
                         .font(.caption2)
                 }
                 .buttonStyle(.borderless)
@@ -124,8 +124,8 @@ struct kWiseDiskWidget: Widget {
         StaticConfiguration(kind: "app.kraftly.klaris.widget", provider: DiskUsageProvider()) { entry in
             DiskUsageWidgetView(entry: entry)
         }
-        .configurationDisplayName("磁盘占用")
-        .description("查看 Mac 存储占用、上次清理与连续打卡。点击即可运行 Smart Care。")
+        .configurationDisplayName(String(localized: String.LocalizationValue("widget.config.displayName")))
+        .description(String(localized: String.LocalizationValue("widget.config.description")))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

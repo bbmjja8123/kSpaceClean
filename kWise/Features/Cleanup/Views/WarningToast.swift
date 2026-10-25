@@ -66,7 +66,8 @@ struct WarningToast: View {
                     .foregroundStyle(Color.stateWarning)
                     .accessibilityHidden(true)
 
-                Text("检测到 \(warnItems.count) 个运行中应用涉及您选择的清理项")
+                Text(String(format: String(localized: String.LocalizationValue("检测到 %@ 个运行中应用涉及您选择的清理项")),
+                            String(warnItems.count)))
                     .font(Typography.mediumTitle())
                     .foregroundStyle(Color.textPrimary)
                     .multilineTextAlignment(.leading)
@@ -87,24 +88,24 @@ struct WarningToast: View {
 
             // Action row — skip / terminate / cancel, in that order.
             HStack(spacing: Spacing.sm) {
-                Button("跳过这些项", action: onSkip)
+                Button(String(localized: String.LocalizationValue("warn.toast.skip")), action: onSkip)
                     .buttonStyle(.bordered)
-                    .help("保留这些运行中应用涉及的路径，其余继续清理")
-                    .accessibilityLabel("跳过这些项")
-                    .accessibilityHint("保留运行中应用涉及的文件，仅清理其他项")
+                    .help(String(localized: String.LocalizationValue("warn.toast.skip.help")))
+                    .accessibilityLabel(String(localized: String.LocalizationValue("warn.toast.skip")))
+                    .accessibilityHint(String(localized: String.LocalizationValue("warn.toast.skip.hint")))
 
-                Button("强制关闭并清理", action: onTerminate)
+                Button(String(localized: String.LocalizationValue("warn.toast.terminate")), action: onTerminate)
                     .buttonStyle(.bordered)
                     .tint(.riskDangerous)
-                    .help("强制终止运行中的应用，然后继续清理")
-                    .accessibilityLabel("强制关闭并清理")
-                    .accessibilityHint("立即终止列出的运行中应用并继续清理")
+                    .help(String(localized: String.LocalizationValue("warn.toast.terminate.help")))
+                    .accessibilityLabel(String(localized: String.LocalizationValue("warn.toast.terminate")))
+                    .accessibilityHint(String(localized: String.LocalizationValue("warn.toast.terminate.hint")))
 
-                Button("取消清理", role: .cancel, action: onAbort)
+                Button(String(localized: String.LocalizationValue("warn.toast.cancel")), role: .cancel, action: onAbort)
                     .buttonStyle(.bordered)
-                    .help("放弃本次清理")
-                    .accessibilityLabel("取消清理")
-                    .accessibilityHint("放弃当前清理操作，保留所有文件")
+                    .help(String(localized: String.LocalizationValue("warn.toast.cancel.help")))
+                    .accessibilityLabel(String(localized: String.LocalizationValue("warn.toast.cancel")))
+                    .accessibilityHint(String(localized: String.LocalizationValue("warn.toast.cancel.hint")))
             }
         }
         .padding(Spacing.md)
@@ -131,26 +132,32 @@ struct WarningToast: View {
     @ViewBuilder
     private func warningRow(for item: WarnItem) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("\(item.appName) (\(item.bundleID)) - PID \(item.processID)")
+            Text(String(format: String(localized: String.LocalizationValue("%@ (%@) - PID %@")),
+                        item.appName, item.bundleID, String(item.processID)))
                 .font(Typography.regularBody())
                 .foregroundStyle(Color.textPrimary)
                 .lineLimit(1)
                 .truncationMode(.middle)
 
-            Text("冲突路径 \(item.conflictingPaths.count) 个 · 共 \(formatBytes(aggregateSize(for: item)))")
+            Text(String(format: String(localized: String.LocalizationValue("冲突路径 %@ 个 · 共 %@")),
+                        String(item.conflictingPaths.count), formatBytes(aggregateSize(for: item))))
                 .font(Typography.smallBody())
                 .foregroundStyle(Color.textSecondary)
                 .monospacedDigit()
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(item.appName)，PID \(item.processID)，\(item.conflictingPaths.count) 个冲突路径，共 \(formatBytes(aggregateSize(for: item)))")
+        .accessibilityLabel(String(
+            format: String(localized: String.LocalizationValue("warn.toast.row.a11y")),
+            item.appName, String(item.processID), String(item.conflictingPaths.count),
+            formatBytes(aggregateSize(for: item))))
     }
 
     // MARK: - Derived state
 
     /// VoiceOver-friendly version of the headline that reads naturally.
     private var headlineAccessibilityLabel: String {
-        "检测到 \(warnItems.count) 个运行中应用涉及您选择的清理项。请选择跳过、强制关闭或取消。"
+        String(format: String(localized: String.LocalizationValue("warn.toast.headline.a11y")),
+               String(warnItems.count))
     }
 
     // MARK: - Helpers

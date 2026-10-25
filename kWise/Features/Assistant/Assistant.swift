@@ -142,10 +142,10 @@ public struct AssistantAnswer: Equatable {
 enum AssistantAnswerBuilder {
 
     static let exampleQuestions = [
-        "哪些视频最占空间？",
-        "磁盘什么时候会满？",
-        "清理重复文件",
-        "应用残留有哪些？",
+        String(localized: String.LocalizationValue("assistant.suggestion.videos")),
+        String(localized: String.LocalizationValue("assistant.suggestion.diskFull")),
+        String(localized: String.LocalizationValue("assistant.suggestion.duplicates")),
+        String(localized: String.LocalizationValue("assistant.suggestion.appLeftovers")),
     ]
 
     static func build(intent: AssistantIntent,
@@ -157,14 +157,17 @@ enum AssistantAnswerBuilder {
             return categorySummary(scanVM: scanVM)
         case .diskForecast:
             return AssistantAnswer(
-                headline: "打开健康月报即可查看「磁盘将满」预测曲线。",
+                headline: String(localized: String.LocalizationValue("assistant.answer.diskForecast")),
                 cards: [],
                 suggestions: exampleQuestions
             )
         case .duplicates:
             return AssistantAnswer(
-                headline: "重复文件按组呈现在首屏画布上，点组卡进下钻页逐项勾选；扫描后会智能保留最新原件。",
-                cards: [AssistantAnswer.Card(title: "重复文件", detail: "字节级 + APFS 克隆 + 视觉相似")],
+                headline: String(localized: String.LocalizationValue("assistant.answer.duplicates")),
+                cards: [AssistantAnswer.Card(
+                    title: String(localized: String.LocalizationValue("assistant.card.duplicates.title")),
+                    detail: String(localized: String.LocalizationValue("assistant.card.duplicates.detail"))
+                )],
                 suggestions: exampleQuestions
             )
         case .appLeftovers:
@@ -173,47 +176,59 @@ enum AssistantAnswerBuilder {
             // 系统状态条目前只是分类摘要（无真实计数），也不得宣称它
             // 「显示现状」。
             return AssistantAnswer(
-                headline: "应用残留的逐项处理界面将在后续版本回归；本版本不会动你的应用数据。",
-                cards: [AssistantAnswer.Card(title: "应用残留", detail: "本版本暂无逐项处理入口")],
+                headline: String(localized: String.LocalizationValue("assistant.answer.appLeftovers")),
+                cards: [AssistantAnswer.Card(
+                    title: String(localized: String.LocalizationValue("assistant.card.appLeftovers.title")),
+                    detail: String(localized: String.LocalizationValue("assistant.card.appLeftovers.detail"))
+                )],
                 suggestions: exampleQuestions
             )
         case .startupItems:
             // fix r1（Important 4）：逐项停用/恢复界面随 P2 T9 退役 ——
             // 同样只做诚实交代，不做不可达的行动承诺。
             return AssistantAnswer(
-                headline: "启动项的逐项停用与恢复将在后续版本回归；本版本不会改动任何启动项。",
-                cards: [AssistantAnswer.Card(title: "启动项", detail: "本版本暂不改动任何启动项")],
+                headline: String(localized: String.LocalizationValue("assistant.answer.startupItems")),
+                cards: [AssistantAnswer.Card(
+                    title: String(localized: String.LocalizationValue("assistant.card.startupItems.title")),
+                    detail: String(localized: String.LocalizationValue("assistant.card.startupItems.detail"))
+                )],
                 suggestions: exampleQuestions
             )
         case .shredHelp:
             return AssistantAnswer(
-                headline: "文件粉碎先覆写内容（SSD 一次覆写已足够），再随机化文件名并移入废纸篓。",
-                cards: [AssistantAnswer.Card(title: "文件粉碎", detail: "首屏「+」菜单或把文件拖进窗口即可粉碎")],
+                headline: String(localized: String.LocalizationValue("assistant.answer.shredHelp")),
+                cards: [AssistantAnswer.Card(
+                    title: String(localized: String.LocalizationValue("assistant.card.shred.title")),
+                    detail: String(localized: String.LocalizationValue("assistant.card.shred.detail"))
+                )],
                 suggestions: exampleQuestions
             )
         case .cleanupNow:
             // P1 T5/T6 后的事实口径：首页是空间解剖页，唯一回收入口是页内
             // 「安全快捷回收」按钮（Smart Care 已降级为次级页）。
             return AssistantAnswer(
-                headline: "点击首屏的「安全快捷回收」按钮，即可扫描并清理推荐项。",
+                headline: String(localized: String.LocalizationValue("assistant.answer.cleanupNow")),
                 cards: [],
                 suggestions: exampleQuestions
             )
         case .similarPhotos:
             return AssistantAnswer(
-                headline: "相似照片按组呈现在首屏画布上：本机感知比对找出截图堆积，每组至少保留一张。",
-                cards: [AssistantAnswer.Card(title: "相似照片", detail: "感知哈希找出相似照片，本机比对不联网")],
+                headline: String(localized: String.LocalizationValue("assistant.answer.similarPhotos")),
+                cards: [AssistantAnswer.Card(
+                    title: String(localized: String.LocalizationValue("assistant.card.photos.title")),
+                    detail: String(localized: String.LocalizationValue("assistant.card.photos.detail"))
+                )],
                 suggestions: exampleQuestions
             )
         case .freeUpSpace:
             return AssistantAnswer(
-                headline: "三步腾空间：① 首屏「安全快捷回收」清推荐项 ② 大文件找巨型文件 ③ 相似照片清截图。全部走废纸篓可还原。",
+                headline: String(localized: String.LocalizationValue("assistant.answer.freeUpSpace")),
                 cards: [],
                 suggestions: exampleQuestions
             )
         case .restoreLastCleanup:
             return AssistantAnswer(
-                headline: "「历史」时间线按清理批次分组，单次清理可整体回滚（30 天内）。",
+                headline: String(localized: String.LocalizationValue("assistant.answer.restoreLastCleanup")),
                 cards: [],
                 suggestions: exampleQuestions
             )
@@ -240,17 +255,20 @@ enum AssistantAnswerBuilder {
 
         let kindName: String
         switch kind {
-        case .video: kindName = "视频"
-        case .image: kindName = "图片"
-        case .audio: kindName = "音频"
-        case .document: kindName = "文档"
-        case .archive: kindName = "压缩包"
-        case nil: kindName = "文件"
+        case .video: kindName = String(localized: String.LocalizationValue("assistant.kind.video"))
+        case .image: kindName = String(localized: String.LocalizationValue("assistant.kind.image"))
+        case .audio: kindName = String(localized: String.LocalizationValue("assistant.kind.audio"))
+        case .document: kindName = String(localized: String.LocalizationValue("assistant.kind.document"))
+        case .archive: kindName = String(localized: String.LocalizationValue("assistant.kind.archive"))
+        case nil: kindName = String(localized: String.LocalizationValue("assistant.kind.file"))
         }
 
         guard !leaves.isEmpty else {
             return AssistantAnswer(
-                headline: "当前扫描结果中没有找到\(kindName)类的大文件 — 先运行一次扫描。",
+                headline: String(
+                    format: String(localized: String.LocalizationValue("assistant.answer.largestFilesNone")),
+                    kindName
+                ),
                 cards: [],
                 suggestions: exampleQuestions
             )
@@ -263,7 +281,10 @@ enum AssistantAnswerBuilder {
             )
         }
         return AssistantAnswer(
-            headline: "占用空间最多的 \(cards.count) 个\(kindName)：",
+            headline: String(
+                format: String(localized: String.LocalizationValue("assistant.answer.largestFilesTop")),
+                cards.count, kindName
+            ),
             cards: cards,
             suggestions: exampleQuestions
         )
@@ -283,7 +304,7 @@ enum AssistantAnswerBuilder {
     private static func categorySummary(scanVM: ScanResultsViewModel?) -> AssistantAnswer {
         guard let scanVM, !scanVM.categories.isEmpty else {
             return AssistantAnswer(
-                headline: "还没有扫描结果 — 点击「扫描」开始。",
+                headline: String(localized: String.LocalizationValue("assistant.answer.categorySummaryEmpty")),
                 cards: [],
                 suggestions: exampleQuestions
             )
@@ -298,7 +319,11 @@ enum AssistantAnswerBuilder {
                     nodeID: category.id
                 )
             }
-        return AssistantAnswer(headline: "空间分布（按类别）：", cards: cards, suggestions: exampleQuestions)
+        return AssistantAnswer(
+            headline: String(localized: String.LocalizationValue("assistant.answer.categorySummary")),
+            cards: cards,
+            suggestions: exampleQuestions
+        )
     }
 }
 

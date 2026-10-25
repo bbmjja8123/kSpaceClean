@@ -54,7 +54,9 @@ enum IntentScanAdapter {
         let categories = await scanCategories(scope: scope)
         let targets = targetsFromRecommendedPicks(in: categories)
         let bytes = targets.reduce(Int64(0)) { $0 + $1.size }
-        let summary = "\(targets.count) 项 · \(FileSizeFormatter.abbreviated(from: bytes))"
+        let summary = String(
+            format: String(localized: String.LocalizationValue("intents.summary.recommendedPicks")),
+            Int64(targets.count), FileSizeFormatter.abbreviated(from: bytes))
         return (targets, summary)
     }
 

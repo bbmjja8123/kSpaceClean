@@ -21,12 +21,34 @@ final class AssistantNodePanelModel: ObservableObject {
     /// Suggested questions shown as chips. Every entry must hit the matcher
     /// template table — `testNodePanelAnswersFromMatcherWithoutChatInput`
     /// pins this (a suggestion the matcher can't answer is a broken promise).
+    ///
+    /// These strings double as **matcher queries** (they are fed straight to
+    /// `AssistantIntentMatcher.match`), so they stay in the template table's
+    /// language. UI rendering goes through ``displayText(for:)`` which maps
+    /// each canonical question onto a localized chip label — English/Japanese
+    /// users tap a translated chip while the matcher still sees a query it
+    /// can answer.
     static let suggestedQuestions = [
         "哪些视频最占空间？",
         "磁盘什么时候会满？",
         "清理重复文件",
         "应用残留有哪些？",
     ]
+
+    /// Canonical suggested question → localization key for its chip label.
+    private static let displayKeys: [String: String] = [
+        "哪些视频最占空间？": "assistant.node.q.videos",
+        "磁盘什么时候会满？": "assistant.node.q.diskFull",
+        "清理重复文件": "assistant.node.q.duplicates",
+        "应用残留有哪些？": "assistant.node.q.appLeftovers",
+    ]
+
+    /// Localized chip label for a suggested question; injected question sets
+    /// with no mapping render verbatim (they must hit the matcher themselves).
+    static func displayText(for question: String) -> String {
+        guard let key = displayKeys[question] else { return question }
+        return String(localized: String.LocalizationValue(key))
+    }
 
     /// Last built answer, if the last question was understood.
     @Published private(set) var answer: AssistantAnswer?
@@ -78,7 +100,7 @@ struct AssistantNodePanelView: View {
                     Button {
                         model.answer(question: question)
                     } label: {
-                        Text(question)
+                        Text(AssistantNodePanelModel.displayText(for: question))
                             .font(AppFont.caption)
                             .foregroundStyle(Color.brandPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)

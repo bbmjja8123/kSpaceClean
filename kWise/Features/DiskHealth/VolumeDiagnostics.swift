@@ -91,14 +91,14 @@ public final class VolumeDiagnostics: ObservableObject {
         // Total bytes — does NOT need FDA; we always surface this.
         diagnostics.append(.init(
             kind: .totalBytes,
-            title: "总容量",
+            title: String(localized: String.LocalizationValue("diskhealth.volume.totalCapacity")),
             detail: String(total),
             requiresFDA: false
         ))
         // Used bytes — derived, no FDA.
         diagnostics.append(.init(
             kind: .freeBytes,
-            title: "可用空间",
+            title: String(localized: String.LocalizationValue("diskhealth.volume.freeSpace")),
             detail: String(available),
             requiresFDA: false
         ))
@@ -106,7 +106,7 @@ public final class VolumeDiagnostics: ObservableObject {
         // is the most accurate "you can free this much" signal macOS exposes.
         diagnostics.append(.init(
             kind: .purgeableBytes,
-            title: "可清理空间",
+            title: String(localized: String.LocalizationValue("diskhealth.volume.cleanable")),
             detail: String(used),
             requiresFDA: false
         ))
@@ -116,21 +116,25 @@ public final class VolumeDiagnostics: ObservableObject {
         if let fs = try? diskutilFilesystem() {
             diagnostics.append(.init(
                 kind: .fileSystem,
-                title: "文件系统",
+                title: String(localized: String.LocalizationValue("diskhealth.volume.fileSystem")),
                 detail: fs,
                 requiresFDA: false
             ))
         }
         diagnostics.append(.init(
             kind: .isInternal,
-            title: "位置",
-            detail: (resourceValues.volumeIsInternal ?? false) ? "内置" : "外接",
+            title: String(localized: String.LocalizationValue("diskhealth.volume.location")),
+            detail: (resourceValues.volumeIsInternal ?? false)
+                ? String(localized: String.LocalizationValue("diskhealth.volume.internal"))
+                : String(localized: String.LocalizationValue("diskhealth.volume.external")),
             requiresFDA: false
         ))
         diagnostics.append(.init(
             kind: .isReadOnly,
-            title: "只读",
-            detail: (resourceValues.volumeIsReadOnly ?? false) ? "是" : "否",
+            title: String(localized: String.LocalizationValue("diskhealth.volume.readOnly")),
+            detail: (resourceValues.volumeIsReadOnly ?? false)
+                ? String(localized: String.LocalizationValue("diskhealth.volume.yes"))
+                : String(localized: String.LocalizationValue("diskhealth.volume.no")),
             requiresFDA: false
         ))
 

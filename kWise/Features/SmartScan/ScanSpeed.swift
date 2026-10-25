@@ -34,19 +34,19 @@ public enum ScanSpeed: String, Codable, CaseIterable, Sendable {
 
     public var displayName: String {
         switch self {
-        case .turbo:  return "极速"
-        case .fast:   return "快速"
-        case .medium: return "中等"
-        case .gentle: return "温和"
+        case .turbo:  return String(localized: String.LocalizationValue("scanSpeed.turbo.name"))
+        case .fast:   return String(localized: String.LocalizationValue("scanSpeed.fast.name"))
+        case .medium: return String(localized: String.LocalizationValue("scanSpeed.medium.name"))
+        case .gentle: return String(localized: String.LocalizationValue("scanSpeed.gentle.name"))
         }
     }
 
     public var description: String {
         switch self {
-        case .turbo:  return "不限制 CPU，扫描最快，可能影响其他应用"
-        case .fast:   return "较少占用 CPU，适合空闲时使用"
-        case .medium: return "平衡 CPU 占用与扫描速度（推荐）"
-        case .gentle: return "最低 CPU 占用，适合前台工作时使用"
+        case .turbo:  return String(localized: String.LocalizationValue("scanSpeed.turbo.desc"))
+        case .fast:   return String(localized: String.LocalizationValue("scanSpeed.fast.desc"))
+        case .medium: return String(localized: String.LocalizationValue("scanSpeed.medium.desc"))
+        case .gentle: return String(localized: String.LocalizationValue("scanSpeed.gentle.desc"))
         }
     }
 
