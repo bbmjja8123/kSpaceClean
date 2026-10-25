@@ -440,7 +440,7 @@ kWise/
 - [x] **R4 — 提审机械项** — 全量本地化清扫（~450 keys ×3 语，3 并行批；助手意图匹配表保留中文模式）；Localizable.xcstrings 846 keys；InfoPlist.xcstrings（CFBundleDisplayName ×3 target）；appex PrivacyInfo ×2；删 NSAppleEventsUsageDescription；DiskHealthDetailView 注入画布同款 VM；文案审计测试改钉 key
 - [x] **P5 文档/脚本** — upload_to_testflight.sh 重写（kWise 口径）；release_direct.sh（公证+staple）；SubmissionChecklist/Runbook/PrivacyDetails/Metadata 对齐买断制与双渠道
 - [x] **双渠道全量基线（2026-10-25 重启后）** — MAS scheme kWise：**672 tests / 0 failures**（修复 1 个 R4 遗留断言：DuplicateFolderDescriberTests 改钉本地化键 `dupe.topic.photos`，commit 6330461）；P2 wedge 跳过的审计/门禁测试全数复跑通过（SurfaceRetirementAudit 3、AttributionCopyAudit 3、ScarewareCopyAudit 2、LocalizationCompletenessTests 2，本地化门禁全绿）；KlarisDirect scheme Debug 构建通过（单测宿主为 MAS app，Direct 渠道语义由渠道无关的 ScanScopeContractTests 钉住，KlarisDirect scheme 无 test action）。首次尝试编译失败系重启后 DerivedData 陈旧模块缓存，重构建即恢复
-- [ ] **待办（需用户/GUI）** — UI 冒烟（onboarding 授权 / +菜单→卸载 sheet / 设置启动项 / 双渠道 Paywall 路由）；App Store Connect 记录/截图/IAP 创建；Release 归档验证（GUI 会话出 profile）
+- [ ] **待办（需用户/GUI）** — UI 冒烟**用例已交付**（`kWise/UITests/SmokeUITests.swift` 4 条：onboarding 走通 / +菜单→卸载 sheet / 设置启动项 sheet / 未购买→买断墙路由；独立 scheme `kWiseSmokeUI`，结构与文案元素带 accessibilityIdentifier），但 **执行被环境 wedge 阻塞**（test runner「Timed out while enabling automation mode」×3，代码侧两渠道构建全绿；需 GUI 会话授权自动化或重启后复跑）；App Store Connect 记录/截图/IAP 创建；Release 归档验证（GUI 会话出 profile）
 - [ ] **决策备忘** — 直营正式付费方案（许可密钥/Paddle）；直营自动更新（Sparkle）；MAS 展示名终审
 
 ### Backlog（待设计）
