@@ -85,6 +85,9 @@ struct CanvasPlusMenu: View {
                 .foregroundStyle(Color.textSecondary)
         }
         .help(String(localized: String.LocalizationValue("canvas.hero.plusMenu.help")))
+        // A11y 审计：图标-only 的 Menu 需要显式 label + hint（VoiceOver 不读 .help）。
+        .accessibilityLabel(Text(String(localized: String.LocalizationValue("canvas.hero.plusMenu.help"))))
+        .accessibilityHint(Text(String(localized: String.LocalizationValue("canvas.plusMenu.a11y.hint"))))
         // P3 UI 冒烟：「+」菜单标识（SmokeUITests 按 identifier 查询，
         // 不依赖图标/文案）。
         .accessibilityIdentifier("canvas.plusMenu")

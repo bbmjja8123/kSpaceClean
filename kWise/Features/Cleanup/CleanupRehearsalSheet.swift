@@ -74,6 +74,10 @@ struct CleanupRehearsalSheet: View {
                                     .foregroundStyle(Color.textSecondary)
                             }
                         }
+                        // A11y 审计：豁免 Toggle 需要显式 label（文件名 + 可回收
+                        // 原因）与 hint——VoiceOver 用户才知道在勾什么、勾了会怎样。
+                        .accessibilityLabel(Text("\(item.target.url.lastPathComponent)，\(reasonSpokenText(item))"))
+                        .accessibilityHint(Text(String(localized: String.LocalizationValue("attr.rehearsal.a11y.exemptHint"))))
                         Spacer()
                         // I1：五色徽章列 —— 与画布/下钻行同一语义映射
                         //（CanvasGroupCardCopy，色/Symbol/文案三表测试钉住）。
@@ -134,6 +138,23 @@ struct CleanupRehearsalSheet: View {
         } else {
             Text("attr.rehearsal.noReason")
         }
+    }
+
+    /// reasonLine 的纯文本镜像（a11y label 用）：与 reasonLine 同一分支、
+    /// 同一批 key（attr.notes.* / probable reason / noReason），口径不漂移。
+    private func reasonSpokenText(_ item: RehearsalItem) -> String {
+        guard let attribution = item.attribution else {
+            return String(localized: String.LocalizationValue("attr.rehearsal.noReason"))
+        }
+        if attribution.confidence == .certain,
+           let ruleID = attribution.ruleID {
+            return String(localized: String.LocalizationValue("attr.notes." + ruleID))
+        } else if attribution.confidence == .probable {
+            return String(format:
+                String(localized: String.LocalizationValue("attr.confidence.probable.reason")),
+                AttributionCopy.causeLabel(attribution.cause))
+        }
+        return String(localized: String.LocalizationValue("attr.rehearsal.noReason"))
     }
 }
 

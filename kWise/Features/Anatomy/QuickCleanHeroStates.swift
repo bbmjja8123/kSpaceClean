@@ -74,6 +74,11 @@ struct QuickCleanGrantCard: View {
         .frame(maxWidth: .infinity, minHeight: 80)
         .background(Color.brandPrimary.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+        // RM 门控（A11y 审计）：授权卡出现/消失的过渡统一经
+        // AccessibilitySettings.reduceMotionAnimation —— Reduce Motion 时退化为
+        // 最短线性过渡（宿主以动画更新渲染时自动生效）。
+        .transition(.opacity.animation(
+            AccessibilitySettings.reduceMotionAnimation(.easeInOut(duration: 0.2))))
     }
 }
 
@@ -176,5 +181,8 @@ struct QuickCleanResultCard: View {
         .frame(maxWidth: .infinity, minHeight: 80)
         .background(Color.brandPrimary.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: AppRadius.lg))
+        // RM 门控（A11y 审计）：结果卡出现/消失（含 8 秒自动复位）同上。
+        .transition(.opacity.animation(
+            AccessibilitySettings.reduceMotionAnimation(.easeInOut(duration: 0.2))))
     }
 }

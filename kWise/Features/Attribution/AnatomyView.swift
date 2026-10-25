@@ -375,6 +375,9 @@ public struct AnatomyView: View {
                         Text(quickCleanTitle)
                     }
                     .buttonStyle(.borderedProminent)
+                    // A11y 审计：VoiceOver 读稳定的动作语义（含估算的动态标题
+                    // 对读屏是噪音，label 固定为动作描述）。
+                    .accessibilityLabel(Text(String(localized: String.LocalizationValue("canvas.hero.quickClean.a11y"))))
                 }
                 // 「+」菜单（P2 T4；P3 扩：应用卸载 / 启动项重接入）。
                 CanvasPlusMenu(actions: CanvasPlusMenuActions(
@@ -392,6 +395,8 @@ public struct AnatomyView: View {
                     Text("canvas.hero.rescan")
                 }
                 .buttonStyle(.bordered)
+                // A11y 审计：显式 label（与快捷回收同一口径）。
+                .accessibilityLabel(Text(String(localized: String.LocalizationValue("canvas.hero.rescan.a11y"))))
             }
         }
         .padding(.vertical, AppSpacing.xs)

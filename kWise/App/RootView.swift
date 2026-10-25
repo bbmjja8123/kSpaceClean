@@ -527,6 +527,10 @@ private struct IconRailButton: View, Equatable {
         }
         .buttonStyle(.plain)
         .help(item.tooltip)
+        // A11y 审计：rail 按钮此前只有 .help（VoiceOver 不读）——补显式 label
+        // + 选中特征，导航结构才进 VoiceOver 的 rotor。
+        .accessibilityLabel(Text(item.tooltip))
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
         // P3 UI 冒烟：rail 按钮标识（SmokeUITests 按 identifier 导航）。
         .accessibilityIdentifier("rail.\(item.rawValue)")
     }

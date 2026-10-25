@@ -235,6 +235,9 @@ struct GroupDrillDownView: View {
             }
         }
         .toggleStyle(.checkbox)
+        // A11y 审计：裸 Toggle 的可读内容散在标签子视图里——显式 label 用
+        // 条目标题，VoiceOver 焦点语义才稳定（与预演 sheet 同口径）。
+        .accessibilityLabel(Text(entry.title))
     }
 
     /// 五色徽章 —— 语义映射复用组卡的 `CanvasGroupCardCopy`（色 / Symbol /

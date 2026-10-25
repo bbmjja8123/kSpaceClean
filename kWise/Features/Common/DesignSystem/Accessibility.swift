@@ -39,6 +39,12 @@ enum AccessibilitySettings {
         NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
     }
 
+    /// 全 app 动效统一门控：Reduce Motion 时退化为最短线性过渡。
+    /// 新动效一律经此包装，禁止裸 withAnimation（审计测试钉住）。
+    static func reduceMotionAnimation(_ base: Animation) -> Animation {
+        reduceMotionEnabled ? .linear(duration: 0.1) : base
+    }
+
     /// `true` when the user has enabled "Increase contrast" in
     /// System Settings → Accessibility → Display.
     ///

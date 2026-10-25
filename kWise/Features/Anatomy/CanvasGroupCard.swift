@@ -111,6 +111,12 @@ public struct CanvasGroupCard: View {
             RoundedRectangle(cornerRadius: AppRadius.xl)
                 .strokeBorder(Color.separatorColor.opacity(0.6), lineWidth: 1)
         )
+        // A11y 审计：整卡可点（宿主 AnatomyView 的 onTapGesture 下钻）——
+        // 合并为单个可聚焦元素并暴露按钮特征 + 下钻 hint；卡内「就地清理」
+        // 与展开箭头 Button 在合并元素上保留为自定义动作，语义不丢。
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint(Text(String(localized: String.LocalizationValue("canvas.group.a11y.drillHint"))))
         .sheet(isPresented: $showsGuidance) {
             GuidancePanel(text: guidanceText, showsCommand: showsCommandHint)
         }
