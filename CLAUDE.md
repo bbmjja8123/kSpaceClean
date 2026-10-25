@@ -439,11 +439,12 @@ kWise/
 - [x] **R3 — M2/M5/M3 重接入** — AppUninstallView（双栏 + 拖入扫描 + 提交口径诚实弹窗）+ AppUninstallDetailPanel；StartupItemsView（用户项停用/恢复 + 系统项只读 + 畸形 plist）；PrivacySurfaceCatalog 入设置页（死 chevron 移除、FDA 行渠道门控）；AppGraph appUninstallVM/startupItemsVM 工厂 + CanvasPlusMenu 4 项 + 深链退役注释；GraphFactoryRewiringTests
 - [x] **R4 — 提审机械项** — 全量本地化清扫（~450 keys ×3 语，3 并行批；助手意图匹配表保留中文模式）；Localizable.xcstrings 846 keys；InfoPlist.xcstrings（CFBundleDisplayName ×3 target）；appex PrivacyInfo ×2；删 NSAppleEventsUsageDescription；DiskHealthDetailView 注入画布同款 VM；文案审计测试改钉 key
 - [x] **P5 文档/脚本** — upload_to_testflight.sh 重写（kWise 口径）；release_direct.sh（公证+staple）；SubmissionChecklist/Runbook/PrivacyDetails/Metadata 对齐买断制与双渠道
-- [ ] **待办（需重启/用户）** — 测试宿主两次 wedge（已知环境问题）：重启后跑双渠道全量基线（846-key 本地化门禁 + 13 个待复跑审计测试 + UI 冒烟）；App Store Connect 记录/截图/IAP 创建；Release 归档验证（GUI 会话出 profile）
+- [x] **双渠道全量基线（2026-10-25 重启后）** — MAS scheme kWise：**672 tests / 0 failures**（修复 1 个 R4 遗留断言：DuplicateFolderDescriberTests 改钉本地化键 `dupe.topic.photos`，commit 6330461）；P2 wedge 跳过的审计/门禁测试全数复跑通过（SurfaceRetirementAudit 3、AttributionCopyAudit 3、ScarewareCopyAudit 2、LocalizationCompletenessTests 2，本地化门禁全绿）；KlarisDirect scheme Debug 构建通过（单测宿主为 MAS app，Direct 渠道语义由渠道无关的 ScanScopeContractTests 钉住，KlarisDirect scheme 无 test action）。首次尝试编译失败系重启后 DerivedData 陈旧模块缓存，重构建即恢复
+- [ ] **待办（需用户/GUI）** — UI 冒烟（onboarding 授权 / +菜单→卸载 sheet / 设置启动项 / 双渠道 Paywall 路由）；App Store Connect 记录/截图/IAP 创建；Release 归档验证（GUI 会话出 profile）
 - [ ] **决策备忘** — 直营正式付费方案（许可密钥/Paddle）；直营自动更新（Sparkle）；MAS 展示名终审
 
 ### Backlog（待设计）
-- [ ] Klaris P3 剩余 — L2 语义归因；直营付费/更新方案；重启后全量基线
+- [ ] Klaris P3 剩余 — L2 语义归因；直营付费/更新方案；UI 冒烟 + ASC 材料
 - [ ] kWise v2 — 3D 磁盘星系图（2D 空间地图也已随 P2 T9 退役；Metal 重启需 Product 拍板）
 - [ ] Klaris 发布决策 — TestFlight / MAS 元数据 / 提审节奏（功能门槛已齐：6 模块 + 双渠道；待重启后全量基线 + ASC 记录/截图/IAP）
 
@@ -451,4 +452,4 @@ kWise/
 
 ---
 
-最后更新：2026-10-25（Klaris P3 上架准备：双渠道架构 + M2/M5/M3 重接入 + 提审机械清扫；CLAUDE.md 同步 M2/M5 状态与 P3 prep 记录。此前：2026-10-07 P2 单一画布收尾；CLAUDE.md 按 IA 终态重写——rail 3 项、退役表面清单、卸载/启动项 UI 不可达备忘、P2 测试基线）
+最后更新：2026-10-25（Klaris P3 双渠道全量基线：MAS 672/0 修复 R4 遗留断言 + 审计测试复跑全绿 + KlarisDirect Debug 构建；此前同日 P3 上架准备双渠道架构 + M2/M5/M3 重接入 + 提审机械清扫）
