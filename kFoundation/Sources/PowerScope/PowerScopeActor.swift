@@ -70,7 +70,7 @@ public actor PowerScope: PowerScopeProviding {
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = false
         panel.directoryURL = FileManager.default.homeDirectoryForCurrentUser
-        panel.message = "kWise needs access to your home folder to scan caches, logs and app leftovers."
+        panel.message = "Klaris needs access to your home folder to scan caches, logs and app leftovers."
         panel.prompt = "Grant Access"
         guard panel.runModal() == .OK else { return nil }
         return panel.url

@@ -133,8 +133,21 @@ struct OnboardingPage2: View {
     }
 
     // MARK: Grant block（原独立授权页迁入）
+    //
+    // P3 双渠道：MAS 版走 PowerScope 主目录书签授权；直营版无沙盒，
+    // 授权块替换为静态说明面板（Full Disk Access 由系统 TCC 自管，
+    // 不弹 NSOpenPanel，跳过按钮无意义因此隐藏）。
 
+    @ViewBuilder
     private var grantBlock: some View {
+        if DistributionChannel.isSandboxed {
+            sandboxGrantBlock
+        } else {
+            directEditionBlock
+        }
+    }
+
+    private var sandboxGrantBlock: some View {
         VStack(spacing: AppSpacing.md) {
             Image(systemName: "folder.badge.checkmark")
                 .font(.system(size: 44))
@@ -174,6 +187,31 @@ struct OnboardingPage2: View {
                 .font(AppFont.callout)
                 .foregroundColor(.textSecondary)
                 .underline()
+        }
+    }
+
+    /// 直营版：无沙盒，磁盘访问由系统 Full Disk Access 语义覆盖 ——
+    /// 静态说明 + 主目录就绪状态，无授权按钮。
+    private var directEditionBlock: some View {
+        VStack(spacing: AppSpacing.md) {
+            Image(systemName: "externaldrive.badge.checkmark")
+                .font(.system(size: 44))
+                .foregroundStyle(Color.brandPrimary)
+
+            VStack(spacing: AppSpacing.xs) {
+                Text("完整磁盘访问")
+                    .font(AppFont.title3)
+                    .foregroundColor(.textPrimary)
+
+                Text("本版本直接运行于你的 Mac 上，可读取完整磁盘完成扫描。文件不会被上传，扫描全部在本机完成。")
+                    .font(AppFont.body)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+
+            Label("主目录访问：始终可用", systemImage: "checkmark.circle.fill")
+                .foregroundStyle(Color.stateSuccess)
+                .font(AppFont.callout)
         }
     }
 }

@@ -199,32 +199,55 @@ struct SettingsView: View {
 
     // MARK: - Buyout unlock (single StoreManager)
 
+    /// P3 双渠道：直营版无 StoreKit 内购 —— 解锁行渲染 MAS 购买引导
+    /// （过渡期决策：直营正式付费方案延后）。
     @ViewBuilder
     private var subscriptionRow: some View {
-        let store = graph.storeManager
-        LabeledContent {
-            if store.hasPurchased {
-                Text("已解锁")
-                    .foregroundColor(.success)
-            } else {
-                Button("恢复购买") {
-                    Task { await store.restorePurchases() }
+        if DistributionChannel.isSandboxed {
+            let store = graph.storeManager
+            LabeledContent {
+                if store.hasPurchased {
+                    Text("已解锁")
+                        .foregroundColor(.success)
+                } else {
+                    Button("恢复购买") {
+                        Task { await store.restorePurchases() }
+                    }
                 }
+            } label: {
+                Text(store.hasPurchased ? "当前: 买断版" : "当前: 免费版")
+                Text("扫描、归因、拒答清单永久免费；回收动作一次买断解锁。")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
             }
-        } label: {
-            Text(store.hasPurchased ? "当前: 买断版" : "当前: 免费版")
-            Text("扫描、归因、拒答清单永久免费；回收动作一次买断解锁。")
-                .font(AppFont.caption)
-                .foregroundColor(.textSecondary)
+        } else {
+            LabeledContent {
+                EmptyView()
+            } label: {
+                Text("当前: 直营版")
+                Text("回收动作解锁请在 Mac App Store 购买 Klaris。")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
         }
     }
 
     // MARK: - File Access (PowerScope)
 
     /// Honest scope row: what kWise can read right now, plus grant/revoke.
+    /// 直营版（`.fullAccess`）无沙盒，访问状态是静态事实而非授权流程。
     @ViewBuilder
     private var scopeRow: some View {
         switch appScope.capability.level {
+        case .fullAccess:
+            LabeledContent {
+                EmptyView()
+            } label: {
+                Text("完整磁盘访问")
+                Text("直营版直接运行于你的 Mac 上，可扫描完整磁盘。")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
         case .homeGranted:
             LabeledContent {
                 Button("撤销授权", role: .destructive) {

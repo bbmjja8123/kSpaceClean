@@ -12,13 +12,20 @@ import PowerScope
 final class AppScope: ObservableObject {
     static let shared = AppScope()
 
-    let scope: PowerScope
+    /// Channel-selected provider: the MAS bookmark actor, or the stateless
+    /// full-access provider in the direct edition (P3 dual-channel).
+    let scope: any PowerScopeProviding
 
     @Published private(set) var capability: ScopeCapability
 
     private init() {
-        scope = PowerScope()
-        capability = ScopeCapability(level: .containerOnly)
+        if DistributionChannel.isSandboxed {
+            scope = PowerScope()
+            capability = ScopeCapability(level: .containerOnly)
+        } else {
+            scope = DirectScopeProvider()
+            capability = ScopeCapability(level: .fullAccess)
+        }
     }
 
     /// Resolve any persisted bookmark and probe public dirs. Call once per

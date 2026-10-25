@@ -19,7 +19,7 @@ public final class AppGraph: ObservableObject {
 
     // MARK: Services (one instance each, process-wide)
 
-    public let scope: PowerScope
+    public let scope: any PowerScopeProviding
     public let persistence: PersistenceController
     public let cleanupEngine: CleanupEngine
     public let storeManager: StoreManager
@@ -84,9 +84,10 @@ public final class AppGraph: ObservableObject {
     @MainActor
     public static let shared = AppGraph()
 
-    public init(scope: PowerScope? = nil, menuBar: MenuBarManager? = nil) {
-        // Default to the AppScope-owned actor so every surface shares one
-        // bookmark store and probe.
+    public init(scope: (any PowerScopeProviding)? = nil, menuBar: MenuBarManager? = nil) {
+        // Default to the AppScope-owned provider so every surface shares one
+        // bookmark store and probe (MAS) — or the stateless full-access
+        // provider in the direct edition (P3 dual-channel).
         self.scope = scope ?? AppScope.shared.scope
         self.persistence = PersistenceController(stack: CoreDataStack.shared)
         self.storeManager = StoreManager()

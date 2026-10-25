@@ -3,6 +3,7 @@ import AppKit
 import Foundation
 import SwiftUI
 import Combine
+import PowerScope
 
 /// The four pre-scan filters the user can tune before starting a scan.
 ///
@@ -236,6 +237,10 @@ final class ScanResultsViewModel: ObservableObject {
     /// `nil` in previews; supplied by `RootView` in production.
     let engine: ScanEngine?
 
+    /// Access-level probe backing the grant fast-fail (P3 dual-channel —
+    /// replaces the old TCC filesystem probe in `UserPathResolver`).
+    private let scopeLevel: () -> ScopeLevel
+
     /// Live progress snapshot forwarded from ``engine`` while a scan runs.
     /// The scan-tab UI renders this with `ScanProgressView` so the user
     /// sees real-time progress instead of a static placeholder.
@@ -262,8 +267,16 @@ final class ScanResultsViewModel: ObservableObject {
 
     /// Designated init. Pass `engine` to wire a real scan; pass `nil` for
     /// previews and tests where the model just renders mock data.
-    init(engine: ScanEngine? = nil) {
+    ///
+    /// `scopeLevel` injects the access-level probe (P3 dual-channel): the
+    /// FDA fast-fail and empty-scan attribution read the PowerScope level
+    /// instead of a TCC filesystem probe, so a direct-edition build
+    /// (`.fullAccess`) never shows the grant state and a sandboxed build
+    /// shows it exactly while the home folder is ungranted.
+    init(engine: ScanEngine? = nil,
+         scopeLevel: @escaping () -> ScopeLevel = { AppScope.shared.capability.level }) {
         self.engine = engine
+        self.scopeLevel = scopeLevel
         // F6 perf sweep: debounce `draftFilters` → `filters` by 150 ms so
         // the size-floor slider does not fire the filter pipeline on
         // every pixel of drag. The pipeline still re-runs on every
@@ -518,11 +531,12 @@ final class ScanResultsViewModel: ObservableObject {
         // publish lands.
         engineProgress = ScanProgress(state: .scanning)
 
-        // FDA fast-fail: a sandboxed app without Full Disk Access cannot
-        // see any user files, so the scan would legitimately enumerate
-        // zero files and we'd show a false "clean" screen. Detect it up
-        // front and surface the FDA guidance state instead.
-        guard UserPathResolver.hasFullDiskAccess() else {
+        // Scope fast-fail: a sandboxed app without the home-folder grant
+        // cannot see any user files, so the scan would legitimately
+        // enumerate zero files and we'd show a false "clean" screen. Detect
+        // it up front and surface the grant guidance state instead. The
+        // direct edition (`.fullAccess`) never trips this.
+        guard scopeLevel() != .containerOnly else {
             var noFDA = working
             noFDA.isScanning = false
             noFDA.hasScanned = true
@@ -557,10 +571,11 @@ final class ScanResultsViewModel: ObservableObject {
         // 是因为扫描完成只建树、从未触发默认选择。
         Self.applyDefaultSelection(to: newSnapshot.categories)
 
-        // Post-scan FDA re-check: if the scan came back empty AND FDA is
-        // missing, the empty result is an artifact of sandboxing (the walk
-        // never saw real files), not a clean Mac. Surface the FDA state.
-        if newSnapshot.categories.isEmpty, !UserPathResolver.hasFullDiskAccess() {
+        // Post-scan scope re-check: if the scan came back empty AND the
+        // home scope is ungranted, the empty result is an artifact of
+        // sandboxing (the walk never saw real files), not a clean Mac.
+        // Surface the grant state. The direct edition never trips this.
+        if newSnapshot.categories.isEmpty, scopeLevel() == .containerOnly {
             newSnapshot.needsFullDiskAccess = true
         }
 

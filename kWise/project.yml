@@ -13,7 +13,11 @@ settings:
     MARKETING_VERSION: "1.5.0"
     CURRENT_PROJECT_VERSION: "1"
     CODE_SIGN_STYLE: Automatic
-    DEVELOPMENT_TEAM: ""
+  configs:
+    Debug:
+      DEVELOPMENT_TEAM: ""
+    Release:
+      DEVELOPMENT_TEAM: "TC973L6HPC"
 
 targets:
   kWise:
@@ -39,7 +43,64 @@ targets:
         INFOPLIST_FILE: Info.plist
         PRODUCT_NAME: Klaris
         PRODUCT_MODULE_NAME: kWise
-        ENTITLEMENTS_FILE: kWise.entitlements
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) DISTRIBUTION_MAS"
+      configs:
+        Debug:
+          CODE_SIGN_ENTITLEMENTS: ""
+        Release:
+          CODE_SIGN_ENTITLEMENTS: kWise.entitlements
+    dependencies:
+      - package: kFoundation
+        product: DetectionCore
+      - package: kFoundation
+        product: AppCatalogCore
+      - package: kFoundation
+        product: PowerScope
+      - package: kFoundation
+        product: CommonUtils
+      - package: kFoundation
+        product: FileScanner
+      - package: kFoundation
+        product: DesignSystem
+    preBuildScripts:
+      - name: "SwiftLint"
+        script: "if which swiftlint >/dev/null; then swiftlint; fi"
+        basedOnDependencyAnalysis: false
+
+  # Direct (Developer ID) channel - same source tree, non-sandboxed so the
+  # real home directory (Full Disk Access) is scannable. Shares bundle ID,
+  # Info.plist and deep-link scheme with the MAS target (product decision:
+  # one product, two distribution channels, not co-installable).
+  KlarisDirect:
+    type: application
+    platform: macOS
+    productName: Klaris
+    sources:
+      - path: .
+        excludes:
+          - "project.yml"
+          - "**/*.md"
+          - "Tests/**"
+          - "UITests/**"
+          - "scripts/**"
+          - "Widgets/**"          # separate widget appex target
+          - "FinderExtension/**"  # separate Finder Sync appex target
+          - "Configuration/**"    # .storekit is dev-only - in project, not bundled
+      - path: Configuration
+        buildPhase: none
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris
+        INFOPLIST_FILE: Info.plist
+        PRODUCT_NAME: Klaris
+        PRODUCT_MODULE_NAME: kWise
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) DISTRIBUTION_DIRECT"
+        ENABLE_HARDENED_RUNTIME: YES
+      configs:
+        Debug:
+          CODE_SIGN_ENTITLEMENTS: ""
+        Release:
+          CODE_SIGN_ENTITLEMENTS: kWiseDirect.entitlements
     dependencies:
       - package: kFoundation
         product: DetectionCore
@@ -70,7 +131,11 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris.widget
         PRODUCT_NAME: kWiseWidget
         INFOPLIST_FILE: Widgets/Info.plist
-        ENTITLEMENTS_FILE: kWiseWidget.entitlements
+      configs:
+        Debug:
+          CODE_SIGN_ENTITLEMENTS: ""
+        Release:
+          CODE_SIGN_ENTITLEMENTS: kWiseWidget.entitlements
     dependencies:
       - package: kFoundation
         product: DetectionCore
@@ -95,7 +160,11 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.kraftly.klaris.finder
         PRODUCT_NAME: kWiseFinder
         INFOPLIST_FILE: FinderExtension/Info.plist
-        ENTITLEMENTS_FILE: kWiseFinder.entitlements
+      configs:
+        Debug:
+          CODE_SIGN_ENTITLEMENTS: ""
+        Release:
+          CODE_SIGN_ENTITLEMENTS: kWiseFinder.entitlements
     dependencies:
       - package: kFoundation
         product: DetectionCore
@@ -152,6 +221,12 @@ schemes:
       config: Debug
       targets:
         - kWiseTests   # UITests excluded from default test action until Phase 8
+  KlarisDirect:
+    build:
+      targets:
+        KlarisDirect: all
+    run:
+      config: Debug
   kWiseWidget:
     build:
       targets:

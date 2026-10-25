@@ -1,6 +1,6 @@
 // kWise/Features/Common/UserPathResolver.swift
 //
-// Sandbox-safe real-user path resolution and Full Disk Access probing.
+// Sandbox-safe real-user path resolution.
 //
 // Why this exists:
 // * In an App Sandbox build, `NSHomeDirectory()` returns the *container*
@@ -14,12 +14,12 @@
 //   (`getpwuid(getuid())->pw_dir`), which the sandbox does not virtualise,
 //   and resolve `~`/`~/…` prefixes against that.
 //
-// FDA probing: kWise ships sandboxed and requires the user to grant
-// Full Disk Access (TCC) before any real filesystem sweep can see data.
-// Without it the scan legitimately enumerates zero files. `hasFullDiskAccess()`
-// probes a handful of known TCC-gated paths and returns true when any of
-// them is readable — an empty scan result then gets attributed to "no FDA"
-// instead of a misleading "your Mac is clean".
+// Access attribution: whether a scan can see real files is answered by the
+// PowerScope capability level (containerOnly → grant flow; homeGranted /
+// fullAccess → real sweep), not by a TCC filesystem probe. The former
+// `hasFullDiskAccess()` path-probing hack was removed with the P3
+// dual-channel split — it conflated "sandbox lacks a grant" with "direct
+// edition TCC state" and silently lied in both directions.
 
 import Foundation
 
@@ -51,22 +51,5 @@ public enum UserPathResolver {
             return realHomeDirectory() + path.dropFirst(1)
         }
         return path
-    }
-
-    /// True when the user has granted Full Disk Access to kWise.
-    ///
-    /// Probes a handful of directories that TCC gates (private logs, Mail,
-    /// Safari, and system cookies) and returns true if *any* is readable.
-    /// Intended for attribution only — an empty scan with FDA missing
-    /// should surface a "grant Full Disk Access" state instead of a false
-    /// "your Mac is clean".
-    static func hasFullDiskAccess() -> Bool {
-        let probes = [
-            "/private/var/log",
-            realHomeDirectory() + "/Library/Mail",
-            realHomeDirectory() + "/Library/Safari",
-            realHomeDirectory() + "/Library/Cookies",
-        ]
-        return probes.contains { FileManager.default.isReadableFile(atPath: $0) }
     }
 }

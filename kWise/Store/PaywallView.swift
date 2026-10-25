@@ -19,6 +19,16 @@ struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
+        // P3 双渠道：直营版没有 StoreKit 内购 —— 买断墙渲染 MAS 购买引导
+        // （过渡期决策），不渲染购买/恢复按钮（无假 affordance）。
+        if DistributionChannel.isSandboxed {
+            masPaywall
+        } else {
+            directGuidance
+        }
+    }
+
+    private var masPaywall: some View {
         GlassPanel {
             VStack(spacing: AppSpacing.xl) {
                 Image(systemName: success.unlocked ? "checkmark.circle.fill" : "lock.open.fill")
@@ -74,6 +84,37 @@ struct PaywallView: View {
                 dismiss()
             }
         }
+    }
+
+    /// 直营版买断墙：无 StoreKit 内购可调，诚实引导去 Mac App Store 购买
+    /// （两渠道同一 bundle ID / 同一产品）。无购买与恢复按钮 —— 没有可执行
+    /// 的动作就不渲染假 affordance。
+    private var directGuidance: some View {
+        GlassPanel {
+            VStack(spacing: AppSpacing.xl) {
+                Image(systemName: "cart.fill")
+                    .font(.system(size: 48))
+                    .foregroundColor(.brandAccent)
+
+                Text("在 Mac App Store 购买 Klaris")
+                    .font(AppFont.title2)
+                    .foregroundColor(.textPrimary)
+                    .multilineTextAlignment(.center)
+
+                Text("直营版不提供内购。打开 Mac App Store 搜索 Klaris，一次买断解锁回收动作；扫描、归因与拒答清单在所有版本永久免费。")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
+
+                Button("好") {
+                    dismiss()
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+            }
+            .padding(AppSpacing.xxl)
+        }
+        .frame(width: 400)
     }
 }
 

@@ -25,8 +25,9 @@ import DesignSystem
 /// quickClean）与按钮渲染权（AnatomyView hero）都必须经过这里。
 enum QuickCleanGate {
     /// container-only 时不允许启动快捷回收管线（扫描将一无所获）。
+    /// 直营版（`.fullAccess`）与已授权的 MAS 版（`.homeGranted`）都放行。
     static func allowsPipeline(_ level: ScopeLevel) -> Bool {
-        level == .homeGranted
+        level != .containerOnly
     }
 
     /// container-only 时 hero 的快捷回收位渲染授权卡。
