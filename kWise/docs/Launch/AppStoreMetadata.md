@@ -1,10 +1,14 @@
-# kWise — App Store Connect Metadata
+# Klaris — App Store Connect Metadata
+
+> ⚠️ 2026-10-25 修订：身份与定价字段已对齐 P0 迁移 + P1 买断制 + P3 双渠道。
+> **描述正文（下方 EN/zh/ja 长文案）仍是 v1 旧模块叙事，提审前需按 P2
+> 单一画布 IA 重写** —— 标注 `[TODO v1.6]` 的区块不得原样提交。
 
 > All fields below are pre-filled; copy each block verbatim into App Store Connect.
 > Re-verify character counts (App Store Connect validates live).
 
 ## App Name
-kWise
+Klaris
 
 ## Subtitle (30 chars max, EN)
 The Smarter Mac Disk Cleaner
@@ -19,7 +23,7 @@ The Smarter Mac Disk Cleaner
 app.kraftly.klaris
 
 ## SKU
-kraftly-sclean-v1-001
+klaris-mas-2026
 
 ## Primary Locale
 English (en-US)
@@ -71,18 +75,17 @@ APP STORE INTEGRATION
 • Finder: right-click any folder to scan it
 • Spotlight: search "Mac space" to find cleanup actions
 
-WHAT YOU GET FOR FREE
-• Full scan of system caches, logs, and leftovers
-• Risk-graded tree view
-• Up to 1 GB of cleanup per session
-• 7-day free trial of Pro
+[TODO v1.6 — 免费层/买断权益区块按 P1 T7 买断制重写，以下为替换基准]
+WHAT YOU GET FOR FREE (FOREVER)
+• Full anatomy scan of your Mac's storage
+• On-device attribution (rule engine + semantic inference, zero network)
+• The honest refusal list — files we won't touch and why
 
-PRO SUBSCRIPTION ($19.99/year, 7-day free trial)
-• Unlimited cleanup
-• 30-day cleanup history with restore
-• Menu bar live disk usage widget
-• Custom scan paths
-• Priority support
+ONE-TIME BUYOUT ($9.90 — no subscription, no trial)
+• Perform the suggested cleanups (30-day restorable trash)
+• Startup item management
+• App uninstall with residue detail
+• File shredder
 
 PRIVACY FIRST
 kWise collects nothing. The App Privacy nutrition label on this listing is empty. Read our privacy policy at kraftly.app/privacy.
@@ -100,10 +103,10 @@ macOS 13.0 or later. Full Disk Access required for system cache cleanup (Apple-m
 mac cleaner,disk cleaner,storage,cache,junk,free up space,apple silicon,metal,4-level risk
 
 ## Support URL
-https://kraftly.app/support/sclean
+https://kraftly.app/support/klaris
 
 ## Marketing URL (optional)
-https://kraftly.app/sclean
+https://kraftly.app/klaris
 
 ## Version 1.0.0 — What's New (4000 chars max, EN)
 First release. Smart 4-level scan, risk-graded cleanup, 30-day undo, menu bar widget, Shortcuts integration, full localization (English, Simplified Chinese, Japanese).
@@ -112,8 +115,6 @@ First release. Smart 4-level scan, risk-graded cleanup, 30-day undo, menu bar wi
 © 2026 Kraftly Inc.
 
 ## Pricing
-Tier 1 (US): $19.99/year
-Tier 2 (EU): €19.99/year
-Tier 9 (CN): ¥98/year
-Tier 11 (JP): ¥2,400/year
-Free Trial: 7 days, non-renewing
+Free download; single non-consumable buyout IAP
+`app.kraftly.klaris.buyout`: US $9.90 · CN ¥68（其余区域 App Store Connect
+tier 对齐，无订阅、无试用、无额度）

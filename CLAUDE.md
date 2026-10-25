@@ -146,8 +146,8 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 | Onboarding | 3 页（价值主张 → 扫描承诺+主目录授权合并 → 就绪），完成后自动首扫（P2 T8） | ✅ |
 | 文件粉碎 | 画布「+」菜单 sheet（1-pass 覆写 SSD 诚实文案 + 校验 + 改名 + trash 处置） | ✅（P2 T4） |
 | 磁盘健康 | 画布 DiskHealthCard + 详情 sheet（S.M.A.R.T. + 卷诊断 + 预测） | ✅ |
-| 🆕 启动项管理 | 引擎（PowerScope 扫描 + 开关）已交付，**UI 不可达**（P2 T9 退役其页面） | ⚠️ P3 候选 |
-| 🆕 应用卸载（基础） | 引擎（AppUninstallScanner/ResidueExplainer/备份回滚）已交付，**UI 不可达**（P2 T9 退役其页面） | ⚠️ P3 候选 |
+| 🆕 启动项管理 | 引擎 + UI 均交付（P3：设置页分区 + 「+」菜单 sheet；系统级项只读引导） | ✅（P3 重接入） |
+| 🆕 应用卸载（基础） | 引擎 + UI 均交付（P3：「+」菜单 sheet，双栏 + 残留分组 + 提交口径诚实弹窗） | ✅（P3 重接入） |
 | PowerScope 主目录授权 | 主目录书签授权（画布 grant gate 承接，替代旧 FDA 引导） | ✅ |
 | 菜单栏图标 | 显示已用空间 + 一键扫描入口 | ✅ |
 | 桌面 Widget | 基础版（13）+ Interactive 版（14+，交互按钮落 `klaris://smartcare` → 画布） | ✅ |
@@ -232,7 +232,7 @@ kWise/
 
 **强烈建议（非阻塞）：** 定时自动清理 / L2 语义归因。
 
-> P2 后现状：M1 Smart Care 已降级为画布快捷回收流；M5/M6 的引擎已交付但 UI 不可达（P3 候选）。
+> P3 后现状：M1 快捷回收（画布 hero）；M2/M5 已重接入 UI；M3 权限概览入设置页；M4/M6 画布 + sheet。双渠道（MAS/直营）见 §5.4。
 
 **功能范围待 grill：** UI 重做方案 / Smart Care 具体行为 / 启动项 UI 位置 / 隐私权限数据源 / 基础 vs 深度卸载切分线。
 
@@ -431,13 +431,24 @@ kWise/
 - [x] **测试基线** — **562 tests / 0 failures**（build-for-testing + 分批 -only-testing，45 批逐批报告，2026-10-08）。13 个源码枚举型审计类/方法因宿主 wedge（沙箱测试宿主 open()/trash-XPC 阻塞，重启可解）跳过，其源码审计断言已带外 grep 复核全绿；待重启后复跑（详见 task-10-report）
 - [x] **能力决策备忘（待 Product）** — 卸载/启动项引擎已交付但 UI 不可达（P3 候选）；助手答案诚实化（只承诺已实现能力）
 
+### Klaris P3 上架准备 — 双渠道 + 提审补齐 🔄 (2026-10-25)
+> 5 commits（`e2e77f1..47db984`）。计划：`.claude/plans/playful-exploring-crab.md`。三路全程序排查（M1-M6 可达性 / MAS 合规 / 构建-测试-文档）后按用户决策落地。
+- [x] **P0 — 图标与版本工具** — icon_1024 修为 1024×1024 8-bit（master 存 Tools/branding/）；version-bump.sh 改写为 project.yml + XcodeGen 口径
+- [x] **R1 — 双渠道架构** — KlarisDirect target（Developer ID，无沙盒 + Hardened Runtime，DISTRIBUTION_DIRECT）与 MAS kWise（DISTRIBUTION_MAS）同源码共 bundle ID；PowerScope 加 `.fullAccess` 档 + DirectScopeProvider；DistributionChannel 单缝；**修复 ENTITLEMENTS_FILE 从未生效的隐性 bug**（改 CODE_SIGN_ENTITLEMENTS，Debug ad-hoc / Release 真 entitlements + Team TC973L6HPC）；hasFullDiskAccess TCC 探测删除（scope 层级语义接管）；Onboarding/设置/买断墙按渠道分支（直营 = MAS 购买引导）；MasScanScope.md 三层可读性契约 + ScanScopeContractTests（10 用例）
+- [x] **R2 — MAS 扫描诚实性** — PrivacyScanner 注入真实主目录（原 NSHomeDirectory 静默扫容器）；设置页隐私区 container-only 授权引导；FDA 行直营专属；画布 systemStatus 占位符改真实 scope 状态行；引擎跳过的受限根上画布诊断（noteSkippedRegions，禁止静默丢弃）；KlarisDirect Debug 产物改名防 DerivedData 冲突
+- [x] **R3 — M2/M5/M3 重接入** — AppUninstallView（双栏 + 拖入扫描 + 提交口径诚实弹窗）+ AppUninstallDetailPanel；StartupItemsView（用户项停用/恢复 + 系统项只读 + 畸形 plist）；PrivacySurfaceCatalog 入设置页（死 chevron 移除、FDA 行渠道门控）；AppGraph appUninstallVM/startupItemsVM 工厂 + CanvasPlusMenu 4 项 + 深链退役注释；GraphFactoryRewiringTests
+- [x] **R4 — 提审机械项** — 全量本地化清扫（~450 keys ×3 语，3 并行批；助手意图匹配表保留中文模式）；Localizable.xcstrings 846 keys；InfoPlist.xcstrings（CFBundleDisplayName ×3 target）；appex PrivacyInfo ×2；删 NSAppleEventsUsageDescription；DiskHealthDetailView 注入画布同款 VM；文案审计测试改钉 key
+- [x] **P5 文档/脚本** — upload_to_testflight.sh 重写（kWise 口径）；release_direct.sh（公证+staple）；SubmissionChecklist/Runbook/PrivacyDetails/Metadata 对齐买断制与双渠道
+- [ ] **待办（需重启/用户）** — 测试宿主两次 wedge（已知环境问题）：重启后跑双渠道全量基线（846-key 本地化门禁 + 13 个待复跑审计测试 + UI 冒烟）；App Store Connect 记录/截图/IAP 创建；Release 归档验证（GUI 会话出 profile）
+- [ ] **决策备忘** — 直营正式付费方案（许可密钥/Paddle）；直营自动更新（Sparkle）；MAS 展示名终审
+
 ### Backlog（待设计）
-- [ ] Klaris P3 候选 — 卸载 / 启动项 UI 重接入（引擎已交付，P2 T9 后不可达）；L2 语义归因
+- [ ] Klaris P3 剩余 — L2 语义归因；直营付费/更新方案；重启后全量基线
 - [ ] kWise v2 — 3D 磁盘星系图（2D 空间地图也已随 P2 T9 退役；Metal 重启需 Product 拍板）
-- [ ] kWise 发布决策 — TestFlight / App Store 元数据 / 提审节奏（上架门槛功能引擎已齐，卸载/启动项 UI 待 P3）
+- [ ] Klaris 发布决策 — TestFlight / MAS 元数据 / 提审节奏（功能门槛已齐：6 模块 + 双渠道；待重启后全量基线 + ASC 记录/截图/IAP）
 
 > ⚠️ **现阶段不要写实现代码**。所有设计待汇总到 spec 文档并通过后，再通过 writing-plans 技能拆解为可执行任务。
 
 ---
 
-最后更新：2026-10-07（Klaris P2 单一画布 11 任务 + 3 修复轮收尾；CLAUDE.md 按 IA 终态重写——rail 3 项、退役表面清单、卸载/启动项 UI 不可达备忘、P2 测试基线）
+最后更新：2026-10-25（Klaris P3 上架准备：双渠道架构 + M2/M5/M3 重接入 + 提审机械清扫；CLAUDE.md 同步 M2/M5 状态与 P3 prep 记录。此前：2026-10-07 P2 单一画布收尾；CLAUDE.md 按 IA 终态重写——rail 3 项、退役表面清单、卸载/启动项 UI 不可达备忘、P2 测试基线）
