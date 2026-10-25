@@ -81,6 +81,14 @@ public final class ScanEngine: ObservableObject {
 
     private let orchestrator: ScanOrchestrator
 
+    /// Honest coverage accounting for the most recent scan (P3 MAS honesty,
+    /// MasScanScope.md red line 2): roots the scope couldn't read, for the
+    /// canvas to surface as diagnostics instead of silently dropping.
+    public func lastScopeCoverage() async -> ScopeCoverage {
+        await orchestrator.scopeCoverage(scannedBytes: progress.totalBytes,
+                                         scannedFiles: progress.filesDiscovered)
+    }
+
     // MARK: Private state
 
     /// The Task that consumes the orchestrator's AsyncStream. Cancelled by

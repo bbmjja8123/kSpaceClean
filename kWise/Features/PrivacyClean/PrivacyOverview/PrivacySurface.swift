@@ -43,6 +43,9 @@ public struct PrivacySurface: Identifiable, Hashable, Sendable {
 extension PrivacySurface {
     /// Canonical catalog. `cleanable` rows are wired to real providers by
     /// the privacy scan pipeline; `guidance` rows deep-link out.
+    ///
+    /// P3 双渠道：`permissions.fda` 只在直营版有意义（MAS 版无沙盒外
+    /// 文件可授权，FDA 引导行只会误导审核与用户），按渠道过滤。
     public static let catalog: [PrivacySurface] = [
         PrivacySurface(id: "browser.traces",
                        kind: .cleanable,
@@ -83,4 +86,12 @@ extension PrivacySurface {
                        iconSystemName: "video",
                        settingsPath: "x-apple.systempreferences:com.apple.preference.security?Privacy_Camera"),
     ]
+
+    /// Rows the current distribution channel should surface. The FDA
+    /// guidance row is direct-edition only.
+    public static var catalogForCurrentChannel: [PrivacySurface] {
+        catalog.filter { surface in
+            !(surface.id == "permissions.fda" && DistributionChannel.isSandboxed)
+        }
+    }
 }

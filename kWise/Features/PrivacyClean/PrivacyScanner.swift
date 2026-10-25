@@ -64,8 +64,14 @@ public final class PrivacyScanner: Sendable {
     private let fm = FileManager.default
     private let home: URL
 
-    public init() {
-        home = URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
+    /// `home` resolves against the *real* user home (libc passwd lookup),
+    /// never `NSHomeDirectory()` — under App Sandbox that returns the
+    /// container, where browser profiles do not exist and the scan would
+    /// silently report zero items (P3 MAS honesty fix). Callers inside a
+    /// granted scope may inject the granted root instead.
+    public init(home: URL? = nil) {
+        self.home = home ?? URL(fileURLWithPath: UserPathResolver.realHomeDirectory(),
+                                isDirectory: true)
     }
 
     // MARK: - Public API

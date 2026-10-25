@@ -113,6 +113,15 @@ public final class CanvasScanCoordinator: ObservableObject {
     /// 降级态文案。管线中途失败时对应组消失，但**绝不静默**（fix r1）。
     @Published public private(set) var scanDiagnostics: [String] = []
 
+    /// P3 诚实性（MasScanScope.md 红线 2）：引擎扫描因 scope 不可读而跳过
+    /// 的根必须可见地落在画布诊断区 —— 禁止静默丢弃（"没扫到"≠"干净"）。
+    public func noteSkippedRegions(_ names: [String]) {
+        guard !names.isEmpty else { return }
+        scanDiagnostics.append(String(
+            format: String(localized: String.LocalizationValue("canvas.diagnostic.skippedRegions")),
+            names.joined(separator: "、")))
+    }
+
     private let attributionService: any AttributionScanning
     private let duplicateScanner: (any DuplicateScanning)?
     private let photoScanner: (any PhotoScanning)?

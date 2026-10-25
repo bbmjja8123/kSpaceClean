@@ -560,16 +560,49 @@ public struct AnatomyView: View {
         drillDown = DrillDownDestination(group: group, entries: entries)
     }
 
-    // MARK: - 系统状态条（spec §3.5 —— T5 前静态占位，不显示假数据）
+    // MARK: - 系统状态条（spec §3.5；P2 为静态占位，P3 改为真实 scope 状态行
+    // —— MAS 授权态在此可见，直营版渲染静态全访问行，不再有占位假文案）
 
+    @ViewBuilder
     private var systemStatusSection: some View {
+        let level = appScope.capability.level
         Section {
-            HStack(spacing: AppSpacing.xs) {
-                Image(systemName: "switch.2")
-                    .foregroundStyle(Color.textSecondary)
-                Text("canvas.systemStatus.placeholder")
-                    .font(AppFont.callout)
-                    .foregroundStyle(Color.textSecondary)
+            HStack(spacing: AppSpacing.sm) {
+                Image(systemName: level == .containerOnly ? "lock" : "checkmark.seal")
+                    .foregroundStyle(level == .containerOnly ? Color.warning : Color.success)
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                    switch level {
+                    case .fullAccess:
+                        Text("完整磁盘访问")
+                            .font(AppFont.callout)
+                            .foregroundStyle(Color.textPrimary)
+                        Text("直营版可直接扫描完整磁盘。")
+                            .font(AppFont.caption)
+                            .foregroundStyle(Color.textSecondary)
+                    case .homeGranted:
+                        Text("主目录已授权")
+                            .font(AppFont.callout)
+                            .foregroundStyle(Color.textPrimary)
+                        Text("扫描范围覆盖你的主目录。")
+                            .font(AppFont.caption)
+                            .foregroundStyle(Color.textSecondary)
+                    case .containerOnly:
+                        Text("仅容器访问")
+                            .font(AppFont.callout)
+                            .foregroundStyle(Color.textPrimary)
+                        Text("授权主目录后才能发现并清理大部分垃圾文件。")
+                            .font(AppFont.caption)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                }
+                Spacer()
+                if level == .containerOnly {
+                    Button("授权主目录") {
+                        Task { await appScope.grant() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.small)
+                }
             }
         }
     }

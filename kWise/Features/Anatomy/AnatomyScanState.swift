@@ -187,6 +187,12 @@ extension AnatomyViewModel {
                 try? await Task.sleep(nanoseconds: 100_000_000)
                 if Task.isCancelled { return }
             }
+            // P3 诚实性：引擎扫描因 scope 跳过的根上画布诊断（禁止静默
+            // 丢弃 —— MAS 未授权时用户必须能看见"哪些区域没扫"）。
+            let skipped = await scanVM.engine?.lastScopeCoverage()
+            if let regions = skipped?.skippedRegions.map(\.displayName), !regions.isEmpty {
+                canvasCoordinator?.noteSkippedRegions(regions)
+            }
         }
         guard !Task.isCancelled else { return }
         scanPhase = .scanning(progress: 0, path: "")

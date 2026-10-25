@@ -365,7 +365,22 @@ struct SettingsView: View {
     private var privacySection: some View {
         // P2 final residual：VM 改走 graph 缓存装配（RootView 与设置页同一
         // 实例，引擎/quota/sinks 同一条链）—— onAppear 装配，未就绪时不渲染。
-        if let privacyVM {
+        // P3 诚实性：container-only 时浏览器痕迹必然扫不到 —— 先给授权引导，
+        // 不渲染无意义（注定为空）的扫描按钮。
+        if !QuickCleanGate.allowsPipeline(appScope.capability.level) {
+            LabeledContent {
+                Button("授权主目录") {
+                    Task { await appScope.grant() }
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+            } label: {
+                Text("需要主目录授权")
+                Text("授权后才能扫描浏览器历史、Cookie 与下载记录。")
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
+        } else if let privacyVM {
             if privacyVM.isScanning {
                 HStack(spacing: AppSpacing.sm) {
                     ProgressView()

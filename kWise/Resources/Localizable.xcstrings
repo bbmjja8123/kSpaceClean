@@ -1,5 +1,6 @@
 {
   "sourceLanguage": "en",
+  "version": "1.1",
   "strings": {
     "%@": {
       "extractionState": "stale",
@@ -8719,7 +8720,28 @@
           }
         }
       }
+    },
+    "canvas.diagnostic.skippedRegions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skipped (no access): %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已跳过（无访问权限）：%@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキップ（アクセス権なし）：%@"
+          }
+        }
+      }
     }
-  },
-  "version": "1.1"
+  }
 }
