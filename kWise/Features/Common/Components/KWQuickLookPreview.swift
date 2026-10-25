@@ -26,6 +26,15 @@ extension View {
     }
 }
 
+/// QuickLook 只吃真实常规文件；目录 / 已消失路径一律不预览。
+enum KWQuickLookEligibility {
+    static func isPreviewable(_ url: URL) -> Bool {
+        guard url.isFileURL, (try? url.checkResourceIsReachable()) == true else { return false }
+        let values = try? url.resourceValues(forKeys: [.isRegularFileKey])
+        return values?.isRegularFile ?? false
+    }
+}
+
 /// Space-key → QuickLook for the row under selection. Attach once per list
 /// surface; the closure decides which file the selection maps to.
 struct KWQuickLookSpaceHandler: ViewModifier {

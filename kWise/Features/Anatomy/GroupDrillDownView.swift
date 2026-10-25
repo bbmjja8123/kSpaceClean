@@ -112,6 +112,8 @@ struct GroupDrillDownView: View {
     // 勾选态 VM：宿主传缓存（面包屑返回保持勾选），未传时自建（预览/测试）。
     @StateObject private var model: GroupDrillDownModel
     @StateObject private var nodePanel: AssistantNodePanelModel
+    /// QuickLook sheet 当前预览的文件（eye 按钮 / Space 键共同写入）。
+    @State private var quickLookURL: URL?
 
     init(group: CanvasGroup,
                 entries: [CanvasEntry],
@@ -206,38 +208,78 @@ struct GroupDrillDownView: View {
                 row(entry)
             }
         }
+        // QuickLook sheet 挂在列表层（每行 eye 按钮写 binding）；Space 键
+        // 处理器同层只挂一次。既有 KWQuickLookSpaceHandler 的闭包只回传
+        // URL、不写 binding —— 这里在闭包内显式落 quickLookURL。
+        .kwQuickLookPreview($quickLookURL)
+        .kwQuickLookSpaceHandler {
+            let url = selectedRowURL()
+            quickLookURL = url
+            return url
+        }
     }
 
     private func row(_ entry: CanvasEntry) -> some View {
-        Toggle(isOn: Binding(
-            get: { model.isChecked(entry.id) },
-            set: { model.setChecked(entry.id, $0) })) {
-            HStack(spacing: AppSpacing.xs) {
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(entry.title)
-                        .font(AppFont.callout)
-                        .lineLimit(1)
-                        .help(entry.title)
-                    if let detail = entry.detail {
-                        Text(detail)
-                            .font(AppFont.caption)
-                            .foregroundStyle(Color.textSecondary)
+        HStack(spacing: AppSpacing.xs) {
+            Toggle(isOn: Binding(
+                get: { model.isChecked(entry.id) },
+                set: { model.setChecked(entry.id, $0) })) {
+                HStack(spacing: AppSpacing.xs) {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(entry.title)
+                            .font(AppFont.callout)
                             .lineLimit(1)
-                            .truncationMode(.head)
-                            .help(detail)
+                            .help(entry.title)
+                        if let detail = entry.detail {
+                            Text(detail)
+                                .font(AppFont.caption)
+                                .foregroundStyle(Color.textSecondary)
+                                .lineLimit(1)
+                                .truncationMode(.head)
+                                .help(detail)
+                        }
                     }
+                    Spacer(minLength: AppSpacing.sm)
+                    badgeView(entry.badge)
+                    Text(FileSizeFormatter.abbreviated(from: entry.bytes))
+                        .font(AppFont.numberCaption)
+                        .foregroundStyle(Color.textSecondary)
                 }
-                Spacer(minLength: AppSpacing.sm)
-                badgeView(entry.badge)
-                Text(FileSizeFormatter.abbreviated(from: entry.bytes))
-                    .font(AppFont.numberCaption)
-                    .foregroundStyle(Color.textSecondary)
+            }
+            .toggleStyle(.checkbox)
+            // A11y 审计：裸 Toggle 的可读内容散在标签子视图里——显式 label 用
+            // 条目标题，VoiceOver 焦点语义才稳定（与预演 sheet 同口径）。
+            .accessibilityLabel(Text(entry.title))
+            // 预览按钮（行尾）：只有文件系统里真实存在的常规文件才渲染 ——
+            // 目录 / 虚拟条目 / 已消失路径诚实降级为不可预览。
+            if let url = entry.target?.url, KWQuickLookEligibility.isPreviewable(url) {
+                Button {
+                    quickLookURL = url
+                } label: {
+                    Image(systemName: "eye")
+                        .foregroundStyle(Color.textSecondary)
+                }
+                .buttonStyle(.plain)
+                .help(String(localized: String.LocalizationValue("drill.quicklook.help")))
+                .accessibilityLabel(Text(String(localized: String.LocalizationValue("drill.quicklook.help"))))
             }
         }
-        .toggleStyle(.checkbox)
-        // A11y 审计：裸 Toggle 的可读内容散在标签子视图里——显式 label 用
-        // 条目标题，VoiceOver 焦点语义才稳定（与预演 sheet 同口径）。
-        .accessibilityLabel(Text(entry.title))
+    }
+
+    /// Space 键的预览目标：勾选集中第一个可预览 target，无则取首行可预览
+    /// 项；全部不可预览返回 nil（Space 静默，不出错）。
+    private func selectedRowURL() -> URL? {
+        func previewableURL(_ entry: CanvasEntry) -> URL? {
+            guard let url = entry.target?.url,
+                  KWQuickLookEligibility.isPreviewable(url) else { return nil }
+            return url
+        }
+        if let checked = model.entries.first(where: {
+            model.isChecked($0.id) && previewableURL($0) != nil
+        }) {
+            return previewableURL(checked)
+        }
+        return model.entries.lazy.compactMap(previewableURL).first
     }
 
     /// 五色徽章 —— 语义映射复用组卡的 `CanvasGroupCardCopy`（色 / Symbol /
