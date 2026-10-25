@@ -14,6 +14,10 @@ import DesignSystem
 /// hero「+」菜单的注册项。顺序即菜单顺序（spec §3.8）。
 /// P2 T9：`.spaceMapLegacy` 逃生口随空间地图退役 —— 画布即地图。
 enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
+    /// 应用卸载（P3 M5 重接入：RootView 挂 sheet，graph.appUninstallVM 装配）。
+    case uninstall
+    /// 启动项管理（P3 M2 重接入：同 sheet 模式，graph.startupItemsVM 装配）。
+    case startupItems
     /// 粉碎窗（RootView 挂 sheet，graph.shredderVM() 现有装配复用）。
     case shredder
     /// 归因规则清单（规则 corpus 的诚实披露页）。
@@ -24,6 +28,8 @@ enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
     /// xcstrings key —— 测试钉 key，文案改动不破坏映射契约。
     var titleKey: String {
         switch self {
+        case .uninstall: return "canvas.plusMenu.uninstall"
+        case .startupItems: return "canvas.plusMenu.startupItems"
         case .shredder: return "canvas.plusMenu.shredder"
         case .attributionRules: return "canvas.plusMenu.attributionRules"
         }
@@ -31,6 +37,8 @@ enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
 
     var systemImage: String {
         switch self {
+        case .uninstall: return "shippingbox.and.arrow.backward"
+        case .startupItems: return "bolt"
         case .shredder: return "flame"
         case .attributionRules: return "list.bullet.rectangle.portrait"
         }
@@ -43,11 +51,15 @@ enum CanvasPlusMenuItem: String, CaseIterable, Identifiable {
 
 /// 菜单项 → 动作的路由。测试钉住分发不串线；视图只消费。
 struct CanvasPlusMenuActions {
+    var onUninstall: () -> Void
+    var onStartupItems: () -> Void
     var onShredder: () -> Void
     var onAttributionRules: () -> Void
 
     func callAsFunction(_ item: CanvasPlusMenuItem) {
         switch item {
+        case .uninstall: onUninstall()
+        case .startupItems: onStartupItems()
         case .shredder: onShredder()
         case .attributionRules: onAttributionRules()
         }

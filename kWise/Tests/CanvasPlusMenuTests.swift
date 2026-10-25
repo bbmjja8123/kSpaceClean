@@ -35,18 +35,20 @@ final class CanvasPlusMenuTests: XCTestCase {
 
     // MARK: - 「+」菜单注册
 
-    /// 菜单恰好两项、顺序稳定 —— P2 T9：旧版空间地图逃生口随 SpaceMapView
-    /// 退役（画布即地图，spec §2/§9）。
-    func testPlusMenuRegistersExactlyTwoItemsInOrder() {
+    /// 菜单四项、顺序稳定 —— P3：应用卸载（M5）与启动项（M2）重接入；
+    /// P2 T9 旧版空间地图逃生口随 SpaceMapView 退役（画布即地图）。
+    func testPlusMenuRegistersExactlyFourItemsInOrder() {
         XCTAssertEqual(CanvasPlusMenuItem.allCases,
-                       [.shredder, .attributionRules],
-                       "「+」菜单 = 粉碎窗 · 归因规则")
+                       [.uninstall, .startupItems, .shredder, .attributionRules],
+                       "「+」菜单 = 卸载 · 启动项 · 粉碎窗 · 归因规则")
     }
 
     /// 标题钉 key（文案改动不破坏映射契约），且 key 能经本地化表取值。
     func testPlusMenuItemTitlesResolveLocalizedKeys() {
         XCTAssertEqual(CanvasPlusMenuItem.shredder.titleKey, "canvas.plusMenu.shredder")
         XCTAssertEqual(CanvasPlusMenuItem.attributionRules.titleKey, "canvas.plusMenu.attributionRules")
+        XCTAssertEqual(CanvasPlusMenuItem.uninstall.titleKey, "canvas.plusMenu.uninstall")
+        XCTAssertEqual(CanvasPlusMenuItem.startupItems.titleKey, "canvas.plusMenu.startupItems")
         for item in CanvasPlusMenuItem.allCases {
             XCTAssertEqual(item.title,
                            String(localized: String.LocalizationValue(item.titleKey)),
@@ -54,16 +56,19 @@ final class CanvasPlusMenuTests: XCTestCase {
         }
     }
 
-    /// 动作分发：两个 case 各自路由到自己的回调（互不串线）。
+    /// 动作分发：每个 case 各自路由到自己的回调（互不串线）。
     func testMenuActionDispatchRoutesEachItemToItsOwnHandler() {
         var calls: [CanvasPlusMenuItem] = []
         let actions = CanvasPlusMenuActions(
+            onUninstall: { calls.append(.uninstall) },
+            onStartupItems: { calls.append(.startupItems) },
             onShredder: { calls.append(.shredder) },
             onAttributionRules: { calls.append(.attributionRules) })
 
         // 故意以非枚举顺序触发 —— 断言看的是「每项命中自己的处理器」，
         // 而非调用顺序。
-        let invocationOrder: [CanvasPlusMenuItem] = [.attributionRules, .shredder]
+        let invocationOrder: [CanvasPlusMenuItem] = [.attributionRules, .shredder,
+                                                     .startupItems, .uninstall]
         for item in invocationOrder { actions(item) }
 
         XCTAssertEqual(calls, invocationOrder, "菜单项逐一命中自己的处理器")

@@ -50,6 +50,10 @@ struct RootView: View {
     @StateObject private var dragToShred = DragToShredModel()
     /// 粉碎窗 sheet（「+」菜单 / 整窗拖放共用入口；VM 走 graph 缓存装配）。
     @State private var showShredWindow = false
+    /// 应用卸载 sheet（P3 M5 重接入；graph.appUninstallVM 缓存装配）。
+    @State private var showUninstallWindow = false
+    /// 启动项 sheet（P3 M2 重接入；graph.startupItemsVM 缓存装配）。
+    @State private var showStartupItemsWindow = false
     /// 磁盘健康详情 sheet（P2 T9：DiskHealthDetailView 保留为画布下钻页）。
     @State private var showDiskHealthDetail = false
     /// 统一预演 sheet（P2 T5 R-统一）：组头就地清理与 hero 快捷回收两条
@@ -156,6 +160,25 @@ struct RootView: View {
                 .sheet(isPresented: $showShredWindow) {
                     ShredderView(viewModel: graph.shredderVM())
                         .frame(minWidth: 560, minHeight: 420)
+                }
+        )
+        // 应用卸载 sheet（P3 M5 重接入）——graph 缓存 VM；确认与提交语义
+        // 在 AppUninstallView 内（引擎统一链，30 天可还原）。
+        .background(
+            Color.clear
+                .sheet(isPresented: $showUninstallWindow) {
+                    AppUninstallView(viewModel: graph.appUninstallVM {
+                        coordinator.presentPaywall()
+                    })
+                    .frame(minWidth: 760, minHeight: 520)
+                }
+        )
+        // 启动项 sheet（P3 M2 重接入）。
+        .background(
+            Color.clear
+                .sheet(isPresented: $showStartupItemsWindow) {
+                    StartupItemsView(viewModel: graph.startupItemsVM())
+                        .frame(minWidth: 560, minHeight: 460)
                 }
         )
         // 磁盘健康详情 sheet（P2 T9）——DiskHealthDetailView 保留为画布下钻
@@ -329,6 +352,17 @@ struct RootView: View {
                 onOpenShredder: {
                     // 「+」菜单 → 粉碎窗（graph.shredderVM() 缓存装配复用）。
                     showShredWindow = true
+                },
+                onOpenUninstall: {
+                    // P3 M5 重接入：「+」菜单 → 应用卸载 sheet（graph 缓存
+                    // 装配 + 配额超限路由买断墙）。
+                    _ = graph.appUninstallVM { coordinator.presentPaywall() }
+                    showUninstallWindow = true
+                },
+                onOpenStartupItems: {
+                    // P3 M2 重接入：「+」菜单 → 启动项 sheet（graph 缓存装配）。
+                    _ = graph.startupItemsVM()
+                    showStartupItemsWindow = true
                 },
                 onScanCancelled: {
                     // fix r1（Important 1）：取消必须真的取消 —— 扇出取消

@@ -175,6 +175,10 @@ public struct AnatomyView: View {
     private let onGroupAction: (CanvasGroup) -> Void
     /// 「+」菜单 → 粉碎窗（RootView 挂 sheet + 整窗拖放转发，P2 T4）。
     private let onOpenShredder: () -> Void
+    /// 「+」菜单 → 应用卸载 sheet（P3 M5 重接入）。
+    private let onOpenUninstall: () -> Void
+    /// 「+」菜单 → 启动项 sheet（P3 M2 重接入）。
+    private let onOpenStartupItems: () -> Void
     /// 扫描中态「取消」回调（P2 T5 fix r1，Important 1）：扇出取消之外，
     /// RootView 据此把快捷回收管线一并作废 —— 否则取消后管线照样落
     /// `.confirming`，模态预演 sheet 会在用户明确取消后弹出。
@@ -204,6 +208,8 @@ public struct AnatomyView: View {
          onOpenDiskHealth: @escaping () -> Void,
          onGroupAction: @escaping (CanvasGroup) -> Void = { _ in },
          onOpenShredder: @escaping () -> Void = {},
+         onOpenUninstall: @escaping () -> Void = {},
+         onOpenStartupItems: @escaping () -> Void = {},
          onScanCancelled: @escaping () -> Void = {},
          onDrillDownRehearse: @escaping (String, [CanvasEntry]) -> Void = { _, _ in }) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -214,6 +220,8 @@ public struct AnatomyView: View {
         self.onOpenDiskHealth = onOpenDiskHealth
         self.onGroupAction = onGroupAction
         self.onOpenShredder = onOpenShredder
+        self.onOpenUninstall = onOpenUninstall
+        self.onOpenStartupItems = onOpenStartupItems
         self.onScanCancelled = onScanCancelled
         self.onDrillDownRehearse = onDrillDownRehearse
     }
@@ -368,9 +376,10 @@ public struct AnatomyView: View {
                     }
                     .buttonStyle(.borderedProminent)
                 }
-                // 「+」菜单（P2 T4）：粉碎窗 · 归因规则（旧版空间地图项
-                // 随 P2 T9 退役）。
+                // 「+」菜单（P2 T4；P3 扩：应用卸载 / 启动项重接入）。
                 CanvasPlusMenu(actions: CanvasPlusMenuActions(
+                    onUninstall: onOpenUninstall,
+                    onStartupItems: onOpenStartupItems,
                     onShredder: onOpenShredder,
                     onAttributionRules: {
                         // corpus 未加载成功时不弹空 sheet（诚实降级——规则

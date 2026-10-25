@@ -26,6 +26,8 @@ struct SettingsView: View {
     @State private var rulesCorpus: AttributionRuleCorpus?
     @State private var showRulesSheet = false
     @State private var showPaywallSheet = false
+    /// P3 M2 重接入：启动项管理 sheet。
+    @State private var showStartupItemsSheet = false
 
     private var graph: AppGraph { injectedGraph ?? AppGraph() }
 
@@ -74,6 +76,21 @@ struct SettingsView: View {
                     .pickerStyle(.menu)
                     .onChange(of: prefs.similarityPresetRaw) { _ in
                         prefs.save()
+                    }
+                }
+
+                // P3 M2 重接入：启动项管理（sheet 呈现，graph 缓存 VM；
+                // 「+」菜单另有直达入口）。
+                Section("启动项") {
+                    LabeledContent {
+                        Button("管理") { showStartupItemsSheet = true }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                    } label: {
+                        Text("登录与启动代理")
+                        Text("查看并停用用户级启动项；系统级项目提供手动指引。")
+                            .font(AppFont.caption)
+                            .foregroundColor(.textSecondary)
                     }
                 }
 
@@ -157,6 +174,14 @@ struct SettingsView: View {
             Color.clear
                 .sheet(isPresented: $showPaywallSheet) {
                     PaywallView(store: graph.storeManager)
+                }
+        )
+        // P3 M2：启动项管理 sheet（graph 缓存 VM —— 与「+」菜单同一实例）。
+        .background(
+            Color.clear
+                .sheet(isPresented: $showStartupItemsSheet) {
+                    StartupItemsView(viewModel: graph.startupItemsVM())
+                        .frame(minWidth: 560, minHeight: 460)
                 }
         )
         // I5（P2 final）：隐私清理的统一预演 sheet —— 与主画布同一张
@@ -363,6 +388,11 @@ struct SettingsView: View {
     /// 不变）；登录态（Cookie）选中时的后果说明保留。
     @ViewBuilder
     private var privacySection: some View {
+        // P3 M3 重接入：权限概览行列表（渠道过滤版 catalog；guidance 行
+        // 深链系统设置，cleanable 行的实体动作即下方扫描器）。
+        PrivacySurfaceCatalog()
+            .padding(.vertical, AppSpacing.xs)
+
         // P2 final residual：VM 改走 graph 缓存装配（RootView 与设置页同一
         // 实例，引擎/quota/sinks 同一条链）—— onAppear 装配，未就绪时不渲染。
         // P3 诚实性：container-only 时浏览器痕迹必然扫不到 —— 先给授权引导，

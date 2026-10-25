@@ -70,11 +70,28 @@ public final class AppGraph: ObservableObject {
         }
     }
 
+    // P3 M5 重接入（CMM 门槛 M5）：应用卸载常驻 VM —— graph 缓存装配，
+    // 与 privacyCleanupVM 同模式：引擎接线 + 配额超限路由买断墙。
+    func appUninstallVM(onQuota: @escaping () -> Void) -> AppUninstallViewModel {
+        cached("appUninstall") {
+            let vm = AppUninstallViewModel(engine: cleanupEngine)
+            vm.onQuotaExhausted = onQuota
+            return vm
+        }
+    }
+
+    /// P3 M2 重接入（CMM 门槛 M2）：启动项常驻 VM —— 注入 graph 持有的
+    /// scope（授权语义一致）与 persistence（历史/回滚同库）。
+    func startupItemsVM() -> StartupItemsViewModel {
+        cached("startupItems") {
+            StartupItemsViewModel(scope: scope, persistence: persistence)
+        }
+    }
+
     // P1 T8: assistantVM() 已随聊天框退役删除——问答由下钻页内嵌的
     // AssistantNodePanelModel 承接（自带 matcher/builder，无共享状态）。
-    // P2 T9: appUninstallVM/duplicatesVM/largeOldVM/photoCleanVM/
-    // photoSimilarityVM/startupItemsVM 随工具表面退役删除（各 VM/扫描器
-    // 保留为逻辑层，画布扇出与测试直接构造）。
+    // P2 T9 曾随工具表面退役的 duplicates/largeOld/photo VM 仍不可达
+    // （画布扇出直接构造）；appUninstall/startupItems 已于 P3 重接入。
 
     // MARK: Shared instance for App Intents / widget intents
 

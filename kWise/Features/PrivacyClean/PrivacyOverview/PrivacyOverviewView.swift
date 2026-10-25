@@ -12,9 +12,7 @@ struct PrivacyOverviewView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
                 header
-                ForEach(PrivacySurface.catalog) { surface in
-                    PrivacySurfaceRow(surface: surface)
-                }
+                PrivacySurfaceCatalog()
             }
             .padding(AppSpacing.lg)
         }
@@ -33,8 +31,21 @@ struct PrivacyOverviewView: View {
     }
 }
 
-/// One row of the overview: cleanable surfaces show a chevron into the
-/// scanner; guidance rows deep-link to System Settings.
+/// The channel-filtered catalog as a plain row stack — safe to embed inside
+/// a Form `Section` (no nested ScrollView).
+struct PrivacySurfaceCatalog: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            ForEach(PrivacySurface.catalogForCurrentChannel) { surface in
+                PrivacySurfaceRow(surface: surface)
+            }
+        }
+    }
+}
+
+/// One row of the overview: guidance rows deep-link to System Settings;
+/// cleanable rows are inert labels — the actual cleaning actions live in
+/// the privacy scanner section below (no dead chevron affordance).
 struct PrivacySurfaceRow: View {
     let surface: PrivacySurface
 
@@ -69,9 +80,11 @@ struct PrivacySurfaceRow: View {
                     .foregroundStyle(Color.textSecondary)
             }
             Spacer()
-            Image(systemName: surface.kind == .guidance ? "arrow.up.forward" : "chevron.right")
-                .font(.caption)
-                .foregroundStyle(Color.textSecondary)
+            if surface.kind == .guidance {
+                Image(systemName: "arrow.up.forward")
+                    .font(.caption)
+                    .foregroundStyle(Color.textSecondary)
+            }
         }
         .padding(AppSpacing.md)
         .background(Color.bgSurface, in: RoundedRectangle(cornerRadius: 8))

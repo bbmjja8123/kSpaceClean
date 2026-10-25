@@ -18,9 +18,13 @@ public final class StartupItemsViewModel: ObservableObject {
 
     private let scanner: StartupItemsScanner
     private let toggler: StartupItemToggler
+    /// 扫描器实际使用的 scope provider —— graph 装配测试断言「注入的是
+    /// graph 持有的实例」用（internal，@testable 可读）。
+    let scannerScope: any PowerScopeProviding
 
     public init(scope: (any PowerScopeProviding)? = nil,
                 persistence: PersistenceController? = nil) {
+        self.scannerScope = scope ?? AppScope.shared.scope
         self.scanner = StartupItemsScanner(scope: scope ?? AppScope.shared.scope)
         self.toggler = StartupItemToggler(persistence: persistence ?? .shared)
     }

@@ -16,7 +16,9 @@ import SwiftUI
 /// - `klaris://settings`  → settings
 /// 已退役面的旧深链（clean/privacy/startup/uninstall/shred/tools/spacemap/
 /// report/duplicates/largefiles/photoclean/maintenance）不再处理 —— 返回
-/// false 走「未处理」，绝不把用户引向一个不存在的表面。
+/// false 走「未处理」，绝不把用户引向一个不存在的表面。P3：卸载/启动项
+/// 的 UI 已重接入，但走「+」菜单 sheet（无外部深链消费者 —— widget 只用
+/// smartcare），不为它们恢复路由。
 @MainActor
 public final class AppCoordinator: ObservableObject {
     public weak var appState: AppState?

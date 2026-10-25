@@ -194,6 +194,18 @@ public final class AppUninstallViewModel: ObservableObject {
         selectedResiduePaths[entryID] = set
     }
 
+    /// 详情面板勾选态读取（P3 UI 重接入）。
+    public func isResidueSelected(_ entryID: UUID, _ residue: ResidueFile) -> Bool {
+        selectedResiduePaths[entryID]?.contains(residue.url.path) ?? false
+    }
+
+    /// 组内全部残留都已勾选？（组头「取消全组 / 全选」按钮态。）
+    public func groupSelected(_ entryID: UUID, _ residues: [ResidueFile]) -> Bool {
+        let paths = Set(residues.map { $0.url.path })
+        let selected = selectedResiduePaths[entryID] ?? []
+        return paths.isSubset(of: selected)
+    }
+
     /// 选中条目的分组（惰性计算：命中缓存直接返回；否则后台分组 +
     /// 主线程发布）。未命中时返回 nil，面板显示「分析中…」骨架。
     ///
