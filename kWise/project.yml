@@ -222,6 +222,19 @@ schemes:
       config: Debug
       targets:
         - kWiseTests   # UITests excluded from default test action until Phase 8
+  # P3 UI 冒烟独立 scheme：不打进 kWise 全量基线（672 tests 语义不变），
+  # 冒烟单跑 `xcodebuild test -scheme kWiseSmokeUI`。
+  kWiseSmokeUI:
+    build:
+      targets:
+        kWise: all
+    run:
+      config: Debug
+      storeKitConfiguration: Configuration/Klaris.storekit
+    test:
+      config: Debug
+      targets:
+        - kWiseUITests
   KlarisDirect:
     build:
       targets:

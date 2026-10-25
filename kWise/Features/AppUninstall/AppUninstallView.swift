@@ -39,6 +39,9 @@ struct AppUninstallView: View {
         }
         .background(Color.bgPrimary)
         .frame(minWidth: 720, minHeight: 480)
+        // P3 UI 冒烟：sheet 根标识（SmokeUITests 按 identifier 查询，
+        // 不依赖文案）。
+        .accessibilityIdentifier("uninstall.sheet")
         .onAppear {
             if viewModel.entries.isEmpty, !viewModel.isScanning {
                 viewModel.startScan()

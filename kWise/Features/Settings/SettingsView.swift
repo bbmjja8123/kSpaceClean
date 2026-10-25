@@ -86,6 +86,7 @@ struct SettingsView: View {
                         Button(String(localized: String.LocalizationValue("settings.startup.manage"))) { showStartupItemsSheet = true }
                             .buttonStyle(.bordered)
                             .controlSize(.small)
+                            .accessibilityIdentifier("settings.startup.manage")
                     } label: {
                         Text(String(localized: String.LocalizationValue("settings.startup.title")))
                         Text(String(localized: String.LocalizationValue("settings.startup.subtitle")))
@@ -372,6 +373,9 @@ struct SettingsView: View {
             .buttonStyle(.borderedProminent)
             .controlSize(.small)
             .disabled(vm.isRunning)
+            // P3 UI 冒烟：买断墙路由的触发按钮（SmokeUITests 定位用；
+            // task.rawValue 唯一，userLogClear 是唯一 engine-backed 任务）。
+            .accessibilityIdentifier("settings.maintenance.clean.\(task.rawValue)")
         } else {
             Button(vm.copiedCommands.contains(task.id)
                    ? String(localized: String.LocalizationValue("settings.maintenance.copied"))

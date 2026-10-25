@@ -329,6 +329,8 @@ struct OnboardingContainerView: View {
         }
         .frame(minWidth: 540, minHeight: 500)
         .background(Color.bgPrimary)
+        // P3 UI 冒烟：onboarding 根标识（SmokeUITests 按 identifier 查询）。
+        .accessibilityIdentifier("onboarding.container")
         .onAppear {
             coordinator.onComplete = onComplete
         }

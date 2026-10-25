@@ -527,6 +527,8 @@ private struct IconRailButton: View, Equatable {
         }
         .buttonStyle(.plain)
         .help(item.tooltip)
+        // P3 UI 冒烟：rail 按钮标识（SmokeUITests 按 identifier 导航）。
+        .accessibilityIdentifier("rail.\(item.rawValue)")
     }
 }
 

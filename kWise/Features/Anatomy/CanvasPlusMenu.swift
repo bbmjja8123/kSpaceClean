@@ -85,6 +85,9 @@ struct CanvasPlusMenu: View {
                 .foregroundStyle(Color.textSecondary)
         }
         .help(String(localized: String.LocalizationValue("canvas.hero.plusMenu.help")))
+        // P3 UI 冒烟：「+」菜单标识（SmokeUITests 按 identifier 查询，
+        // 不依赖图标/文案）。
+        .accessibilityIdentifier("canvas.plusMenu")
     }
 }
 

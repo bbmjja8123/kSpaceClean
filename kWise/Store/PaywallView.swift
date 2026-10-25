@@ -19,13 +19,17 @@ struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        // P3 双渠道：直营版没有 StoreKit 内购 —— 买断墙渲染 MAS 购买引导
-        // （过渡期决策），不渲染购买/恢复按钮（无假 affordance）。
-        if DistributionChannel.isSandboxed {
-            masPaywall
-        } else {
-            directGuidance
+        // P3 UI 冒烟：sheet 根标识（SmokeUITests 按 identifier 查询）。
+        Group {
+            // P3 双渠道：直营版没有 StoreKit 内购 —— 买断墙渲染 MAS 购买引导
+            // （过渡期决策），不渲染购买/恢复按钮（无假 affordance）。
+            if DistributionChannel.isSandboxed {
+                masPaywall
+            } else {
+                directGuidance
+            }
         }
+        .accessibilityIdentifier("paywall.sheet")
     }
 
     private var masPaywall: some View {

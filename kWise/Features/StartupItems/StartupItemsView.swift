@@ -26,6 +26,8 @@ struct StartupItemsView: View {
             content
         }
         .background(Color.bgPrimary)
+        // P3 UI 冒烟：sheet 根标识（SmokeUITests 按 identifier 查询）。
+        .accessibilityIdentifier("startup.sheet")
         .onAppear {
             let scanned = viewModel.userItems.isEmpty
                 && viewModel.systemItems.isEmpty
