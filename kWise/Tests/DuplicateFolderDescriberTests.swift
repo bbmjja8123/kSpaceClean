@@ -100,7 +100,9 @@ final class DuplicateFolderDescriberTests: XCTestCase {
     func testBestTopicHitsPhotoAnchors() {
         let topic = DuplicateFolderDescriber.bestTopic(
             words: ["vacation", "sunset"], vectorLookup: photoLookup)
-        XCTAssertEqual(topic, "照片")
+        // bestTopic 返回本地化键（R4 本地化清扫）；展示时才经
+        // String(localized:) 解析为「照片」。
+        XCTAssertEqual(topic, "dupe.topic.photos")
     }
 
     func testBestTopicReturnsNilBelowThreshold() {
