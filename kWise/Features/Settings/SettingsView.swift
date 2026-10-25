@@ -46,6 +46,12 @@ struct SettingsView: View {
                     Toggle(String(localized: String.LocalizationValue("settings.general.launchAtLogin")), isOn: launchAtLoginBinding)
                     Toggle(String(localized: String.LocalizationValue("settings.general.menuBarDiskUsage")), isOn: $prefs.showMenuBarDiskUsage)
                     Toggle(String(localized: String.LocalizationValue("settings.general.notifyAfterCleanup")), isOn: $prefs.notifyAfterCleanup)
+                    // Task 2 完成时刻音效开关（playCompletionSoundRaw 的计算
+                    // 属性；nil → 默认开）。保存走下方既有 onChange(of: prefs)。
+                    Toggle(String(localized: String.LocalizationValue("settings.sound.completion")),
+                           isOn: Binding(
+                               get: { prefs.playCompletionSound },
+                               set: { prefs.playCompletionSound = $0 }))
                 }
 
                 Section(String(localized: String.LocalizationValue("settings.scan.header"))) {

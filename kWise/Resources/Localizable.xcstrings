@@ -11163,6 +11163,29 @@
         }
       }
     },
+    "settings.sound.completion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play sound when cleanup finishes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理完成后播放音效"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリーンアップ完了時にサウンドを再生"
+          }
+        }
+      }
+    },
     "settings.scan.header": {
       "localizations": {
         "en": {

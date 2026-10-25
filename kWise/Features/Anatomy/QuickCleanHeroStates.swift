@@ -147,9 +147,14 @@ struct QuickCleanResultCard: View {
                     .font(.system(size: 32))
                     .foregroundStyle(Color.success)
                 VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                    Text(QuickCleanResultCopy.doneTitle(freedBytes: freedBytes))
-                        .font(AppFont.title2)
-                        .foregroundStyle(Color.textPrimary)
+                    // Task 2 完成时刻：静态标题 Text → 字节滚动动画（0.9s
+                    // easeOut，RM 下直接落终值）。诚实口径不倒退：
+                    // SmartCareState.done 不带 measuredBytes（测量口径由统一
+                    // 链 outcome 持有，state 不扩），故只传 measured:false，
+                    // 沿用既有「≈」估算前缀。doneTitle 保留作 VoiceOver 标签
+                    // （三语「已释放 X」语义不丢，QuickCleanGateTests 钉住）。
+                    FreedBytesRoller(bytes: freedBytes, measured: false)
+                        .accessibilityLabel(Text(QuickCleanResultCopy.doneTitle(freedBytes: freedBytes)))
                     Text(QuickCleanResultCopy.doneDetail)
                         .font(AppFont.caption)
                         .foregroundStyle(Color.textSecondary)

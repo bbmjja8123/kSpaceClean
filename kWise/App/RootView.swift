@@ -238,6 +238,16 @@ struct RootView: View {
                 break
             }
         }
+        // Task 2 完成时刻：任一统一链清理成功 → 完成音效（用户可关，
+        // settings.sound.completion）。lastOutcome 由统一链
+        // executeConfirmedCleanup 写入 —— 组头就地清理 / hero 快捷回收 /
+        // 下钻「预演并清理」三个入口都在这条链上，一处 onReceive 全覆盖。
+        // brief 原稿读 outcome.successCount —— CleanupOutcome 无该字段，
+        // 等价改为「有成功 URL」（succeeded 非空）。
+        .onReceive(cleanupViewModel.$lastOutcome) { outcome in
+            guard let outcome, !outcome.succeeded.isEmpty else { return }
+            CompletionSound.playIfEnabled(UserPreferences.load().playCompletionSound)
+        }
         .onAppear {
             // Late-bind the Smart Care VM to the scan VM. Two @StateObject
             // can't reference each other at init time; `.attach` resolves the

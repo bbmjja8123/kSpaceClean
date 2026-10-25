@@ -26,6 +26,17 @@ public struct UserPreferences: Codable, Equatable {
         set { similarityPresetRaw = newValue.rawValue }
     }
 
+    /// 完成音效开关（Task 2 完成时刻）。Optional 旧 JSON 兼容
+    /// （先例 similarityPresetRaw）：absent in pre-Task2 JSON → decodes nil
+    /// → 默认开，而不是解码失败重置全部偏好。
+    public var playCompletionSoundRaw: Bool?
+
+    /// 计算属性：nil → 默认开（用户可在设置关闭）。
+    public var playCompletionSound: Bool {
+        get { playCompletionSoundRaw ?? true }
+        set { playCompletionSoundRaw = newValue }
+    }
+
     public enum CleanAction: String, Codable, Equatable {
         case trash, permanent
     }
