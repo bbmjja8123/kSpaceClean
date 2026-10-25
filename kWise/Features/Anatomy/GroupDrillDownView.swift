@@ -29,12 +29,26 @@ final class GroupDrillDownModel: ObservableObject {
     let entries: [CanvasEntry]
     /// 勾选集（entry.id）。
     @Published private(set) var checked: Set<UUID>
+    /// QuickLook 可预览缓存（entry.id → 可预览）。`entries` 是 `let` 且
+    /// init 之后无任何重设路径，缓存在 init 时一次性冻结 —— 行渲染 /
+    /// Space 键取 URL 只查表，绝不在 SwiftUI body 重求值里做文件系统 stat
+    /// （每次勾选切换逐行 stat = 主线程卡顿）。
+    private let quickLookEligible: [UUID: Bool]
 
     init(group: CanvasGroup, entries: [CanvasEntry]) {
         self.group = group
         self.entries = entries
         self.checked = Set(entries.filter { $0.badge == .recyclable }.map(\.id))
+        var eligible: [UUID: Bool] = [:]
+        eligible.reserveCapacity(entries.count)
+        for entry in entries {
+            eligible[entry.id] = entry.target.map { KWQuickLookEligibility.isPreviewable($0.url) } ?? false
+        }
+        self.quickLookEligible = eligible
     }
+
+    /// 条目是否可预览（init 时缓存的判定；未知 id 诚实返回 false）。
+    func isPreviewable(_ id: UUID) -> Bool { quickLookEligible[id] ?? false }
 
     func isChecked(_ id: UUID) -> Bool { checked.contains(id) }
 
@@ -251,8 +265,9 @@ struct GroupDrillDownView: View {
             // 条目标题，VoiceOver 焦点语义才稳定（与预演 sheet 同口径）。
             .accessibilityLabel(Text(entry.title))
             // 预览按钮（行尾）：只有文件系统里真实存在的常规文件才渲染 ——
-            // 目录 / 虚拟条目 / 已消失路径诚实降级为不可预览。
-            if let url = entry.target?.url, KWQuickLookEligibility.isPreviewable(url) {
+            // 目录 / 虚拟条目 / 已消失路径诚实降级为不可预览。可预览性取
+            // VM 的 init 缓存，不在 body 重求值里 stat。
+            if let url = entry.target?.url, model.isPreviewable(entry.id) {
                 Button {
                     quickLookURL = url
                 } label: {
@@ -267,11 +282,12 @@ struct GroupDrillDownView: View {
     }
 
     /// Space 键的预览目标：勾选集中第一个可预览 target，无则取首行可预览
-    /// 项；全部不可预览返回 nil（Space 静默，不出错）。
+    /// 项；全部不可预览返回 nil（Space 静默，不出错）。可预览性与行渲染
+    /// 同源——只查 VM 的 init 缓存，不在按键路径 stat。
     private func selectedRowURL() -> URL? {
         func previewableURL(_ entry: CanvasEntry) -> URL? {
-            guard let url = entry.target?.url,
-                  KWQuickLookEligibility.isPreviewable(url) else { return nil }
+            guard model.isPreviewable(entry.id),
+                  let url = entry.target?.url else { return nil }
             return url
         }
         if let checked = model.entries.first(where: {
