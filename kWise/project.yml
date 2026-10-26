@@ -15,7 +15,16 @@ settings:
     CODE_SIGN_STYLE: Automatic
   configs:
     Debug:
-      DEVELOPMENT_TEAM: ""
+      # 开发签名（修订 P3 R1 的 Debug ad-hoc 决策）：ad-hoc 每次重编译签名
+      # 身份都变 → TCC 把每个 build 当新 app，授权全作废、权限弹窗风暴。
+      # Manual + Apple Development：Automatic 会无视显式 identity、按平台找
+      # "Mac Development"（本机钥匙串没有）。无 entitlements → 不需要
+      # profile，CLI 构建不受影响。
+      DEVELOPMENT_TEAM: "TC973L6HPC"
+      CODE_SIGN_STYLE: Manual
+      # 用 SHA-1 直接指定：Xcode 会把 "Apple Development" 名字按平台映射成
+      # "Mac Development"（本机没有该名字证书）导致解析失败；哈希精确匹配。
+      CODE_SIGN_IDENTITY: "4DDA81287291B008FCDE79F4F260353E02EEEC7E"
     Release:
       DEVELOPMENT_TEAM: "TC973L6HPC"
 
