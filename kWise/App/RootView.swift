@@ -114,6 +114,13 @@ struct RootView: View {
         // 接受的批次预填粉碎 VM 并打开粉碎窗；粉碎自身的 DELETE 确认链在
         // ShredderView 内，未被绕过。
         .modifier(DragToShredOverlay(model: dragToShred))
+        // Task 5（feature sprint）：Dock 图标拖放 —— AppDelegate 的 open 事件
+        // 经 `.klarisOpenFiles` 单向路由到同一 DragToShredModel（全有全无校验、
+        // onShredRequested → 粉碎窗 sheet，与整窗拖放完全同一条链）。
+        .onReceive(NotificationCenter.default.publisher(for: .klarisOpenFiles)) { note in
+            guard let urls = note.userInfo?["urls"] as? [URL] else { return }
+            _ = dragToShred.urlsDropped(urls)
+        }
         .scanKeyboardShortcuts(
             onNewScan: {
                 // ⌘N — switch to the canvas and start a fresh scan.

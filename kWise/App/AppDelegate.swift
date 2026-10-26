@@ -34,4 +34,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         return .terminateNow
     }
+
+    /// Dock 图标拖放（Task 5）：文件落 Dock → open 事件 → 通知 RootView
+    /// 转发 DragToShredModel（全有全无校验在模型内，粉碎 DELETE 确认链
+    /// 在 ShredderView 内，这里零绕过）。
+    func application(_ application: NSApplication, open urls: [URL]) {
+        NotificationCenter.default.post(
+            name: .klarisOpenFiles, object: nil, userInfo: ["urls": urls])
+    }
+}
+
+/// Task 5（feature sprint）：Dock 拖放路由的唯一通知名。
+/// AppDelegate（open 事件）→ RootView（`.onReceive` → DragToShredModel）。
+extension Notification.Name {
+    static let klarisOpenFiles = Notification.Name("app.kraftly.klaris.openFiles")
 }
