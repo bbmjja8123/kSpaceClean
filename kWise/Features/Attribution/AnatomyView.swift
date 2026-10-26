@@ -46,6 +46,11 @@ public final class AnatomyViewModel: ObservableObject {
     var canvasCoordinator: CanvasScanCoordinator?
     /// 扫描范围覆盖（rebindScope 注入；nil = 走 defaultScope）。
     var canvasScopeProvider: (() -> CanvasScanScope)?
+    /// Task 8 —— 家务三组（iOS 备份/下载分诊/废纸篓大项）的授权根来源：
+    /// defaultScope 组装时求值。默认 grantedRoot（主目录书签根）；
+    /// container-only 为 nil → coordinator 上 skippedHousekeeping 诊断。
+    /// var（非 let）：测试可直接替换（@testable 同模块），无需经 rebindScope。
+    var housekeepingHomeProvider: () -> URL? = { AppScope.shared.capability.grantedRoot }
     /// 进行中的扇出 Task（startScan/cancelScan 操纵）。
     var canvasScanTask: Task<Void, Never>?
     /// coordinator 增量组/进度订阅。
@@ -191,8 +196,9 @@ public struct AnatomyView: View {
     private let onScanCancelled: () -> Void
     /// 下钻页底部「预演并清理」（P2 T6）—— 勾选集条目（target + 徽章）→
     /// 根部统一预演 sheet（与组头就地清理同一张 sheet、同一条
-    /// CleanupViewModel 链）。参数：组名（sheet 语境副行）+ 勾选集条目。
-    private let onDrillDownRehearse: (String, [CanvasEntry]) -> Void
+    /// CleanupViewModel 链）。参数：所属组（RootView 派生 sheet 语境副行 +
+    /// Task 8 的 isPermanent 路径语义）+ 勾选集条目。
+    private let onDrillDownRehearse: (CanvasGroup, [CanvasEntry]) -> Void
     /// 打开的下钻页（T6）：nil = 画布；非 nil = 下钻页替换画布区。
     /// 本 App 无 NavigationStack（导航全走 appState 切换），下钻用本地
     /// 页面切换实现「推入 → 面包屑返回」，勾选态由 VM 缓存跨页面保留。
@@ -217,7 +223,7 @@ public struct AnatomyView: View {
          onOpenUninstall: @escaping () -> Void = {},
          onOpenStartupItems: @escaping () -> Void = {},
          onScanCancelled: @escaping () -> Void = {},
-         onDrillDownRehearse: @escaping (String, [CanvasEntry]) -> Void = { _, _ in }) {
+         onDrillDownRehearse: @escaping (CanvasGroup, [CanvasEntry]) -> Void = { _, _ in }) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.coordinator = coordinator
         self.diskHealthViewModel = diskHealthViewModel
@@ -238,7 +244,7 @@ public struct AnatomyView: View {
                 group: drillDown.group,
                 entries: drillDown.entries,
                 onRehearse: { entries in
-                    onDrillDownRehearse(drillDown.group.title, entries)
+                    onDrillDownRehearse(drillDown.group, entries)
                 },
                 onBack: { self.drillDown = nil },
                 scanResultsProvider: viewModel.scanResultsProvider ?? { nil },

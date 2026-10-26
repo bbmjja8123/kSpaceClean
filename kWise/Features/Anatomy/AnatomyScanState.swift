@@ -231,7 +231,8 @@ extension AnatomyViewModel {
         scanPhase = .scanning(progress: 0, path: "")
         // 段 3：扇出消费**此刻**的新鲜树（provider 在扫描完成后才求值）。
         let scope = canvasScopeProvider?() ?? Self.defaultScope(
-            categories: categoriesProvider?() ?? [])
+            categories: categoriesProvider?() ?? [],
+            housekeepingHome: housekeepingHomeProvider())
         let report = await coordinator.runScan(scope: scope)
         guard !Task.isCancelled else {
             // I3：取消的收尾 —— 本 continuation 恰在 isRunning 落 false 之后
@@ -312,15 +313,18 @@ extension AnatomyViewModel {
     }
 
     /// 生产扫描范围：归因吃扫描树分类（rebindCategories 注入的 provider），
-    /// 三个检测器吃各自工具页同源的默认授权目录（PowerScope-honest 探测，
-    /// 无权限时为空 → coordinator 跳过对应段，不出空组）。
-    static func defaultScope(categories: [ScanCategory]) -> CanvasScanScope {
+    /// 检测器吃各自工具页同源的默认授权目录（PowerScope-honest 探测，
+    /// 无权限时为空 → coordinator 跳过对应段，不出空组）。家务三组（Task 8）
+    /// 吃 `housekeepingHome`（grantedRoot；container-only 为 nil → 上诊断）。
+    static func defaultScope(categories: [ScanCategory],
+                             housekeepingHome: URL?) -> CanvasScanScope {
         let capability = AppScope.shared.capability
         return CanvasScanScope(
             categories: categories,
             duplicateRoots: DuplicateViewModel.defaultScanPaths(capability: capability),
             photoDirectories: PhotoSimilarityScanner.candidateDirectories(capability: capability),
-            largeFileRoots: [FileManager.default.homeDirectoryForCurrentUser])
+            largeFileRoots: [FileManager.default.homeDirectoryForCurrentUser],
+            housekeepingHome: housekeepingHome)
     }
 }
 

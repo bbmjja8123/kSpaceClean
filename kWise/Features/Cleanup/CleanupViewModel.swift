@@ -169,13 +169,18 @@ public final class CleanupViewModel: ObservableObject {
     ///     平移）；执行大小以 target 自带 size 为准，本参数不参与。
     ///   - confirmedTargets: 预演 sheet 确认后传出的勾选子集（nil = 未接
     ///     预演 UI 的兼容路径，用暂存的全量）。
+    ///   - config: 本次运行的引擎配置（Task 8）：默认 `.default`（trash +
+    ///     30 天可回滚）；垃圾桶来源的废纸篓大项组走 ``CleanupConfiguration``
+    ///     永久档（moveToTrash: false）—— 由 RootView 按 payload.isPermanent
+    ///     传入，其余路径行为不变。
     /// - Returns: 本次运行的真实 `CleanupOutcome`（含逐项失败）；`nil` =
     ///     本次没有产生运行（双击守卫 / 空清单）或引擎抛错。宿主（P2 T5
     ///     的 `finishRehearsal`）**以返回值判定成败**，绝不读上次运行的
     ///     `lastOutcome` 推断 —— fix r1（Important 2）。
     @discardableResult
     public func executeConfirmedCleanup(sizes: [URL: Int64]? = nil,
-                                        confirmedTargets: [CleanupTarget]? = nil) async -> CleanupOutcome? {
+                                        confirmedTargets: [CleanupTarget]? = nil,
+                                        config: CleanupConfiguration = .default) async -> CleanupOutcome? {
         guard !isCleaning else { return nil }
         let toRun = confirmedTargets ?? pendingTargets
         pendingTargets = []
@@ -189,7 +194,7 @@ public final class CleanupViewModel: ObservableObject {
             Task { await self.refreshHistory() }
         }
         do {
-            let outcome = try await engine.cleanup(targets: toRun)
+            let outcome = try await engine.cleanup(targets: toRun, config: config)
             self.lastOutcome = outcome
             // Best-effort conversion into the legacy TrashResult shape so the
             // history list view keeps rendering through the existing

@@ -84,7 +84,7 @@ final class GroupDrillDownModel: ObservableObject {
 
 /// 下钻页条目来源：cause 组从扫描树按 cause 切片（复用
 /// `AttributionService.flatten` 全树展开 + 归因引擎的 cause 映射）；
-/// detection 组（重复/相似照片/大文件）直接用 `CanvasGroup.entries`
+/// detection 组（重复/相似照片/大文件/家务三组）直接用 `CanvasGroup.entries`
 /// （T2 组装器已产全量，无需重扫）。
 enum GroupDrillDownSource {
     static func entries(for group: CanvasGroup,
@@ -104,6 +104,9 @@ enum GroupDrillDownSource {
             // 组卡本就由同一条 flatten→归因管线产出，两者同源，不是伪造。
             return sliced.isEmpty ? group.entries : sliced
         case .duplicates, .similarPhotos, .largeFiles:
+            return group.entries
+        case .housekeeping:
+            // Task 8 家务三组：与检测器组同源 —— 组装器已产全量条目。
             return group.entries
         }
     }

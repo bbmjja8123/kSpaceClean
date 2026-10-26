@@ -1,13 +1,15 @@
 // kWise/Features/Anatomy/CanvasScanCoordinator.swift
 //
-// 画布扇出扫描（P2 T2，spec §5 扫描即动作）：
-//   归因（已有 AsyncStream）→ 重复 → 照片 → 大文件。
+// 画布扇出扫描（P2 T2，spec §5 扫描即动作；Task 8 扩第五缝）：
+//   归因（已有 AsyncStream）→ 重复 → 照片 → 大文件 → 家务三组。
 // 每段完成即把组推上画布（增量产出，画布不清空）；检测器为 nil
 // （未授权 / 已关闭）时对应段跳过 —— 不出空组。
 //
-// 三个检测器与归因服务都包 protocol seam（DuplicateScanning /
-// PhotoScanning / LargeFileScanning / AttributionScanning），测试注入
-// mock（CanvasScanCoordinatorTests 零文件系统触达），生产包真实现。
+// 检测器与归因服务都包 protocol seam（DuplicateScanning /
+// PhotoScanning / LargeFileScanning / HousekeepingScanning /
+// AttributionScanning），测试注入 mock（CanvasScanCoordinatorTests 零
+// 文件系统触达），生产包真实现。HousekeepingScanning 定义在
+// HousekeepingDetector.swift（seam 与实现同文件，不在此重复声明）。
 import Foundation
 import DetectionCore
 import Combine
@@ -61,6 +63,10 @@ public struct CanvasScanScope: Sendable {
     public var duplicateRoots: [URL]
     public var photoDirectories: [URL]
     public var largeFileRoots: [URL]
+    /// 家务三组的授权根（Task 8）：主目录书签根 / grantedRoot；nil =
+    /// container-only —— 检测器返回空，协调器上 `skippedHousekeeping`
+    /// 诊断（禁止静默丢弃，R2 先例）。默认 nil：不传 = 未授权语义。
+    public var housekeepingHome: URL?
     public var selectionStrategy: SelectionStrategy
     public var preset: SimilarityPreset
 
@@ -68,12 +74,14 @@ public struct CanvasScanScope: Sendable {
                 duplicateRoots: [URL],
                 photoDirectories: [URL],
                 largeFileRoots: [URL],
+                housekeepingHome: URL? = nil,
                 selectionStrategy: SelectionStrategy = .keepNewest,
                 preset: SimilarityPreset = .normal) {
         self.categories = categories
         self.duplicateRoots = duplicateRoots
         self.photoDirectories = photoDirectories
         self.largeFileRoots = largeFileRoots
+        self.housekeepingHome = housekeepingHome
         self.selectionStrategy = selectionStrategy
         self.preset = preset
     }
@@ -126,6 +134,8 @@ public final class CanvasScanCoordinator: ObservableObject {
     private let duplicateScanner: (any DuplicateScanning)?
     private let photoScanner: (any PhotoScanning)?
     private let largeFileScanner: (any LargeFileScanning)?
+    /// 家务三组检测器（Task 8 第五缝）。
+    private let housekeepingScanner: (any HousekeepingScanning)?
 
     /// 重复检测下限沿用 v2.3 工具默认（1 MiB）—— 画布不重复暴露该旋钮。
     static let duplicateMinFileSize: Int64 = 1_048_576
@@ -133,14 +143,16 @@ public final class CanvasScanCoordinator: ObservableObject {
     public init(attributionService: any AttributionScanning = AttributionService.live(),
                 duplicateScanner: (any DuplicateScanning)? = DuplicateScanner(),
                 photoScanner: (any PhotoScanning)? = PhotoSimilarityScanner(),
-                largeFileScanner: (any LargeFileScanning)? = LargeOldScanner()) {
+                largeFileScanner: (any LargeFileScanning)? = LargeOldScanner(),
+                housekeepingScanner: (any HousekeepingScanning)? = HousekeepingDetector()) {
         self.attributionService = attributionService
         self.duplicateScanner = duplicateScanner
         self.photoScanner = photoScanner
         self.largeFileScanner = largeFileScanner
+        self.housekeepingScanner = housekeepingScanner
     }
 
-    /// 扇出顺序：归因 → 重复 → 照片 → 大文件。
+    /// 扇出顺序：归因 → 重复 → 照片 → 大文件 → 家务。
     /// 重入守卫（fix r1 ④）：扫描进行中再次调用 → 直接 return 当前增量
     /// 状态并记诊断，不打断进行中的扫描。
     public func runScan(scope: CanvasScanScope) async -> CanvasReport {
@@ -216,6 +228,18 @@ public final class CanvasScanCoordinator: ObservableObject {
             if let group = CanvasGroupAssembler.assembleLargeFiles(from: entries) {
                 groups.append(group)
             }
+        }
+
+        // 5. 家务三组（Task 8）：iOS 设备备份 / 下载分诊 / 废纸篓大项。
+        // container-only（housekeepingHome == nil）→ 检测器返回空，此时必须
+        // 上画布诊断（MasScanScope.md 红线 2：禁止静默丢弃 —— "没扫到"≠"干净"）。
+        if let housekeepingScanner {
+            let findings = await housekeepingScanner.scan(homeURL: scope.housekeepingHome)
+            if findings.isEmpty, scope.housekeepingHome == nil {
+                scanDiagnostics.append(String(
+                    localized: String.LocalizationValue("canvas.diagnostic.skippedHousekeeping")))
+            }
+            groups.append(contentsOf: CanvasGroupAssembler.assembleHousekeeping(from: findings))
         }
 
         // 报告按 totalBytes 降序（fix r1 ③）；增量填充顺序见 `groups`

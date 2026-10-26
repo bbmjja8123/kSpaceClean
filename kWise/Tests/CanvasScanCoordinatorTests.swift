@@ -135,6 +135,22 @@ private final class MockLargeFileScanner: LargeFileScanning, @unchecked Sendable
     }
 }
 
+/// Task 8 家务检测 mock：`homeURL == nil` 模拟 container-only（诚实返回空，
+/// 诊断由 coordinator 负责 —— 与真实现同契约）。
+private final class MockHousekeepingScanner: HousekeepingScanning, @unchecked Sendable {
+    let recorder: CallRecorder
+    let findings: [HousekeepingFinding]
+    init(recorder: CallRecorder, findings: [HousekeepingFinding]) {
+        self.recorder = recorder
+        self.findings = findings
+    }
+    func scan(homeURL: URL?) async -> [HousekeepingFinding] {
+        recorder.record("housekeeping")
+        guard homeURL != nil else { return [] }
+        return findings
+    }
+}
+
 // MARK: - Tests
 
 @MainActor
@@ -161,18 +177,24 @@ final class CanvasScanCoordinatorTests: XCTestCase {
     private func makeCoordinator(report: AttributionReport,
                                  duplicate: (any DuplicateScanning)?,
                                  photo: (any PhotoScanning)?,
-                                 large: (any LargeFileScanning)?) -> CanvasScanCoordinator {
+                                 large: (any LargeFileScanning)?,
+                                 housekeeping: (any HousekeepingScanning)? = nil)
+        -> CanvasScanCoordinator {
         CanvasScanCoordinator(
             attributionService: MockAttribution(report: report, recorder: recorder),
             duplicateScanner: duplicate,
             photoScanner: photo,
-            largeFileScanner: large)
+            largeFileScanner: large,
+            housekeepingScanner: housekeeping)
     }
 
     private func scope() -> CanvasScanScope {
+        // housekeepingHome 指向不存在的路径 → 真检测器（若被注入）也返回空；
+        // nil 语义留给 container-only 专项测试（上 skippedHousekeeping 诊断）。
         CanvasScanScope(categories: [], duplicateRoots: [URL(fileURLWithPath: "/t")],
                         photoDirectories: [URL(fileURLWithPath: "/t")],
-                        largeFileRoots: [URL(fileURLWithPath: "/t")])
+                        largeFileRoots: [URL(fileURLWithPath: "/t")],
+                        housekeepingHome: URL(fileURLWithPath: "/t"))
     }
 
     private func photoGroup(size: Int64) -> DetectionCore.DuplicateGroup {
@@ -360,5 +382,39 @@ final class CanvasScanCoordinatorTests: XCTestCase {
         await gate.open()
         _ = await first.value
         XCTAssertFalse(coordinator.isRunning)
+    }
+
+    // MARK: 家务第五缝（Task 8）
+
+    func testHousekeepingGroupAppendedAfterLargeFiles() async {
+        let finding = HousekeepingFinding(kind: .trashLargeItems,
+                                          url: URL(fileURLWithPath: "/t/.Trash/big.dmg"),
+                                          title: "big.dmg", bytes: 30_000_000,
+                                          daysIdle: nil)
+        let coordinator = makeCoordinator(
+            report: attributionReport(items: []),
+            duplicate: nil, photo: nil, large: nil,
+            housekeeping: MockHousekeepingScanner(recorder: recorder, findings: [finding]))
+        let report = await coordinator.runScan(scope: scope())
+
+        XCTAssertEqual(recorder.calls, ["attribution", "housekeeping"],
+                       "家务是第五缝：归因之后（其余检测器 nil 时紧随归因）")
+        XCTAssertEqual(report.groups.map(\.id), [.housekeeping(.trashLargeItems)],
+                       "家务 findings 组装为 CanvasGroup，空 kind 不出现")
+    }
+
+    func testContainerOnlyHousekeepingNotSilentlyDropped() async {
+        let coordinator = makeCoordinator(
+            report: attributionReport(items: []),
+            duplicate: nil, photo: nil, large: nil,
+            housekeeping: MockHousekeepingScanner(recorder: recorder, findings: []))
+        var containerOnlyScope = scope()
+        containerOnlyScope.housekeepingHome = nil
+
+        let report = await coordinator.runScan(scope: containerOnlyScope)
+
+        XCTAssertTrue(report.groups.isEmpty, "container-only → 不出家务组（诚实降级）")
+        XCTAssertEqual(coordinator.scanDiagnostics.count, 1,
+                       "container-only 家务跳过必须可见（禁止静默丢弃，R2 先例）")
     }
 }

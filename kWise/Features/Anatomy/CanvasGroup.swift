@@ -13,12 +13,14 @@ import DetectionCore
 
 // MARK: - Model
 
-/// 画布组的身份：归因 cause 组（找到才出现）或三个检测器组。
+/// 画布组的身份：归因 cause 组（找到才出现）或四个检测器组
+/// （重复 / 相似照片 / 大文件 / 家务三组，Task 8）。
 public enum GroupKind: Equatable, Hashable, Sendable {
     case cause(AttributionCause)
     case duplicates
     case similarPhotos
     case largeFiles
+    case housekeeping(HousekeepingKind)
 }
 
 /// 五色徽章语义（plan Global Constraints）：
@@ -270,6 +272,72 @@ public enum CanvasGroupAssembler {
         return assemble(kind: .largeFiles, icon: icon(for: .largeFiles), entries: canvasEntries)
     }
 
+    /// 家务三组（Task 8）：iOS 设备备份 / 下载分诊 / 废纸篓大项。
+    /// 每个非空 kind 一组，组间按 totalBytes 降序（空组不出现）。
+    ///
+    /// detail 语义（预演 sheet 对无归因条目只显示通用「无归因信息」，所以
+    /// 条目级必须交代的话放进 detail —— 下钻页/组卡展开都渲染它）：
+    /// - iOS 备份 = 不可恢复警告（删本机备份不可逆，iCloud 云备份不受影响）
+    ///   —— 路径信息由标题（设备目录名）+ QuickLook 兜底；
+    /// - 其余两组 = 父目录路径（与检测器组既有口径一致）。
+    public static func assembleHousekeeping(from findings: [HousekeepingFinding]) -> [CanvasGroup] {
+        HousekeepingKind.allCases.compactMap { kind in
+            let items = findings.filter { $0.kind == kind }
+            guard !items.isEmpty else { return nil }
+            let entries = items.map { finding in
+                CanvasEntry(
+                    id: finding.id,
+                    title: finding.title,
+                    bytes: finding.bytes,
+                    badge: badge(for: kind),
+                    detail: entryDetail(for: kind, finding: finding),
+                    target: CleanupTarget(
+                        id: finding.id,
+                        url: finding.url,
+                        size: finding.bytes,
+                        risk: risk(for: kind),
+                        categoryID: "housekeeping.\(kind.rawValue)"))
+            }
+            return assemble(kind: .housekeeping(kind),
+                            icon: icon(for: .housekeeping(kind)),
+                            entries: entries,
+                            totalBytes: entries.reduce(0) { $0 + $1.bytes })
+        }
+        .sorted { $0.totalBytes > $1.totalBytes }
+    }
+
+    /// 家务 kind → 五色徽章。iOS 备份 = 橙 ⚠（数据·注意：不是垃圾，
+    /// 删了本机备份就没了）；下载分诊 / 废纸篓大项 = 绿 ✓ 可回收。
+    static func badge(for kind: HousekeepingKind) -> BadgeKind {
+        switch kind {
+        case .iosBackup: return .attention
+        case .staleDownloads, .trashLargeItems: return .recyclable
+        }
+    }
+
+    /// 家务 kind → 风险级（CleanupTarget 契约）。iOS 备份 .caution ——
+    /// 删除即不可恢复（iCloud 不受影响）；下载分诊 .optional；废纸篓大项
+    /// .recommended（已在废纸篓，处置即永久移除）。
+    static func risk(for kind: HousekeepingKind) -> RiskLevel {
+        switch kind {
+        case .iosBackup: return .caution
+        case .staleDownloads: return .optional
+        case .trashLargeItems: return .recommended
+        }
+    }
+
+    /// 条目 detail 行（见 `assembleHousekeeping` 注释）。
+    private static func entryDetail(for kind: HousekeepingKind,
+                                    finding: HousekeepingFinding) -> String {
+        switch kind {
+        case .iosBackup:
+            return String(localized:
+                String.LocalizationValue("canvas.entry.iosBackup.warning"))
+        case .staleDownloads, .trashLargeItems:
+            return finding.url.deletingLastPathComponent().path
+        }
+    }
+
     // MARK: 拒答虚线卡
 
     /// refused → 虚线卡数据；清单为空 → nil（与空组不出现同一原则）。
@@ -289,6 +357,7 @@ public enum CanvasGroupAssembler {
         case .duplicates: return String(localized: String.LocalizationValue("canvas.group.duplicates.title"))
         case .similarPhotos: return String(localized: String.LocalizationValue("canvas.group.similarPhotos.title"))
         case .largeFiles: return String(localized: String.LocalizationValue("canvas.group.largeFiles.title"))
+        case .housekeeping(let housekeeping): return housekeepingTitle(housekeeping)
         }
     }
 
@@ -297,6 +366,7 @@ public enum CanvasGroupAssembler {
         case .duplicates: return String(localized: String.LocalizationValue("canvas.group.duplicates.subtitle"))
         case .similarPhotos: return String(localized: String.LocalizationValue("canvas.group.similarPhotos.subtitle"))
         case .largeFiles: return String(localized: String.LocalizationValue("canvas.group.largeFiles.subtitle"))
+        case .housekeeping(let housekeeping): return housekeepingSubtitle(housekeeping)
         case .cause: return ""
         }
     }
@@ -305,6 +375,7 @@ public enum CanvasGroupAssembler {
         switch kind {
         case .duplicates, .similarPhotos: return .rehearse
         case .largeFiles: return .migrate
+        case .housekeeping: return .rehearse
         case .cause: return .rehearse
         }
     }
@@ -332,10 +403,29 @@ public enum CanvasGroupAssembler {
         case .duplicates: return "doc.on.doc"
         case .similarPhotos: return "photo.on.rectangle.angled"
         case .largeFiles: return "externaldrive"
+        case .housekeeping(let housekeeping):
+            switch housekeeping {
+            case .iosBackup: return "ipad.and.iphone"
+            case .staleDownloads: return "arrow.down.circle"
+            case .trashLargeItems: return "trash"
+            }
         }
     }
 
     // MARK: Helpers
+
+    /// 家务组标题/副行（Task 8 三语 key；copy 表与检测器解耦——组装器只认
+    /// kind）。key 先拼接再构造 LocalizationValue —— 在 LocalizationValue
+    /// 插值会把 key 变成 "%@" 格式串、查表必失配渲染裸 key（P1 T4 同坑）。
+    private static func housekeepingTitle(_ kind: HousekeepingKind) -> String {
+        String(localized: String.LocalizationValue(
+            "canvas.group.housekeeping." + kind.rawValue + ".title"))
+    }
+
+    private static func housekeepingSubtitle(_ kind: HousekeepingKind) -> String {
+        String(localized: String.LocalizationValue(
+            "canvas.group.housekeeping." + kind.rawValue + ".subtitle"))
+    }
 
     /// 同一路径只保留字节更大的一条（uniquingKeysWith）。无 target 的条目
     /// 以自身 id 兜底键，永不被合并。

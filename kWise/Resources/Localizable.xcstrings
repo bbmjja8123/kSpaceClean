@@ -7730,6 +7730,144 @@
         }
       }
     },
+    "canvas.group.housekeeping.iosBackup.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS device backups"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS デバイスのバックアップ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS 设备备份"
+          }
+        }
+      }
+    },
+    "canvas.group.housekeeping.iosBackup.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full local backups — deleting them never affects iCloud backups"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ローカル完全バックアップ—削除しても iCloud バックアップには影響しません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本机完整备份，删除不影响 iCloud 云备份"
+          }
+        }
+      }
+    },
+    "canvas.group.housekeeping.staleDownloads.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download triage"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードの整理"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载分诊"
+          }
+        }
+      }
+    },
+    "canvas.group.housekeeping.staleDownloads.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large files unopened for 14 days"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14 日間開いていない大きなファイル"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14 天未再打开的大文件"
+          }
+        }
+      }
+    },
+    "canvas.group.housekeeping.trashLargeItems.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large items in Trash"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱の大きな項目"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "废纸篓大项"
+          }
+        }
+      }
+    },
+    "canvas.group.housekeeping.trashLargeItems.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large files still taking up space in the Trash"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱に残って容量を占める大きなファイル"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仍在废纸篓占用空间的大文件"
+          }
+        }
+      }
+    },
     "canvas.group.largeFiles.title": {
       "extractionState": "manual",
       "localizations": {
@@ -8048,6 +8186,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "スキャンに関する通知"
+          }
+        }
+      }
+    },
+    "canvas.entry.iosBackup.warning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleting removes this local backup irrecoverably — iCloud backups are not affected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除するとこのローカルバックアップは復元できません（iCloud バックアップには影響しません）"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除将永久移除本机备份，不可恢复；iCloud 云备份不受影响"
           }
         }
       }
@@ -8784,6 +8945,29 @@
           "stringUnit": {
             "state": "translated",
             "value": "好"
+          }
+        }
+      }
+    },
+    "canvas.diagnostic.skippedHousekeeping": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Housekeeping groups need Home folder access before they can be checked"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホームフォルダへのアクセス許可が必要なため、ハウスキーピング項目はチェックできません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "家务组需主目录授权后才能检查"
           }
         }
       }

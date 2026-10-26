@@ -86,6 +86,13 @@ struct RootView: View {
     @AppStorage("onboarding.completed.v1") private var onboardingCompleted = false
     @State private var showOnboarding = false
 
+    /// Task 8 —— 废纸篓大项（`GroupKind.housekeeping(.trashLargeItems)`）的
+    /// 执行配置：确认后**永久移除**（不二次入废纸篓）；预演页脚
+    /// `attr.rehearsal.permanentNote` 已诚实标注不可回滚。
+    static let permanentConfig = CleanupConfiguration(
+        warnHandling: .skip, moveToTrash: false, recordHistory: true,
+        retentionDays: CleanupHistoryRetention.days)
+
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -216,10 +223,14 @@ struct RootView: View {
                         context: payload.context,
                         onConfirm: { confirmed in
                             let quickClean = quickCleanStage == .awaitingConfirm
+                            // Task 8：路径语义随 payload 走 —— 垃圾桶来源组
+                            // （isPermanent）确认后走永久移除配置。
+                            let permanent = payload.isPermanent
                             rehearsalPayload = nil
                             Task {
                                 await finishRehearsal(confirmed,
-                                                      quickClean: quickClean)
+                                                      quickClean: quickClean,
+                                                      permanent: permanent)
                             }
                         },
                         onCancel: {
@@ -404,11 +415,12 @@ struct RootView: View {
                         smartCareViewModel.reset()
                     }
                 },
-                onDrillDownRehearse: { context, entries in
+                onDrillDownRehearse: { group, entries in
                     // P2 T6 — 下钻「预演并清理」：勾选集条目（target + 徽章）
                     // 直入同一条预演链，sheet 以组名为语境（与组头就地清理
                     // 同源；I1 徽章进预演 → 非绿徽默认豁免）。
-                    presentDrillDownRehearsal(entries: entries, context: context)
+                    // Task 8：路径语义（isPermanent）与组头入口同规则。
+                    presentDrillDownRehearsal(group: group, entries: entries)
                 }
             )
         }
@@ -425,11 +437,13 @@ struct RootView: View {
         let entries = group.entries.filter { $0.target != nil }
         // 组装器保证 rehearse 组的条目非空且带 target；防御性兜底而已。
         guard !entries.isEmpty else { return }
+        // Task 8：废纸篓大项组是垃圾桶来源 —— isPermanent = true（sheet
+        // 页脚标注不可回滚，确认后走永久移除配置）；其余组常规回收。
+        let isPermanent = group.id == .housekeeping(.trashLargeItems)
         Task {
             let items = await cleanupViewModel.makeRehearsal(entries: entries)
-            // Task 6：isPermanent 默认 false —— 本入口为常规回收（30 天回滚）。
             rehearsalPayload = RehearsalSheetPayload(items: items, context: group.title,
-                                                     isPermanent: false)
+                                                     isPermanent: isPermanent)
         }
     }
 
@@ -437,13 +451,15 @@ struct RootView: View {
     /// `makeRehearsal(entries:)`（target 的 risk/bundleID/categoryID 与
     /// 五色徽章原样保留），sheet 以下钻组名为语境；确认执行复用统一链
     /// `executeConfirmedCleanup`。勾选集为空时按钮已禁用，此守卫纯防御。
-    private func presentDrillDownRehearsal(entries: [CanvasEntry], context: String) {
+    /// Task 8：isPermanent 与组头入口同规则 —— 废纸篓大项组（垃圾桶来源）
+    /// 页脚标注不可回滚、确认后走永久移除配置。
+    private func presentDrillDownRehearsal(group: CanvasGroup, entries: [CanvasEntry]) {
         guard !entries.isEmpty else { return }
+        let isPermanent = group.id == .housekeeping(.trashLargeItems)
         Task {
             let items = await cleanupViewModel.makeRehearsal(entries: entries)
-            // Task 6：isPermanent 默认 false —— 本入口为常规回收（30 天回滚）。
-            rehearsalPayload = RehearsalSheetPayload(items: items, context: context,
-                                                     isPermanent: false)
+            rehearsalPayload = RehearsalSheetPayload(items: items, context: group.title,
+                                                     isPermanent: isPermanent)
         }
     }
 
@@ -467,8 +483,11 @@ struct RootView: View {
 
     /// 预演确认 → 统一链执行（确认只执行 sheet 上勾选的子集）。快捷回收
     /// 路径再把结果回填给 orchestrator；组头路径执行完就地关闭 sheet 即可。
+    /// Task 8：`permanent` = 垃圾桶来源组（废纸篓大项）—— 执行走永久移除
+    /// 配置（moveToTrash: false），与 sheet 页脚的不可回滚标注一致。
     private func finishRehearsal(_ confirmed: [CleanupTarget],
-                                 quickClean: Bool) async {
+                                 quickClean: Bool,
+                                 permanent: Bool = false) async {
         // sheet 在 confirmedItems 为空时禁用确认；此守卫纯防御。
         guard !confirmed.isEmpty else {
             if quickClean {
@@ -486,7 +505,8 @@ struct RootView: View {
         // 为 nil（引擎抛错 / no-op）即走 failExecution，绝不读 `lastOutcome`
         // 推断（上次成功的旧字节不能顶替本次失败展示成 doneHero）。
         let outcome = await cleanupViewModel.executeConfirmedCleanup(
-            sizes: nil, confirmedTargets: confirmed)
+            sizes: nil, confirmedTargets: confirmed,
+            config: permanent ? Self.permanentConfig : .default)
         // I2（P2 final）：就地清理成功 → 画布就地失效（移除已清理条目/组、
         // 作废下钻勾选缓存、重跑归因）—— 不等下一次重扫画布才反映新事实。
         if let outcome {
