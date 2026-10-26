@@ -8933,19 +8933,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Shows how the scanned space breaks down by group. Tap a segment to open that group."
+            "value": "Read-only composition summary. To open a group, use the group cards below."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "スキャンした空間のグループ別内訳を表示します。セグメントをタップするとそのグループを開きます。"
+            "value": "読み取り専用の構成サマリーです。グループを開くには下のグループカードを使用してください。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "展示扫描空间按组的占比。点按分段可打开对应组。"
+            "value": "只读的空间构成摘要。要打开某个组，请使用下方组卡。"
           }
         }
       }

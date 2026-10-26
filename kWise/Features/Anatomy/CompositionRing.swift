@@ -9,7 +9,9 @@
 // - 「其他」分段用 `RingSliceModel.isOther` 哨兵判别，不伪造 GroupKind
 //   （brief 修正：`id` 仅为满足 Identifiable，语义判断一律先看 isOther）；
 // - 命中区用与 Canvas 完全同几何的环形带 Shape（不是整块扇形——避免圆心
-//   附近大片误触），分段点击 → onSelect(kind)；
+//   附近大片误触），分段点击 → onSelect(kind)。指针交互；对 VoiceOver 这是
+//   只读空间摘要（children: .ignore 元素标 .isButton 而激活无动作是谎言，
+//   fix r1）—— 下钻走下方组卡；
 // - 入场缩放动画经 AccessibilitySettings.reduceMotionAnimation 统一门控
 //   （Reduce Motion 时无位移，审计测试钉住）。
 import SwiftUI
@@ -125,7 +127,10 @@ struct CompositionRing: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(a11ySummary))
-        .accessibilityAddTraits(.isButton)
+        // fix r1（Important）：无 .isButton 特征 —— 点击手势在环形带覆盖层上，
+        // children: .ignore 之后 VoiceOver 激活不了它们；标按钮却激活无动作
+        // 是谎言。对读屏这是只读空间摘要（下钻走下方组卡）；指针用户仍可
+        // 点分段下钻（覆盖层在视觉层照常工作）。
         .accessibilityHint(Text(String(localized: String.LocalizationValue("canvas.ring.a11y.hint"))))
     }
 
@@ -146,10 +151,11 @@ struct CompositionRing: View {
 
     // MARK: A11y
 
-    /// 读屏摘要：按折叠后的片合成「组名 + 百分比」清单（与视觉一致，
+    /// 读屏摘要：按折叠后的片合成「组名 + 百分比」清单（与视觉一致 ——
+    /// 绘制/命中层过滤 fraction ≤ 0，摘要同口径过滤，不出「组名 0%」；
     /// 「其他」用独立文案）。单一 key，条目 join 后填入。
     private var a11ySummary: String {
-        let items = folded.map { slice -> String in
+        let items = folded.filter { $0.fraction > 0 }.map { slice -> String in
             let name = slice.isOther
                 ? String(localized: String.LocalizationValue("canvas.ring.other"))
                 : CanvasGroupAssembler.localizedTitle(for: slice.id)
