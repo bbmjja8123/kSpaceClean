@@ -229,7 +229,11 @@ struct RootView: View {
                                 smartCareViewModel.reset()
                             }
                         },
-                        isExecuting: cleanupViewModel.isCleaning
+                        isExecuting: cleanupViewModel.isCleaning,
+                        // Task 6（预演安全感叙事）：payload 携带路径语义 ——
+                        // 三处组装点（组头/下钻/快捷回收）默认 false（30 天
+                        // 回滚）；垃圾桶来源永久组由后续任务置 true。
+                        isPermanent: payload.isPermanent
                     )
                     .frame(width: 560, height: 480)
                 }
@@ -423,7 +427,9 @@ struct RootView: View {
         guard !entries.isEmpty else { return }
         Task {
             let items = await cleanupViewModel.makeRehearsal(entries: entries)
-            rehearsalPayload = RehearsalSheetPayload(items: items, context: group.title)
+            // Task 6：isPermanent 默认 false —— 本入口为常规回收（30 天回滚）。
+            rehearsalPayload = RehearsalSheetPayload(items: items, context: group.title,
+                                                     isPermanent: false)
         }
     }
 
@@ -435,7 +441,9 @@ struct RootView: View {
         guard !entries.isEmpty else { return }
         Task {
             let items = await cleanupViewModel.makeRehearsal(entries: entries)
-            rehearsalPayload = RehearsalSheetPayload(items: items, context: context)
+            // Task 6：isPermanent 默认 false —— 本入口为常规回收（30 天回滚）。
+            rehearsalPayload = RehearsalSheetPayload(items: items, context: context,
+                                                     isPermanent: false)
         }
     }
 
@@ -452,7 +460,8 @@ struct RootView: View {
         }
         Task {
             let items = await cleanupViewModel.makeRehearsal(targets: recommended)
-            rehearsalPayload = RehearsalSheetPayload(items: items)
+            // Task 6：isPermanent 默认 false —— 快捷回收为常规回收（30 天回滚）。
+            rehearsalPayload = RehearsalSheetPayload(items: items, isPermanent: false)
         }
     }
 

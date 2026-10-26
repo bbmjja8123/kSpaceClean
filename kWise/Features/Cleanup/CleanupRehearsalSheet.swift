@@ -20,6 +20,10 @@ struct CleanupRehearsalSheet: View {
     /// r1 fix（Important 3）：执行中禁用确认按钮（双击守卫的 UI 侧，
     /// VM 侧另有同步 `isCleaning` 守卫兜底）。
     var isExecuting: Bool = false
+    /// Task 6（预演安全感叙事）：true = 条目来自废纸篓的永久处置路径，
+    /// 页脚必须诚实标注「不可回滚」；false（默认）= 移入废纸篓，30 天
+    /// 内可回滚（History 入口）。机制本任务落地，垃圾桶来源组由后续任务置 true。
+    let isPermanent: Bool
     /// I1（P2 final）：初始豁免集 = 带非 `.recyclable` 徽章的条目（C4）——
     /// 「数据·不属垃圾」等项绝不默认进清理集；无徽章条目默认勾选。
     @State private var exemptedPaths: Set<String>
@@ -28,12 +32,14 @@ struct CleanupRehearsalSheet: View {
          context: String? = nil,
          onConfirm: @escaping ([CleanupTarget]) -> Void,
          onCancel: @escaping () -> Void,
-         isExecuting: Bool = false) {
+         isExecuting: Bool = false,
+         isPermanent: Bool = false) {
         self.items = items
         self.context = context
         self.onConfirm = onConfirm
         self.onCancel = onCancel
         self.isExecuting = isExecuting
+        self.isPermanent = isPermanent
         _exemptedPaths = State(initialValue: CleanupRehearsal.defaultExemptedPaths(for: items))
     }
 
@@ -97,12 +103,22 @@ struct CleanupRehearsalSheet: View {
             }
             .frame(minHeight: 240)
 
-            HStack {
+            // Task 6（预演安全感叙事）：页脚承诺行 —— 默认路径承诺 30 天
+            // 废纸篓回滚（History 一键回滚）；垃圾桶来源的永久路径诚实
+            // 标注不可回滚（不夸大、不隐瞒，C-6 同一口径）。置于总计行
+            // 下方作小字 caption，不改变 560×480 固定布局预算。
+            VStack(alignment: .leading, spacing: 2) {
                 Text(String(format:
                     String(localized: String.LocalizationValue("attr.rehearsal.total")),
                     FileSizeFormatter.abbreviated(from: totalBytes),
                     confirmedItems.count, items.count))
                     .font(AppFont.body)
+                Text(String(localized: String.LocalizationValue(
+                    isPermanent ? "attr.rehearsal.permanentNote" : "attr.rehearsal.rollbackNote")))
+                    .font(AppFont.caption)
+                    .foregroundColor(.textSecondary)
+            }
+            HStack {
                 Spacer()
                 Button(role: .cancel) { onCancel() } label: { Text("attr.rehearsal.cancel") }
                     .disabled(isExecuting)
@@ -165,4 +181,7 @@ struct RehearsalSheetPayload: Identifiable {
     let items: [RehearsalItem]
     /// 组头入口的组名等语境（nil = hero / 下钻入口）。
     var context: String? = nil
+    /// Task 6：true = 永久路径（垃圾桶来源大项，后续任务接入）；
+    /// false（默认）= 移入废纸篓可回滚。RootView 三处组装点均默认 false。
+    var isPermanent: Bool = false
 }

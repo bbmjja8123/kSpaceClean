@@ -2303,6 +2303,50 @@
         }
       }
     },
+    "attr.rehearsal.permanentNote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Items are removed permanently after confirmation — this cannot be undone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確認後はゴミ箱から完全に削除され、元に戻せません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认后将从废纸篓永久移除，此操作不可回滚"
+          }
+        }
+      }
+    },
+    "attr.rehearsal.rollbackNote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Items move to Trash — restore anytime within 30 days from History"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実行後はゴミ箱へ移動 — 30 日以内なら履歴から復元できます"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "执行后移入废纸篓，30 天内可在「历史」一键回滚"
+          }
+        }
+      }
+    },
     "attr.rehearsal.title": {
       "extractionState": "stale",
       "localizations": {
