@@ -3,6 +3,11 @@
 > ⚠️ 2026-10-25 修订：身份与定价字段已对齐 P0 迁移 + P1 买断制 + P3 双渠道。
 > **描述正文（下方 EN/zh/ja 长文案）仍是 v1 旧模块叙事，提审前需按 P2
 > 单一画布 IA 重写** —— 标注 `[TODO v1.6]` 的区块不得原样提交。
+>
+> 2026-10-27 补充：应用本体已交付 12 语本地化（见下方 Localizations）与推荐冲刺
+> 新能力（VoiceOver 无障碍 / QuickLook 下钻 / Dock 拖放粉碎 / App Shortcuts
+> Spotlight-Siri / 控制中心控件 macOS 26+ / 预演 30 天回滚页脚）。重写描述文案时
+> 把这些卖点并入。
 
 > All fields below are pre-filled; copy each block verbatim into App Store Connect.
 > Re-verify character counts (App Store Connect validates live).
@@ -102,6 +107,25 @@ macOS 13.0 or later. Full Disk Access required for system cache cleanup (Apple-m
 ## Keywords (100 chars max, comma-separated)
 mac cleaner,disk cleaner,storage,cache,junk,free up space,apple silicon,metal,4-level risk
 
+## Keywords — new markets (12-language rollout)
+Per-locale keyword fields should be created for the 9 new storefront languages
+below. Suggested head terms (localize, verify 100-char limit per locale):
+- zh-Hant: `mac 清理,磁碟清理,釋放空間,快取,重複檔案`
+- ko: `맥 정리,디스크 정리,저장 공간,캐시`
+- de: `mac aufräumen,festplatte,speicher freigeben,cache`
+- fr: `nettoyer mac,disque dur,libérer espace,cache`
+- es: `limpiar mac,disco,liberar espacio,caché`
+- pt-BR: `limpar mac,disco,liberar espaço,cache`
+- it: `pulire mac,disco,liberare spazio,cache`
+- ru: `очистка mac,диск,освободить место,кэш`
+- ar: `تنظيف ماك,القرص,تحرير مساحة`
+
+## Localizations (App Store Connect "Localizations" section)
+12 languages ship in-app (Localizable.xcstrings + InfoPlist.xcstrings):
+en-US, zh-Hans, ja, zh-Hant, ko, de, fr, es, pt-BR, it, ru, ar.
+Add all 12 as ASC metadata localizations (name/subtitle/keywords/privacy at
+minimum); description body may roll out progressively — en-US is authoritative.
+
 ## Support URL
 https://kraftly.app/support/klaris
 
@@ -109,7 +133,7 @@ https://kraftly.app/support/klaris
 https://kraftly.app/klaris
 
 ## Version 1.0.0 — What's New (4000 chars max, EN)
-First release. Smart 4-level scan, risk-graded cleanup, 30-day undo, menu bar widget, Shortcuts integration, full localization (English, Simplified Chinese, Japanese).
+First release. Smart 4-level scan, risk-graded cleanup with rehearsal preview and 30-day undo, drill-down Quick Look, Dock drag-to-shred, App Shortcuts (Spotlight/Siri), Control Center quick-clean control (macOS 26+), VoiceOver accessibility, menu bar widget, Finder extension — fully localized in 12 languages (English, Simplified & Traditional Chinese, Japanese, Korean, German, French, Spanish, Portuguese-BR, Italian, Russian, Arabic).
 
 ## Copyright
 © 2026 Kraftly Inc.
