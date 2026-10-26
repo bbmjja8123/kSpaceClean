@@ -24,7 +24,13 @@ final class LocalizationCompletenessTests: XCTestCase {
         let stringUnit: StringUnit?
     }
 
-    private static let requiredLanguages = ["en", "zh-Hans", "ja"]
+    /// 12 launch languages: the original trio (en/zh-Hans/ja) plus the 9 added
+    /// for the 12-language localization sprint (zh-Hant, ko, de, fr, es,
+    /// pt-BR, it, ru, ar).
+    private static let requiredLanguages = [
+        "en", "zh-Hans", "ja",
+        "zh-Hant", "ko", "de", "fr", "es", "pt-BR", "it", "ru", "ar",
+    ]
 
     private func catalogURL() throws -> URL {
         let url = URL(fileURLWithPath: #filePath)
@@ -38,7 +44,7 @@ final class LocalizationCompletenessTests: XCTestCase {
         return url
     }
 
-    func testEveryKeyHasAllThreeLanguages() throws {
+    func testEveryKeyHasAllTwelveLanguages() throws {
         let data = try Data(contentsOf: try catalogURL())
         let catalog = try JSONDecoder().decode(XCStrings.self, from: data)
         XCTAssertGreaterThan(catalog.strings.count, 0, "Catalog must not be empty")

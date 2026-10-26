@@ -169,7 +169,10 @@ struct KlarisQuickCleanControl: ControlWidget {
             }
         }
         .displayName("Klaris")
-        .description(String(localized: String.LocalizationValue("widget.control.quickCleanDescription")))
+        // `ControlWidgetConfiguration.description` takes a
+        // `LocalizedStringResource` on this SDK (a `String` does not convert),
+        // so the key resolves through the widget-local catalog directly.
+        .description(LocalizedStringResource("widget.control.quickCleanDescription"))
     }
 }
 
