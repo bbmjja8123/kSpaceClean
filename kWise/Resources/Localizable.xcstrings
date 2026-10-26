@@ -12387,6 +12387,29 @@
         }
       }
     },
+    "widget.control.quickCleanDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One tap to Klaris quick clean"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ワンタップで Klaris クイック整理"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一点即达 Klaris 快捷回收"
+          }
+        }
+      }
+    },
     "widget.config.description": {
       "localizations": {
         "en": {

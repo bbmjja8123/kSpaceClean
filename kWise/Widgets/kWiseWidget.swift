@@ -139,7 +139,7 @@ struct kWiseDiskWidget: Widget {
     }
 }
 
-// MARK: - Control Center Control (macOS 15+)
+// MARK: - Control Center Control (macOS 26+)
 
 /// 控制中心快捷回收（Task 11）。ControlWidget API 在 macOS 上是 26.0+
 /// （iOS 18 同代，但 Mac 端 Controls 随 macOS Tahoe 26 才进入 Control
@@ -169,7 +169,7 @@ struct KlarisQuickCleanControl: ControlWidget {
             }
         }
         .displayName("Klaris")
-        .description("One tap to Klaris quick clean")
+        .description(String(localized: String.LocalizationValue("widget.control.quickCleanDescription")))
     }
 }
 

@@ -1,6 +1,6 @@
 // WidgetSurfaceTests.swift
 //
-// Task 11 — Control Center quick-clean control widget (macOS 15+ gated).
+// Task 11 — Control Center quick-clean control widget (macOS 26+ gated).
 // Source-level audit: the widget extension target has no test host that can
 // render a ControlWidget, so the contract is pinned at the declaration level.
 import XCTest
