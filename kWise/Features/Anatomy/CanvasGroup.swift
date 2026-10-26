@@ -361,6 +361,13 @@ public enum CanvasGroupAssembler {
         }
     }
 
+    /// kind → 本地化组标题（组装器缺省标题的对外口径）：CompositionRing 的
+    /// 读屏摘要（Task 9）等无组实例场合按 kind 取名。自定义 title 的组在此
+    /// 退回缺省标题（摘要场景可接受——组卡本体仍用真实 title）。
+    public static func localizedTitle(for kind: GroupKind) -> String {
+        defaultTitle(kind)
+    }
+
     private static func defaultSubtitle(_ kind: GroupKind) -> String {
         switch kind {
         case .duplicates: return String(localized: String.LocalizationValue("canvas.group.duplicates.subtitle"))

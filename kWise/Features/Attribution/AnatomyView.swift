@@ -353,7 +353,21 @@ public struct AnatomyView: View {
             Text("attr.anatomy.hero.subtitle")
                 .font(AppFont.callout)
                 .foregroundStyle(Color.textSecondary)
-            compositionBar
+            // Task 9：构成条 + 迷你比例环并排 —— 环是构成条的图形升级
+            // （top-N 折叠 + 「其他」），分段可点 → 与组卡同款下钻入口。
+            HStack(alignment: .center, spacing: AppSpacing.md) {
+                compositionBar
+                Spacer()
+                if !viewModel.compositionSlices.isEmpty {
+                    CompositionRing(slices: viewModel.compositionSlices) { kind in
+                        // 与 groupsSection 同口径：按 kind 定位组并下钻；
+                        // 无匹配组（含「其他」合并片）时静默不动。
+                        if let group = viewModel.displayGroups.first(where: { $0.id == kind }) {
+                            openDrillDown(group)
+                        }
+                    }
+                }
+            }
             // fix r1（Important 2）：快捷回收结果态回到 hero —— done 显示
             // 真实释放字节（C-3）+「移入废纸篓 · 30 天可还原」披露行，
             // failed 显示失败信息；8 秒后自动复位，点「好」立即复位。

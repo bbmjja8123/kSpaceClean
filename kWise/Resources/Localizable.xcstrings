@@ -8927,6 +8927,75 @@
         }
       }
     },
+    "canvas.ring.a11y.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows how the scanned space breaks down by group. Tap a segment to open that group."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンした空間のグループ別内訳を表示します。セグメントをタップするとそのグループを開きます。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "展示扫描空间按组的占比。点按分段可打开对应组。"
+          }
+        }
+      }
+    },
+    "canvas.ring.a11y.summary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space composition: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空間の構成：%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空间构成：%@"
+          }
+        }
+      }
+    },
+    "canvas.ring.other": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "その他"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他"
+          }
+        }
+      }
+    },
     "canvas.quickclean.result.dismiss": {
       "extractionState": "manual",
       "localizations": {
