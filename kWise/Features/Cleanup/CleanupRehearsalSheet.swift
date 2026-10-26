@@ -75,9 +75,21 @@ struct CleanupRehearsalSheet: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(item.target.url.lastPathComponent)
                                     .font(AppFont.body)
-                                reasonLine(item)
-                                    .font(AppFont.caption)
-                                    .foregroundStyle(Color.textSecondary)
+                                // Task 8 review Important 1：条目 detail 在确认
+                                // 时刻可见 —— 有 detail（如 iOS 备份的删除语义）
+                                // 优先渲染它，没有才退归因 reason（通用机制，
+                                // 不做 iOS 专属分支）。
+                                if let detail = item.detail, !detail.isEmpty {
+                                    Text(detail)
+                                        .font(AppFont.caption)
+                                        .foregroundStyle(Color.textSecondary)
+                                        .lineLimit(2)
+                                        .help(detail)
+                                } else {
+                                    reasonLine(item)
+                                        .font(AppFont.caption)
+                                        .foregroundStyle(Color.textSecondary)
+                                }
                             }
                         }
                         // A11y 审计：豁免 Toggle 需要显式 label（文件名 + 可回收
@@ -158,7 +170,9 @@ struct CleanupRehearsalSheet: View {
 
     /// reasonLine 的纯文本镜像（a11y label 用）：与 reasonLine 同一分支、
     /// 同一批 key（attr.notes.* / probable reason / noReason），口径不漂移。
+    /// Task 8 review Important 1：detail 优先（与行渲染同一优先级）。
     private func reasonSpokenText(_ item: RehearsalItem) -> String {
+        if let detail = item.detail, !detail.isEmpty { return detail }
         guard let attribution = item.attribution else {
             return String(localized: String.LocalizationValue("attr.rehearsal.noReason"))
         }

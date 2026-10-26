@@ -464,9 +464,17 @@ public actor CleanupEngine {
 
         // Record history (batched in one background context). One runID per
         // `cleanup(targets:)` call groups rows into a timeline event (Phase 7).
+        // Task 8 review Important 2：永久移除路径（moveToTrash == false）的
+        // 行带 distinguishing actionKind —— freed bytes 照记，但时间线据此
+        // 不再提供回滚（回滚必 .notFound，假入口 = 信任崩塌）。
         let runID = UUID()
         let historyContext = persistence.newBackgroundContext()
-        let recorded = await recordHistory(for: toCleanFinal, runID: runID, in: historyContext)
+        let recorded = await recordHistory(
+            for: toCleanFinal, runID: runID,
+            actionKind: config.moveToTrash
+                ? CleanupHistoryItem.ActionKind.cleanup
+                : CleanupHistoryItem.ActionKind.permanentCleanup,
+            in: historyContext)
 
         // Move files to trash. Use FileManager.trashItem — it routes through the
         // Finder Trash so the user can undo via Finder's "Put Back". NSWorkspace
@@ -483,11 +491,9 @@ public actor CleanupEngine {
         // 废纸篓内文件已在 Trash 中 — "再清理"语义是清倒（永久移除），
         // trashItem 会失败，所以特判 removeItem。确认 Sheet 对这类目标
         // 显示不可恢复警告（C-5）。
-        let trashPrefix = (NSHomeDirectory() as NSString).appendingPathComponent(".Trash")
-
         for target in recorded {
             do {
-                let alreadyInTrash = target.url.standardizedFileURL.path.hasPrefix(trashPrefix)
+                let alreadyInTrash = Self.isInTrash(target.url)
                 if config.moveToTrash && !alreadyInTrash {
                     try FileManager.default.trashItem(at: target.url, resultingItemURL: nil)
                 } else {
@@ -537,6 +543,26 @@ public actor CleanupEngine {
             ))
         }
         return outcome
+    }
+
+    // MARK: - Trash path resolution
+
+    /// 真实用户废纸篓的标准化路径（Task 8 review Important 3）。**绝不能用
+    /// `NSHomeDirectory()` 拼 `~/.Trash`** —— MAS 沙盒下 `NSHomeDirectory()`
+    /// 返回容器 home，前缀永远匹配不上真实废纸篓路径（特判失效 → 对已在
+    /// 废纸篓的项再走 trashItem，必然报错）。`urls(for: .trashDirectory)`
+    /// 在沙盒内同样解析到真实用户废纸篓；解析失败回退真实
+    /// `homeDirectoryForCurrentUser` 的 `.Trash`（internal：可测）。
+    static func trashDirectoryPath() -> String {
+        let url = FileManager.default.urls(for: .trashDirectory, in: .userDomainMask).first
+            ?? FileManager.default.homeDirectoryForCurrentUser
+                .appendingPathComponent(".Trash", isDirectory: true)
+        return url.standardizedFileURL.path
+    }
+
+    /// 目标是否已在废纸篓内（"再清理" = 清倒特判的判定入口）。
+    static func isInTrash(_ url: URL) -> Bool {
+        url.standardizedFileURL.path.hasPrefix(trashDirectoryPath())
     }
 
     /// Free bytes available for "important usage" on the volume containing

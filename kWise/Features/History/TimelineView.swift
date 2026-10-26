@@ -23,6 +23,10 @@ public struct TimelineEvent: Identifiable {
     /// Rows already restored (or whose Trash copy is gone) still show, with
     /// their state — never silently hidden.
     public let restorableCount: Int
+    /// Task 8 review Important 2：永久移除 run（垃圾桶来源组等，moveToTrash
+    /// == false）—— 释放字节照计，但**没有回滚语义**：restorableCount 恒 0，
+    /// 行尾不渲染回滚按钮，改渲染诚实的「已永久移除」说明行。
+    public let isPermanent: Bool
     public let rows: [CleanupHistoryItem]
 
     public var isRestorable: Bool { restorableCount > 0 }
@@ -77,7 +81,11 @@ public final class TimelineViewModel: ObservableObject {
         return buckets.map { runID, rows in
             let date = rows.compactMap(\.cleanedAt).max() ?? Date()
             let freed = rows.reduce(Int64(0)) { $0 + $1.size }
-            let notRestored = rows.filter { !$0.isRestored }.count
+            // Task 8 review Important 2：永久移除 run 永不进回滚集 ——
+            // restorableCount 恒 0（否则回滚逐行 .notFound，假入口）。
+            let isPermanent = rows.first?.actionKind
+                == CleanupHistoryItem.ActionKind.permanentCleanup
+            let notRestored = isPermanent ? 0 : rows.filter { !$0.isRestored }.count
             return TimelineEvent(
                 id: runID,
                 date: date,
@@ -85,6 +93,7 @@ public final class TimelineViewModel: ObservableObject {
                 itemCount: rows.count,
                 freedBytes: freed,
                 restorableCount: notRestored,
+                isPermanent: isPermanent,
                 rows: rows
             )
         }
@@ -331,11 +340,20 @@ private struct TimelineEventRow: View {
                         .foregroundStyle(Color.textPrimary)
                 }
 
-                Text(event.isRestorable
-                     ? String(format: String(localized: String.LocalizationValue("history.timeline.restorableCount")), event.restorableCount)
-                     : String(localized: String.LocalizationValue("history.timeline.notRestorable")))
-                    .font(AppFont.caption)
-                    .foregroundStyle(event.isRestorable ? Color.success : Color.textSecondary)
+                // Task 8 review Important 2：永久移除 run 的诚实说明行 ——
+                // 不再复用「不可还原」的通用灰字（那是「已还原/废纸篓已清」
+                // 语义），而是明确「当时就是永久移除，无回滚入口」。
+                if event.isPermanent {
+                    Text("history.timeline.permanentRemoved")
+                        .font(AppFont.caption)
+                        .foregroundStyle(Color.warning)
+                } else {
+                    Text(event.isRestorable
+                         ? String(format: String(localized: String.LocalizationValue("history.timeline.restorableCount")), event.restorableCount)
+                         : String(localized: String.LocalizationValue("history.timeline.notRestorable")))
+                        .font(AppFont.caption)
+                        .foregroundStyle(event.isRestorable ? Color.success : Color.textSecondary)
+                }
 
                 HStack {
                     Button(String(localized: String.LocalizationValue("history.timeline.showDetails"))) {
@@ -344,10 +362,14 @@ private struct TimelineEventRow: View {
                     .buttonStyle(.plain)
                     .font(AppFont.caption)
                     Spacer()
-                    Button(String(localized: String.LocalizationValue("history.timeline.rollbackAll"))) { onRollback() }
-                        .buttonStyle(.bordered)
-                        .controlSize(.small)
-                        .disabled(!event.isRestorable)
+                    // 永久移除 run 不渲染回滚按钮（不是禁用 —— 禁用暗示
+                    // 「有这个能力」，永久移除压根没有这个能力）。
+                    if !event.isPermanent {
+                        Button(String(localized: String.LocalizationValue("history.timeline.rollbackAll"))) { onRollback() }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            .disabled(!event.isRestorable)
+                    }
                 }
             }
             .padding(AppSpacing.md)

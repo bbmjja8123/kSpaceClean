@@ -8191,24 +8191,25 @@
       }
     },
     "canvas.entry.iosBackup.warning": {
+      "comment": "Task 8 review minor: deletion target is Trash with 30-day rollback (then gone forever, since no other local backup remains) — not immediate destruction. Keep firmly cautionary but accurate.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deleting removes this local backup irrecoverably — iCloud backups are not affected"
+            "value": "Deleting this removes your only local backup of this device. It goes to the Trash for 30 days, then is gone. iCloud backups are not affected."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "削除するとこのローカルバックアップは復元できません（iCloud バックアップには影響しません）"
+            "value": "削除すると、このデバイスの唯一のローカルバックアップがこの Mac からなくなります（ゴミ箱に 30 日間残り、その後は元に戻せません）。iCloud バックアップには影響しません。"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除将永久移除本机备份，不可恢复；iCloud 云备份不受影响"
+            "value": "删除将移除这台设备在本机的唯一备份：先进入废纸篓（30 天后清空，届时不可恢复）；iCloud 云备份不受影响。"
           }
         }
       }
@@ -13197,7 +13198,31 @@
         }
       }
     },
+    "history.timeline.permanentRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removed permanently in this run — rollback is not available for these items"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この実行で完全に削除されたため、復元はできません"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次运行为永久移除，不提供回滚"
+          }
+        }
+      }
+    },
     "history.timeline.notRestorable": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {

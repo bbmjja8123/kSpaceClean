@@ -14,29 +14,39 @@ public struct RehearsalItem: Identifiable, Equatable, Sendable {
     /// 默认进清理集）。nil = 入口未携带徽章（快捷回收推荐项等树来源），
     /// 保持既有默认勾选行为。
     public let badge: BadgeKind?
+    /// 来源画布条目的 detail 行（Task 8 review Important 1）：sheet 行必须
+    /// 能看到条目级必须交代的话（如 iOS 备份的删除语义）—— 归因缺席时
+    /// 只有通用「无归因信息」是不够的。nil = 入口未携带 detail。
+    public let detail: String?
 
     public init(id: UUID = UUID(), target: CleanupTarget,
                 attribution: SpaceAttribution?,
-                badge: BadgeKind? = nil) {
+                badge: BadgeKind? = nil,
+                detail: String? = nil) {
         self.id = id
         self.target = target
         self.attribution = attribution
         self.badge = badge
+        self.detail = detail
     }
 }
 
 public enum CleanupRehearsal {
     /// targets 与输出 1:1 同序；归因按路径首段匹配。
     /// `badgesByPath`（I1）：路径 → 徽章，由携带 CanvasEntry 的入口传入。
+    /// `detailsByPath`（Task 8 review Important 1）：路径 → 条目 detail，
+    /// 同由携带 CanvasEntry 的入口传入（sheet 行原样渲染，不解释）。
     public static func build(targets: [CleanupTarget],
                              attributions: [SpaceAttribution],
-                             badgesByPath: [String: BadgeKind] = [:]) -> [RehearsalItem] {
+                             badgesByPath: [String: BadgeKind] = [:],
+                             detailsByPath: [String: String] = [:]) -> [RehearsalItem] {
         let byPath = Dictionary(attributions.map { ($0.paths.first ?? "", $0) },
                                 uniquingKeysWith: { first, _ in first })
         return targets.map { target in
             RehearsalItem(target: target,
                           attribution: byPath[target.url.path],
-                          badge: badgesByPath[target.url.path])
+                          badge: badgesByPath[target.url.path],
+                          detail: detailsByPath[target.url.path])
         }
     }
 

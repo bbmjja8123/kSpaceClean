@@ -142,17 +142,24 @@ public final class CleanupViewModel: ObservableObject {
     /// - Returns: 与条目 1:1 同序的预演项（过滤消失路径与无 target 条目后）。
     @discardableResult
     public func makeRehearsal(entries: [CanvasEntry]) async -> [RehearsalItem] {
-        let existing = entries.compactMap { entry -> (CleanupTarget, BadgeKind)? in
+        let existing = entries.compactMap { entry -> (CleanupTarget, BadgeKind, String?)? in
             guard let target = entry.target,
                   (try? target.url.checkResourceIsReachable()) == true else { return nil }
-            return (target, entry.badge)
+            return (target, entry.badge, entry.detail)
         }
         pendingTargets = existing.map(\.0)
         let badges = Dictionary(existing.map { ($0.0.url.path, $0.1) },
                                 uniquingKeysWith: { first, _ in first })
+        // Task 8 review Important 1：条目 detail 随预演进 sheet —— iOS 备份
+        // 等组条目级必须交代的话在确认时刻可见（sheet 逐行渲染，不解释）。
+        let details = Dictionary(existing.compactMap { pair -> (String, String)? in
+            guard let detail = pair.2, !detail.isEmpty else { return nil }
+            return (pair.0.url.path, detail)
+        }, uniquingKeysWith: { first, _ in first })
         return CleanupRehearsal.build(targets: pendingTargets,
                                       attributions: attributionLookup?() ?? [],
-                                      badgesByPath: badges)
+                                      badgesByPath: badges,
+                                      detailsByPath: details)
     }
 
     /// 执行段（P1 T4；r1 修订）：执行集合**以传入的 `confirmedTargets` 为准**

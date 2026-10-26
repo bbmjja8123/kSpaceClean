@@ -203,6 +203,53 @@ final class TimelineMigrationTests: XCTestCase {
         let events = TimelineViewModel.group(rows)
         XCTAssertEqual(events.count, 1)
         XCTAssertEqual(events.first?.itemCount, 2)
+        XCTAssertFalse(events.first?.isPermanent ?? true,
+                       "常规 trash run 保持可回滚语义（回滚入口照常）")
+    }
+
+    // MARK: 永久移除 run 的诚实时间线（Task 8 review Important 2）
+
+    @MainActor
+    func testPermanentRunRowsCarryPermanentActionKind() async throws {
+        let file = FileManager.default.temporaryDirectory.appendingPathComponent("perm-\(UUID()).txt")
+        try "a".write(to: file, atomically: true, encoding: .utf8)
+
+        let persistence = PersistenceController(inMemory: true)
+        let engine = CleanupEngine(persistence: persistence)
+        _ = try await engine.cleanup(
+            targets: [CleanupTarget(url: file, size: 1, risk: .recommended)],
+            config: CleanupConfiguration(moveToTrash: false))
+
+        let rows = persistence.fetchHistory(limit: 0)
+        XCTAssertEqual(rows.count, 1, "历史仍记录（freed bytes 计数不丢）")
+        XCTAssertEqual(rows.first?.actionKind,
+                       CleanupHistoryItem.ActionKind.permanentCleanup,
+                       "永久移除路径必须带 distinguishing actionKind")
+        XCTAssertEqual(rows.first?.size, 1)
+    }
+
+    @MainActor
+    func testPermanentRunIsNeverRestorableInTimeline() {
+        let persistence = PersistenceController(inMemory: true)
+        let context = persistence.viewContext
+        let runID = UUID()
+        let item = CleanupHistoryItem(context: context)
+        item.id = UUID()
+        item.path = "/tmp/perm-x"
+        item.size = 500
+        item.cleanedAt = Date()
+        item.riskLevel = "recommended"
+        item.runID = runID
+        item.actionKind = CleanupHistoryItem.ActionKind.permanentCleanup
+        persistence.save(context: context)
+
+        let events = TimelineViewModel.group(persistence.fetchHistory(limit: 0))
+        XCTAssertEqual(events.count, 1)
+        XCTAssertTrue(events.first?.isPermanent ?? false)
+        XCTAssertEqual(events.first?.restorableCount, 0,
+                       "永久移除 run 永不进回滚集（否则回滚逐行 .notFound）")
+        XCTAssertFalse(events.first?.isRestorable ?? true)
+        XCTAssertEqual(events.first?.freedBytes, 500, "释放字节照常计入")
     }
 }
 

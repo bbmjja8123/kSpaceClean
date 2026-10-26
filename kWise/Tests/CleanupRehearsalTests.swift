@@ -86,4 +86,32 @@ final class CleanupRehearsalTests: XCTestCase {
         XCTAssertEqual(CleanupRehearsal.defaultExemptedPaths(for: items), [data.path],
                        "含 dataNotJunk 条目的组预演 → 该项初始 exempted")
     }
+
+    /// Task 8 review Important 1：条目 detail 随 `makeRehearsal(entries:)`
+    /// 进预演项 —— sheet 行在确认时刻渲染它（如 iOS 备份的删除语义）；
+    /// 无 detail 的条目 detail 为 nil（退归因 reason 渲染，行为不变）。
+    func testMakeRehearsalEntriesCarriesDetail() async throws {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("rehearsal-detail-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let backup = root.appendingPathComponent("DEV1")
+        try FileManager.default.createDirectory(at: backup, withIntermediateDirectories: true)
+        let plain = root.appendingPathComponent("plain.txt")
+        try Data("x".utf8).write(to: plain)
+
+        let vm = CleanupViewModel(engine: CleanupEngine(
+            persistence: PersistenceController(inMemory: true), quota: nil))
+        let warning = "仅本机备份的删除语义警告"
+        let entries = [
+            CanvasEntry(title: "DEV1", bytes: 10, badge: .attention, detail: warning,
+                        target: CleanupTarget(url: backup, size: 10, risk: .caution)),
+            CanvasEntry(title: "plain", bytes: 1, badge: .recyclable,
+                        target: CleanupTarget(url: plain, size: 1, risk: .recommended)),
+        ]
+        let items = await vm.makeRehearsal(entries: entries)
+        XCTAssertEqual(items.first?.detail, warning,
+                       "带 detail 的条目在 sheet 行可见（确认时刻的删除语义）")
+        XCTAssertNil(items.last?.detail, "无 detail 条目保持既有 reason 渲染路径")
+    }
 }

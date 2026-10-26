@@ -53,6 +53,10 @@ extension CleanupHistoryItem {
         public static let cleanup = "cleanup"
         public static let shred = "shred"
         public static let startupItem = "startupItem"
+        /// Task 8 review Important 2 —— 永久移除路径（`CleanupConfiguration
+        /// .moveToTrash == false`，如废纸篓大项组）：行仍记录（freed bytes
+        /// 计数不丢），但**不可回滚**，时间线必须据此隐藏回滚入口。
+        public static let permanentCleanup = "permanentCleanup"
     }
 
     /// Friendly kind label for the timeline; legacy rows read as cleanup.

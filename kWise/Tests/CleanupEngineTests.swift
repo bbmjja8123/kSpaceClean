@@ -35,6 +35,24 @@ final class CleanupEngineTests: XCTestCase {
         XCTAssertEqual(outcome.failed.first?.url, missing)
     }
 
+    // MARK: - Trash path resolution（Task 8 review Important 3）
+
+    /// MAS 沙盒下 `NSHomeDirectory()` 是容器 home —— 用它拼 `~/.Trash` 的
+    /// 前缀永远匹配不上真实废纸篓（alreadyInTrash 特判失效）。解析必须走
+    /// `urls(for: .trashDirectory)`；本测试宿主即沙盒应用，若解析回退到
+    /// 容器路径会在第一、二条断言炸出。
+    func testTrashPrefixResolvesRealTrashNotContainerHome() {
+        let prefix = CleanupEngine.trashDirectoryPath()
+        XCTAssertFalse(prefix.isEmpty, "废纸篓路径必须能解析（失败也应回退真实 home）")
+        XCTAssertFalse(prefix.hasPrefix(NSHomeDirectory() + "/Library/Containers"),
+                       "废纸篓前缀不得落在 MAS 容器内（NSHomeDirectory 拼接的旧坑）")
+        XCTAssertTrue(CleanupEngine.isInTrash(
+            URL(fileURLWithPath: prefix + "/some-item.dmg")),
+            "废纸篓下的路径必须命中 alreadyInTrash 特判（清倒语义）")
+        XCTAssertFalse(CleanupEngine.isInTrash(
+            URL(fileURLWithPath: "/tmp/definitely-not-trash.txt")))
+    }
+
     // MARK: - History persistence
 
     func testCleanupWritesHistoryRows() async throws {
