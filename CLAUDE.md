@@ -78,7 +78,7 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 | SwiftData | macOS 14+ | 13 降级到 Core Data |
 | Live Activities | macOS 14+ | 13 不展示 |
 | Interactive Widgets | macOS 14+ | 13 用基础 Widget |
-| Control Widgets | macOS 14+ | 13 隐藏入口 |
+| Control Widgets | macOS 26+（SDK 实证：WidgetKit swiftinterface `@available(iOS 18.0, macOS 26.0)`；旧表 macOS 14 为笔误） | 25 及以下隐藏入口（已随 2026-10-26 冲刺 T11 落地，26.0 门控） |
 | App Intents | macOS 13+ | 全版本支持 |
 | TipKit | macOS 14+ | 13 跳过引导提示 |
 
@@ -154,8 +154,19 @@ KraftlyWorkspace.xcworkspace         # 顶层 workspace
 | Shortcuts App Intents | 扫描/清理等（走 ScanOrchestrator 单引擎） | ✅ |
 | Finder 扩展 | 右键"用 Klaris 扫描" → `klaris://scan?path=` 落画布 | ✅ |
 | 助手问答 | 下钻页节点级问答（AssistantNodePanel，聊天框已退役；答案诚实，不承诺扫描/清理范围外的事） | ✅（P2 T9 fix） |
-| Live Activities / Spotlight / 空间地图 | 已删除（v2.0 Phase 1 / P2 T9 清理死面） | ❌ 已删 |
-| 本地化 | 英文 + 简体中文 + 日文 | ✅ |
+| Live Activities / 空间地图 | 已删除（v2.0 Phase 1 / P2 T9 清理死面） | ❌ 已删 |
+| 🆕 无障碍审计 | rail /「+」菜单 / 组卡 / 预演开关 VoiceOver 标注 + Reduce Motion 门控 + AccessibilityAuditTests 审计测试 | ✅（冲刺 T1） |
+| 🆕 清理完成时刻 | 释放字节滚动动画 + Glass 音效（设置可关）+ RM 感知 | ✅（冲刺 T2） |
+| 🆕 下钻 QuickLook | 行级 eye 按钮 + Space 键预览（资格按条目缓存，不逐行 stat） | ✅（冲刺 T3） |
+| 🆕 快捷键 | ⌘1/2/3 rail 切换 + ⌘, 设置 | ✅（冲刺 T4） |
+| 🆕 Dock 拖放粉碎 | Dock 图标投放文件 → `klarisOpenFiles` 路由 → 粉碎 sheet | ✅（冲刺 T5） |
+| 🆕 预演安全感页脚 | 预演 sheet 底部 30 天回滚承诺 + 永久路径诚实标注 | ✅（冲刺 T6） |
+| 🆕 FSEvents 增量监视 | 画布内容变化 pill（即时重扫提示；启动失败诚实降级） | ✅（冲刺 T7） |
+| 🆕 家务三画布组 | iOS 备份（橙注意·删前警示无 iCloud 备份即数据损失）+ 下载分诊 + 废纸篓大项（永久路径） | ✅（冲刺 T8） |
+| 🆕 hero 比例环 | 画布 hero 空间构成环（top-3 折叠 + 「其他」哨兵；诚实只读 a11y） | ✅（冲刺 T9） |
+| 🆕 App Shortcuts 三件套 | AppShortcutsProvider（状态查询/清理）→ Spotlight / Siri 直达 | ✅（冲刺 T10） |
+| 🆕 Control Widget | 控制中心快捷清理控件（WidgetKit ControlWidget，26.0 门控；25 及以下隐藏） | ✅（冲刺 T11） |
+| 本地化 | **12 语**：英文 + 简体中文 + 日文 + zh-Hant / ko / de / fr / es / pt-BR / it / ru / ar（含 RTL 审计门禁） | ✅（冲刺 T12） |
 
 **深链（P2 终态）**：`klaris://scan?path=` / `smartcare` / `health` → anatomy；`history` → history；`settings` → settings。退役面的旧深链（clean/privacy/startup/uninstall/shred/tools/spacemap 等）不再路由。
 
@@ -443,6 +454,25 @@ kWise/
 - [ ] **待办（需用户/GUI）** — UI 冒烟**用例已交付**（`kWise/UITests/SmokeUITests.swift` 4 条：onboarding 走通 / +菜单→卸载 sheet / 设置启动项 sheet / 未购买→买断墙路由；独立 scheme `kWiseSmokeUI`，结构与文案元素带 accessibilityIdentifier），但 **执行被环境 wedge 阻塞**（test runner「Timed out while enabling automation mode」×3，代码侧两渠道构建全绿；需 GUI 会话授权自动化或重启后复跑）；App Store Connect 记录/截图/IAP 创建；Release 归档验证（GUI 会话出 profile）
 - [ ] **决策备忘** — 直营正式付费方案（许可密钥/Paddle）；直营自动更新（Sparkle）；MAS 展示名终审
 
+### Klaris 推荐冲刺 — 12 语 + 推荐就绪 ✅ (2026-10-26 → 2026-10-27)
+> 13 任务，22 commits（`feb1a08..914e4f1`，含实现计划 0336d1a 与 i18n 工具 chore）。计划：`docs/superpowers/plans/2026-10-26-klaris-feature-sprint.md`；台账：`.superpowers/sdd/2026-10-26-klaris-feature-sprint/`。
+- [x] **T1 无障碍审计** — rail /「+」菜单 / 组卡 / 预演开关 VoiceOver 标注 + RM 门控 helper + AccessibilityAuditTests
+- [x] **T2 清理完成时刻** — 释放字节滚动动画 + Glass 音效（设置可关）+ RM 感知
+- [x] **T3 下钻 QuickLook** — 行级 eye 按钮 + Space 键；资格按条目缓存（不逐行 stat）；1 修复轮
+- [x] **T4 快捷键** — ⌘1/2/3 rail 切换 + ⌘, 设置
+- [x] **T5 Dock 拖放粉碎** — open-URLs 路由 → 粉碎 sheet
+- [x] **T6 预演安全感页脚** — 30 天回滚承诺 + 永久路径诚实标注（RehearsalSafetyCopyAuditTests）
+- [x] **T7 FSEvents 增量监视** — 画布内容变化 pill；1 修复轮：passRetained 生命周期 + start 失败诚实
+- [x] **T8 家务三画布组** — iOS 备份（橙注意 + 无 iCloud 备份即数据损失警示）/ 下载分诊 / 废纸篓大项（永久路径）；1 修复轮（sheet 可见性 + permanentCleanup 历史诚实 + 真实废纸篓前缀）
+- [x] **T9 hero 比例环** — top-3 折叠 + 「其他」哨兵；1 修复轮：诚实只读 a11y（无假 button trait）
+- [x] **T10 App Shortcuts 三件套** — AppShortcutsProvider 状态/清理 → Spotlight / Siri
+- [x] **T11 Control Widget** — 控制中心快捷清理控件；**计划前提被 SDK 实证推翻并修订**：WidgetKit ControlWidget 实际 macOS 26.0（swiftinterface `@available(iOS 18.0, macOS 26.0)`），按 26.0 门控、测试钉 26.0
+- [x] **T12 12 语本地化** — +zh-Hant/ko/de/fr/es/pt-BR/it/ru/ar + RTL 审计门禁；widget appex strings 补齐
+- [x] **T13 基线收口** — DockDropRoutingTests 改逐跳验证（原整链写法在无 SwiftUI 场景的单测宿主确定性落空——通知中段 RootView `.onReceive` 无观察者；改为 AppDelegate 转发 + 模型末端真跑 + RootView 接线源码审计）；重生成 xcodeproj 清掉 i18n 工具遗留的 `.xcstrings.bak` 资源引用（曾致构建失败）
+- [x] **Debug 签名决策修订（37f48c9）** — Debug 改稳定开发签名（project.yml 按 SHA-1 指定 CODE_SIGN_IDENTITY），根治每次构建触发 TCC 授权弹窗风暴
+- [x] **测试基线** — **711 tests / 0 failures**（2026-10-27，MAS scheme kWise 全量，~6 分钟，无宿主重启；冲刺新增测试全数真跑，Accessibility/Localization/RTL/RehearsalSafety/KeyboardShortcut/DockDrop/CompositionRing/FSEvents 审计套件全绿）；KlarisDirect Debug 构建绿；kWiseSmokeUI 冒烟仍被环境 wedge 阻塞（test runner 建连前挂起，非代码问题，需 GUI 会话授权自动化）。首跑曾现 testLazyHistoryCleanup 宿主崩溃（Core Data 析构竞态），隔离复跑 7/7 绿、全量复跑自愈——测试宿主环境族，非产品回归
+- [ ] **遗留** — GUI 冒烟清单（VoiceOver 实测 / 完成动画视觉 / ring hover / trash 组下钻 / Spotlight 短语收录 / Dock 拖放端到端 / 冒烟套件解 wedge 后复跑）；挂账 minors 见 `.superpowers/sdd/2026-10-26-klaris-feature-sprint/progress.md`
+
 ### Backlog（待设计）
 - [ ] Klaris P3 剩余 — L2 语义归因；直营付费/更新方案；UI 冒烟 + ASC 材料
 - [ ] kWise v2 — 3D 磁盘星系图（2D 空间地图也已随 P2 T9 退役；Metal 重启需 Product 拍板）
@@ -452,4 +482,4 @@ kWise/
 
 ---
 
-最后更新：2026-10-25（Klaris P3 双渠道全量基线：MAS 672/0 修复 R4 遗留断言 + 审计测试复跑全绿 + KlarisDirect Debug 构建；此前同日 P3 上架准备双渠道架构 + M2/M5/M3 重接入 + 提审机械清扫）
+最后更新：2026-10-27（Klaris 推荐冲刺收官：13 任务 + MAS 基线 711/0 + KlarisDirect Debug 构建；12 语本地化 / Control Widget 26+ / 无障碍审计等 12 项新能力入表；此前 2026-10-25 P3 双渠道 672/0）
