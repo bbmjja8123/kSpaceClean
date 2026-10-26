@@ -12365,6 +12365,28 @@
         }
       }
     },
+    "widget.control.quickClean": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick Clean"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クイック整理"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快捷回收"
+          }
+        }
+      }
+    },
     "widget.config.description": {
       "localizations": {
         "en": {
