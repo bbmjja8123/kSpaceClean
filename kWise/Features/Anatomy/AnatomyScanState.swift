@@ -173,15 +173,20 @@ extension AnatomyViewModel {
     // MARK: - FSEvents 变更监视（Task 7）
 
     /// 首扫完成后启动主目录变更监视。沙盒 container-only 时 grantedRoot
-    /// 为 nil → 不启动（pill 不出现，诚实降级）；流创建失败同样无感。
-    /// 幂等：监视器已存在时不重建（整个会话一根流，重扫不重启监视）。
+    /// 为 nil → 不启动（pill 不出现，诚实降级）；流创建/启动失败同样降级
+    /// ——不保留监视器，pill 不会出现，也绝不静默承诺「会感知变更」。
+    /// 幂等：监视器已在且流健康时不重建（整个会话一根流，重扫不重启监视）；
+    /// 上次流创建失败的（如授权前的探测）在下次扫描完成后自动重试。
     public func startChangeMonitoring(root: URL?) {
-        guard let root, fsMonitor == nil else { return }
+        guard let root else { return }
+        if let existing = fsMonitor, existing.isStreamCreated { return }
         let monitor = FSEventsMonitor(watching: root) { [weak self] in
             Task { @MainActor in self?.hasPendingChanges = true }
         }
         monitor.start()
-        fsMonitor = monitor
+        // MINOR 2：消费 isStreamCreated —— 创建/启动失败不保留监视器
+        // （下次扫描完成后重试），降级以 pill 缺席呈现，不弹 UI。
+        fsMonitor = monitor.isStreamCreated ? monitor : nil
     }
 
     /// 重扫入口（startScan）消费待重扫标志 —— pill 随之消失。
