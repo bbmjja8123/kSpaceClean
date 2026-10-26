@@ -2486,6 +2486,29 @@
         }
       }
     },
+    "canvas.changes.pending": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contents changed — rescan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内容有变化——点按重新扫描"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内容が変わりました — 再スキャン"
+          }
+        }
+      }
+    },
     "kWise 会扫描系统缓存、应用缓存、日志与残留文件，扫描结果按应用归组展示。": {
       "extractionState": "stale",
       "localizations": {

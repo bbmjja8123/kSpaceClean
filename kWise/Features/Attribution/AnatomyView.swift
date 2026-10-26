@@ -18,6 +18,7 @@ import SwiftUI
 import DesignSystem
 import CommonUtils
 import Combine
+import FileScanner
 
 /// 一个原因分组：组内条目按 bytes 降序，组间按 totalBytes 降序（VM 保证）。
 /// （P2 T3 起主画布渲染改走 CanvasGroup/CanvasReport；本类型保留供
@@ -56,6 +57,11 @@ public final class AnatomyViewModel: ObservableObject {
     /// C1（P2 final）：bindScanViewModel 绑定的扫描页 VM —— runCanvasScan
     /// 的统一入口先 await 它的引擎扫描完成，再对新鲜树做扇出。
     var scanVM: ScanResultsViewModel?
+    /// Task 7：主目录变更待重扫标志（FSEvents 监视命中后置位；hero pill
+    /// 渲染条件）。置位逻辑在 AnatomyScanState.swift 的 startChangeMonitoring。
+    @Published public internal(set) var hasPendingChanges = false
+    /// Task 7：主目录变更监视器（首扫完成后启动；nil = 未启动，诚实降级）。
+    var fsMonitor: FSEventsMonitor?
 
     private let service: AttributionService
     /// internal：AnatomyScanState.swift 的扩展（runCanvasScan 完成后的
@@ -355,6 +361,20 @@ public struct AnatomyView: View {
                 Text("canvas.quickclean.empty")
                     .font(AppFont.callout)
                     .foregroundStyle(Color.textSecondary)
+            }
+            // Task 7：FSEvents 监视命中后的「内容有变化」秒级重扫入口 ——
+            // 按钮行前渲染；点击即走统一扫描入口 startScan（同时清除标志）。
+            // 未授权（container-only → 未启动监视）或流创建失败时该标志
+            // 永不为 true，pill 不出现 —— 监视是增强，不是承诺。
+            if viewModel.hasPendingChanges {
+                Button {
+                    viewModel.startScan()
+                } label: {
+                    Label(String(localized: String.LocalizationValue("canvas.changes.pending")),
+                          systemImage: "arrow.triangle.2.circlepath")
+                }
+                .buttonStyle(.bordered)
+                .accessibilityLabel(Text(String(localized: String.LocalizationValue("canvas.changes.pending"))))
             }
             HStack(spacing: AppSpacing.sm) {
                 // 回收入口（P2 T5 R-统一）：触发快捷回收管线，`.confirming`

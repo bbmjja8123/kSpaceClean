@@ -14,6 +14,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import FileScanner
 
 extension AnatomyViewModel {
 
@@ -105,6 +106,12 @@ extension AnatomyViewModel {
                             self.scanPhase = self.canvasReport != nil ? .done : .idle
                         }
                         await self.refresh()
+                        // Task 7：扫描完成后启动主目录变更监视（幂等 —— 已有
+                        // 监视器则不重复启动）。container-only 时 grantedRoot
+                        // 为 nil → 不启动（pill 不出现，诚实降级）；流创建失败
+                        // 同样无感（监视是增强，不是承诺）。
+                        self.startChangeMonitoring(
+                            root: AppScope.shared.capability.grantedRoot)
                     }
                 }
             }
@@ -138,6 +145,10 @@ extension AnatomyViewModel {
     /// - `.stopping` 过渡期（用户已取消、上一轮管线正在收尾）的重扫 →
     ///   排队等落定后真实启动 —— 取消后立即重扫绝不静默丢弃（I3）。
     public func startScan() {
+        // Task 7：重扫即消费待重扫标志 —— 无论本次触发最终走新扇出还是
+        // 撞上活跃扫描守卫被忽略，「用户已要求重扫」的事实都成立，pill
+        // 不应残留。置位于动作入口（brief 口径）。
+        clearPendingChanges()
         guard let coordinator = canvasCoordinator else { return }
         if coordinator.isRunning, scanPhase != .stopping { return }
         canvasScanTask?.cancel()
@@ -158,6 +169,23 @@ extension AnatomyViewModel {
             scanPhase = .idle
         }
     }
+
+    // MARK: - FSEvents 变更监视（Task 7）
+
+    /// 首扫完成后启动主目录变更监视。沙盒 container-only 时 grantedRoot
+    /// 为 nil → 不启动（pill 不出现，诚实降级）；流创建失败同样无感。
+    /// 幂等：监视器已存在时不重建（整个会话一根流，重扫不重启监视）。
+    public func startChangeMonitoring(root: URL?) {
+        guard let root, fsMonitor == nil else { return }
+        let monitor = FSEventsMonitor(watching: root) { [weak self] in
+            Task { @MainActor in self?.hasPendingChanges = true }
+        }
+        monitor.start()
+        fsMonitor = monitor
+    }
+
+    /// 重扫入口（startScan）消费待重扫标志 —— pill 随之消失。
+    public func clearPendingChanges() { hasPendingChanges = false }
 
     /// 可等待的扇出扫描管线（startScan 的实现体）。
     ///
