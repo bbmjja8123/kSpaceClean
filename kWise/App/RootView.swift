@@ -129,6 +129,13 @@ struct RootView: View {
                 anatomyViewModel.startScan()
             }
         )
+        // Task 4（feature sprint）：⌘1/2/3 切 rail 三面；⌘, 打开设置
+        // （app 无 Settings scene，约定键位绑定 rail 面而非静默失效）。
+        .railKeyboardShortcuts(
+            onAnatomy: { appState.navigation = .anatomy },
+            onHistory: { appState.navigation = .history },
+            onSettings: { appState.navigation = .settings }
+        )
         // Free-tier paywall — the only place the sheet is presented from
         // (v2.0 Phase 1). `CleanupOutcome.quotaExhausted` routes here via
         // `AppCoordinator.presentPaywall()`.
