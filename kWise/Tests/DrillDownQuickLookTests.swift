@@ -22,6 +22,7 @@ final class DrillDownQuickLookTests: XCTestCase {
     // init 一次性冻结 —— 之后文件消失，VM 仍报可预览（行渲染/Space 键
     // 只查表，绝不在 body 重求值里做文件系统 stat；文件消失的实际后果
     // 由 QuickLook sheet 自身呈现，不属本缓存职责）。
+    @MainActor
     func testEligibilityCachedForEntriesLifetime() throws {
         let dir = FileManager.default.temporaryDirectory
             .appendingPathComponent("ql-cache-\(UUID().uuidString)")
@@ -31,6 +32,7 @@ final class DrillDownQuickLookTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: dir) }
 
         let entry = CanvasEntry(title: "cached.bin", bytes: 1,
+                                badge: .recyclable,
                                 target: CleanupTarget(url: file, size: 1))
         let group = try XCTUnwrap(CanvasGroupAssembler.assemble(
             kind: .largeFiles, icon: "doc", entries: [entry], totalBytes: 1))
