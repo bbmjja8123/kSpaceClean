@@ -39,15 +39,22 @@ struct CleanCacheIntent: AppIntent {
     static let openAppWhenRun: Bool = true
 
     @MainActor
-    func perform() async throws -> some IntentResult & ReturnsValue<Int> {
+    func perform() async throws -> some IntentResult & ProvidesDialog {
         let (targets, _) = await IntentScanAdapter.recommendedPickTargets(scope: AppScope.shared)
-        guard !targets.isEmpty else { return .result(value: 0) }
+        guard !targets.isEmpty else {
+            // 空集不是成功伪装成清理——诚实汇报无可清理项（Task 10）。
+            return .result(dialog: IntentDialog(stringLiteral:
+                String(localized: String.LocalizationValue("intent.clean.nothing"))))
+        }
 
         // Shared process-wide graph engine so history, the menu-bar
         // "最近清理" row, and the other event sinks stay in sync.
         let engine = AppGraph.shared.cleanupEngine
         let outcome = try await engine.cleanup(targets: targets)
-        return .result(value: Int(outcome.freedBytes))
+        let freed = ByteCountFormatter.string(fromByteCount: outcome.freedBytes, countStyle: .file)
+        return .result(dialog: IntentDialog(stringLiteral:
+            String(localized: String.LocalizationValue("intent.clean.done"))
+                .replacingOccurrences(of: "{freed}", with: freed)))
     }
 }
 
