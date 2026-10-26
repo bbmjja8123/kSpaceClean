@@ -83,6 +83,7 @@ public final class TimelineViewModel: ObservableObject {
             let freed = rows.reduce(Int64(0)) { $0 + $1.size }
             // Task 8 review Important 2：永久移除 run 永不进回滚集 ——
             // restorableCount 恒 0（否则回滚逐行 .notFound，假入口）。
+            // 混合 kind 运行目前不可能（每次 cleanup() 调用统一 stamp 单一 actionKind）；若未来出现混合批，此处按首行判定需重审
             let isPermanent = rows.first?.actionKind
                 == CleanupHistoryItem.ActionKind.permanentCleanup
             let notRestored = isPermanent ? 0 : rows.filter { !$0.isRestored }.count

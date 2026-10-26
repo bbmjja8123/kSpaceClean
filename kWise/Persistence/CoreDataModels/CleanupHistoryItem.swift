@@ -64,6 +64,8 @@ extension CleanupHistoryItem {
         switch actionKind {
         case ActionKind.shred: return "粉碎"
         case ActionKind.startupItem: return "启动项"
+        case ActionKind.permanentCleanup:
+            return String(localized: String.LocalizationValue("history.row.kind.permanent"))
         default: return "清理"
         }
     }

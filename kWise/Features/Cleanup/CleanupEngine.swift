@@ -491,6 +491,7 @@ public actor CleanupEngine {
         // 废纸篓内文件已在 Trash 中 — "再清理"语义是清倒（永久移除），
         // trashItem 会失败，所以特判 removeItem。确认 Sheet 对这类目标
         // 显示不可恢复警告（C-5）。
+        // 注意：该特例对 in-trash 目标即永久移除——只应经家务垃圾桶组（isPermanent 路径）到达
         for target in recorded {
             do {
                 let alreadyInTrash = Self.isInTrash(target.url)
