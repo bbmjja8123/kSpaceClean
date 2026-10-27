@@ -122,7 +122,9 @@ final class SmokeUITests: XCTestCase {
                       "第 3 页应呈现就绪态与首扫按钮")
 
         // 完成 → onboarding 关闭，落画布（自动首扫已被 launch arg 压掉）。
-        tapIdentifier("onboarding.nav.done")
+        // 末页底部按钮仍是同一个 next 按钮（label 切换为「完成」），共用
+        // onboarding.nav.next 标识。
+        tapIdentifier("onboarding.nav.next")
         // 先等画布就绪（「+」菜单出现），再确认 onboarding 已关闭 ——
         // sheet 消失有过渡动画，直接断言不存在会与动画竞态。
         XCTAssertTrue(waitForIdentifier("canvas.plusMenu", timeout: 10),

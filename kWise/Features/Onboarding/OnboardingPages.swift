@@ -305,6 +305,8 @@ struct OnboardingContainerView: View {
                 }
                 .buttonStyle(.bordered)
                 .disabled(coordinator.currentPage == 0)
+                // P3 UI 冒烟：导航按钮标识（SmokeUITests 按 identifier 驱动）。
+                .accessibilityIdentifier("onboarding.nav.back")
 
                 Spacer()
 
@@ -322,6 +324,8 @@ struct OnboardingContainerView: View {
                 .tint(.brandPrimary)
                 .controlSize(.large)
                 .keyboardShortcut(.return, modifiers: [])
+                // P3 UI 冒烟：导航按钮标识（SmokeUITests 按 identifier 驱动）。
+                .accessibilityIdentifier("onboarding.nav.next")
             }
             .padding(.horizontal, AppSpacing.xl)
             .padding(.vertical, AppSpacing.md)
